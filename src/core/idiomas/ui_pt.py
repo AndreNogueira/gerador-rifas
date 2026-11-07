@@ -91,5 +91,6 @@ T.update({
     'web_tema_auto': 'Automático',
     'web_sessao_expirada': 'A sessão expirou (ou o servidor reiniciou). Carregue os ficheiros de novo.',
     'web_erro_rede': 'Não foi possível falar com o servidor. Verifique a ligação e tente de novo.',
+    'web_visual': 'Estilo',
 })
 T.update({'web_demasiados': 'No máximo {max} números por pedido.'})

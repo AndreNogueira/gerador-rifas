@@ -91,5 +91,6 @@ T.update({
     'web_tema_auto': 'Automat',
     'web_sessao_expirada': 'Sesiunea a expirat (sau serverul a fost repornit). Încarcă din nou fișierele.',
     'web_erro_rede': 'Nu s-a putut contacta serverul. Verifică conexiunea și încearcă din nou.',
+    'web_visual': 'Stil',
 })
 T.update({'web_demasiados': 'Cel mult {max} de numere per cerere.'})

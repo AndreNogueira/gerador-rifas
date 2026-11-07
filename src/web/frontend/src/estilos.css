@@ -1,74 +1,72 @@
 /*
- * Visual «bilhete de rifa»: cada passo é um bilhete com picotado e entalhes, cada passo com a sua cor.
- * Tema claro/escuro por variáveis; `data-tema` força um deles, sem o atributo vale o do sistema.
+ * Estilos base da webapp. Tudo o que muda de tema é uma variável (cores com `light-dark()`, forma, tipo de letra):
+ * os valores abaixo são os do tema «Premiado»; os outros temas vivem em `temas/<id>.css` e só reescrevem variáveis
+ * (mais um ou outro adorno). `data-tema` força claro/escuro, sem o atributo vale o do sistema; `data-visual` escolhe o tema.
  */
 :root {
-  --fundo: #f3effe;
-  --cartao: #ffffff;
-  --texto: #1d1240;
-  --suave: #62597f;
-  --linha: #ddd5f5;
-  --campo: #f8f6ff;
-  --destaque: #6a35f5;
-  --destaque-texto: #ffffff;
-  --rosa: #d62b8f;
-  --ok: #0b7a5f;
-  --aviso: #a05a00;
-  --erro: #c9183a;
-  --sombra: 44 20 120;
-  --banda: linear-gradient(115deg, #4a1fd6 0%, #7b2fe8 45%, #d62b8f 100%);
-  --botao: linear-gradient(120deg, #6a35f5 0%, #d62b8f 100%);
-  --passo-1: #6a35f5;
-  --passo-2: #d62b8f;
-  --passo-3: #ec6a08;
-  --passo-4: #0e9f84;
-  --fonte: "Bricolage Grotesque Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme: light dark;
+
+  /* cores */
+  --fundo: light-dark(#f3effe, #0f0a22);
+  --cartao: light-dark(#ffffff, #1b1236);
+  --texto: light-dark(#1d1240, #f1ecff);
+  --suave: light-dark(#62597f, #aa9fcf);
+  --linha: light-dark(#ddd5f5, #35295a);
+  --campo: light-dark(#f8f6ff, #130c2a);
+  --destaque: light-dark(#6a35f5, #a68bff);
+  --destaque-2: light-dark(#d62b8f, #ff6fb5);
+  --ok: light-dark(#0b7a5f, #3fe0b5);
+  --aviso: light-dark(#a05a00, #ffb454);
+  --erro: light-dark(#c9183a, #ff7a90);
+  --sombra-cor: light-dark(#2c1478, #000000);
+  --passo-1: light-dark(#6a35f5, #a68bff);
+  --passo-2: light-dark(#d62b8f, #ff6fb5);
+  --passo-3: light-dark(#ec6a08, #ffa14d);
+  --passo-4: light-dark(#0e9f84, #3fe0b5);
+
+  /* faixa do cabeçalho e botões */
+  --b1: light-dark(#4a1fd6, #3a1ac0);
+  --b2: light-dark(#7b2fe8, #7a25cf);
+  --b3: light-dark(#d62b8f, #c42a92);
+  --banda:
+    radial-gradient(circle at 80% 30%, rgb(255 255 255 / 16%) 0 0.35rem, transparent 0.4rem) 0 0 / 3.2rem
+    3.2rem,
+    linear-gradient(115deg, var(--b1) 0%, var(--b2) 45%, var(--b3) 100%);
+  --banda-altura: 17rem;
+  --banda-forma: ellipse(130% 100% at 50% 0%);
+  --topo-texto: #ffffff;
+  --pilula: rgb(20 6 60 / 32%);
+  --pilula-texto: #ffffff;
+  --nav-ativo: #ffd84a;
+  --nav-ativo-texto: #2a1068;
+  --botao-1: #6a35f5;
+  --botao-2: #d62b8f;
+  --botao-texto: #ffffff;
+  --botao-borda: 2px solid transparent;
+  --botao-sombra: 0 8px 18px -8px rgb(214 43 143 / 70%);
+  --botao-sombra-hover: 0 12px 22px -8px rgb(214 43 143 / 75%);
+  --botao-hover: translateY(-1px);
+  --botao-ativo: translateY(1px);
+  --entrega-1: #0e9f84;
+  --entrega-2: #1ab6d6;
+
+  /* forma e tipo de letra */
+  --fonte: "Bricolage Grotesque Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fonte-titulo: var(--fonte);
+  --peso-titulo: 750;
+  --raio: 18px;
+  --raio-c: 12px;
+  --borda: 2px;
+  --filtro-coluna: drop-shadow(0 10px 18px color-mix(in srgb, var(--sombra-cor) 18%, transparent));
+  --sombra-visor: 0 10px 28px -10px color-mix(in srgb, var(--sombra-cor) 35%, transparent);
+  --corte: 3.6rem; /* altura do cabeçalho do bilhete = onde ficam o picotado e os entalhes */
+  --extra: 0px; /* espaço por cima do cabeçalho do bilhete (toldo, barra de título...) */
+  --entalhe: 0.7rem;
 }
 :root[data-tema="light"] {
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-tema="light"]) {
-    --fundo: #0f0a22;
-    --cartao: #1b1236;
-    --texto: #f1ecff;
-    --suave: #aa9fcf;
-    --linha: #35295a;
-    --campo: #130c2a;
-    --destaque: #a68bff;
-    --destaque-texto: #ffffff;
-    --rosa: #ff6fb5;
-    --ok: #3fe0b5;
-    --aviso: #ffb454;
-    --erro: #ff7a90;
-    --sombra: 0 0 0;
-    --banda: linear-gradient(115deg, #3a1ac0 0%, #7a25cf 50%, #c42a92 100%);
-    --passo-1: #a68bff;
-    --passo-2: #ff6fb5;
-    --passo-3: #ffa14d;
-    --passo-4: #3fe0b5;
-  }
-}
 :root[data-tema="dark"] {
-  --fundo: #0f0a22;
-  --cartao: #1b1236;
-  --texto: #f1ecff;
-  --suave: #aa9fcf;
-  --linha: #35295a;
-  --campo: #130c2a;
-  --destaque: #a68bff;
-  --destaque-texto: #ffffff;
-  --rosa: #ff6fb5;
-  --ok: #3fe0b5;
-  --aviso: #ffb454;
-  --erro: #ff7a90;
-  --sombra: 0 0 0;
-  --banda: linear-gradient(115deg, #3a1ac0 0%, #7a25cf 50%, #c42a92 100%);
-  --passo-1: #a68bff;
-  --passo-2: #ff6fb5;
-  --passo-3: #ffa14d;
-  --passo-4: #3fe0b5;
   color-scheme: dark;
 }
 
@@ -87,23 +85,21 @@ body {
   font: 16px / 1.5 var(--fonte);
   font-optical-sizing: auto;
 }
-/* a faixa de cor por trás do cabeçalho, com bolinhas de confetis */
+/* a faixa de cor por trás do cabeçalho */
 body::before {
   content: "";
   position: absolute;
   inset: 0 0 auto 0;
-  height: 17rem;
-  background:
-    radial-gradient(circle at 80% 30%, rgb(255 255 255 / 16%) 0 0.35rem, transparent 0.4rem) 0 0 / 3.2rem
-    3.2rem,
-    var(--banda);
-  clip-path: ellipse(130% 100% at 50% 0%);
+  height: var(--banda-altura);
+  background: var(--banda);
+  clip-path: var(--banda-forma);
   z-index: -1;
 }
 h1,
 h2,
 h3 {
-  font-weight: 750;
+  font-family: var(--fonte-titulo);
+  font-weight: var(--peso-titulo);
   letter-spacing: -0.01em;
   line-height: 1.2;
 }
@@ -149,7 +145,7 @@ a {
   gap: 12px 20px;
   padding-block: 18px 22px;
   flex-wrap: wrap;
-  color: #fff;
+  color: var(--topo-texto);
 }
 .marca {
   display: flex;
@@ -189,8 +185,8 @@ a {
   gap: 7px;
   padding: 7px 13px;
   border-radius: 999px;
-  background: rgb(20 6 60 / 32%);
-  color: #fff;
+  background: var(--pilula);
+  color: var(--pilula-texto);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.92rem;
@@ -198,11 +194,11 @@ a {
   transition: background 0.15s;
 }
 .navegacao a:hover {
-  background: rgb(20 6 60 / 50%);
+  background: color-mix(in srgb, var(--pilula) 70%, #000);
 }
 .navegacao a[aria-current="page"] {
-  background: #ffd84a;
-  color: #2a1068;
+  background: var(--nav-ativo);
+  color: var(--nav-ativo-texto);
 }
 .definicoes {
   display: flex;
@@ -213,7 +209,7 @@ a {
   padding-block: 0;
 }
 .seletor:focus-within {
-  outline: 2px solid #ffd84a;
+  outline: 2px solid var(--nav-ativo);
   outline-offset: 2px;
 }
 .seletor select {
@@ -221,7 +217,7 @@ a {
   padding: 7px 4px;
   border: 0;
   background: transparent;
-  color: #fff;
+  color: var(--pilula-texto);
   font-weight: 600;
   font-size: 0.92rem;
   border-radius: 0;
@@ -246,10 +242,10 @@ a {
 }
 .pagina > p[aria-busy],
 .pagina > p[role="alert"] {
-  color: #fff;
+  color: var(--topo-texto);
 }
 .pagina > h1 {
-  color: #fff;
+  color: var(--topo-texto);
   text-shadow: 0 2px 14px rgb(20 4 70 / 40%);
 }
 
@@ -260,8 +256,8 @@ button,
 .botao {
   font: inherit;
   padding: 8px 12px;
-  border: 2px solid var(--linha);
-  border-radius: 12px;
+  border: var(--borda) solid var(--linha);
+  border-radius: var(--raio-c);
   background: var(--campo);
   color: var(--texto);
 }
@@ -291,13 +287,13 @@ button,
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: var(--botao);
-  color: #fff;
-  border-color: transparent;
+  background: linear-gradient(120deg, var(--botao-1), var(--botao-2));
+  color: var(--botao-texto);
+  border: var(--botao-borda);
   font-weight: 650;
   cursor: pointer;
   text-decoration: none;
-  box-shadow: 0 8px 18px -8px rgb(214 43 143 / 70%);
+  box-shadow: var(--botao-sombra);
   transition:
     transform 0.12s,
     box-shadow 0.12s,
@@ -305,19 +301,19 @@ button,
 }
 button:hover:not(:disabled),
 .botao:hover {
-  transform: translateY(-1px);
+  transform: var(--botao-hover);
   filter: saturate(1.15) brightness(1.04);
-  box-shadow: 0 12px 22px -8px rgb(214 43 143 / 75%);
+  box-shadow: var(--botao-sombra-hover);
 }
 button:active:not(:disabled),
 .botao:active {
-  transform: translateY(1px);
+  transform: var(--botao-ativo);
 }
 button.secundario,
 .botao.secundario {
   background: var(--cartao);
   color: var(--destaque);
-  border-color: color-mix(in srgb, var(--destaque) 55%, transparent);
+  border: var(--borda) solid color-mix(in srgb, var(--destaque) 55%, transparent);
   box-shadow: none;
 }
 button.secundario:hover:not(:disabled),
@@ -342,7 +338,7 @@ button:disabled {
   box-shadow: none;
 }
 :focus-visible {
-  outline: 3px solid var(--rosa);
+  outline: 3px solid var(--destaque-2);
   outline-offset: 2px;
 }
 label {
@@ -377,13 +373,13 @@ progress::-webkit-progress-bar {
   background: transparent;
 }
 progress::-webkit-progress-value {
-  border-radius: 999px;
-  background: linear-gradient(90deg, #6a35f5, #d62b8f 70%, #ff9a3d);
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--botao-1), var(--botao-2) 70%, var(--passo-3));
   transition: width 0.4s;
 }
 progress::-moz-progress-bar {
-  border-radius: 999px;
-  background: linear-gradient(90deg, #6a35f5, #d62b8f 70%, #ff9a3d);
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--botao-1), var(--botao-2) 70%, var(--passo-3));
 }
 
 /* ---------- ecrã principal */
@@ -405,30 +401,30 @@ progress::-moz-progress-bar {
   display: grid;
   gap: 18px;
   /* a sombra fica fora do recorte dos entalhes de cada bilhete */
-  filter: drop-shadow(0 10px 18px rgb(var(--sombra) / 18%));
+  filter: var(--filtro-coluna);
 }
 
 /* o bilhete: cabeçalho colorido, picotado e entalhes laterais à altura do picotado */
 .cartao {
   --cor: var(--destaque);
-  --corte: 3.6rem;
   display: grid;
   gap: 10px;
   padding: 0 0 16px;
   background: var(--cartao);
-  border-radius: 18px;
+  border-radius: var(--raio);
+}
+.cartao.passo {
+  --cota: calc(var(--corte) + var(--extra));
+  padding-top: var(--extra);
+  -webkit-mask:
+    radial-gradient(circle var(--entalhe) at 0 var(--cota), #0000 97%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--entalhe) at 100% var(--cota), #0000 97%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle var(--entalhe) at 0 var(--cota), #0000 97%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--entalhe) at 100% var(--cota), #0000 97%, #000) right / 51% 100% no-repeat;
 }
 .cartao.passo > :not(h2) {
   margin-inline: 18px;
-}
-.cartao.passo {
-  --entalhe: 0.7rem;
-  -webkit-mask:
-    radial-gradient(circle var(--entalhe) at 0 var(--corte), #0000 97%, #000) left / 51% 100% no-repeat,
-    radial-gradient(circle var(--entalhe) at 100% var(--corte), #0000 97%, #000) right / 51% 100% no-repeat;
-  mask:
-    radial-gradient(circle var(--entalhe) at 0 var(--corte), #0000 97%, #000) left / 51% 100% no-repeat,
-    radial-gradient(circle var(--entalhe) at 100% var(--corte), #0000 97%, #000) right / 51% 100% no-repeat;
 }
 .cartao.passo > h2 {
   display: flex;
@@ -439,7 +435,7 @@ progress::-moz-progress-bar {
   padding: 0 20px 0 14px;
   border-bottom: 2px dashed color-mix(in srgb, var(--cor) 38%, var(--linha));
   background: linear-gradient(95deg, color-mix(in srgb, var(--cor) 16%, transparent), transparent 70%);
-  border-radius: 18px 18px 0 0;
+  border-radius: var(--raio) var(--raio) 0 0;
 }
 .passo-1 {
   --cor: var(--passo-1);
@@ -515,8 +511,8 @@ progress::-moz-progress-bar {
 .modo label.opcao {
   flex: 1 1 9rem;
   padding: 9px 12px;
-  border: 2px solid var(--linha);
-  border-radius: 12px;
+  border: var(--borda) solid var(--linha);
+  border-radius: var(--raio-c);
   cursor: pointer;
   font-weight: 600;
   background: var(--campo);
@@ -535,7 +531,7 @@ progress::-moz-progress-bar {
 }
 .carregar {
   border: 2px dashed color-mix(in srgb, var(--cor) 55%, var(--linha));
-  border-radius: 14px;
+  border-radius: calc(var(--raio-c) + 2px);
   padding: 10px;
   background: color-mix(in srgb, var(--cor) 6%, transparent);
   transition:
@@ -552,7 +548,7 @@ progress::-moz-progress-bar {
   text-align: left;
   background: var(--cartao);
   color: var(--cor);
-  border: 2px solid color-mix(in srgb, var(--cor) 50%, transparent);
+  border: var(--borda) solid color-mix(in srgb, var(--cor) 50%, transparent);
   box-shadow: none;
 }
 .carregar button:hover:not(:disabled) {
@@ -607,15 +603,15 @@ progress::-moz-progress-bar {
     monospace;
   white-space: pre-wrap;
   background: var(--campo);
-  border: 2px solid var(--linha);
-  border-radius: 12px;
+  border: var(--borda) solid var(--linha);
+  border-radius: var(--raio-c);
   padding: 10px;
 }
 .entrega {
   display: grid;
   gap: 8px;
   padding: 14px;
-  border-radius: 14px;
+  border-radius: calc(var(--raio-c) + 2px);
   background: color-mix(in srgb, var(--passo-4) 12%, var(--cartao));
   border: 2px dashed color-mix(in srgb, var(--passo-4) 55%, transparent);
 }
@@ -628,8 +624,7 @@ progress::-moz-progress-bar {
   overflow: auto;
 }
 .entrega .botao {
-  background: linear-gradient(120deg, #0e9f84, #1ab6d6);
-  box-shadow: 0 8px 18px -8px rgb(14 159 132 / 75%);
+  background: linear-gradient(120deg, var(--entrega-1), var(--entrega-2));
   padding-block: 11px;
 }
 
@@ -639,8 +634,8 @@ progress::-moz-progress-bar {
   top: 10px;
   padding: 16px;
   background: var(--cartao);
-  border-radius: 18px;
-  box-shadow: 0 10px 28px -10px rgb(var(--sombra) / 35%);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-visor);
   overflow: hidden;
 }
 .visor::before {
@@ -648,7 +643,7 @@ progress::-moz-progress-bar {
   position: absolute;
   inset: 0 0 auto 0;
   height: 6px;
-  background: linear-gradient(90deg, #6a35f5, #d62b8f, #ff9a3d);
+  background: linear-gradient(90deg, var(--botao-1), var(--botao-2), var(--passo-3));
 }
 .expandido .visor {
   position: static;
@@ -666,9 +661,6 @@ progress::-moz-progress-bar {
   align-items: center;
   gap: 10px;
 }
-.visor-topo h2 .icone {
-  color: var(--rosa);
-}
 .visor-topo a {
   display: inline-flex;
   align-items: center;
@@ -681,8 +673,8 @@ progress::-moz-progress-bar {
   height: 78vh;
   min-height: 420px;
   margin-top: 12px;
-  border: 2px solid var(--linha);
-  border-radius: 14px;
+  border: var(--borda) solid var(--linha);
+  border-radius: var(--raio-c);
   background: #fff;
 }
 .vazio {
@@ -693,7 +685,7 @@ progress::-moz-progress-bar {
   padding: 56px 20px;
   text-align: center;
   border: 2px dashed var(--linha);
-  border-radius: 14px;
+  border-radius: calc(var(--raio-c) + 2px);
   background:
     radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--destaque) 12%, transparent), transparent 70%),
     var(--campo);
@@ -723,9 +715,9 @@ progress::-moz-progress-bar {
   display: grid;
   gap: 4px;
   background: var(--cartao);
-  border-radius: 18px;
+  border-radius: var(--raio);
   padding: 8px;
-  box-shadow: 0 10px 28px -12px rgb(var(--sombra) / 30%);
+  box-shadow: var(--sombra-visor);
 }
 .topico {
   justify-content: flex-start;
@@ -742,14 +734,14 @@ progress::-moz-progress-bar {
   box-shadow: none;
 }
 .topico.atual {
-  background: var(--botao);
-  color: #fff;
+  background: linear-gradient(120deg, var(--botao-1), var(--botao-2));
+  color: var(--botao-texto);
   font-weight: 700;
 }
 .pagina .cartao,
 .sobre {
   padding: 22px;
-  box-shadow: 0 10px 28px -12px rgb(var(--sombra) / 30%);
+  box-shadow: var(--sombra-visor);
 }
 .texto-longo {
   white-space: pre-line;
@@ -759,15 +751,15 @@ progress::-moz-progress-bar {
 .imagem-tutorial {
   max-width: 100%;
   height: auto;
-  border: 2px solid var(--linha);
-  border-radius: 12px;
+  border: var(--borda) solid var(--linha);
+  border-radius: var(--raio-c);
 }
 .video {
   width: 100%;
   max-width: 56rem;
   background: #000;
-  border-radius: 18px;
-  box-shadow: 0 14px 34px -14px rgb(var(--sombra) / 55%);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-visor);
 }
 .voltar {
   justify-self: start;
@@ -777,7 +769,7 @@ progress::-moz-progress-bar {
 .dialogo {
   max-width: min(32rem, calc(100vw - 32px));
   border: 0;
-  border-radius: 20px;
+  border-radius: calc(var(--raio) + 2px);
   background: var(--cartao);
   color: var(--texto);
   padding: 22px 24px 20px;
@@ -795,7 +787,7 @@ progress::-moz-progress-bar {
   border-top-color: #ffb020;
 }
 .dialogo.confirmar {
-  border-top-color: var(--rosa);
+  border-top-color: var(--destaque-2);
 }
 .dialogo-texto {
   margin: 0 0 18px;
@@ -817,6 +809,10 @@ progress::-moz-progress-bar {
   }
 }
 @media (max-width: 560px) {
+  /* o cabeçalho ocupa mais linhas: a faixa cresce com ele */
+  body::before {
+    height: calc(var(--banda-altura) + 4.5rem);
+  }
   .topo {
     padding-block: 14px 18px;
   }

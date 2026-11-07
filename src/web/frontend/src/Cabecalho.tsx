@@ -2,6 +2,7 @@ import { useI18n } from "./i18n";
 import { Icone, type NomeIcone } from "./icones";
 import { Ligacao, useLocalizacao } from "./rota";
 import type { Tema } from "./tema";
+import { VISUAIS, type Visual } from "./temas";
 
 const PAGINAS: readonly { para: string; chave: string; icone: NomeIcone }[] = [
   { para: "/tutorial", chave: "tut_titulo", icone: "livro" },
@@ -11,7 +12,14 @@ const PAGINAS: readonly { para: string; chave: string; icone: NomeIcone }[] = [
 
 const ICONE_DO_TEMA: Record<Tema, NomeIcone> = { auto: "auto", claro: "sol", escuro: "lua" };
 
-export function Cabecalho({ tema, mudarTema }: { tema: Tema; mudarTema: (t: Tema) => void }) {
+interface Props {
+  tema: Tema;
+  mudarTema: (t: Tema) => void;
+  visual: Visual;
+  mudarVisual: (v: Visual) => void;
+}
+
+export function Cabecalho({ tema, mudarTema, visual, mudarVisual }: Props) {
   const { t, lingua, linguas, mudarLingua } = useI18n();
   const caminho = useLocalizacao().split("?")[0];
   return (
@@ -46,6 +54,22 @@ export function Cabecalho({ tema, mudarTema }: { tema: Tema; mudarTema: (t: Tema
             {linguas.map((l) => (
               <option key={l.codigo} value={l.codigo}>
                 {l.nome}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="seletor">
+          <Icone nome="paleta" tamanho={18} />
+          <span className="so-leitores">{t("web_visual")}</span>
+          <select
+            value={visual}
+            onChange={(e) => mudarVisual(e.target.value as Visual)}
+            data-testid="visual"
+            aria-label={t("web_visual")}
+          >
+            {VISUAIS.map((v) => (
+              <option key={v.id} value={v.id} title={v.descricao}>
+                {v.nome}
               </option>
             ))}
           </select>

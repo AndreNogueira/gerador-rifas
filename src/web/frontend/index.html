@@ -9,6 +9,16 @@
     <link rel="icon" href="/icone.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/icone-apple.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
+    <script>
+      // aplica o tema e o modo guardados antes de a página pintar (o React confirma-os depois)
+      try {
+        var raiz = document.documentElement;
+        var visual = localStorage.getItem("rifas.visual");
+        var modo = localStorage.getItem("rifas.tema");
+        if (visual) raiz.setAttribute("data-visual", visual);
+        if (modo === "claro" || modo === "escuro") raiz.setAttribute("data-tema", modo === "claro" ? "light" : "dark");
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="raiz"></div>

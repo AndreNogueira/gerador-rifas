@@ -91,5 +91,6 @@ T.update({
     'web_tema_auto': 'Automatic',
     'web_sessao_expirada': 'The session expired (or the server restarted). Please upload your files again.',
     'web_erro_rede': 'Could not reach the server. Check your connection and try again.',
+    'web_visual': 'Style',
 })
 T.update({'web_demasiados': 'At most {max} numbers per request.'})

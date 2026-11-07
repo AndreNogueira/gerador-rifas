@@ -82,5 +82,6 @@ T.update({
     'web_tema_auto': '自动',
     'web_sessao_expirada': '会话已过期（或服务器已重启）。请重新上传文件。',
     'web_erro_rede': '无法连接到服务器。请检查网络后重试。',
+    'web_visual': '风格',
 })
 T.update({'web_demasiados': '每次最多 {max} 个号码。'})

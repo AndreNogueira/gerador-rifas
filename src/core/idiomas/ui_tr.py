@@ -91,5 +91,6 @@ T.update({
     'web_tema_auto': 'Otomatik',
     'web_sessao_expirada': 'Oturum sona erdi (veya sunucu yeniden başlatıldı). Dosyalarınızı yeniden yükleyin.',
     'web_erro_rede': 'Sunucuya ulaşılamadı. Bağlantınızı kontrol edip yeniden deneyin.',
+    'web_visual': 'Stil',
 })
 T.update({'web_demasiados': 'Her istekte en fazla {max} numara.'})

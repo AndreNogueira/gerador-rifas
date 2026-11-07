@@ -92,5 +92,6 @@ T.update({
     'web_tema_auto': 'Automatycznie',
     'web_sessao_expirada': 'Sesja wygasła (lub serwer został uruchomiony ponownie). Wczytaj pliki jeszcze raz.',
     'web_erro_rede': 'Nie można połączyć się z serwerem. Sprawdź połączenie i spróbuj ponownie.',
+    'web_visual': 'Styl',
 })
 T.update({'web_demasiados': 'Maksymalnie {max} numerów na jedno zlecenie.'})

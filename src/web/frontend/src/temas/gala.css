@@ -1,0 +1,193 @@
+/*
+ * Gala: art déco. Dourado sobre azul-noite, molduras duplas, raios de leque e cantos chanfrados; letra «Marcellus» nos
+ * títulos e «Jost» no texto. Claro = pérola com azul-marinho e ouro velho.
+ */
+:root[data-visual="gala"] {
+  --ouro: light-dark(#a47a1c, #e6c56e);
+  --fundo: light-dark(#eceff5, #0a101f);
+  --cartao: light-dark(#fbfcff, #121a30);
+  --texto: light-dark(#0d1b34, #f6eedb);
+  --suave: light-dark(#56627d, #aeb4c8);
+  --linha: light-dark(#cdd3e0, #2a3454);
+  --campo: light-dark(#f2f4fa, #0c1326);
+  --destaque: light-dark(#8a6516, #e6c56e);
+  --destaque-2: light-dark(#0f7a5c, #35d6a4);
+  --ok: light-dark(#0b7a56, #46e0ac);
+  --aviso: light-dark(#8a5a00, #ffc861);
+  --erro: light-dark(#b0102e, #ff7d94);
+  --sombra-cor: light-dark(#0d1b34, #000000);
+  --passo-1: light-dark(#8a6516, #e6c56e);
+  --passo-2: light-dark(#0f7a5c, #35d6a4);
+  --passo-3: light-dark(#a3112f, #ff7d94);
+  --passo-4: light-dark(#1d4ea8, #7ba6ff);
+  --b1: light-dark(#0b1a33, #070c19);
+  --b2: light-dark(#14284d, #0f1a33);
+  --b3: light-dark(#0b1a33, #070c19);
+  --banda:
+    repeating-conic-gradient(
+      from 270deg at 50% 118%,
+      rgb(230 197 110 / 22%) 0 2.5deg,
+      transparent 2.5deg 9deg
+    ),
+    linear-gradient(180deg, var(--b1), var(--b2) 80%, var(--b3));
+  --banda-altura: 13.5rem;
+  --banda-forma: polygon(
+    0 0,
+    100% 0,
+    100% 78%,
+    97% 78%,
+    97% 88%,
+    94% 88%,
+    94% 100%,
+    6% 100%,
+    6% 88%,
+    3% 88%,
+    3% 78%,
+    0 78%
+  );
+  --pilula: rgb(230 197 110 / 12%);
+  --pilula-texto: #f6eedb;
+  --nav-ativo: #e6c56e;
+  --nav-ativo-texto: #0b1a33;
+  --botao-1: #f1d98c;
+  --botao-2: #c9a13f;
+  --botao-texto: #0b1a33;
+  --botao-borda: 1px solid #8a6a1c;
+  --botao-sombra: 0 6px 16px -8px rgb(201 161 63 / 80%);
+  --botao-sombra-hover: 0 10px 22px -8px rgb(201 161 63 / 90%);
+  --entrega-1: #0f7a5c;
+  --entrega-2: #35b58a;
+  --fonte: "Jost Variable", "Century Gothic", system-ui, sans-serif;
+  --fonte-titulo: "Marcellus", "Trajan Pro", Georgia, serif;
+  --peso-titulo: 400;
+  --raio: 3px;
+  --raio-c: 2px;
+  --borda: 1px;
+  --filtro-coluna: drop-shadow(0 10px 16px color-mix(in srgb, var(--sombra-cor) 28%, transparent));
+  --entalhe: 0.8rem;
+}
+:root[data-visual="gala"] body::before {
+  border-bottom: 2px solid #e6c56e;
+}
+:root[data-visual="gala"] .marca h1 {
+  font-size: 1.75rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: #f1d98c;
+  text-shadow: 0 2px 16px rgb(0 0 0 / 60%);
+}
+:root[data-visual="gala"] .pagina > h1 {
+  letter-spacing: 0.06em;
+  color: #f1d98c;
+}
+:root[data-visual="gala"] .marca img {
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 2px #e6c56e,
+    0 8px 20px rgb(0 0 0 / 55%);
+}
+:root[data-visual="gala"] .navegacao a,
+:root[data-visual="gala"] .seletor {
+  border-radius: 2px;
+  border: 1px solid rgb(230 197 110 / 55%);
+  letter-spacing: 0.02em;
+}
+:root[data-visual="gala"] .navegacao a:hover {
+  background: rgb(230 197 110 / 24%);
+}
+:root[data-visual="gala"] .seletor option {
+  color: #0b1a33;
+}
+/* a moldura dupla dourada dos bilhetes */
+:root[data-visual="gala"] .cartao.passo {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--ouro) 70%, transparent),
+    inset 0 0 0 5px var(--cartao),
+    inset 0 0 0 6px color-mix(in srgb, var(--ouro) 38%, transparent);
+}
+:root[data-visual="gala"] .cartao.passo > h2 {
+  background: linear-gradient(95deg, color-mix(in srgb, var(--ouro) 14%, transparent), transparent 75%);
+  border-bottom: 1px dashed color-mix(in srgb, var(--ouro) 70%, transparent);
+  padding-left: 20px;
+  margin-top: 6px;
+  border-radius: 0;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+}
+:root[data-visual="gala"] .cartao.passo > h2::after {
+  content: none;
+}
+:root[data-visual="gala"] .cartao.passo > :not(h2) {
+  margin-inline: 22px;
+}
+:root[data-visual="gala"] .insignia {
+  border-radius: 0;
+  transform: none;
+  clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
+  background: linear-gradient(140deg, #f6e3a1, var(--cor) 55%, color-mix(in srgb, var(--cor) 70%, #000));
+  color: light-dark(#fff, #0b1a33);
+  box-shadow: none;
+  width: 2.6rem;
+  height: 2.6rem;
+}
+:root[data-visual="gala"] .numero {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 2rem;
+  color: color-mix(in srgb, var(--ouro) 80%, transparent);
+}
+:root[data-visual="gala"] button,
+:root[data-visual="gala"] .botao {
+  letter-spacing: 0.03em;
+}
+:root[data-visual="gala"] button.secundario {
+  border: 1px solid var(--ouro);
+  color: var(--destaque);
+}
+:root[data-visual="gala"] .carregar button {
+  color: var(--texto);
+  border: 1px solid var(--ouro);
+}
+:root[data-visual="gala"] .carregar,
+:root[data-visual="gala"] .entrega,
+:root[data-visual="gala"] .vazio {
+  border-radius: 2px;
+  border-color: color-mix(in srgb, var(--ouro) 60%, transparent);
+}
+:root[data-visual="gala"] .modo label.opcao:has(input:checked) {
+  border-color: var(--ouro);
+  background: color-mix(in srgb, var(--ouro) 14%, var(--cartao));
+}
+:root[data-visual="gala"] .visor {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--ouro) 70%, transparent),
+    inset 0 0 0 5px var(--cartao),
+    inset 0 0 0 6px color-mix(in srgb, var(--ouro) 38%, transparent),
+    var(--sombra-visor);
+  padding: 22px;
+}
+:root[data-visual="gala"] .visor::before {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #e6c56e, transparent);
+}
+:root[data-visual="gala"] progress {
+  height: 10px;
+  border-radius: 0;
+}
+:root[data-visual="gala"] progress::-webkit-progress-value {
+  border-radius: 0;
+  background: linear-gradient(90deg, #c9a13f, #f1d98c);
+}
+:root[data-visual="gala"] progress::-moz-progress-bar {
+  border-radius: 0;
+  background: linear-gradient(90deg, #c9a13f, #f1d98c);
+}
+:root[data-visual="gala"] .dialogo {
+  border-radius: 3px;
+  border: 1px solid var(--ouro);
+  border-top: 4px solid var(--ouro);
+}
+:root[data-visual="gala"] .topico.atual {
+  background: linear-gradient(120deg, #f1d98c, #c9a13f);
+  color: #0b1a33;
+}

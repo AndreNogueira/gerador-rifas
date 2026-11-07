@@ -92,5 +92,6 @@ T.update({
     'web_tema_auto': 'Automatico',
     'web_sessao_expirada': 'La sessione è scaduta (o il server è stato riavviato). Carica di nuovo i file.',
     'web_erro_rede': 'Impossibile contattare il server. Controlla la connessione e riprova.',
+    'web_visual': 'Stile',
 })
 T.update({'web_demasiados': 'Al massimo {max} numeri per richiesta.'})
