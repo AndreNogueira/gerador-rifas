@@ -73,3 +73,18 @@ T = {
     'limpar': 'सब साफ़ करें',
     'tut_limpar': 'पूरा होने पर “{limpar}” (या मेनू “{ficheiro}” › “{limpar}”) सब कुछ साफ़ कर देता है — टेम्पलेट, अंक, फ़ोल्डर, नाम, संख्याएँ और पूर्वावलोकन — ताकि आप दूसरा रैफ़ल शुरू कर सकें।',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'डाउनलोड',
+    'web_senha': 'पासवर्ड',
+    'web_entrar': 'साइन इन',
+    'web_senha_errada': 'गलत पासवर्ड।',
+    'web_demasiado_grande': 'फ़ाइल सीमा ({mb} MB) से बड़ी है।',
+    'web_ocupado': 'एक जनरेशन पहले से चल रही है। थोड़ी देर बाद फिर कोशिश करें।',
+    'web_voltar': 'वापस',
+    'web_ficheiros_gerados': 'बनाए गए PDF',
+    'web_nova_janela': 'नई विंडो में खोलें',
+    'web_tema_auto': 'स्वचालित',
+})
+T.update({'web_demasiados': 'प्रति अनुरोध अधिकतम {max} नंबर।'})

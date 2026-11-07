@@ -70,3 +70,18 @@ T = {
     'limpar': '全部清除',
     'tut_limpar': '完成后，点击“{limpar}”（或菜单“{ficheiro}”›“{limpar}”）即可清空一切——模板、数字文件、文件夹、名称、编号和预览——重新开始下一场抽奖。',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': '下载',
+    'web_senha': '密码',
+    'web_entrar': '登录',
+    'web_senha_errada': '密码错误。',
+    'web_demasiado_grande': '文件超过大小限制（{mb} MB）。',
+    'web_ocupado': '已有生成任务在进行，请稍后再试。',
+    'web_voltar': '返回',
+    'web_ficheiros_gerados': '已生成的 PDF',
+    'web_nova_janela': '在新窗口中打开',
+    'web_tema_auto': '自动',
+})
+T.update({'web_demasiados': '每次最多 {max} 个号码。'})

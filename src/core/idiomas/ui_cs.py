@@ -78,3 +78,18 @@ T = {
     'limpar': 'Vymazat vše',
     'tut_limpar': 'Po dokončení „{limpar}“ (nebo nabídka „{ficheiro}“ › „{limpar}“) vše vyčistí — šablonu, číslice, složku, název, čísla i náhled — a můžete začít další tombolu.',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'Stáhnout',
+    'web_senha': 'Heslo',
+    'web_entrar': 'Přihlásit',
+    'web_senha_errada': 'Nesprávné heslo.',
+    'web_demasiado_grande': 'Soubor je větší než limit ({mb} MB).',
+    'web_ocupado': 'Generování již probíhá. Zkuste to za chvíli znovu.',
+    'web_voltar': 'Zpět',
+    'web_ficheiros_gerados': 'Vygenerované PDF',
+    'web_nova_janela': 'Otevřít v novém okně',
+    'web_tema_auto': 'Automaticky',
+})
+T.update({'web_demasiados': 'Nejvýše {max} čísel na jednu zakázku.'})

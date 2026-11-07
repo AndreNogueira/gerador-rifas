@@ -80,3 +80,18 @@ T = {
     'limpar': 'Wyczyść wszystko',
     'tut_limpar': 'Po zakończeniu „{limpar}” (lub menu „{ficheiro}” › „{limpar}”) czyści wszystko — template, cyfry, folder, nazwę, numery i podgląd — abyś mógł zacząć kolejną loterię.',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'Pobierz',
+    'web_senha': 'Hasło',
+    'web_entrar': 'Zaloguj',
+    'web_senha_errada': 'Nieprawidłowe hasło.',
+    'web_demasiado_grande': 'Plik jest większy niż limit ({mb} MB).',
+    'web_ocupado': 'Trwa już generowanie. Spróbuj ponownie za chwilę.',
+    'web_voltar': 'Wstecz',
+    'web_ficheiros_gerados': 'Wygenerowane pliki PDF',
+    'web_nova_janela': 'Otwórz w nowym oknie',
+    'web_tema_auto': 'Automatycznie',
+})
+T.update({'web_demasiados': 'Maksymalnie {max} numerów na jedno zlecenie.'})

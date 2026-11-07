@@ -1,8 +1,9 @@
 # Webapp «Gerador de Rifas» — plano (rascunho para aprovar)
 
-Decidido: **backend Python (FastAPI) + frontend React/Vite/TypeScript** (opção B do `docs/MIGRATION_PLAN.md`). Ferramentas: Node 22, pnpm, uv, git, `gh` e Rancher Desktop (docker).
+Decidido: **backend Python (FastAPI) + frontend React/Vite/TypeScript** (opção B do `docs/MIGRATION_PLAN.md`). Ferramentas (últimas versões, fixadas exatamente): Node 26, pnpm 12, uv, git, `gh` e Rancher Desktop (docker).
 
-Python: **3.12** no backend/imagem Docker; o `src/core` tem de correr também em 3.13 (app Windows) — o CI testa as duas.
+Python: **3.15** no backend/imagem Docker; o `src/core` tem de correr também em 3.13 (app Windows) — o CI testa as duas.
+Regra: **sempre as últimas versões estáveis, fixadas** (`pnpm-lock.yaml`, `uv.lock`, tags do Docker). Quadro das versões e a avaliação React × Angular: §7.
 Regras e comandos: `CLAUDE.md` (raiz).
 
 ## 1. Ideia
@@ -14,9 +15,9 @@ Inclui os dois modos do template (vários bilhetes por página / uma só rifa qu
 Estrutura alvo (raiz do repo; ver `CLAUDE.md`):
 ```
 src/core/             motor puro, sem UI nem Windows: motor, pdftexto, i18n, idiomas/ (18 línguas), pedido, escolha_folha, config, tutorial, autoteste
-src/web/              FastAPI (Python 3.12, uv)
-  main.py             app + rotas (api)
-  trabalhos.py        fila de trabalhos + limpeza
+src/web/              FastAPI (Python 3.15, uv)
+  app.py              `criar_app()`: rotas da API, /health e estáticos do frontend (já existe)
+  trabalhos.py        (a criar) pool de processos para o PDFium + fila de trabalhos + limpeza
   frontend/           React + Vite + TypeScript (pnpm)
 tests/                pytest: testes do motor (migrados de app/testes: templates aleatórios + os do Canva) e da API
 app/                  app Windows (passa a importar o core de src/core)
@@ -52,7 +53,7 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
 - Apagar tudo no fim; sem registo de conteúdo; política de privacidade curta.
 
 ## 6. Fases
-1. **Esqueleto** (backend FastAPI + frontend Vite a falar um com o outro, docker-compose a correr no Rancher).
+1. **Esqueleto** — **feito** (FastAPI + React/Vite a falar um com o outro: `/health`, `/api/linguas`, `/api/textos/{lingua}`; Dockerfile multi-stage e CI; falta só o `docker-compose`, que não é preciso).
 2. **Motor como pacote** partilhado + testes a passar (`teste_folha`, `teste_canva`, `teste_5000`, `teste_limpar` adaptado).
 3. **API de análise + pré-visualização** (template, algarismos, folha) e os 4 cartões + visor.
 4. **Geração** (trabalhos, progresso, cancelar, ZIP) + «Limpar tudo».
@@ -64,6 +65,11 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
 **Tomadas** (ver `docs/MIGRATION_PLAN.md`, que tem a análise completa da app desktop e as estimativas):
 - Abordagem **B**: backend **FastAPI** com processos de trabalho isolados para o PDFium.
 - Frontend **React + Vite + TypeScript** (pnpm), mantido (não HTMX/Jinja). Imagem Docker multi-stage.
+- **React e não Angular** (avaliado em 2026-11-07 contra os registos npm/PyPI; detalhe em `docs/MIGRATION_PLAN.md` §10). Pesou, por esta ordem: (1) o Angular 22 fixa `typescript >=6.0 <6.1` e a regra
+  «últimas versões» pede o TypeScript 7.0; (2) o i18n do Angular compila uma build por língua, e aqui as 18 línguas vêm em JSON da API; (3) 5 ecrãs e um formulário não justificam o peso do Angular.
+  O Angular teria a vantagem de trazer router/formulários/HTTP/testes de origem, mas isso não compensa os pontos acima.
+- **Versões (2026-11-07):** Python 3.15.2 · FastAPI 0.162 · uvicorn 0.54 · Node 26.13 · pnpm 12.18 · React 19.3 · Vite 8.3 · `@vitejs/plugin-react` 6 · TypeScript 7.0 · Vitest 5.1 · Biome 2.6. Lint com **Biome**
+  porque `typescript-eslint` limita o TypeScript a <6.1. Só `react` e `react-dom` em produção.
 - Estimativa revista: ≈ 25 dias úteis (±30 %).
 
 - **Alojamento:** serviço **gratuito** (qual: ver «Em aberto»).
@@ -92,5 +98,12 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
 + os scripts `teste_folha`/`teste_canva`/`teste_5000`/`teste_digitos` passam em Windows e em Linux (`docker\testes_linux.ps1`, Python 3.12 e 3.13); `src/core` sem imports
 de UI/Windows (verificado por teste). Detalhe: `docs/MIGRATION_PLAN.md` §8.
 
+**Esqueleto feito (React).** `src/web/app.py` (FastAPI: `/health`, `/api/linguas`, `/api/textos/{lingua}`, estáticos com *fallback* para o `index.html`, `/api/...` desconhecido = 404 JSON), `src/web/frontend/` (React 19.3 + Vite 8 + TS 7; carrega as línguas e os textos
+da API; os 4 passos só como títulos), Dockerfile (`node:26-slim` → `python:3.15-slim`, sem Node na imagem final, utilizador sem root, `HEALTHCHECK`) e CI (pytest 3.13/3.15 em Linux e Windows, frontend, Docker). 483 testes pytest em 3.15 e 441 em 3.13; 8 do Vitest.
+O protótipo em NiceGUI (5 ecrãs completos, 63 testes) ficou arquivado no ramo local `nicegui-prototipo` como referência (por exemplo, o fluxo de sessões/geração em `src/web/estado.py` e `motor.py`).
+
 **Próximo: Fase 1 (API)** em `src/web/`: FastAPI com sessões, upload (`preparar_de_bytes`), análise do template, folha (`escolha_folha`), pré-visualização (`pdf_da_previa`),
 trabalhos num processo de trabalho isolado (1 PDFium), progresso por SSE, ZIP; palavra-passe `ACCESS_PASSWORD`; limites (tamanho, nº de números, tempo). Depois o frontend (Fase 2).
+
+**Atenção ao começar a geração:** o plano e o `CLAUDE.md` exigem o PDFium num **processo** de trabalho (pool de processos, `multiprocessing.Event` para cancelar, `Preparado` recriado dentro do worker porque não é serializável); o protótipo NiceGUI usava um só *thread* (`ThreadPoolExecutor(1)`),
+que serve para um utilizador mas não dá isolamento de memória/tempo para os 512 MB do Render. Não copiar esse `motor.py` sem trocar o *thread* por um processo.

@@ -79,3 +79,18 @@ T = {
     'limpar': 'Șterge tot',
     'tut_limpar': 'La final, „{limpar}” (sau meniul „{ficheiro}” › „{limpar}”) șterge tot — șablonul, cifrele, dosarul, numele, numerele și previzualizarea — ca să puteți începe o altă tombolă.',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'Descarcă',
+    'web_senha': 'Parolă',
+    'web_entrar': 'Autentificare',
+    'web_senha_errada': 'Parolă greșită.',
+    'web_demasiado_grande': 'Fișierul depășește limita ({mb} MB).',
+    'web_ocupado': 'O generare este deja în curs. Încercați din nou peste puțin timp.',
+    'web_voltar': 'Înapoi',
+    'web_ficheiros_gerados': 'PDF-uri generate',
+    'web_nova_janela': 'Deschide într-o fereastră nouă',
+    'web_tema_auto': 'Automat',
+})
+T.update({'web_demasiados': 'Cel mult {max} de numere per cerere.'})

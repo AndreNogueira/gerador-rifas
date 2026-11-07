@@ -79,3 +79,18 @@ T = {
     'limpar': 'Rensa allt',
     'tut_limpar': 'När det är klart återställer ”{limpar}” (eller menyn ”{ficheiro}” › ”{limpar}”) allt — mall, siffror, mapp, namn, nummer och förhandsgranskning — så att du kan börja på en ny lottdragning.',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'Ladda ner',
+    'web_senha': 'Lösenord',
+    'web_entrar': 'Logga in',
+    'web_senha_errada': 'Fel lösenord.',
+    'web_demasiado_grande': 'Filen är större än gränsen ({mb} MB).',
+    'web_ocupado': 'En generering pågår redan. Försök igen om en stund.',
+    'web_voltar': 'Tillbaka',
+    'web_ficheiros_gerados': 'Genererade PDF-filer',
+    'web_nova_janela': 'Öppna i nytt fönster',
+    'web_tema_auto': 'Automatiskt',
+})
+T.update({'web_demasiados': 'Högst {max} nummer per beställning.'})

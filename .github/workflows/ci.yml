@@ -1,5 +1,5 @@
-# Integracao continua: testes do motor em Linux e Windows (Python 3.12 e 3.13) e a imagem Docker.
-# Substitui o «--selftest» do .exe como verificacao automatica. O deploy (Render) so deve acontecer depois deste CI passar.
+# Integracao continua: motor + API em Linux e Windows (Python 3.13 = a da app Windows, e 3.15 = a da webapp), frontend React
+# (lint, tipos, testes, build) e a imagem Docker. O deploy (Render) so deve acontecer depois deste CI passar.
 name: CI
 
 on:
@@ -15,10 +15,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        python: ["3.12", "3.13"]
+        python: ["3.13", "3.15"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
         with:
           python-version: ${{ matrix.python }}
       - run: uv sync --frozen
@@ -29,9 +29,32 @@ jobs:
           PYTHONIOENCODING: utf-8
         run: uv run --no-sync python -m core ../app/exemplos ${{ runner.temp }}/autoteste
 
+  frontend:
+    name: frontend (Node 26, pnpm)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/web/frontend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: src/web/frontend/package.json   # a versao do pnpm vem do campo packageManager
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: pnpm
+          cache-dependency-path: src/web/frontend/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint
+      - run: pnpm run tipos
+      - run: pnpm run teste
+      - run: pnpm run build
+
   docker:
     name: imagem Docker (testes dentro do build)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: docker build --target testes -t gerador-rifas-testes .
+      - run: docker build --target web -t gerador-rifas .

@@ -80,3 +80,18 @@ T = {
     'limpar': 'Alles zurücksetzen',
     'tut_limpar': 'Wenn alles fertig ist, setzt „{limpar}“ (oder Menü „{ficheiro}“ › „{limpar}“) alles zurück – Vorlage, Ziffern, Ordner, Name, Nummern und Vorschau –, damit Sie eine neue Verlosung beginnen können.',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'Herunterladen',
+    'web_senha': 'Passwort',
+    'web_entrar': 'Anmelden',
+    'web_senha_errada': 'Falsches Passwort.',
+    'web_demasiado_grande': 'Die Datei ist größer als das Limit ({mb} MB).',
+    'web_ocupado': 'Es läuft bereits eine Erzeugung. Bitte gleich noch einmal versuchen.',
+    'web_voltar': 'Zurück',
+    'web_ficheiros_gerados': 'Erzeugte PDFs',
+    'web_nova_janela': 'In neuem Fenster öffnen',
+    'web_tema_auto': 'Automatisch',
+})
+T.update({'web_demasiados': 'Höchstens {max} Nummern pro Auftrag.'})

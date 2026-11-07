@@ -79,3 +79,18 @@ T = {
     'limpar': 'Hepsini temizle',
     'tut_limpar': 'İş bitince “{limpar}” (veya “{ficheiro}” menüsü › “{limpar}”) her şeyi sıfırlar — şablon, rakamlar, klasör, ad, numaralar ve önizleme — böylece yeni bir çekiliş başlatabilirsiniz.',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'İndir',
+    'web_senha': 'Parola',
+    'web_entrar': 'Giriş yap',
+    'web_senha_errada': 'Yanlış parola.',
+    'web_demasiado_grande': 'Dosya sınırdan büyük ({mb} MB).',
+    'web_ocupado': 'Zaten bir oluşturma işlemi sürüyor. Birazdan tekrar deneyin.',
+    'web_voltar': 'Geri',
+    'web_ficheiros_gerados': "Oluşturulan PDF'ler",
+    'web_nova_janela': 'Yeni pencerede aç',
+    'web_tema_auto': 'Otomatik',
+})
+T.update({'web_demasiados': 'Her istekte en fazla {max} numara.'})

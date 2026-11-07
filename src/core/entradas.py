@@ -46,7 +46,7 @@ def preparar_de_bytes(template: bytes, algarismos: bytes | None, nome_template: 
     decide-se pelos bytes, nao pelo nome). Erros: os de `preparar`; tipo errado -> `err_abrir_template` (template) ou
     `err_formato` (algarismos). O `Preparado` fica independente dos temporarios (que ja nao existem)."""
     if detetar_tipo(template) != "pdf":
-        raise ErroRifas("err_abrir_template", erro="not a PDF file")
+        raise ErroRifas("err_abrir_template", erro=f"«{nome_template}»")
     nome_t = nome_de_upload(nome_template, "pdf", "template")
     tipo_a = detetar_tipo(algarismos) if algarismos is not None else None
     if algarismos is not None and tipo_a is None:
@@ -72,3 +72,15 @@ def preparar_de_bytes(template: bytes, algarismos: bytes | None, nome_template: 
     prep.template = Path(nome_t)
     prep.info.caminho = Path(nome_t)
     return prep
+
+
+def analisar_template_de_bytes(template: bytes, nome_template: str = "template.pdf"):
+    """`core.analisar_template` para um PDF recebido como bytes (devolve a InfoTemplate; erros: err_abrir_template, err_sem_exemplos, ...).
+    Serve para mostrar o que se leu do template antes de haver o ficheiro dos algarismos."""
+    if detetar_tipo(template) != "pdf":
+        raise ErroRifas("err_abrir_template", erro=f"«{nome_template}»")
+    nome_t = nome_de_upload(nome_template, "pdf", "template")
+    with ficheiro_temporario(template, nome_t) as tpl:
+        info = analisar_template(tpl)
+    info.caminho = Path(nome_t)
+    return info

@@ -72,3 +72,18 @@ T = {
     'limpar': '모두 지우기',
     'tut_limpar': "끝나면 '{limpar}'(또는 '{ficheiro}' 메뉴 › '{limpar}')로 템플릿, 숫자 파일, 폴더, 이름, 번호, 미리보기를 모두 지우고 다른 추첨을 시작하세요.",
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': '다운로드',
+    'web_senha': '비밀번호',
+    'web_entrar': '로그인',
+    'web_senha_errada': '비밀번호가 올바르지 않습니다.',
+    'web_demasiado_grande': '파일이 제한({mb} MB)보다 큽니다.',
+    'web_ocupado': '이미 생성 중입니다. 잠시 후 다시 시도하세요.',
+    'web_voltar': '뒤로',
+    'web_ficheiros_gerados': '생성된 PDF',
+    'web_nova_janela': '새 창에서 열기',
+    'web_tema_auto': '자동',
+})
+T.update({'web_demasiados': '요청당 최대 {max}개의 번호입니다.'})

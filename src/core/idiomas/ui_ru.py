@@ -78,3 +78,18 @@ T = {
     'limpar': 'Очистить всё',
     'tut_limpar': 'Когда всё готово, «{limpar}» (или меню «{ficheiro}» › «{limpar}») очищает всё — шаблон, цифры, папку, имя, номера и предпросмотр — чтобы начать новую лотерею.',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'Скачать',
+    'web_senha': 'Пароль',
+    'web_entrar': 'Войти',
+    'web_senha_errada': 'Неверный пароль.',
+    'web_demasiado_grande': 'Файл больше лимита ({mb} МБ).',
+    'web_ocupado': 'Уже идёт создание файлов. Повторите попытку через минуту.',
+    'web_voltar': 'Назад',
+    'web_ficheiros_gerados': 'Созданные PDF',
+    'web_nova_janela': 'Открыть в новом окне',
+    'web_tema_auto': 'Автоматически',
+})
+T.update({'web_demasiados': 'Не более {max} номеров за один запрос.'})

@@ -80,3 +80,18 @@ T = {
     'limpar': 'Limpiar todo',
     'tut_limpar': 'Al terminar, «{limpar}» (o menú «{ficheiro}» › «{limpar}») lo deja todo limpio — template, dígitos, carpeta, nombre, números y vista previa — para empezar otra rifa.',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'Descargar',
+    'web_senha': 'Contraseña',
+    'web_entrar': 'Entrar',
+    'web_senha_errada': 'Contraseña incorrecta.',
+    'web_demasiado_grande': 'El archivo supera el límite ({mb} MB).',
+    'web_ocupado': 'Ya hay una generación en curso. Inténtelo de nuevo en un momento.',
+    'web_voltar': 'Volver',
+    'web_ficheiros_gerados': 'PDF generados',
+    'web_nova_janela': 'Abrir en una ventana nueva',
+    'web_tema_auto': 'Automático',
+})
+T.update({'web_demasiados': 'Como máximo {max} números por pedido.'})

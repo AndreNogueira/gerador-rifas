@@ -6,6 +6,7 @@
 !/tests/
 !/src/
 !/pyproject.toml
+!/.python-version
 !/uv.lock
 !/docker/
 !/Dockerfile

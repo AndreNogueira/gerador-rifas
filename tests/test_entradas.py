@@ -159,3 +159,27 @@ def test_pdf_da_previa_com_fim_e_folha(tmp_path, fx):
 def test_pagina_previa_continua_igual_a_renderizar_o_pdf(fx):
     prep = core.preparar(fx("template_exemplo.pdf"), fx("digitos_exemplo.pdf"))
     assert core.pagina_previa(prep, 1, 4, dpi=50) == core.png_de_pagina(core.pdf_da_previa(prep, 1, 4), 50)
+
+
+# ------------------------------------------------------------------ analisar_template_de_bytes (a webapp mostra o que leu antes dos algarismos)
+def test_analisar_template_de_bytes_devolve_a_info(fx):
+    info = entradas.analisar_template_de_bytes(_bytes(fx, "template_exemplo.pdf"), "Rifa Natal.pdf")
+    assert info.caminho == Path("Rifa Natal.pdf")                 # nome seguro, nunca um caminho do cliente
+    esperado = core.analisar_template(fx("template_exemplo.pdf"))
+    assert info.n_campos > 0                                      # leu os numeros de exemplo
+    campos = ("n_campos", "n_paginas", "primeiro", "ultimo", "largura", "altura", "slots")
+    assert [getattr(info, c) for c in campos] == [getattr(esperado, c) for c in campos]
+
+
+def test_analisar_template_de_bytes_nome_perigoso(fx):
+    info = entradas.analisar_template_de_bytes(_bytes(fx, "template_exemplo.pdf"), "../../etc/passwd")
+    assert info.caminho == Path("passwd.pdf")
+
+
+@pytest.mark.parametrize("mau", [b"", b"hello", b"\x89PNG\r\n\x1a\n", b" %PDF-1.4"])
+def test_analisar_template_de_bytes_so_aceita_pdf(mau):
+    with pytest.raises(core.ErroRifas) as e:
+        entradas.analisar_template_de_bytes(mau, "x.pdf")
+    assert e.value.chave == "err_abrir_template"
+    assert "«x.pdf»" in e.value.em("pt")                           # o erro nomeia o ficheiro (sem texto em ingles misturado)
+    assert "not a PDF" not in e.value.em("pt")

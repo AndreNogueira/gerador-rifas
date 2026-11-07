@@ -80,3 +80,18 @@ T = {
     'limpar': 'Alles wissen',
     'tut_limpar': 'Als alles klaar is, zet ‘{limpar}’ (of menu ‘{ficheiro}’ › ‘{limpar}’) alles terug — template, cijfers, map, naam, nummers en voorbeeld — zodat u een nieuwe loterij kunt beginnen.',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'Downloaden',
+    'web_senha': 'Wachtwoord',
+    'web_entrar': 'Aanmelden',
+    'web_senha_errada': 'Onjuist wachtwoord.',
+    'web_demasiado_grande': 'Het bestand is groter dan de limiet ({mb} MB).',
+    'web_ocupado': 'Er is al een generatie bezig. Probeer het zo opnieuw.',
+    'web_voltar': 'Terug',
+    'web_ficheiros_gerados': "Gegenereerde pdf's",
+    'web_nova_janela': 'Openen in een nieuw venster',
+    'web_tema_auto': 'Automatisch',
+})
+T.update({'web_demasiados': 'Maximaal {max} nummers per opdracht.'})

@@ -6,6 +6,7 @@ as linguas) e, por lingua, `<lingua>_a.png` / `_b.png` / `_c.png` (capturas da j
 """
 from __future__ import annotations
 
+import io
 import json
 import re
 from pathlib import Path
@@ -77,3 +78,27 @@ def ficheiro_video(pasta_video: Path, lingua: str) -> Path | None:
         if f.exists():
             return f
     return None
+
+
+def recorte(pasta_ajuda: Path, lingua: str, estado: str, zona: str) -> tuple | None:
+    """A imagem `('rec', estado, zona)` do tutorial: (bytes PNG, largura natural em unidades logicas), ou None se nao existe.
+    Procura na `lingua`, depois em ingles e portugues (como a janela do tutorial). Serve a webapp; a app Windows recorta ela propria."""
+    from PIL import Image
+    pasta_ajuda = Path(pasta_ajuda)
+    zonas = caixas(pasta_ajuda)
+    for lg in (lingua, "en", "pt"):
+        info = zonas.get(lg, {}).get(estado)
+        ficheiro = pasta_ajuda / f"{lg}_{estado}.png"
+        if info and zona in info and ficheiro.exists():
+            break
+    else:
+        return None
+    try:
+        esc = float(info.get("escala", 1.0)) or 1.0
+        with Image.open(ficheiro) as im:
+            rec = im.convert("RGB").crop(tuple(info[zona]))
+        saida = io.BytesIO()
+        rec.save(saida, "PNG")
+        return saida.getvalue(), rec.width / esc
+    except Exception:
+        return None

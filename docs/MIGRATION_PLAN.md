@@ -271,3 +271,30 @@ neutra (`SistemaNeutro`, só variáveis de ambiente) e os substitutos web. Teste
 1. **Cor de destaque e modo escuro «do Windows» do utilizador** — um servidor não vê o sistema do cliente. Isolado em `Sistema.cor_destaque()/modo_escuro()` (devolvem `None` = «o browser decide»). Opções: (a) **CSS do browser** (recomendado: `prefers-color-scheme` + `accent-color`, zero código no servidor); (b) o dono fixa a cor/tema por variável de ambiente; (c) um seletor de tema na página guardado em `localStorage`.
 2. **Capturas e vídeo do tutorial** (`fazer_ajuda.py`, `fazer_video.py`: simulam o rato e fotografam a janela Tk no Windows). Não fazem parte do servidor; as imagens/vídeos já feitos servem-se como ficheiros. Opções para o futuro: (a) manter as ferramentas locais e só refazer os assets quando a app Windows mudar (recomendado); (b) refazer as capturas **da webapp** com Playwright (já previsto para os testes e2e), em CI; (c) correr as atuais em Linux com `xvfb` + Tk (trabalho grande, pouco valor).
 3. **Otimização de redimensionamento do Tk** — desaparece com o Tk; nada a substituir.
+
+## 10. Frontend: React ou Angular? (avaliação de 2026-11-07)
+
+Pedido: escolher entre React e Angular e usar **sempre as últimas versões**. Os números abaixo foram lidos nos registos (`npm view`, PyPI, endoflife.date) no próprio dia, não de memória.
+
+**Últimas versões estáveis nesse dia:** React 19.3.1 · Angular 22.2 (CLI 22.2.6) · Vite 8.3.6 · TypeScript **7.0.2** · Vitest 5.1.0 · Node 26.13 (LTS desde 2026-10-28; o 24 é a LTS anterior) · pnpm 12.18 · Python 3.15.2 · FastAPI 0.162.2.
+
+| Critério | React 19 + Vite 8 | Angular 22 | Pesa |
+|---|---|---|---|
+| «Últimas versões em tudo» | TypeScript 7.0.2 funciona (o Vite e o plugin React transformam com oxc, não com `tsc`) | `@angular/compiler-cli` e `@angular/build` pedem `typescript >=6.0 <6.1`: **o TypeScript 7 fica excluído** | **Decisivo** |
+| i18n das 18 línguas (já em Python, `src/core/idiomas`) | JSON vindo de `/api/textos/{lingua}` + um contexto de ~60 linhas; troca de língua sem recarregar | O i18n embutido compila **uma build por língua**; trocar em tempo de execução pede uma biblioteca de terceiros | Alto |
+| Tamanho da app | 5 ecrãs, um formulário, um visor de PDF, progresso por SSE: só `react` + `react-dom` em produção (≈70 kB gzip no esqueleto) | Router, formulários, HTTP e DI de origem: úteis, mas excessivos para 5 ecrãs | Médio |
+| Ferramentas de lint | `typescript-eslint` também limita o TS a <6.1 → usar **Biome 2.6** (lint + formato) | ESLint com `angular-eslint`, que depende de `typescript-eslint` (o mesmo teto <6.1); aqui o compilador do Angular já impõe o 6.0 | Médio |
+| Consistência com o plano | O `PLANO.md` e o `CLAUDE.md` já diziam React + Vite | Obrigaria a refazer o plano | Baixo |
+| A favor do Angular | — | Estrutura imposta e *upgrades* guiados (`ng update`) a cada 6 meses; menos escolhas de bibliotecas | Baixo (compensa pouco numa app de um só programador e um só ecrã) |
+
+**Recomendação: React + Vite + TypeScript 7**, com Biome. O ponto 1 sozinho já decide: o Angular obriga a ficar um major atrás no TypeScript, o que contraria o pedido. O custo do React (escolher router/estado) evita-se mantendo-o mínimo: **sem biblioteca de i18n nem de estado, sem Tailwind**; um router só se for preciso quando entrarem o tutorial e o vídeo.
+
+**Ressalvas e riscos conhecidos**
+- `typescript-eslint` não suporta TS 7 → não há ESLint; se algum dia for preciso uma regra que só o ESLint tem, ou se desce o TypeScript ou se aguarda.
+- O pnpm 11 não consegue passar sozinho para o 12 no Windows (o `packageManager` falha ao arrancar o 12); instala-se com `npm install -g pnpm@12.18.0`. No CI e no Docker não há o problema.
+- «Últimas versões» significa *fixadas exatamente* (`pnpm-lock.yaml`, `uv.lock`, tags do Docker): uma versão que sai amanhã entra só quando alguém voltar a pedir a atualização e os testes passarem.
+- A app Windows (`app/`: Python 3.13, Nuitka, CustomTkinter) **não** foi atualizada: o build do `.exe` demora 10–20 min e tem de manter o `--selftest` igual. Decisão em aberto: subi-la para 3.15 quando o Nuitka e o CustomTkinter o suportarem.
+- Antes de a imagem do Render usar Python 3.15 convém confirmar que o Render aceita a imagem (é só Docker, não deve haver problema) e que a memória em 512 MB chega (ainda por medir com 100 000 números).
+
+**Estado do esqueleto (verificado):** 483 testes pytest em Python 3.15 e 441 em 3.13; 8 do Vitest; `tsc` 7.0.2 sem erros; Biome sem avisos; `docker build --target testes` e `--target web` passam; a imagem fica *healthy*, corre sem root,
+sem Node, 373 MB; no browser real a língua muda para japonês e fica guardada. O protótipo NiceGUI (que já tinha os 5 ecrãs) ficou arquivado no ramo local `nicegui-prototipo`.

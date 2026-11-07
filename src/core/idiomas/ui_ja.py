@@ -72,3 +72,18 @@ T = {
     'limpar': 'すべてクリア',
     'tut_limpar': '完了したら「{limpar}」（またはメニュー「{ficheiro}」›「{limpar}」）で、テンプレート・数字ファイル・フォルダー・名前・番号・プレビューをすべてクリアして、次のくじを始められます。',
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'ダウンロード',
+    'web_senha': 'パスワード',
+    'web_entrar': 'ログイン',
+    'web_senha_errada': 'パスワードが違います。',
+    'web_demasiado_grande': 'ファイルが上限（{mb} MB）を超えています。',
+    'web_ocupado': 'すでに生成中です。しばらくしてからもう一度お試しください。',
+    'web_voltar': '戻る',
+    'web_ficheiros_gerados': '生成した PDF',
+    'web_nova_janela': '新しいウィンドウで開く',
+    'web_tema_auto': '自動',
+})
+T.update({'web_demasiados': '1 回につき最大 {max} 件の番号です。'})

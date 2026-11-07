@@ -80,3 +80,18 @@ T = {
     'limpar': 'Cancella tutto',
     'tut_limpar': "Al termine, «{limpar}» (o menu «{ficheiro}» › «{limpar}») azzera tutto — template, cifre, cartella, nome, numeri e anteprima — per iniziare un'altra lotteria.",
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'Scarica',
+    'web_senha': 'Password',
+    'web_entrar': 'Accedi',
+    'web_senha_errada': 'Password errata.',
+    'web_demasiado_grande': 'Il file supera il limite ({mb} MB).',
+    'web_ocupado': 'È già in corso una generazione. Riprova tra poco.',
+    'web_voltar': 'Indietro',
+    'web_ficheiros_gerados': 'PDF generati',
+    'web_nova_janela': 'Apri in una nuova finestra',
+    'web_tema_auto': 'Automatico',
+})
+T.update({'web_demasiados': 'Al massimo {max} numeri per richiesta.'})

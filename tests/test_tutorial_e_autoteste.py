@@ -2,6 +2,8 @@
 Antes viviam em ajuda.py (lista_de_topicos, _caixas) e app.py (verificar_ajuda, selftest)."""
 from pathlib import Path
 
+import pytest
+
 from core import autoteste, i18n, tutorial
 
 ASSETS = Path(__file__).resolve().parent.parent / "app" / "assets"
@@ -69,3 +71,29 @@ def test_autoteste_gerar_exemplos(tmp_path, fx):
         "1 rifa, A3, margem 5, digitos_exemplo.pdf: ok (10 por folha, 3 paginas)",
         "1 rifa, A4, margem 12, digitos_exemplo.pdf: ok (3 por folha, 8 paginas)"]
     assert len(list((tmp_path / "folha").glob("*.pdf"))) == 6
+
+
+# ------------------------------------------------------------------ recorte (imagens do tutorial na webapp)
+def test_recorte_devolve_png_e_largura_logica():
+    from PIL import Image
+    import io
+    png, largura = tutorial.recorte(ASSETS / "ajuda", "pt", "a", "c1")
+    assert png.startswith(b"\x89PNG")
+    box = tutorial.caixas(ASSETS / "ajuda")["pt"]["a"]
+    x0, y0, x1, y1 = box["c1"]
+    with Image.open(io.BytesIO(png)) as im:
+        assert im.size == (x1 - x0, y1 - y0)
+    assert largura == pytest.approx((x1 - x0) / float(box["escala"]))
+
+
+def test_recorte_lingua_sem_imagens_cai_no_ingles_ou_portugues():
+    assert tutorial.recorte(ASSETS / "ajuda", "xx", "a", "c1") == tutorial.recorte(ASSETS / "ajuda", "en", "a", "c1")
+
+
+@pytest.mark.parametrize("estado, zona", [("a", "zona_que_nao_existe"), ("z", "c1")])
+def test_recorte_inexistente_devolve_none(estado, zona):
+    assert tutorial.recorte(ASSETS / "ajuda", "pt", estado, zona) is None
+
+
+def test_recorte_pasta_sem_ajuda_devolve_none(tmp_path):
+    assert tutorial.recorte(tmp_path, "pt", "a", "c1") is None

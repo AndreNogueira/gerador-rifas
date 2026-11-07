@@ -80,3 +80,18 @@ T = {
     'limpar': 'Tout effacer',
     'tut_limpar': "Quand c'est terminé, « {limpar} » (ou menu « {ficheiro} » › « {limpar} ») remet tout à zéro — template, chiffres, dossier, nom, numéros et aperçu — pour commencer une autre tombola.",
 }
+
+# --- interface web (src/web)
+T.update({
+    'web_descarregar': 'Télécharger',
+    'web_senha': 'Mot de passe',
+    'web_entrar': 'Se connecter',
+    'web_senha_errada': 'Mot de passe incorrect.',
+    'web_demasiado_grande': 'Le fichier dépasse la limite ({mb} Mo).',
+    'web_ocupado': 'Une génération est déjà en cours. Réessayez dans un instant.',
+    'web_voltar': 'Retour',
+    'web_ficheiros_gerados': 'PDF générés',
+    'web_nova_janela': 'Ouvrir dans une nouvelle fenêtre',
+    'web_tema_auto': 'Automatique',
+})
+T.update({'web_demasiados': 'Au maximum {max} numéros par demande.'})
