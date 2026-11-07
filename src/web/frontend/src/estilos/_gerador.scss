@@ -1,0 +1,258 @@
+// O ecrã principal: a coluna dos 4 passos (bilhetes), as ações e a entrega.
+
+.gerador {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 34rem) minmax(0, 1fr);
+  align-items: start;
+
+  &.expandido {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 960px) {
+  .gerador {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.coluna {
+  display: grid;
+  gap: 18px;
+  // a sombra fica fora do recorte dos entalhes de cada bilhete
+  filter: var(--filtro-coluna);
+}
+
+// o bilhete: cabeçalho colorido, picotado e entalhes laterais à altura do picotado
+.cartao {
+  --cor: var(--destaque);
+  display: grid;
+  gap: 10px;
+  padding: 0 0 16px;
+  background: var(--faixa-topo) top / 100% var(--faixa-topo-altura) no-repeat, var(--cartao);
+  border-radius: var(--raio);
+  box-shadow:
+    inset 0 0 0 var(--anel-largura) color-mix(in srgb, var(--cor) var(--anel-tinta), var(--anel-cor)),
+    var(--cartao-anel-extra);
+
+  &.passo {
+    -webkit-mask:
+      radial-gradient(circle var(--entalhe) at 0 var(--corte), #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--entalhe) at 100% var(--corte), #0000 97%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle var(--entalhe) at 0 var(--corte), #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle var(--entalhe) at 100% var(--corte), #0000 97%, #000) right / 51% 100% no-repeat;
+
+    > :not(h2) {
+      margin-inline: 18px;
+    }
+    > h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: var(--corte);
+      margin: 0 0 4px;
+      padding: 0 20px 0 14px;
+      color: var(--cabecalho-texto);
+      border-bottom: 2px var(--picotado-estilo) color-mix(in srgb, var(--cor) 38%, var(--linha));
+      background:
+        var(--cabecalho-fundo-extra),
+        linear-gradient(
+          var(--cabecalho-angulo),
+          color-mix(in srgb, var(--cor) var(--cabecalho-tinta), transparent),
+          color-mix(in srgb, var(--cor) var(--cabecalho-tinta-fim), transparent) var(--cabecalho-fim)
+        );
+      border-radius: var(--raio) var(--raio) 0 0;
+    }
+  }
+}
+.passo-1 {
+  --cor: var(--passo-1);
+}
+.passo-2 {
+  --cor: var(--passo-2);
+}
+.passo-3 {
+  --cor: var(--passo-3);
+}
+.passo-4 {
+  --cor: var(--passo-4);
+}
+.insignia {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--insignia-raio);
+  clip-path: var(--insignia-forma);
+  color: var(--insignia-cor);
+  background: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--cor) calc(100% - var(--insignia-luz)), #fff),
+    var(--cor) 60%,
+    color-mix(in srgb, var(--cor) calc(100% - var(--insignia-escuro)), #000)
+  );
+  box-shadow: var(--insignia-sombra);
+  transform: var(--insignia-rot);
+}
+.titulo-passo {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.15;
+  text-shadow: var(--brilho-titulo);
+}
+.numero {
+  margin-left: auto;
+  font-family: var(--fonte-numero);
+  font-size: 2.1rem;
+  font-weight: var(--peso-numero);
+  line-height: 1;
+  color: color-mix(in srgb, var(--cor) var(--numero-pct), transparent);
+  text-shadow: var(--numero-sombra);
+  font-variant-numeric: tabular-nums;
+}
+.acoes {
+  padding: 18px;
+}
+.linha {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+
+  > label {
+    flex: 1 1 6rem;
+  }
+  input {
+    font-size: 1.15rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+}
+.folha {
+  display: grid;
+  gap: 8px;
+  border-top: 2px dashed var(--linha);
+  padding-top: 12px;
+}
+.modo {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  label.opcao {
+    flex: 1 1 9rem;
+    padding: 9px 12px;
+    border: var(--borda) solid var(--linha);
+    border-radius: var(--raio-c);
+    cursor: pointer;
+    font-weight: 600;
+    background: var(--campo);
+    box-shadow: var(--campo-anel);
+    transition:
+      border-color 0.15s,
+      background 0.15s;
+
+    &:has(input:checked) {
+      border-color: var(--cor);
+      background: color-mix(in srgb, var(--cor) var(--modo-ativo-tinta), var(--cartao));
+      color: var(--modo-ativo-texto);
+    }
+  }
+  input[type="radio"] {
+    accent-color: var(--cor);
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+}
+.carregar {
+  border: 2px var(--zona-estilo) color-mix(in srgb, var(--cor) 55%, var(--linha));
+  border-radius: calc(var(--raio-c) + 2px);
+  padding: 10px;
+  background: color-mix(in srgb, var(--cor) 6%, transparent);
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+
+  &.por-cima {
+    border-color: var(--cor);
+    background: color-mix(in srgb, var(--cor) 18%, transparent);
+  }
+  button {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+    background: var(--cartao);
+    color: var(--cor);
+    border-color: color-mix(in srgb, var(--cor) 50%, transparent);
+    box-shadow: var(--botao-anel), var(--botao-sec-sombra);
+
+    &:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--cor) 12%, var(--cartao));
+    }
+  }
+}
+.estado {
+  margin: 0;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  min-height: 1.5em;
+}
+.ajuda {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.botoes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.acoes .botoes button {
+  &[data-testid="gerar"] {
+    flex: 1 1 10rem;
+    padding-block: 12px;
+    font-size: 1.1rem;
+  }
+  &[data-testid="previa"] {
+    padding-block: 12px;
+  }
+}
+.registo {
+  margin: 0;
+  max-height: 9rem;
+  overflow: auto;
+  font:
+    0.8rem / 1.45 ui-monospace,
+    "Cascadia Mono",
+    Consolas,
+    monospace;
+  white-space: pre-wrap;
+  background: var(--campo);
+  border: var(--borda) solid var(--linha);
+  border-radius: var(--raio-c);
+  box-shadow: var(--campo-anel);
+  padding: 10px;
+}
+.entrega {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border-radius: calc(var(--raio-c) + 2px);
+  background: color-mix(in srgb, var(--passo-4) 12%, var(--cartao));
+  border: 2px var(--zona-estilo) color-mix(in srgb, var(--passo-4) 55%, transparent);
+
+  ul {
+    margin: 0;
+    padding-left: 1.2em;
+    font-size: 0.85rem;
+    color: var(--suave);
+    max-height: 7rem;
+    overflow: auto;
+  }
+  .botao {
+    background: linear-gradient(120deg, var(--entrega-1), var(--entrega-2));
+    padding-block: 11px;
+  }
+}

@@ -13,7 +13,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && node scripts/verificar-dist.mjs",
     "tipos": "tsc --noEmit",
     "teste": "vitest run",
     "lint": "biome check ."
@@ -40,6 +40,7 @@
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.2.1",
     "jsdom": "31.0.0",
+    "sass": "1.108.1",
     "typescript": "7.0.2",
     "vite": "8.3.6",
     "vitest": "5.1.0"

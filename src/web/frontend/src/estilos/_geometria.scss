@@ -1,0 +1,7 @@
+// A ESTRUTURA do site: medidas e posições iguais em todos os temas. Estas variáveis NÃO se mudam num tema (o teste
+// `temas.test.tsx` não as deixa).
+:root {
+  --corte: 3.6rem; // altura do cabeçalho do bilhete = onde ficam o picotado e os entalhes
+  --banda-altura: 17rem; // a faixa atrás do cabeçalho
+  --borda: 2px; // espessura dos contornos dos controlos (o relevo/espessura extra faz-se com sombras)
+}

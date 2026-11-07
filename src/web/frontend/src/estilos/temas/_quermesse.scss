@@ -1,0 +1,58 @@
+// Quermesse: a feira popular. Faixa = tenda vermelha com lâmpadas e festo; cada bilhete tem o seu toldo às riscas;
+// títulos em letra de cartaz. Escuro = a feira à noite.
+@use "../tema" as *;
+
+@include tema(quermesse) {
+  --fundo: light-dark(#fff1cf, #17122e);
+  --cartao: light-dark(#fffdf6, #261b46);
+  --texto: light-dark(#3a1420, #fdf1dc);
+  --suave: light-dark(#7a5a50, #c5b6da);
+  --linha: light-dark(#ecd7a4, #43346e);
+  --campo: light-dark(#fff8e4, #1a1237);
+  --destaque: light-dark(#c4122f, #ff7587);
+  --destaque-2: light-dark(#1b8a7a, #3ddbc2);
+  --sombra-cor: light-dark(#6b2a10, #000000);
+  --passo-1: light-dark(#c4122f, #ff7587);
+  --passo-2: light-dark(#d99100, #ffc93c);
+  --passo-3: light-dark(#2556a8, #84acff);
+  --passo-4: light-dark(#1b8a7a, #3ddbc2);
+
+  --fonte-titulo: "Alfa Slab One", Georgia, serif;
+  --peso-titulo: 400;
+  --peso-marca: 400;
+  --peso-numero: 400;
+  --raio: 10px;
+  --raio-c: 8px;
+  --filtro-coluna: drop-shadow(0 6px 0 color-mix(in srgb, var(--sombra-cor) 22%, transparent));
+
+  // a tenda: riscas vermelhas, lâmpadas e festo por baixo
+  --banda:
+    radial-gradient(circle, #fff3b0 0 0.2rem, #ffd23f 0.22rem 0.34rem, rgb(255 210 63 / 35%) 0.36rem 0.62rem, transparent 0.66rem) 0 calc(100% - 1.5rem) / 2.8rem 1.2rem repeat-x,
+    repeating-linear-gradient(90deg, light-dark(#b3122b, #6e0f27) 0 2.8rem, light-dark(#d7263d, #92162f) 2.8rem 5.6rem);
+  --banda-forma: none;
+  --banda-mascara:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 1.4rem) no-repeat,
+    radial-gradient(circle 1.4rem at 50% 0, #000 98%, #0000) bottom / 2.8rem 1.4rem repeat-x;
+  --topo-sombra: 0 3px 0 #7a0a1b;
+  --pilula: rgb(70 6 20 / 38%);
+  --nav-ativo: #ffd23f;
+  --nav-ativo-texto: #4a0a14;
+
+  --botao-1: #c4122f;
+  --botao-2: #ee5a24;
+  --botao-sombra: 0 4px 0 #7a0a1b;
+  --botao-sombra-hover: 0 6px 0 #7a0a1b;
+  --botao-hover: translateY(-2px);
+  --botao-ativo: translateY(3px);
+  --entrega-1: #1b8a7a;
+  --entrega-2: #2fb89a;
+
+  // o toldo de cada bilhete
+  --faixa-topo: repeating-linear-gradient(90deg, var(--destaque) 0 16px, var(--cartao) 16px 32px);
+  --faixa-topo-altura: 14px;
+  --cabecalho-tinta: 0%;
+  --insignia-raio: 50%;
+  --insignia-rot: none;
+  --insignia-sombra: 0 3px 0 rgb(0 0 0 / 25%);
+  --visor-barra: repeating-linear-gradient(90deg, var(--destaque) 0 16px, var(--cartao) 16px 32px);
+}

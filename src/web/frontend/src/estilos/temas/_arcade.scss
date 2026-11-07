@@ -1,0 +1,79 @@
+// Arcade: pixéis e néon. Faixa de pôr do sol sintético com grelha e linhas de varrimento, cantos retos, sombras de pixel,
+// barra de progresso em blocos. Escuro = máquina de jogos; claro = a mesma em tons de pastel.
+@use "../tema" as *;
+
+@include tema(arcade) {
+  --fundo: light-dark(#e9e6ff, #0b0a1f);
+  --cartao: light-dark(#ffffff, #15133d);
+  --texto: light-dark(#1a1650, #e8f4ff);
+  --suave: light-dark(#575392, #9a97d6);
+  --linha: light-dark(#b9b3ff, #34318a);
+  --campo: light-dark(#f4f2ff, #0d0c2b);
+  --destaque: light-dark(#3b2bff, #00e5ff);
+  --destaque-2: light-dark(#e0129e, #ff2bd6);
+  --ok: light-dark(#007a3f, #39ff88);
+  --aviso: light-dark(#8a5a00, #ffe600);
+  --erro: light-dark(#d1103a, #ff5c7a);
+  --sombra-cor: light-dark(#3b2bff, #ff2bd6);
+  --passo-1: light-dark(#3b2bff, #00e5ff);
+  --passo-2: light-dark(#e0129e, #ff2bd6);
+  --passo-3: light-dark(#c47600, #ffe600);
+  --passo-4: light-dark(#00924a, #39ff88);
+
+  --fonte: "Pixelify Sans Variable", ui-monospace, "Cascadia Mono", monospace;
+  --peso-titulo: 700;
+  --peso-marca: 700;
+  --peso-numero: 700;
+  --ligaduras: none;
+  --raio: 0px;
+  --raio-c: 0px;
+  --entalhe: 0px;
+  --filtro-coluna: drop-shadow(5px 5px 0 color-mix(in srgb, var(--sombra-cor) 70%, transparent));
+  --sombra-visor: 5px 5px 0 color-mix(in srgb, var(--sombra-cor) 70%, transparent);
+
+  --banda:
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 22%) 0 2px, transparent 2px 4px),
+    linear-gradient(rgb(255 255 255 / 22%) 1px, transparent 1px) 0 0 / 2.6rem 2.6rem,
+    linear-gradient(90deg, rgb(255 255 255 / 22%) 1px, transparent 1px) 0 0 / 2.6rem 2.6rem,
+    linear-gradient(180deg, light-dark(#2a1fb8, #12006e) 0%, light-dark(#8a2be2, #6a00c9) 62%, light-dark(#ff4fb8, #ff2bd6) 100%);
+  --banda-forma: none;
+  --banda-borda: 4px solid light-dark(#1a1650, #00e5ff);
+  --topo-sombra: 3px 3px 0 #12006e;
+  --marca-anel: 0 0 0 2px #fff, 4px 4px 0 #12006e;
+  --pilula: rgb(8 4 40 / 55%);
+  --pilula-anel: 0 0 0 2px rgb(255 255 255 / 70%);
+  --nav-ativo: #ffe600;
+  --nav-ativo-texto: #1a1650;
+
+  --botao-1: light-dark(#e0129e, #ff2bd6);
+  --botao-2: light-dark(#e0129e, #ff2bd6);
+  --botao-texto: light-dark(#ffffff, #0b0a1f);
+  --botao-borda-cor: light-dark(#1a1650, #ffffff);
+  --botao-anel: 0 0 0 1px light-dark(#1a1650, #ffffff);
+  --botao-sombra: 4px 4px 0 var(--destaque);
+  --botao-sombra-hover: 2px 2px 0 var(--destaque);
+  --botao-hover: translate(2px, 2px);
+  --botao-ativo: translate(4px, 4px);
+  --entrega-1: light-dark(#00924a, #39ff88);
+  --entrega-2: light-dark(#00924a, #39ff88);
+
+  --anel-largura: 3px;
+  --anel-tinta: 100%;
+  --cabecalho-tinta: 16%;
+  --insignia-luz: 0%;
+  --insignia-escuro: 0%;
+  --insignia-cor: light-dark(#ffffff, #0b0a1f);
+  --insignia-raio: 0px;
+  --insignia-rot: none;
+  --insignia-sombra: 3px 3px 0 #0b0a1f;
+  --numero-pct: 100%;
+  --numero-sombra: 2px 2px 0 rgb(0 0 0 / 35%);
+  --picotado-estilo: solid;
+
+  --progresso-raio: 0px;
+  --progresso-fundo: repeating-linear-gradient(90deg, transparent 0 8px, color-mix(in srgb, var(--destaque) 20%, transparent) 8px 10px);
+  --progresso-barra: repeating-linear-gradient(90deg, var(--destaque-2) 0 8px, transparent 8px 10px);
+  --visor-barra: repeating-linear-gradient(90deg, var(--destaque) 0 12px, var(--destaque-2) 12px 24px);
+  --visor-anel: inset 0 0 0 3px var(--destaque);
+  --dialogo-sombra: 6px 6px 0 var(--destaque-2);
+}

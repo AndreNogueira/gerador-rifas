@@ -1,0 +1,147 @@
+// Cabeçalho (marca, navegação, seletores), conteúdo e rodapé.
+
+.topo,
+.conteudo,
+.rodape {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.topo {
+  display: flex;
+  align-items: center;
+  gap: 12px 20px;
+  padding-block: 18px 22px;
+  flex-wrap: wrap;
+  color: var(--topo-texto);
+}
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  margin-right: auto;
+
+  img {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    box-shadow: var(--marca-anel);
+    transform: rotate(-4deg);
+    transition: transform 0.25s;
+  }
+  &:hover img {
+    transform: rotate(4deg) scale(1.06);
+  }
+  // o nome da app: `h1` só no ecrã principal (nas outras páginas o `h1` é o da página)
+  .nome {
+    margin: 0;
+    font-family: var(--fonte-titulo);
+    font-weight: var(--peso-marca);
+    font-size: 1.7rem;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-shadow: var(--topo-sombra);
+  }
+}
+.navegacao {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.navegacao a,
+.seletor {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: var(--pilula);
+  color: var(--pilula-texto);
+  box-shadow: var(--pilula-anel);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.92rem;
+  backdrop-filter: blur(6px);
+  transition: background 0.15s;
+}
+.navegacao a {
+  &:hover {
+    background: color-mix(in srgb, var(--pilula) 70%, #000);
+  }
+  &[aria-current="page"] {
+    background: var(--nav-ativo);
+    color: var(--nav-ativo-texto);
+  }
+}
+.definicoes {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.seletor {
+  padding-block: 0;
+
+  &:focus-within {
+    outline: 2px solid var(--nav-ativo);
+    outline-offset: 2px;
+  }
+  select {
+    width: auto;
+    padding: 7px 4px;
+    border: 0;
+    background: transparent;
+    color: var(--pilula-texto);
+    font-weight: 600;
+    font-size: 0.92rem;
+    border-radius: 0;
+    box-shadow: none;
+
+    &:focus-visible {
+      outline: none;
+    }
+  }
+  option {
+    color: #1d1240;
+    background: #fff;
+  }
+}
+.rodape {
+  color: var(--suave);
+  font-size: 0.85rem;
+  padding-block: 28px;
+}
+.pagina {
+  display: grid;
+  gap: 18px;
+  max-width: 960px;
+
+  > h1 {
+    color: var(--topo-texto);
+    text-shadow: var(--topo-sombra);
+  }
+  > p[aria-busy],
+  > p[role="alert"] {
+    color: var(--topo-texto);
+  }
+}
+
+@media (max-width: 560px) {
+  // o cabeçalho ocupa mais linhas: a faixa cresce com ele
+  body::before {
+    height: calc(var(--banda-altura) + 4.5rem);
+  }
+  .topo {
+    padding-block: 14px 18px;
+  }
+  .marca {
+    .nome {
+      font-size: 1.35rem;
+    }
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}

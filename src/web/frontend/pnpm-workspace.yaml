@@ -1,0 +1,4 @@
+minimumReleaseAgeExclude:
+  - sass@1.108.1
+allowBuilds:
+  "@parcel/watcher": false
