@@ -185,7 +185,7 @@ Fase 0 numa pasta nova (`webapp/` ou pacote `rifas_core` na raiz), **sem tocar e
 | Tema | Decisão |
 |---|---|
 | Abordagem | B: FastAPI + React/Vite/TypeScript |
-| Alojamento | Serviço **gratuito** (por escolher, abaixo) |
+| Alojamento | **Render** (Web Service gratuito, Docker, deploy automático do GitHub) |
 | Utilizadores | **Só o dono**: sem contas; acesso protegido por palavra-passe/token (ou espaço privado) |
 | Repositório | GitHub **privado** `AndreNogueira/gerador-rifas` com `app/`, `webapp/`, `docs/` (criado) |
 | Motor | **Partilhado** (`rifas_core`) entre a app Windows e a webapp |
@@ -199,6 +199,5 @@ Fase 0 numa pasta nova (`webapp/` ou pacote `rifas_core` na raiz), **sem tocar e
 | **Google Cloud Run** | Quota mensal gratuita, escala a zero | Docker puro, robusto, deploy via GitHub Actions | Exige conta de faturação (cartão); risco de custos se mal configurado |
 | Fly.io / Railway | Sem *free tier* real para contas novas | — | Pagos / créditos de teste |
 
-**Recomendação:** Hugging Face Spaces (Docker, privado) pela RAM e por não precisar de cartão; alternativa: Render, se preferires
-integração direta com o repositório GitHub. Qualquer escolha implica: ficheiros temporários só em disco efémero, limites de RAM/tempo
-nos pedidos, e arranque a frio tolerado (é uso individual).
+**Escolhido: Render.** (A recomendação era Hugging Face Spaces pela RAM; o Render dá deploy direto do GitHub e não pede cartão.) Implica: ficheiros temporários só em disco efémero, limites de RAM/tempo
+nos pedidos (512 MB!), palavra-passe da app (o plano gratuito não tem autenticação) e arranque a frio tolerado (é uso individual).

@@ -73,5 +73,15 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
   qualquer ampliação, menos carga no servidor. O template carregado vê-se logo no browser (PDF.js lê o ficheiro local, sem upload).
   Consequência: o visor passa a ser um componente React sobre PDF.js (`pdfjs-dist`, Apache-2.0) e o PNG a 200 dpi deixa de existir.
 
-**Em aberto:**
-1. **Qual serviço gratuito** (afeta limites: RAM, tempo de arranque a frio, cartão de crédito) — opções em `docs/MIGRATION_PLAN.md` §7.
+- **Alojamento:** **Render** (Web Service gratuito, Docker). Consequências de desenho:
+  - **512 MB de RAM** e CPU partilhada → teto de números por pedido (≈ 100 000), geração em *streaming* para o ZIP, 1 trabalho de cada vez,
+    1 processo de trabalho para o PDFium; ficheiros só em disco efémero (apagados após ~30 min; perdem-se ao reiniciar).
+  - **Adormece após 15 min** sem uso (arranque ≈ 1 min): a página mostra «a acordar o servidor…» (frontend serve-se de ficheiros estáticos).
+  - **Sem autenticação própria** no plano gratuito → a app pede uma **palavra-passe** (variável de ambiente `ACCESS_PASSWORD`, cookie assinado).
+  - **Deploy automático:** ligar o repositório no painel do Render (autorizar a app GitHub no repo privado); *Auto-Deploy* a cada *push* para
+    `main`, **só depois do CI passar** (GitHub Actions: testes do motor + build do frontend). Dockerfile na **raiz do repo** (contexto vê `app/` e `webapp/`).
+
+## 8. Próximo passo
+**Fase 0** (sem tocar no comportamento da app Windows): criar o pacote `rifas_core` (mover `core.py`, `pdftexto.py`, `i18n.py`, `idiomas/`),
+com língua por pedido, log estruturado e entrada por bytes/temporários; a app Windows passa a importá-lo; correr `teste_folha`, `teste_canva`,
+`teste_5000` em Windows **e** num contentor Linux (Rancher). Só depois a Fase 1 (API).
