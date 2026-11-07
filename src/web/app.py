@@ -20,6 +20,7 @@ from pydantic import BaseModel
 
 from . import VERSAO, admin, config, rotas, rotas_ajuda, seo
 from .limites import Limitador
+from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
 from .rotas import Servico
@@ -118,6 +119,11 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         armazem.limpar_antigas(0)                            # pastas de um arranque anterior (nao ha sessoes em memoria para elas)
         limpeza = asyncio.create_task(_limpeza_periodica(servico, 60))
         amostrador = asyncio.create_task(_amostrar(servico, 30))
+        url_acordado, cada_s = config.manter_acordado()
+        acordado = None
+        if url_acordado:
+            servico.acordado.ativo, servico.acordado.url, servico.acordado.cada_s = True, url_acordado, cada_s
+            acordado = asyncio.create_task(ciclo_acordado(servico.acordado))
         try:
             await servico.motor.aquecer()                    # o 1.o pedido nao paga o arranque do processo do motor
         except Exception:  # noqa: BLE001 - o servidor arranca na mesma; o motor recria-se no 1.o pedido
@@ -127,6 +133,8 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         finally:
             limpeza.cancel()
             amostrador.cancel()
+            if acordado is not None:
+                acordado.cancel()
             servico.motor.parar()
             with contextlib.suppress(Exception):
                 servico.metricas.fechar()
@@ -161,6 +169,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
 
     app.include_router(rotas.router)
     app.include_router(rotas_ajuda.router)
+    app.include_router(rotas.router_ecra)
     app.include_router(admin.router)
 
     # imagens do tutorial e videos (os mesmos ficheiros da app Windows); tem de vir antes do «fallback» do frontend

@@ -21,8 +21,9 @@ from fastapi.responses import FileResponse, StreamingResponse
 
 from . import config, trabalhos
 from .limites import Limitador, ler_corpo
-from .metricas import Metricas, dispositivo
-from .modelos import Calculo, Campos, ErroApi, Sessao, TrabalhoEstado
+from .manter_acordado import EstadoAcordado
+from .metricas import Metricas, classe_do_ecra, dispositivo, familia, modelo_limpo
+from .modelos import Calculo, Campos, Ecra, ErroApi, Sessao, TrabalhoEstado
 from .sessoes import (Geracao, SessaoEstado, Sessoes, calcular, folha_dos_campos, ler_progresso, texto_de_erro,
                       trabalho_dos_campos, vista, _trabalho)
 from .sistema import Observador
@@ -36,6 +37,7 @@ class Servico:
     limitador: Limitador
     metricas: Metricas = field(default_factory=Metricas)           # contagens para o painel de administracao (sem dados pessoais)
     observador: Observador | None = None
+    acordado: EstadoAcordado = field(default_factory=EstadoAcordado)       # o anti-sono (ver manter_acordado.py)
 
     def __post_init__(self) -> None:
         if self.observador is None:
@@ -228,6 +230,38 @@ def previa_pdf(id_: str, serv: Servico = Depends(servico)) -> FileResponse:
     return _pdf_inline(pasta / "previa.pdf")
 
 
+async def _png(serv: Servico, pdf: Path, lg: str) -> FileResponse:
+    """O PNG da 1.a pagina de `pdf` (cache ao lado do PDF: so se refaz se o PDF mudou)."""
+    cache = pdf.with_suffix(".png")
+    if not (cache.is_file() and cache.stat().st_mtime >= pdf.stat().st_mtime):
+        try:
+            r = await serv.motor.curto(trabalhos.png, str(pdf), 150)
+        except Ocupado:
+            raise _ocupado(lg) from None
+        except (asyncio.TimeoutError, BrokenProcessPool) as e:
+            raise ErroApi(500, i18n.traduzir("erro_inesperado", lg, erro=_motivo(e)), "erro") from None
+        if r[0] != "ok":
+            _levantar(r, lg)
+        cache.write_bytes(r[1])
+    return FileResponse(cache, media_type="image/png", headers={"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff"})
+
+
+@router.get("/{id_}/modelo.png")
+async def modelo_png(id_: str, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> FileResponse:
+    s, pasta = _sessao(serv, id_)
+    if not (pasta / "template.pdf").is_file():
+        raise ErroApi(404, "Sem template", "erro")
+    return await _png(serv, pasta / "template.pdf", lg)
+
+
+@router.get("/{id_}/previa.png")
+async def previa_png(id_: str, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> FileResponse:
+    s, pasta = _sessao(serv, id_)
+    if not (pasta / "previa.pdf").is_file():
+        raise ErroApi(404, "Sem pré-visualização", "erro")
+    return await _png(serv, pasta / "previa.pdf", lg)
+
+
 # ------------------------------------------------------------------ formulario
 @router.post("/{id_}/calcular", response_model=Calculo, dependencies=[Depends(leve)])
 def calcular_formulario(id_: str, campos: Campos, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Calculo:
@@ -408,3 +442,22 @@ def descarregar(id_: str, serv: Servico = Depends(servico), lg: str = Depends(li
     if e.tipo == "pdf":
         cabecalhos["Content-Length"] = str(e.ficheiros[0].stat().st_size)
     return StreamingResponse(saida.conteudo_da_entrega(e), media_type=e.media_type, headers=cabecalhos)
+
+
+# ------------------------------------------------------------------ o tipo de ecra (so para as metricas: nunca muda nada)
+router_ecra = APIRouter(prefix="/api/ecra", tags=["metricas"])
+
+
+@router_ecra.post("", status_code=204, dependencies=[Depends(leve)])
+def registar_ecra(e: Ecra, request: Request, serv: Servico = Depends(servico)) -> Response:
+    """O browser diz, uma vez por separador, o tamanho do ecra e da janela e o modelo (se o souber). Guardam-se so a classe, o
+    tamanho do ecra, a familia/modelo do dispositivo e a largura da janela: sem IP, sem User-Agent. Os robos nao contam."""
+    ua = request.headers.get("user-agent", "")
+    if dispositivo(ua) != "robo":
+        classe = classe_do_ecra(e.ecra_l, e.ecra_a, e.toque)
+        # a notacao do ecra: tamanho em px CSS e a densidade (os telemoveis recentes sao 2x ou 3x)
+        dens = f"{round(e.dpr * 4) / 4:g}x"
+        modelo = modelo_limpo(e.modelo)
+        serv.metricas.evento("ecra", classe, f"{e.ecra_l}×{e.ecra_a} @{dens}", modelo or familia(ua, e.toque, e.ecra_l),
+                             v1=e.janela_l, v2=e.janela_a, v3=1 if e.toque else 0)
+    return Response(status_code=204)

@@ -48,6 +48,51 @@ def dispositivo(user_agent: str) -> str:
     return "movel" if _MOVEL.search(user_agent or "") else "computador"
 
 
+def familia(user_agent: str, toque: bool = False, largura_ecra: int = 0) -> str:
+    """A familia do dispositivo pelo User-Agent: iPhone, iPad, Android (telemovel/tablet), Windows, Mac, Linux, ChromeOS ou Outro.
+    O iPad moderno diz que e um Mac: distingue-se por ter toque e um ecra grande."""
+    ua = user_agent or ""
+    if "iPhone" in ua:
+        return "iPhone"
+    if "iPad" in ua or ("Macintosh" in ua and toque and largura_ecra >= 700):
+        return "iPad"
+    if "Android" in ua:
+        return "Android (telemóvel)" if "Mobile" in ua else "Android (tablet)"
+    if "CrOS" in ua:
+        return "ChromeOS"
+    for chave, nome in (("Windows", "Windows"), ("Macintosh", "Mac"), ("Linux", "Linux")):
+        if chave in ua:
+            return nome
+    return "Outro"
+
+
+def classe_do_ecra(largura: int, altura: int, toque: bool) -> str:
+    """«telemovel», «tablet» ou o tamanho do ecra de um computador, pelo lado MAIOR e MENOR do ecra em pixeis CSS e por ter toque."""
+    curto, longo = min(largura, altura), max(largura, altura)
+    if toque and curto < 600:
+        return "telemóvel"
+    if toque and curto < 1100 and longo < 1500:
+        return "tablet"
+    fisico = f"{largura}×{altura}"
+    if longo >= 2000 and longo / max(curto, 1) > 2.1:                  # ultra-wide: um monitor largo (nao um ecra vertical pequeno)
+        return f"computador ultra-wide ({fisico})" if longo >= 2400 else "computador ultra-wide"
+    if longo < 1400:
+        return "computador pequeno (< 1400 px)"
+    if longo < 1800:
+        return "computador médio (1400–1799 px)"
+    if longo < 2400:
+        return "computador Full HD (1800–2399 px)"
+    if longo < 3200:
+        return "computador QHD/2K (2400–3199 px)"
+    return "computador 4K ou maior (≥ 3200 px)"
+
+
+def modelo_limpo(modelo: str) -> str:
+    """O modelo do telemovel (de `userAgentData`), sem controlos e sem os valores «vazios» do Chrome com UA reduzido."""
+    m = "".join(c for c in (modelo or "") if c.isprintable()).strip()[:40]
+    return "" if m.upper() in ("", "K", "UNKNOWN", "ANDROID") else m
+
+
 def _balde(ms: float) -> int:
     for i, limite in enumerate(LIMITES_MS):
         if ms <= limite:
@@ -256,9 +301,23 @@ class Metricas:
             "robos": n("pagina", "AND c='robo'"),
             "erros_http": self._contar("erro_http", "a", desde),
             "falhas": self._contar("geracao", "b", desde, "AND a='falhou'"),
+            "classes_de_ecra": self._contar("ecra", "a", desde),
+            "ecras": self._contar("ecra", "b", desde),
+            "dispositivos_detalhe": self._contar("ecra", "c", desde),
+            "janelas": self._janelas(desde),
+            "toque": self._contar("ecra", "CASE WHEN v3 > 0 THEN 'com toque' ELSE 'sem toque' END", desde),
             "reinicios_motor": n("motor_reiniciado"),
             "arranques": n("arranque"),
         }
+
+    def _janelas(self, desde: int) -> list[dict]:
+        """A largura da JANELA do browser (nao do ecra) por escaloes: mostra quem usa janelas pequenas num ecra grande."""
+        linhas = self._consultar(
+            "SELECT CASE WHEN v1 < 360 THEN '< 360 px' WHEN v1 < 414 THEN '360–413 px (telemóvel)' WHEN v1 < 768 THEN '414–767 px (telemóvel grande)' "
+            "WHEN v1 < 1024 THEN '768–1023 px (tablet)' WHEN v1 < 1440 THEN '1024–1439 px' WHEN v1 < 1920 THEN '1440–1919 px' "
+            "WHEN v1 < 2560 THEN '1920–2559 px' ELSE '≥ 2560 px' END AS e, COUNT(*) FROM eventos WHERE tipo='ecra' AND ts>=? GROUP BY e ORDER BY 2 DESC",
+            (desde,))
+        return [{"chave": r[0], "n": r[1]} for r in linhas]
 
     def proxy(self) -> dict:
         """O que o servidor ve dos clientes: se os IPs reais chegam (`FORWARDED_ALLOW_IPS`) ou se tudo parece vir do proxy do Render."""
