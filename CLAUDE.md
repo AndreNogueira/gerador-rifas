@@ -84,6 +84,11 @@ Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import 
 - Regras de produto iguais às da app: o template nunca é guardado, o nome dos ficheiros é escrito pelo utilizador, aviso/confirmação com >24 rifas por
   folha, «Limpar tudo» no fim, 18 línguas. Nos blocos da folha a numeração é sequencial **por bloco** (não ordenar globalmente).
 
+## Fluxo de trabalho (PRs)
+
+Trabalha-se em **PRs pequenos** a partir de `main` (`feat/…`, `fix/…`, `tema/…`, `docs/…`, `chore/…`); o fluxo completo está em `CONTRIBUTING.md` e as ideias por fazer em `docs/ROADMAP.md`. Antes de abrir o PR: `scripts/verificar.ps1` (= o que o CI corre; `-Docker` constrói também as imagens). Merge só com o CI verde, em *squash*; `main` verde faz deploy sozinho.
+O GitHub gratuito não protege a branch num repositório privado (403), por isso «PR + CI verde» é convenção, não trava. O repositório tem modelos de PR/issue, `CODEOWNERS` e `dependabot.yml` (semanal, agrupado). Uma mudança visível ao utilizador sobe `VERSAO` em `src/web/__init__.py`. O utilizador aprova cada commit/push/PR («sim»): não fazer push nem abrir PRs sem ele pedir.
+
 ## Comandos
 
 ### Webapp e testes (venv da raiz, Python 3.15, `uv`; frontend com pnpm 12 / Node 26)
