@@ -584,3 +584,26 @@ def test_config_dos_limites_por_defeito(monkeypatch):
         monkeypatch.delenv(v, raising=False)
     assert (config.limite_upload_mb(), config.max_numeros(), config.validade_min(), config.tempo_maximo_geracao_min()) == (25, 30_000, 30, 10)
     assert (config.max_sessoes(), config.limite_sessao_mb(), config.pedidos_pesados_por_min(), config.pedidos_leves_por_min()) == (200, 300, 30, 300)
+
+
+# ------------------------------------------------------------------ PNG da pre-visualizacao (browsers sem visor de PDF, como o Chrome do Android)
+def test_a_previa_e_o_template_tambem_saem_em_png(cliente):
+    s = _pronta(cliente)
+    assert cliente.get(f"/api/sessoes/{s}/previa.png").status_code == 404                 # ainda nao ha pre-visualizacao
+    assert cliente.post(f"/api/sessoes/{s}/previa", json=_campos()).status_code == 200
+    for nome in ("previa", "modelo"):
+        r = cliente.get(f"/api/sessoes/{s}/{nome}.png")
+        assert r.status_code == 200 and r.headers["content-type"] == "image/png" and r.headers["cache-control"] == "no-store"
+        assert r.content.startswith(b"\x89PNG") and len(r.content) > 5_000
+    assert (cliente.dados / s / "previa.png").is_file()                                   # fica em cache ao lado do PDF
+    assert cliente.get("/api/sessoes/naoexiste12345678901/previa.png").status_code == 404
+
+
+def test_o_png_refaz_se_a_previa_mudar(cliente):
+    s = _pronta(cliente)
+    cliente.post(f"/api/sessoes/{s}/previa", json=_campos(inicio="1"))
+    a = cliente.get(f"/api/sessoes/{s}/previa.png").content
+    time.sleep(0.05)
+    cliente.post(f"/api/sessoes/{s}/previa", json=_campos(inicio="5000", fim="5004"))
+    b = cliente.get(f"/api/sessoes/{s}/previa.png").content
+    assert a != b

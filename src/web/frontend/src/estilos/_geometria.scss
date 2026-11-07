@@ -4,5 +4,12 @@
   --corte: 3.6rem; // altura do cabeçalho do bilhete = onde ficam o picotado e os entalhes
   --banda-altura: 17rem; // a faixa atrás do cabeçalho
   --fonte-controlos: "Bricolage Grotesque Variable", system-ui, -apple-system, "Segoe UI", sans-serif; // botões e seletores do cabeçalho: a largura do texto decide em que linha cabem, por isso não muda com o tema
+  --largura-max: clamp(1280px, 64vw, 2300px); // a largura do conteudo cresce nos ecras grandes (TV, 4K, ultra-wide)
   --borda: 2px; // espessura dos contornos dos controlos (o relevo/espessura extra faz-se com sombras)
+}
+
+// A ESCALA: tudo o que esta em `rem` cresce com o ecra, para a app nao ficar minuscula num 4K nem numa TV (16 px ate ~1440 px de
+// largura, 22 px aos 2560 px e mais). Igual em todos os temas.
+html {
+  font-size: clamp(16px, 0.5vw + 8px, 22px);
 }

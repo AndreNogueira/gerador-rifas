@@ -107,6 +107,14 @@ def previa(pasta: str, tpl_nome: str, alg_nome: str, papel: str, margem: str, po
         return _erro(e)
 
 
+def png(pdf: str, dpi: int = 150) -> tuple:
+    """A 1.a pagina de um PDF como PNG (para os browsers que nao mostram PDFs, como o Chrome do Android): (\"ok\", bytes) | erro."""
+    try:
+        return ("ok", core.motor.png_de_pagina(Path(pdf), dpi))
+    except Exception as e:  # noqa: BLE001
+        return _erro(e)
+
+
 class Bandeira:
     """Imita threading.Event para o motor (que so usa `is_set`): ha uma bandeira se o ficheiro existe."""
 

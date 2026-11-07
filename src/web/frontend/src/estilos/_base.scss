@@ -19,8 +19,9 @@ body {
   position: relative;
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh; // em telemoveis a barra de enderecos muda a altura: dvh segue-a
   color: var(--texto);
-  font: 16px / 1.5 var(--fonte);
+  font: 1rem / 1.5 var(--fonte);
   font-optical-sizing: auto;
   font-variant-ligatures: var(--ligaduras);
 
@@ -268,5 +269,24 @@ progress {
   *::after {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+// Em ecras tateis (telemoveis, tablets): alvos de toque de pelo menos 44 px (recomendacao da Apple e da Google)
+@media (pointer: coarse) {
+  select,
+  input:not([type="radio"], [type="file"]),
+  button,
+  .botao,
+  .navegacao a,
+  .seletor {
+    min-height: 44px;
+  }
+  .seletor select {
+    min-height: 42px;
+  }
+  .modo input[type="radio"] {
+    width: 1.35rem;
+    height: 1.35rem;
   }
 }

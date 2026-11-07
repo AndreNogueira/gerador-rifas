@@ -78,7 +78,7 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual }: Props) {
             ))}
           </select>
         </label>
-        <label className="seletor">
+        <label className="seletor modo-tema">
           <Icone nome={ICONE_DO_TEMA[tema]} tamanho={18} />
           <span className="so-leitores">{t("mi_tema")}</span>
           <select

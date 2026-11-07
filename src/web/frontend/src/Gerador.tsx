@@ -152,6 +152,11 @@ function Entrega({ entrega }: { entrega: NonNullable<Sessao["trabalho"]["entrega
   );
 }
 
+/** `navigator.pdfViewerEnabled` é false onde o browser não mostra PDFs dentro de uma página (p.ex. o Chrome do Android). */
+function sem_visor_de_pdf(): boolean {
+  return typeof navigator !== "undefined" && navigator.pdfViewerEnabled === false;
+}
+
 function Visor({
   sessao,
   expandido,
@@ -190,7 +195,18 @@ function Visor({
         </div>
       </div>
       {url ? (
-        <iframe key={url} className="pdf" src={`${url}#view=FitH`} title={titulo} data-testid="visor" />
+        sem_visor_de_pdf() ? (
+          // browsers sem visor de PDF (Chrome do Android): uma imagem da 1.ª página; «Abrir noutra janela» continua a abrir o PDF
+          <img
+            key={url}
+            className="pdf-imagem"
+            src={url.replace(".pdf", ".png")}
+            alt={titulo}
+            data-testid="visor"
+          />
+        ) : (
+          <iframe key={url} className="pdf" src={`${url}#view=FitH`} title={titulo} data-testid="visor" />
+        )
       ) : (
         <div className="vazio">
           <Icone nome="bilhete" tamanho={64} strokeWidth={1.5} />

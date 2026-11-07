@@ -40,6 +40,15 @@ const ESTADO: Estado = {
     forwarded_allow_ips: "127.0.0.1",
   },
   proxy: { pedidos: 80, ips_distintos: 1, privados_pct: 100, xff_pct: 100, veredicto: "problema" },
+  acordado: {
+    ativo: true,
+    cada_min: 10,
+    chamadas: 4,
+    falhas: 0,
+    ultima_em: AGORA - 300,
+    ultima_ok: true,
+    ultimo_ms: 12,
+  },
   intervalos: ["1h", "6h", "24h", "7d", "30d"],
 };
 const DADOS: Dados = {
@@ -128,6 +137,23 @@ const DADOS: Dados = {
     robos: 3,
     erros_http: [{ chave: "429", n: 2 }],
     falhas: [{ chave: "err_digitos", n: 1 }],
+    classes_de_ecra: [
+      { chave: "telemóvel", n: 8 },
+      { chave: "computador Full HD (1800–2399 px)", n: 4 },
+    ],
+    ecras: [
+      { chave: "393×852 @3x", n: 5 },
+      { chave: "1920×1080 @1x", n: 4 },
+    ],
+    dispositivos_detalhe: [
+      { chave: "iPhone", n: 5 },
+      { chave: "Pixel 9", n: 3 },
+    ],
+    janelas: [{ chave: "360–413 px (telemóvel)", n: 8 }],
+    toque: [
+      { chave: "com toque", n: 8 },
+      { chave: "sem toque", n: 4 },
+    ],
     reinicios_motor: 1,
     arranques: 1,
   },
@@ -219,6 +245,12 @@ describe("painel de administração", () => {
     const tabela = screen.getByTestId("admin-tabela-pedidos");
     expect(within(tabela).getByText("POST /api/sessoes")).toBeInTheDocument();
     expect(within(tabela).getByText(/\(progresso\)/)).toBeInTheDocument();
+    // o anti-sono e os ecrãs
+    expect(screen.getByText("ativo (10 min)")).toBeInTheDocument();
+    expect(screen.getByText(/último pedido ok há 5 min/)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Ecrãs e dispositivos" })).toBeInTheDocument();
+    expect(screen.getByText("393×852 @3x")).toBeInTheDocument();
+    expect(screen.getByText("Pixel 9")).toBeInTheDocument();
     // aviso dos dados temporários e o veredicto do proxy
     expect(screen.getByRole("note")).toHaveTextContent(/Os dados são temporários/);
     expect(screen.getByTestId("admin-proxy")).toHaveTextContent(/o limite por IP é, na prática, global/);
