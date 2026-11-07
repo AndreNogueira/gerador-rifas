@@ -1,0 +1,7 @@
+# Quem é chamado a rever cada PR (o GitHub pede a revisão sozinho).
+# O motor é partilhado com a app Windows: qualquer mudança lá merece olhos extra.
+*                    @AndreNogueira
+/src/core/           @AndreNogueira
+/.github/            @AndreNogueira
+/Dockerfile          @AndreNogueira
+/render.yaml         @AndreNogueira

@@ -1,0 +1,33 @@
+name: Erro
+description: Algo não funciona como devia
+title: "[Erro] "
+labels: ["erro"]
+body:
+  - type: textarea
+    id: passos
+    attributes:
+      label: O que fizeste?
+      description: Os passos, pela ordem (que ficheiros carregaste, que números, que modo).
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: O que esperavas e o que aconteceu?
+    validations:
+      required: true
+  - type: input
+    id: ambiente
+    attributes:
+      label: Browser, sistema e língua da interface
+      placeholder: Firefox 150, Windows 11, Português
+  - type: input
+    id: versao
+    attributes:
+      label: Versão (rodapé da página ou /health)
+      placeholder: "3.2.0"
+  - type: textarea
+    id: extra
+    attributes:
+      label: Mensagens de erro ou capturas de ecrã
+      description: Não anexes templates com dados pessoais.

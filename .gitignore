@@ -2,6 +2,7 @@
 /*
 !/.gitignore
 !/CLAUDE.md
+!/CONTRIBUTING.md
 !/README.md
 !/render.yaml
 !/pytest.ini
@@ -11,6 +12,7 @@
 !/.python-version
 !/uv.lock
 !/docker/
+!/scripts/
 !/Dockerfile
 !/.dockerignore
 !/.github/

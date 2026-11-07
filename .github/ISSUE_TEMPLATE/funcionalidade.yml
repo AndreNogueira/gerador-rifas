@@ -1,0 +1,37 @@
+name: Funcionalidade
+description: Uma ideia para a webapp (pequena e testável, para dar um PR)
+title: "[Funcionalidade] "
+labels: ["funcionalidade"]
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: Que problema resolve?
+      description: Do ponto de vista de quem organiza a rifa, não da implementação.
+    validations:
+      required: true
+  - type: textarea
+    id: proposta
+    attributes:
+      label: Como imaginas que funciona?
+      description: Passos no ecrã, ou um esboço. Quanto mais pequeno, melhor.
+    validations:
+      required: true
+  - type: dropdown
+    id: onde
+    attributes:
+      label: Onde mexe?
+      multiple: true
+      options:
+        - Interface (frontend)
+        - API (backend)
+        - Motor (src/core, partilhado com a app Windows)
+        - Textos / traduções
+        - Deploy / infraestrutura
+    validations:
+      required: true
+  - type: textarea
+    id: limites
+    attributes:
+      label: Riscos para o serviço público
+      description: Memória (512 MB), tempo de geração, abuso, privacidade dos ficheiros. «Nenhum» também é resposta.

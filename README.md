@@ -47,4 +47,13 @@ Criam-se em **GitHub → o repositório → Settings → Secrets and variables �
 4. Não há variáveis de ambiente obrigatórias. Se um dia precisares de algum valor secreto, define-o no painel do Render, nunca no repositório.
 5. Copia o *Deploy Hook* do serviço para o secret `RENDER_DEPLOY_HOOK_URL` (tabela acima).
 
-> **Nota:** o serviço é público. Hoje só mostra o esqueleto (língua e títulos), por isso não há risco. Antes de a app aceitar uploads e gerar PDFs, têm de existir os limites contra abuso (tamanho, nº de números, uma geração de cada vez, por IP): estão no `webapp/PLANO.md`.
+> **Nota:** o serviço é público e sem palavra-passe. A defesa contra abuso são os limites (tamanho dos uploads, nº de números por pedido, uma geração de cada vez, pedidos por IP): ver `src/web/config.py` e `src/web/limites.py`.
+
+## Contribuir
+
+Trabalha-se em **pull requests pequenos**, um por funcionalidade. O fluxo, as regras e as receitas estão em [`CONTRIBUTING.md`](CONTRIBUTING.md); as ideias por fazer em [`docs/ROADMAP.md`](docs/ROADMAP.md). Antes de abrir um PR corre tudo o que o CI corre:
+
+```
+powershell -File scripts/verificar.ps1      # Windows (-Docker para construir também as imagens)
+sh scripts/verificar.sh                     # Linux/macOS
+```

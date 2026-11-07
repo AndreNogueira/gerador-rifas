@@ -1,0 +1,39 @@
+# Atualizações das dependências em PRs semanais e agrupados (regra do projeto: sempre as últimas estáveis, fixadas exatamente).
+# O CI valida cada PR como qualquer outro. As tags do Dockerfile (ARG PYTHON/NODE/UV) o Dependabot não as lê: atualizam-se à mão.
+version: 2
+updates:
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      python:
+        patterns: ["*"]
+    labels: [dependencias]
+    commit-message:
+      prefix: "Dependencias (Python):"
+
+  - package-ecosystem: npm
+    directory: /src/web/frontend
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      frontend:
+        patterns: ["*"]
+    labels: [dependencias]
+    commit-message:
+      prefix: "Dependencias (frontend):"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions:
+        patterns: ["*"]
+    labels: [dependencias]
+    commit-message:
+      prefix: "Dependencias (Actions):"
