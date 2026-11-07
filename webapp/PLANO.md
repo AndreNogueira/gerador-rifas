@@ -30,13 +30,13 @@ webapp/
 | POST | `/api/sessoes` | cria sessão |
 | POST | `/api/sessoes/{id}/template` e `/algarismos` | envia PDF/PNG/JPG; devolve `InfoTemplate` (bilhetes/página, letra, rifa única?, erros traduzidos) |
 | POST | `/api/sessoes/{id}/folha` | papel, margem, rifas por folha → disposição, máximo, avisos (>24) |
-| POST | `/api/sessoes/{id}/previa` | PNG da 1.ª página (números verdadeiros) |
+| POST | `/api/sessoes/{id}/previa` | PDF de 1 página com os primeiros números (o browser desenha-o com PDF.js) |
 | POST | `/api/sessoes/{id}/gerar` | cria trabalho; progresso por SSE; cancelar |
 | GET | `/api/trabalhos/{id}/ficheiros` | ZIP (ou PDF único) |
 | GET | `/api/textos/{lingua}` | textos (exportados dos `idiomas/*.py` para JSON) |
 
 ## 4. Frontend
-Página única com os 4 cartões + visor (zoom, deslocamento, expandir) como na app; menu Idioma/Tema (claro/escuro do sistema);
+Página única com os 4 cartões + visor (PDF.js: zoom, deslocamento, expandir) como na app; menu Idioma/Tema (claro/escuro do sistema);
 tutorial com as imagens/vídeos já feitos (`assets/ajuda`, `assets/video`); botão «Limpar tudo» no fim.
 Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizador, avisos e confirmações iguais.
 
@@ -62,9 +62,16 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
 - Frontend **React + Vite + TypeScript** (pnpm), mantido (não HTMX/Jinja). Imagem Docker multi-stage.
 - Estimativa revista: ≈ 25 dias úteis (±30 %).
 
-**Em aberto** (a recomendação entre parênteses é só proposta; não avanço sem confirmares):
-1. **Alojamento:** só local/Docker, VPS próprio, ou serviço (Fly.io, Railway, Render, Azure…)? Define limites e custo.
-2. **Público:** só tu/equipa (sem limites duros) ou aberto na internet (limites e proteção contra abuso)?
-3. **Repositório:** `git init` + GitHub (`gh` já está autenticado como AndreNogueira): privado ou público? Só `webapp/` ou tudo?
-4. **Motor:** pacote `rifas_core` partilhado com a app Windows (recomendado) ou cópia só para a webapp?
-5. **Pré-visualização:** PNG gerado no servidor, igual à app (recomendado), ou PDF.js no browser?
+- **Alojamento:** serviço **gratuito** (qual: ver «Em aberto»).
+- **Público:** **só o dono** → sem contas de utilizador, mas o serviço fica atrás de uma palavra-passe/token (ou espaço privado do
+  serviço); limites de segurança mantêm-se (tamanho, nº de números, tempo), sem *rate limiting* por IP sofisticado.
+- **Repositório:** GitHub **privado** `AndreNogueira/gerador-rifas` (criado), com `app/`, `webapp/` e `docs/` (a raiz usa `.gitignore`
+  que deixa de fora `final/`, `saida/`, `.venv`, `dist` e caches).
+- **Motor:** **partilhado** — pacote `rifas_core` usado pela app Windows e pela webapp (a app passa a importá-lo; testes comuns).
+- **Pré-visualização:** **PDF.js no browser**. O servidor gera um PDF de **1 página** com os primeiros números (`Documento` já
+  faz isto; novo `pdf_da_previa()` em vez de `pagina_previa()` em PNG) e o browser desenha-o: zoom/pan nativos e nítidos a
+  qualquer ampliação, menos carga no servidor. O template carregado vê-se logo no browser (PDF.js lê o ficheiro local, sem upload).
+  Consequência: o visor passa a ser um componente React sobre PDF.js (`pdfjs-dist`, Apache-2.0) e o PNG a 200 dpi deixa de existir.
+
+**Em aberto:**
+1. **Qual serviço gratuito** (afeta limites: RAM, tempo de arranque a frio, cartão de crédito) — opções em `docs/MIGRATION_PLAN.md` §7.

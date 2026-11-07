@@ -130,7 +130,7 @@ Nada no motor impede Linux; falta confirmar a suite de testes (`teste_folha`, `t
 | `Preparado` não serializável | Certa / Médio | Recriar no worker a partir dos ficheiros da sessão (≈ 1 s) |
 | Memória/tempo em pedidos enormes (1 M números ≈ 190 MB, 1,5 min) | Média / Médio | Teto de números por pedido, geração em *streaming* para ZIP, cancelamento |
 | Língua global em `i18n` | Certa / Médio | Língua por pedido; log estruturado |
-| Paridade do visor (zoom/pan, 200 dpi) | Média / Médio | PNG gerado no servidor + pequena ilha JS para zoom/pan |
+| Paridade do visor (zoom/pan) | Média / Médio | **PDF.js** no browser sobre um PDF de 1 página gerado pelo servidor (zoom nítido, sem PNG) |
 | Manter 18 línguas + capturas/vídeo sincronizados | Média / Baixo | Textos exportados do mesmo `idiomas/`; scripts `fazer_ajuda`/`fazer_video` mantidos |
 | Dois códigos (desktop e web) a divergir | Média / Médio | Pacote `rifas_core` partilhado e testes comuns |
 | Sessões em memória (se NiceGUI) vs escala | Média / Médio | Preferir API sem estado por ligação (opção B) |
@@ -177,3 +177,28 @@ tutorial com 8 páginas ganham com componentes e estado no cliente. Custo face a
 
 ### Próximo passo sugerido
 Fase 0 numa pasta nova (`webapp/` ou pacote `rifas_core` na raiz), **sem tocar em `app/`** até os testes do motor passarem em Linux (Docker/Rancher). Detalhe em `webapp/PLANO.md`.
+
+---
+
+## 7. Decisões tomadas e alojamento gratuito
+
+| Tema | Decisão |
+|---|---|
+| Abordagem | B: FastAPI + React/Vite/TypeScript |
+| Alojamento | Serviço **gratuito** (por escolher, abaixo) |
+| Utilizadores | **Só o dono**: sem contas; acesso protegido por palavra-passe/token (ou espaço privado) |
+| Repositório | GitHub **privado** `AndreNogueira/gerador-rifas` com `app/`, `webapp/`, `docs/` (criado) |
+| Motor | **Partilhado** (`rifas_core`) entre a app Windows e a webapp |
+| Pré-visualização | **PDF.js** no browser; o servidor devolve um PDF de 1 página (não PNG) |
+
+**Opções gratuitas para uma imagem Docker (uso individual):**
+| Serviço | Grátis | Prós | Contras |
+|---|---|---|---|
+| **Hugging Face Spaces (Docker)** | CPU 2 vCPU / 16 GB RAM; Spaces privados | Muita RAM, sem cartão, deploy por git; privado = só tu | Adormece após inatividade; URL do Hugging Face; limites de armazenamento efémero |
+| **Render (Web Service free)** | 512 MB RAM, deploy do GitHub | Sem cartão, CI/CD automático a cada *push* | Adormece após 15 min (arranque ≈ 1 min); 512 MB limita pedidos grandes |
+| **Google Cloud Run** | Quota mensal gratuita, escala a zero | Docker puro, robusto, deploy via GitHub Actions | Exige conta de faturação (cartão); risco de custos se mal configurado |
+| Fly.io / Railway | Sem *free tier* real para contas novas | — | Pagos / créditos de teste |
+
+**Recomendação:** Hugging Face Spaces (Docker, privado) pela RAM e por não precisar de cartão; alternativa: Render, se preferires
+integração direta com o repositório GitHub. Qualquer escolha implica: ficheiros temporários só em disco efémero, limites de RAM/tempo
+nos pedidos, e arranque a frio tolerado (é uso individual).
