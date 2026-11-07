@@ -30,6 +30,7 @@ src/core/    lógica pura, SEM UI nem Windows (pacote `core`, usado pela app Win
   pdftexto.py    interpretador de content streams PDF · i18n.py + idiomas/  textos das 18 línguas
   pedido.py      campos de texto -> Trabalho e resumo        · escolha_folha.py  papel/margem/rifas por folha
   config.py      preferências (config.json) e pasta de dados · tutorial.py  conteúdo do tutorial · autoteste.py  exemplos do --selftest
+  entradas.py    uploads em bytes: tipo real (%PDF-/PNG/JPG), ficheiros temporários, `preparar_de_bytes`
   __init__.py    reexporta o motor: `import core; core.preparar(...)` e `from core import i18n, pedido, ...`
 src/web/     (a criar) API FastAPI (+ trabalhos, sessões, limites) e frontend React/Vite (src/web/frontend/)
 tests/       pytest (raiz): testes do core e fixtures
@@ -37,9 +38,9 @@ app/         app Windows: só interface (Tk/CustomTkinter), tema/winreg, ctypes 
 docs/        análise e planos · webapp/PLANO.md  plano da webapp
 ```
 
-Estado: **Fase 0 feita** (lógica movida para `src/core`, a app Windows importa de lá; `app/core.py`, `pdftexto.py`, `i18n.py` e `idiomas/` já não existem em `app/`).
-Falta para a webapp: `src/web/`, `pyproject.toml`, `Dockerfile`, `.github/`, língua por pedido, entrada por bytes/temporários, correr tudo num contentor Linux.
-O `.gitignore` da raiz só deixa entrar `app/`, `webapp/`, `docs/`, `tests/`, `src/`, `pytest.ini` e este ficheiro → **acrescentar** `pyproject.toml`, `Dockerfile`, `.github/` quando existirem.
+Estado: **Fase 0 feita** (lógica em `src/core`, a app Windows importa de lá; língua por pedido, mensagens estruturadas, entrada por bytes e `pdf_da_previa` existem;
+testes a passar em Windows e em Linux, Python 3.12 e 3.13). Falta para a webapp: `src/web/` (Fase 1), `Dockerfile` de produção, `.github/` (CI).
+O `.gitignore` da raiz só deixa entrar `app/`, `webapp/`, `docs/`, `tests/`, `src/`, `docker/`, `pytest.ini`, `pyproject.toml`, `uv.lock` e este ficheiro → **acrescentar** `Dockerfile`, `.github/` quando existirem.
 Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import ambiente` antes de importar `core`; o `construir.bat` define `PYTHONPATH=..\src` e `--include-package=core` para o Nuitka.
 
 ## Regras
@@ -55,7 +56,10 @@ Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import 
 - **Sem segredos no código nem no repo** (palavra-passe, chaves, certificados privados, `.env`); o `.cer` público é a única exceção. Documentar um `.env.example` sem valores reais.
 - Segurança dos uploads: validar o tipo real (`%PDF-`, PNG/JPG), nunca usar nomes/caminhos do cliente (`core.nome_seguro`), limites de tamanho/números/tempo.
 - **PDFium não é thread-safe** → todas as chamadas ao motor vão para um processo de trabalho (1 processo = 1 PDFium), nunca threads do servidor.
-- Língua **por pedido** — **ainda por fazer**: `core.i18n` tem uma língua global (serve a app Windows); na webapp o log do core deve emitir chave + parâmetros e traduzir-se na fronteira.
+- **Língua por pedido na webapp:** `i18n.definir()` é global (só a app Windows a usa). Na API usar `with i18n.com_lingua(lg):` (contextvars; **não passa para outras threads nem processos** — chamá-lo dentro do
+  worker) ou `ErroRifas.em(lg)` / `Mensagem.em(lg)` / `i18n.traduzir(chave, lg, **params)`. O log do `gerar`/`preparar` e os erros de `verificar` são `i18n.Mensagem` (um `str` com `.chave` e `.params`, picklable).
+- **Entradas da API:** `core.entradas.preparar_de_bytes(template, algarismos, ...)` (valida o tipo pelos bytes, nome seguro, apaga os temporários) e `core.pdf_da_previa(prep, inicio, digitos)` para o PDF.js.
+  O cancelamento só usa `.is_set()`: serve um `multiprocessing.Event`.
 - Regras de produto iguais às da app: o template nunca é guardado, o nome dos ficheiros é escrito pelo utilizador, aviso/confirmação com >24 rifas por
   folha, «Limpar tudo» no fim, 18 línguas. Nos blocos da folha a numeração é sequencial **por bloco** (não ordenar globalmente).
 
@@ -63,13 +67,20 @@ Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import 
 
 ### Hoje (existem)
 **Testes de caracterização (pytest)** — a partir da raiz do repo, com o venv de `app/` (`pytest` está em `app/requirements.txt`; instalar com
-`uv pip install --python app/.venv/Scripts/python.exe pytest`). Fixam o comportamento do `src/core` (295 testes, ≈12 s; `pytest.ini` aponta `pythonpath = src`).
+`uv pip install --python app/.venv/Scripts/python.exe pytest`). Cobrem o `src/core` (343 testes, ≈16 s; `pytest.ini` aponta `pythonpath = src`).
 Se um falhar depois de uma alteração: é regressão, ou o comportamento mudou de propósito e o teste deve ser atualizado conscientemente. Fixtures em `tests/fixtures/`.
 ```
 app/.venv/Scripts/python.exe -m pytest                                        # todos
 app/.venv/Scripts/python.exe -m pytest tests/test_folha.py::test_maximo_por_folha   # um só
 ```
 O que continua preso a Tkinter/Windows está listado em `docs/MIGRATION_PLAN.md` §8 («Não testável ainda»); os testes nunca importam `app.py`.
+
+**Em Linux (contentor)** — com o Rancher Desktop aberto (motor dockerd/moby). Corre `pytest` + `teste_folha`, `teste_canva`, `teste_5000` (pdf e png) e `teste_digitos`
+com `uv sync` (`pyproject.toml`/`uv.lock`), numa imagem `python:3.12-slim` (ou `-Python 3.13`); sai com código ≠ 0 se algo falhar. O `docker.exe` do Rancher não está no PATH
+do Claude Code: o script usa `C:\Program Files\Rancher Desktop\resources\resources\win32\bin`.
+```
+powershell -File docker\testes_linux.ps1 [-Python 3.13]
+```
 
 **Scripts antigos** — correr a partir de `app/` com o venv `app/.venv` (Windows; `PYTHONIOENCODING=utf-8` na consola). Cada script sai com código 1 se falhar; não há runner.
 ```
@@ -83,11 +94,11 @@ python app.py --selftest <pasta>                                        # auto-t
 `teste_gui.py` e `teste_limpar.py` precisam de ecrã. Build do `.exe`: `construir.bat` (só Windows; ≈10–20 min). Depois de mexer na GUI ou no `construir.bat`,
 correr `dist\GeradorRifas.exe --selftest <pasta>`.
 
-### Alvo (a criar nas Fases 0–1; não existem ainda — ajustar aqui quando existirem)
+### Alvo (a criar na Fase 1; as 3 primeiras linhas já funcionam)
 ```
-uv sync                                          # instalar dependências (Python 3.12), incluindo as de dev
-uv run pytest                                    # todos os testes (hoje: ver acima)
-uv run pytest tests/test_folha.py::test_a4 -x    # um só teste
+uv sync                                          # instalar dependências (Python >=3.12) incluindo as de dev (pyproject.toml)
+uv run pytest                                    # todos os testes
+uv run pytest tests/test_folha.py::test_maximo_por_folha -x    # um só teste
 ACCESS_PASSWORD=dev SECRET_KEY=dev uv run uvicorn web.main:app --reload --app-dir src   # API em http://localhost:8000
 pnpm -C src/web/frontend install && pnpm -C src/web/frontend dev    # frontend (Vite) com proxy para a API
 pnpm -C src/web/frontend build                   # gera os estáticos servidos pela API

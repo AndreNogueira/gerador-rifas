@@ -5,6 +5,9 @@
 !/pytest.ini
 !/tests/
 !/src/
+!/pyproject.toml
+!/uv.lock
+!/docker/
 !/app/
 !/webapp/
 !/docs/

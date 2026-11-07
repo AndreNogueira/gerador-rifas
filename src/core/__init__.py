@@ -10,4 +10,4 @@ from .motor import *  # noqa: F401,F403
 from .motor import (  # noqa: F401  (privados usados pelos testes)
     _abrir_leitor, _arrumar, _f, _matriz_texto, _mesma_letra, _origem_pdf, _rot_de, _uv, _xy,
 )
-from . import autoteste, config, escolha_folha, i18n, idiomas, pdftexto, pedido, tutorial  # noqa: F401
+from . import autoteste, config, entradas, escolha_folha, i18n, idiomas, pdftexto, pedido, tutorial  # noqa: F401

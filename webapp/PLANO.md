@@ -86,9 +86,11 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
     `main`, **só depois do CI passar** (GitHub Actions: testes do motor + build do frontend). Dockerfile na **raiz do repo** (contexto vê `app/` e `webapp/`).
 
 ## 8. Próximo passo
-**Fase 0 — metade feita.** Feito (sem alterar o comportamento da app Windows): `src/core` existe com o motor, `pdftexto`, `i18n`, `idiomas/` e a lógica
-que estava na janela (`pedido`, `escolha_folha`, `config`, `tutorial`, `autoteste`); a app Windows importa de lá; 295 testes pytest; `src/core` sem imports de UI/Windows
-(verificado por teste). Detalhe e o que ficou na app: `docs/MIGRATION_PLAN.md` §8.
+**Fase 0 — feita.** `src/core` tem o motor, `pdftexto`, `i18n`, `idiomas/` e a lógica que estava na janela (`pedido`, `escolha_folha`, `config`, `tutorial`,
+`autoteste`); a app Windows importa de lá (o `--selftest` dá o mesmo resultado). Para a webapp: língua por pedido (`i18n.com_lingua`), log e erros de verificação como
+`Mensagem` (chave + parâmetros), `core.entradas.preparar_de_bytes` (tipo real, nome seguro, temporários) e `core.pdf_da_previa` (PDF de 1 página para o PDF.js). 343 testes pytest
++ os scripts `teste_folha`/`teste_canva`/`teste_5000`/`teste_digitos` passam em Windows e em Linux (`docker\testes_linux.ps1`, Python 3.12 e 3.13); `src/core` sem imports
+de UI/Windows (verificado por teste). Detalhe: `docs/MIGRATION_PLAN.md` §8.
 
-**Falta da Fase 0** (muda comportamento do motor, por isso fica para agora): língua **por pedido** e log estruturado (chave + parâmetros), entrada por
-bytes/temporários, e correr `pytest` + `teste_folha`, `teste_canva`, `teste_5000` num contentor **Linux** (Rancher). Só depois a Fase 1 (API).
+**Próximo: Fase 1 (API)** em `src/web/`: FastAPI com sessões, upload (`preparar_de_bytes`), análise do template, folha (`escolha_folha`), pré-visualização (`pdf_da_previa`),
+trabalhos num processo de trabalho isolado (1 PDFium), progresso por SSE, ZIP; palavra-passe `ACCESS_PASSWORD`; limites (tamanho, nº de números, tempo). Depois o frontend (Fase 2).

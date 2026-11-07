@@ -7,30 +7,81 @@ A lingua atual e GLOBAL (uma por processo): serve a app Windows; a webapp tera d
 """
 from __future__ import annotations
 
+import contextlib
+import contextvars
 import locale
 import os
 import re
 
 from .idiomas import NOMES as LINGUAS, TEXTOS
 
-_atual = "pt"
+_atual = "pt"                       # lingua global (a app Windows: uma por processo)
+_do_pedido: contextvars.ContextVar = contextvars.ContextVar("lingua_do_pedido", default=None)
 ENV_LINGUA = "RIFAS_LINGUA"         # variavel de ambiente: forca a lingua por defeito (ex.: RIFAS_LINGUA=en)
 
 
 def definir(lingua: str) -> None:
+    """Muda a lingua GLOBAL (a app Windows). Numa webapp use `com_lingua` (por pedido)."""
     global _atual
     _atual = lingua if lingua in LINGUAS else "pt"
 
 
 def atual() -> str:
-    return _atual
+    """A lingua em uso: a do pedido (se dentro de `com_lingua`), senao a global."""
+    return _do_pedido.get() or _atual
 
 
-def t(chave: str, **kw) -> str:
-    txt = TEXTOS.get(_atual, {}).get(chave)
+@contextlib.contextmanager
+def com_lingua(lingua: str):
+    """Dentro do `with`, `t()`, `atual()` e a traducao dos erros usam `lingua` - so no contexto atual (thread ou tarefa
+    asyncio), por isso pedidos concorrentes nao se atropelam. NAO passa para outras threads/processos: chame-a la dentro.
+    Uma lingua desconhecida vale portugues, como em `definir`."""
+    token = _do_pedido.set(lingua if lingua in LINGUAS else "pt")
+    try:
+        yield
+    finally:
+        _do_pedido.reset(token)
+
+
+def traduzir(chave: str, lingua: str, **kw) -> str:
+    """Funcao pura: o texto de `chave` em `lingua` (portugues se faltar), sem usar a lingua global nem a do pedido."""
+    txt = TEXTOS.get(lingua, {}).get(chave)
     if txt is None:
         txt = TEXTOS["pt"][chave]
     return txt.format(**kw) if kw else txt
+
+
+def t(chave: str, **kw) -> str:
+    return traduzir(chave, atual(), **kw)
+
+
+class Mensagem(str):
+    """Texto ja traduzido (na lingua em uso quando foi criado) que guarda a chave e os parametros: o motor emite estas
+    mensagens no log e nos erros de verificacao, por isso uma webapp pode traduzi-las outra vez (`.em(lingua)`) sem
+    perder nada. E um `str` normal para quem so quer o texto."""
+    chave: str
+    params: dict
+
+    def __new__(cls, chave: str, **params):
+        obj = super().__new__(cls, t(chave, **params))
+        obj.chave, obj.params = chave, params
+        return obj
+
+    def em(self, lingua: str) -> str:
+        return traduzir(self.chave, lingua, **self.params)
+
+    def __reduce__(self):           # copy/pickle (p.ex. do processo de trabalho para o servidor) mantem texto, chave e parametros
+        return (_reconstruir, (str(self), self.chave, self.params))
+
+
+def _reconstruir(texto: str, chave: str, params: dict) -> "Mensagem":
+    obj = str.__new__(Mensagem, texto)
+    obj.chave, obj.params = chave, params
+    return obj
+
+
+def msg(chave: str, **params) -> Mensagem:
+    return Mensagem(chave, **params)
 
 
 def lingua_de_codigo(codigo: str) -> str:

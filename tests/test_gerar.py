@@ -225,3 +225,16 @@ def test_pagina_template_e_imagem_de_pdf(fx):
     assert Image.open(io.BytesIO(core.pagina_template(fx("template_exemplo.pdf")))).size == (744, 1053)    # 90 dpi
     assert core.png_de_pagina(fx("digitos_exemplo.pdf"), 72)[:4] == b"\x89PNG"
     assert core.imagem_de_pdf(fx("digitos_exemplo.pdf")).size == (4334, 917)
+
+
+def test_gerar_aceita_qualquer_evento_com_is_set(tmp_path, prep5):
+    """O cancelamento so usa `.is_set()`: um multiprocessing.Event (processo de trabalho) serve tal como um threading.Event."""
+    import multiprocessing
+    ev = multiprocessing.Event()
+    ev.set()
+    assert erro_de(core.gerar, core.Trabalho(tmp_path, "T", 1, 12), prep5, cancelar=ev)[:2] == ("Cancelado", "cancelado")
+
+    class Falso:
+        def is_set(self):
+            return False
+    assert core.gerar(core.Trabalho(tmp_path / "x", "T", 1, 5), prep5, cancelar=Falso())[0].ok

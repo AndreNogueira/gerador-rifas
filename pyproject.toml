@@ -1,0 +1,19 @@
+[project]
+name = "gerador-rifas"
+version = "0.1.0"
+description = "Gerador de Rifas: motor (src/core) usado pela app Windows (app/) e pela webapp (src/web)"
+requires-python = ">=3.12"
+dependencies = [
+    "pypdf",
+    "pypdfium2",
+    "pillow",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "reportlab",   # so os testes (PDFs sinteticos)
+]
+
+[tool.uv]
+package = false    # nao e uma biblioteca instalavel: src/ e posto no caminho pelo pytest.ini (pythonpath) e pela app

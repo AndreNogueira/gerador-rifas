@@ -210,7 +210,7 @@ nos pedidos (512 MB!), palavra-passe da app (o plano gratuito não tem autentica
 que estava misturada com a interface foi extraída para módulos novos do mesmo pacote, **sem alterar o comportamento** (a app Windows importa de `src/core`; o
 `--selftest` dá exatamente o mesmo resultado que antes). Cada passo foi validado com `pytest`.
 
-**Testes** (`tests/`, pytest, 295 testes, ≈ 12 s): começaram como testes de **caracterização** (fixam o comportamento atual, também as esquisitices) e
+**Testes** (`tests/`, pytest, 343 testes, ≈ 16 s): começaram como testes de **caracterização** (fixam o comportamento atual, também as esquisitices) e
 cobrem agora todo o `src/core`: validação (`validar`), plano de ficheiros (`planear`, `nome_seguro`), geometria e folha, análise do template (exemplos da app,
 5 templates aleatórios e PDFs sintéticos de casos limite), `preparar`, `gerar`/`verificar`/`Documento`/`pagina_previa`, algarismos em imagem (imagens sintéticas),
 as 18 línguas, e os módulos extraídos (`pedido`, `escolha_folha`, `config`, `tutorial`, `autoteste`). `tests/test_core_puro.py` verifica que **nenhum ficheiro de
@@ -234,8 +234,10 @@ as 18 línguas, e os módulos extraídos (`pedido`, `escolha_folha`, `config`, `
 | Caminhos absolutos em `app/testes/` | `Z:\projects\rifas\app`, `C:\Windows\Fonts` | ✅ relativos a `__file__` / `RIFAS_FONTES` (`%WINDIR%\Fonts`). Ficam só textos de demonstração (`C:\Rifas\Exemplo` nas capturas) |
 | `abrir_pasta`, `App._video`, `ficheiro_video` | Abrir pasta/vídeo | ⛔ **fica na app, por natureza** (`os.startfile`): na web é descarregar ZIP/PDF e `<video>` |
 | `tema.py`, `widgets.py`, `visor.py`, `icones.py`, janela `Tutorial` | Cores do Windows, visor, ícones | ⛔ **ficam na app** (winreg, ctypes.windll, Tk): na web reescrevem-se (CSS/React/PDF.js) |
-| Efeitos globais no motor | Língua global (`i18n._atual`) em `ErroRifas.__str__`/`verificar`/`log`; entrada por `Path`; `Preparado` não serializável; cancelar com `threading.Event` | ⏳ **Fase 1** (mudaria comportamento): língua por pedido, log com chave+parâmetros, entrada por bytes/temporários |
-| Execução em Linux | Os testes só correram em Windows | ⏳ por fazer: contentor (Rancher Desktop) |
+| Língua global (`i18n._atual`) em `ErroRifas.__str__`/`verificar`/`log` | Pedidos concorrentes | ✅ **aditivo**, sem mudar a app Windows: `i18n.com_lingua(lg)` (contextvars), `traduzir(chave, lg)`, `ErroRifas.em(lg)`; o log e os erros de `verificar` passam a `Mensagem` (str + chave + parâmetros, picklable) · `tests/test_lingua_por_pedido.py`. Atenção: a língua do pedido não passa para outras threads/processos |
+| Entrada por `Path` | Upload em bytes | ✅ `core.entradas` (`detetar_tipo` pelos bytes, `nome_de_upload`, `ficheiro_temporario`, `preparar_de_bytes`) + `core.pdf_da_previa` (PDF de 1 página para o PDF.js) · `tests/test_entradas.py` |
+| Cancelar com `threading.Event`; `Preparado` não serializável | Processo de trabalho | ✅ o cancelamento só usa `.is_set()` (serve um `multiprocessing.Event`, testado); `Preparado` continua a recriar-se no worker (≈ 1 s), por desenho |
+| Execução em Linux | Os testes só correram em Windows | ✅ `docker\testes_linux.ps1`: 343 testes pytest + `teste_folha`, `teste_canva`, `teste_5000` (pdf/png), `teste_digitos` em `python:3.12-slim` e `3.13-slim` (Rancher Desktop). Único ajuste: `gerar_template_aleatorio.py` usa as letras do reportlab quando não há as do Windows |
 
 **Particularidades fixadas pelos testes** (ver comentários «quirk» em `tests/`): `nome_seguro` apaga `/` em vez de separar pastas e não trata nomes
 reservados (`CON`); `validar` aceita `inicio = 0`; `_f(-0.00001)` escreve `-0`; `disposicao_da_folha` com `n <= 0` devolve 1 rifa e com margem negativa usa 0;

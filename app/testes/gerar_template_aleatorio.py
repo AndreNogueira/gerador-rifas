@@ -16,6 +16,7 @@ import random
 import sys
 from pathlib import Path
 
+import reportlab
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -54,6 +55,8 @@ def criar(destino: Path, semente: int, n: int, talao_rot: int | None = None, ndi
     if tamanho is not None:
         nome_pag, (W, H) = "rifa", tamanho
     fonte_ttf = PASTA_FONTES / rnd.choice(FONTES)
+    if not fonte_ttf.exists():       # sem as letras do Windows (p.ex. Linux): usa as que o reportlab traz (Vera / Vera Bold)
+        fonte_ttf = Path(reportlab.__file__).parent / "fonts" / ("VeraBd.ttf" if fonte_ttf.stem.endswith("bd") else "Vera.ttf")
     cols, rows = _grelha(n, rnd)
     margem, gap = (3.0 if tamanho is not None else 18.0), 8.0
     tw = (W - 2 * margem - gap * (cols - 1)) / cols

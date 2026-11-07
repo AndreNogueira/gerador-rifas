@@ -35,7 +35,7 @@ from pypdf.generic import (ArrayObject, DecodedStreamObject, DictionaryObject, F
                            IndirectObject, NameObject, NumberObject, RectangleObject)
 
 from . import pdftexto
-from .i18n import t
+from .i18n import msg, t, traduzir
 
 logging.getLogger("pypdf").setLevel(logging.CRITICAL)
 
@@ -63,6 +63,10 @@ class ErroRifas(Exception):
 
     def __str__(self) -> str:
         return t(self.chave, **self.params)
+
+    def em(self, lingua: str) -> str:
+        """A mensagem do erro numa lingua escolhida (sem mexer na lingua global)."""
+        return traduzir(self.chave, lingua, **self.params)
 
 
 class Cancelado(ErroRifas):
@@ -412,7 +416,7 @@ def letra_de_pdf(caminho: Path, nome_pedido: str, log: Log) -> LetraPDF | None:
     escolhido = next((d for d in candidatos if _mesma_letra(d["fonte"].nome, nome_pedido)), None)
     if escolhido is None:
         escolhido = candidatos[0]
-        log(t("aviso_letra_diferente", usada=escolhido["fonte"].nome, pedida=nome_pedido))
+        log(msg("aviso_letra_diferente", usada=escolhido["fonte"].nome, pedida=nome_pedido))
     f = escolhido["fonte"]
     mapa = escolhido["mapa"]
     return LetraPDF(rd, f.ref if f.ref is not None else f.obj, {d: mapa[d] for d in DIGITOS}, f.n_bytes,
@@ -575,7 +579,7 @@ class GlifosImagem:
                 hc = max(g.base for g in gs) - topo_min
                 escala = (v1 - v0) / hc
                 if (u1 - u0) < sum(g.w for g in gs) * escala - 0.15 * (v1 - v0) * (len(gs) - 1):
-                    log(t("aviso_mais_largos", texto=s.texto))
+                    log(msg("aviso_mais_largos", texto=s.texto))
                 v1_[id(s)] = v1
                 medidas.append((s, u0, u1, v0, escala, topo_min, hc, runs if len(runs) == len(gs) else None))
         finally:
@@ -630,7 +634,7 @@ class GlifosImagem:
             dpi = 72 / escala
             pior_dpi = dpi if pior_dpi is None else min(pior_dpi, dpi)
         if pior_dpi is not None:
-            log(t("aviso_dpi_baixo" if pior_dpi < 300 else "info_dpi", dpi=f"{pior_dpi:.0f}"))
+            log(msg("aviso_dpi_baixo" if pior_dpi < 300 else "info_dpi", dpi=f"{pior_dpi:.0f}"))
 
     @staticmethod
     def _ajustar_margens(obs: list) -> list:
@@ -747,7 +751,7 @@ def glifos_de_imagem(caminho: Path, log: Log) -> GlifosImagem:
     except Exception as e:
         raise ErroRifas("err_abrir_ficheiro", nome=caminho.name, erro=str(e)) from e
     glifos = extrair_glifos(mascara_de_imagem(img))
-    log(t("log_imagem_ok", altura=glifos[0].mascara.height))
+    log(msg("log_imagem_ok", altura=glifos[0].mascara.height))
     return GlifosImagem(glifos, ("desc_imagem", {"nome": caminho.name}))
 
 
@@ -862,9 +866,9 @@ def disposicao_da_folha(info: InfoTemplate, papel: str, margem_mm: float, n: int
 def preparar(template: Path, algarismos: Path | None, log: Log = _sem_log) -> Preparado:
     """Le o template e o ficheiro dos algarismos 0-9 (obrigatorio)."""
     info = analisar_template(template)
-    log(t("log_template", n=info.n_campos, primeiro=info.primeiro, ultimo=info.ultimo))
+    log(msg("log_template", n=info.n_campos, primeiro=info.primeiro, ultimo=info.ultimo))
     if info.n_paginas > 1:
-        log(t("aviso_paginas_template", n=info.n_paginas))
+        log(msg("aviso_paginas_template", n=info.n_paginas))
     if algarismos is None:
         raise ErroAlgarismos("err_sem_ficheiro_algarismos", info)
 
@@ -876,7 +880,7 @@ def preparar(template: Path, algarismos: Path | None, log: Log = _sem_log) -> Pr
         if ext == ".pdf":
             esc = letra_de_pdf(algarismos, info.fontes[0], log)
             if esc is None:
-                log(t("log_pdf_imagem"))
+                log(msg("log_pdf_imagem"))
                 esc = glifos_de_imagem(algarismos, log)
         elif ext in EXT_IMAGEM:
             esc = glifos_de_imagem(algarismos, log)
@@ -889,7 +893,7 @@ def preparar(template: Path, algarismos: Path | None, log: Log = _sem_log) -> Pr
     except Exception as e:
         raise ErroAlgarismos("err_usar_ficheiro", info, nome=algarismos.name, erro=str(e)) from e
     if len(info.fontes) > 1:
-        log(t("aviso_varias_letras"))
+        log(msg("aviso_varias_letras"))
 
     fundo = criar_fundo(template, info)
     if not esc.vetorial:    # imagem: calibrar contra o template (precisa do original e do "sem numeros")
@@ -1068,7 +1072,7 @@ def verificar(destino: Path, linhas: list, prep: Preparado, largura: int) -> lis
     doc = _abrir_pdfium(destino)
     try:
         if len(doc) != len(linhas):
-            erros.append(t("ver_paginas", tem=len(doc), esperado=len(linhas)))
+            erros.append(msg("ver_paginas", tem=len(doc), esperado=len(linhas)))
         for i in range(min(len(doc), len(linhas))):
             pg = doc[i]
             achados = sorted(padrao.findall(_texto_pagina(pg)))
@@ -1082,7 +1086,7 @@ def verificar(destino: Path, linhas: list, prep: Preparado, largura: int) -> lis
             # template (o PDFium nem sempre extrai o texto de formularios aninhados, por isso tambem pode faltar)
             if (any(c_ach[k] < v for k, v in c_esp.items())
                     or any(c_ach[k] - c_esp.get(k, 0) > c_fix.get(k, 0) for k in c_ach)):
-                erros.append(t("ver_pagina", i=i + 1, esperado=sorted(c_esp.elements()), achado=achados))
+                erros.append(msg("ver_pagina", i=i + 1, esperado=sorted(c_esp.elements()), achado=achados))
     finally:
         doc.close()
     return erros
@@ -1098,14 +1102,14 @@ def gerar(tr: Trabalho, prep: Preparado, log: Log = _sem_log,
     largura = max(tr.digitos, len(str(tr.fim)))
     if prep.disp is not None:
         d = prep.disp
-        log(t("log_folha", papel=d.papel, n=d.n, w=f"{d.celula.width / MM:.0f}", h=f"{d.celula.height / MM:.0f}"))
+        log(msg("log_folha", papel=d.papel, n=d.n, w=f"{d.celula.width / MM:.0f}", h=f"{d.celula.height / MM:.0f}"))
         if d.n > AVISO_POR_PAGINA:
-            log(t("aviso_muitas", n=d.n))
+            log(msg("aviso_muitas", n=d.n))
     if largura > len(info.primeiro):
-        log(t("aviso_algarismos", exemplo=len(info.primeiro), largura=largura,
+        log(msg("aviso_algarismos", exemplo=len(info.primeiro), largura=largura,
               pct=round(100 * len(info.primeiro) / largura)))
     if (tr.fim - tr.inicio + 1) % por_pagina:
-        log(t("aviso_multiplo", qtd=tr.fim - tr.inicio + 1, n=por_pagina))
+        log(msg("aviso_multiplo", qtd=tr.fim - tr.inicio + 1, n=por_pagina))
     try:
         tr.saida.mkdir(parents=True, exist_ok=True)
     except OSError as e:
@@ -1123,7 +1127,7 @@ def gerar(tr: Trabalho, prep: Preparado, log: Log = _sem_log,
     resultados = []
     for destino, a, b in plano:
         linhas = linhas_de_numeros(a, b, por_pagina, largura)
-        log(t("log_a_gerar", nome=destino.name, paginas=len(linhas)))
+        log(msg("log_a_gerar", nome=destino.name, paginas=len(linhas)))
         doc = _montar(linhas, prep, passo, cancelar)
         try:
             doc.gravar(destino)
@@ -1136,14 +1140,20 @@ def gerar(tr: Trabalho, prep: Preparado, log: Log = _sem_log,
         resultados.append(r)
         mb = f"{destino.stat().st_size / 1e6:.1f}"
         if r.ok:
-            log(t("log_pronto_ok", nome=destino.name, paginas=len(linhas), mb=mb))
+            log(msg("log_pronto_ok", nome=destino.name, paginas=len(linhas), mb=mb))
         else:
-            log(t("log_pronto_erro", nome=destino.name, paginas=len(linhas), mb=mb, n=len(erros), primeiro=erros[0]))
+            log(msg("log_pronto_erro", nome=destino.name, paginas=len(linhas), mb=mb, n=len(erros), primeiro=erros[0]))
     return resultados
 
 
 def pagina_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = None, dpi: int = 160) -> bytes:
     """PNG da 1.a pagina, com os primeiros numeros do intervalo."""
+    return png_de_pagina(pdf_da_previa(prep, inicio, digitos, fim), dpi)
+
+
+def pdf_da_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = None) -> bytes:
+    """PDF de 1 pagina (bytes) com os primeiros numeros do intervalo: o que `pagina_previa` desenha, mas ainda vetorial
+    (a webapp mostra-o no browser com PDF.js)."""
     n = prep.por_pagina
     largura = max(digitos, len(str(fim if fim is not None else inicio + n)))
     ultimo = inicio + n - 1 if fim is None else min(fim, inicio + n - 1)
@@ -1151,7 +1161,7 @@ def pagina_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = 
     doc = _montar(linhas, prep)
     buf = io.BytesIO()
     doc.gravar(buf)
-    return png_de_pagina(buf.getvalue(), dpi)
+    return buf.getvalue()
 
 
 def pagina_template(caminho: Path, dpi: int = 90) -> bytes:
