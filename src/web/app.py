@@ -13,11 +13,11 @@ from pathlib import Path
 from core import i18n
 from core.armazenamento import ArmazenamentoLocal
 from fastapi import FastAPI, Header, HTTPException, Request, Response
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse, Response as RespostaSimples
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, config, rotas, rotas_ajuda
+from . import VERSAO, config, rotas, rotas_ajuda, seo
 from .limites import Limitador
 from .modelos import ErroApi
 from .rotas import Servico
@@ -143,23 +143,47 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         if (assets / sub).is_dir():
             app.mount(rota, StaticFiles(directory=assets / sub), name=sub)
 
+    @app.middleware("http")
+    async def _api_nao_se_indexa(request: Request, call_next):
+        resposta = await call_next(request)
+        if request.url.path.startswith(("/api/", "/health")):
+            resposta.headers["X-Robots-Tag"] = "noindex, nofollow"
+        return resposta
+
+    @app.get("/robots.txt", include_in_schema=False)
+    def robots_txt(request: Request) -> PlainTextResponse:
+        return PlainTextResponse(seo.robots(seo.url_publica(request)), headers={"Cache-Control": "public, max-age=3600"})
+
+    @app.get("/sitemap.xml", include_in_schema=False)
+    def sitemap_xml(request: Request) -> RespostaSimples:
+        return RespostaSimples(seo.sitemap(seo.url_publica(request)), media_type="application/xml", headers={"Cache-Control": "public, max-age=3600"})
+
     @app.get("/{caminho:path}", include_in_schema=False)
     def frontend_estatico(caminho: str, request: Request):
-        """Ficheiros do frontend; qualquer outra rota devolve o index.html (o React trata das paginas). `/api...` nunca cai aqui.
+        """Ficheiros do frontend e as paginas da SPA. `/api...` nunca cai aqui.
 
-        O `dist` traz cada ficheiro de texto ja comprimido (`.br`, `.gz`): entrega-se o que o browser aceita, sem gastar CPU.
-        Os mapas (`.map`) e as proprias versoes comprimidas nunca se servem como ficheiros soltos."""
+        As paginas conhecidas (`seo.ROTAS`) saem com o `<head>` e o texto de SEO injetados no index.html; qualquer outra rota que nao
+        seja um ficheiro e um 404 a sério (nada de «soft 404»). O `dist` traz cada ficheiro de texto ja comprimido (`.br`, `.gz`):
+        entrega-se o que o browser aceita. Os mapas e as versoes comprimidas nunca se servem como ficheiros soltos."""
         if caminho == "api" or caminho.startswith("api/"):
             return JSONResponse({"detail": "Rota inexistente"}, status_code=404)
         index = pasta / "index.html"
         if not index.is_file():
             return JSONResponse({"detail": "Frontend por compilar: cd src/web/frontend && pnpm install && pnpm build"}, status_code=503)
         alvo = (pasta / caminho).resolve()
-        if caminho and alvo.is_relative_to(pasta) and alvo.is_file():
+        if caminho and caminho != "index.html" and alvo.is_relative_to(pasta) and alvo.is_file():
             if alvo.suffix in _NAO_SERVIR:
                 return JSONResponse({"detail": "Rota inexistente"}, status_code=404)
             cabecalhos = {"Cache-Control": "public, max-age=31536000, immutable"} if alvo.parent.name == "assets" else {}
             return _enviar(alvo, request, cabecalhos)
-        return _enviar(index, request, {"Cache-Control": "no-cache"})
+        rota = "/" if caminho in ("", "index.html") else "/" + caminho.rstrip("/")
+        if caminho.endswith("/") and caminho != "" and rota in seo.ROTAS:          # /tutorial/ -> /tutorial
+            return RedirectResponse(rota, status_code=301)
+        base = seo.url_publica(request)
+        cab = {"Cache-Control": "no-cache"}
+        pagina = seo.ROTAS.get(rota)
+        if pagina is None:
+            return HTMLResponse(seo.renderizar(index.read_text(encoding="utf-8"), seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
+        return HTMLResponse(seo.renderizar(index.read_text(encoding="utf-8"), pagina, base), headers=cab)
 
     return app

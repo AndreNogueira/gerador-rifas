@@ -74,7 +74,7 @@ export function Tutorial() {
               <img
                 key={img.url}
                 src={img.url}
-                alt=""
+                alt={topico.titulo}
                 loading="lazy"
                 className="imagem-tutorial"
                 style={img.largura ? { width: `min(100%, ${img.largura}px)` } : undefined}
