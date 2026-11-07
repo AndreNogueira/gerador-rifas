@@ -1,0 +1,106 @@
+// Matrix Gamer: chuva de caracteres em verde sobre preto (a de `assets/matrix-chuva.svg`, em duas velocidades) e o brilho
+// de neon de um HUD de jogo: botões que acendem, barra de vida em blocos, insígnias hexagonais, cores RGB nos passos.
+// Escuro = o ecrã do Matrix; claro = o mesmo terminal em papel verde-menta.
+@use "../tema" as *;
+
+@include tema(matrix) {
+  --t-verde: light-dark(#007a2e, #00ff66);
+  --t-brilho: color-mix(in srgb, var(--t-verde) 60%, transparent);
+
+  --fundo: light-dark(#e3f9e8, #020a04);
+  --cartao: light-dark(#fbfffc, #06150a);
+  --texto: light-dark(#052e12, #c8ffd4);
+  --suave: light-dark(#3d6b4b, #62c57e);
+  --linha: light-dark(#b5dcc0, #0f4d22);
+  --campo: light-dark(#f0fcf3, #031007);
+  --destaque: var(--t-verde);
+  --destaque-2: light-dark(#c4109e, #ff2bd6);
+  --ok: light-dark(#007a2e, #00ff66);
+  --aviso: light-dark(#8a6500, #ffd400);
+  --erro: light-dark(#c4143a, #ff4d6d);
+  --sombra-cor: light-dark(#05381a, #00ff66);
+  // os passos em verde, ciano, magenta e âmbar: o RGB de um teclado de jogo
+  --passo-1: light-dark(#007a2e, #00ff66);
+  --passo-2: light-dark(#007a99, #00e5ff);
+  --passo-3: light-dark(#c4109e, #ff2bd6);
+  --passo-4: light-dark(#a87a00, #ffd400);
+
+  --fonte: "JetBrains Mono Variable", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --fonte-titulo: "Orbitron Variable", "JetBrains Mono Variable", ui-monospace, monospace;
+  --fonte-marca: "JetBrains Mono Variable", ui-monospace, monospace;
+  --peso-titulo: 700;
+  --peso-marca: 800;
+  --peso-numero: 800;
+  --ligaduras: none;
+  --brilho-titulo: 0 0 8px var(--t-brilho);
+  --brilho-botao: 0 0 6px color-mix(in srgb, var(--botao-texto) 40%, transparent);
+
+  --raio: 3px;
+  --raio-c: 2px;
+  --entalhe: 0px;
+  --filtro-coluna: drop-shadow(0 0 12px color-mix(in srgb, var(--t-verde) 32%, transparent));
+  --sombra-visor: 0 0 26px -6px var(--t-brilho);
+
+  // a chuva: duas camadas com velocidades diferentes (cada uma anda um mosaico por ciclo, sem emenda)
+  --deco-pagina:
+    url("../assets/matrix-chuva.svg") 0 0 / 220px 400px,
+    url("../assets/matrix-chuva.svg") 90px 0 / 330px 600px;
+  --deco-pagina-opacidade: 0.3;
+  --deco-pagina-animacao: desliza-pagina 18s linear infinite;
+  --deco-pagina-desliza: 0 400px, 90px 600px;
+
+  // a faixa: quadrícula de ecrã, linhas de varrimento e um fio verde a brilhar na base
+  --banda:
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 14%) 0 1px, transparent 1px 3px),
+    linear-gradient(color-mix(in srgb, var(--t-verde) 14%, transparent) 1px, transparent 1px) 0 0 / 26px 26px,
+    linear-gradient(90deg, color-mix(in srgb, var(--t-verde) 14%, transparent) 1px, transparent 1px) 0 0 / 26px 26px,
+    linear-gradient(180deg, light-dark(#c8f1d1, #00210d), light-dark(#e3f9e8, #02140a));
+  --banda-forma: none;
+  --banda-borda: 2px solid var(--t-verde);
+  --topo-texto: light-dark(#052e12, #c8ffd4);
+  --topo-sombra: 0 0 14px var(--t-brilho);
+  --marca-anel: 0 0 0 2px var(--t-verde), 0 0 18px var(--t-brilho);
+  --pilula: light-dark(rgb(255 255 255 / 60%), rgb(0 20 8 / 62%));
+  --pilula-texto: light-dark(#052e12, #c8ffd4);
+  --pilula-anel: 0 0 0 1px var(--t-verde);
+  --nav-ativo: var(--t-verde);
+  --nav-ativo-texto: light-dark(#ffffff, #00140a);
+
+  --botao-1: light-dark(#007a2e, #00ff66);
+  --botao-2: light-dark(#00a83e, #00c853);
+  --botao-texto: light-dark(#ffffff, #00140a);
+  --botao-sombra: 0 0 16px color-mix(in srgb, var(--t-verde) 50%, transparent);
+  --botao-sombra-hover: 0 0 26px color-mix(in srgb, var(--t-verde) 80%, transparent);
+  --botao-sec-sombra: 0 0 10px -2px var(--t-brilho);
+  --botao-hover: translateY(-1px);
+  --entrega-1: light-dark(#0e7a99, #00c8e6);
+  --entrega-2: light-dark(#007a2e, #00ff66);
+
+  --campo-anel: inset 0 0 8px -3px var(--t-brilho);
+  --campo-anel-foco: 0 0 0 3px color-mix(in srgb, var(--t-verde) 35%, transparent), 0 0 14px var(--t-brilho);
+
+  // o bilhete: contorno de néon na cor do passo, picotado a pontos como um circuito, insígnia hexagonal
+  --anel-largura: 1px;
+  --anel-tinta: 100%;
+  --picotado-estilo: dotted;
+  --cabecalho-tinta: 14%;
+  --insignia-luz: 25%;
+  --insignia-escuro: 45%;
+  --insignia-cor: light-dark(#ffffff, #00140a);
+  --insignia-raio: 0px;
+  --insignia-rot: none;
+  --insignia-sombra: 0 0 14px -2px var(--t-brilho);
+  --insignia-forma: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%);
+  --numero-pct: 100%;
+  --numero-sombra: 0 0 10px currentcolor;
+  --modo-ativo-tinta: 20%;
+
+  // a barra de vida: blocos que acendem
+  --progresso-raio: 2px;
+  --progresso-fundo: light-dark(#d4efdb, #031a0b);
+  --progresso-barra: repeating-linear-gradient(90deg, var(--t-verde) 0 9px, transparent 9px 12px);
+  --visor-barra: linear-gradient(90deg, #00ff66, #00e5ff, #ff2bd6);
+  --visor-anel: inset 0 0 0 1px var(--t-verde);
+  --dialogo-sombra: 0 0 40px -4px var(--t-brilho);
+  --dialogo-topo: var(--t-verde);
+}

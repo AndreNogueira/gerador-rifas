@@ -33,6 +33,7 @@
   --fonte-titulo: var(--fonte);
   --peso-titulo: 750;
   --fonte-numero: var(--fonte-titulo);
+  --fonte-marca: var(--fonte-titulo); // o nome da app no cabeçalho (uma fonte estreita evita que o cabeçalho quebre noutra linha)
   --peso-marca: 800; // o nome da app no cabeçalho
   --peso-numero: 800; // o número grande de cada passo
   --ligaduras: normal; // `none` desliga as ligaduras (fi, fl) em letras de pixel

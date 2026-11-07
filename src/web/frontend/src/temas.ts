@@ -18,6 +18,11 @@ export const VISUAIS = [
   { id: "risografia", nome: "Risografia", descricao: "Impressão de duas tintas sobre papel, com retícula." },
   { id: "janela98", nome: "Janela 98", descricao: "Cada passo é uma janela de um computador dos anos 90." },
   { id: "gala", nome: "Gala", descricao: "Art déco: dourado sobre azul-noite, para a rifa de gala." },
+  {
+    id: "matrix",
+    nome: "Matrix Gamer",
+    descricao: "Chuva de caracteres verdes e o brilho de neon de um HUD de jogo.",
+  },
   { id: "natal", nome: "Natal", descricao: "A rifa de Natal: verde, vermelho, dourado e neve a cair." },
 ] as const;
 

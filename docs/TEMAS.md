@@ -12,6 +12,7 @@ A webapp tem vários **temas** (escolhidos no cabeçalho, ícone da paleta); cad
 | **Janela 98** | computador dos anos 90 | Tahoma | relevo clássico nos botões e janelas, barra de título azul em cada passo |
 | **Gala** | art déco | Marcellus + Jost | dourado sobre azul-noite, molduras duplas, raios de leque, insígnias chanfradas |
 | **Natal** | rifa de Natal | Fraunces + Bricolage | verde-pinheiro, risca de bengala doce, luzinhas e neve a cair devagar |
+| **Matrix Gamer** | chuva de caracteres e HUD de jogo | Orbitron + JetBrains Mono | chuva verde em duas velocidades (`assets/matrix-chuva.svg`), brilho de neon, insígnias hexagonais, RGB nos passos, barra de vida em blocos |
 
 ## A regra: a estrutura nunca muda, só cores e formatação
 
@@ -22,14 +23,14 @@ Mudar de tema **não pode mexer na estrutura do site**: os blocos ficam nos mesm
 - **raios** dos cantos e **sombras** (inclui contornos e relevo desenhados com sombras interiores);
 - **fundos** que só pintam (a faixa do cabeçalho, a decoração da página, o toldo ou a bengala doce no topo do bilhete, a barra do visor).
 
-Por isso um tema **é um único bloco de variáveis**. A estrutura vive em `src/estilos/_geometria.scss` e nas regras da base; as variáveis que um tema pode mudar estão todas em `src/estilos/_tokens.scss`, com os valores do Premiado. `temas.test.tsx` compila cada tema com o Sass e **falha** se o tema:
+Por isso um tema **é um único bloco de variáveis**. A estrutura (inclui a letra dos controlos do cabeçalho) vive em `src/estilos/_geometria.scss` e nas regras da base; as variáveis que um tema pode mudar estão todas em `src/estilos/_tokens.scss`, com os valores do Premiado. `temas.test.tsx` compila cada tema com o Sass e **falha** se o tema:
 
 - tiver mais do que um bloco `:root[data-visual="<id>"]`, ou qualquer `@media`/`@keyframes`;
 - declarar algo que não seja uma variável (nada de `padding`, `display`, `width`…);
 - mexer numa variável de geometria (`--corte`, `--banda-altura`, `--borda`…);
 - usar uma variável que não esteja em `_tokens.scss` (as auxiliares do próprio tema chamam-se `--t-…`).
 
-Medido no browser (Playwright, 1300 px de largura): as posições e as larguras dos blocos de todos os temas coincidem com as do Premiado, **menos o que depende da própria letra** (a largura do texto dos botões do cabeçalho e a quebra de linha dos títulos, até ≈ 30 px e, no Arcade, uma linha a mais num título).
+Medido no browser (Playwright, 1300 px de largura, claro e escuro): as posições dos blocos de todos os temas coincidem com as do Premiado até ≈ 28 px, **só pelo que depende da própria letra** (a largura do texto num botão, e no Arcade uma linha a mais num título). Para o cabeçalho não saltar de linha com letras largas: os botões e seletores do cabeçalho usam sempre a mesma letra (`--fonte-controlos`, em `_geometria.scss`), e em ecrã largo o cabeçalho é uma só linha (o nome da app encolhe com reticências). O nome da app tem a sua variável (`--fonte-marca`).
 
 O que isto custou aos temas já feitos: **Janela 98** perdeu a barra de título «de verdade» (agora é o cabeçalho do bilhete pintado de azul, com o relevo clássico), a faixa e os entalhes; o **Quermesse** e o **Natal** já não alargam o bilhete (o toldo e a bengala doce são pintura no topo); **Arcade**, **Brutalista** e **Janela 98** ficaram sem entalhes (`--entalhe: 0px`); o **Gala** deixou de ter margens próprias.
 
@@ -48,7 +49,7 @@ O que isto custou aos temas já feitos: **Janela 98** perdeu a barra de título 
 | Grupo | Variáveis |
 |---|---|
 | Cores | `--fundo --cartao --texto --suave --linha --campo --destaque --destaque-2 --ok --aviso --erro --sombra-cor --passo-1…4` |
-| Letra | `--fonte --fonte-titulo --peso-titulo --peso-marca --peso-numero --fonte-numero --ligaduras --brilho-titulo --brilho-botao` |
+| Letra | `--fonte --fonte-titulo --fonte-marca --peso-titulo --peso-marca --peso-numero --fonte-numero --ligaduras --brilho-titulo --brilho-botao` |
 | Raios e sombras | `--raio --raio-c --entalhe --filtro-coluna --sombra-visor` |
 | Faixa e página | `--banda --banda-forma --banda-mascara --banda-borda --banda-mistura --banda-animacao --banda-desliza --deco-pagina --deco-pagina-opacidade --deco-pagina-animacao --deco-pagina-desliza` |
 | Cabeçalho | `--topo-texto --topo-sombra --marca-anel --pilula --pilula-texto --pilula-anel --nav-ativo --nav-ativo-texto` |
