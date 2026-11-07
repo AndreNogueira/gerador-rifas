@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-import i18n
+from core import i18n
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 

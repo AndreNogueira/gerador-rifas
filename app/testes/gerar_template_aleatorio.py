@@ -11,6 +11,7 @@ Uso:  python gerar_template_aleatorio.py <pasta_saida> <semente> <bilhetes_por_p
 from __future__ import annotations
 
 import json
+import os
 import random
 import sys
 from pathlib import Path
@@ -19,6 +20,8 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 
+# pasta das letras do sistema: variavel RIFAS_FONTES, ou %WINDIR%\Fonts
+PASTA_FONTES = Path(os.environ.get("RIFAS_FONTES") or Path(os.environ.get("WINDIR", r"C:\Windows")) / "Fonts")
 FONTES = ["arial.ttf", "arialbd.ttf", "georgia.ttf", "georgiab.ttf", "times.ttf", "timesbd.ttf",
           "verdana.ttf", "verdanab.ttf", "impact.ttf", "comic.ttf", "trebuc.ttf", "tahoma.ttf",
           "calibri.ttf", "candara.ttf", "corbel.ttf", "consola.ttf", "cour.ttf", "palab.ttf", "segoeui.ttf"]
@@ -50,7 +53,7 @@ def criar(destino: Path, semente: int, n: int, talao_rot: int | None = None, ndi
         nome_pag, (W, H) = "A4", PAGINAS["A4"]
     if tamanho is not None:
         nome_pag, (W, H) = "rifa", tamanho
-    fonte_ttf = Path(r"C:\Windows\Fonts") / rnd.choice(FONTES)
+    fonte_ttf = PASTA_FONTES / rnd.choice(FONTES)
     cols, rows = _grelha(n, rnd)
     margem, gap = (3.0 if tamanho is not None else 18.0), 8.0
     tw = (W - 2 * margem - gap * (cols - 1)) / cols

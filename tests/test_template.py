@@ -4,7 +4,7 @@ import io
 import pytest
 
 import core
-import pdftexto
+from core import pdftexto
 from conftest import erro_de, pdf_sintetico
 
 

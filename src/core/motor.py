@@ -34,8 +34,8 @@ from pypdf import PdfReader, PdfWriter
 from pypdf.generic import (ArrayObject, DecodedStreamObject, DictionaryObject, FloatObject,
                            IndirectObject, NameObject, NumberObject, RectangleObject)
 
-import pdftexto
-from i18n import t
+from . import pdftexto
+from .i18n import t
 
 logging.getLogger("pypdf").setLevel(logging.CRITICAL)
 

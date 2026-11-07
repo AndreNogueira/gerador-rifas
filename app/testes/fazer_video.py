@@ -20,6 +20,7 @@ from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(BASE))
+import ambiente  # noqa: F401,E402  (poe ..\src no sys.path)
 sys.setswitchinterval(0.0005)
 from tkinter import messagebox
 
@@ -30,7 +31,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageGrab
 
 import app as A
 import core
-import i18n
+from core import i18n
 import icones
 
 EX = BASE / "exemplos"
@@ -45,7 +46,7 @@ LARG, ALT = 1920, 1080
 APP_X, APP_Y, APP_W, APP_H = 36, 100, 1260, 900          # onde cabe a janela da app
 FUNDO, PAINEL = (22, 31, 37), (34, 46, 54)
 BRANCO, CINZA, VERDE, LARANJA, VERDE_OK = (255, 255, 255), (178, 192, 199), (17, 118, 122), (240, 126, 24), (96, 205, 134)
-FONTES = Path(r"C:\Windows\Fonts")
+FONTES = Path(os.environ.get("RIFAS_FONTES") or Path(os.environ.get("WINDIR", r"C:\Windows")) / "Fonts")   # pasta das letras do sistema
 
 TEXTOS = {
     "pt": {

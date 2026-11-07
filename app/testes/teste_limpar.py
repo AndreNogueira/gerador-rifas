@@ -2,15 +2,17 @@
 Uso: python testes/teste_limpar.py <pasta_de_saida>   (a janela aparece no ecra durante um minuto)"""
 import sys, time
 from pathlib import Path
-sys.path.insert(0, r"Z:\projects\rifas\app")
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import ambiente  # noqa: F401,E402  (poe ..\src no sys.path)
 sys.setswitchinterval(0.0005)
 from tkinter import messagebox
 messagebox.showwarning = messagebox.showerror = lambda *a, **k: print("MSG", a[1][:80])
 messagebox.askyesno = lambda *a, **k: True
 from PIL import ImageGrab
-import app as A, core, i18n
+import app as A, core
+from core import i18n
 
-EX = Path(r"Z:\projects\rifas\app\exemplos")
+EX = Path(__file__).resolve().parent.parent / "exemplos"
 OUT = Path(sys.argv[1]); OUT.mkdir(parents=True, exist_ok=True)
 a = A.App(usar_config=False)
 a.geometry("1240x900+20+5"); a.attributes("-topmost", True)

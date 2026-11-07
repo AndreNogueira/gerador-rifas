@@ -22,34 +22,40 @@ verificação) passa a ser **um só código** usado pelas duas. Uso só do dono 
   **só depois do CI passar**. Teto de ~100 000 números por pedido, ZIP em *streaming*, 1 trabalho de cada vez, PDFium em processo isolado.
 - **Dependências do core:** `pypdf`, `pypdfium2`, `pillow` (todas com rodas Linux). `customtkinter`, `nuitka` e afins ficam só em `app/`.
 
-## Estrutura de pastas alvo
+## Estrutura de pastas
 
 ```
-src/core/    lógica pura: análise do template, folha, geração, verificação, pdftexto, textos das 18 línguas (i18n)
-src/web/     interface: API FastAPI (+ trabalhos, sessões, limites) e frontend React/Vite (src/web/frontend/)
-tests/       pytest: testes do core (migrados de app/testes/) e da API
-app/         app Windows (continua; passa a importar o core de src/core). Só UI Windows + build do .exe
-docs/        análise e planos
-webapp/      PLANO.md (rascunho/plano; o código vai para src/)
+src/core/    lógica pura, SEM UI nem Windows (pacote `core`, usado pela app Windows e, mais tarde, pela webapp)
+  motor.py       análise do template, folha, geração, verificação, pré-visualização (o antigo app/core.py)
+  pdftexto.py    interpretador de content streams PDF · i18n.py + idiomas/  textos das 18 línguas
+  pedido.py      campos de texto -> Trabalho e resumo        · escolha_folha.py  papel/margem/rifas por folha
+  config.py      preferências (config.json) e pasta de dados · tutorial.py  conteúdo do tutorial · autoteste.py  exemplos do --selftest
+  __init__.py    reexporta o motor: `import core; core.preparar(...)` e `from core import i18n, pedido, ...`
+src/web/     (a criar) API FastAPI (+ trabalhos, sessões, limites) e frontend React/Vite (src/web/frontend/)
+tests/       pytest (raiz): testes do core e fixtures
+app/         app Windows: só interface (Tk/CustomTkinter), tema/winreg, ctypes e build do .exe. `app/ambiente.py` põe ..\src no sys.path
+docs/        análise e planos · webapp/PLANO.md  plano da webapp
 ```
 
-Estado atual: `src/` **ainda não existe** (`tests/` já existe, com os testes de caracterização); hoje o motor vive em `app/core.py`, `app/pdftexto.py`, `app/i18n.py`, `app/idiomas/`.
-A **Fase 0** cria `src/core` movendo-os (sem mudar o comportamento da app Windows) e acrescenta à raiz o `pyproject.toml`; o `.gitignore`
-da raiz só deixa entrar `app/`, `webapp/`, `docs/`, `tests/`, `pytest.ini` e este ficheiro → **acrescentar `src/`, `pyproject.toml`, `Dockerfile`, `.github/`**.
-Estes nomes já estão refletidos em `webapp/PLANO.md` e `docs/MIGRATION_PLAN.md` (antes `rifas_core`, `backend/`, `frontend/`).
+Estado: **Fase 0 feita** (lógica movida para `src/core`, a app Windows importa de lá; `app/core.py`, `pdftexto.py`, `i18n.py` e `idiomas/` já não existem em `app/`).
+Falta para a webapp: `src/web/`, `pyproject.toml`, `Dockerfile`, `.github/`, língua por pedido, entrada por bytes/temporários, correr tudo num contentor Linux.
+O `.gitignore` da raiz só deixa entrar `app/`, `webapp/`, `docs/`, `tests/`, `src/`, `pytest.ini` e este ficheiro → **acrescentar** `pyproject.toml`, `Dockerfile`, `.github/` quando existirem.
+Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import ambiente` antes de importar `core`; o `construir.bat` define `PYTHONPATH=..\src` e `--include-package=core` para o Nuitka.
 
 ## Regras
 
 - **Nenhuma alteração ao `src/core` sem os testes passarem** — antes e depois. Hoje: `pytest` (raiz) e ainda `teste_folha`, `teste_canva`,
   `teste_5000` (ver Comandos) em Windows **e** em Linux (contentor). Nunca "ajustar o teste" para passar sem perceber porquê.
 - **`src/core` não importa nada de interface desktop nem de Windows:** nada de `tkinter`, `customtkinter`, `pywin32`/`win32*`, `winreg`,
-  `ctypes.windll`, `os.startfile`, `%APPDATA%`, nem de FastAPI/Starlette (o core não conhece a web). Verificar com `grep` antes de fechar uma tarefa.
-- **Configuração só por variáveis de ambiente** (previstas: `ACCESS_PASSWORD`, `SECRET_KEY` para assinar o cookie, `MAX_UPLOAD_MB`,
-  `MAX_NUMEROS`, `JOB_TTL_MIN`); valores por defeito seguros, falhar ao arrancar se faltar `ACCESS_PASSWORD`. Sem caminhos absolutos no código.
+  `ctypes`, `os.startfile`, `%APPDATA%`, nem de FastAPI/Starlette (o core não conhece a web). `tests/test_core_puro.py` verifica-o (AST de todo o `src/core` + `import core`
+  num processo limpo). O que é do Windows fica em `app/` (`ambiente.py`: `%APPDATA%`, língua do Windows via kernel32) e passa ao core como parâmetro.
+- **Configuração por variáveis de ambiente, sem caminhos absolutos no código** (`pathlib`, relativos a `__file__`). Existem: `RIFAS_LINGUA` (língua por defeito, ganha a tudo),
+  `RIFAS_DADOS` (pasta do `config.json`; por defeito `%APPDATA%\GeradorRifas` na app Windows), `RIFAS_FONTES` (letras do sistema, só nos scripts de testes; por defeito `%WINDIR%\Fonts`).
+  Previstas para a webapp: `ACCESS_PASSWORD`, `SECRET_KEY` (assinar o cookie), `MAX_UPLOAD_MB`, `MAX_NUMEROS`, `JOB_TTL_MIN`; valores por defeito seguros, falhar ao arrancar se faltar `ACCESS_PASSWORD`.
 - **Sem segredos no código nem no repo** (palavra-passe, chaves, certificados privados, `.env`); o `.cer` público é a única exceção. Documentar um `.env.example` sem valores reais.
 - Segurança dos uploads: validar o tipo real (`%PDF-`, PNG/JPG), nunca usar nomes/caminhos do cliente (`core.nome_seguro`), limites de tamanho/números/tempo.
 - **PDFium não é thread-safe** → todas as chamadas ao motor vão para um processo de trabalho (1 processo = 1 PDFium), nunca threads do servidor.
-- Língua **por pedido** (o `i18n.t` global tem de deixar de ser usado no core); o log do core emite chave + parâmetros, traduz-se na fronteira.
+- Língua **por pedido** — **ainda por fazer**: `core.i18n` tem uma língua global (serve a app Windows); na webapp o log do core deve emitir chave + parâmetros e traduzir-se na fronteira.
 - Regras de produto iguais às da app: o template nunca é guardado, o nome dos ficheiros é escrito pelo utilizador, aviso/confirmação com >24 rifas por
   folha, «Limpar tudo» no fim, 18 línguas. Nos blocos da folha a numeração é sequencial **por bloco** (não ordenar globalmente).
 
@@ -57,13 +63,13 @@ Estes nomes já estão refletidos em `webapp/PLANO.md` e `docs/MIGRATION_PLAN.md
 
 ### Hoje (existem)
 **Testes de caracterização (pytest)** — a partir da raiz do repo, com o venv de `app/` (`pytest` está em `app/requirements.txt`; instalar com
-`uv pip install --python app/.venv/Scripts/python.exe pytest`). Fixam o comportamento atual de `core`, `pdftexto`, `i18n` e `idiomas` (145 testes, ≈10 s).
+`uv pip install --python app/.venv/Scripts/python.exe pytest`). Fixam o comportamento do `src/core` (295 testes, ≈12 s; `pytest.ini` aponta `pythonpath = src`).
 Se um falhar depois de uma alteração: é regressão, ou o comportamento mudou de propósito e o teste deve ser atualizado conscientemente. Fixtures em `tests/fixtures/`.
 ```
 app/.venv/Scripts/python.exe -m pytest                                        # todos
 app/.venv/Scripts/python.exe -m pytest tests/test_folha.py::test_maximo_por_folha   # um só
 ```
-O que não se testa por estar preso a Tkinter/Windows está listado em `docs/MIGRATION_PLAN.md` §8 («Não testável ainda»); os testes nunca importam `app.py`.
+O que continua preso a Tkinter/Windows está listado em `docs/MIGRATION_PLAN.md` §8 («Não testável ainda»); os testes nunca importam `app.py`.
 
 **Scripts antigos** — correr a partir de `app/` com o venv `app/.venv` (Windows; `PYTHONIOENCODING=utf-8` na consola). Cada script sai com código 1 se falhar; não há runner.
 ```
@@ -72,9 +78,10 @@ python testes/teste_canva.py   <pasta_saida> [pasta_pdfs]                # templ
 python testes/teste_5000.py    <pasta_templates> <pasta_saida> pdf|png [N]
 python testes/teste_digitos.py <pasta_templates_aleatorios> <pasta_saida>
 python app.py                                                           # app Windows (GUI)
-python app.py --selftest <pasta>                                        # auto-teste sem janela
+python app.py --selftest <pasta>                                        # auto-teste sem janela (compara com o selftest.txt anterior se mexeres na GUI)
 ```
-`teste_gui.py` e `teste_limpar.py` precisam de ecrã. Build do `.exe`: `construir.bat` (só Windows).
+`teste_gui.py` e `teste_limpar.py` precisam de ecrã. Build do `.exe`: `construir.bat` (só Windows; ≈10–20 min). Depois de mexer na GUI ou no `construir.bat`,
+correr `dist\GeradorRifas.exe --selftest <pasta>`.
 
 ### Alvo (a criar nas Fases 0–1; não existem ainda — ajustar aqui quando existirem)
 ```
@@ -91,5 +98,6 @@ docker build -t gerador-rifas . && docker run --rm -p 8000:8000 -e ACCESS_PASSWO
 ## Armadilhas do motor
 
 `core.preparar(template, algarismos)` → `Preparado` (não serializável entre processos: recriar no worker, ≈1 s) → `core.gerar(Trabalho, Preparado)`
-escreve os PDFs → `core.verificar` relê-os. `pdftexto.py` é um interpretador próprio de *content streams* PDF. API baseada em `Path` (adaptar a
+escreve os PDFs → `core.verificar` relê-os. `pdftexto.py` é um interpretador próprio de *content streams* PDF. Nomes privados (`core._arrumar`, `_f`, …) estão
+reexportados em `core/__init__.py` só porque os testes os usam; as funções de imagem (`_segmentar`, …) acedem-se por `core.motor`. API baseada em `Path` (adaptar a
 bytes/temporários), cancelar = `threading.Event` (em processo de trabalho precisa de evento de `multiprocessing`). Para o resto ver `docs/MIGRATION_PLAN.md` §3.

@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import ambiente  # noqa: F401,E402  (poe ..\src no sys.path)
 sys.setswitchinterval(0.0005)
 from tkinter import messagebox
 
@@ -17,7 +18,7 @@ messagebox.askyesno = lambda *a, **k: True
 from PIL import ImageGrab
 
 import app as A
-import i18n
+from core import i18n
 
 T, tpl, alg = Path(sys.argv[1]), sys.argv[2], sys.argv[3]
 FIM = sys.argv[4] if len(sys.argv) > 4 else "5000"

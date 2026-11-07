@@ -10,56 +10,46 @@ from __future__ import annotations
 
 import gc
 import io
-import json
-import math
 import os
 import queue
-import re
 import sys
 import threading
 import time
 import tkinter as tk
 import traceback
 from concurrent.futures import ThreadPoolExecutor
-from dataclasses import replace
 from pathlib import Path
 from tkinter import filedialog, messagebox
 
 import customtkinter as ctk
 from PIL import Image
 
+import ambiente          # poe ..\src no sys.path (tem de vir antes de ajuda/core)
 import ajuda
 import core
-import i18n
 import icones
 import tema
-from i18n import t
+from core import i18n
+from core.i18n import t
 from tema import C, FONTE, cor_tk
 from visor import Visor
 from widgets import BarraMenus, Dica, Rolavel, novo_menu, repintar_so_o_necessario
 
 VERSAO = "2.2.0"
 BASE = Path(__file__).resolve().parent            # tambem certo no .exe compilado (recursos ao lado)
-DADOS = Path(os.environ.get("APPDATA", Path.home())) / "GeradorRifas"
-CONFIG = DADOS / "config.json"
+DADOS = core.config.pasta_de_dados(ambiente.dados_por_defeito())     # RIFAS_DADOS, ou %APPDATA%\GeradorRifas
+CONFIG = DADOS / core.config.NOME_CONFIG
 NOMES_LINGUAS = list(i18n.LINGUAS.values())
 CODIGO_DE_NOME = {v: k for k, v in i18n.LINGUAS.items()}
 MODOS_TEMA = ("system", "light", "dark")
 
 
 def ler_config() -> dict:
-    try:
-        return json.loads(CONFIG.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
+    return core.config.ler_config(CONFIG)
 
 
 def gravar_config(d: dict) -> None:
-    try:
-        DADOS.mkdir(parents=True, exist_ok=True)
-        CONFIG.write_text(json.dumps(d, ensure_ascii=False, indent=2), encoding="utf-8")
-    except Exception:
-        pass
+    core.config.gravar_config(CONFIG, d)
 
 
 def abrir_pasta(p: Path) -> None:
@@ -71,35 +61,12 @@ def abrir_pasta(p: Path) -> None:
 
 def verificar_traducoes() -> list:
     """Todas as linguas tem de ter as mesmas chaves e os mesmos {parametros} que o portugues."""
-    problemas = []
-    ref = i18n.TEXTOS["pt"]
-    for lg, textos in i18n.TEXTOS.items():
-        for k in ref.keys() - textos.keys():
-            problemas.append(f"{lg}: falta {k}")
-        for k in textos.keys() - ref.keys():
-            problemas.append(f"{lg}: chave a mais {k}")
-        for k in ref.keys() & textos.keys():
-            if set(re.findall(r"\{(\w+)\}", ref[k])) != set(re.findall(r"\{(\w+)\}", textos[k])):
-                problemas.append(f"{lg}: parametros diferentes em {k}")
-    return problemas
+    return i18n.verificar_traducoes()
 
 
 def verificar_ajuda() -> list:
     """As imagens do tutorial existem para todas as linguas."""
-    problemas = []
-    for nome in ("modelo.jpg", "modelo1.jpg", "digitos.png", "folha.png"):
-        if not (ajuda.PASTA / nome).exists():
-            problemas.append(f"falta {nome}")
-    for lg in ("pt", "en"):
-        f = BASE / "assets" / "video" / f"tutorial_{lg}.mp4"
-        if not f.exists() or f.stat().st_size < 100_000:
-            problemas.append(f"falta o video {f.name}")
-    caixas = ajuda._caixas()
-    for lg in i18n.LINGUAS:
-        for estado in ("a", "b", "c"):
-            if not (ajuda.PASTA / f"{lg}_{estado}.png").exists() or estado not in caixas.get(lg, {}):
-                problemas.append(f"falta a captura {lg}_{estado}")
-    return problemas
+    return core.tutorial.verificar_ajuda(ajuda.PASTA, BASE / "assets" / "video", i18n.LINGUAS)
 
 
 def selftest(destino: Path) -> int:
@@ -128,24 +95,9 @@ def selftest(destino: Path) -> int:
         app._mudar_lingua(i18n.LINGUAS["pt"])
         app.destroy()
         linhas.append(f"janela e tutorial construidos e reconstruidos em {len(i18n.LINGUAS)} linguas: ok")
-        tpl = BASE / "exemplos" / "template_exemplo.pdf"
-        for nome in ("digitos_exemplo.png", "digitos_exemplo.pdf"):
-            prep = core.preparar(tpl, BASE / "exemplos" / nome)
-            res = core.gerar(core.Trabalho(saida=destino / nome.split(".")[0], nome="TESTE", inicio=1, fim=65), prep)
-            ok = all(r.ok for r in res)
-            linhas.append(f"{nome}: {'ok' if ok else 'ERRO'} ({sum(r.paginas for r in res)} paginas)")
-            codigo |= 0 if ok else 1
-        # uma so rifa no template: a folha A4 e enchida com copias (PDF e imagem de algarismos; 0, 90 graus e A3)
-        for nome in ("digitos_exemplo.png", "digitos_exemplo.pdf"):
-            prep = core.preparar(BASE / "exemplos" / "template_exemplo_1_rifa.pdf", BASE / "exemplos" / nome)
-            for papel, margem in (("A4", 5), ("A3", 5), ("A4", 12)):
-                p = prep.com_folha(papel, margem)
-                res = core.gerar(core.Trabalho(saida=destino / "folha", nome=f"UMA-{papel}-{margem}-{nome[-3:]}",
-                                               inicio=1, fim=23), p)
-                ok = all(r.ok for r in res) and p.disp.n >= 3
-                linhas.append(f"1 rifa, {papel}, margem {margem}, {nome}: {'ok' if ok else 'ERRO'} "
-                              f"({p.disp.n} por folha, {sum(r.paginas for r in res)} paginas)")
-                codigo |= 0 if ok else 1
+        extra, cod = core.autoteste.gerar_exemplos(BASE / "exemplos", destino)
+        linhas.extend(extra)
+        codigo |= cod
     except Exception:
         linhas.append("EXCECAO:\n" + traceback.format_exc())
         codigo = 1
@@ -173,7 +125,7 @@ class App(ctk.CTk):
             self.after(250, lambda: self._icone(ico))
 
         if usar_config:
-            i18n.definir(self.cfg.get("lingua") or i18n.detetar())
+            i18n.definir(self.cfg.get("lingua") or i18n.detetar(ambiente.codigo_de_lingua_do_windows()))
         self.fila: queue.Queue = queue.Queue()
         # o PDFium nao e thread-safe: TODAS as chamadas ao motor passam por este unico worker
         self.pool = ThreadPoolExecutor(max_workers=1)
@@ -530,7 +482,7 @@ class App(ctk.CTk):
         info = self.info
         if not (hasattr(self, "f_folha") and self.f_folha.winfo_exists()):
             return
-        if info is None or info.n_campos != 1 or info.celula is None:
+        if not core.escolha_folha.tem_folha(info):
             self.disp, self.st_folha = None, None
             self.f_folha.pack_forget()
             self._resumo()
@@ -538,22 +490,9 @@ class App(ctk.CTk):
         if not self.f_folha.winfo_ismapped():
             self.f_folha.pack(fill="x", padx=16, pady=(0, 11), after=self.l_template)
         try:
-            try:
-                m = int(self.v_margem.get().strip())
-                if not 0 <= m <= 50:
-                    raise ValueError
-            except ValueError:
-                raise core.ErroRifas("int_invalido", campo=t("lay_margem"))
-            base = core.disposicao_da_folha(info, self.v_papel.get(), m)
-            txt = self.v_porfolha.get().strip()
-            try:
-                pedido = base.maximo if not txt else int(txt)
-                if pedido < 1:
-                    raise ValueError
-            except ValueError:
-                raise core.ErroRifas("int_invalido", campo=t("lay_por_folha"))
-            self.disp = core.disposicao_da_folha(info, self.v_papel.get(), m, pedido)
-            self.st_folha = ("ok", self.disp, pedido > base.maximo)
+            esc = core.escolha_folha.escolher_folha(info, self.v_papel.get(), self.v_margem.get(), self.v_porfolha.get())
+            self.disp = esc.disp
+            self.st_folha = ("ok", self.disp, esc.acima)
         except core.ErroRifas as e:
             self.disp, self.st_folha = None, ("erro", e)
         self._render_folha()
@@ -568,33 +507,18 @@ class App(ctk.CTk):
         if k[0] == "erro":
             self.l_folha.configure(text="✖ " + self._primeira_linha(k[1]), text_color=C["erro"])
             return
-        d, acima = k[1], k[2]
-        txt = t("lay_resultado", w=f"{d.celula.width / core.MM:.0f}", h=f"{d.celula.height / core.MM:.0f}", n=d.n,
-                papel=d.papel, max=d.maximo)
-        if d.origem != "pagina":
-            txt += t("lay_recortada")
-        if d.rodadas:
-            txt += t("lay_rodadas", r=d.rodadas)
-        cor = C["suave"]
-        if acima:
-            txt += "\n" + t("lay_acima", max=d.maximo)
-            cor = C["aviso"]
-        if d.n > core.AVISO_POR_PAGINA:
-            txt += "\n" + t("aviso_muitas", n=d.n)
-            cor = C["aviso"]
-        self.l_folha.configure(text=txt, text_color=cor)
+        txt, aviso = core.escolha_folha.texto_da_folha(k[1], k[2])
+        self.l_folha.configure(text=txt, text_color=C["aviso"] if aviso else C["suave"])
 
     def _prep_atual(self) -> core.Preparado | None:
         """O template preparado, com a folha escolhida quando o template tem uma so rifa. None (e aviso ao utilizador)
         se a folha nao e valida."""
-        prep = self.prep
-        if prep is None or prep.info.n_campos != 1:
-            return prep
-        if self.disp is None:
-            erro = self.st_folha[1] if (self.st_folha and self.st_folha[0] == "erro") else core.ErroRifas("erro_inesperado", erro="?")
-            messagebox.showwarning(t("app_nome"), str(erro))
+        erro = self.st_folha[1] if (self.st_folha and self.st_folha[0] == "erro") else None
+        try:
+            return core.escolha_folha.preparado_com_folha(self.prep, self.disp, erro)
+        except core.ErroRifas as e:
+            messagebox.showwarning(t("app_nome"), str(e))
             return None
-        return replace(prep, disp=self.disp)
 
     # -- divisoria entre as definicoes e a pre-visualizacao
     LARGURA_MIN_ESQ, LARGURA_MIN_VISOR = 430, 300
@@ -840,27 +764,24 @@ class App(ctk.CTk):
 
     # -- config (o template e o nome dos ficheiros nunca sao guardados)
     def _carregar_config(self) -> None:
-        c = self.cfg
+        pref = core.config.preferencias(self.cfg)
         for chave, var in (("algarismos", self.v_alg), ("saida", self.v_saida), ("inicio", self.v_inicio),
                            ("fim", self.v_fim), ("digitos", self.v_digitos), ("max", self.v_max),
                            ("margem", self.v_margem)):
-            if c.get(chave, "") != "":
-                var.set(str(c[chave]))
-        if c.get("papel") in core.PAPEIS:
-            self.v_papel.set(c["papel"])
-        if c.get("modo") in ("varios", "unico"):
-            self.modo = c["modo"]
-        if self.v_alg.get() and not Path(self.v_alg.get()).exists():
-            self.v_alg.set("")
+            if chave in pref:
+                var.set(pref[chave])
+        if "papel" in pref:
+            self.v_papel.set(pref["papel"])
+        if "modo" in pref:
+            self.modo = pref["modo"]
 
     def _guardar_config(self) -> None:
         if not self.usar_config:
             return
-        gravar_config({"lingua": i18n.atual(), "tema": self.modo_tema,
-                       "algarismos": self.v_alg.get(), "saida": self.v_saida.get(),
-                       "inicio": self.v_inicio.get(), "fim": self.v_fim.get(), "digitos": self.v_digitos.get(),
-                       "max": self.v_max.get(), "modo": self.modo, "papel": self.v_papel.get(),
-                       "margem": self.v_margem.get()})
+        gravar_config(core.config.para_gravar(
+            lingua=i18n.atual(), tema=self.modo_tema, algarismos=self.v_alg.get(), saida=self.v_saida.get(),
+            inicio=self.v_inicio.get(), fim=self.v_fim.get(), digitos=self.v_digitos.get(), max_ficheiro=self.v_max.get(),
+            modo=self.modo, papel=self.v_papel.get(), margem=self.v_margem.get()))
 
     def _fechar(self) -> None:
         if self.a_gerar and not messagebox.askyesno(t("app_nome"), t("sair_a_gerar")):
@@ -910,37 +831,16 @@ class App(ctk.CTk):
 
     # -- resumo
     def _trabalho(self) -> core.Trabalho:
-        def inteiro(txt: str, campo: str) -> int:
-            try:
-                return int(txt.strip())
-            except ValueError:
-                raise core.ErroRifas("int_invalido", campo=campo)
-        saida = self.v_saida.get().strip()
-        return core.Trabalho(
-            saida=Path(saida) if saida else Path(""),
-            nome=self.v_nome.get().strip(),
-            inicio=inteiro(self.v_inicio.get(), t("de")), fim=inteiro(self.v_fim.get(), t("ate")),
-            por_ficheiro=inteiro(self.v_max.get(), t("max_ficheiro")) if self.modo == "varios" else None,
-            digitos=inteiro(self.v_digitos.get(), t("algarismos")))
+        return core.pedido.trabalho_de_campos(
+            self.v_saida.get(), self.v_nome.get(), self.v_inicio.get(), self.v_fim.get(), self.v_max.get(),
+            self.v_digitos.get(), self.modo)
 
     def _resumo(self) -> None:
         try:
             tr = self._trabalho()
-            n = self.disp.n if self.disp is not None else (self.info.n_campos if self.info else 1)
-            if tr.fim < tr.inicio:
-                raise core.ErroRifas("err_intervalo")
-            qtd = tr.fim - tr.inicio + 1
-            paginas = math.ceil(qtd / n)
-            if tr.por_ficheiro is None:
-                txt = t("resumo_unico", qtd=qtd, paginas=paginas)
-            else:
-                if tr.por_ficheiro < 1:
-                    raise core.ErroRifas("err_max")
-                txt = t("resumo_varios", qtd=qtd, ficheiros=math.ceil(qtd / tr.por_ficheiro), paginas=paginas)
-                if self.info and tr.por_ficheiro % n:
-                    self.l_resumo.configure(text=t("resumo_multiplo", n=n), text_color=C["aviso"])
-                    return
-            self.l_resumo.configure(text=txt, text_color=C["suave"])
+            n = core.pedido.rifas_por_pagina(self.disp, self.info)
+            txt, aviso = core.pedido.resumo_do_pedido(tr, n, tem_template=self.info is not None)
+            self.l_resumo.configure(text=txt, text_color=C["aviso"] if aviso else C["suave"])
         except core.ErroRifas as e:
             self.l_resumo.configure(text=str(e), text_color=C["aviso"])
 

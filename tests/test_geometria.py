@@ -68,3 +68,10 @@ def test_nomes_de_letra():
     assert core._mesma_letra("Comic Sans MS Regular", "ComicSansMS")
     assert not core._mesma_letra("Arial", "Verdana")
     assert core._mesma_letra("", "x")                                     # quirk: o vazio «e prefixo» de tudo
+
+
+def test_core_vem_de_src():
+    # garante que se testa o pacote src/core e nao uma copia antiga em app/
+    from pathlib import Path
+    assert Path(core.__file__).resolve().parent.name == "core"
+    assert Path(core.__file__).resolve().parent.parent.name == "src"

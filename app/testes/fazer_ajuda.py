@@ -15,6 +15,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import ambiente  # noqa: F401,E402  (poe ..\src no sys.path)
 sys.setswitchinterval(0.0005)
 from tkinter import messagebox
 
@@ -25,7 +26,7 @@ from PIL import Image, ImageChops, ImageDraw, ImageGrab
 import ajuda
 import app as A
 import core
-import i18n
+from core import i18n
 
 BASE = Path(__file__).resolve().parent.parent
 EX = BASE / "exemplos"

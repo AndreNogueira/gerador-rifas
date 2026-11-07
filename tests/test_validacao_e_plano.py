@@ -71,7 +71,7 @@ def test_validar_ordem_das_verificacoes():
 
 
 def test_erro_rifas_guarda_chave_e_traduz_na_hora():
-    import i18n
+    from core import i18n
     e = core.ErroRifas("err_digitos", max=12)
     assert (e.chave, e.params) == ("err_digitos", {"max": 12})
     pt = str(e)

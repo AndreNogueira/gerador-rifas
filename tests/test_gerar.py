@@ -8,7 +8,7 @@ from PIL import Image
 from pypdf import PdfReader
 
 import core
-import i18n
+from core import i18n
 from conftest import erro_de, numeros_pdf, textos_pdf
 
 

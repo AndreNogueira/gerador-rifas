@@ -6,51 +6,25 @@ Tudo isto e gerado por testes/fazer_ajuda.py a partir da propria aplicacao.
 """
 from __future__ import annotations
 
-import json
-import re
 from pathlib import Path
 
 import customtkinter as ctk
 from PIL import Image
 
-import i18n
-from i18n import t
+import ambiente          # noqa: F401  (poe ..\src no sys.path)
+from core import i18n, tutorial
+from core.i18n import t
 from tema import C, FONTE
 from widgets import Rolavel
 
 BASE = Path(__file__).resolve().parent
 PASTA = BASE / "assets" / "ajuda"
-TOPICO_ALGARISMOS = 3          # posicao do topico «2 Algarismos» na lista
+TOPICO_ALGARISMOS = tutorial.TOPICO_ALGARISMOS      # posicao do topico «2 Algarismos» na lista
+lista_de_topicos = tutorial.lista_de_topicos          # o conteudo do tutorial esta em core/tutorial.py (sem interface)
 
 
 def _caixas() -> dict:
-    try:
-        return json.loads((PASTA / "ajuda.json").read_text(encoding="utf-8"))
-    except Exception:
-        return {}
-
-
-def lista_de_topicos() -> list:
-    """[(titulo no menu, titulo da pagina, texto, [imagens])]; imagem = ('fixa', ficheiro) | ('rec', estado, zona)."""
-    ps = dict(previa=t("previa"), gerar=t("gerar"), ajustar=t("zoom_ajustar"), pasta=t("abrir_pasta"),
-              de=t("de"), ate=t("ate"), algarismos=t("algarismos"), varios=t("modo_varios"), unico=t("modo_unico"),
-              papel=t("lay_papel"), margem=t("lay_margem"), porfolha=t("lay_por_folha"),
-              ajuda=t("m_ajuda"), video=t("mi_video"), limpar=t("limpar"), ficheiro=t("m_ficheiro"))
-
-    def curto(s: str) -> str:               # "Algarismos 0-9 (obrigatorio)" -> "Algarismos 0-9"
-        return re.sub(r"\s*[（(][^)）]*[)）]\s*$", "", s)
-    return [
-        (t("tut_t0"), t("tut_t0"), t("tut_b0", **ps) + "\n\n" + t("tut_video", **ps), [("rec", "a", "janela")]),
-        ("1   " + curto(t("c1_titulo")), t("c1_titulo"), t("tut_b1"), [("fixa", "modelo.jpg"), ("rec", "a", "c1")]),
-        ("      " + t("tut_t_uma"), t("tut_t_uma"), t("tut_b_uma", **ps),
-         [("fixa", "modelo1.jpg"), ("rec", "c", "c1"), ("fixa", "folha.png")]),
-        ("2   " + curto(t("c2_titulo")), t("ajuda_titulo"), t("ajuda_texto"), [("fixa", "digitos.png"), ("rec", "a", "c2")]),
-        ("3   " + curto(t("c3_titulo")), t("c3_titulo"), t("tut_b3", **ps), [("rec", "a", "c3")]),
-        ("4   " + curto(t("c4_titulo")), t("c4_titulo"), t("tut_b4"), [("rec", "a", "c4")]),
-        ("5   " + t("tut_t5"), t("tut_t5"), t("tut_b5", **ps) + "\n\n" + t("tut_limpar", **ps),
-         [("rec", "a", "barra"), ("rec", "b", "acoes")]),
-        (t("tut_t6"), t("tut_t6"), t("tut_b6"), []),
-    ]
+    return tutorial.caixas(PASTA)
 
 
 class Tutorial(ctk.CTkToplevel):

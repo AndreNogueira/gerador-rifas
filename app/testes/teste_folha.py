@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+import ambiente  # noqa: F401,E402  (poe ..\src no sys.path)
 import core
 
 EX, SAIDA = Path(sys.argv[1]), Path(sys.argv[2])

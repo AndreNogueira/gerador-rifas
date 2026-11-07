@@ -13,7 +13,7 @@ Inclui os dois modos do template (vários bilhetes por página / uma só rifa qu
 ## 2. Arquitetura
 Estrutura alvo (raiz do repo; ver `CLAUDE.md`):
 ```
-src/core/             motor puro, sem UI nem Windows: core, pdftexto, i18n, idiomas/ (textos das 18 línguas)
+src/core/             motor puro, sem UI nem Windows: motor, pdftexto, i18n, idiomas/ (18 línguas), pedido, escolha_folha, config, tutorial, autoteste
 src/web/              FastAPI (Python 3.12, uv)
   main.py             app + rotas (api)
   trabalhos.py        fila de trabalhos + limpeza
@@ -86,6 +86,9 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
     `main`, **só depois do CI passar** (GitHub Actions: testes do motor + build do frontend). Dockerfile na **raiz do repo** (contexto vê `app/` e `webapp/`).
 
 ## 8. Próximo passo
-**Fase 0** (sem tocar no comportamento da app Windows): criar `src/core` (mover `core.py`, `pdftexto.py`, `i18n.py`, `idiomas/`),
-com língua por pedido, log estruturado e entrada por bytes/temporários; a app Windows passa a importá-lo; correr `teste_folha`, `teste_canva`,
-`teste_5000` em Windows **e** num contentor Linux (Rancher). Só depois a Fase 1 (API).
+**Fase 0 — metade feita.** Feito (sem alterar o comportamento da app Windows): `src/core` existe com o motor, `pdftexto`, `i18n`, `idiomas/` e a lógica
+que estava na janela (`pedido`, `escolha_folha`, `config`, `tutorial`, `autoteste`); a app Windows importa de lá; 295 testes pytest; `src/core` sem imports de UI/Windows
+(verificado por teste). Detalhe e o que ficou na app: `docs/MIGRATION_PLAN.md` §8.
+
+**Falta da Fase 0** (muda comportamento do motor, por isso fica para agora): língua **por pedido** e log estruturado (chave + parâmetros), entrada por
+bytes/temporários, e correr `pytest` + `teste_folha`, `teste_canva`, `teste_5000` num contentor **Linux** (Rancher). Só depois a Fase 1 (API).

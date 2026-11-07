@@ -85,8 +85,8 @@ Os ficheiros de exemplo (`exemplos\`) são todos inventados e gerados por `teste
 Svenska, Čeština, Română, Ελληνικά, Русский, Türkçe, 简体中文, 日本語, 한국어, हिन्दी. No 1.º arranque usa a língua do
 Windows (ou inglês). As escolhas (língua, tema, ficheiro dos algarismos, pasta, números) ficam em
 `%APPDATA%\GeradorRifas\config.json`; **o template e o nome dos ficheiros nunca são guardados**.
-Para acrescentar uma língua: copiar `idiomas\pt.py` e `idiomas\ui_pt.py` para `<codigo>.py` e `ui_<codigo>.py`,
-traduzir e juntar o código em `idiomas\__init__.py`; depois `python testes\fazer_ajuda.py` para as capturas do tutorial.
+Para acrescentar uma língua: copiar `..\src\core\idiomas\pt.py` e `ui_pt.py` para `<codigo>.py` e `ui_<codigo>.py`,
+traduzir e juntar o código em `..\src\core\idiomas\__init__.py`; depois `python testes\fazer_ajuda.py` para as capturas do tutorial.
 
 ## Cores do Windows
 
@@ -193,7 +193,8 @@ Tk (Windows), que obrigavam a repintar todos os widgets do CustomTkinter a cada 
 - `assets\ajuda\` imagens do tutorial · `assets\video\` vídeos do tutorial
 - `app.py` janela principal e menus · `visor.py` pré-visualização · `ajuda.py` tutorial · `widgets.py` painel
   deslocável, barra de menus, dicas e a otimização de redimensionamento · `tema.py` cores do Windows · `icones.py` ícones
-- `core.py` motor · `pdftexto.py` leitura/edição do texto dos PDF · `i18n.py` + `idiomas\` textos
+- `ambiente.py` põe `..\src` no caminho de importação (e guarda o que é do Windows) · **`..\src\core\`** o motor e toda a lógica sem janela:
+  `motor.py`, `pdftexto.py` (leitura/edição do texto dos PDF), `i18n.py` + `idiomas\` (textos), `pedido.py`, `escolha_folha.py`, `config.py`, `tutorial.py`, `autoteste.py`
 - `exemplos\` template e algarismos de exemplo · `assets\icon.ico`, `make_icon.py` ícone
 - `construir.bat`, `assinar.ps1`, `instalar_certificado.ps1`, `requirements.txt` · `LICENCAS.md`
 - `..\final` (scripts de linha de comandos antigos, ainda com PyMuPDF) não faz parte da app.

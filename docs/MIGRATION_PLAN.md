@@ -206,30 +206,36 @@ nos pedidos (512 MB!), palavra-passe da app (o plano gratuito não tem autentica
 
 ## 8. Testes de caracterização e «Não testável ainda»
 
-**Testes existentes** (`tests/`, pytest, 145 testes, ≈ 10 s): fixam o comportamento **atual** do motor — também as esquisitices — para detetar
-regressões durante a migração. Cobrem `core.py`, `pdftexto.py`, `i18n.py` e `idiomas/`: validação (`validar`), plano de ficheiros (`planear`,
-`nome_seguro`), geometria e folha (`_arrumar`, `disposicao_da_folha`), análise do template (exemplos da app, 5 templates aleatórios e PDFs
-sintéticos de casos limite), `preparar` (letra em PDF e em imagem, erros), `gerar`/`verificar`/`Documento`/`pagina_previa` com E/S real em
-pasta temporária, e a paridade das 18 línguas. Os ficheiros de exemplo estão em `tests/fixtures/` (cópias de `app/exemplos/` e de
-`app/testes/templates_aleatorios/`). Correr: `app\.venv\Scripts\python.exe -m pytest` na raiz do repo (o `pytest.ini` aponta `pythonpath` para `app/`;
-na Fase 0 passa a `src/`). Nenhum teste importa `app.py`, `ajuda.py`, `tema.py`, `widgets.py`, `visor.py` ou `icones.py` (puxam Tkinter/Windows).
+**Fase 0 (feita):** o motor passou de `app/` para o pacote `src/core` (`motor.py` = o antigo `core.py`, `pdftexto.py`, `i18n.py`, `idiomas/`) e a lógica
+que estava misturada com a interface foi extraída para módulos novos do mesmo pacote, **sem alterar o comportamento** (a app Windows importa de `src/core`; o
+`--selftest` dá exatamente o mesmo resultado que antes). Cada passo foi validado com `pytest`.
 
-**Não testável ainda** — lógica presa à interface ou ao Windows. Não se alterou código; cada linha diz o que bloqueia e a extração prevista (§3.2):
+**Testes** (`tests/`, pytest, 295 testes, ≈ 12 s): começaram como testes de **caracterização** (fixam o comportamento atual, também as esquisitices) e
+cobrem agora todo o `src/core`: validação (`validar`), plano de ficheiros (`planear`, `nome_seguro`), geometria e folha, análise do template (exemplos da app,
+5 templates aleatórios e PDFs sintéticos de casos limite), `preparar`, `gerar`/`verificar`/`Documento`/`pagina_previa`, algarismos em imagem (imagens sintéticas),
+as 18 línguas, e os módulos extraídos (`pedido`, `escolha_folha`, `config`, `tutorial`, `autoteste`). `tests/test_core_puro.py` verifica que **nenhum ficheiro de
+`src/core` importa tkinter, customtkinter, pywin32/win32*, winreg, ctypes, msvcrt ou frameworks web** e que `import core` não carrega Tkinter. Fixtures em
+`tests/fixtures/`. Correr: `app\.venv\Scripts\python.exe -m pytest` na raiz. Nenhum teste importa `app.py`, `ajuda.py`, `tema.py`, `widgets.py`, `visor.py` ou `icones.py`.
 
-| Onde | Lógica | O que a prende | Como destravar |
-|---|---|---|---|
-| `app.py::App._trabalho` | Converte os campos de texto em `core.Trabalho`; erro `int_invalido` com o nome do campo traduzido | Lê `StringVar` da janela; `app.py` importa `tkinter`/`customtkinter` ao ser carregado | Função pura `trabalho_de(campos: dict, modo)` (validação Pydantic na API) |
-| `app.py::App._resumo` | Nº de ficheiros e de páginas (`ceil(qtd / n)`, `ceil(qtd / por_ficheiro)`), aviso «máximo não múltiplo» | Escreve em `l_resumo` (labels) e lê `self.disp`/`self.info` | Função pura `resumo(tr, n_por_pagina) -> dict` |
-| `app.py::App._recalcular_folha` | Margem inteira entre 0 e 50 mm; «rifas por folha» vazio = máximo; sinal «pedido > máximo» (`acima`) | Mistura `winfo_*`/`pack` com a validação; as regras **só existem aqui**, não no `core` | Serviço «folha»: `escolher_folha(info, papel, margem_txt, porfolha_txt)` |
-| `app.py::App._prep_atual` | Escolhe o `Preparado` com a folha (`replace(prep, disp=...)`) ou recusa se não é válida | `messagebox.showwarning` | Devolver o erro em vez de abrir diálogo |
-| `app.py::App._carregar_config` / `_guardar_config`, `ler_config`, `gravar_config` | Que chaves se guardam (nunca o template nem o nome), validação de `papel`/`modo`, apagar o caminho dos algarismos se já não existe | `%APPDATA%\GeradorRifas\config.json` fixo no módulo; ligado a `StringVar` | Passar a pasta de dados por parâmetro/variável de ambiente; na web, preferências no cliente |
-| `app.py::verificar_traducoes`, `verificar_ajuda`, `selftest` | Verificações de qualidade (paridade de chaves, imagens do tutorial, vídeos, geração dos exemplos) | Vivem em `app.py` (import de Tkinter) e usam `App`/`ajuda`; `selftest` abre a janela | Mover para o `core`/testes. Nota: a **paridade das línguas já se testa nos dados** (`tests/test_i18n.py`), mas não a função `verificar_traducoes` em si |
-| `ajuda.py::lista_de_topicos`, `_caixas` | Lista de tópicos do tutorial e as caixas das capturas | `ajuda.py` importa `customtkinter` e `widgets` | Separar os dados (tópicos/caixas) do `CTkToplevel` |
-| `app.py::abrir_pasta`, `App._video`, `ficheiro_video` | Abrir pasta/vídeo | `os.startfile` (Windows) | Descarregar ZIP/PDF; `<video>` na página |
-| `i18n.py::detetar` | Língua do sistema (ramo `kernel32.GetUserDefaultLocaleName` e `locale`) | `ctypes.windll` só em Windows; depende da máquina | Na web: `Accept-Language`. Só se testa que o resultado é sempre uma língua válida |
-| `tema.py`, `widgets.py`, `visor.py`, `icones.py` | Cores do Windows, zoom/deslocamento do visor, ícones | `winreg`, `ctypes.windll`, Tk `Canvas`, CustomTkinter | Reescrever no frontend (CSS/React/PDF.js); a lógica do zoom pode ter testes novos (vitest) |
-| `core.py` (parcial) | `GlifosImagem.calibrar`, `extrair_glifos`, `mascara_de_imagem`, medição de tinta | Sem UI nem Windows, mas só se exercitam **indiretamente** (`preparar` com PNG e `gerar`); não têm testes unitários próprios | Testes unitários com imagens sintéticas (a fazer; não bloqueado) |
-| `core.py` (efeitos globais) | Língua do `ErroRifas.__str__`/`verificar`/`log`, cancelamento por `threading.Event`, `Preparado` não serializável | Estado global (`i18n._atual`) e tipos não picklable | Ressalvas da Fase 0 (§3.1): língua por pedido, log com chave+parâmetros; os testes de hoje fixam o comportamento global |
+**«Não testável ainda» — estado:**
+
+| Onde (antes) | Lógica | Agora |
+|---|---|---|
+| `App._trabalho` | Campos de texto → `Trabalho`; `int_invalido` com o nome traduzido | ✅ `core.pedido.trabalho_de_campos` / `ler_inteiro` · `tests/test_pedido.py` |
+| `App._resumo` | Nº de ficheiros/páginas, aviso «máximo não múltiplo» | ✅ `core.pedido.resumo_do_pedido` / `rifas_por_pagina` · `tests/test_pedido.py` |
+| `App._recalcular_folha`, `_render_folha` | Margem 0–50, «por folha» vazio = máximo, `acima`, texto da folha | ✅ `core.escolha_folha` (`ler_margem`, `escolher_folha`, `texto_da_folha`) · `tests/test_escolha_folha.py` |
+| `App._prep_atual` | Preparado com a folha ou o erro | ✅ `core.escolha_folha.preparado_com_folha` (a interface mostra o aviso) |
+| `ler_config`, `gravar_config`, `_carregar_config`, `_guardar_config`, `DADOS` | Que chaves se guardam, validações, `%APPDATA%` fixo | ✅ `core.config` (`preferencias`, `para_gravar`, `pasta_de_dados` com `RIFAS_DADOS`) · `tests/test_config.py`. O valor por defeito `%APPDATA%\GeradorRifas` fica em `app/ambiente.py` |
+| `verificar_traducoes` | Paridade de chaves/parâmetros das línguas | ✅ `core.i18n.verificar_traducoes` · `tests/test_i18n.py` |
+| `verificar_ajuda`, `ajuda.lista_de_topicos`, `_caixas` | Tópicos e imagens do tutorial | ✅ `core.tutorial` (a janela `Tutorial` fica em `ajuda.py`) · `tests/test_tutorial_e_autoteste.py` |
+| `selftest` (metade do motor) | Gerar os exemplos e confirmar | ✅ `core.autoteste.gerar_exemplos`; a metade da janela fica em `app.py` |
+| `i18n.detetar` | Língua do sistema (kernel32) | ✅ `core.i18n.detetar(codigo_sistema)` + `RIFAS_LINGUA`; a chamada ao Windows (`ctypes`) foi para `app/ambiente.py` |
+| `GlifosImagem.calibrar`, `extrair_glifos`, `mascara_de_imagem` | Algarismos em imagem | ✅ (parcial) `mascara_de_imagem`, `_segmentar`, `extrair_glifos`, `glifos_de_imagem` · `tests/test_glifos.py`. `calibrar` continua só coberto indiretamente (gerar com PNG) |
+| Caminhos absolutos em `app/testes/` | `Z:\projects\rifas\app`, `C:\Windows\Fonts` | ✅ relativos a `__file__` / `RIFAS_FONTES` (`%WINDIR%\Fonts`). Ficam só textos de demonstração (`C:\Rifas\Exemplo` nas capturas) |
+| `abrir_pasta`, `App._video`, `ficheiro_video` | Abrir pasta/vídeo | ⛔ **fica na app, por natureza** (`os.startfile`): na web é descarregar ZIP/PDF e `<video>` |
+| `tema.py`, `widgets.py`, `visor.py`, `icones.py`, janela `Tutorial` | Cores do Windows, visor, ícones | ⛔ **ficam na app** (winreg, ctypes.windll, Tk): na web reescrevem-se (CSS/React/PDF.js) |
+| Efeitos globais no motor | Língua global (`i18n._atual`) em `ErroRifas.__str__`/`verificar`/`log`; entrada por `Path`; `Preparado` não serializável; cancelar com `threading.Event` | ⏳ **Fase 1** (mudaria comportamento): língua por pedido, log com chave+parâmetros, entrada por bytes/temporários |
+| Execução em Linux | Os testes só correram em Windows | ⏳ por fazer: contentor (Rancher Desktop) |
 
 **Particularidades fixadas pelos testes** (ver comentários «quirk» em `tests/`): `nome_seguro` apaga `/` em vez de separar pastas e não trata nomes
 reservados (`CON`); `validar` aceita `inicio = 0`; `_f(-0.00001)` escreve `-0`; `disposicao_da_folha` com `n <= 0` devolve 1 rifa e com margem negativa usa 0;

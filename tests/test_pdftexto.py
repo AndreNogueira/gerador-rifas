@@ -4,7 +4,7 @@ import re
 import pytest
 
 import core
-import pdftexto
+from core import pdftexto
 
 
 def test_mul_composicao_de_matrizes():

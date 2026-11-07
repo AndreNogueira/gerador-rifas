@@ -8,8 +8,8 @@ import re
 import pytest
 
 import core
-import i18n
-from idiomas import NOMES, ORDEM, TEXTOS
+from core import i18n
+from core.idiomas import NOMES, ORDEM, TEXTOS
 
 PARAMS = re.compile(r"\{(\w+)\}")
 
@@ -90,6 +90,48 @@ def test_cada_erro_do_motor_tem_texto_em_todas_as_linguas():
 def test_detetar_devolve_uma_lingua_suportada():
     # a parte do Windows (kernel32) nao se testa; so se garante que o resultado e sempre uma lingua valida
     assert i18n.detetar() in i18n.LINGUAS
+
+
+@pytest.mark.parametrize("codigo, lingua", [("pt-PT", "pt"), ("pt_BR", "pt"), ("zh-CN", "zh"), ("EN-us", "en"), ("de", "de"),
+                                            ("xx-YY", "en"), ("", "en"), ("hi-IN", "hi")])
+def test_lingua_de_codigo(codigo, lingua):
+    assert i18n.lingua_de_codigo(codigo) == lingua
+
+
+def test_detetar_prioridades(monkeypatch):
+    monkeypatch.delenv("RIFAS_LINGUA", raising=False)
+    assert i18n.detetar("pt-PT") == "pt" and i18n.detetar("ja-JP") == "ja" and i18n.detetar("xx") == "en"
+    monkeypatch.setattr(i18n.locale, "getlocale", lambda: ("fr_FR", "UTF-8"))
+    assert i18n.detetar() == "fr"                                  # sem codigo do sistema usa o locale do Python
+    assert i18n.detetar("es-ES") == "es"                           # o codigo do sistema ganha ao locale
+    monkeypatch.setattr(i18n.locale, "getlocale", lambda: (None, None))
+    assert i18n.detetar() == "en"
+    monkeypatch.setenv("RIFAS_LINGUA", "ko")
+    assert i18n.detetar("pt-PT") == "ko"                           # a variavel de ambiente ganha a tudo
+    monkeypatch.setenv("RIFAS_LINGUA", "klingon")
+    assert i18n.detetar("pt-PT") == "pt"                           # valor invalido ignora-se
+    assert i18n.ENV_LINGUA == "RIFAS_LINGUA"
+
+
+def test_detetar_locale_que_rebenta(monkeypatch):
+    monkeypatch.delenv("RIFAS_LINGUA", raising=False)
+
+    def mau():
+        raise ValueError("locale estragado")
+    monkeypatch.setattr(i18n.locale, "getlocale", mau)
+    assert i18n.detetar() == "en"
+
+
+def test_verificar_traducoes_dados_reais_ok():
+    assert i18n.verificar_traducoes() == []
+
+
+def test_verificar_traducoes_deteta_problemas(monkeypatch):
+    monkeypatch.delitem(TEXTOS["en"], "nenhum")
+    monkeypatch.setitem(TEXTOS["de"], "chave_extra", "x")
+    monkeypatch.setitem(TEXTOS["es"], "err_digitos", "sin parametros")
+    assert sorted(i18n.verificar_traducoes()) == ["de: chave a mais chave_extra", "en: falta nenhum",
+                                                  "es: parametros diferentes em err_digitos"]
 
 
 def test_erro_rifas_traduz_com_a_lingua_global():
