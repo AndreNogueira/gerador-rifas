@@ -13,7 +13,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build && node scripts/verificar-dist.mjs",
+    "build": "tsc --noEmit && vite build && node scripts/comprimir-dist.mjs && node scripts/verificar-dist.mjs",
+    "medir": "node scripts/medir-js.mjs",
     "tipos": "tsc --noEmit",
     "teste": "vitest run",
     "lint": "biome check ."
@@ -41,6 +42,7 @@
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.2.1",
+    "javascript-obfuscator": "5.10.0",
     "jsdom": "31.0.0",
     "sass": "1.108.1",
     "typescript": "7.0.2",
