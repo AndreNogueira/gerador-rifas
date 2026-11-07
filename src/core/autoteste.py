@@ -32,3 +32,25 @@ def gerar_exemplos(exemplos: Path, destino: Path) -> tuple:
                           f"({p.disp.n} por folha, {sum(r.paginas for r in res)} paginas)")
             codigo |= 0 if ok else 1
     return linhas, codigo
+
+
+def main(argv: list | None = None) -> int:
+    """Auto-teste sem janela para CI/Linux (substitui `GeradorRifas.exe --selftest` fora do Windows):
+    `python -m core <pasta_de_exemplos> <pasta_de_saida>`. Verifica as traducoes e gera os exemplos. Devolve 0 se tudo ok."""
+    import sys
+    from . import i18n
+    args = sys.argv[1:] if argv is None else argv
+    if len(args) != 2:
+        print("uso: python -m core <pasta_de_exemplos> <pasta_de_saida>", file=sys.stderr)
+        return 2
+    exemplos, destino = Path(args[0]), Path(args[1])
+    destino.mkdir(parents=True, exist_ok=True)
+    probs = i18n.verificar_traducoes()
+    linhas = [f"traducoes ({len(i18n.LINGUAS)} linguas): {'ok' if not probs else probs}"]
+    codigo = int(bool(probs))
+    extra, cod = gerar_exemplos(exemplos, destino)
+    linhas += extra
+    codigo |= cod
+    linhas.append("RESULTADO: " + ("OK" if codigo == 0 else "FALHOU"))
+    print("\n".join(linhas))
+    return int(codigo)

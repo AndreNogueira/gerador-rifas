@@ -1,0 +1,37 @@
+# Integracao continua: testes do motor em Linux e Windows (Python 3.12 e 3.13) e a imagem Docker.
+# Substitui o «--selftest» do .exe como verificacao automatica. O deploy (Render) so deve acontecer depois deste CI passar.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  testes:
+    name: pytest (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --frozen
+      - run: uv run --no-sync python -m pytest -q
+      - name: Auto-teste do motor (python -m core)
+        working-directory: src
+        env:
+          PYTHONIOENCODING: utf-8
+        run: uv run --no-sync python -m core ../app/exemplos ${{ runner.temp }}/autoteste
+
+  docker:
+    name: imagem Docker (testes dentro do build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build --target testes -t gerador-rifas-testes .

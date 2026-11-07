@@ -53,10 +53,7 @@ def gravar_config(d: dict) -> None:
 
 
 def abrir_pasta(p: Path) -> None:
-    try:
-        os.startfile(str(p))  # type: ignore[attr-defined]
-    except Exception:
-        pass
+    ambiente.abrir(p)       # os.startfile (Windows) vive em ambiente.py
 
 
 def verificar_traducoes() -> list:
@@ -624,11 +621,7 @@ class App(ctk.CTk):
     @staticmethod
     def ficheiro_video() -> Path | None:
         """O video tutorial na lingua atual (ou em ingles / portugues, se nao houver nessa lingua)."""
-        for lg in (i18n.atual(), "en", "pt"):
-            f = BASE / "assets" / "video" / f"tutorial_{lg}.mp4"
-            if f.exists():
-                return f
-        return None
+        return core.tutorial.ficheiro_video(BASE / "assets" / "video", i18n.atual())
 
     def _video(self) -> None:
         f = self.ficheiro_video()

@@ -8,6 +8,9 @@
 !/pyproject.toml
 !/uv.lock
 !/docker/
+!/Dockerfile
+!/.dockerignore
+!/.github/
 !/app/
 !/webapp/
 !/docs/

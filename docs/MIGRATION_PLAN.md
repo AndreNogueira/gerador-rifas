@@ -242,3 +242,32 @@ as 18 línguas, e os módulos extraídos (`pedido`, `escolha_folha`, `config`, `
 **Particularidades fixadas pelos testes** (ver comentários «quirk» em `tests/`): `nome_seguro` apaga `/` em vez de separar pastas e não trata nomes
 reservados (`CON`); `validar` aceita `inicio = 0`; `_f(-0.00001)` escreve `-0`; `disposicao_da_folha` com `n <= 0` devolve 1 rifa e com margem negativa usa 0;
 papel desconhecido levanta `KeyError`; `PADRAO_EXEMPLO` também apanha `0002` em `a0002b`; o `2099` da data do sorteio dos exemplos conta como número fixo.
+
+---
+
+## 9. Dependências do Windows → substitutos num servidor Linux
+
+Para cada linha da tabela do §2. O código do Windows ficou **todo** em `app/ambiente.py`, atrás do contrato `core.sistema.Sistema`; o `src/core` tem a implementação
+neutra (`SistemaNeutro`, só variáveis de ambiente) e os substitutos web. Testes: `tests/test_substitutos_windows.py` e `tests/test_armazenamento_e_saida.py`
+(o código do Windows testa-se com um «registo» falso, por isso corre em Linux no CI).
+
+| Dependência (§2) | Substituto no servidor | Onde | Estado |
+|---|---|---|---|
+| `tema.py` · `winreg`: cor de destaque + claro/escuro | **No browser**: CSS `prefers-color-scheme` e `accent-color`. O servidor só calcula a paleta: `core.tema.construir(7 tons)` (idêntica à da app, comparada em 300 paletas) e `variaveis_css()` para a página; o dono pode fixar `RIFAS_TEMA` (`claro`/`escuro`) e `RIFAS_COR_DESTAQUE` (`#RRGGBB`) via `SistemaNeutro` | `core/tema.py`, `core/sistema.py`; registo em `app/ambiente.py` | ✅ |
+| `widgets.py` · `ctypes.windll.user32` (acelerar o redimensionar do Tk) | **Nenhum — não faz falta**: é uma otimização do Tkinter; o browser não tem este problema. Fica em `app/widgets.py` | — | ⛔ sem substituto (nem é preciso) |
+| `i18n.detetar` · `kernel32.GetUserDefaultLocaleName` | Cabeçalho **`Accept-Language`**: `i18n.lingua_de_accept_language()` (respeita `q`, `*`, `q=0`, entradas inválidas) + `RIFAS_LINGUA` para forçar | `core/i18n.py` | ✅ |
+| `app.py` · `%APPDATA%\GeradorRifas\config.json` | Preferências **no browser** (`localStorage`/cookie), validadas por `config.preferencias(cfg, caminhos=False)` (nunca devolve caminhos); onde houver ficheiro, `RIFAS_DADOS` | `core/config.py` | ✅ |
+| Ficheiros locais (template, algarismos, pasta de saída) | **Upload** (`core.entradas.preparar_de_bytes`: tipo real pelos bytes, nome seguro, temporários) e **armazenamento por sessão** numa pasta configurável: `RIFAS_ARMAZENAMENTO` (por defeito a pasta temporária), `RIFAS_LIMITE_SESSAO_MB`, ids de sessão aleatórios, nomes validados contra `..`/barras, limpeza por idade. Interface `Armazenamento` — um S3/Blob futuro implementa o mesmo contrato (o PDFium precisa de ficheiros locais: `ficheiro_local()` descarregaria para uma cache) | `core/entradas.py`, `core/armazenamento.py` | ✅ (S3/Blob: só a interface) |
+| `app.py::abrir_pasta` · `os.startfile` (abrir a pasta dos PDFs) | **Descarregar**: um PDF, ou um ZIP em *streaming* (sem o ter inteiro em memória: 512 MB no Render): `saida.entrega()` + `conteudo_da_entrega()`; só entram os PDFs verificados | `core/saida.py`; `os.startfile` em `app/ambiente.py` | ✅ |
+| `App._video` · `os.startfile` no vídeo | `<video src=…>` na página; `tutorial.ficheiro_video(pasta, lingua)` escolhe o ficheiro (língua → en → pt) | `core/tutorial.py` | ✅ |
+| Impressão local | A app nunca imprimiu: sempre gerou PDF. Na web é o mesmo: o utilizador descarrega e imprime onde quiser | — | ✅ nada a fazer |
+| `GeradorRifas.exe --selftest` | `python -m core <exemplos> <saída>` (traduções + gerar os exemplos, código de saída ≠ 0 se falhar) e o CI | `core/__main__.py`, `.github/workflows/ci.yml` | ✅ |
+| `construir.bat` · Nuitka, `assinar.ps1`, `instalar_certificado.ps1`, `make_icon.py` | **`Dockerfile`** (alvo `testes`: corre pytest + o auto-teste durante o *build*; o alvo `web` entra na Fase 1) e **GitHub Actions** (pytest em Linux e Windows × Python 3.12/3.13 + a imagem). A assinatura Authenticode não se aplica a um serviço web (HTTPS trata disso) | `Dockerfile`, `.dockerignore`, `.github/workflows/ci.yml` | ✅ (CI ainda não correu no GitHub) |
+| `testes/` · `C:\Windows\Fonts`, `SetCursorPos`, ffmpeg | Letras: `RIFAS_FONTES`, e o `reportlab` traz as suas se não houver as do Windows. `SetCursorPos` e o ffmpeg só servem para **gerar capturas e vídeo do tutorial** (ferramentas de desenvolvimento, não correm no servidor) | `app/testes/` | ⛔ ficam locais, ver abaixo |
+| Caminhos absolutos (`C:\Rifas\Exemplo`) | Só texto de demonstração nas capturas | — | ✅ |
+| Hardware, COM (Excel/Outlook), impressoras, serviços Windows | **Não existem** na app (§2). Se aparecerem no futuro, entram atrás de uma interface em `src/core` como `Sistema` — sem inventar já | — | — |
+
+**O que não tem substituto razoável (e as opções):**
+1. **Cor de destaque e modo escuro «do Windows» do utilizador** — um servidor não vê o sistema do cliente. Isolado em `Sistema.cor_destaque()/modo_escuro()` (devolvem `None` = «o browser decide»). Opções: (a) **CSS do browser** (recomendado: `prefers-color-scheme` + `accent-color`, zero código no servidor); (b) o dono fixa a cor/tema por variável de ambiente; (c) um seletor de tema na página guardado em `localStorage`.
+2. **Capturas e vídeo do tutorial** (`fazer_ajuda.py`, `fazer_video.py`: simulam o rato e fotografam a janela Tk no Windows). Não fazem parte do servidor; as imagens/vídeos já feitos servem-se como ficheiros. Opções para o futuro: (a) manter as ferramentas locais e só refazer os assets quando a app Windows mudar (recomendado); (b) refazer as capturas **da webapp** com Playwright (já previsto para os testes e2e), em CI; (c) correr as atuais em Linux com `xvfb` + Tk (trabalho grande, pouco valor).
+3. **Otimização de redimensionamento do Tk** — desaparece com o Tk; nada a substituir.

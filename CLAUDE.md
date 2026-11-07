@@ -31,16 +31,21 @@ src/core/    lógica pura, SEM UI nem Windows (pacote `core`, usado pela app Win
   pedido.py      campos de texto -> Trabalho e resumo        · escolha_folha.py  papel/margem/rifas por folha
   config.py      preferências (config.json) e pasta de dados · tutorial.py  conteúdo do tutorial · autoteste.py  exemplos do --selftest
   entradas.py    uploads em bytes: tipo real (%PDF-/PNG/JPG), ficheiros temporários, `preparar_de_bytes`
+  armazenamento.py  sessões em disco (RIFAS_ARMAZENAMENTO), limite e limpeza · saida.py  descarregar PDF/ZIP em streaming (em vez de «abrir a pasta»)
+  sistema.py     contrato `Sistema` (língua, dados, tema, abrir) + `SistemaNeutro` (variáveis de ambiente) · tema.py  paleta de cores e CSS, sem registo do Windows
+  __main__.py    `python -m core <exemplos> <saida>`: auto-teste sem janela (CI/Linux)
   __init__.py    reexporta o motor: `import core; core.preparar(...)` e `from core import i18n, pedido, ...`
 src/web/     (a criar) API FastAPI (+ trabalhos, sessões, limites) e frontend React/Vite (src/web/frontend/)
 tests/       pytest (raiz): testes do core e fixtures
-app/         app Windows: só interface (Tk/CustomTkinter), tema/winreg, ctypes e build do .exe. `app/ambiente.py` põe ..\src no sys.path
+app/         app Windows: só interface (Tk/CustomTkinter) e build do .exe. `app/ambiente.py` põe ..\src no sys.path e é o ÚNICO sítio com winreg/ctypes/os.startfile (`SistemaWindows`)
 docs/        análise e planos · webapp/PLANO.md  plano da webapp
 ```
 
 Estado: **Fase 0 feita** (lógica em `src/core`, a app Windows importa de lá; língua por pedido, mensagens estruturadas, entrada por bytes e `pdf_da_previa` existem;
 testes a passar em Windows e em Linux, Python 3.12 e 3.13). Falta para a webapp: `src/web/` (Fase 1), `Dockerfile` de produção, `.github/` (CI).
-O `.gitignore` da raiz só deixa entrar `app/`, `webapp/`, `docs/`, `tests/`, `src/`, `docker/`, `pytest.ini`, `pyproject.toml`, `uv.lock` e este ficheiro → **acrescentar** `Dockerfile`, `.github/` quando existirem.
+Substitutos das dependências do Windows (tabela completa e o que não tem substituto: `docs/MIGRATION_PLAN.md` §9): lingua → `Accept-Language`; registo/tema → CSS do browser;
+`%APPDATA%` → `RIFAS_DADOS`; ficheiros locais → upload + `armazenamento`; `os.startfile` → `saida` (download); `--selftest` → `python -m core`; build do `.exe` → `Dockerfile` + `.github/workflows/ci.yml`.
+O `.gitignore` da raiz só deixa entrar `app/`, `webapp/`, `docs/`, `tests/`, `src/`, `docker/`, `.github/`, `Dockerfile`, `.dockerignore`, `pytest.ini`, `pyproject.toml`, `uv.lock` e este ficheiro.
 Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import ambiente` antes de importar `core`; o `construir.bat` define `PYTHONPATH=..\src` e `--include-package=core` para o Nuitka.
 
 ## Regras
@@ -51,7 +56,8 @@ Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import 
   `ctypes`, `os.startfile`, `%APPDATA%`, nem de FastAPI/Starlette (o core não conhece a web). `tests/test_core_puro.py` verifica-o (AST de todo o `src/core` + `import core`
   num processo limpo). O que é do Windows fica em `app/` (`ambiente.py`: `%APPDATA%`, língua do Windows via kernel32) e passa ao core como parâmetro.
 - **Configuração por variáveis de ambiente, sem caminhos absolutos no código** (`pathlib`, relativos a `__file__`). Existem: `RIFAS_LINGUA` (língua por defeito, ganha a tudo),
-  `RIFAS_DADOS` (pasta do `config.json`; por defeito `%APPDATA%\GeradorRifas` na app Windows), `RIFAS_FONTES` (letras do sistema, só nos scripts de testes; por defeito `%WINDIR%\Fonts`).
+  `RIFAS_DADOS` (pasta do `config.json`; por defeito `%APPDATA%\GeradorRifas` na app Windows), `RIFAS_FONTES` (letras do sistema, só nos scripts de testes; por defeito `%WINDIR%\Fonts`),
+  `RIFAS_ARMAZENAMENTO` (pasta das sessões/uploads/PDFs; por defeito a temporária do sistema), `RIFAS_LIMITE_SESSAO_MB`, `RIFAS_TEMA` (`claro`/`escuro`), `RIFAS_COR_DESTAQUE` (`#RRGGBB`).
   Previstas para a webapp: `ACCESS_PASSWORD`, `SECRET_KEY` (assinar o cookie), `MAX_UPLOAD_MB`, `MAX_NUMEROS`, `JOB_TTL_MIN`; valores por defeito seguros, falhar ao arrancar se faltar `ACCESS_PASSWORD`.
 - **Sem segredos no código nem no repo** (palavra-passe, chaves, certificados privados, `.env`); o `.cer` público é a única exceção. Documentar um `.env.example` sem valores reais.
 - Segurança dos uploads: validar o tipo real (`%PDF-`, PNG/JPG), nunca usar nomes/caminhos do cliente (`core.nome_seguro`), limites de tamanho/números/tempo.
@@ -67,7 +73,7 @@ Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import 
 
 ### Hoje (existem)
 **Testes de caracterização (pytest)** — a partir da raiz do repo, com o venv de `app/` (`pytest` está em `app/requirements.txt`; instalar com
-`uv pip install --python app/.venv/Scripts/python.exe pytest`). Cobrem o `src/core` (343 testes, ≈16 s; `pytest.ini` aponta `pythonpath = src`).
+`uv pip install --python app/.venv/Scripts/python.exe pytest`). Cobrem o `src/core` (430 testes, ≈18 s; `pytest.ini` aponta `pythonpath = src`).
 Se um falhar depois de uma alteração: é regressão, ou o comportamento mudou de propósito e o teste deve ser atualizado conscientemente. Fixtures em `tests/fixtures/`.
 ```
 app/.venv/Scripts/python.exe -m pytest                                        # todos
@@ -80,6 +86,8 @@ com `uv sync` (`pyproject.toml`/`uv.lock`), numa imagem `python:3.12-slim` (ou `
 do Claude Code: o script usa `C:\Program Files\Rancher Desktop\resources\resources\win32\bin`.
 ```
 powershell -File docker\testes_linux.ps1 [-Python 3.13]
+docker build --target testes -t gerador-rifas-testes .      # o mesmo, como imagem: pytest + `python -m core` correm durante o build (usa o Dockerfile da raiz)
+cd src && python -m core ../app/exemplos <pasta_saida>       # auto-teste sem janela (substitui o --selftest fora do Windows)
 ```
 
 **Scripts antigos** — correr a partir de `app/` com o venv `app/.venv` (Windows; `PYTHONIOENCODING=utf-8` na consola). Cada script sai com código 1 se falhar; não há runner.

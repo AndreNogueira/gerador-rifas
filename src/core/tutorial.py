@@ -67,3 +67,13 @@ def verificar_ajuda(pasta_ajuda: Path, pasta_video: Path, linguas) -> list:
             if not (pasta_ajuda / f"{lg}_{estado}.png").exists() or estado not in zonas.get(lg, {}):
                 problemas.append(f"falta a captura {lg}_{estado}")
     return problemas
+
+
+def ficheiro_video(pasta_video: Path, lingua: str) -> Path | None:
+    """O video tutorial na `lingua` (ou em ingles / portugues, se nao houver nessa lingua); None se nao ha nenhum.
+    Na webapp serve-se como ficheiro estatico (<video>) em vez de abrir o leitor do sistema."""
+    for lg in (lingua, "en", "pt"):
+        f = Path(pasta_video) / f"tutorial_{lg}.mp4"
+        if f.exists():
+            return f
+    return None

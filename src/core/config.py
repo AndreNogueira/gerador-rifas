@@ -49,10 +49,11 @@ def gravar_config(ficheiro: Path, d: dict) -> None:
         pass
 
 
-def preferencias(cfg: dict) -> dict:
+def preferencias(cfg: dict, caminhos: bool = True) -> dict:
     """Valores a pre-preencher a partir do config: so as chaves que tem valor (vazio ou ausente = nao mexer).
     Chaves de texto: algarismos, saida, inicio, fim, digitos, max, margem (sempre como str); `papel` so se for um papel
-    conhecido; `modo` so se for «varios» ou «unico»; o caminho dos algarismos desaparece se o ficheiro ja nao existe."""
+    conhecido; `modo` so se for «varios» ou «unico»; o caminho dos algarismos desaparece se o ficheiro ja nao existe.
+    Com `caminhos=False` (webapp, preferencias vindas do browser) nunca se devolvem `algarismos` nem `saida`."""
     saida: dict = {}
     for chave in CAMPOS_DE_TEXTO:
         if cfg.get(chave, "") != "":
@@ -63,6 +64,9 @@ def preferencias(cfg: dict) -> dict:
         saida["modo"] = cfg["modo"]
     if saida.get("algarismos") and not Path(saida["algarismos"]).exists():
         del saida["algarismos"]
+    if not caminhos:            # webapp: o ficheiro e a pasta ficam no computador do utilizador, o servidor nao os conhece
+        saida.pop("algarismos", None)
+        saida.pop("saida", None)
     return saida
 
 

@@ -90,6 +90,34 @@ def lingua_de_codigo(codigo: str) -> str:
     return base if base in LINGUAS else "en"
 
 
+def lingua_de_accept_language(cabecalho: str | None, por_defeito: str = "en") -> str:
+    """A melhor lingua suportada para um cabecalho HTTP Accept-Language (p.ex. «pt-PT,pt;q=0.9,en;q=0.8»), pela ordem de
+    preferencia (q); `por_defeito` se nenhuma for suportada ou o cabecalho for invalido. E o equivalente web da lingua do Windows."""
+    if not cabecalho:
+        return por_defeito
+    candidatas = []
+    for pos, parte in enumerate(cabecalho.split(",")):
+        etiqueta, _, resto = parte.strip().partition(";")
+        etiqueta = etiqueta.strip()
+        if not etiqueta or etiqueta == "*":
+            continue
+        q = 1.0
+        resto = resto.strip()
+        if resto.lower().startswith("q="):
+            try:
+                q = float(resto[2:])
+            except ValueError:
+                continue
+        if q <= 0:
+            continue
+        candidatas.append((-q, pos, etiqueta))
+    for _, _, etiqueta in sorted(candidatas):
+        base = etiqueta.replace("_", "-").split("-")[0].lower()
+        if base in LINGUAS:
+            return base
+    return por_defeito
+
+
 def detetar(codigo_sistema: str = "") -> str:
     """Lingua por defeito. Ordem: variavel de ambiente RIFAS_LINGUA (se for uma lingua suportada) > `codigo_sistema`
     (a app Windows passa aqui o codigo do Windows, p.ex. «pt-PT») > locale do Python > ingles."""
