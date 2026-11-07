@@ -11,9 +11,7 @@ from pathlib import Path
 
 import pytest
 
-import core
 from core import config, i18n, sistema, tema, tutorial
-from conftest import erro_de
 
 RAIZ = Path(__file__).resolve().parent.parent
 

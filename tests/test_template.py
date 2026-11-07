@@ -131,7 +131,8 @@ def test_criar_fundo_apaga_so_os_numeros_de_exemplo(fx):
     assert len(rd.pages) == 1 and [float(v) for v in rd.pages[0].mediabox] == [0.0, 0.0, 595.0, 842.0]
     # o texto fixo continua la
     from conftest import textos_pdf
-    import tempfile, pathlib
+    import tempfile
+    import pathlib
     with tempfile.TemporaryDirectory() as d:
         f = pathlib.Path(d) / "fundo.pdf"
         f.write_bytes(fundo)

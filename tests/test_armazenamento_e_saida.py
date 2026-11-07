@@ -4,14 +4,12 @@ import io
 import os
 import time
 import zipfile
-from pathlib import Path
 
 import pytest
 
 import core
 from core import armazenamento as arm
 from core import saida
-from conftest import erro_de
 
 
 # ------------------------------------------------------------------ armazenamento

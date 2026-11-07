@@ -1,0 +1,83 @@
+# Deploy: so depois de o CI passar num push para main.
+#   1. publica a imagem no GitHub Container Registry (ghcr.io/<dono>/<repo>:latest e :sha-<commit>);
+#   2. manda o Render puxar essa imagem exata (deploy hook + imgURL).
+# Credenciais: so secrets do GitHub (ver README.md, «CI/CD»). O ghcr.io usa o GITHUB_TOKEN automatico: nao ha nada para criar.
+# Sem o secret RENDER_DEPLOY_HOOK_URL a imagem e publicada e o passo do Render e saltado (com um aviso), para o workflow nao falhar
+# antes de o servico existir.
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false      # um deploy nunca interrompe outro a meio
+
+jobs:
+  publicar:
+    name: publicar a imagem no ghcr.io
+    # So se o CI passou E foi um push (nao um pull request).
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      imagem: ${{ steps.nome.outputs.imagem }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}      # exatamente o commit que o CI validou
+      - name: Nome da imagem (ghcr.io exige minusculas)
+        id: nome
+        env:
+          COMMIT: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          base="ghcr.io/${GITHUB_REPOSITORY,,}"
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          echo "imagem=$base:sha-$COMMIT" >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          target: web
+          push: true
+          tags: |
+            ${{ steps.nome.outputs.imagem }}
+            ${{ steps.nome.outputs.base }}:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.event.workflow_run.head_sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  render:
+    name: deploy no Render
+    needs: publicar
+    runs-on: ubuntu-latest
+    env:
+      RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+      IMAGEM: ${{ needs.publicar.outputs.imagem }}
+    steps:
+      - name: Pedir ao Render para puxar a imagem
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK_URL" ]; then
+            echo "::notice::Secret RENDER_DEPLOY_HOOK_URL em falta: a imagem $IMAGEM foi publicada mas nao houve deploy (ver README.md)."
+            exit 0
+          fi
+          # O URL do hook ja traz «?key=...»: acrescenta-se &imgURL=<imagem codificada>. Nao se imprime o URL (e um segredo).
+          alvo="$(python3 -c 'import os, urllib.parse; print(urllib.parse.quote(os.environ["IMAGEM"], safe=""))')"
+          codigo="$(curl -sS -o /dev/null -w '%{http_code}' --retry 3 --retry-all-errors -X POST "${RENDER_DEPLOY_HOOK_URL}&imgURL=${alvo}")"
+          echo "Render respondeu HTTP $codigo para $IMAGEM"
+          case "$codigo" in 2*) ;; *) echo "::error::O Render recusou o deploy (HTTP $codigo)."; exit 1 ;; esac

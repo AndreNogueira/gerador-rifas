@@ -2,6 +2,7 @@
 /*
 !/.gitignore
 !/CLAUDE.md
+!/README.md
 !/pytest.ini
 !/tests/
 !/src/

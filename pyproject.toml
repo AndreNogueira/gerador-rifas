@@ -14,6 +14,7 @@ dev = [
     "pytest",
     "reportlab",   # so os testes (PDFs sinteticos)
     "httpx2",      # usado pelo starlette.testclient (testes da API); o antigo `httpx` esta obsoleto no Starlette 1.x
+    "ruff",         # lint (CI)
 ]
 
 web = [
@@ -25,3 +26,14 @@ web = [
 [tool.uv]
 default-groups = ["dev", "web"]
 package = false    # nao e uma biblioteca instalavel: src/ e posto no caminho pelo pytest.ini (pythonpath) e pela app
+
+[tool.ruff]
+# Lint do codigo novo e do motor: `app/` (interface Tk, ja validada pelo --selftest) fica de fora.
+src = ["src"]
+extend-exclude = ["app", "final", "saida"]
+
+[tool.ruff.lint]
+# Erros de sintaxe/execucao e pyflakes (imports e variaveis por usar, nomes indefinidos).
+select = ["E4", "E7", "E9", "F"]
+# Estilo do motor ja existente, sem risco: nomes de uma letra (`l`), varios comandos por linha, lambda atribuida.
+ignore = ["E741", "E702", "E731"]

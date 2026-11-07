@@ -22,7 +22,7 @@ verificação) passa a ser **um só código** usado pelas duas. Uso só do dono 
   em produção; sem Tailwind, sem biblioteca de i18n nem de estado. O prototipo NiceGUI foi **arquivado** no ramo local `nicegui-prototipo` (não está em `main`): não usar.
 - **Pré-visualização:** PDF.js (`pdfjs-dist`) no browser; o servidor devolve um PDF de 1 página com os primeiros números (não PNG).
 - **Testes:** pytest (backend/core), Vitest + Testing Library (frontend), Playwright (e2e, mais tarde).
-- **Docker** multi-stage (`node:26.13.0-slim` faz `pnpm teste` e `pnpm build`; `python:3.15.2-slim` + uv 0.13.7 servem API + estáticos, sem Node; contentor sem root; tags exatas). **GitHub Actions** (em tags *major* — `checkout@v7`, `setup-uv@v10`, `setup-node@v7`, `pnpm/action-setup@v6` —, as únicas coisas não fixadas ao patch): testes (Python 3.13 e 3.15) + frontend + imagem → deploy.
+- **Docker** multi-stage (`node:26.13.0-slim` faz `pnpm teste` e `pnpm build`; `python:3.15.2-slim` + uv 0.13.7 servem API + estáticos, sem Node; contentor sem root; tags exatas). **GitHub Actions** (`.github/workflows/`): `ci.yml` (ruff, pytest em Linux/Windows × Python 3.13/3.15, frontend, imagem Docker) e `deploy.yml` (só em push para `main` **depois** de o CI passar, via `workflow_run`: publica em `ghcr.io/<dono>/<repo>` e chama o *deploy hook* do Render com `imgURL`). Credenciais só como *secrets* do GitHub (`RENDER_DEPLOY_HOOK_URL`; o `GITHUB_TOKEN` é automático); a lista e onde os obter está no `README.md`. Actions em tag *major* (`checkout@v7`, `setup-node@v7`, `pnpm/action-setup@v6`, `docker/*`) exceto `astral-sh/setup-uv`, que **já não tem tag flutuante** e usa a versão exata (`@v10.3.3`; o `v10` não resolve — foi o que fez falhar o 1.º CI).
 - **Alojamento: Render** (web service gratuito, Docker): 512 MB RAM, adormece aos 15 min, disco efémero. Deploy a cada push para `main`,
   **só depois do CI passar**. Teto de ~100 000 números por pedido, ZIP em *streaming*, 1 trabalho de cada vez, PDFium em processo isolado.
 - **Dependências do core:** `pypdf`, `pypdfium2`, `pillow` (todas com rodas Linux). `customtkinter`, `nuitka` e afins ficam só em `app/`.
@@ -54,7 +54,7 @@ títulos); Dockerfile multi-stage (alvos `testes` e `web`) e CI (pytest 3.13/3.1
 **processo isolado para o PDFium** (pool de processos + `multiprocessing.Event`; recriar o `Preparado` no worker), os 4 cartões e o visor, tutorial/vídeo, deploy no Render.
 Substitutos das dependências do Windows (tabela completa e o que não tem substituto: `docs/MIGRATION_PLAN.md` §9): lingua → `Accept-Language`; registo/tema → CSS do browser;
 `%APPDATA%` → `RIFAS_DADOS`; ficheiros locais → upload + `armazenamento`; `os.startfile` → `saida` (download); `--selftest` → `python -m core`; build do `.exe` → `Dockerfile` + `.github/workflows/ci.yml`.
-O `.gitignore` da raiz só deixa entrar `app/`, `webapp/`, `docs/`, `tests/`, `src/`, `docker/`, `.github/`, `Dockerfile`, `.dockerignore`, `pytest.ini`, `pyproject.toml`, `.python-version`, `uv.lock` e este ficheiro.
+O `.gitignore` da raiz só deixa entrar `app/`, `webapp/`, `docs/`, `tests/`, `src/`, `docker/`, `.github/`, `Dockerfile`, `.dockerignore`, `pytest.ini`, `pyproject.toml`, `.python-version`, `uv.lock`, `README.md` e este ficheiro.
 Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import ambiente` antes de importar `core`; o `construir.bat` define `PYTHONPATH=..\src` e `--include-package=core` para o Nuitka.
 
 ## Regras
@@ -86,6 +86,7 @@ Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import 
 uv sync                                                      # .venv na raiz (Python 3.15) com core + FastAPI + pytest (grupos dev e web)
 uv run pytest                                                # todos os testes (≈480, ≈20 s)
 uv run pytest tests/test_folha.py::test_maximo_por_folha -x  # um só
+uv run ruff check .                                          # lint (regras E4,E7,E9,F em pyproject.toml; `app/` excluída)
 uv run python -m src.web                                     # API + frontend compilado em http://127.0.0.1:8080 (PORT, HOST, RIFAS_FRONTEND)
 cd src/web/frontend && pnpm install                          # (o pnpm 12 vem de `npm i -g pnpm@12.18.0`; o Node 26 vem do `devEngines` do package.json)
 pnpm dev                                                     # Vite em http://localhost:5173 com proxy de /api e /health para :8080 (correr antes `python -m src.web`)
