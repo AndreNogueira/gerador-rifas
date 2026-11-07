@@ -187,6 +187,7 @@ class Motor:
         self.geracao: str | None = None            # sessao que esta a gerar
         self.tempo_maximo_s = tempo_maximo_s
         self._pendentes = 0
+        self.reinicios = 0                        # quantas vezes o processo foi morto e recriado (painel de administracao)
 
     # -- processo
     def _novo(self) -> ProcessPoolExecutor:
@@ -203,6 +204,7 @@ class Motor:
         pool, self._pool = self._pool, None
         if pool is None:
             return
+        self.reinicios += 1
         for proc in list(getattr(pool, "_processes", {}).values()):
             try:
                 proc.kill()

@@ -129,6 +129,12 @@ export function definirLingua(lingua: string): void {
   linguaAtual = lingua;
 }
 
+// O tema visual escolhido: só vai ao servidor (cabeçalho X-Visual) para a estatística de que temas se usam; nunca muda nada.
+let visualAtual = "";
+export function definirVisual(visual: string): void {
+  visualAtual = visual;
+}
+
 interface Opcoes {
   json?: unknown;
   ficheiro?: File;
@@ -138,6 +144,7 @@ interface Opcoes {
 async function pedir<T>(metodo: string, url: string, opcoes: Opcoes = {}): Promise<T> {
   const cabecalhos: Record<string, string> = {};
   if (linguaAtual) cabecalhos["X-Lingua"] = linguaAtual;
+  if (visualAtual) cabecalhos["X-Visual"] = visualAtual;
   let corpo: BodyInit | undefined;
   if (opcoes.json !== undefined) {
     cabecalhos["Content-Type"] = "application/json";
