@@ -1,21 +1,43 @@
-"""Cores da aplicacao: seguem o Windows (cor de destaque e modo claro/escuro).
+"""Cores da aplicacao: a identidade «Premiado» (violeta e magenta, a mesma da webapp), ou as do Windows se se pedir.
 
-O registo do Windows le-se em ambiente.py e a paleta calcula-se em core/tema.py (sem Windows, serve tambem a webapp).
+O registo do Windows le-se em ambiente.py e a paleta neutra calcula-se em core/tema.py (sem Windows, serve tambem a webapp).
 
-- A cor de destaque vem da paleta de personalizacao do Windows (Definicoes > Personalizacao > Cores).
+- POR DEFEITO a app usa as cores da marca (violeta #6A35F5 e magenta #D62B8F), claras e escuras, como a webapp.
+- RIFAS_COR_DESTAQUE=windows segue a cor de destaque do Windows (Definicoes > Personalizacao > Cores);
+  RIFAS_COR_DESTAQUE=#RRGGBB usa essa cor de destaque, ambas com os cinzentos neutros do Windows.
 - O modo escuro/claro por defeito acompanha o Windows; o utilizador pode forcar um dos dois.
 `C` e um dicionario {nome: (claro, escuro)} atualizado no proprio objeto por `atualizar()`.
 """
 from __future__ import annotations
 
+import os
+
 import ambiente          # noqa: F401  (poe ..\src no sys.path; o registo do Windows esta la)
 import customtkinter as ctk
-from core.tema import PADRAO, construir, contraste, legivel as _legivel, misturar, texto_sobre   # noqa: F401
-from core.tema import hex_para_rgb as _rgb, rgb_para_hex as _hex                                   # noqa: F401
+from core.tema import PADRAO, construir, contraste, cor_valida, legivel as _legivel, misturar, paleta_de_cor, texto_sobre   # noqa: F401
+from core.tema import hex_para_rgb as _rgb, rgb_para_hex as _hex                                                           # noqa: F401
 
 FONTE = "Segoe UI"
 
 C: dict = {}
+
+MARCA = (0x6A, 0x35, 0xF5)          # o violeta da marca (o mesmo de src/web/frontend: --destaque)
+
+# As cores fixas do tema «Premiado» (as mesmas de src/web/frontend/src/estilos/_tokens.scss): (claro, escuro)
+_MARCA_FIXAS = dict(
+    fundo=("#F3EFFE", "#0F0A22"), cartao=("#FFFFFF", "#1B1236"), barra=("#FBF9FF", "#150E2C"), borda=("#DDD5F5", "#35295A"),
+    texto=("#1D1240", "#F1ECFF"), suave=("#62597F", "#AA9FCF"), campo=("#F8F6FF", "#130C2A"),
+    acento=("#6A35F5", "#A68BFF"), acento_h=("#5628D8", "#C2AEFF"), link=("#5528D4", "#B9A5FF"),
+    acento_suave=("#E5DCFE", "#2F2160"), sel_menu=("#E9E2FD", "#2A1D52"),
+    ok=("#0B7A5F", "#3FE0B5"), erro=("#C9183A", "#FF7A90"), aviso=("#A05A00", "#FFB454"),
+    visor=("#E8E2F8", "#0D0820"),
+)
+# a faixa do topo, o magenta e as cores dos 4 passos
+_MARCA_EXTRAS = dict(
+    acento2=("#D62B8F", "#FF6FB5"), acento2_h=("#B81E78", "#FF9AC9"),
+    passo1=("#6A35F5", "#A68BFF"), passo2=("#D62B8F", "#FF6FB5"), passo3=("#EC6A08", "#FFA14D"), passo4=("#0E9F84", "#3FE0B5"),
+    banda_a=("#4A1FD6", "#3A1AC0"), banda_b=("#D62B8F", "#C42A92"),
+)
 
 
 # ------------------------------------------------------------------ Windows
@@ -28,10 +50,48 @@ def windows_escuro() -> bool:
     return bool(ambiente.windows_escuro())
 
 
-# ------------------------------------------------------------------ paleta (construir esta em core/tema.py)
+def _escolha() -> str:
+    return os.environ.get("RIFAS_COR_DESTAQUE", "").strip().lower()
+
+
+def marca_ativa() -> bool:
+    """True com as cores da marca (por defeito); False se RIFAS_COR_DESTAQUE pede as do Windows ou uma cor propria."""
+    e = _escolha()
+    return not (e == "windows" or cor_valida(e))
+
+
+def _paleta_pedida() -> list:
+    e = _escolha()
+    if e == "windows":
+        return paleta_windows()
+    rgb = cor_valida(e)
+    return paleta_de_cor(rgb) if rgb else paleta_de_cor(MARCA)
+
+
+def _par_rgb(par: tuple) -> tuple:
+    return _rgb(par[0]), _rgb(par[1])
+
+
+def _paleta_completa() -> dict:
+    p = construir(_paleta_pedida())
+    if marca_ativa():
+        p.update(_MARCA_FIXAS)
+        p["sobre_acento"] = tuple(texto_sobre(c) for c in _par_rgb(p["acento"]))
+        p.update(_MARCA_EXTRAS)
+    else:                                   # cor do Windows: o magenta e os passos reutilizam o destaque
+        p.update(acento2=p["acento"], acento2_h=p["acento_h"], banda_a=p["acento_h"], banda_b=p["acento"])
+        for i in range(1, 5):
+            p[f"passo{i}"] = p["acento"]
+    p["sobre_acento2"] = tuple(texto_sobre(c) for c in _par_rgb(p["acento2"]))
+    for i in range(1, 5):
+        p[f"sobre_passo{i}"] = tuple(texto_sobre(c) for c in _par_rgb(p[f"passo{i}"]))
+    return p
+
+
+# ------------------------------------------------------------------ paleta
 def atualizar() -> bool:
-    """Le o destaque do Windows e refaz C no proprio objeto. Devolve True se as cores mudaram."""
-    novo = construir(paleta_windows())
+    """Refaz C no proprio objeto (cor da marca, ou do Windows se se pediu). Devolve True se as cores mudaram."""
+    novo = _paleta_completa()
     mudou = novo != dict(C)
     C.clear()
     C.update(novo)
@@ -39,8 +99,8 @@ def atualizar() -> bool:
 
 
 def assinatura() -> tuple:
-    """Muda quando o utilizador troca a cor de destaque do Windows."""
-    return tuple(paleta_windows())
+    """Muda quando o utilizador troca a cor de destaque do Windows (so conta se a app a segue)."""
+    return tuple(paleta_windows()) if _escolha() == "windows" else tuple(_paleta_pedida())
 
 
 def cor_tk(par: tuple) -> str:
