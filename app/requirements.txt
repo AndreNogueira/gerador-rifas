@@ -1,0 +1,13 @@
+# --- a app (todas com licenca permissiva)
+pypdf               # BSD-3-Clause
+pypdfium2           # BSD-3-Clause ou Apache-2.0 (PDFium: BSD-3)
+pillow              # MIT-CMU (HPND)
+customtkinter       # MIT
+# --- so para construir o .exe (ferramentas; nao fazem parte do programa)
+nuitka              # compilador Python->C (AGPL-3.0 a ferramenta; o programa gerado NAO herda a licenca)
+ordered-set
+zstandard
+# --- so para os testes (testes\)
+reportlab           # BSD
+fonttools           # MIT
+psutil              # BSD-3-Clause

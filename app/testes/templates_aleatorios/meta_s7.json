@@ -1,0 +1,13 @@
+{
+ "template": "template_4_por_pagina_4dig_s7.pdf",
+ "algarismos_pdf": "algarismos_s7.pdf",
+ "algarismos_png": "algarismos_s7.png",
+ "n": 4,
+ "ndig": 4,
+ "pagina": "A5 420x595",
+ "grelha": "1x4",
+ "fonte": "times.ttf",
+ "talao": "dir rot=180",
+ "tam_main": 26.0,
+ "tam_talao": 25.7
+}

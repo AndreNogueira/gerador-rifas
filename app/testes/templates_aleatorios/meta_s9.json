@@ -1,0 +1,13 @@
+{
+ "template": "template_12_por_pagina_8dig_s9.pdf",
+ "algarismos_pdf": "algarismos_s9.pdf",
+ "algarismos_png": "algarismos_s9.png",
+ "n": 12,
+ "ndig": 8,
+ "pagina": "Letter 612x792",
+ "grelha": "2x6",
+ "fonte": "tahoma.ttf",
+ "talao": "esq rot=270",
+ "tam_main": 13.8,
+ "tam_talao": 11.4
+}

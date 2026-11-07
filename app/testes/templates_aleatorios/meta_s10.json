@@ -1,0 +1,13 @@
+{
+ "template": "template_1_por_pagina_4dig_s10.pdf",
+ "algarismos_pdf": "algarismos_s10.pdf",
+ "algarismos_png": "algarismos_s10.png",
+ "n": 1,
+ "ndig": 4,
+ "pagina": "A4 595x842",
+ "grelha": "1x1",
+ "fonte": "candara.ttf",
+ "talao": "dir rot=90",
+ "tam_main": 26.0,
+ "tam_talao": 22.3
+}

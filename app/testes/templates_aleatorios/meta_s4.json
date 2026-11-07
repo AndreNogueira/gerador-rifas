@@ -1,0 +1,13 @@
+{
+ "template": "template_14_por_pagina_4dig_s4.pdf",
+ "algarismos_pdf": "algarismos_s4.pdf",
+ "algarismos_png": "algarismos_s4.png",
+ "n": 14,
+ "ndig": 4,
+ "pagina": "A4 595x842",
+ "grelha": "2x7",
+ "fonte": "comic.ttf",
+ "talao": "dir rot=0",
+ "tam_main": 26.0,
+ "tam_talao": 14
+}

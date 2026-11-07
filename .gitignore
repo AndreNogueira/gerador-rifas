@@ -1,0 +1,19 @@
+# Só entram app/, webapp/ e docs/. Tudo o resto da raiz fica de fora (scripts antigos com PyMuPDF, saídas, caches, definições locais).
+/*
+!/.gitignore
+!/app/
+!/webapp/
+!/docs/
+
+# ambientes, caches e resultados de compilação
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+dist/
+build/
+.vite/
+*.log
+
+# PDFs gerados pela app durante os testes (os templates e as letras do Canva em app/testes/ ficam)
+app/testes/teste - *.pdf

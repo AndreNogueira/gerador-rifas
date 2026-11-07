@@ -1,0 +1,13 @@
+{
+ "template": "template_24_por_pagina_4dig_s5.pdf",
+ "algarismos_pdf": "algarismos_s5.pdf",
+ "algarismos_png": "algarismos_s5.png",
+ "n": 24,
+ "ndig": 4,
+ "pagina": "A5 420x595",
+ "grelha": "2x12",
+ "fonte": "tahoma.ttf",
+ "talao": "dir rot=270",
+ "tam_main": 10.7,
+ "tam_talao": 8.8
+}

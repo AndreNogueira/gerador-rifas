@@ -1,0 +1,13 @@
+{
+ "template": "template_2_por_pagina_4dig_s1.pdf",
+ "algarismos_pdf": "algarismos_s1.pdf",
+ "algarismos_png": "algarismos_s1.png",
+ "n": 2,
+ "ndig": 4,
+ "pagina": "A4 paisagem 842x595",
+ "grelha": "1x2",
+ "fonte": "segoeui.ttf",
+ "talao": "esq rot=90",
+ "tam_main": 26.0,
+ "tam_talao": 21.3
+}

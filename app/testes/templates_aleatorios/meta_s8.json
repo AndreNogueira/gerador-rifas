@@ -1,0 +1,13 @@
+{
+ "template": "template_5_por_pagina_6dig_s8.pdf",
+ "algarismos_pdf": "algarismos_s8.pdf",
+ "algarismos_png": "algarismos_s8.png",
+ "n": 5,
+ "ndig": 6,
+ "pagina": "A4 paisagem 842x595",
+ "grelha": "2x3",
+ "fonte": "tahoma.ttf",
+ "talao": "esq rot=270",
+ "tam_main": 20.8,
+ "tam_talao": 17.7
+}
