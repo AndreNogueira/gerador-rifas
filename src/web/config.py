@@ -5,6 +5,7 @@ O servico e PUBLICO e sem palavra-passe: os limites abaixo sao a defesa contra a
 from __future__ import annotations
 
 import os
+import re
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]            # raiz do repositorio (ou /repo no contentor)
@@ -93,3 +94,13 @@ def espera_cancelar_s() -> float:
         return max(0.0, float(os.environ.get("CANCELAR_ESPERA_S", "3")))
     except ValueError:
         return 3.0
+
+
+def url_publica() -> str:
+    """O URL publico do site (sem barra final), para o canonico, o Open Graph e o sitemap. PUBLIC_URL; no Render, o RENDER_EXTERNAL_URL
+    que o proprio Render define serve de reserva. Vazio = usar o do pedido (so em desenvolvimento)."""
+    for nome in ("PUBLIC_URL", "RENDER_EXTERNAL_URL"):
+        v = os.environ.get(nome, "").strip().rstrip("/")
+        if re.fullmatch(r"https?://[A-Za-z0-9.\-]+(:\d+)?", v):
+            return v
+    return ""
