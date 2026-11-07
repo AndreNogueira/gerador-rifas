@@ -77,14 +77,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'डाउनलोड',
-    'web_senha': 'पासवर्ड',
-    'web_entrar': 'साइन इन',
-    'web_senha_errada': 'गलत पासवर्ड।',
     'web_demasiado_grande': 'फ़ाइल सीमा ({mb} MB) से बड़ी है।',
     'web_ocupado': 'एक जनरेशन पहले से चल रही है। थोड़ी देर बाद फिर कोशिश करें।',
     'web_voltar': 'वापस',
     'web_ficheiros_gerados': 'बनाए गए PDF',
     'web_nova_janela': 'नई विंडो में खोलें',
     'web_tema_auto': 'स्वचालित',
+    'web_sessao_expirada': 'सत्र समाप्त हो गया (या सर्वर पुनः आरंभ हुआ)। कृपया फ़ाइलें फिर से अपलोड करें।',
+    'web_erro_rede': 'सर्वर से संपर्क नहीं हो सका। कनेक्शन जाँचें और फिर प्रयास करें।',
 })
 T.update({'web_demasiados': 'प्रति अनुरोध अधिकतम {max} नंबर।'})

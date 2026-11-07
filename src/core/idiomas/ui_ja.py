@@ -76,14 +76,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'ダウンロード',
-    'web_senha': 'パスワード',
-    'web_entrar': 'ログイン',
-    'web_senha_errada': 'パスワードが違います。',
     'web_demasiado_grande': 'ファイルが上限（{mb} MB）を超えています。',
     'web_ocupado': 'すでに生成中です。しばらくしてからもう一度お試しください。',
     'web_voltar': '戻る',
     'web_ficheiros_gerados': '生成した PDF',
     'web_nova_janela': '新しいウィンドウで開く',
     'web_tema_auto': '自動',
+    'web_sessao_expirada': 'セッションの有効期限が切れました（またはサーバーが再起動されました）。ファイルをもう一度アップロードしてください。',
+    'web_erro_rede': 'サーバーに接続できませんでした。接続を確認して、もう一度お試しください。',
 })
 T.update({'web_demasiados': '1 回につき最大 {max} 件の番号です。'})

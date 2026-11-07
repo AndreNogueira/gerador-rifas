@@ -46,7 +46,7 @@ tutorial com as imagens/vídeos já feitos (`assets/ajuda`, `assets/video`); bot
 Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizador, avisos e confirmações iguais.
 
 ## 5. Segurança e limites (importante: recebemos ficheiros de desconhecidos)
-- Limites: tamanho do upload (ex. 25 MB), nº máximo de números por pedido (ex. 100 000), tempo máximo por trabalho, 1 trabalho
+- Limites: tamanho do upload (ex. 25 MB), nº máximo de números por pedido (30 000 por defeito, medido no Render: ver `docs/MIGRATION_PLAN.md` §10), tempo máximo por trabalho, 1 trabalho
   por sessão, limite de pedidos por IP.
 - Validar tipo real (`%PDF-`, PNG/JPG), nunca confiar em nomes (`nome_seguro`), sem caminhos fornecidos pelo cliente.
 - PDFs maliciosos: motor corre em processo isolado com limite de memória/tempo; contentor sem root e sem rede de saída.
@@ -84,7 +84,7 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
   Consequência: o visor passa a ser um componente React sobre PDF.js (`pdfjs-dist`, Apache-2.0) e o PNG a 200 dpi deixa de existir.
 
 - **Alojamento:** **Render** (Web Service gratuito, Docker). Consequências de desenho:
-  - **512 MB de RAM** e CPU partilhada → teto de números por pedido (≈ 100 000), geração em *streaming* para o ZIP, 1 trabalho de cada vez,
+  - **512 MB de RAM** e CPU partilhada → teto de números por pedido (30 000), geração em *streaming* para o ZIP, 1 trabalho de cada vez,
     1 processo de trabalho para o PDFium; ficheiros só em disco efémero (apagados após ~30 min; perdem-se ao reiniciar).
   - **Adormece após 15 min** sem uso (arranque ≈ 1 min): a página mostra «a acordar o servidor…» (frontend serve-se de ficheiros estáticos).
   - **Sem autenticação** (serviço público): nada de `ACCESS_PASSWORD`; a proteção é a dos limites acima.
@@ -98,12 +98,13 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
 + os scripts `teste_folha`/`teste_canva`/`teste_5000`/`teste_digitos` passam em Windows e em Linux (`docker\testes_linux.ps1`, Python 3.12 e 3.13); `src/core` sem imports
 de UI/Windows (verificado por teste). Detalhe: `docs/MIGRATION_PLAN.md` §8.
 
-**Esqueleto feito (React).** `src/web/app.py` (FastAPI: `/health`, `/api/linguas`, `/api/textos/{lingua}`, estáticos com *fallback* para o `index.html`, `/api/...` desconhecido = 404 JSON), `src/web/frontend/` (React 19.3 + Vite 8 + TS 7; carrega as línguas e os textos
-da API; os 4 passos só como títulos), Dockerfile (`node:26-slim` → `python:3.15-slim`, sem Node na imagem final, utilizador sem root, `HEALTHCHECK`) e CI (pytest 3.13/3.15 em Linux e Windows, frontend, Docker). 483 testes pytest em 3.15 e 441 em 3.13; 8 do Vitest.
-O protótipo em NiceGUI (5 ecrãs completos, 63 testes) ficou arquivado no ramo local `nicegui-prototipo` como referência (por exemplo, o fluxo de sessões/geração em `src/web/estado.py` e `motor.py`).
+**Webapp funcional (2026-11-07).** `src/web` (FastAPI) + `src/web/frontend` (React 19.3, Vite 8, TypeScript 7): sessões sem contas (`/api/sessoes/{id}/...`), upload do template e dos algarismos (corpo em bruto com teto de tamanho), resumo e folha
+calculados pelo servidor a cada tecla, pré-visualização (PDF de 1 página no visor do browser), gerar com progresso (consulta de 500 ms), cancelar, descarregar PDF/ZIP em *streaming*, «Limpar tudo», tutorial, vídeo, «Acerca de», 18 línguas, tema claro/escuro.
+O motor corre num **processo à parte** (`trabalhos.py`): cache do último `Preparado`, progresso em ficheiro, cancelar por ficheiro e, se não parar em 3 s (gravar/verificar não consultam o cancelamento), o processo é morto e recriado; também se recria se morrer (OOM) ou passar de 10 min.
+Defesas do serviço público: teto de upload e de números por pedido, uma geração de cada vez (as outras sessões recebem logo «ocupado»), pedidos por IP, máximo de sessões, espaço por sessão, limpeza periódica.
+Verificado: 574 testes pytest (Python 3.15), 27 do Vitest, Biome e `tsc` 7 limpos; no browser real (Playwright) todos os ecrãs, upload, pré-visualização com números novos, gerar (ZIP de 63 PDFs, 3 754 páginas conferidas com o pypdf), cancelar, «Limpar tudo», erros (não-PDF, algarismos inválidos,
+máximo não múltiplo, De > Até), sessão perdida, recarregar, troca de língua a meio, tema escuro e telemóvel; e num contentor com `--memory=512m --cpus=0.1`: memória máx. ≈ 230 MiB; 5 000 números ≈ 25 s; 20 000 ≈ 85 s; 1.º «preparar» dos algarismos ≈ 10 s.
+O protótipo em NiceGUI ficou arquivado no ramo local `nicegui-prototipo`.
 
-**Próximo: Fase 1 (API)** em `src/web/`: FastAPI com sessões, upload (`preparar_de_bytes`), análise do template, folha (`escolha_folha`), pré-visualização (`pdf_da_previa`),
-trabalhos num processo de trabalho isolado (1 PDFium), progresso por SSE, ZIP; limites contra abuso (tamanho, nº de números, tempo, por IP; o serviço é público). Depois o frontend (Fase 2).
-
-**Atenção ao começar a geração:** o plano e o `CLAUDE.md` exigem o PDFium num **processo** de trabalho (pool de processos, `multiprocessing.Event` para cancelar, `Preparado` recriado dentro do worker porque não é serializável); o protótipo NiceGUI usava um só *thread* (`ThreadPoolExecutor(1)`),
-que serve para um utilizador mas não dá isolamento de memória/tempo para os 512 MB do Render. Não copiar esse `motor.py` sem trocar o *thread* por um processo.
+**Falta:** `RENDER_DEPLOY_HOOK_URL` (deploy automático); guardar os algarismos entre sessões (no browser, p.ex.); refazer as capturas do tutorial para a webapp (Playwright); `HOST` seguro/`FORWARDED_ALLOW_IPS` confirmados no Render; contas e pagamento quando for pago;
+isolar melhor a memória do processo do motor (hoje só o limite do contentor).

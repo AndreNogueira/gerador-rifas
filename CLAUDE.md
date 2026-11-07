@@ -24,7 +24,7 @@ verificação) passa a ser **um só código** usado pelas duas. Serviço **públ
 - **Testes:** pytest (backend/core), Vitest + Testing Library (frontend), Playwright (e2e, mais tarde).
 - **Docker** multi-stage (`node:26.13.0-slim` faz `pnpm teste` e `pnpm build`; `python:3.15.2-slim` + uv 0.13.7 servem API + estáticos, sem Node; contentor sem root; tags exatas). **GitHub Actions** (`.github/workflows/`): `ci.yml` (ruff, pytest em Linux/Windows × Python 3.13/3.15, frontend, imagem Docker) e `deploy.yml` (só em push para `main` **depois** de o CI passar, via `workflow_run`: publica em `ghcr.io/<dono>/<repo>` e chama o *deploy hook* do Render com `imgURL`). Credenciais só como *secrets* do GitHub (`RENDER_DEPLOY_HOOK_URL`; o `GITHUB_TOKEN` é automático); a lista e onde os obter está no `README.md`. Actions em tag *major* (`checkout@v7`, `setup-node@v7`, `pnpm/action-setup@v6`, `docker/*`) exceto `astral-sh/setup-uv`, que **já não tem tag flutuante** e usa a versão exata (`@v10.3.3`; o `v10` não resolve — foi o que fez falhar o 1.º CI).
 - **Alojamento: Render** (web service gratuito, Docker): 512 MB RAM, adormece aos 15 min, disco efémero. Deploy a cada push para `main`,
-  **só depois do CI passar**. Teto de ~100 000 números por pedido, ZIP em *streaming*, 1 trabalho de cada vez, PDFium em processo isolado.
+  **só depois do CI passar**. Teto de 30 000 números por pedido (medido: com 0.1 CPU, 20 000 números ≈ 85 s e 100 000 vários minutos), ZIP em *streaming*, 1 trabalho de cada vez, PDFium em processo isolado.
 - **Dependências do core:** `pypdf`, `pypdfium2`, `pillow` (todas com rodas Linux). `customtkinter`, `nuitka` e afins ficam só em `app/`.
 
 ## Estrutura de pastas
@@ -41,17 +41,21 @@ src/core/    lógica pura, SEM UI nem Windows (pacote `core`, usado pela app Win
   __main__.py    `python -m core <exemplos> <saida>`: auto-teste sem janela (CI/Linux)
   __init__.py    reexporta o motor: `import core; core.preparar(...)` e `from core import i18n, pedido, ...`
 src/web/     API FastAPI e frontend. Só chama `core` (um teste proíbe imports de pypdf/PIL/Tk aqui). `python -m src.web` (PORT, por omissão 8080)
-  app.py         `criar_app()`: /health, /api/linguas, /api/textos/{lingua}, estáticos do frontend · config.py  variáveis de ambiente
-  frontend/      React + Vite + TS (pnpm): `src/api.ts` (cliente), `src/i18n.tsx` (textos vindos da API), `src/App.tsx`; `dist/` (compilado, ignorado pelo git) é o que o FastAPI serve
+  app.py         `criar_app()`: /health, /api/linguas, /api/textos/{lingua}, ciclo de vida (limpeza periodica, motor aquecido), estaticos do frontend e de `app/assets` (/ajuda, /videos)
+  rotas.py       API das sessoes (`/api/sessoes/{id}/...`): template, algarismos, calcular, previa, gerar, trabalho, cancelar, descarregar, limpar · rotas_ajuda.py  /api/tutorial e recortes
+  sessoes.py     estado de cada sessao + a vista em JSON ja TRADUZIDA (`vista`, `calcular`) · modelos.py  os JSON (Pydantic) e `ErroApi` · limites.py  teto do corpo dos uploads e pedidos por IP · config.py  variaveis de ambiente
+  trabalhos.py   o motor num PROCESSO isolado (`ProcessPoolExecutor(1)`, spawn): cache do ultimo `Preparado`, progresso em `progresso.json`, cancelar com o ficheiro `cancelar`, mata e recria o processo (OOM, tempo, cancelar tardio)
+  frontend/      React + Vite + TS (pnpm): `src/api.ts` (cliente), `i18n.tsx`, `sessao.tsx` (sessao + polling), `formulario.ts`, `Gerador.tsx` + `cartoes.tsx` (ecra principal), `paginas.tsx` (tutorial, video, sobre), `dialogos.tsx`, `rota.tsx` (router minimo), `tema.ts`; `servidor-falso.ts` para os testes; `dist/` (compilado, ignorado pelo git) e o que o FastAPI serve
 tests/       pytest (raiz): testes do core, da API (`test_web_api.py`) e fixtures; os do frontend ficam ao lado do código (`*.test.tsx`)
 app/         app Windows: só interface (Tk/CustomTkinter) e build do .exe. `app/ambiente.py` põe ..\src no sys.path e é o ÚNICO sítio com winreg/ctypes/os.startfile (`SistemaWindows`)
 docs/        análise e planos · webapp/PLANO.md  plano da webapp
 ```
 
 Estado: **Fase 0 feita** (lógica em `src/core`, a app Windows importa de lá; língua por pedido, mensagens estruturadas, entrada por bytes e `pdf_da_previa` existem;
-testes a passar em Windows e em Linux, Python 3.13 e 3.15). **Esqueleto da webapp feito**: API FastAPI com `/health`, `/api/linguas` e `/api/textos/{lingua}`; frontend React que carrega as línguas e os textos da API (os 4 passos só como
-títulos); Dockerfile multi-stage (alvos `testes` e `web`) e CI (pytest 3.13/3.15, frontend, Docker). **Falta (Fase 1 em diante, ver `webapp/PLANO.md`):** sessões, **limites contra abuso (o serviço é público)**, upload, análise, pré-visualização, gerar/cancelar/ZIP,
-**processo isolado para o PDFium** (pool de processos + `multiprocessing.Event`; recriar o `Preparado` no worker), os 4 cartões e o visor, tutorial/vídeo, deploy no Render.
+testes a passar em Windows e em Linux, Python 3.13 e 3.15). **Webapp funcional** (verificada num browser real e num contentor de 512 MB / 0.1 CPU): sessões sem contas, upload do template e dos algarismos, resumo e folha a cada tecla, pré-visualização com números reais, gerar com progresso,
+cancelar, descarregar (PDF ou ZIP em *streaming*), «Limpar tudo», tutorial, vídeo, «Acerca de», 18 línguas e tema claro/escuro. Mesmos 4 passos e as mesmas regras da app Windows (a lógica vem toda de `src/core`). O motor corre num processo à parte.
+**Falta:** secret `RENDER_DEPLOY_HOOK_URL` para o deploy automático (ver `README.md`); guardar os algarismos entre sessões (a app Windows lembra o ficheiro); capturas do tutorial são as da app Windows; sem contas/pagamento (será pago mais tarde).
+**Medido no Render-like (0.1 CPU):** memória máx. ≈ 230 MiB; 5 000 números ≈ 25 s, 20 000 ≈ 85 s; o 1.º «preparar» dos algarismos ≈ 10 s; pré-visualizar ≈ 0,3 s com a cache. Por isso `MAX_NUMEROS` = 30 000.
 Substitutos das dependências do Windows (tabela completa e o que não tem substituto: `docs/MIGRATION_PLAN.md` §9): lingua → `Accept-Language`; registo/tema → CSS do browser;
 `%APPDATA%` → `RIFAS_DADOS`; ficheiros locais → upload + `armazenamento`; `os.startfile` → `saida` (download); `--selftest` → `python -m core`; build do `.exe` → `Dockerfile` + `.github/workflows/ci.yml`.
 O `.gitignore` da raiz só deixa entrar `app/`, `webapp/`, `docs/`, `tests/`, `src/`, `docker/`, `.github/`, `Dockerfile`, `.dockerignore`, `pytest.ini`, `pyproject.toml`, `.python-version`, `uv.lock`, `README.md` e este ficheiro.
@@ -67,8 +71,9 @@ Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import 
 - **Configuração por variáveis de ambiente, sem caminhos absolutos no código** (`pathlib`, relativos a `__file__`). Existem: `RIFAS_LINGUA` (língua por defeito, ganha a tudo),
   `RIFAS_DADOS` (pasta do `config.json`; por defeito `%APPDATA%\GeradorRifas` na app Windows), `RIFAS_FONTES` (letras do sistema, só nos scripts de testes; por defeito `%WINDIR%\Fonts`),
   `RIFAS_ARMAZENAMENTO` (pasta das sessões/uploads/PDFs; por defeito a temporária do sistema), `RIFAS_LIMITE_SESSAO_MB`, `RIFAS_TEMA` (`claro`/`escuro`), `RIFAS_COR_DESTAQUE` (`#RRGGBB`).
-  Webapp (`src/web/config.py`): `PORT` (8080), `HOST` (127.0.0.1; no contentor 0.0.0.0), `RIFAS_FRONTEND` (pasta do frontend compilado; por omissão `src/web/frontend/dist`). Previstas: `SECRET_KEY` (se houver cookies),
-  `MAX_UPLOAD_MB`, `MAX_NUMEROS`, `JOB_TTL_MIN`; valores por defeito seguros. **Sem `ACCESS_PASSWORD`**: o serviço é público, por isso os limites (tamanho, nº de números, 1 geração de cada vez, por IP) passam a ser a defesa.
+  Webapp (`src/web/config.py`): `PORT` (8080), `HOST` (127.0.0.1; no contentor 0.0.0.0), `RIFAS_FRONTEND` (pasta do frontend compilado; por omissão `src/web/frontend/dist`), `RIFAS_ASSETS` (imagens do tutorial e vídeos; `app/assets`),
+  `MAX_UPLOAD_MB` (25), `MAX_NUMEROS` (30 000), `JOB_TTL_MIN` (30), `JOB_MAX_MIN` (10), `MAX_SESSOES` (200), `RIFAS_LIMITE_SESSAO_MB` (300), `RATE_PESADOS_POR_MIN` (30), `RATE_LEVES_POR_MIN` (300), `CANCELAR_ESPERA_S` (3), `FORWARDED_ALLOW_IPS`.
+  **Sem `ACCESS_PASSWORD`**: o serviço é público, por isso os limites (tamanho, nº de números, 1 geração de cada vez, por IP) passam a ser a defesa.
 - **Sem segredos no código nem no repo** (palavra-passe, chaves, certificados privados, `.env`); o `.cer` público é a única exceção. Documentar um `.env.example` sem valores reais.
 - Segurança dos uploads: validar o tipo real (`%PDF-`, PNG/JPG), nunca usar nomes/caminhos do cliente (`core.nome_seguro`), limites de tamanho/números/tempo.
 - **PDFium não é thread-safe** → todas as chamadas ao motor vão para um processo de trabalho (1 processo = 1 PDFium), nunca threads do servidor.
@@ -134,3 +139,13 @@ correr `dist\GeradorRifas.exe --selftest <pasta>`.
 escreve os PDFs → `core.verificar` relê-os. `pdftexto.py` é um interpretador próprio de *content streams* PDF. Nomes privados (`core._arrumar`, `_f`, …) estão
 reexportados em `core/__init__.py` só porque os testes os usam; as funções de imagem (`_segmentar`, …) acedem-se por `core.motor`. API baseada em `Path` (adaptar a
 bytes/temporários), cancelar = `threading.Event` (em processo de trabalho precisa de evento de `multiprocessing`). Para o resto ver `docs/MIGRATION_PLAN.md` §3.
+
+## Armadilhas da webapp
+
+- **Processo do motor (`trabalhos.py`):** usa `spawn`, que reimporta o módulo principal: `src/web/__main__.py` tem de ficar leve (importações pesadas dentro de `iniciar()`) e qualquer script que arranque a app/`Motor` precisa de `if __name__ == "__main__":`.
+  Só atravessam o processo dados simples (um `ErroRifas` com parâmetros não sobrevive ao pickle: viaja como tuplo). No Windows `os.replace` do `progresso.json` pode falhar se o servidor o estiver a ler: é só informativo, nunca derruba a geração.
+- **Cancelar:** o motor só consulta o cancelamento enquanto monta páginas; gravar/verificar não. Por isso `rotas._cancelar_a_forca` mata o processo passados `CANCELAR_ESPERA_S` s e `_geracao` trata o `BrokenProcessPool` como «cancelado».
+- **Textos:** todos os que o utilizador lê saem do servidor já traduzidos (cabeçalho `X-Lingua`); as chaves novas custam 18 traduções e mexem na contagem de `tests/test_i18n.py`. A descrição dos algarismos calcula-se nas 18 línguas no worker (`trabalhos._descricoes`).
+- **Testes do frontend:** `userEvent.upload` respeita o atributo `accept` do `<input>` (um PNG num campo `.pdf` nem chega a ser enviado); o servidor falso (`servidor-falso.ts`) tem de ser atualizado quando a API muda.
+- **Neste ambiente:** não editar ficheiros UTF-8 com `Get-Content`/`Set-Content` do PowerShell 5.1 (lê em cp1252 e estraga os acentos, acrescentando BOM): usar Edit/Write ou Python. Heredocs do Bash com crases ou muitas aspas falham: usar Write.
+  Para parar um servidor de teste, matar só o PID da porta (`Get-NetTCPConnection -LocalPort`) e a sua árvore (`taskkill /T`), nunca processos Python em geral.

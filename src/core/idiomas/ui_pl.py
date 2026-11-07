@@ -84,14 +84,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'Pobierz',
-    'web_senha': 'Hasło',
-    'web_entrar': 'Zaloguj',
-    'web_senha_errada': 'Nieprawidłowe hasło.',
     'web_demasiado_grande': 'Plik jest większy niż limit ({mb} MB).',
     'web_ocupado': 'Trwa już generowanie. Spróbuj ponownie za chwilę.',
     'web_voltar': 'Wstecz',
     'web_ficheiros_gerados': 'Wygenerowane pliki PDF',
     'web_nova_janela': 'Otwórz w nowym oknie',
     'web_tema_auto': 'Automatycznie',
+    'web_sessao_expirada': 'Sesja wygasła (lub serwer został uruchomiony ponownie). Wczytaj pliki jeszcze raz.',
+    'web_erro_rede': 'Nie można połączyć się z serwerem. Sprawdź połączenie i spróbuj ponownie.',
 })
 T.update({'web_demasiados': 'Maksymalnie {max} numerów na jedno zlecenie.'})

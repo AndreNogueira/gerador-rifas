@@ -74,14 +74,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': '下载',
-    'web_senha': '密码',
-    'web_entrar': '登录',
-    'web_senha_errada': '密码错误。',
     'web_demasiado_grande': '文件超过大小限制（{mb} MB）。',
     'web_ocupado': '已有生成任务在进行，请稍后再试。',
     'web_voltar': '返回',
     'web_ficheiros_gerados': '已生成的 PDF',
     'web_nova_janela': '在新窗口中打开',
     'web_tema_auto': '自动',
+    'web_sessao_expirada': '会话已过期（或服务器已重启）。请重新上传文件。',
+    'web_erro_rede': '无法连接到服务器。请检查网络后重试。',
 })
 T.update({'web_demasiados': '每次最多 {max} 个号码。'})

@@ -296,5 +296,7 @@ Pedido: escolher entre React e Angular e usar **sempre as últimas versões**. O
 - A app Windows (`app/`: Python 3.13, Nuitka, CustomTkinter) **não** foi atualizada: o build do `.exe` demora 10–20 min e tem de manter o `--selftest` igual. Decisão em aberto: subi-la para 3.15 quando o Nuitka e o CustomTkinter o suportarem.
 - Antes de a imagem do Render usar Python 3.15 convém confirmar que o Render aceita a imagem (é só Docker, não deve haver problema) e que a memória em 512 MB chega (ainda por medir com 100 000 números).
 
+**Atualização:** a webapp completa (sessões, upload, gerar, cancelar, descarregar, tutorial, vídeo) está feita e medida num contentor de 512 MB / 0.1 CPU (memória máx. ≈ 230 MiB; 20 000 números ≈ 85 s): ver `webapp/PLANO.md` §8 e `CLAUDE.md`.
+
 **Estado do esqueleto (verificado):** 483 testes pytest em Python 3.15 e 441 em 3.13; 8 do Vitest; `tsc` 7.0.2 sem erros; Biome sem avisos; `docker build --target testes` e `--target web` passam; a imagem fica *healthy*, corre sem root,
 sem Node, 373 MB; no browser real a língua muda para japonês e fica guardada. O protótipo NiceGUI (que já tinha os 5 ecrãs) ficou arquivado no ramo local `nicegui-prototipo`.

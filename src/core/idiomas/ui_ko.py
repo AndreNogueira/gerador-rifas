@@ -76,14 +76,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': '다운로드',
-    'web_senha': '비밀번호',
-    'web_entrar': '로그인',
-    'web_senha_errada': '비밀번호가 올바르지 않습니다.',
     'web_demasiado_grande': '파일이 제한({mb} MB)보다 큽니다.',
     'web_ocupado': '이미 생성 중입니다. 잠시 후 다시 시도하세요.',
     'web_voltar': '뒤로',
     'web_ficheiros_gerados': '생성된 PDF',
     'web_nova_janela': '새 창에서 열기',
     'web_tema_auto': '자동',
+    'web_sessao_expirada': '세션이 만료되었습니다(또는 서버가 다시 시작되었습니다). 파일을 다시 업로드하세요.',
+    'web_erro_rede': '서버에 연결할 수 없습니다. 연결을 확인하고 다시 시도하세요.',
 })
 T.update({'web_demasiados': '요청당 최대 {max}개의 번호입니다.'})

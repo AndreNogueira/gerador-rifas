@@ -83,14 +83,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'Descarcă',
-    'web_senha': 'Parolă',
-    'web_entrar': 'Autentificare',
-    'web_senha_errada': 'Parolă greșită.',
     'web_demasiado_grande': 'Fișierul depășește limita ({mb} MB).',
     'web_ocupado': 'O generare este deja în curs. Încercați din nou peste puțin timp.',
     'web_voltar': 'Înapoi',
     'web_ficheiros_gerados': 'PDF-uri generate',
     'web_nova_janela': 'Deschide într-o fereastră nouă',
     'web_tema_auto': 'Automat',
+    'web_sessao_expirada': 'Sesiunea a expirat (sau serverul a fost repornit). Încarcă din nou fișierele.',
+    'web_erro_rede': 'Nu s-a putut contacta serverul. Verifică conexiunea și încearcă din nou.',
 })
 T.update({'web_demasiados': 'Cel mult {max} de numere per cerere.'})

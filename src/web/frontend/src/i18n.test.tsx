@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { App } from "./App";
-import { ProvedorI18n, traduzir } from "./i18n";
+import { ProvedorI18n, traduzir, useI18n } from "./i18n";
+import { ServidorFalso } from "./servidor-falso";
 
 describe("traduzir", () => {
   const textos = { ola: "Olá {nome}, tem {n} novas", simples: "sem parâmetros" };
@@ -22,84 +22,37 @@ describe("traduzir", () => {
   });
 });
 
-const TEXTOS: Record<string, Record<string, string>> = {
-  pt: {
-    app_nome: "Gerador de Rifas",
-    m_idioma: "Idioma",
-    c1_titulo: "Template (PDF)",
-    c2_titulo: "Algarismos",
-    c3_titulo: "Números",
-    c4_titulo: "Destino",
-    previa_titulo: "Pré-visualização",
-    previa_vazio: "vazio",
-    previa: "Pré-visualizar",
-    gerar: "Gerar PDFs",
-  },
-  en: {
-    app_nome: "Raffle Generator",
-    m_idioma: "Language",
-    c1_titulo: "Template (PDF)",
-    c2_titulo: "Digits",
-    c3_titulo: "Numbers",
-    c4_titulo: "Destination",
-    previa_titulo: "Preview",
-    previa_vazio: "empty",
-    previa: "Preview",
-    gerar: "Generate PDFs",
-  },
-};
-
-function resposta(corpo: unknown, estado = 200) {
-  return Promise.resolve(new Response(JSON.stringify(corpo), { status: estado }));
-}
-
-function comApi() {
-  vi.stubGlobal(
-    "fetch",
-    vi.fn((url: string) => {
-      if (url === "/health") return resposta({ estado: "ok", versao: "3.0.0" });
-      if (url === "/api/linguas")
-        return resposta({
-          por_defeito: "pt",
-          linguas: [
-            { codigo: "pt", nome: "Português" },
-            { codigo: "en", nome: "English" },
-          ],
-        });
-      const m = /^\/api\/textos\/(\w+)$/.exec(url);
-      if (m?.[1] && TEXTOS[m[1]]) return resposta({ lingua: m[1], textos: TEXTOS[m[1]] });
-      return resposta({ detail: "não" }, 404);
-    }),
+function Amostra() {
+  const { t, lingua, linguas, mudarLingua } = useI18n();
+  return (
+    <>
+      <h1>{t("app_nome")}</h1>
+      <select value={lingua} onChange={(e) => mudarLingua(e.target.value)} aria-label="lingua">
+        {linguas.map((l) => (
+          <option key={l.codigo} value={l.codigo}>
+            {l.nome}
+          </option>
+        ))}
+      </select>
+    </>
   );
 }
 
-function renderApp() {
-  render(
-    <ProvedorI18n>
-      <App />
-    </ProvedorI18n>,
-  );
-}
-
-beforeEach(() => {
-  localStorage.clear();
-  comApi();
-});
-afterEach(() => vi.unstubAllGlobals());
-
-describe("App", () => {
-  it("mostra os 4 passos na língua do browser e a versão da API", async () => {
-    renderApp();
-    expect(await screen.findByRole("heading", { name: "Gerador de Rifas" })).toBeInTheDocument();
-    for (const t of ["Template (PDF)", "Algarismos", "Números", "Destino"])
-      expect(screen.getByText(t)).toBeInTheDocument();
-    expect(await screen.findByText("v3.0.0")).toBeInTheDocument();
+describe("ProvedorI18n", () => {
+  beforeEach(() => {
+    localStorage.clear();
+    new ServidorFalso().instalar();
   });
+  afterEach(() => vi.unstubAllGlobals());
 
-  it("muda de língua e lembra-se dela", async () => {
-    renderApp();
-    await screen.findByRole("heading", { name: "Gerador de Rifas" });
-    await userEvent.selectOptions(screen.getByTestId("lingua"), "en");
+  it("usa a língua do browser e muda de língua guardando a escolha", async () => {
+    render(
+      <ProvedorI18n>
+        <Amostra />
+      </ProvedorI18n>,
+    );
+    expect(await screen.findByRole("heading", { name: "Gerador de Rifas" })).toBeInTheDocument();
+    await userEvent.selectOptions(screen.getByLabelText("lingua"), "en");
     expect(await screen.findByRole("heading", { name: "Raffle Generator" })).toBeInTheDocument();
     expect(document.documentElement.lang).toBe("en");
     await waitFor(() => expect(localStorage.getItem("rifas.lingua")).toBe("en"));
@@ -107,16 +60,36 @@ describe("App", () => {
 
   it("usa a língua guardada em vez da do browser", async () => {
     localStorage.setItem("rifas.lingua", "en");
-    renderApp();
+    render(
+      <ProvedorI18n>
+        <Amostra />
+      </ProvedorI18n>,
+    );
     expect(await screen.findByRole("heading", { name: "Raffle Generator" })).toBeInTheDocument();
+  });
+
+  it("ignora uma língua guardada que já não existe", async () => {
+    localStorage.setItem("rifas.lingua", "klingon");
+    render(
+      <ProvedorI18n>
+        <Amostra />
+      </ProvedorI18n>,
+    );
+    expect(await screen.findByRole("heading", { name: "Gerador de Rifas" })).toBeInTheDocument();
   });
 
   it("mostra o erro se a API falhar", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn(() => resposta({ detail: "servidor em baixo" }, 503)),
+      vi.fn(() =>
+        Promise.resolve(new Response(JSON.stringify({ detail: "servidor em baixo" }), { status: 503 })),
+      ),
     );
-    renderApp();
+    render(
+      <ProvedorI18n>
+        <Amostra />
+      </ProvedorI18n>,
+    );
     expect(await screen.findByRole("alert")).toHaveTextContent("servidor em baixo");
   });
 });

@@ -83,14 +83,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'Download',
-    'web_senha': 'Password',
-    'web_entrar': 'Sign in',
-    'web_senha_errada': 'Wrong password.',
     'web_demasiado_grande': 'The file is larger than the limit ({mb} MB).',
     'web_ocupado': 'Another generation is in progress. Try again in a moment.',
     'web_voltar': 'Back',
     'web_ficheiros_gerados': 'Generated PDFs',
     'web_nova_janela': 'Open in a new window',
     'web_tema_auto': 'Automatic',
+    'web_sessao_expirada': 'The session expired (or the server restarted). Please upload your files again.',
+    'web_erro_rede': 'Could not reach the server. Check your connection and try again.',
 })
 T.update({'web_demasiados': 'At most {max} numbers per request.'})

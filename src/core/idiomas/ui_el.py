@@ -83,14 +83,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'Λήψη',
-    'web_senha': 'Κωδικός πρόσβασης',
-    'web_entrar': 'Σύνδεση',
-    'web_senha_errada': 'Λάθος κωδικός.',
     'web_demasiado_grande': 'Το αρχείο υπερβαίνει το όριο ({mb} MB).',
     'web_ocupado': 'Μια δημιουργία βρίσκεται ήδη σε εξέλιξη. Δοκιμάστε ξανά σε λίγο.',
     'web_voltar': 'Πίσω',
     'web_ficheiros_gerados': 'PDF που δημιουργήθηκαν',
     'web_nova_janela': 'Άνοιγμα σε νέο παράθυρο',
     'web_tema_auto': 'Αυτόματο',
+    'web_sessao_expirada': 'Η συνεδρία έληξε (ή ο διακομιστής επανεκκινήθηκε). Ανεβάστε ξανά τα αρχεία σας.',
+    'web_erro_rede': 'Δεν ήταν δυνατή η επικοινωνία με τον διακομιστή. Ελέγξτε τη σύνδεση και δοκιμάστε ξανά.',
 })
 T.update({'web_demasiados': 'Το πολύ {max} αριθμοί ανά αίτημα.'})

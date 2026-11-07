@@ -84,14 +84,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'Herunterladen',
-    'web_senha': 'Passwort',
-    'web_entrar': 'Anmelden',
-    'web_senha_errada': 'Falsches Passwort.',
     'web_demasiado_grande': 'Die Datei ist größer als das Limit ({mb} MB).',
     'web_ocupado': 'Es läuft bereits eine Erzeugung. Bitte gleich noch einmal versuchen.',
     'web_voltar': 'Zurück',
     'web_ficheiros_gerados': 'Erzeugte PDFs',
     'web_nova_janela': 'In neuem Fenster öffnen',
     'web_tema_auto': 'Automatisch',
+    'web_sessao_expirada': 'Die Sitzung ist abgelaufen (oder der Server wurde neu gestartet). Bitte lade die Dateien erneut hoch.',
+    'web_erro_rede': 'Der Server ist nicht erreichbar. Prüfe die Verbindung und versuche es erneut.',
 })
 T.update({'web_demasiados': 'Höchstens {max} Nummern pro Auftrag.'})

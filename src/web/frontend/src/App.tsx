@@ -1,58 +1,54 @@
 import { useEffect, useState } from "react";
 import { api } from "./api";
-import { useI18n } from "./i18n";
+import { Cabecalho } from "./Cabecalho";
+import { ProvedorDialogos } from "./dialogos";
+import { useFormulario } from "./formulario";
+import { Gerador } from "./Gerador";
+import { Sobre, Tutorial, Video } from "./paginas";
+import { useLocalizacao } from "./rota";
+import { ProvedorSessao, useSessao } from "./sessao";
+import { useTema } from "./tema";
 
-/** Os 4 passos da app Windows. Por agora só os títulos: os cartões a sério vêm nas fases seguintes (ver webapp/PLANO.md). */
-const PASSOS = ["c1_titulo", "c2_titulo", "c3_titulo", "c4_titulo"] as const;
-
-export function App() {
-  const { t, lingua, linguas, mudarLingua } = useI18n();
-  const [versao, setVersao] = useState<string | null>(null);
+function Aplicacao() {
+  const [tema, mudarTema] = useTema();
+  const [versao, setVersao] = useState("");
+  const caminho = useLocalizacao().split("?")[0];
+  const { sessao } = useSessao();
+  // o formulário vive aqui para não se perder ao ir ao tutorial e voltar
+  const formulario = useFormulario(sessao);
 
   useEffect(() => {
     api
       .saude()
       .then((s) => setVersao(s.versao))
-      .catch(() => setVersao(null));
+      .catch(() => setVersao(""));
   }, []);
 
   return (
     <>
-      <header className="topo">
-        <h1>{t("app_nome")}</h1>
-        <label>
-          {t("m_idioma")}{" "}
-          <select value={lingua} onChange={(e) => mudarLingua(e.target.value)} data-testid="lingua">
-            {linguas.map((l) => (
-              <option key={l.codigo} value={l.codigo}>
-                {l.nome}
-              </option>
-            ))}
-          </select>
-        </label>
-      </header>
+      <Cabecalho tema={tema} mudarTema={mudarTema} />
       <main className="conteudo">
-        <ol className="passos">
-          {PASSOS.map((chave, i) => (
-            <li key={chave} className="cartao">
-              <span className="numero">{i + 1}</span> {t(chave)}
-            </li>
-          ))}
-        </ol>
-        <section className="visor" aria-label={t("previa_titulo")}>
-          <h2>{t("previa_titulo")}</h2>
-          <p>{t("previa_vazio")}</p>
-        </section>
-        <div className="acoes">
-          <button type="button" disabled>
-            {t("previa")}
-          </button>
-          <button type="button" disabled>
-            {t("gerar")}
-          </button>
-        </div>
+        {caminho === "/tutorial" ? (
+          <Tutorial />
+        ) : caminho === "/video" ? (
+          <Video />
+        ) : caminho === "/sobre" ? (
+          <Sobre versao={versao} />
+        ) : (
+          <Gerador {...formulario} />
+        )}
       </main>
       {versao && <footer className="rodape">v{versao}</footer>}
     </>
+  );
+}
+
+export function App() {
+  return (
+    <ProvedorDialogos>
+      <ProvedorSessao>
+        <Aplicacao />
+      </ProvedorSessao>
+    </ProvedorDialogos>
   );
 }

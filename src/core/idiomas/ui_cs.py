@@ -82,14 +82,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'Stáhnout',
-    'web_senha': 'Heslo',
-    'web_entrar': 'Přihlásit',
-    'web_senha_errada': 'Nesprávné heslo.',
     'web_demasiado_grande': 'Soubor je větší než limit ({mb} MB).',
     'web_ocupado': 'Generování již probíhá. Zkuste to za chvíli znovu.',
     'web_voltar': 'Zpět',
     'web_ficheiros_gerados': 'Vygenerované PDF',
     'web_nova_janela': 'Otevřít v novém okně',
     'web_tema_auto': 'Automaticky',
+    'web_sessao_expirada': 'Relace vypršela (nebo se server restartoval). Nahrajte soubory znovu.',
+    'web_erro_rede': 'Server není dostupný. Zkontrolujte připojení a zkuste to znovu.',
 })
 T.update({'web_demasiados': 'Nejvýše {max} čísel na jednu zakázku.'})

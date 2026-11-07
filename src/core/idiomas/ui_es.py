@@ -84,14 +84,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'Descargar',
-    'web_senha': 'Contraseña',
-    'web_entrar': 'Entrar',
-    'web_senha_errada': 'Contraseña incorrecta.',
     'web_demasiado_grande': 'El archivo supera el límite ({mb} MB).',
     'web_ocupado': 'Ya hay una generación en curso. Inténtelo de nuevo en un momento.',
     'web_voltar': 'Volver',
     'web_ficheiros_gerados': 'PDF generados',
     'web_nova_janela': 'Abrir en una ventana nueva',
     'web_tema_auto': 'Automático',
+    'web_sessao_expirada': 'La sesión ha caducado (o el servidor se ha reiniciado). Vuelve a cargar los archivos.',
+    'web_erro_rede': 'No se pudo contactar con el servidor. Comprueba la conexión e inténtalo de nuevo.',
 })
 T.update({'web_demasiados': 'Como máximo {max} números por pedido.'})

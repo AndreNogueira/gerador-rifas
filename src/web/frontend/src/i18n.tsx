@@ -1,5 +1,5 @@
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from "react";
-import { api, type Lingua } from "./api";
+import { api, definirLingua, type Lingua } from "./api";
 
 export type Params = Record<string, string | number>;
 
@@ -15,6 +15,7 @@ export function traduzir(textos: Record<string, string>, chave: string, params?:
 
 interface Contexto {
   t: (chave: string, params?: Params) => string;
+  /** A língua dos textos que já chegaram (muda só quando os textos novos estão prontos). */
   lingua: string;
   linguas: Lingua[];
   mudarLingua: (codigo: string) => void;
@@ -33,8 +34,10 @@ function lerGuardada(): string | null {
 
 export function ProvedorI18n({ children }: { children: ReactNode }) {
   const [linguas, setLinguas] = useState<Lingua[]>([]);
-  const [lingua, setLingua] = useState<string | null>(null);
-  const [textos, setTextos] = useState<Record<string, string> | null>(null);
+  const [escolhida, setEscolhida] = useState<string | null>(null);
+  const [carregados, setCarregados] = useState<{ lingua: string; textos: Record<string, string> } | null>(
+    null,
+  );
   const [erro, setErro] = useState<string | null>(null);
 
   useEffect(() => {
@@ -43,22 +46,23 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
       .then((l) => {
         setLinguas(l.linguas);
         const guardada = lerGuardada();
-        setLingua(l.linguas.some((x) => x.codigo === guardada) ? guardada : l.por_defeito);
+        setEscolhida(l.linguas.some((x) => x.codigo === guardada) ? guardada : l.por_defeito);
       })
       .catch((e: Error) => setErro(e.message));
   }, []);
 
   useEffect(() => {
-    if (!lingua) return;
+    if (!escolhida) return;
     let atual = true;
     api
-      .textos(lingua)
+      .textos(escolhida)
       .then((r) => {
         if (!atual) return;
-        setTextos(r.textos);
-        document.documentElement.lang = lingua;
+        definirLingua(r.lingua); // antes de os componentes pedirem à API na língua nova
+        document.documentElement.lang = r.lingua;
+        setCarregados({ lingua: r.lingua, textos: r.textos });
         try {
-          localStorage.setItem(CHAVE, lingua);
+          localStorage.setItem(CHAVE, r.lingua);
         } catch {
           /* sem armazenamento */
         }
@@ -69,14 +73,19 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
     return () => {
       atual = false;
     };
-  }, [lingua]);
+  }, [escolhida]);
 
   const valor = useMemo<Contexto | null>(
     () =>
-      textos && lingua
-        ? { t: (c, p) => traduzir(textos, c, p), lingua, linguas, mudarLingua: setLingua }
+      carregados
+        ? {
+            t: (c, p) => traduzir(carregados.textos, c, p),
+            lingua: carregados.lingua,
+            linguas,
+            mudarLingua: setEscolhida,
+          }
         : null,
-    [textos, lingua, linguas],
+    [carregados, linguas],
   );
 
   if (erro) return <p role="alert">Erro / Error: {erro}</p>;

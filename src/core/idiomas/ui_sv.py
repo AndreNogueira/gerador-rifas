@@ -83,14 +83,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'Ladda ner',
-    'web_senha': 'Lösenord',
-    'web_entrar': 'Logga in',
-    'web_senha_errada': 'Fel lösenord.',
     'web_demasiado_grande': 'Filen är större än gränsen ({mb} MB).',
     'web_ocupado': 'En generering pågår redan. Försök igen om en stund.',
     'web_voltar': 'Tillbaka',
     'web_ficheiros_gerados': 'Genererade PDF-filer',
     'web_nova_janela': 'Öppna i nytt fönster',
     'web_tema_auto': 'Automatiskt',
+    'web_sessao_expirada': 'Sessionen har gått ut (eller så har servern startats om). Ladda upp filerna igen.',
+    'web_erro_rede': 'Det gick inte att nå servern. Kontrollera anslutningen och försök igen.',
 })
 T.update({'web_demasiados': 'Högst {max} nummer per beställning.'})

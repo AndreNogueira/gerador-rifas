@@ -84,14 +84,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'Downloaden',
-    'web_senha': 'Wachtwoord',
-    'web_entrar': 'Aanmelden',
-    'web_senha_errada': 'Onjuist wachtwoord.',
     'web_demasiado_grande': 'Het bestand is groter dan de limiet ({mb} MB).',
     'web_ocupado': 'Er is al een generatie bezig. Probeer het zo opnieuw.',
     'web_voltar': 'Terug',
     'web_ficheiros_gerados': "Gegenereerde pdf's",
     'web_nova_janela': 'Openen in een nieuw venster',
     'web_tema_auto': 'Automatisch',
+    'web_sessao_expirada': 'De sessie is verlopen (of de server is opnieuw gestart). Upload je bestanden opnieuw.',
+    'web_erro_rede': 'De server is niet bereikbaar. Controleer je verbinding en probeer het opnieuw.',
 })
 T.update({'web_demasiados': 'Maximaal {max} nummers per opdracht.'})

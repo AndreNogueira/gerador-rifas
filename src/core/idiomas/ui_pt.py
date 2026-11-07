@@ -83,14 +83,13 @@ T = {
 # --- interface web (src/web)
 T.update({
     'web_descarregar': 'Descarregar',
-    'web_senha': 'Palavra-passe',
-    'web_entrar': 'Entrar',
-    'web_senha_errada': 'Palavra-passe errada.',
     'web_demasiado_grande': 'O ficheiro é maior do que o limite ({mb} MB).',
     'web_ocupado': 'Já há uma geração em curso. Tente de novo daqui a pouco.',
     'web_voltar': 'Voltar',
     'web_ficheiros_gerados': 'PDFs gerados',
     'web_nova_janela': 'Abrir noutra janela',
     'web_tema_auto': 'Automático',
+    'web_sessao_expirada': 'A sessão expirou (ou o servidor reiniciou). Carregue os ficheiros de novo.',
+    'web_erro_rede': 'Não foi possível falar com o servidor. Verifique a ligação e tente de novo.',
 })
 T.update({'web_demasiados': 'No máximo {max} números por pedido.'})
