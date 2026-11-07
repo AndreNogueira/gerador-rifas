@@ -1,0 +1,69 @@
+# Compila a app Windows (Nuitka -> GeradorRifas.exe), corre o auto-teste e publica o .exe numa *release* do GitHub.
+# Uso: git tag windows-v2.3.0 && git push origin windows-v2.3.0   (ou «Run workflow» com o nome da etiqueta)
+# Demora 15-25 min (o Nuitka traduz o Python para C e compila). NAO corre em cada push: so com a etiqueta.
+# O .exe sai SEM assinatura digital (um certificado autoassinado criado no servidor do GitHub nao tem valor): para assinar,
+# usa o assinar.ps1 com o teu certificado (ver app/README.md).
+name: Windows
+
+on:
+  push:
+    tags: ["windows-v*"]
+  workflow_dispatch:
+    inputs:
+      etiqueta:
+        description: "Etiqueta da release (p.ex. windows-v2.3.0); tem de existir ou ser criada a partir de main"
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: windows-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  exe:
+    name: GeradorRifas.exe (Windows, Nuitka)
+    runs-on: windows-latest
+    timeout-minutes: 60
+    env:
+      ETIQUETA: ${{ github.event.inputs.etiqueta || github.ref_name }}
+      SEM_ASSINATURA: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+      - name: Compilar (app/construir.bat)
+        shell: cmd
+        run: app\construir.bat
+      - name: Auto-teste do .exe (--selftest, sem janela)
+        shell: pwsh
+        working-directory: app
+        run: |
+          $pasta = Join-Path $env:RUNNER_TEMP "selftest"
+          New-Item -ItemType Directory -Force $pasta | Out-Null
+          $p = Start-Process -FilePath ".\dist\GeradorRifas.exe" -ArgumentList "--selftest", $pasta -Wait -PassThru
+          Write-Host "codigo de saida: $($p.ExitCode)"
+          Get-ChildItem $pasta | Select-Object -First 20 Name, Length
+          if ($p.ExitCode -ne 0) { exit 1 }
+      - name: SHA-256
+        shell: pwsh
+        working-directory: app
+        run: |
+          $h = (Get-FileHash .\dist\GeradorRifas.exe -Algorithm SHA256).Hash.ToLower()
+          "$h  GeradorRifas.exe" | Set-Content -Encoding ascii .\dist\GeradorRifas.exe.sha256
+          Write-Host $h
+      - name: Publicar na release
+        shell: pwsh
+        working-directory: app
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $versao = $env:ETIQUETA -replace '^windows-v', ''
+          $hash = (Get-Content .\dist\GeradorRifas.exe.sha256).Split(' ')[0]
+          $notas = "App Windows $versao. Descarrega **GeradorRifas.exe** (nao precisa de instalar nada).`n`nSHA-256: ``$hash```n`nO ficheiro NAO esta assinado digitalmente: o Windows SmartScreen pode avisar na primeira vez («Mais informacoes» > «Executar mesmo assim»). Compilado pelo GitHub Actions a partir da etiqueta $($env:ETIQUETA)."
+          $existe = gh release view $env:ETIQUETA 2>$null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $env:ETIQUETA .\dist\GeradorRifas.exe .\dist\GeradorRifas.exe.sha256 --clobber
+          } else {
+            gh release create $env:ETIQUETA .\dist\GeradorRifas.exe .\dist\GeradorRifas.exe.sha256 --title "Gerador de Rifas $versao (Windows)" --notes $notas --target $env:GITHUB_SHA
+          }

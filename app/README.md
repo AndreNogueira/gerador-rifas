@@ -5,7 +5,10 @@ Programa com interface gráfica que pega num **template em PDF** (exportado do C
 página** (5, 12, …) ou **uma só rifa**: nesse caso o programa enche a folha (A4, A3, …) com cópias, o máximo que
 couber. Gera vários PDFs ou **um único PDF com tudo**.
 
-**Executável:** `dist\GeradorRifas.exe` (compilado para código nativo e assinado; não precisa de instalar nada).
+**Executável:** `dist\GeradorRifas.exe` (compilado para código nativo; não precisa de instalar nada).
+**Descarregar:** na página de *Releases* do repositório no GitHub (etiquetas `windows-vX.Y.Z`), junto com o `.sha256`
+para conferir o ficheiro. A versão atual é a 2.3.0: visual novo (faixa com o gradiente violeta → magenta e o ícone da
+marca, passos numerados com cores próprias, botão «Gerar» em magenta), as mesmas cores da webapp.
 
 ## Como usar
 
@@ -88,10 +91,14 @@ Windows (ou inglês). As escolhas (língua, tema, ficheiro dos algarismos, pasta
 Para acrescentar uma língua: copiar `..\src\core\idiomas\pt.py` e `ui_pt.py` para `<codigo>.py` e `ui_<codigo>.py`,
 traduzir e juntar o código em `..\src\core\idiomas\__init__.py`; depois `python testes\fazer_ajuda.py` para as capturas do tutorial.
 
-## Cores do Windows
+## Cores
 
-- **Cor de destaque**: lida das Definições do Windows (Personalização › Cores) — botões, números dos passos, barra
-  de progresso, seleção dos menus. Se a mudar com o programa aberto, a janela adapta-se em ~2 s.
+- **Por defeito** a app usa as cores da marca («Premiado»: violeta `#6A35F5` e magenta `#D62B8F`), em claro e escuro,
+  iguais às da webapp (`tema.py`).
+- **Cor de destaque do Windows**: com a variável de ambiente `RIFAS_COR_DESTAQUE=windows` os botões, números dos passos,
+  barra de progresso e seleção dos menus seguem as Definições do Windows (Personalização › Cores); com
+  `RIFAS_COR_DESTAQUE=#RRGGBB` usam essa cor. Se a mudar com o programa aberto, a janela adapta-se em ~2 s.
+- O ícone (`assets\icon.ico`/`icon.png`) sai do desenho da webapp: `python make_icon.py`.
 - **Tema** (menu Ver › Tema): *Igual ao Windows* (por defeito, segue o modo claro/escuro do Windows em tempo real),
   *Claro* ou *Escuro*. O botão ☾/☀ no canto alterna.
 - Os ícones são desenhados com sobre-amostragem (bordos suaves, sem pixeis) e mudam de cor com o tema.
@@ -145,6 +152,18 @@ máquina com um desassemblador consegue seguir o fluxo, só com muito mais traba
 Detalhes e licenças em `LICENCAS.md`.
 
 Para correr sem construir: `.venv\Scripts\python.exe app.py`.
+
+### Publicar uma versão no GitHub
+
+O fluxo `.github/workflows/windows.yml` compila o `.exe` num servidor Windows do GitHub (15–25 min), corre o
+`--selftest` e anexa `GeradorRifas.exe` + `GeradorRifas.exe.sha256` a uma *release*:
+
+```
+git tag windows-v2.3.0 && git push origin windows-v2.3.0      # ou Actions › Windows › Run workflow
+```
+O `.exe` do GitHub sai **sem assinatura** (`SEM_ASSINATURA=1`; um certificado autoassinado criado no servidor não vale
+nada). Para publicar um `.exe` assinado, construa em casa e use `gh release upload windows-v2.3.0 dist\GeradorRifas.exe --clobber`.
+Se o repositório for privado, só quem tem acesso a ele consegue descarregar.
 
 ## Assinatura digital e SmartScreen
 

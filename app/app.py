@@ -33,9 +33,9 @@ from core import i18n
 from core.i18n import t
 from tema import C, FONTE, cor_tk
 from visor import Visor
-from widgets import BarraMenus, Dica, Rolavel, novo_menu, repintar_so_o_necessario
+from widgets import Banda, BarraMenus, Dica, Rolavel, novo_menu, repintar_so_o_necessario
 
-VERSAO = "2.2.0"
+VERSAO = "2.3.0"
 BASE = Path(__file__).resolve().parent            # tambem certo no .exe compilado (recursos ao lado)
 DADOS = core.config.pasta_de_dados(ambiente.dados_por_defeito())     # RIFAS_DADOS, ou %APPDATA%\GeradorRifas
 CONFIG = DADOS / core.config.NOME_CONFIG
@@ -217,13 +217,13 @@ class App(ctk.CTk):
 
     # -- construcao
     def _cartao(self, pai, passo: int, titulo: str) -> ctk.CTkFrame:
-        c = ctk.CTkFrame(pai, corner_radius=10, fg_color=C["cartao"], border_width=1, border_color=C["borda"])
+        c = ctk.CTkFrame(pai, corner_radius=14, fg_color=C["cartao"], border_width=1, border_color=C["borda"])
         c.pack(fill="x", padx=2, pady=(0, 9))
         self.w_ajuda[f"c{passo}"] = c
         topo = ctk.CTkFrame(c, fg_color="transparent")
         topo.pack(fill="x", padx=16, pady=(11, 4))
-        ctk.CTkLabel(topo, text=str(passo), width=26, height=26, corner_radius=13, fg_color=C["acento"],
-                     text_color=C["sobre_acento"], font=ctk.CTkFont(FONTE, 13, "bold")).pack(side="left")
+        ctk.CTkLabel(topo, text=str(passo), width=30, height=30, corner_radius=15, fg_color=C[f"passo{passo}"],
+                     text_color=C[f"sobre_passo{passo}"], font=ctk.CTkFont(FONTE, 14, "bold")).pack(side="left")
         ctk.CTkLabel(topo, text=titulo, font=ctk.CTkFont(FONTE, 15, "bold"), text_color=C["texto"]).pack(
             side="left", padx=(10, 0))
         return c
@@ -273,16 +273,21 @@ class App(ctk.CTk):
         self.configure(fg_color=C["fundo"])
         self.b_escolher = []
         self.w_ajuda = {"janela": self}
-        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(3, weight=1)
         self.grid_columnconfigure(0, weight=1)
+
+        # a faixa da marca (gradiente violeta -> magenta, logotipo e nome)
+        logo = None
+        try:
+            logo = Image.open(BASE / "assets" / "icon.png").convert("RGBA")
+        except Exception:
+            pass
+        self.banda = Banda(self, t("app_nome"), VERSAO, logo, escala=self._px(1))
+        self.banda.grid(row=0, column=0, sticky="ew")
 
         # barra superior: logotipo, menus, idioma e tema
         topo = tk.Frame(self, bg=cor_tk(C["barra"]), highlightthickness=0)
-        topo.grid(row=0, column=0, sticky="ew")
-        ctk.CTkLabel(topo, text="", image=icones.icone("bilhete", 26, C["acento"]), width=32).pack(
-            side="left", padx=(14, 4), pady=5)
-        ctk.CTkLabel(topo, text=t("app_nome"), font=ctk.CTkFont(FONTE, 14, "bold"), text_color=C["texto"]).pack(
-            side="left", padx=(0, 16))
+        topo.grid(row=1, column=0, sticky="ew")
         self.menus = BarraMenus(topo)
         self.menus.pack(side="left")
         self.menus.adicionar(t("m_ficheiro"), self._preencher_ficheiro)
@@ -304,12 +309,12 @@ class App(ctk.CTk):
         self.m_lingua.set(i18n.LINGUAS[i18n.atual()])
         self.m_lingua.pack(side="right", padx=(0, 4))
         ctk.CTkLabel(topo, text="", image=icones.icone("globo", 18), width=24).pack(side="right")
-        tk.Frame(self, height=1, bg=cor_tk(C["borda"])).grid(row=1, column=0, sticky="ew")
+        tk.Frame(self, height=1, bg=cor_tk(C["borda"])).grid(row=2, column=0, sticky="ew")
 
         # corpo: definicoes | divisoria | pre-visualizacao. A divisoria propria so desenha uma linha fina enquanto
         # se arrasta e aplica a nova largura ao largar (muito mais rapido do que redesenhar tudo a cada pixel).
         self.painel = tk.Frame(self, bg=cor_tk(C["fundo"]), highlightthickness=0)
-        self.painel.grid(row=2, column=0, sticky="nsew", padx=14, pady=(12, 14))
+        self.painel.grid(row=3, column=0, sticky="nsew", padx=14, pady=(12, 14))
         self.painel.grid_rowconfigure(0, weight=1)
         self.painel.grid_columnconfigure(0, weight=0, minsize=self._px(self._largura_esq))
         self.painel.grid_columnconfigure(1, weight=0, minsize=12)
@@ -409,12 +414,12 @@ class App(ctk.CTk):
         self.b_previa = self._botao(a, t("previa"), self._previa, False, icone="olho", width=160, height=46)
         self.b_previa.pack(side="left")
         self.b_gerar = ctk.CTkButton(a, text=t("gerar"), height=46, corner_radius=8, command=self._gerar,
-                                     fg_color=C["acento"], hover_color=C["acento_h"], text_color=C["sobre_acento"],
+                                     fg_color=C["acento2"], hover_color=C["acento2_h"], text_color=C["sobre_acento2"],
                                      font=ctk.CTkFont(FONTE, 16, "bold"), compound="left",
-                                     image=icones.icone("gerar", 18, C["sobre_acento"]))
+                                     image=icones.icone("gerar", 18, C["sobre_acento2"]))
         self.b_gerar.pack(side="left", fill="x", expand=True, padx=(10, 0))
 
-        self.barra = ctk.CTkProgressBar(self.f_acoes, height=8, corner_radius=4, progress_color=C["acento"],
+        self.barra = ctk.CTkProgressBar(self.f_acoes, height=8, corner_radius=4, progress_color=C["acento2"],
                                         fg_color=C["borda"])
         self.barra.set(self.prog)
         self.barra.pack(fill="x", padx=4, pady=(6, 4))
