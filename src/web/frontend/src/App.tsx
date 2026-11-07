@@ -7,10 +7,11 @@ import { Gerador } from "./Gerador";
 import { Sobre, Tutorial, Video } from "./paginas";
 import { useLocalizacao } from "./rota";
 import { ProvedorSessao, useSessao } from "./sessao";
-import { useTema } from "./tema";
+import { useTema, useVisual } from "./tema";
 
 function Aplicacao() {
   const [tema, mudarTema] = useTema();
+  const [visual, mudarVisual] = useVisual();
   const [versao, setVersao] = useState("");
   const caminho = useLocalizacao().split("?")[0];
   const { sessao } = useSessao();
@@ -26,7 +27,7 @@ function Aplicacao() {
 
   return (
     <>
-      <Cabecalho tema={tema} mudarTema={mudarTema} />
+      <Cabecalho tema={tema} mudarTema={mudarTema} visual={visual} mudarVisual={mudarVisual} />
       <main className="conteudo">
         {caminho === "/tutorial" ? (
           <Tutorial />

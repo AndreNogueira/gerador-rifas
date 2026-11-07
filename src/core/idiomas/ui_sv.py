@@ -91,5 +91,6 @@ T.update({
     'web_tema_auto': 'Automatiskt',
     'web_sessao_expirada': 'Sessionen har gått ut (eller så har servern startats om). Ladda upp filerna igen.',
     'web_erro_rede': 'Det gick inte att nå servern. Kontrollera anslutningen och försök igen.',
+    'web_visual': 'Stil',
 })
 T.update({'web_demasiados': 'Högst {max} nummer per beställning.'})

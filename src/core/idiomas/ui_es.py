@@ -92,5 +92,6 @@ T.update({
     'web_tema_auto': 'Automático',
     'web_sessao_expirada': 'La sesión ha caducado (o el servidor se ha reiniciado). Vuelve a cargar los archivos.',
     'web_erro_rede': 'No se pudo contactar con el servidor. Comprueba la conexión e inténtalo de nuevo.',
+    'web_visual': 'Estilo',
 })
 T.update({'web_demasiados': 'Como máximo {max} números por pedido.'})

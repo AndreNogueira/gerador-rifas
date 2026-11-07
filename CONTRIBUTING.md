@@ -37,6 +37,7 @@ Estão explicadas em [`CLAUDE.md`](CLAUDE.md); em resumo:
 | Quero… | Onde mexer | Atenção |
 |---|---|---|
 | Mudar a interface | `src/web/frontend/src` | Biome (`pnpm lint`), `tsc` (`pnpm tipos`), Vitest (`pnpm teste`); atualiza o `servidor-falso.ts` se a API mudar |
+| Adicionar um tema visual | `src/web/frontend/src/temas/<id>.css`, `temas.ts`, `main.tsx` | receita e variáveis em [`docs/TEMAS.md`](docs/TEMAS.md); capturas em claro e escuro no PR |
 | Adicionar um endpoint | `src/web/rotas.py` (+ `modelos.py`) | testa em `tests/test_web_api.py`; erros por `ErroApi`; respeita os limites de `limites.py` |
 | Adicionar um texto | os 18 `src/core/idiomas/ui_*.py` + `servidor-falso.ts` | `tests/test_i18n.py` conta as chaves |
 | Mexer no motor | `src/core` | os testes do `core`, `teste_folha`/`teste_canva` e a app Windows (ver `CLAUDE.md`) |

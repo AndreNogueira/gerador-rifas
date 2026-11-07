@@ -194,6 +194,24 @@ importers:
       '@fontsource-variable/bricolage-grotesque':
         specifier: 5.3.0
         version: 5.3.0
+      '@fontsource-variable/fraunces':
+        specifier: 5.3.0
+        version: 5.3.0
+      '@fontsource-variable/jost':
+        specifier: 5.3.0
+        version: 5.3.0
+      '@fontsource-variable/pixelify-sans':
+        specifier: 5.3.0
+        version: 5.3.0
+      '@fontsource-variable/space-grotesk':
+        specifier: 5.3.0
+        version: 5.3.0
+      '@fontsource/alfa-slab-one':
+        specifier: 5.3.0
+        version: 5.3.0
+      '@fontsource/marcellus':
+        specifier: 5.3.0
+        version: 5.3.0
       react:
         specifier: 19.3.1
         version: 19.3.1
@@ -341,6 +359,24 @@ packages:
 
   '@fontsource-variable/bricolage-grotesque@5.3.0':
     resolution: {integrity: sha512-TLi9Q4hJjS2UvoTMRSS2nHu6c4R56lAw60NR9QYtVRCHn0XtsFpiEhNffZ8Glsoxu6wEEwLKBP8lb94J52PNBA==}
+
+  '@fontsource-variable/fraunces@5.3.0':
+    resolution: {integrity: sha512-9BYGySn4AHEJdgp9Z28tQ3X+laJMEOITXkQarZXeloWQZDq5oOvXJ3kDA8c7MGIfpogIaZfjrQBqmda8POOCKA==}
+
+  '@fontsource-variable/jost@5.3.0':
+    resolution: {integrity: sha512-9FS8iBMJnfyPqQOi9dfMjSwYBIWd0kBD3/jl8VvtbIMY2pK+CSp3oAaTLS1V60rDoM7AfyPvuT+IUfJfGeCTKg==}
+
+  '@fontsource-variable/pixelify-sans@5.3.0':
+    resolution: {integrity: sha512-rOF07QCyHg9xb4UZF3lpXOM4UO+zo3y8tXvO7T+vy40GVt/GU8HL+/YWE029CMsbhOwk4plRDY9G8BU5cWs1ig==}
+
+  '@fontsource-variable/space-grotesk@5.3.0':
+    resolution: {integrity: sha512-2IxmvfB08i9vnGB3Ym/AXvhRE+8XOjWMXIyDum03c+tPwH0FUoMNQfGpU8NXPxjbws0Vvss3AH0Zqt4oJBBAdw==}
+
+  '@fontsource/alfa-slab-one@5.3.0':
+    resolution: {integrity: sha512-J/ANFZ7S9CbZClr/QhMjmBtpFmmKipVkEXHj20aurR5uqJPCBChVPJn1/kx6vtrwnfnDY0kQaYSTYasSt4GruA==}
+
+  '@fontsource/marcellus@5.3.0':
+    resolution: {integrity: sha512-cMnanjpiPIC7Rq4GXIA/Zal5WLSoDV5Mc681tMkWsWfKHXnRnLGlhuGeBnLF6HrqtFkiSdiuy4NCSPfOrz266w==}
 
   '@jridgewell/resolve-uri@3.1.2':
     resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
@@ -1283,6 +1319,18 @@ snapshots:
   '@exodus/bytes@1.16.0': {}
 
   '@fontsource-variable/bricolage-grotesque@5.3.0': {}
+
+  '@fontsource-variable/fraunces@5.3.0': {}
+
+  '@fontsource-variable/jost@5.3.0': {}
+
+  '@fontsource-variable/pixelify-sans@5.3.0': {}
+
+  '@fontsource-variable/space-grotesk@5.3.0': {}
+
+  '@fontsource/alfa-slab-one@5.3.0': {}
+
+  '@fontsource/marcellus@5.3.0': {}
 
   '@jridgewell/resolve-uri@3.1.2': {}
 

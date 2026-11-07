@@ -1,0 +1,96 @@
+/*
+ * Quermesse: a feira popular. A faixa é uma tenda vermelha com lâmpadas e festo; cada bilhete tem o seu toldo às riscas
+ * (na cor do passo) e título em letra de cartaz. Escuro = a feira à noite.
+ */
+:root[data-visual="quermesse"] {
+  --fundo: light-dark(#fff1cf, #17122e);
+  --cartao: light-dark(#fffdf6, #261b46);
+  --texto: light-dark(#3a1420, #fdf1dc);
+  --suave: light-dark(#7a5a50, #c5b6da);
+  --linha: light-dark(#ecd7a4, #43346e);
+  --campo: light-dark(#fff8e4, #1a1237);
+  --destaque: light-dark(#c4122f, #ff7587);
+  --destaque-2: light-dark(#1b8a7a, #3ddbc2);
+  --sombra-cor: light-dark(#6b2a10, #000000);
+  --passo-1: light-dark(#c4122f, #ff7587);
+  --passo-2: light-dark(#d99100, #ffc93c);
+  --passo-3: light-dark(#2556a8, #84acff);
+  --passo-4: light-dark(#1b8a7a, #3ddbc2);
+  --b1: light-dark(#b3122b, #6e0f27);
+  --b2: light-dark(#d7263d, #92162f);
+  --b3: light-dark(#b3122b, #6e0f27);
+  --banda:
+    radial-gradient(
+      circle,
+      #fff3b0 0 0.2rem,
+      #ffd23f 0.22rem 0.34rem,
+      rgb(255 210 63 / 35%) 0.36rem 0.62rem,
+      transparent 0.66rem
+    )
+    0 calc(100% - 1.5rem) / 2.8rem 1.2rem repeat-x,
+    repeating-linear-gradient(90deg, var(--b1) 0 2.8rem, var(--b2) 2.8rem 5.6rem);
+  --banda-altura: 12.5rem;
+  --banda-forma: none;
+  --pilula: rgb(70 6 20 / 38%);
+  --nav-ativo: #ffd23f;
+  --nav-ativo-texto: #4a0a14;
+  --botao-1: #c4122f;
+  --botao-2: #ee5a24;
+  --botao-sombra: 0 4px 0 #7a0a1b;
+  --botao-sombra-hover: 0 6px 0 #7a0a1b;
+  --botao-hover: translateY(-2px);
+  --botao-ativo: translateY(3px);
+  --entrega-1: #1b8a7a;
+  --entrega-2: #2fb89a;
+  --fonte-titulo: "Alfa Slab One", Georgia, serif;
+  --peso-titulo: 400;
+  --raio: 10px;
+  --raio-c: 8px;
+  --extra: 16px;
+  --filtro-coluna: drop-shadow(0 6px 0 color-mix(in srgb, var(--sombra-cor) 22%, transparent));
+}
+/* a tenda: festo (semicírculos) por baixo da faixa */
+:root[data-visual="quermesse"] body::before {
+  -webkit-mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 1.4rem) no-repeat,
+    radial-gradient(circle 1.4rem at 50% 0, #000 98%, #0000) bottom / 2.8rem 1.4rem repeat-x;
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 1.4rem) no-repeat,
+    radial-gradient(circle 1.4rem at 50% 0, #000 98%, #0000) bottom / 2.8rem 1.4rem repeat-x;
+}
+:root[data-visual="quermesse"] .marca h1 {
+  font-size: 1.55rem;
+  letter-spacing: 0.01em;
+  text-shadow: 0 3px 0 #7a0a1b;
+}
+:root[data-visual="quermesse"] .pagina > h1 {
+  text-shadow: 0 3px 0 #7a0a1b;
+}
+/* o toldo de cada bilhete: riscas da cor do passo e da cor do papel */
+:root[data-visual="quermesse"] .cartao.passo {
+  background:
+    repeating-linear-gradient(90deg, var(--cor) 0 16px, var(--cartao) 16px 32px) top / 100% var(--extra)
+    no-repeat,
+    linear-gradient(0deg, rgb(0 0 0 / 14%), transparent 0.5rem) 0 var(--extra) / 100% 0.5rem no-repeat,
+    var(--cartao);
+}
+:root[data-visual="quermesse"] .cartao.passo > h2 {
+  background: none;
+}
+:root[data-visual="quermesse"] .insignia {
+  border-radius: 50%;
+  transform: none;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--cor) 60%, #000);
+}
+:root[data-visual="quermesse"] .numero {
+  font-family: var(--fonte-titulo);
+  font-weight: 400;
+  font-size: 1.9rem;
+}
+:root[data-visual="quermesse"] .visor::before {
+  height: 12px;
+  background: repeating-linear-gradient(90deg, var(--destaque) 0 16px, var(--cartao) 16px 32px);
+}
+:root[data-visual="quermesse"] .visor {
+  padding-top: 28px;
+}

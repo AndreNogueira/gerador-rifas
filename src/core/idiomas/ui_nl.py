@@ -92,5 +92,6 @@ T.update({
     'web_tema_auto': 'Automatisch',
     'web_sessao_expirada': 'De sessie is verlopen (of de server is opnieuw gestart). Upload je bestanden opnieuw.',
     'web_erro_rede': 'De server is niet bereikbaar. Controleer je verbinding en probeer het opnieuw.',
+    'web_visual': 'Stijl',
 })
 T.update({'web_demasiados': 'Maximaal {max} nummers per opdracht.'})

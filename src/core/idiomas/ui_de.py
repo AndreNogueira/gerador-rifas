@@ -92,5 +92,6 @@ T.update({
     'web_tema_auto': 'Automatisch',
     'web_sessao_expirada': 'Die Sitzung ist abgelaufen (oder der Server wurde neu gestartet). Bitte lade die Dateien erneut hoch.',
     'web_erro_rede': 'Der Server ist nicht erreichbar. Prüfe die Verbindung und versuche es erneut.',
+    'web_visual': 'Stil',
 })
 T.update({'web_demasiados': 'Höchstens {max} Nummern pro Auftrag.'})

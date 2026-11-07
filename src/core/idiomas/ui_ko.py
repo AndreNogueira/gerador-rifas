@@ -84,5 +84,6 @@ T.update({
     'web_tema_auto': '자동',
     'web_sessao_expirada': '세션이 만료되었습니다(또는 서버가 다시 시작되었습니다). 파일을 다시 업로드하세요.',
     'web_erro_rede': '서버에 연결할 수 없습니다. 연결을 확인하고 다시 시도하세요.',
+    'web_visual': '스타일',
 })
 T.update({'web_demasiados': '요청당 최대 {max}개의 번호입니다.'})

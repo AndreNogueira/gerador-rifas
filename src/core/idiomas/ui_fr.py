@@ -92,5 +92,6 @@ T.update({
     'web_tema_auto': 'Automatique',
     'web_sessao_expirada': 'La session a expiré (ou le serveur a redémarré). Chargez de nouveau vos fichiers.',
     'web_erro_rede': 'Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.',
+    'web_visual': 'Style',
 })
 T.update({'web_demasiados': 'Au maximum {max} numéros par demande.'})

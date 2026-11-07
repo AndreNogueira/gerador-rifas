@@ -90,5 +90,6 @@ T.update({
     'web_tema_auto': 'Automaticky',
     'web_sessao_expirada': 'Relace vypršela (nebo se server restartoval). Nahrajte soubory znovu.',
     'web_erro_rede': 'Server není dostupný. Zkontrolujte připojení a zkuste to znovu.',
+    'web_visual': 'Styl',
 })
 T.update({'web_demasiados': 'Nejvýše {max} čísel na jednu zakázku.'})

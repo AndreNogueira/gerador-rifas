@@ -84,5 +84,6 @@ T.update({
     'web_tema_auto': '自動',
     'web_sessao_expirada': 'セッションの有効期限が切れました（またはサーバーが再起動されました）。ファイルをもう一度アップロードしてください。',
     'web_erro_rede': 'サーバーに接続できませんでした。接続を確認して、もう一度お試しください。',
+    'web_visual': 'スタイル',
 })
 T.update({'web_demasiados': '1 回につき最大 {max} 件の番号です。'})

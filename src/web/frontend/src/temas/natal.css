@@ -1,0 +1,100 @@
+/*
+ * Natal: para a rifa de Natal. Faixa verde-pinheiro com neve a cair devagar e luzinhas coloridas, bilhetes com a risca
+ * de bengala doce no topo, vermelho e dourado. A neve para com «reduzir movimento».
+ */
+:root[data-visual="natal"] {
+  --fundo: light-dark(#eef5ef, #08150f);
+  --cartao: light-dark(#ffffff, #10281c);
+  --texto: light-dark(#12301f, #f1fbf4);
+  --suave: light-dark(#4c6a58, #a6c7b2);
+  --linha: light-dark(#cfe0d4, #234a35);
+  --campo: light-dark(#f5faf6, #0b1f15);
+  --destaque: light-dark(#0f6b3f, #6fe3a0);
+  --destaque-2: light-dark(#c1121f, #ff6b78);
+  --ok: light-dark(#0b7a46, #5fe39b);
+  --aviso: light-dark(#8a5a00, #ffcb5c);
+  --erro: light-dark(#b50f1c, #ff7b86);
+  --sombra-cor: light-dark(#0b3a22, #000000);
+  --passo-1: light-dark(#c1121f, #ff6b78);
+  --passo-2: light-dark(#0f6b3f, #6fe3a0);
+  --passo-3: light-dark(#b27700, #ffcb5c);
+  --passo-4: light-dark(#1f6fb2, #7cc0ff);
+  --b1: light-dark(#0a4a2b, #06281a);
+  --b2: light-dark(#14783f, #0d4a2c);
+  --b3: light-dark(#0a4a2b, #06281a);
+  --banda:
+    radial-gradient(circle at 1.2rem 50%, #ff4d4d 0 0.26rem, transparent 0.3rem) 0 calc(100% - 2.2rem) / 4.8rem 1rem repeat-x,
+    radial-gradient(circle at 2.4rem 50%, #ffd23f 0 0.26rem, transparent 0.3rem) 0 calc(100% - 2.2rem) / 4.8rem 1rem repeat-x,
+    radial-gradient(circle at 3.6rem 50%, #4db5ff 0 0.26rem, transparent 0.3rem) 0 calc(100% - 2.2rem) / 4.8rem 1rem repeat-x,
+    radial-gradient(circle at 4.7rem 50%, #6bff9a 0 0.26rem, transparent 0.3rem) 0 calc(100% - 2.2rem) / 4.8rem 1rem repeat-x,
+    radial-gradient(circle at 25% 50%, #fff 0 0.14rem, transparent 0.18rem) 0 0 / 7.7rem 7.7rem,
+    radial-gradient(circle at 70% 20%, rgb(255 255 255 / 85%) 0 0.2rem, transparent 0.24rem) 0 0 / 11.3rem 11.3rem,
+    radial-gradient(circle at 40% 80%, rgb(255 255 255 / 70%) 0 0.12rem, transparent 0.16rem) 0 0 / 5.3rem 5.3rem,
+    linear-gradient(115deg, var(--b1), var(--b2) 50%, var(--b3));
+  --banda-altura: 13rem;
+  --banda-forma: ellipse(120% 100% at 50% 0%);
+  --pilula: rgb(4 40 22 / 42%);
+  --nav-ativo: #ffd23f;
+  --nav-ativo-texto: #4a0a0e;
+  --botao-1: #b50f1c;
+  --botao-2: #dc2f3b;
+  --botao-sombra: 0 8px 18px -8px rgb(193 18 31 / 75%);
+  --botao-sombra-hover: 0 12px 22px -8px rgb(193 18 31 / 85%);
+  --entrega-1: #0f6b3f;
+  --entrega-2: #2a9a5f;
+  --fonte-titulo: "Fraunces Variable", Georgia, serif;
+  --peso-titulo: 800;
+  --extra: 9px;
+}
+:root[data-visual="natal"] body::before {
+  animation: neve 28s linear infinite;
+}
+@keyframes neve {
+  to {
+    background-position:
+      0 calc(100% - 2.2rem),
+      0 calc(100% - 2.2rem),
+      0 calc(100% - 2.2rem),
+      0 calc(100% - 2.2rem),
+      0 7.7rem,
+      0 11.3rem,
+      0 5.3rem,
+      0 0;
+  }
+}
+:root[data-visual="natal"] .marca h1 {
+  font-weight: 900;
+  font-size: 1.8rem;
+}
+/* a risca de bengala doce no topo de cada bilhete */
+:root[data-visual="natal"] .cartao.passo {
+  background:
+    repeating-linear-gradient(135deg, #c1121f 0 9px, #ffffff 9px 18px) top / 100% var(--extra) no-repeat,
+    var(--cartao);
+}
+:root[data-visual="natal"] .insignia {
+  border-radius: 50%;
+  transform: none;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--cor) 25%, transparent),
+    0 6px 14px -6px var(--cor);
+}
+:root[data-visual="natal"] .numero {
+  font-family: var(--fonte-titulo);
+  font-weight: 900;
+}
+:root[data-visual="natal"] .visor::before {
+  height: 9px;
+  background: repeating-linear-gradient(135deg, #c1121f 0 9px, #ffffff 9px 18px);
+}
+:root[data-visual="natal"] .visor {
+  padding-top: 24px;
+}
+:root[data-visual="natal"] .carregar button {
+  color: var(--cor);
+}
+:root[data-visual="natal"] .dialogo {
+  border-top: 9px solid transparent;
+  border-image: repeating-linear-gradient(135deg, #c1121f 0 9px, #ffffff 9px 18px) 9;
+  border-radius: 0;
+}

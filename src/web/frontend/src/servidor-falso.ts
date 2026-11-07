@@ -10,6 +10,7 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     mi_tema_claro: "Claro",
     mi_tema_escuro: "Escuro",
     web_tema_auto: "Automático",
+    web_visual: "Estilo",
     tut_titulo: "Tutorial",
     mi_video: "Vídeo tutorial",
     mi_sobre: "Acerca de…",
