@@ -11,3 +11,4 @@ zstandard
 reportlab           # BSD
 fonttools           # MIT
 psutil              # BSD-3-Clause
+pytest              # MIT (testes de caracterizacao em ..\tests)

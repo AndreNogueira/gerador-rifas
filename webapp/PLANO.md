@@ -2,24 +2,28 @@
 
 Decidido: **backend Python (FastAPI) + frontend React/Vite/TypeScript** (opção B do `docs/MIGRATION_PLAN.md`). Ferramentas: Node 22, pnpm, uv, git, `gh` e Rancher Desktop (docker).
 
+Python: **3.12** no backend/imagem Docker; o `src/core` tem de correr também em 3.13 (app Windows) — o CI testa as duas.
+Regras e comandos: `CLAUDE.md` (raiz).
+
 ## 1. Ideia
 Os mesmos 4 passos da app Windows (template → algarismos → números → destino/nome), mas no browser: o utilizador carrega
 o template (PDF do Canva) e o ficheiro dos algarismos, vê a pré-visualização e descarrega os PDFs (ZIP, ou um PDF só).
 Inclui os dois modos do template (vários bilhetes por página / uma só rifa que enche a folha), 18 línguas, tutorial e vídeo.
 
 ## 2. Arquitetura
+Estrutura alvo (raiz do repo; ver `CLAUDE.md`):
 ```
-webapp/
-  backend/   FastAPI (Python 3.13, uv)
-    rifas/       <- motor copiado da app: core.py, pdftexto.py (sem tkinter), idiomas/ (textos)
-    api.py       endpoints
-    trabalhos.py fila de trabalhos + limpeza
-  frontend/  React + Vite + TypeScript (pnpm)
-  Dockerfile (backend + frontend estático), docker-compose.yml
-  tests/     reutiliza os testes do motor (templates aleatórios + os do Canva)
+src/core/             motor puro, sem UI nem Windows: core, pdftexto, i18n, idiomas/ (textos das 18 línguas)
+src/web/              FastAPI (Python 3.12, uv)
+  main.py             app + rotas (api)
+  trabalhos.py        fila de trabalhos + limpeza
+  frontend/           React + Vite + TypeScript (pnpm)
+tests/                pytest: testes do motor (migrados de app/testes: templates aleatórios + os do Canva) e da API
+app/                  app Windows (passa a importar o core de src/core)
+Dockerfile, docker-compose.yml, .github/workflows/   na raiz
 ```
-- **Motor partilhado:** o `core.py` deixa de estar duplicado — extrair para um pacote `rifas_core` usado pela app Windows e
-  pela webapp (decidir: pasta partilhada na raiz vs. copiar).
+- **Motor partilhado:** o `core.py` deixa de estar duplicado — vive em `src/core` e é usado pela app Windows e pela webapp
+  (decidido: pasta partilhada na raiz, sem copiar). Substitui os nomes antigos `rifas_core`, `backend/` e `frontend/`.
 - **PDFium não é thread-safe** (já nos mordeu): os pedidos ao motor vão para processos de trabalho (`ProcessPoolExecutor`,
   1 processo = 1 PDFium) e nunca para threads do servidor.
 - **Sem contas:** cada sessão recebe um id aleatório; ficheiros temporários apagados ao fim de ~30 min.
@@ -67,7 +71,7 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
   serviço); limites de segurança mantêm-se (tamanho, nº de números, tempo), sem *rate limiting* por IP sofisticado.
 - **Repositório:** GitHub **privado** `AndreNogueira/gerador-rifas` (criado), com `app/`, `webapp/` e `docs/` (a raiz usa `.gitignore`
   que deixa de fora `final/`, `saida/`, `.venv`, `dist` e caches).
-- **Motor:** **partilhado** — pacote `rifas_core` usado pela app Windows e pela webapp (a app passa a importá-lo; testes comuns).
+- **Motor:** **partilhado** — `src/core` usado pela app Windows e pela webapp (a app passa a importá-lo; testes comuns).
 - **Pré-visualização:** **PDF.js no browser**. O servidor gera um PDF de **1 página** com os primeiros números (`Documento` já
   faz isto; novo `pdf_da_previa()` em vez de `pagina_previa()` em PNG) e o browser desenha-o: zoom/pan nativos e nítidos a
   qualquer ampliação, menos carga no servidor. O template carregado vê-se logo no browser (PDF.js lê o ficheiro local, sem upload).
@@ -82,6 +86,6 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
     `main`, **só depois do CI passar** (GitHub Actions: testes do motor + build do frontend). Dockerfile na **raiz do repo** (contexto vê `app/` e `webapp/`).
 
 ## 8. Próximo passo
-**Fase 0** (sem tocar no comportamento da app Windows): criar o pacote `rifas_core` (mover `core.py`, `pdftexto.py`, `i18n.py`, `idiomas/`),
+**Fase 0** (sem tocar no comportamento da app Windows): criar `src/core` (mover `core.py`, `pdftexto.py`, `i18n.py`, `idiomas/`),
 com língua por pedido, log estruturado e entrada por bytes/temporários; a app Windows passa a importá-lo; correr `teste_folha`, `teste_canva`,
 `teste_5000` em Windows **e** num contentor Linux (Rancher). Só depois a Fase 1 (API).

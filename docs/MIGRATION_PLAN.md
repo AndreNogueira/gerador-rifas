@@ -132,14 +132,14 @@ Nada no motor impede Linux; falta confirmar a suite de testes (`teste_folha`, `t
 | Língua global em `i18n` | Certa / Médio | Língua por pedido; log estruturado |
 | Paridade do visor (zoom/pan) | Média / Médio | **PDF.js** no browser sobre um PDF de 1 página gerado pelo servidor (zoom nítido, sem PNG) |
 | Manter 18 línguas + capturas/vídeo sincronizados | Média / Baixo | Textos exportados do mesmo `idiomas/`; scripts `fazer_ajuda`/`fazer_video` mantidos |
-| Dois códigos (desktop e web) a divergir | Média / Médio | Pacote `rifas_core` partilhado e testes comuns |
+| Dois códigos (desktop e web) a divergir | Média / Médio | `src/core` partilhado e testes comuns |
 | Sessões em memória (se NiceGUI) vs escala | Média / Médio | Preferir API sem estado por ligação (opção B) |
 | Experiência de «escolher pasta» não existe no browser | Certa / Baixo | Nome do ficheiro + descarregar ZIP |
 
 ### 6.2 Estimativa (1 programador, dias úteis)
 | Fase | Conteúdo | **B** FastAPI + React/Vite | **A** NiceGUI |
 |---|---|---|---|
-| 0 | Extrair `rifas_core`: língua por pedido, log estruturado, bytes/temp em vez de `Path`, cancelamento; testes existentes a passar em Linux | 3 | 3 |
+| 0 | Extrair `src/core`: língua por pedido, log estruturado, bytes/temp em vez de `Path`, cancelamento; testes existentes a passar em Linux | 3 | 3 |
 | 1 | Serviço/API: sessões, upload, análise, folha, pré-visualização, trabalhos em processo isolado, progresso (SSE), ZIP | 4 | 3 |
 | 2 | Interface: 4 cartões, visor com zoom/pan, expandir, limpar tudo (React + Vite + TS) | 7 | 4 |
 | 3 | i18n (18 línguas), tutorial + vídeo, tema | 3 | 2 |
@@ -162,21 +162,21 @@ Nada no motor impede Linux; falta confirmar a suite de testes (`teste_folha`, `t
    vive na memória de cada sessão e é mais difícil impor limites por pedido, escalar horizontalmente e isolar uploads.
    Serve bem para ferramenta interna com poucos utilizadores; não para aberta na internet.
 3. **API e interface desacopladas:** o contrato HTTP (OpenAPI do FastAPI) permite testar o backend sem browser e gerar tipos TypeScript para o frontend.
-4. Mantém o motor testável isoladamente e a app Windows a funcionar com o mesmo pacote `rifas_core`.
+4. Mantém o motor testável isoladamente e a app Windows a funcionar com o mesmo `src/core`.
 
 **Porquê React + Vite (e o que custa):** o visor com zoom/pan, o painel da folha (recálculo ao vivo), o progresso em tempo real e o
 tutorial com 8 páginas ganham com componentes e estado no cliente. Custo face ao HTMX: ≈ +1 dia na interface, ≈ +1 dia no CI
 (build do frontend, imagem multi-stage) e uma cadeia Node (pnpm) a manter; em troca, a UI pode crescer (ex.: mais modos de folha) sem reescrever.
 
 **Arquitetura-alvo:**
-- `backend/` FastAPI (Python 3.13, uv) + pacote `rifas_core` (motor) + processo(s) de trabalho para o PDFium.
-- `frontend/` React + Vite + TypeScript (pnpm); estado local (React) e *fetch*/SSE para a API; textos das 18 línguas servidos pela API em JSON.
+- `src/web/` FastAPI (Python 3.12, uv) + `src/core` (motor, antes «`rifas_core`») + processo(s) de trabalho para o PDFium.
+- `src/web/frontend/` React + Vite + TypeScript (pnpm); estado local (React) e *fetch*/SSE para a API; textos das 18 línguas servidos pela API em JSON.
 - Uma imagem Docker multi-stage: *stage* Node faz `pnpm build`, *stage* Python serve a API **e** o frontend estático; contentor sem root.
 
 **Quando A teria sido melhor:** ferramenta **estritamente interna** (poucos utilizadores, rede fechada, sem uploads de terceiros) — poupava ≈ 6 dias.
 
 ### Próximo passo sugerido
-Fase 0 numa pasta nova (`webapp/` ou pacote `rifas_core` na raiz), **sem tocar em `app/`** até os testes do motor passarem em Linux (Docker/Rancher). Detalhe em `webapp/PLANO.md`.
+Fase 0 numa pasta nova (`src/core` na raiz), **sem tocar em `app/`** até os testes do motor passarem em Linux (Docker/Rancher). Detalhe em `webapp/PLANO.md`.
 
 ---
 
@@ -188,7 +188,7 @@ Fase 0 numa pasta nova (`webapp/` ou pacote `rifas_core` na raiz), **sem tocar e
 | Alojamento | **Render** (Web Service gratuito, Docker, deploy automático do GitHub) |
 | Utilizadores | **Só o dono**: sem contas; acesso protegido por palavra-passe/token (ou espaço privado) |
 | Repositório | GitHub **privado** `AndreNogueira/gerador-rifas` com `app/`, `webapp/`, `docs/` (criado) |
-| Motor | **Partilhado** (`rifas_core`) entre a app Windows e a webapp |
+| Motor | **Partilhado** (`src/core`) entre a app Windows e a webapp |
 | Pré-visualização | **PDF.js** no browser; o servidor devolve um PDF de 1 página (não PNG) |
 
 **Opções gratuitas para uma imagem Docker (uso individual):**
@@ -201,3 +201,36 @@ Fase 0 numa pasta nova (`webapp/` ou pacote `rifas_core` na raiz), **sem tocar e
 
 **Escolhido: Render.** (A recomendação era Hugging Face Spaces pela RAM; o Render dá deploy direto do GitHub e não pede cartão.) Implica: ficheiros temporários só em disco efémero, limites de RAM/tempo
 nos pedidos (512 MB!), palavra-passe da app (o plano gratuito não tem autenticação) e arranque a frio tolerado (é uso individual).
+
+---
+
+## 8. Testes de caracterização e «Não testável ainda»
+
+**Testes existentes** (`tests/`, pytest, 145 testes, ≈ 10 s): fixam o comportamento **atual** do motor — também as esquisitices — para detetar
+regressões durante a migração. Cobrem `core.py`, `pdftexto.py`, `i18n.py` e `idiomas/`: validação (`validar`), plano de ficheiros (`planear`,
+`nome_seguro`), geometria e folha (`_arrumar`, `disposicao_da_folha`), análise do template (exemplos da app, 5 templates aleatórios e PDFs
+sintéticos de casos limite), `preparar` (letra em PDF e em imagem, erros), `gerar`/`verificar`/`Documento`/`pagina_previa` com E/S real em
+pasta temporária, e a paridade das 18 línguas. Os ficheiros de exemplo estão em `tests/fixtures/` (cópias de `app/exemplos/` e de
+`app/testes/templates_aleatorios/`). Correr: `app\.venv\Scripts\python.exe -m pytest` na raiz do repo (o `pytest.ini` aponta `pythonpath` para `app/`;
+na Fase 0 passa a `src/`). Nenhum teste importa `app.py`, `ajuda.py`, `tema.py`, `widgets.py`, `visor.py` ou `icones.py` (puxam Tkinter/Windows).
+
+**Não testável ainda** — lógica presa à interface ou ao Windows. Não se alterou código; cada linha diz o que bloqueia e a extração prevista (§3.2):
+
+| Onde | Lógica | O que a prende | Como destravar |
+|---|---|---|---|
+| `app.py::App._trabalho` | Converte os campos de texto em `core.Trabalho`; erro `int_invalido` com o nome do campo traduzido | Lê `StringVar` da janela; `app.py` importa `tkinter`/`customtkinter` ao ser carregado | Função pura `trabalho_de(campos: dict, modo)` (validação Pydantic na API) |
+| `app.py::App._resumo` | Nº de ficheiros e de páginas (`ceil(qtd / n)`, `ceil(qtd / por_ficheiro)`), aviso «máximo não múltiplo» | Escreve em `l_resumo` (labels) e lê `self.disp`/`self.info` | Função pura `resumo(tr, n_por_pagina) -> dict` |
+| `app.py::App._recalcular_folha` | Margem inteira entre 0 e 50 mm; «rifas por folha» vazio = máximo; sinal «pedido > máximo» (`acima`) | Mistura `winfo_*`/`pack` com a validação; as regras **só existem aqui**, não no `core` | Serviço «folha»: `escolher_folha(info, papel, margem_txt, porfolha_txt)` |
+| `app.py::App._prep_atual` | Escolhe o `Preparado` com a folha (`replace(prep, disp=...)`) ou recusa se não é válida | `messagebox.showwarning` | Devolver o erro em vez de abrir diálogo |
+| `app.py::App._carregar_config` / `_guardar_config`, `ler_config`, `gravar_config` | Que chaves se guardam (nunca o template nem o nome), validação de `papel`/`modo`, apagar o caminho dos algarismos se já não existe | `%APPDATA%\GeradorRifas\config.json` fixo no módulo; ligado a `StringVar` | Passar a pasta de dados por parâmetro/variável de ambiente; na web, preferências no cliente |
+| `app.py::verificar_traducoes`, `verificar_ajuda`, `selftest` | Verificações de qualidade (paridade de chaves, imagens do tutorial, vídeos, geração dos exemplos) | Vivem em `app.py` (import de Tkinter) e usam `App`/`ajuda`; `selftest` abre a janela | Mover para o `core`/testes. Nota: a **paridade das línguas já se testa nos dados** (`tests/test_i18n.py`), mas não a função `verificar_traducoes` em si |
+| `ajuda.py::lista_de_topicos`, `_caixas` | Lista de tópicos do tutorial e as caixas das capturas | `ajuda.py` importa `customtkinter` e `widgets` | Separar os dados (tópicos/caixas) do `CTkToplevel` |
+| `app.py::abrir_pasta`, `App._video`, `ficheiro_video` | Abrir pasta/vídeo | `os.startfile` (Windows) | Descarregar ZIP/PDF; `<video>` na página |
+| `i18n.py::detetar` | Língua do sistema (ramo `kernel32.GetUserDefaultLocaleName` e `locale`) | `ctypes.windll` só em Windows; depende da máquina | Na web: `Accept-Language`. Só se testa que o resultado é sempre uma língua válida |
+| `tema.py`, `widgets.py`, `visor.py`, `icones.py` | Cores do Windows, zoom/deslocamento do visor, ícones | `winreg`, `ctypes.windll`, Tk `Canvas`, CustomTkinter | Reescrever no frontend (CSS/React/PDF.js); a lógica do zoom pode ter testes novos (vitest) |
+| `core.py` (parcial) | `GlifosImagem.calibrar`, `extrair_glifos`, `mascara_de_imagem`, medição de tinta | Sem UI nem Windows, mas só se exercitam **indiretamente** (`preparar` com PNG e `gerar`); não têm testes unitários próprios | Testes unitários com imagens sintéticas (a fazer; não bloqueado) |
+| `core.py` (efeitos globais) | Língua do `ErroRifas.__str__`/`verificar`/`log`, cancelamento por `threading.Event`, `Preparado` não serializável | Estado global (`i18n._atual`) e tipos não picklable | Ressalvas da Fase 0 (§3.1): língua por pedido, log com chave+parâmetros; os testes de hoje fixam o comportamento global |
+
+**Particularidades fixadas pelos testes** (ver comentários «quirk» em `tests/`): `nome_seguro` apaga `/` em vez de separar pastas e não trata nomes
+reservados (`CON`); `validar` aceita `inicio = 0`; `_f(-0.00001)` escreve `-0`; `disposicao_da_folha` com `n <= 0` devolve 1 rifa e com margem negativa usa 0;
+papel desconhecido levanta `KeyError`; `PADRAO_EXEMPLO` também apanha `0002` em `a0002b`; o `2099` da data do sorteio dos exemplos conta como número fixo.
