@@ -14,3 +14,8 @@ services:
       creds:
         fromRegistryCreds:
           name: ghcr
+    envVars:
+      # A palavra-passe do painel de administracao (/admin). NAO tem valor aqui: o Blueprint pede-a no painel do Render
+      # (e num servico que ja existe define-se em Environment). Sem ela (ou com menos de 12 caracteres) o painel nao existe.
+      - key: ADMIN_TOKEN
+        sync: false

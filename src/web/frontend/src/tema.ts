@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { definirVisual } from "./api";
 import { VISUAL_POR_OMISSAO, type Visual, visualValido } from "./temas";
 
 /** Claro/escuro (`data-tema`) e, separado, o tema visual (`data-visual`): cada tema visual tem as duas versões. */
@@ -48,6 +49,7 @@ function visualLido(): Visual {
 
 export function aplicarVisual(visual: Visual): void {
   document.documentElement.setAttribute("data-visual", visual);
+  definirVisual(visual);
 }
 
 export function useVisual(): [Visual, (v: Visual) => void] {

@@ -186,6 +186,9 @@ def renderizar(html_base: str, pagina: Pagina, base: str) -> str:
     return html_base
 
 
+ADMIN = Pagina("/admin", f"Painel | {NOME}", "Painel de administração.", lambda: "<h1>Painel</h1>", indexavel=False, no_mapa=False)
+
+
 def pagina_nao_encontrada() -> Pagina:
     return Pagina("/404", f"Página não encontrada | {NOME}", "Esta página não existe.",
                   lambda: f'<h1>Página não encontrada</h1><p><a href="/">Ir para o {NOME}</a></p>', indexavel=False, no_mapa=False)

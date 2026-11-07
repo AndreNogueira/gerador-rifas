@@ -31,6 +31,7 @@ const DESENHOS = {
   esquerda: "M19 12H5M11 6l-6 6 6 6",
   anterior: "M15 6l-6 6 6 6",
   seguinte: "M9 6l6 6-6 6",
+  verificado: "M5 12.5l4.5 4.5L19 7.5",
   descarregar: "M12 4v11M7.5 11 12 15.5 16.5 11M5 20h14",
 } as const;
 

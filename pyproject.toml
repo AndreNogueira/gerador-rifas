@@ -21,6 +21,7 @@ web = [
     "fastapi",
     "uvicorn",
     "python-multipart",   # uploads
+    "psutil>=7.2.2",
 ]
 
 [tool.uv]

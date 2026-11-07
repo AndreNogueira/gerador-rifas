@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Admin } from "./Admin";
 import { api } from "./api";
 import { Cabecalho } from "./Cabecalho";
 import { ProvedorDialogos } from "./dialogos";
@@ -30,7 +31,9 @@ function Aplicacao() {
           ? t("mi_video")
           : caminho === "/sobre"
             ? t("mi_sobre")
-            : "";
+            : caminho === "/admin"
+              ? "Painel" // o painel é só em português
+              : "";
     document.title = pagina ? `${pagina.replace(/…$/, "")} | ${nome}` : nome;
   }, [caminho, t]);
 
@@ -51,6 +54,8 @@ function Aplicacao() {
           <Video />
         ) : caminho === "/sobre" ? (
           <Sobre versao={versao} />
+        ) : caminho === "/admin" ? (
+          <Admin />
         ) : (
           <Gerador {...formulario} />
         )}

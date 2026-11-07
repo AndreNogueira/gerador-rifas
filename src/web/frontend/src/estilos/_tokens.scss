@@ -35,6 +35,7 @@
   --fonte-numero: var(--fonte-titulo);
   --fonte-marca: var(--fonte-titulo); // o nome da app no cabeçalho (uma fonte estreita evita que o cabeçalho quebre noutra linha)
   --peso-marca: 800; // o nome da app no cabeçalho
+  --espaco-marca: -0.01em; // espaçamento entre letras do nome da app (uma letra monoespaçada pede menos)
   --peso-numero: 800; // o número grande de cada passo
   --ligaduras: normal; // `none` desliga as ligaduras (fi, fl) em letras de pixel
   --brilho-titulo: none; // text-shadow dos títulos e dos números
