@@ -1,0 +1,14 @@
+{
+  "name": "Gerador de Rifas",
+  "short_name": "Rifas",
+  "description": "Gera os bilhetes numerados das tuas rifas a partir de um template do Canva.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f3effe",
+  "theme_color": "#6a35f5",
+  "icons": [
+    { "src": "/icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icone-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icone.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

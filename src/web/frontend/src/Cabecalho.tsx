@@ -1,12 +1,15 @@
 import { useI18n } from "./i18n";
+import { Icone, type NomeIcone } from "./icones";
 import { Ligacao, useLocalizacao } from "./rota";
 import type { Tema } from "./tema";
 
-const PAGINAS = [
-  { para: "/tutorial", chave: "tut_titulo" },
-  { para: "/video", chave: "mi_video" },
-  { para: "/sobre", chave: "mi_sobre" },
-] as const;
+const PAGINAS: readonly { para: string; chave: string; icone: NomeIcone }[] = [
+  { para: "/tutorial", chave: "tut_titulo", icone: "livro" },
+  { para: "/video", chave: "mi_video", icone: "video" },
+  { para: "/sobre", chave: "mi_sobre", icone: "info" },
+];
+
+const ICONE_DO_TEMA: Record<Tema, NomeIcone> = { auto: "auto", claro: "sol", escuro: "lua" };
 
 export function Cabecalho({ tema, mudarTema }: { tema: Tema; mudarTema: (t: Tema) => void }) {
   const { t, lingua, linguas, mudarLingua } = useI18n();
@@ -14,6 +17,7 @@ export function Cabecalho({ tema, mudarTema }: { tema: Tema; mudarTema: (t: Tema
   return (
     <header className="topo">
       <Ligacao para="/" className="marca">
+        <img src="/icone.svg" alt="" width={46} height={46} />
         <h1>{t("app_nome")}</h1>
       </Ligacao>
       <nav className="navegacao" aria-label={t("app_nome")}>
@@ -24,12 +28,14 @@ export function Cabecalho({ tema, mudarTema }: { tema: Tema; mudarTema: (t: Tema
             aria-current={caminho === p.para ? "page" : undefined}
             data-testid={`nav-${p.para.slice(1)}`}
           >
+            <Icone nome={p.icone} tamanho={18} />
             {t(p.chave).replace(/…$/, "")}
           </Ligacao>
         ))}
       </nav>
       <div className="definicoes">
-        <label>
+        <label className="seletor">
+          <Icone nome="globo" tamanho={18} />
           <span className="so-leitores">{t("m_idioma")}</span>
           <select
             value={lingua}
@@ -44,7 +50,8 @@ export function Cabecalho({ tema, mudarTema }: { tema: Tema; mudarTema: (t: Tema
             ))}
           </select>
         </label>
-        <label>
+        <label className="seletor">
+          <Icone nome={ICONE_DO_TEMA[tema]} tamanho={18} />
           <span className="so-leitores">{t("mi_tema")}</span>
           <select
             value={tema}

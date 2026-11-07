@@ -2,6 +2,7 @@ import { type ReactNode, useEffect, useRef, useState } from "react";
 import type { Calculo, Campos, Cor, Ficheiro, Sessao } from "./api";
 import { PAPEIS } from "./formulario";
 import { useI18n } from "./i18n";
+import { Icone, type NomeIcone } from "./icones";
 import type { Ocupado } from "./sessao";
 
 const COR_DO_ESTADO: Record<Ficheiro["estado"], Cor> = {
@@ -11,11 +12,23 @@ const COR_DO_ESTADO: Record<Ficheiro["estado"], Cor> = {
   erro: "erro",
 };
 
+const ICONE_DO_PASSO: Record<number, NomeIcone> = {
+  1: "template",
+  2: "algarismos",
+  3: "bilhete",
+  4: "destino",
+};
+
+/** Um passo é um bilhete: insígnia colorida com o ícone, o título, e o número do passo como o número do bilhete. */
 export function Cartao({ passo, titulo, children }: { passo: number; titulo: string; children: ReactNode }) {
   return (
-    <section className="cartao" aria-label={titulo}>
+    <section className={`cartao passo passo-${passo}`} aria-label={titulo}>
       <h2>
-        <span className="numero">{passo}</span> {titulo}
+        <span className="insignia">
+          <Icone nome={ICONE_DO_PASSO[passo] ?? "bilhete"} tamanho={22} />
+        </span>
+        <span className="titulo-passo">{titulo}</span>
+        <span className="numero">{passo}</span>
       </h2>
       {children}
     </section>
@@ -81,6 +94,7 @@ function Carregar({
         disabled={desativado}
         onClick={() => entrada.current?.click()}
       >
+        <Icone nome="carregar" />
         {rotulo}
       </button>
       <input

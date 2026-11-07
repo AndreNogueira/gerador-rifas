@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, ErroApi, type Tutorial as TutorialDados } from "./api";
 import { useI18n } from "./i18n";
+import { Icone } from "./icones";
 import { Ligacao, navegar, useLocalizacao } from "./rota";
 
 function useTutorial(): { dados: TutorialDados | null; erro: string } {
@@ -26,7 +27,8 @@ function Voltar() {
   const { t } = useI18n();
   return (
     <Ligacao para="/" className="botao secundario voltar">
-      ← {t("web_voltar")}
+      <Icone nome="esquerda" />
+      {t("web_voltar")}
     </Ligacao>
   );
 }
@@ -85,7 +87,8 @@ export function Tutorial() {
                 disabled={atual === 0}
                 onClick={() => ir(atual - 1)}
               >
-                ‹ {t("tut_ant")}
+                <Icone nome="anterior" />
+                {t("tut_ant")}
               </button>
               <button
                 type="button"
@@ -93,7 +96,8 @@ export function Tutorial() {
                 disabled={atual >= topicos.length - 1}
                 onClick={() => ir(atual + 1)}
               >
-                {t("tut_seg")} ›
+                {t("tut_seg")}
+                <Icone nome="seguinte" />
               </button>
               <span className="suave">
                 {atual + 1} / {topicos.length}

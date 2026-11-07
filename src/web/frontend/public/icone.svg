@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Gerador de Rifas">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B2BFF" />
+      <stop offset=".55" stop-color="#A72BE6" />
+      <stop offset="1" stop-color="#FF3D8B" />
+    </linearGradient>
+    <radialGradient id="brilho" cx=".22" cy=".12" r=".7">
+      <stop offset="0" stop-color="#fff" stop-opacity=".38" />
+      <stop offset="1" stop-color="#fff" stop-opacity="0" />
+    </radialGradient>
+    <path id="bilhete" d="M20 0H224A16 16 0 0 0 256 0H300Q320 0 320 20V156Q320 176 300 176H256A16 16 0 0 0 224 176H20Q0 176 0 156V20Q0 0 20 0Z" />
+    <path id="faisca" d="M0-1C.12-.12.12-.12 1 0C.12.12.12.12 0 1C-.12.12-.12.12-1 0C-.12-.12-.12-.12 0-1Z" />
+  </defs>
+
+  <rect width="512" height="512" rx="116" fill="url(#fundo)" />
+  <rect width="512" height="512" rx="116" fill="url(#brilho)" />
+
+  <!-- bilhete de trás (menta) -->
+  <g transform="translate(226 304) rotate(-15) translate(-160 -88)">
+    <use href="#bilhete" fill="#1B0A57" opacity=".28" transform="translate(0 12)" />
+    <use href="#bilhete" fill="#2BE4B5" />
+    <path d="M240 28V148" stroke="#0E9F84" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 12" />
+    <path d="M40 120H190M40 86H150" stroke="#0E9F84" stroke-width="12" stroke-linecap="round" opacity=".55" />
+  </g>
+
+  <!-- bilhete da frente (amarelo) com o 7 da sorte -->
+  <g transform="translate(274 228) rotate(8) translate(-160 -88)">
+    <use href="#bilhete" fill="#1B0A57" opacity=".3" transform="translate(0 12)" />
+    <use href="#bilhete" fill="#FFD84A" />
+    <path d="M240 26V150" stroke="#D9A000" stroke-width="5" stroke-linecap="round" stroke-dasharray="1 12" />
+    <path d="M56 48H186L112 142" fill="none" stroke="#2A1068" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" />
+    <use href="#faisca" transform="translate(288 88) scale(17)" fill="#E5287A" />
+  </g>
+
+  <!-- brilhos e confetis -->
+  <use href="#faisca" transform="translate(402 104) scale(38)" fill="#fff" />
+  <use href="#faisca" transform="translate(112 408) scale(22)" fill="#fff" opacity=".9" />
+  <use href="#faisca" transform="translate(448 196) scale(15)" fill="#FFD84A" />
+  <circle cx="92" cy="128" r="9" fill="#2BE4B5" />
+  <circle cx="418" cy="404" r="8" fill="#FFD84A" />
+  <rect x="352" y="446" width="26" height="10" rx="5" fill="#fff" opacity=".85" transform="rotate(-28 365 451)" />
+  <rect x="150" y="70" width="22" height="9" rx="4.5" fill="#FF8AB8" transform="rotate(32 161 74)" />
+</svg>

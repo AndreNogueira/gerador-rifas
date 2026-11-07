@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Calculo, Campos, Sessao } from "./api";
 import { CartaoAlgarismos, CartaoDestino, CartaoNumeros, CartaoTemplate } from "./cartoes";
 import { useI18n } from "./i18n";
+import { Icone } from "./icones";
 import { Ligacao } from "./rota";
 import { aCorrer, useSessao } from "./sessao";
 
@@ -95,6 +96,7 @@ function Acoes({
           onClick={() => void s.pedirPrevia(campos)}
           data-testid="previa"
         >
+          <Icone nome="olho" />
           {t("previa")}
         </button>
         <button
@@ -103,6 +105,7 @@ function Acoes({
           onClick={() => (a_gerar ? void s.cancelar() : void s.pedirGerar(campos, calculo?.confirmar ?? ""))}
           data-testid="gerar"
         >
+          <Icone nome={a_gerar ? "fechar" : "faiscas"} />
           {a_gerar ? t("cancelar") : t("gerar")}
         </button>
         <button
@@ -112,6 +115,7 @@ function Acoes({
           onClick={() => void aoLimpar()}
           data-testid="limpar"
         >
+          <Icone nome="lixo" />
           {t("limpar")}
         </button>
       </div>
@@ -141,6 +145,7 @@ function Entrega({ entrega }: { entrega: NonNullable<Sessao["trabalho"]["entrega
         {entrega.total > entrega.ficheiros.length && <li>… (+{entrega.total - entrega.ficheiros.length})</li>}
       </ul>
       <a className="botao" href={entrega.url} download={entrega.nome} data-testid="descarregar">
+        <Icone nome="descarregar" />
         {t("web_descarregar")} — {entrega.nome}
       </a>
     </div>
@@ -167,13 +172,18 @@ function Visor({
   return (
     <section className="visor" aria-label={titulo}>
       <div className="visor-topo">
-        <h2 data-testid="titulo-visor">{titulo}</h2>
+        <h2>
+          <Icone nome="olho" tamanho={22} />
+          <span data-testid="titulo-visor">{titulo}</span>
+        </h2>
         <div className="botoes">
           <button type="button" className="texto" onClick={aoAlternar} data-testid="expandir">
+            <Icone nome={expandido ? "reduzir" : "expandir"} tamanho={18} />
             {t(expandido ? "mi_reduzir" : "mi_expandir")}
           </button>
           {url && (
             <a href={url} target="_blank" rel="noreferrer" data-testid="nova-janela">
+              <Icone nome="externo" tamanho={16} />
               {t("web_nova_janela")}
             </a>
           )}
@@ -182,7 +192,10 @@ function Visor({
       {url ? (
         <iframe key={url} className="pdf" src={`${url}#view=FitH`} title={titulo} data-testid="visor" />
       ) : (
-        <p className="suave">{t("previa_vazio")}</p>
+        <div className="vazio">
+          <Icone nome="bilhete" tamanho={64} strokeWidth={1.5} />
+          <p className="suave">{t("previa_vazio")}</p>
+        </div>
       )}
     </section>
   );
