@@ -73,8 +73,8 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
 - Estimativa revista: ≈ 25 dias úteis (±30 %).
 
 - **Alojamento:** serviço **gratuito** (qual: ver «Em aberto»).
-- **Público:** **só o dono** → sem contas de utilizador, mas o serviço fica atrás de uma palavra-passe/token (ou espaço privado do
-  serviço); limites de segurança mantêm-se (tamanho, nº de números, tempo), sem *rate limiting* por IP sofisticado.
+- **Público (decisão de 2026-11-07, substitui «só o dono»):** serviço **público e sem palavra-passe**; sem contas por agora (mais tarde será pago, e aí haverá contas/pagamento).
+  Como qualquer pessoa pode usar a CPU de 512 MB, os limites passam a ser obrigatórios antes de haver upload/geração: tamanho, nº de números, tempo, 1 geração de cada vez e *rate limiting* por IP.
 - **Repositório:** GitHub **privado** `AndreNogueira/gerador-rifas` (criado), com `app/`, `webapp/` e `docs/` (a raiz usa `.gitignore`
   que deixa de fora `final/`, `saida/`, `.venv`, `dist` e caches).
 - **Motor:** **partilhado** — `src/core` usado pela app Windows e pela webapp (a app passa a importá-lo; testes comuns).
@@ -87,7 +87,7 @@ Mesmas regras: template nunca guardado, nome dos ficheiros escrito pelo utilizad
   - **512 MB de RAM** e CPU partilhada → teto de números por pedido (≈ 100 000), geração em *streaming* para o ZIP, 1 trabalho de cada vez,
     1 processo de trabalho para o PDFium; ficheiros só em disco efémero (apagados após ~30 min; perdem-se ao reiniciar).
   - **Adormece após 15 min** sem uso (arranque ≈ 1 min): a página mostra «a acordar o servidor…» (frontend serve-se de ficheiros estáticos).
-  - **Sem autenticação própria** no plano gratuito → a app pede uma **palavra-passe** (variável de ambiente `ACCESS_PASSWORD`, cookie assinado).
+  - **Sem autenticação** (serviço público): nada de `ACCESS_PASSWORD`; a proteção é a dos limites acima.
   - **Deploy automático:** ligar o repositório no painel do Render (autorizar a app GitHub no repo privado); *Auto-Deploy* a cada *push* para
     `main`, **só depois do CI passar** (GitHub Actions: testes do motor + build do frontend). Dockerfile na **raiz do repo** (contexto vê `app/` e `webapp/`).
 
@@ -103,7 +103,7 @@ da API; os 4 passos só como títulos), Dockerfile (`node:26-slim` → `python:3
 O protótipo em NiceGUI (5 ecrãs completos, 63 testes) ficou arquivado no ramo local `nicegui-prototipo` como referência (por exemplo, o fluxo de sessões/geração em `src/web/estado.py` e `motor.py`).
 
 **Próximo: Fase 1 (API)** em `src/web/`: FastAPI com sessões, upload (`preparar_de_bytes`), análise do template, folha (`escolha_folha`), pré-visualização (`pdf_da_previa`),
-trabalhos num processo de trabalho isolado (1 PDFium), progresso por SSE, ZIP; palavra-passe `ACCESS_PASSWORD`; limites (tamanho, nº de números, tempo). Depois o frontend (Fase 2).
+trabalhos num processo de trabalho isolado (1 PDFium), progresso por SSE, ZIP; limites contra abuso (tamanho, nº de números, tempo, por IP; o serviço é público). Depois o frontend (Fase 2).
 
 **Atenção ao começar a geração:** o plano e o `CLAUDE.md` exigem o PDFium num **processo** de trabalho (pool de processos, `multiprocessing.Event` para cancelar, `Preparado` recriado dentro do worker porque não é serializável); o protótipo NiceGUI usava um só *thread* (`ThreadPoolExecutor(1)`),
 que serve para um utilizador mas não dá isolamento de memória/tempo para os 512 MB do Render. Não copiar esse `motor.py` sem trocar o *thread* por um processo.

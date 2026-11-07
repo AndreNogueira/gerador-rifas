@@ -1,0 +1,16 @@
+# Blueprint do Render: cria o servico a partir da imagem publicada pelo deploy.yml no ghcr.io (ver README.md, «CI/CD»).
+# Render -> New -> Blueprint -> escolher este repositorio. As credenciais para puxar a imagem privada NAO ficam aqui:
+# criam-se no painel (Workspace Settings -> Registry Credentials) com o nome «ghcr».
+# Servico PUBLICO e sem palavra-passe (decisao de 2026-11-07; mais tarde sera pago). A porta vem do Render (PORT) e o HOST=0.0.0.0 da imagem.
+services:
+  - type: web
+    name: gerador-rifas
+    runtime: image
+    plan: free
+    region: frankfurt
+    healthCheckPath: /health
+    image:
+      url: ghcr.io/andrenogueira/gerador-rifas:latest
+      creds:
+        fromRegistryCreds:
+          name: ghcr

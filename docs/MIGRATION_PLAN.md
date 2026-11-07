@@ -186,7 +186,7 @@ Fase 0 numa pasta nova (`src/core` na raiz), **sem tocar em `app/`** até os tes
 |---|---|
 | Abordagem | B: FastAPI + React/Vite/TypeScript |
 | Alojamento | **Render** (Web Service gratuito, Docker, deploy automático do GitHub) |
-| Utilizadores | **Só o dono**: sem contas; acesso protegido por palavra-passe/token (ou espaço privado) |
+| Utilizadores | **Público, sem palavra-passe nem contas** (decisão de 2026-11-07; será pago mais tarde) |
 | Repositório | GitHub **privado** `AndreNogueira/gerador-rifas` com `app/`, `webapp/`, `docs/` (criado) |
 | Motor | **Partilhado** (`src/core`) entre a app Windows e a webapp |
 | Pré-visualização | **PDF.js** no browser; o servidor devolve um PDF de 1 página (não PNG) |
@@ -200,7 +200,7 @@ Fase 0 numa pasta nova (`src/core` na raiz), **sem tocar em `app/`** até os tes
 | Fly.io / Railway | Sem *free tier* real para contas novas | — | Pagos / créditos de teste |
 
 **Escolhido: Render.** (A recomendação era Hugging Face Spaces pela RAM; o Render dá deploy direto do GitHub e não pede cartão.) Implica: ficheiros temporários só em disco efémero, limites de RAM/tempo
-nos pedidos (512 MB!), palavra-passe da app (o plano gratuito não tem autenticação) e arranque a frio tolerado (é uso individual).
+nos pedidos (512 MB!), limites contra abuso por ser serviço público (sem palavra-passe) e arranque a frio tolerado.
 
 ---
 

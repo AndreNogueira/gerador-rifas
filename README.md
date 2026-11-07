@@ -38,11 +38,13 @@ Criam-se em **GitHub → o repositório → Settings → Secrets and variables �
 
 ### O que configurar no Render (não são secrets do GitHub)
 
+0. O serviço é **público e sem palavra-passe** (por agora é grátis; mais tarde será pago).
 1. **Primeiro faz um push para `main`** e espera que o `Deploy` publique a imagem (separador *Packages* do repositório). O serviço só se pode criar depois de a imagem existir.
-2. **Credencial para puxar a imagem privada:** a imagem herda a visibilidade *privada* do repositório. No GitHub cria um *Personal access token (classic)* só com o âmbito `read:packages`
+2. **Credencial para puxar a imagem privada** (tem de se chamar **`ghcr`**, é o nome que o `render.yaml` usa): a imagem herda a visibilidade *privada* do repositório. No GitHub cria um *Personal access token (classic)* só com o âmbito `read:packages`
    (**GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)**). No Render: **Account Settings → Registry Credentials → Add Credential**, registo *GitHub Container Registry*, o teu utilizador do GitHub e esse token.
-3. **Criar o serviço:** *New → Web Service → Existing Image* → `ghcr.io/andrenogueira/gerador-rifas:latest`, plano *Free*, *Health Check Path* `/health`. O Render define `PORT` sozinho e a app ouve nessa porta.
-4. **Variáveis de ambiente do serviço** (no painel do Render, nunca no repositório): `SECRET_KEY` (um valor aleatório longo) e, quando existir, `ACCESS_PASSWORD`.
+3. **Criar o serviço com o Blueprint:** no Render, *New → Blueprint* e escolhe este repositório (o Render pede autorização para a app GitHub dele ler o repositório privado). O [`render.yaml`](render.yaml) já define o serviço `gerador-rifas`
+   (imagem `ghcr.io/andrenogueira/gerador-rifas:latest`, credencial `ghcr`, plano *Free*, região Frankfurt, *Health Check Path* `/health`). O Render define `PORT` sozinho e a app ouve nessa porta. O plano gratuito adormece após 15 min sem uso (o 1.º pedido demora cerca de 1 min).
+4. Não há variáveis de ambiente obrigatórias. Se um dia precisares de algum valor secreto, define-o no painel do Render, nunca no repositório.
 5. Copia o *Deploy Hook* do serviço para o secret `RENDER_DEPLOY_HOOK_URL` (tabela acima).
 
-> **Atenção:** a palavra-passe de acesso (`ACCESS_PASSWORD`) ainda **não está implementada** na webapp. Enquanto não estiver, não crie o serviço no Render nem o secret `RENDER_DEPLOY_HOOK_URL`: o servidor ficaria público.
+> **Nota:** o serviço é público. Hoje só mostra o esqueleto (língua e títulos), por isso não há risco. Antes de a app aceitar uploads e gerar PDFs, têm de existir os limites contra abuso (tamanho, nº de números, uma geração de cada vez, por IP): estão no `webapp/PLANO.md`.

@@ -9,7 +9,7 @@ Projeto em português (pt-PT): comentários, docs e mensagens ao utilizador em p
 
 Passar o «Gerador de Rifas» (app Windows em `app/`, Tkinter/CustomTkinter, Python 3.13, Nuitka `.exe`) para uma **webapp** com deploy
 automático, **sem perder** a app Windows: o motor de geração (análise do template do Canva, arrumação da folha, escrita dos números,
-verificação) passa a ser **um só código** usado pelas duas. Uso só do dono (sem contas), repo GitHub privado `AndreNogueira/gerador-rifas`.
+verificação) passa a ser **um só código** usado pelas duas. Serviço **público e sem palavra-passe** (decisão de 2026-11-07; mais tarde será pago, sem contas por agora), repo GitHub privado `AndreNogueira/gerador-rifas`.
 
 ## Stack alvo (abordagem B)
 
@@ -50,7 +50,7 @@ docs/        análise e planos · webapp/PLANO.md  plano da webapp
 
 Estado: **Fase 0 feita** (lógica em `src/core`, a app Windows importa de lá; língua por pedido, mensagens estruturadas, entrada por bytes e `pdf_da_previa` existem;
 testes a passar em Windows e em Linux, Python 3.13 e 3.15). **Esqueleto da webapp feito**: API FastAPI com `/health`, `/api/linguas` e `/api/textos/{lingua}`; frontend React que carrega as línguas e os textos da API (os 4 passos só como
-títulos); Dockerfile multi-stage (alvos `testes` e `web`) e CI (pytest 3.13/3.15, frontend, Docker). **Falta (Fase 1 em diante, ver `webapp/PLANO.md`):** palavra-passe `ACCESS_PASSWORD`, sessões, upload, análise, pré-visualização, gerar/cancelar/ZIP,
+títulos); Dockerfile multi-stage (alvos `testes` e `web`) e CI (pytest 3.13/3.15, frontend, Docker). **Falta (Fase 1 em diante, ver `webapp/PLANO.md`):** sessões, **limites contra abuso (o serviço é público)**, upload, análise, pré-visualização, gerar/cancelar/ZIP,
 **processo isolado para o PDFium** (pool de processos + `multiprocessing.Event`; recriar o `Preparado` no worker), os 4 cartões e o visor, tutorial/vídeo, deploy no Render.
 Substitutos das dependências do Windows (tabela completa e o que não tem substituto: `docs/MIGRATION_PLAN.md` §9): lingua → `Accept-Language`; registo/tema → CSS do browser;
 `%APPDATA%` → `RIFAS_DADOS`; ficheiros locais → upload + `armazenamento`; `os.startfile` → `saida` (download); `--selftest` → `python -m core`; build do `.exe` → `Dockerfile` + `.github/workflows/ci.yml`.
@@ -67,8 +67,8 @@ Todo o ponto de entrada da app Windows ou de `app/testes/` tem de fazer `import 
 - **Configuração por variáveis de ambiente, sem caminhos absolutos no código** (`pathlib`, relativos a `__file__`). Existem: `RIFAS_LINGUA` (língua por defeito, ganha a tudo),
   `RIFAS_DADOS` (pasta do `config.json`; por defeito `%APPDATA%\GeradorRifas` na app Windows), `RIFAS_FONTES` (letras do sistema, só nos scripts de testes; por defeito `%WINDIR%\Fonts`),
   `RIFAS_ARMAZENAMENTO` (pasta das sessões/uploads/PDFs; por defeito a temporária do sistema), `RIFAS_LIMITE_SESSAO_MB`, `RIFAS_TEMA` (`claro`/`escuro`), `RIFAS_COR_DESTAQUE` (`#RRGGBB`).
-  Webapp (`src/web/config.py`): `PORT` (8080), `HOST` (127.0.0.1; no contentor 0.0.0.0), `RIFAS_FRONTEND` (pasta do frontend compilado; por omissão `src/web/frontend/dist`). Previstas: `ACCESS_PASSWORD`, `SECRET_KEY` (assinar o cookie),
-  `MAX_UPLOAD_MB`, `MAX_NUMEROS`, `JOB_TTL_MIN`; valores por defeito seguros, falhar ao arrancar se faltar `ACCESS_PASSWORD`.
+  Webapp (`src/web/config.py`): `PORT` (8080), `HOST` (127.0.0.1; no contentor 0.0.0.0), `RIFAS_FRONTEND` (pasta do frontend compilado; por omissão `src/web/frontend/dist`). Previstas: `SECRET_KEY` (se houver cookies),
+  `MAX_UPLOAD_MB`, `MAX_NUMEROS`, `JOB_TTL_MIN`; valores por defeito seguros. **Sem `ACCESS_PASSWORD`**: o serviço é público, por isso os limites (tamanho, nº de números, 1 geração de cada vez, por IP) passam a ser a defesa.
 - **Sem segredos no código nem no repo** (palavra-passe, chaves, certificados privados, `.env`); o `.cer` público é a única exceção. Documentar um `.env.example` sem valores reais.
 - Segurança dos uploads: validar o tipo real (`%PDF-`, PNG/JPG), nunca usar nomes/caminhos do cliente (`core.nome_seguro`), limites de tamanho/números/tempo.
 - **PDFium não é thread-safe** → todas as chamadas ao motor vão para um processo de trabalho (1 processo = 1 PDFium), nunca threads do servidor.
