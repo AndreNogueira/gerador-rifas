@@ -5,6 +5,8 @@ Gera PDFs de rifas numerados a partir de um template feito no Canva. Há duas in
 - **app Windows** (`app/`, Tkinter/CustomTkinter, `.exe` com Nuitka) — ver `app/README.md`;
 - **webapp** (`src/web`: API FastAPI + frontend React/Vite/TypeScript): carregas o template e os algarismos, vês a pré-visualização e descarregas os PDFs (ZIP ou PDF único). Pública e sem palavra-passe; 18 línguas; tutorial e vídeo.
 
+Planos: [`docs/PLANO_PRODUTO.md`](docs/PLANO_PRODUTO.md) (funcionalidades e monetização), [`docs/ONLINE.md`](docs/ONLINE.md) (manter o serviço acordado), [`docs/ADMIN.md`](docs/ADMIN.md) (painel), [`docs/SEO.md`](docs/SEO.md).
+
 Contexto, decisões e regras de trabalho: [`CLAUDE.md`](CLAUDE.md), [`webapp/PLANO.md`](webapp/PLANO.md), [`docs/MIGRATION_PLAN.md`](docs/MIGRATION_PLAN.md).
 
 ## Correr localmente
