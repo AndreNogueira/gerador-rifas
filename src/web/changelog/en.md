@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.24.1 — 2026-11-08
+
+### Improved
+- **Tick boxes aligned:** “One color per series” and the other tick boxes now sit next to their text instead of at the far end of the card.
+
 ## 3.24.0 — 2026-11-08
 
 ### Improved

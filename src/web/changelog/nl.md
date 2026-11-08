@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.24.1 — 2026-11-08
+
+### Verbeterd
+- **Selectievakjes uitgelijnd:** „Eén kleur per serie” en de andere vakjes staan nu naast hun tekst in plaats van aan het andere eind van de kaart.
+
 ## 3.24.0 — 2026-11-08
 
 ### Verbeterd

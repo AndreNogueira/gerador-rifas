@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.24.1 — 2026-11-08
+
+### Verbessert
+- **Kontrollkästchen ausgerichtet:** „Eine Farbe pro Serie“ und die anderen Kästchen stehen jetzt neben ihrem Text statt am anderen Ende der Karte.
+
 ## 3.24.0 — 2026-11-08
 
 ### Verbessert

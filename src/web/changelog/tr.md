@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.24.1 — 2026-11-08
+
+### İyileştirildi
+- **Onay kutuları hizalandı:** «Seri başına bir renk» ve diğer kutular artık kartın öbür ucunda değil, metinlerinin yanında.
+
 ## 3.24.0 — 2026-11-08
 
 ### İyileştirildi

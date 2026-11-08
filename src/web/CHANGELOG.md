@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.24.1 — 2026-11-08
+
+### Melhorado
+- **Caixas de seleção alinhadas:** «Uma cor para cada série» e as outras caixas ficam junto ao texto, em vez de no extremo do cartão.
+
 ## 3.24.0 — 2026-11-08
 
 ### Melhorado

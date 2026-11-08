@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.24.1 — 2026-11-08
+
+### Vylepšeno
+- **Zarovnaná zaškrtávací políčka:** „Jedna barva pro každou sérii“ a další políčka jsou nyní vedle textu, ne na druhém konci karty.
+
 ## 3.24.0 — 2026-11-08
 
 ### Vylepšeno
