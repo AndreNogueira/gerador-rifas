@@ -334,6 +334,18 @@ export function Admin() {
             dados externa (ver docs/ADMIN.md).
           </p>
         )}
+        {estado.base_de_dados.erro && (
+          <p role="alert" className="cor-aviso" data-testid="admin-bd-erro">
+            <b>A base de dados não responde.</b> As métricas ficam em memória e voltam a ser gravadas assim
+            que ela responder (os gráficos podem estar vazios). O gerador continua a funcionar.
+          </p>
+        )}
+        {estado.base_de_dados.tipo === "postgres" && !estado.base_de_dados.erro && (
+          <p className="cor-ok" role="note" data-testid="admin-bd-ok">
+            Métricas guardadas na base de dados (gravação de {estado.base_de_dados.intervalo_min} em{" "}
+            {estado.base_de_dados.intervalo_min} minutos): sobrevivem a reinícios.
+          </p>
+        )}
         {falha && (
           <p role="alert" className="cor-aviso">
             {falha}

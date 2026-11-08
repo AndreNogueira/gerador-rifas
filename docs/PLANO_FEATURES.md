@@ -26,7 +26,7 @@ Feitos todos os itens dos níveis 1 e 2 **exceto F8 e M9**, cada um num PR e com
 | M6 | QR por bilhete | feito | 3.20.0 | #25 | `VERIFICACAO_CHAVE` (sem ela não há QR) e `PUBLIC_URL` certo |
 | M7 | Sorteio verificável | feito | 3.21.0 | #26 | — |
 | M8 | Testes e2e no CI | feito | — | #27 | — |
-| M9 | Métricas persistentes | **por fazer** (espera a escolha da base de dados) | — | — | decidir (`BASE_DE_DADOS.md`) |
+| M9 | Métricas persistentes | feito no código (Postgres via `DATABASE_URL`; **Neon aprovado**) | — | — | criar o projeto Neon (UE) e pôr o `DATABASE_URL` no Render (`ADMIN.md`) |
 | M10 | Contraste dos temas | feito (medido, 9 temas × claro/escuro) | 3.22.0 | #28 | — |
 
 **Depois (3.23.0 e app Windows 2.4.0, 2026-11-08):** cada funcionalidade de utilizador passou a ter **tópico no tutorial nas 18 línguas e vídeo em pt/en** (regra em `CLAUDE.md`, verificada por `tests/test_funcionalidades.py`);

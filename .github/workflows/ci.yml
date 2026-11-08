@@ -50,6 +50,31 @@ jobs:
           PYTHONIOENCODING: utf-8
         run: uv run --no-sync python -m core ../app/exemplos ${{ runner.temp }}/autoteste
 
+  # As metricas na base Postgres (DATABASE_URL): as mesmas consultas do painel contra um Postgres a sério (o SQLite e o Postgres nao podem divergir).
+  # Num trabalho a parte porque os contentores de servico so existem em runners Linux.
+  postgres:
+    name: metricas em Postgres 17
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17.11
+        env:
+          POSTGRES_PASSWORD: teste          # base descartavel do CI, so acessivel dentro do trabalho
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://postgres:teste@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.7"
+          python-version: "3.15"
+      - run: uv sync --frozen
+      - run: uv run --no-sync python -m pytest -q tests/test_web_metricas.py tests/test_web_metricas_bd.py -rs
+
   frontend:
     name: frontend (Node 26, pnpm)
     runs-on: ubuntu-latest

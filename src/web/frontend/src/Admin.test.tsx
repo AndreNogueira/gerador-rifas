@@ -6,12 +6,13 @@ import type { Dados, Estado } from "./admin-api";
 import { escalaY, Funil, formatarNumero, GraficoBarras, GraficoLinhas, Medidor } from "./graficos";
 
 const AGORA = 1_800_000_000;
-const ESTADO: Estado = {
+let ESTADO: Estado = {
   versao: "3.8.0",
   agora: AGORA,
   arranque: AGORA - 7200,
   dados_desde: AGORA - 3600,
   dados_efemeros: true,
+  base_de_dados: { tipo: "sqlite", erro: false, intervalo_min: 0 },
   sistema: {
     cpu: 12.3,
     cpu_nucleos: 4,
@@ -219,7 +220,11 @@ beforeEach(() => {
     }),
   );
 });
-afterEach(() => vi.unstubAllGlobals());
+const ESTADO_INICIAL = ESTADO;
+afterEach(() => {
+  ESTADO = ESTADO_INICIAL;
+  vi.unstubAllGlobals();
+});
 
 describe("painel de administração", () => {
   it("sem sessão pede a palavra-passe e não mostra nenhum dado", async () => {
@@ -275,6 +280,27 @@ describe("painel de administração", () => {
     for (const p of pedidos) {
       if (p.url !== "/api/admin/entrar") expect(JSON.stringify(p)).not.toContain(palavraCerta);
     }
+  });
+
+  it("com a base Postgres a funcionar diz que as métricas sobrevivem; se ela falhar, avisa", async () => {
+    ESTADO = {
+      ...ESTADO_INICIAL,
+      dados_efemeros: false,
+      base_de_dados: { tipo: "postgres", erro: false, intervalo_min: 60 },
+    };
+    const { unmount } = render(<Admin />);
+    await userEvent.type(await screen.findByTestId("admin-token"), palavraCerta);
+    await userEvent.click(screen.getByTestId("admin-entrar"));
+    await screen.findByRole("heading", { name: "Agora" });
+    expect(screen.getByTestId("admin-bd-ok")).toHaveTextContent(/60 em 60 minutos/);
+    expect(screen.queryByText(/Os dados são temporários/)).not.toBeInTheDocument();
+    expect(screen.queryByTestId("admin-bd-erro")).not.toBeInTheDocument();
+    unmount();
+    ESTADO = { ...ESTADO, base_de_dados: { tipo: "postgres", erro: true, intervalo_min: 60 } };
+    render(<Admin />); // a sessão (cookie) continua válida: entra direto
+    await screen.findByRole("heading", { name: "Agora" });
+    expect(screen.getByTestId("admin-bd-erro")).toHaveTextContent(/A base de dados não responde/);
+    expect(screen.queryByTestId("admin-bd-ok")).not.toBeInTheDocument();
   });
 
   it("mudar o intervalo pede os dados desse intervalo", async () => {

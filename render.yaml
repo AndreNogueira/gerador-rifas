@@ -19,3 +19,7 @@ services:
       # (e num servico que ja existe define-se em Environment). Sem ela (ou com menos de 12 caracteres) o painel nao existe.
       - key: ADMIN_TOKEN
         sync: false
+      # O endereco da base Postgres (Neon) para as metricas sobreviverem a reinicios. NAO tem valor aqui: define-se em Environment. Sem ele
+      # as metricas ficam no disco efemero, como antes.
+      - key: DATABASE_URL
+        sync: false

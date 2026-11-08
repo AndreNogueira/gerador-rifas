@@ -150,10 +150,26 @@ def admin_token() -> str:
     return t if len(t) >= 12 else ""
 
 
+def database_url() -> str:
+    """O endereco da base Postgres (Neon, Supabase...): DATABASE_URL, so no Render (leva a palavra-passe: NUNCA no repositorio, num log ou no
+    painel). So `postgres://` ou `postgresql://`; outra coisa ignora-se. Vazio = SQLite local, como sempre."""
+    v = os.environ.get("DATABASE_URL", "").strip()
+    return v if re.fullmatch(r"postgres(ql)?://[^\s]{6,500}", v) else ""
+
+
+def metricas_bd_min() -> float:
+    """De quantos em quantos minutos as metricas vao para a base Postgres (METRICAS_BD_MIN, 1 a 720; 60 por omissao). Quanto mais perto de 5,
+    menos a computacao do Neon suspende (o plano gratuito tem horas limitadas); quanto maior, mais se perde se o servico for morto sem avisar."""
+    try:
+        return min(720.0, max(1.0, float(os.environ.get("METRICAS_BD_MIN", "60"))))
+    except ValueError:
+        return 60.0
+
+
 def metricas_efemeras() -> bool:
     """Se as metricas se perdem quando o servico reinicia: no Render (variavel RENDER) o disco e efemero, a menos que o dono diga onde
     fica um disco persistente (RIFAS_METRICAS)."""
-    return bool(os.environ.get("RENDER")) and not os.environ.get("RIFAS_METRICAS", "").strip()
+    return bool(os.environ.get("RENDER")) and not os.environ.get("RIFAS_METRICAS", "").strip() and not database_url()
 
 
 def manter_acordado() -> tuple[str, float]:

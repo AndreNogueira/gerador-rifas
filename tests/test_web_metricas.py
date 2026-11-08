@@ -1,6 +1,6 @@
 """Metricas (src/web/metricas.py): agregacao, histogramas, retencao, privacidade e o proxy."""
 import json
-import sqlite3
+import os
 import time
 
 import pytest
@@ -23,9 +23,24 @@ def relogio():
     return Relogio()
 
 
-@pytest.fixture
-def m(tmp_path, relogio):
-    obj = Metricas(tmp_path / "m.sqlite3", relogio=relogio)
+URL_PG = os.environ.get("TEST_DATABASE_URL", "")                   # um Postgres descartavel (no CI: o contentor do servico); sem ele os testes de Postgres saltam
+
+
+def limpar_postgres() -> None:
+    import psycopg
+
+    with psycopg.connect(URL_PG, autocommit=True) as lig:
+        lig.execute("DROP TABLE IF EXISTS sistema, pedidos, eventos")
+
+
+@pytest.fixture(params=["sqlite", pytest.param("postgres", marks=pytest.mark.skipif(not URL_PG, reason="sem TEST_DATABASE_URL"))])
+def m(request, tmp_path, relogio):
+    """As mesmas consultas e agregacoes correm no SQLite e no Postgres: o painel nao pode depender da base."""
+    if request.param == "postgres":
+        limpar_postgres()
+        obj = Metricas(None, relogio=relogio, url_bd=URL_PG)
+    else:
+        obj = Metricas(tmp_path / "m.sqlite3", relogio=relogio)
     yield obj
     obj.fechar()
 
@@ -134,9 +149,8 @@ def test_retencao_apaga_o_antigo(m, relogio):
     m.descarregar(tudo=True)
     relogio.t += metricas.RETENCAO_EVENTOS_S + 10
     m.descarregar(tudo=True)
-    ligacao = sqlite3.connect(str(m.caminho))
-    assert ligacao.execute("SELECT COUNT(*) FROM eventos").fetchone()[0] == 0
-    assert ligacao.execute("SELECT COUNT(*) FROM sistema").fetchone()[0] == 0
+    assert m._armazem.executar("SELECT COUNT(*) FROM eventos")[0][0] == 0
+    assert m._armazem.executar("SELECT COUNT(*) FROM sistema")[0][0] == 0
 
 
 def test_o_texto_longo_e_cortado_e_nao_parte_o_sql(m):
@@ -146,6 +160,8 @@ def test_o_texto_longo_e_cortado_e_nao_parte_o_sql(m):
 
 
 def test_privacidade_nenhum_ip_fica_no_disco(m, relogio):
+    if m.persistente:
+        pytest.skip("o ficheiro bruto so existe no SQLite; o teste abaixo olha para as linhas do Postgres")
     for ip in ("203.0.113.7", "198.51.100.23", "2001:db8::1"):
         for _ in range(3):
             m.cliente(ip, tem_xff=True)
@@ -190,3 +206,19 @@ def test_intervalos_validos():
         assert janela // passo <= 720, chave                             # nunca mais de 720 pontos por grafico
     assert time.time() > 0
     assert json.dumps(list(INTERVALOS))
+
+
+def test_privacidade_nenhum_ip_fica_na_base_postgres(m, relogio):
+    """O mesmo teste de privacidade, lendo todas as linhas de todas as tabelas (no Postgres nao ha ficheiro para ler)."""
+    if not m.persistente:
+        pytest.skip("o SQLite tem o teste do ficheiro bruto")
+    for ip in ("203.0.113.7", "198.51.100.23", "2001:db8::1"):
+        m.cliente(ip, tem_xff=True)
+        m.pedido("GET /api/linguas", 200, 3)
+    m.evento("sessao", "pt", "matrix", "computador")
+    m.amostrar(1, 1, 1, 1, 1, 0, 0)
+    m.descarregar(tudo=True)
+    tudo = repr([m._armazem.executar(f"SELECT * FROM {t}") for t in ("eventos", "sistema", "pedidos")])   # noqa: S608
+    for ip in ("203.0.113.7", "198.51.100.23", "2001:db8"):
+        assert ip not in tudo
+    assert "matrix" in tudo

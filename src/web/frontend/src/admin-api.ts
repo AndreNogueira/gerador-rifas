@@ -25,6 +25,7 @@ export interface Estado {
   arranque: number;
   dados_desde: number;
   dados_efemeros: boolean;
+  base_de_dados: { tipo: "sqlite" | "postgres"; erro: boolean; intervalo_min: number };
   sistema: Sistema;
   limites: Record<string, number | string>;
   proxy: {

@@ -134,7 +134,7 @@ async def _amostrar(servico: Servico, cada_s: float) -> None:
             anteriores = servico.motor.reinicios
             servico.metricas.amostrar(d["cpu"], d["mem_servidor_mb"], d["mem_motor_mb"], d["mem_contentor_mb"], d["disco_usado_mb"],
                                       d["sessoes_ativas"], int(d["geracao_em_curso"]))
-            await asyncio.to_thread(servico.metricas.descarregar)
+            await asyncio.to_thread(servico.metricas.descarregar_periodico)
         await asyncio.sleep(cada_s)
 
 
@@ -144,7 +144,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     pasta = (frontend or config.pasta_frontend()).resolve()
     armazem = ArmazenamentoLocal(armazenamento, limite_bytes=config.limite_sessao_mb() * 1024 * 1024)
     servico = Servico(Sessoes(armazem), motor or Motor(tempo_maximo_s=config.tempo_maximo_geracao_min() * 60), Limitador(),
-                      metricas or Metricas(caminho_por_defeito(armazem.raiz)), Observador(armazem.raiz))
+                      metricas or Metricas(caminho_por_defeito(armazem.raiz), url_bd=config.database_url(), intervalo_bd_min=config.metricas_bd_min()), Observador(armazem.raiz))
 
     @contextlib.asynccontextmanager
     async def ciclo_de_vida(app: FastAPI):
