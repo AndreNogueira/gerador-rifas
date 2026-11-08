@@ -43,7 +43,7 @@ describe("tema por época", () => {
     vi.setSystemTime(new Date(2026, 11, 20));
     abrir();
     const seletor = await screen.findByTestId("visual");
-    expect(raiz.getAttribute("data-visual")).toBe("natal");
+    await waitFor(() => expect(raiz.getAttribute("data-visual")).toBe("natal")); // o atributo aplica-se num efeito: pode chegar depois do seletor
     expect(localStorage.getItem("rifas.visual")).toBeNull();
     await userEvent.selectOptions(seletor, "premiado");
     expect(localStorage.getItem("rifas.visual")).toBe("premiado");
@@ -56,7 +56,7 @@ describe("temas visuais", () => {
   it("arranca no tema por omissão e não guarda nada", async () => {
     abrir();
     await screen.findByTestId("visual");
-    expect(raiz.getAttribute("data-visual")).toBe(VISUAL_POR_OMISSAO);
+    await waitFor(() => expect(raiz.getAttribute("data-visual")).toBe(VISUAL_POR_OMISSAO));
     expect(localStorage.getItem("rifas.visual")).toBeNull();
   });
 
