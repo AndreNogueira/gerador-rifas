@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.18.0 — 2026-11-08
+
+### Novo
+- **Galeria de templates:** quem não sabe fazer o template no Canva escolhe um de quatro desenhos (Bosque, Quermesse, Natal e Gala), escreve o título, a organização, até três prémios e a data do sorteio, vê a pré-visualização e carrega em «Usar este template»: o template e os algarismos ficam prontos e só falta escolher os números. Cada desenho é uma rifa com talão (o número duas vezes) que o programa repete na folha A4.
+- Os desenhos são originais deste projeto, na letra Vera (livre). A letra só tem o alfabeto latino: com outras letras aparece um aviso em vez de uma imagem.
+
 ## 3.17.0 — 2026-11-08
 
 ### Novo

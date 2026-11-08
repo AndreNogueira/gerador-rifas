@@ -198,12 +198,12 @@ dependencies = [
 dev = [
     { name = "httpx2" },
     { name = "pytest" },
-    { name = "reportlab" },
     { name = "ruff" },
 ]
 web = [
     { name = "fastapi" },
     { name = "psutil" },
+    { name = "reportlab" },
     { name = "uvicorn" },
 ]
 
@@ -218,12 +218,12 @@ requires-dist = [
 dev = [
     { name = "httpx2" },
     { name = "pytest" },
-    { name = "reportlab" },
     { name = "ruff" },
 ]
 web = [
     { name = "fastapi" },
     { name = "psutil", specifier = ">=7.2.2" },
+    { name = "reportlab" },
     { name = "uvicorn" },
 ]
 

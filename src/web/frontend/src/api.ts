@@ -103,6 +103,14 @@ export interface Calculo {
   confirmar: string;
 }
 
+export interface DadosGaleria {
+  desenho: string;
+  titulo: string;
+  organizacao: string;
+  premios: string[];
+  data: string;
+}
+
 export interface EntradaChangelog {
   versao: string;
   data: string;
@@ -211,6 +219,14 @@ export const api = {
   linguas: () => pedir<Linguas>("GET", "/api/linguas"),
   textos: (lingua: string) => pedir<Textos>("GET", `/api/textos/${encodeURIComponent(lingua)}`),
   tutorial: () => pedir<Tutorial>("GET", "/api/tutorial"),
+  /** O PNG de um desenho da galeria com estes textos (`t`, `o`, `p1`..`p3`, `d`). */
+  galeriaPrevia: (p: Record<string, string>, sinal?: AbortSignal) =>
+    pedir<Blob>("GET", `/api/galeria/previa.png?${new URLSearchParams(p).toString()}`, {
+      bruto: true,
+      sinal,
+    }),
+  usarGaleria: (id: string, dados: DadosGaleria) =>
+    pedir<Sessao>("POST", `${s(id)}/galeria`, { json: dados }),
   /** A lista de bilhetes em CSV e a folha de controlo em PDF do pedido que está no formulário. */
   listaCsv: (campos: Campos) => pedir<Blob>("POST", "/api/exportar/lista.csv", { json: campos, bruto: true }),
   folhaDeControlo: (campos: Campos) =>

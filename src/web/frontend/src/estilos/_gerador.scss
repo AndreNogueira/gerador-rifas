@@ -130,6 +130,45 @@
     font-variant-numeric: tabular-nums;
   }
 }
+.galeria {
+  display: grid;
+  gap: 10px;
+  border-top: 2px dashed var(--linha);
+  padding-top: 12px;
+
+  > summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--destaque);
+  }
+  &[open] > summary {
+    margin-bottom: 4px;
+  }
+  .desenhos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+  }
+  .galeria-previa {
+    width: 100%;
+    max-width: 30rem;
+    height: auto;
+    border: var(--borda) solid var(--linha);
+    border-radius: var(--raio-c);
+    background: #fff;
+  }
+  .premios {
+    display: grid;
+    gap: 6px;
+
+    legend {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--suave);
+      margin-bottom: 4px;
+    }
+  }
+}
 .linha.extras {
   > label {
     flex: 1 1 11rem;

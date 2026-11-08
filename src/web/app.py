@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, rotas_listas, seo, textos_legais
+from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, rotas_galeria, rotas_listas, seo, textos_legais
 from .limites import Limitador
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
@@ -223,6 +223,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     app.include_router(rotas_ajuda.router)
     app.include_router(rotas.router_ecra)
     app.include_router(rotas_listas.router)
+    app.include_router(rotas_galeria.router)
     app.include_router(admin.router)
 
     # imagens do tutorial e videos (os mesmos ficheiros da app Windows); tem de vir antes do «fallback» do frontend

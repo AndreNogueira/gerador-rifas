@@ -21,6 +21,12 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_saltar: "Saltar números",
     web_cor_serie: "Uma cor para cada série",
     web_marcas: "Marcas de corte",
+    web_galeria: "Sem template? Escolha um da galeria",
+    web_galeria_usar: "Usar este template",
+    web_galeria_titulo: "Título",
+    web_galeria_organizacao: "Organização ou evento",
+    web_galeria_premios: "Prémios (uma linha cada, até 3)",
+    web_galeria_data: "Data do sorteio",
     web_exportar_csv: "Exportar lista (CSV)",
     web_folha_controlo: "Folha de controlo (PDF)",
     web_copiar_ligacao: "Copiar ligação",
@@ -133,6 +139,7 @@ export class ServidorFalso {
   falhaSessaoPerdida = false;
   donativoUrl = "";
   exportarErro = "";
+  galeriaErro = "";
   temContacto = false;
 
   nova(): Sessao {
@@ -175,6 +182,10 @@ export class ServidorFalso {
     if (url === "/api/exportar/lista.csv" || url === "/api/exportar/controlo.pdf") {
       if (this.exportarErro) return this.responder({ detail: this.exportarErro, tipo: "aviso" }, 422);
       return Promise.resolve(new Response(new Blob([url.endsWith("csv") ? "csv" : "%PDF"]), { status: 200 }));
+    }
+    if (url.startsWith("/api/galeria/previa.png")) {
+      if (this.galeriaErro) return this.responder({ detail: this.galeriaErro, tipo: "aviso" }, 422);
+      return Promise.resolve(new Response(new Blob(["png"]), { status: 200 }));
     }
     if (url === "/api/publico")
       return this.responder({ donativo_url: this.donativoUrl, contacto: this.temContacto });
@@ -248,6 +259,26 @@ export class ServidorFalso {
                 },
             info: { n_campos: 5, primeiro: "0001", ultimo: "0005", digitos: 4, tem_folha: false },
           };
+      this.sessoes.set(id, novo);
+      return this.responder(novo);
+    }
+    if (acao === "galeria" && metodo === "POST") {
+      if (this.galeriaErro) return this.responder({ detail: this.galeriaErro, tipo: "aviso" }, 422);
+      const d = corpo as { desenho: string };
+      const novo: Sessao = {
+        ...s,
+        pronto: true,
+        tem_modelo: true,
+        modelo_url: `/api/sessoes/${id}/modelo.pdf`,
+        template: {
+          nome: `galeria-${d.desenho}.pdf`,
+          estado: "ok",
+          texto: "✔ 1 bilhete (galeria)",
+          detalhe: "",
+        },
+        algarismos: { nome: "galeria.pdf", estado: "ok", texto: "✔ letra Vera", detalhe: "" },
+        info: { n_campos: 1, primeiro: "0001", ultimo: "0001", digitos: 4, tem_folha: true },
+      };
       this.sessoes.set(id, novo);
       return this.responder(novo);
     }

@@ -12,7 +12,6 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest",
-    "reportlab",   # so os testes (PDFs sinteticos)
     "httpx2",      # usado pelo starlette.testclient (testes da API); o antigo `httpx` esta obsoleto no Starlette 1.x
     "ruff",         # lint (CI)
 ]
@@ -21,6 +20,7 @@ web = [
     "fastapi",
     "uvicorn",
     "psutil>=7.2.2",
+    "reportlab",          # a galeria de templates (core/galeria.py) cria os PDFs; tambem serve os testes (PDFs sinteticos)
 ]
 
 [tool.uv]

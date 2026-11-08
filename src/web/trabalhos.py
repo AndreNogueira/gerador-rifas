@@ -108,6 +108,15 @@ def previa(pasta: str, tpl_nome: str, alg_nome: str, papel: str, margem: str, po
         return _erro(e)
 
 
+def galeria_png(desenho: str, titulo: str, organizacao: str, premios: tuple, data: str, dpi: int = 110) -> tuple:
+    """O PNG de um desenho da galeria com estes textos: ("ok", bytes) | erro (os textos que a letra nao tem, desenho desconhecido)."""
+    try:
+        pdf = core.galeria.criar_template(desenho, core.galeria.Textos(titulo, organizacao, tuple(p for p in premios if p), data))
+        return ("ok", core.png_de_pagina(pdf, dpi))
+    except Exception as e:  # noqa: BLE001
+        return _erro(e)
+
+
 def png(pdf: str, dpi: int = 150) -> tuple:
     """A 1.a pagina de um PDF como PNG (para os browsers que nao mostram PDFs, como o Chrome do Android): (\"ok\", bytes) | erro."""
     try:
