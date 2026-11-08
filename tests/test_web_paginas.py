@@ -16,7 +16,7 @@ def c(tmp_path):
 def test_sem_configuracao_nao_ha_donativo_nem_contacto(c, monkeypatch):
     for v in ("DONATIVO_URL", "CONTACTO_EMAIL", "RESPONSAVEL"):
         monkeypatch.delenv(v, raising=False)
-    assert c.get("/api/publico").json() == {"donativo_url": "", "contacto": False}
+    assert c.get("/api/publico").json() == {"donativo_url": "", "contacto": False, "qr": False}
     d = c.get("/api/pagina/contacto").json()
     assert "não há um contacto público" in d["seccoes"][0]["paragrafos"][0]
 
@@ -25,7 +25,7 @@ def test_a_configuracao_aparece_e_so_se_for_valida(c, monkeypatch):
     monkeypatch.setenv("DONATIVO_URL", "https://exemplo.pt/doar")
     monkeypatch.setenv("CONTACTO_EMAIL", "ola@exemplo.pt")
     monkeypatch.setenv("RESPONSAVEL", "Ana <b>Silva</b>\nOutra linha")
-    assert c.get("/api/publico").json() == {"donativo_url": "https://exemplo.pt/doar", "contacto": True}
+    assert c.get("/api/publico").json() == {"donativo_url": "https://exemplo.pt/doar", "contacto": True, "qr": False}
     texto = str(c.get("/api/pagina/termos").json()) + str(c.get("/api/pagina/contacto").json())
     assert "ola@exemplo.pt" in texto and "Ana bSilva/bOutra linha" in texto and "<b>" not in texto
     for mau in ("http://inseguro.pt", "javascript:alert(1)", "https://a b.pt", ""):

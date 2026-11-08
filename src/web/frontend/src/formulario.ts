@@ -22,6 +22,9 @@ export const PADRAO: Campos = {
   logo_posicao: "sd",
   logo_tamanho: "25",
   cor_numeros: "",
+  qr: "",
+  qr_posicao: "ie",
+  qr_tamanho: "28",
 };
 
 // O que se lembra entre visitas. NUNCA o nome dos ficheiros (cada rifa tem o seu) nem os algarismos/folha (vêm do template).
@@ -57,6 +60,7 @@ const NA_LIGACAO = {
   cor: "cor_serie",
   mc: "marcas",
   cn: "cor_numeros",
+  qr: "qr",
 } as const satisfies Record<string, keyof Campos>;
 
 /** A ligação (`/?de=1&ate=100&…`) que repõe estes valores noutro browser. `base` = o endereço do site, com barra final. */
@@ -93,6 +97,7 @@ export function camposDaLigacao(pesquisa: string): Partial<Campos> {
   if (saltar && /^[0-9 ,-]{1,300}$/.test(saltar)) saida.saltar = saltar;
   if (p.get("cor") === "1") saida.cor_serie = "1";
   if (p.get("mc") === "1") saida.marcas = "1";
+  if (p.get("qr") === "1") saida.qr = "1";
   const cn = p.get("cn");
   if (cn && /^#[0-9A-Fa-f]{6}$/.test(cn)) saida.cor_numeros = cn.toUpperCase();
   const nome = p.get("nome");

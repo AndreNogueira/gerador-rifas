@@ -52,6 +52,12 @@ def max_numeros() -> int:
     return _inteiro("MAX_NUMEROS", 30_000)
 
 
+def max_numeros_qr() -> int:
+    """Quantos numeros, no maximo, num pedido COM QR (MAX_NUMEROS_QR): cada QR custa ~1 ms de CPU e ~600 bytes de PDF, o que num pedido de
+    30 000 numeros na instancia gratuita passaria o tempo maximo da geracao. 10 000 por defeito."""
+    return _inteiro("MAX_NUMEROS_QR", 10_000)
+
+
 def validade_min() -> int:
     """Minutos sem atividade ate uma sessao e os seus ficheiros serem apagados. JOB_TTL_MIN."""
     return _inteiro("JOB_TTL_MIN", 30)
@@ -116,6 +122,13 @@ def contacto_email() -> str:
     """E-mail publico de contacto: CONTACTO_EMAIL (nada no repositorio). Invalido ou vazio = sem contacto publico."""
     v = os.environ.get("CONTACTO_EMAIL", "").strip()
     return v if re.fullmatch(r"[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,190}\.[A-Za-z]{2,24}", v) else ""
+
+
+def verificacao_chave() -> str:
+    """A chave que assina os codigos dos QR dos bilhetes: VERIFICACAO_CHAVE (so no Render; pelo menos 16 caracteres). Sem ela nao ha QR
+    (nao se assinaria nada) e a pagina de verificacao diz que nao esta disponivel. NUNCA no repositorio."""
+    v = os.environ.get("VERIFICACAO_CHAVE", "").strip()
+    return v if len(v) >= 16 else ""
 
 
 def responsavel() -> str:

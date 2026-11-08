@@ -226,7 +226,7 @@ def pagina_nao_encontrada() -> Pagina:
 
 def robots(base: str) -> str:
     """`robots.txt`: tudo aberto (incluindo o JS e o CSS, que os robos precisam para desenhar a pagina), menos a API e o painel."""
-    return f"User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\n\nSitemap: {base}/sitemap.xml\n"
+    return f"User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\nDisallow: /v/\nDisallow: /V/\n\nSitemap: {base}/sitemap.xml\n"
 
 
 def sitemap(base: str) -> str:

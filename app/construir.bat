@@ -24,7 +24,7 @@ set "PYTHONPATH=%~dp0..\src"
   --include-package=core --include-package-data=customtkinter --include-package-data=pypdfium2 --include-package-data=pypdfium2_raw ^
   --include-data-dir=assets=assets --include-data-dir=exemplos=exemplos ^
   --python-flag=no_docstrings --python-flag=no_asserts --python-flag=no_warnings ^
-  --nofollow-import-to=reportlab --nofollow-import-to=fontTools --nofollow-import-to=psutil --nofollow-import-to=numpy ^
+  --nofollow-import-to=reportlab --nofollow-import-to=segno --nofollow-import-to=fontTools --nofollow-import-to=psutil --nofollow-import-to=numpy ^
   --onefile-tempdir-spec="{CACHE_DIR}/GeradorRifas/{VERSION}" ^
   --company-name="Gerador de Rifas" --product-name="Gerador de Rifas" ^
   --file-description="Gerador de rifas a partir de templates PDF" ^

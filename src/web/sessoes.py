@@ -256,6 +256,8 @@ def calcular(info, c: Campos, lg: str) -> Calculo:
             texto, aviso = pedido.resumo_do_pedido(tr_, n, tem_template=info is not None)
             if core.series.contar(tr_) > config.max_numeros():          # avisa-se logo, nao so ao carregar em «Gerar»
                 texto, aviso = i18n.traduzir("web_demasiados", lg, max=config.max_numeros()), True
+            elif c.qr == "1" and info is not None and escolha_folha.tem_folha(info) and core.series.contar(tr_) > config.max_numeros_qr():
+                texto, aviso = i18n.traduzir("web_demasiados", lg, max=config.max_numeros_qr()), True
             resumo = Resumo(texto=texto, aviso=aviso, max_ativo=c.modo == "varios")
         except core.ErroRifas as e:
             resumo = Resumo(texto=e.em(lg), aviso=True, max_ativo=c.modo == "varios")
