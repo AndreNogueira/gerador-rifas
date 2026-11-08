@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.25.0 — 2026-11-08
+
+### Nowości
+- **Jeden adres na język dla wyszukiwarek:** każdy język ma własny adres (/en, /ja/tutorial…) z tytułem, opisem i tekstem w tym języku, a strona podaje Google, które wersje są równoważne (hreflang). Portugalski zostaje pod /. Wybrany język widać teraz w pasku adresu.
+
 ## 3.24.1 — 2026-11-08
 
 ### Ulepszono

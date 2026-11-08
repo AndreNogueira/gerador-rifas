@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.25.0 — 2026-11-08
+
+### Nytt
+- **En adress per språk för sökmotorer:** varje språk har sin egen adress (/en, /ja/tutorial…) med titel, beskrivning och text på det språket, och webbplatsen talar om för Google vilka versioner som motsvarar varandra (hreflang). Portugisiska ligger kvar på /. Det valda språket syns nu i adressfältet.
+
 ## 3.24.1 — 2026-11-08
 
 ### Förbättrat

@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.25.0 — 2026-11-08
+
+### Neu
+- **Eine Adresse pro Sprache für Suchmaschinen:** Jede Sprache hat eine eigene Adresse (/en, /ja/tutorial…) mit Titel, Beschreibung und Text in dieser Sprache, und die Seite sagt Google, welche Versionen gleichwertig sind (hreflang). Portugiesisch bleibt unter /. Die gewählte Sprache steht jetzt in der Adressleiste.
+
 ## 3.24.1 — 2026-11-08
 
 ### Verbessert

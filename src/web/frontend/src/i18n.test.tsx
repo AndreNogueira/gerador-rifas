@@ -78,6 +78,44 @@ describe("ProvedorI18n", () => {
     expect(await screen.findByRole("heading", { name: "Gerador de Rifas" })).toBeInTheDocument();
   });
 
+  it("a língua do URL ganha à guardada, e mudar de língua põe o prefixo no URL (o português não leva)", async () => {
+    localStorage.setItem("rifas.lingua", "pt");
+    window.history.replaceState(null, "", "/en/tutorial?p=2");
+    render(
+      <ProvedorI18n>
+        <Amostra />
+      </ProvedorI18n>,
+    );
+    expect(await screen.findByRole("heading", { name: "Raffle Generator" })).toBeInTheDocument();
+    expect(window.location.pathname + window.location.search).toBe("/en/tutorial?p=2"); // sem mexer no que já está certo
+    await waitFor(() => expect(localStorage.getItem("rifas.lingua")).toBe("en"));
+    await userEvent.selectOptions(screen.getByLabelText("lingua"), "pt");
+    await waitFor(() => expect(window.location.pathname).toBe("/tutorial"));
+    expect(window.location.search).toBe("?p=2");
+    await userEvent.selectOptions(screen.getByLabelText("lingua"), "en");
+    await waitFor(() => expect(window.location.pathname).toBe("/en/tutorial"));
+  });
+
+  it("sem prefixo no URL, a língua escolhida passa a estar no URL; o painel nunca leva prefixo", async () => {
+    localStorage.setItem("rifas.lingua", "en");
+    window.history.replaceState(null, "", "/sobre");
+    const { unmount } = render(
+      <ProvedorI18n>
+        <Amostra />
+      </ProvedorI18n>,
+    );
+    await waitFor(() => expect(window.location.pathname).toBe("/en/sobre"));
+    unmount();
+    window.history.replaceState(null, "", "/admin");
+    render(
+      <ProvedorI18n>
+        <Amostra />
+      </ProvedorI18n>,
+    );
+    expect(await screen.findByRole("heading", { name: "Raffle Generator" })).toBeInTheDocument();
+    expect(window.location.pathname).toBe("/admin");
+  });
+
   it("mostra o erro se a API falhar", async () => {
     vi.stubGlobal(
       "fetch",

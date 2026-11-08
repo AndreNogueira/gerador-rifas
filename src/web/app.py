@@ -278,20 +278,23 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             if alvo.name == "sw.js":                                                  # o browser tem de ver sempre a versao nova do service worker
                 cabecalhos = {"Cache-Control": "no-cache"}
             return _enviar(alvo, request, cabecalhos)
-        rota = "/" if caminho in ("", "index.html") else "/" + caminho.rstrip("/")
-        if caminho.endswith("/") and caminho != "" and rota in seo.ROTAS:          # /tutorial/ -> /tutorial
-            return RedirectResponse(rota, status_code=301)
+        lg, sem_prefixo = seo.separar_lingua(caminho)
+        if lg == "pt-prefixado":                                                    # /pt/tutorial -> /tutorial (um so URL por pagina)
+            return RedirectResponse("/" + sem_prefixo.rstrip("/"), status_code=301)
+        rota = "/" if sem_prefixo in ("", "index.html") else "/" + sem_prefixo.rstrip("/")
+        if caminho.endswith("/") and caminho != "" and rota in seo.ROTAS:          # /tutorial/ -> /tutorial, /en/ -> /en
+            return RedirectResponse(seo.caminho_na_lingua(rota, lg), status_code=301)
         base = seo.url_publica(request)
         cab = {"Cache-Control": "no-cache"}
-        if rota == "/admin":                                                        # o painel: sem ADMIN_TOKEN nao existe
+        html_base = index.read_text(encoding="utf-8")
+        if rota == "/admin" and lg == "pt":                                         # o painel: sem ADMIN_TOKEN nao existe (e so em portugues, sem prefixo)
             if not admin.ativo():
-                return HTMLResponse(seo.renderizar(index.read_text(encoding="utf-8"), seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
-            return HTMLResponse(seo.renderizar(index.read_text(encoding="utf-8"), seo.ADMIN, base),
-                                headers={"Cache-Control": "no-store", "X-Robots-Tag": "noindex, nofollow"})
+                return HTMLResponse(seo.renderizar(html_base, seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
+            return HTMLResponse(seo.renderizar(html_base, seo.ADMIN, base), headers={"Cache-Control": "no-store", "X-Robots-Tag": "noindex, nofollow"})
         pagina = seo.ROTAS.get(rota)
         if pagina is None:
-            return HTMLResponse(seo.renderizar(index.read_text(encoding="utf-8"), seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
+            return HTMLResponse(seo.renderizar(html_base, seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
         servico.metricas.evento("pagina", rota, c=dispositivo(request.headers.get("user-agent", "")))
-        return HTMLResponse(seo.renderizar(index.read_text(encoding="utf-8"), pagina, base), headers=cab)
+        return HTMLResponse(seo.renderizar(html_base, pagina, base, lg), headers={**cab, "Content-Language": lg})
 
     return app

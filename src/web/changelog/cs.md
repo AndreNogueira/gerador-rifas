@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.25.0 — 2026-11-08
+
+### Novinky
+- **Jedna adresa pro každý jazyk pro vyhledávače:** každý jazyk má vlastní adresu (/en, /ja/tutorial…) s názvem, popisem a textem v tomto jazyce a web sděluje Googlu, které verze jsou rovnocenné (hreflang). Portugalština zůstává na /. Zvolený jazyk je nyní vidět v adresním řádku.
+
 ## 3.24.1 — 2026-11-08
 
 ### Vylepšeno

@@ -2,6 +2,14 @@
 
 A webapp é uma SPA (React): sem cuidados, o HTML que o servidor entrega estaria vazio e só os robôs que correm JavaScript veriam alguma coisa. O que está feito, e como se verifica:
 
+## Uma página por língua
+
+Cada língua tem o seu URL (`seo.caminho_na_lingua`): o **português sem prefixo** (`/`, `/tutorial`) e as outras 17 com ele (`/en`, `/ja/tutorial`; a inicial é `/en`, sem barra final). O servidor entrega o HTML **na língua do URL**: `<html lang>`, `<title>`, descrição, texto (`h1`, tutorial, Changelog, páginas legais), canónico, `og:locale`, JSON-LD e `Content-Language`, e em todas as páginas `<link rel="alternate" hreflang>` para as 18 línguas mais `x-default` (= português). O `sitemap.xml` lista cada página em cada língua, com as alternativas (`xhtml:link`).
+
+- **Um URL sem prefixo é sempre português**: não se redireciona pelo `Accept-Language` (o robô veria uma língua só). No browser a interface segue o URL (`rota.tsx`: `/ja/tutorial` ganha à língua guardada, que ganha à do browser) e, ao mudar de língua, o URL passa a ter o prefixo certo (sem criar entrada no histórico); o português tira-o.
+- `/pt/...` e as barras finais (`/en/`, `/en/tutorial/`) fazem 301 para o URL único; prefixos desconhecidos, `/en/admin` e o resto são 404 a sério. O painel `/admin` nunca tem prefixo.
+- Os textos de SEO (título e descrição da inicial, descrições, introdução) estão em `src/web/seo_textos.py`, **fora** de `core.i18n` (só o servidor os usa: não vão para o browser nem mudam a contagem de chaves); o resto vem das chaves normais (`app_nome`, `tut_titulo`…). **Língua nova** = entrada em `seo_textos.CHAVES` (um teste exige as 18) e em `LINGUAS_COM_PREFIXO` de `rota.tsx` (outro teste confere com `seo.LINGUAS_URL`). Testes: `tests/test_web_seo_linguas.py`, `rota.test.tsx`, `i18n.test.tsx` e o e2e «cada língua tem o seu URL».
+
 ## O que o servidor entrega
 
 `src/web/seo.py` + `src/web/app.py`. Para cada página conhecida (`/`, `/tutorial`, `/video`, `/sobre`) o servidor monta o `index.html` compilado com:
@@ -36,7 +44,7 @@ Ferramentas: o *Rich Results Test* do Google (JSON-LD), o *URL Inspection* da Se
 
 ## Limites e para depois
 
-- **Só há HTML em português** para os robôs (a língua da interface escolhe-se no browser, não no URL), por isso não há `hreflang` e o site compete em pesquisas em português. Para posicionar as outras 17 línguas fazia falta um URL por língua (`/en/`, `/es/`…) com o texto traduzido no HTML: é um incremento grande (ver `docs/ROADMAP.md`).
+- **Traduções do SEO sem revisão nativa** (`src/web/seo_textos.py`, 15 textos × 18 línguas): títulos e descrições curtos, mas convém uma leitura por falantes. Os textos legais, o Changelog e o tutorial que vão no HTML já vêm das traduções do resto do site.
 - **Conteúdo**: um motor de pesquisa premeia páginas com texto útil. Páginas de «como fazer» (rifas para a escola, para a associação, como imprimir) trariam tráfego; não estão feitas.
 - **O arranque a frio** do plano gratuito (≈ 1 min) prejudica a pesquisa (o Google mede o tempo de resposta). Um pedido periódico externo ao `/health` mantém-no acordado, ou o plano pago.
 - Os **Core Web Vitals** não foram medidos com o Lighthouse; o que ajuda já está feito (um só JS e CSS comprimidos, letras `font-display: swap`, ficheiros com cache de um ano).

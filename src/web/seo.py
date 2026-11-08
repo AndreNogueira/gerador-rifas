@@ -5,8 +5,10 @@ muitos motores de pesquisa, partilhas por mensagem). Por isso o servidor injeta 
  - no `<head>` (marcador `<!--seo:cabecalho-->`): titulo, descricao, canonico, robots, Open Graph, Twitter e JSON-LD;
  - no corpo (marcador `<!--seo:corpo-->` dentro de `#raiz`): texto real da pagina (o React substitui-o ao arrancar; o CSS esconde-o
    visualmente: `.seo-estatico`).
-O conteudo e sempre em portugues (e o `lang` do documento): e o que um robo sem `Accept-Language` recebe. Nao ha hreflang porque
-a lingua da interface nao esta no URL. Sem URL publico configurado (`PUBLIC_URL`) o canonico sai do pedido.
+Cada lingua tem o seu URL: o portugues sem prefixo (`/`, `/tutorial`) e as outras 17 com ele (`/en`, `/en/tutorial`, ...). O servidor entrega o
+HTML na lingua do URL (titulo, descricao, texto, `<html lang>`, canonico, `og:locale`) com `hreflang` para as 18 e `x-default` = portugues; o sitemap
+lista todas. Um URL sem prefixo e SEMPRE portugues (nao se redireciona pelo `Accept-Language`: o robo veria so uma lingua); a interface, no
+browser, passa para a lingua escolhida e poe o prefixo no URL. Sem URL publico configurado (`PUBLIC_URL`) o canonico sai do pedido.
 """
 from __future__ import annotations
 
@@ -20,129 +22,142 @@ from core import i18n, tutorial
 from fastapi import Request
 
 from . import VERSAO, changelog, config, textos_legais
+from .seo_textos import LOCALE_OG, texto
 
-NOME = "Gerador de Rifas"
+NOME = "Gerador de Rifas"           # o nome em portugues; em cada lingua vem de `app_nome` (ver `_app`)
 IMAGEM = "/og-imagem.png"           # 1200x630, em frontend/public
-IMAGEM_ALT = "Gerador de Rifas: dois bilhetes numerados, um amarelo com o 7 da sorte"
 MARCADOR_CABECALHO = "<!--seo:cabecalho-->"
 MARCADOR_CORPO = "<!--seo:corpo-->"
-
-_PASSOS = (
-    ("Template", "Carregue o PDF do template exportado do Canva (com 0001, 0002, ... no lugar dos números)."),
-    ("Algarismos 0–9", "Carregue um PDF, PNG ou JPG com os dez algarismos na mesma letra do template."),
-    ("Números", "Escolha de que número a que número, quantos algarismos e se quer vários PDFs ou um só."),
-    ("Destino", "Escreva o nome dos ficheiros, veja a pré-visualização com os números reais e gere: descarregue o PDF ou o ZIP."),
-)
+LINGUAS_URL = tuple(lg for lg in i18n.LINGUAS if lg != "pt")      # as que tem prefixo no URL (/en/..); o portugues e o URL sem prefixo
 
 
-def _paragrafos(texto: str) -> str:
-    return "".join(f"<p>{html.escape(p).replace(chr(10), '<br>')}</p>" for p in texto.split("\n\n") if p.strip())
+# ------------------------------------------------------------------ URLs por lingua
+def caminho_na_lingua(caminho: str, lingua: str) -> str:
+    """`/tutorial` -> `/en/tutorial`; a pagina inicial de uma lingua com prefixo e `/en` (sem barra final); o portugues nao leva prefixo."""
+    if lingua == "pt":
+        return caminho
+    return f"/{lingua}" if caminho == "/" else f"/{lingua}{caminho}"
 
 
-def _corpo_inicio() -> str:
-    passos = "".join(f"<li><strong>{html.escape(t)}.</strong> {html.escape(d)}</li>" for t, d in _PASSOS)
-    return (
-        f"<h1>{NOME}</h1>"
-        "<p>Crie rifas numeradas em PDF a partir de um template do Canva: escolha os números, veja a pré-visualização e descarregue "
-        "os PDFs prontos a imprimir. É grátis, não precisa de registo e funciona em 18 línguas.</p>"
-        f"<h2>Como funciona</h2><ol>{passos}</ol>"
-        f"<h2>Os seus ficheiros</h2><p>O template e os algarismos servem só para gerar as suas rifas e são apagados do servidor "
-        f"passados {config.validade_min()} minutos sem atividade, ou quando carrega em «Limpar tudo».</p>"
-        '<nav><a href="/tutorial">Tutorial</a> <a href="/video">Vídeo tutorial</a> <a href="/sobre">Acerca de</a></nav>'
-    )
+def separar_lingua(caminho: str) -> tuple[str, str]:
+    """(lingua, resto) do caminho de um pedido (sem a barra inicial): `en/tutorial` -> ('en', 'tutorial'); sem prefixo -> ('pt', caminho).
+    `pt/...` devolve ('pt-prefixado', resto): quem chama redireciona para o URL sem prefixo (um so URL por pagina)."""
+    primeiro, _, resto = caminho.partition("/")
+    if primeiro in LINGUAS_URL:
+        return primeiro, resto
+    if primeiro == "pt":
+        return "pt-prefixado", resto
+    return "pt", caminho
 
 
-def _corpo_tutorial() -> str:
-    with i18n.com_lingua("pt"):
+def _app(lingua: str) -> str:
+    return i18n.traduzir("app_nome", lingua)
+
+
+def _l(lingua: str, caminho: str) -> str:
+    return html.escape(caminho_na_lingua(caminho, lingua), quote=True)
+
+
+def _voltar(lingua: str) -> str:
+    return f'<p><a href="{_l(lingua, "/")}">{html.escape(texto("voltar", lingua, app=_app(lingua)))}</a></p>'
+
+
+def _paragrafos(texto_: str) -> str:
+    return "".join(f"<p>{html.escape(p).replace(chr(10), '<br>')}</p>" for p in texto_.split("\n\n") if p.strip())
+
+
+def _nome_pagina(chave: str) -> Callable[[str], str]:
+    return lambda lg: i18n.traduzir(chave, lg).rstrip("…")
+
+
+def _corpo_inicio(lg: str) -> str:
+    with i18n.com_lingua(lg):
         topicos = tutorial.lista_de_topicos("web")
-    secoes = "".join(f"<section><h2>{html.escape(titulo)}</h2>{_paragrafos(texto)}</section>" for _, titulo, texto, _ in topicos)
-    return f'<h1>Tutorial</h1><p>Passo a passo para gerar as suas rifas numeradas.</p>{secoes}<p><a href="/">Voltar ao {NOME}</a></p>'
-
-
-def _corpo_video() -> str:
+    passos = "".join(f"<li><strong>{html.escape(topicos[i][1])}.</strong> {html.escape(topicos[i][2].split(chr(10) * 2)[0])}</li>" for i in (1, 3, 4, 5))
     return (
-        "<h1>Vídeo tutorial</h1>"
-        "<p>Veja em vídeo como gerar rifas numeradas em PDF, do template do Canva ao PDF pronto a imprimir.</p>"
-        '<p><a href="/videos/tutorial_pt.mp4">Ver o vídeo tutorial (MP4)</a></p>'
-        f'<p><a href="/">Voltar ao {NOME}</a></p>'
+        f"<h1>{html.escape(_app(lg))}</h1><p>{html.escape(texto('intro', lg))}</p>"
+        f"<h2>{html.escape(texto('como', lg))}</h2><ol>{passos}</ol>"
+        f"<p>{html.escape(texto('ficheiros', lg, min=config.validade_min()))}</p>"
+        f'<nav><a href="{_l(lg, "/tutorial")}">{html.escape(_nome_pagina("tut_titulo")(lg))}</a> '
+        f'<a href="{_l(lg, "/video")}">{html.escape(_nome_pagina("mi_video")(lg))}</a> '
+        f'<a href="{_l(lg, "/sobre")}">{html.escape(_nome_pagina("mi_sobre")(lg))}</a></nav>'
     )
 
 
-def _corpo_sobre() -> str:
-    with i18n.com_lingua("pt"):
-        texto = i18n.traduzir("sobre_texto", "pt", app=NOME, versao=VERSAO)
-    resumo = "\n\n".join(texto.split("\n\n")[:2])
-    return f'<h1>Acerca do {NOME}</h1>{_paragrafos(resumo)}<p><a href="/">Voltar ao {NOME}</a></p>'
+def _corpo_tutorial(lg: str) -> str:
+    with i18n.com_lingua(lg):
+        topicos = tutorial.lista_de_topicos("web")
+    secoes = "".join(f"<section><h2>{html.escape(titulo)}</h2>{_paragrafos(txt)}</section>" for _, titulo, txt, _ in topicos)
+    return f"<h1>{html.escape(_nome_pagina('tut_titulo')(lg))}</h1><p>{html.escape(texto('d_tutorial', lg))}</p>{secoes}{_voltar(lg)}"
 
 
-def _corpo_sorteio() -> str:
+def _corpo_video(lg: str) -> str:
+    video = "tutorial_pt.mp4" if lg == "pt" else "tutorial_en.mp4"
     return (
-        "<h1>Sorteio verificável</h1>"
-        "<p>Sorteie os números premiados de uma rifa de forma que qualquer pessoa possa repetir o sorteio e confirmar o resultado. "
-        "O resultado só depende dos números, de quantos se sorteiam, dos números a saltar e de uma semente pública que escolhe: "
-        "por exemplo o resultado de uma lotaria pública, conhecido só depois de fechadas as vendas.</p>"
-        "<h2>Como funciona</h2><p>Os números possíveis ordenam-se; para cada prémio, o SHA-256 da semente e da posição escolhe um dos que faltam. "
-        "Faz-se tudo no seu browser, sem enviar nada ao servidor, e a ligação que se copia repete o mesmo sorteio.</p>"
-        f'<p><a href="/">Voltar ao {NOME}</a></p>'
+        f"<h1>{html.escape(_nome_pagina('mi_video')(lg))}</h1><p>{html.escape(texto('d_video', lg))}</p>"
+        f'<p><a href="/videos/{video}">{html.escape(_nome_pagina("mi_video")(lg))} (MP4)</a></p>{_voltar(lg)}'
     )
 
 
-def _corpo_changelog() -> str:
+def _corpo_sobre(lg: str) -> str:
+    resumo = "\n\n".join(i18n.traduzir("sobre_texto", lg, app=_app(lg), versao=VERSAO).split("\n\n")[:2])
+    return f"<h1>{html.escape(_nome_pagina('mi_sobre')(lg))}</h1>{_paragrafos(resumo)}{_voltar(lg)}"
+
+
+def _corpo_sorteio(lg: str) -> str:
+    return f"<h1>{html.escape(_nome_pagina('web_sorteio')(lg))}</h1><p>{html.escape(texto('d_sorteio', lg))}</p>{_voltar(lg)}"
+
+
+def _corpo_changelog(lg: str) -> str:
     blocos = []
-    for e in list(changelog.entradas())[:6]:
+    for e in list(changelog.entradas(lg))[:6]:
         itens = "".join(f"<h3>{html.escape(s.titulo)}</h3><ul>{''.join(f'<li>{html.escape(i)}</li>' for i in s.itens)}</ul>" for s in e.seccoes)
-        blocos.append(f"<section><h2>Versão {html.escape(e.versao)} ({html.escape(e.data)})</h2>{itens}</section>")
-    return f'<h1>Changelog</h1><p>O que mudou no {NOME}, versão a versão.</p>{"".join(blocos)}<p><a href="/">Voltar ao {NOME}</a></p>'
+        blocos.append(f"<section><h2>{html.escape(e.versao)} ({html.escape(e.data)})</h2>{itens}</section>")
+    return f"<h1>Changelog</h1><p>{html.escape(texto('d_changelog', lg))}</p>{''.join(blocos)}{_voltar(lg)}"
 
 
-def _corpo_texto(nome: str) -> Callable[[], str]:
-    def corpo() -> str:
-        d = textos_legais.PAGINAS[nome]()
+def _corpo_texto(nome: str) -> Callable[[str], str]:
+    def corpo(lg: str) -> str:
+        d = textos_legais.pagina(nome, lg)
         aviso = f"<p><em>{html.escape(d['aviso'])}</em></p>" if d["aviso"] else ""
         secoes = "".join(f"<section><h2>{html.escape(s['titulo'])}</h2>{''.join(f'<p>{html.escape(p)}</p>' for p in s['paragrafos'])}</section>"
                          for s in d["seccoes"])
-        return f'<h1>{html.escape(d["titulo"])}</h1>{aviso}{secoes}<p><a href="/">Voltar ao {NOME}</a></p>'
+        return f'<h1>{html.escape(d["titulo"])}</h1>{aviso}{secoes}{_voltar(lg)}'
     return corpo
 
 
 @dataclass(frozen=True)
 class Pagina:
     caminho: str
-    titulo: str                 # ate ~60 caracteres
-    descricao: str              # ate ~155 caracteres
-    corpo: Callable[[], str]
+    descricao_chave: str                       # a chave de `seo_textos` (d_<...>)
+    corpo: Callable[[str], str]                # (lingua) -> HTML
+    nome: Callable[[str], str] | None = None   # o nome da pagina na lingua, para o titulo «<nome> | <app>» (None: usa `t_inicio`)
     indexavel: bool = True
     no_mapa: bool = True
+    titulo_fixo: str = ""                      # paginas sem texto proprio (painel, 404): titulo e descricao fixos
+    descricao_fixa: str = ""
+
+    def titulo(self, lg: str = "pt") -> str:                 # ate ~65 caracteres
+        if self.titulo_fixo:
+            return self.titulo_fixo
+        if self.nome is None:
+            return texto("t_inicio", lg, app=_app(lg))
+        return f"{self.nome(lg)} | {_app(lg)}"
+
+    def descricao(self, lg: str = "pt") -> str:              # ate ~160 caracteres
+        return self.descricao_fixa or texto(self.descricao_chave, lg)
 
 
 ROTAS: dict[str, Pagina] = {p.caminho: p for p in (
-    Pagina("/", f"{NOME}: rifas numeradas em PDF a partir do Canva",
-           "Rifas numeradas em PDF a partir de um template do Canva: escolha os números, veja a pré-visualização e descarregue. Grátis e sem registo.",
-           _corpo_inicio),
-    Pagina("/tutorial", f"Tutorial: como criar rifas numeradas | {NOME}",
-           "Passo a passo para preparar o template no Canva, criar o ficheiro dos algarismos, escolher os números e gerar os PDFs das rifas.",
-           _corpo_tutorial),
-    Pagina("/video", f"Vídeo tutorial | {NOME}",
-           "Veja em vídeo como gerar rifas numeradas em PDF, do template do Canva ao PDF pronto a imprimir.",
-           _corpo_video),
-    Pagina("/sobre", f"Acerca do {NOME}",
-           "O que é o Gerador de Rifas, como funciona e o que usa. O mesmo motor da aplicação para Windows, agora no browser.",
-           _corpo_sobre),
-    Pagina("/sorteio", f"Sorteio verificável de números | {NOME}",
-           "Sorteie números premiados de forma que qualquer pessoa possa repetir o sorteio e confirmar o resultado, com uma semente pública.",
-           _corpo_sorteio),
-    Pagina("/termos", f"Termos de utilização | {NOME}",
-           "As regras de utilização do Gerador de Rifas: o que o serviço faz, o que não faz e quem é responsável pela rifa.",
-           _corpo_texto("termos")),
-    Pagina("/privacidade", f"Política de privacidade | {NOME}",
-           "Que dados o Gerador de Rifas trata (quase nenhuns), durante quanto tempo e que direitos tem, segundo o RGPD.",
-           _corpo_texto("privacidade")),
-    Pagina("/contacto", f"Contacto | {NOME}",
-           "Como falar com quem gere o Gerador de Rifas: dúvidas, erros e sugestões sobre as suas rifas numeradas.",
-           _corpo_texto("contacto")),
-    Pagina("/changelog", f"Changelog: o que mudou | {NOME}",
-           "Tudo o que mudou no Gerador de Rifas, versão a versão: novas funcionalidades, melhorias e correções.",
-           _corpo_changelog),
+    Pagina("/", "d_inicio", _corpo_inicio),
+    Pagina("/tutorial", "d_tutorial", _corpo_tutorial, _nome_pagina("tut_titulo")),
+    Pagina("/video", "d_video", _corpo_video, _nome_pagina("mi_video")),
+    Pagina("/sobre", "d_sobre", _corpo_sobre, _nome_pagina("mi_sobre")),
+    Pagina("/sorteio", "d_sorteio", _corpo_sorteio, _nome_pagina("web_sorteio")),
+    Pagina("/termos", "d_termos", _corpo_texto("termos"), lambda lg: textos_legais.pagina("termos", lg)["titulo"]),
+    Pagina("/privacidade", "d_privacidade", _corpo_texto("privacidade"), lambda lg: textos_legais.pagina("privacidade", lg)["titulo"]),
+    Pagina("/contacto", "d_contacto", _corpo_texto("contacto"), lambda lg: textos_legais.pagina("contacto", lg)["titulo"]),
+    Pagina("/changelog", "d_changelog", _corpo_changelog, lambda lg: "Changelog"),
 )}
 
 
@@ -162,66 +177,70 @@ def _json_ld(dados: dict) -> str:
     return json.dumps(dados, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 
 
-def _dados_estruturados(base: str) -> dict:
+def _dados_estruturados(base: str, lg: str) -> dict:
     return {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": NOME,
-        "url": f"{base}/",
-        "description": ROTAS["/"].descricao,
+        "name": _app(lg),
+        "url": f"{base}{caminho_na_lingua('/', lg)}",
+        "description": ROTAS["/"].descricao(lg),
         "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "Qualquer (browser)",
-        "browserRequirements": "Requer JavaScript",
+        "operatingSystem": "Any (browser)",
+        "browserRequirements": "Requires JavaScript",
         "inLanguage": list(i18n.LINGUAS),
         "image": f"{base}{IMAGEM}",
         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
-        "featureList": [
-            "Rifas numeradas em PDF a partir de um template do Canva",
-            "Pré-visualização com os números reais",
-            "Um PDF único ou vários PDFs, com download em ZIP",
-            "18 línguas",
-        ],
     }
 
 
-def cabecalho(pagina: Pagina, base: str) -> str:
-    """O bloco do `<head>` desta pagina."""
-    url = f"{base}/" if pagina.caminho == "/" else f"{base}{pagina.caminho}"
+def _url(base: str, caminho: str, lg: str) -> str:
+    c = caminho_na_lingua(caminho, lg)
+    return f"{base}/" if c == "/" else f"{base}{c}"
+
+
+def cabecalho(pagina: Pagina, base: str, lg: str = "pt") -> str:
+    """O bloco do `<head>` desta pagina na lingua `lg` (o canonico e o hreflang apontam para o URL de cada lingua)."""
+    url = _url(base, pagina.caminho, lg)
     imagem = f"{base}{IMAGEM}"
+    titulo, descricao = pagina.titulo(lg), pagina.descricao(lg)
+    alt = texto("og_alt", lg, app=_app(lg))
     robots = "index,follow,max-image-preview:large" if pagina.indexavel else "noindex,nofollow"
     linhas = [
-        f"<title>{_e(pagina.titulo)}</title>",
-        f'<meta name="description" content="{_e(pagina.descricao)}" />',
+        f"<title>{_e(titulo)}</title>",
+        f'<meta name="description" content="{_e(descricao)}" />',
         f'<meta name="robots" content="{robots}" />',
     ]
     if pagina.indexavel:
+        linhas.append(f'<link rel="canonical" href="{_e(url)}" />')
+        linhas += [f'<link rel="alternate" hreflang="{outra}" href="{_e(_url(base, pagina.caminho, outra))}" />' for outra in i18n.LINGUAS]
+        linhas.append(f'<link rel="alternate" hreflang="x-default" href="{_e(_url(base, pagina.caminho, "pt"))}" />')
         linhas += [
-            f'<link rel="canonical" href="{_e(url)}" />',
             '<meta property="og:type" content="website" />',
-            f'<meta property="og:site_name" content="{NOME}" />',
-            '<meta property="og:locale" content="pt_PT" />',
-            f'<meta property="og:title" content="{_e(pagina.titulo)}" />',
-            f'<meta property="og:description" content="{_e(pagina.descricao)}" />',
+            f'<meta property="og:site_name" content="{_e(_app(lg))}" />',
+            f'<meta property="og:locale" content="{LOCALE_OG[lg]}" />',
+            f'<meta property="og:title" content="{_e(titulo)}" />',
+            f'<meta property="og:description" content="{_e(descricao)}" />',
             f'<meta property="og:url" content="{_e(url)}" />',
             f'<meta property="og:image" content="{_e(imagem)}" />',
             '<meta property="og:image:width" content="1200" />',
             '<meta property="og:image:height" content="630" />',
-            f'<meta property="og:image:alt" content="{_e(IMAGEM_ALT)}" />',
+            f'<meta property="og:image:alt" content="{_e(alt)}" />',
             '<meta name="twitter:card" content="summary_large_image" />',
-            f'<meta name="twitter:title" content="{_e(pagina.titulo)}" />',
-            f'<meta name="twitter:description" content="{_e(pagina.descricao)}" />',
+            f'<meta name="twitter:title" content="{_e(titulo)}" />',
+            f'<meta name="twitter:description" content="{_e(descricao)}" />',
             f'<meta name="twitter:image" content="{_e(imagem)}" />',
-            f'<meta name="twitter:image:alt" content="{_e(IMAGEM_ALT)}" />',
+            f'<meta name="twitter:image:alt" content="{_e(alt)}" />',
         ]
     if pagina.caminho == "/":
-        linhas.append(f'<script type="application/ld+json">{_json_ld(_dados_estruturados(base))}</script>')
+        linhas.append(f'<script type="application/ld+json">{_json_ld(_dados_estruturados(base, lg))}</script>')
     return "\n    ".join(linhas)
 
 
-def renderizar(html_base: str, pagina: Pagina, base: str) -> str:
-    """O `index.html` compilado com o `<head>` e o corpo estatico desta pagina."""
-    cab = cabecalho(pagina, base)
-    corpo = f'<div class="seo-estatico">{pagina.corpo()}</div>'
+def renderizar(html_base: str, pagina: Pagina, base: str, lg: str = "pt") -> str:
+    """O `index.html` compilado com o `<head>` e o corpo estatico desta pagina, na lingua `lg` (tambem o `<html lang>`)."""
+    cab = cabecalho(pagina, base, lg)
+    corpo = f'<div class="seo-estatico">{pagina.corpo(lg)}</div>'
+    html_base = re.sub(r'<html lang="[^"]*"', f'<html lang="{lg}"', html_base, count=1)
     if MARCADOR_CABECALHO in html_base:
         html_base = html_base.replace(MARCADOR_CABECALHO, cab, 1)
     else:                                                    # frontend sem marcadores (testes, desenvolvimento): antes de </head>
@@ -231,12 +250,13 @@ def renderizar(html_base: str, pagina: Pagina, base: str) -> str:
     return html_base
 
 
-ADMIN = Pagina("/admin", f"Painel | {NOME}", "Painel de administração.", lambda: "<h1>Painel</h1>", indexavel=False, no_mapa=False)
+ADMIN = Pagina("/admin", "", lambda lg: "<h1>Painel</h1>", indexavel=False, no_mapa=False,
+               titulo_fixo=f"Painel | {NOME}", descricao_fixa="Painel de administração.")
 
 
 def pagina_nao_encontrada() -> Pagina:
-    return Pagina("/404", f"Página não encontrada | {NOME}", "Esta página não existe.",
-                  lambda: f'<h1>Página não encontrada</h1><p><a href="/">Ir para o {NOME}</a></p>', indexavel=False, no_mapa=False)
+    return Pagina("/404", "", lambda lg: f'<h1>Página não encontrada</h1><p><a href="/">Ir para o {NOME}</a></p>', indexavel=False, no_mapa=False,
+                  titulo_fixo=f"Página não encontrada | {NOME}", descricao_fixa="Esta página não existe.")
 
 
 def robots(base: str) -> str:
@@ -245,7 +265,13 @@ def robots(base: str) -> str:
 
 
 def sitemap(base: str) -> str:
-    urls = "".join(
-        f"<url><loc>{_e(base + ('/' if p.caminho == '/' else p.caminho))}</loc></url>" for p in ROTAS.values() if p.indexavel and p.no_mapa
-    )
-    return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n'
+    """Uma `<url>` por pagina e lingua, cada uma com as alternativas (`xhtml:link`, o formato que o Google pede para varias linguas)."""
+    urls = []
+    for p in ROTAS.values():
+        if not (p.indexavel and p.no_mapa):
+            continue
+        alternativas = "".join(f'<xhtml:link rel="alternate" hreflang="{lg}" href="{_e(_url(base, p.caminho, lg))}"/>' for lg in i18n.LINGUAS)
+        alternativas += f'<xhtml:link rel="alternate" hreflang="x-default" href="{_e(_url(base, p.caminho, "pt"))}"/>'
+        urls += [f"<url><loc>{_e(_url(base, p.caminho, lg))}</loc>{alternativas}</url>" for lg in i18n.LINGUAS]
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+            f'xmlns:xhtml="http://www.w3.org/1999/xhtml">{"".join(urls)}</urlset>\n')

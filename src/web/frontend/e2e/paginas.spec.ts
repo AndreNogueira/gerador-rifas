@@ -39,6 +39,31 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.getByTestId("pagina-termos")).toContainText("the Portuguese one prevails");
   });
 
+  test("cada língua tem o seu URL: o HTML já vem na língua, a interface segue o URL e o seletor muda-o", async ({
+    page,
+    request,
+  }) => {
+    // para quem não corre JavaScript (robôs): título, canónico e hreflang na língua do URL
+    const html = await (await request.get("/ja/tutorial")).text();
+    expect(html).toContain('<html lang="ja"');
+    expect(html).toContain('<link rel="canonical" href="http://127.0.0.1:8123/ja/tutorial" />');
+    expect(html).toContain('hreflang="x-default" href="http://127.0.0.1:8123/tutorial"');
+    // no browser: a língua do URL ganha à do browser (pt-PT) e as ligações levam o prefixo
+    await page.goto("/ja/tutorial");
+    await expect(page.getByTestId("lingua")).toHaveValue("ja");
+    await expect(page).toHaveTitle(/チュートリアル/);
+    await expect(page.getByRole("link", { name: "抽選" })).toHaveAttribute("href", "/ja/sorteio");
+    await page.getByRole("link", { name: "抽選" }).click();
+    await expect(page).toHaveURL(/\/ja\/sorteio$/);
+    // mudar de língua muda o prefixo; o português fica sem ele
+    await page.getByTestId("lingua").selectOption("en");
+    await expect(page).toHaveURL(/\/en\/sorteio$/);
+    await page.getByTestId("lingua").selectOption("pt");
+    await expect(page).toHaveURL(/127\.0\.0\.1:8123\/sorteio$/);
+    // um URL com prefixo desconhecido é 404 a sério
+    expect((await request.get("/xx/tutorial")).status()).toBe(404);
+  });
+
   test("o tutorial tem um tópico com vídeo por funcionalidade e o vídeo carrega a sério", async ({
     page,
   }) => {
