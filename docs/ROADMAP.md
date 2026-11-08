@@ -7,9 +7,9 @@
 | # | Incremento | Tam. | Notas |
 |---|---|---|---|
 | 1 | **Lembrar o ficheiro dos algarismos** entre sessões | S | A app Windows lembra-o; aqui a sessão perde-o. Guardar no browser (IndexedDB) e reenviar ao servidor ao retomar. Nada fica no servidor. |
-| 2 | **Capturas do tutorial da web** | M | As atuais são da app Windows. Gerar com Playwright nas 18 línguas (`/api/tutorial/recorte`) e trocar `rotas_ajuda`. |
+| 2 | ~~**Capturas do tutorial da web**~~ (feito, 3.24) | M | As atuais são da app Windows. Gerar com Playwright nas 18 línguas (`/api/tutorial/recorte`) e trocar `rotas_ajuda`. |
 | 4 | **Mais temas** | S cada | `docs/TEMAS.md` tem a receita. Ideias: Halloween, Verão/Praia, Jornal antigo, Terminal verde, Cartaz de circo. |
-| 5 | **SEO por língua** | L | Um URL por língua (`/en/`, `/es/`…) com o texto traduzido no HTML e `hreflang`: hoje só o português se posiciona (`docs/SEO.md`). Antes disso: páginas de «como fazer» (rifas para a escola, a associação…). |
+| 5 | ~~**SEO por língua**~~ (feito, 3.25; faltam as páginas de «como fazer») | L | Um URL por língua (`/en/`, `/es/`…) com o texto traduzido no HTML e `hreflang`: hoje só o português se posiciona (`docs/SEO.md`). Antes disso: páginas de «como fazer» (rifas para a escola, a associação…). |
 | 6 | **Instalar como app (PWA)** | S | O `manifest.webmanifest` e os ícones já existem; falta um *service worker* que guarde só a «casca» (a geração precisa sempre do servidor). |
 | 7 | **Partilhar a configuração por link** | S | Os campos (de, até, modo…) no URL; nunca os ficheiros. |
 
@@ -26,7 +26,7 @@
 
 | # | Incremento | Tam. | Notas |
 |---|---|---|---|
-| 15 | **Pré-visualização por PR** | M | Um deploy efémero por PR (Render *Preview Environments* ou imagem `pr-<n>`). |
+| 15 | ~~**Pré-visualização por PR**~~ (feito: etiqueta `preview`, `docs/PREVIEW.md`) | M | Um deploy efémero por PR (Render *Preview Environments* ou imagem `pr-<n>`). |
 | 16 | **Subir a app Windows para Python 3.15** | M | Hoje fica na 3.13 (Nuitka demora 10–20 min e o `--selftest` tem de dar igual). Decisão em aberto. |
 | 17 | **Contas e pagamento** | L | O serviço será pago mais tarde. Desenhar antes os planos (limites por conta), a faturação e a proteção da privacidade dos ficheiros. |
 | 18 | **Observabilidade** | S | Registo estruturado dos pedidos e um painel de erros/tempos, sem guardar conteúdo dos ficheiros. |

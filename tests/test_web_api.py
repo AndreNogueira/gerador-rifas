@@ -42,6 +42,11 @@ def test_health_devolve_200(cliente):
     assert r.status_code == 200 and r.json() == {"estado": "ok", "versao": VERSAO}
 
 
+def test_health_aceita_head_para_os_monitores_externos(cliente):
+    r = cliente.head("/health")
+    assert r.status_code == 200 and r.content == b""
+
+
 def test_health_funciona_sem_frontend_compilado(tmp_path):
     assert TestClient(criar_app(tmp_path / "nao_existe")).get("/health").status_code == 200
 

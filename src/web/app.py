@@ -180,9 +180,11 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         servico.metricas.evento("erro_http", str(e.estado), e.tipo)
         return JSONResponse({"detail": e.texto, "tipo": e.tipo}, status_code=e.estado)
 
+    @app.head("/health", include_in_schema=False)
     @app.get("/health", response_model=Saude, tags=["sistema"])
     def saude() -> Saude:
-        """Para o Render e para o Docker (HEALTHCHECK): 200 enquanto o servidor responde."""
+        """Para o Render e para o Docker (HEALTHCHECK): 200 enquanto o servidor responde. Aceita HEAD porque os monitores externos
+        (UptimeRobot, etc.) usam-no por omissão."""
         return Saude(estado="ok", versao=VERSAO)
 
     @app.get("/api/changelog", response_model=Changelog, tags=["sistema"])

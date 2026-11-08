@@ -1,5 +1,6 @@
 """SEO por língua: um URL por língua (`/en/tutorial`), HTML na língua do URL, `hreflang`, canónico e sitemap com as 18 alternativas."""
 import re
+import unicodedata
 from pathlib import Path
 from xml.etree import ElementTree
 
@@ -153,3 +154,26 @@ def test_o_sitemap_lista_cada_pagina_em_todas_as_linguas_com_as_alternativas(c):
 def test_o_robots_nao_bloqueia_as_linguas(c):
     r = c.get("/robots.txt").text
     assert "Allow: /" in r and "Disallow: /en" not in r and f"Sitemap: {URL}/sitemap.xml" in r
+
+
+def _largura(texto: str) -> int:
+    """Largura aproximada no resultado de pesquisa: os caracteres CJK ocupam o dobro."""
+    return sum(2 if unicodedata.east_asian_width(ch) in "WF" else 1 for ch in texto)
+
+
+@pytest.mark.parametrize("lg", LINGUAS)
+def test_titulos_e_descricoes_cabem_no_resultado_de_pesquisa(lg):
+    """O Google corta os títulos por volta dos 60 caracteres e as descrições por volta dos 155 (CJK conta a dobrar)."""
+    for caminho, pagina in seo.ROTAS.items():
+        assert _largura(pagina.titulo(lg)) <= 66, (lg, caminho, pagina.titulo(lg))
+        assert 50 <= _largura(pagina.descricao(lg)) <= 158, (lg, caminho, _largura(pagina.descricao(lg)))
+
+
+@pytest.mark.parametrize("lg", [lg for lg in LINGUAS if lg != "pt"])
+def test_as_descricoes_usam_o_nome_do_produto_nessa_lingua(lg):
+    """Quem vem do Google lê o nome da app na língua; o texto não pode chamar-lhe outra coisa (ex. «Los-Generator» vs «Tombola-Generator»)."""
+    nome = i18n.traduzir("app_nome", lg).lower()
+    for chave in ("d_sobre", "d_termos", "d_privacidade", "d_contacto", "d_changelog"):
+        t = seo_textos.CHAVES[chave][lg].lower()
+        raiz = nome.split()[-1][:5]          # a palavra distintiva (declina em pl, cs, ru, el, tr), sem o fim
+        assert raiz in t, (lg, chave, nome)

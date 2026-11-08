@@ -33,7 +33,9 @@ Feitos todos os itens dos níveis 1 e 2 **exceto F8 e M9**, cada um num PR e com
 o Changelog, os Termos, a Privacidade e o Contacto estão nas 18 línguas; e a app Windows ganhou o menu «Extras» com as funcionalidades M1–M5 e M7, a lista (CSV) e a folha de controlo (M2) e o visual Natal automático (F1).
 Ficam só no site: o QR de verificação (M6: a chave que o assina não pode estar num `.exe` público), guardar/partilhar o pedido (F4/F5) e instalar como app (F6).
 
-**Ainda por fazer:** F8, M9, o nível 3 (D1–D4: contas, packs com Stripe, API para gráficas, SEO por língua) e o nível 4. Fora do código: capturas do tutorial da web, pré-visualização por PR, revisão nativa das traduções `web_*` e as dos textos novos (≈ 100 chaves escritas sem falante nativo), mais volume por pedido.
+**Depois (3.24–3.25, 2026-11-08):** capturas do tutorial do site nas 18 línguas (`pnpm capturas`), **D4 feito** (SEO por língua: um URL por língua, `hreflang`, sitemap × 18), pré-visualização por PR (etiqueta `preview`, `docs/PREVIEW.md`), verificação do Google Search Console e monitor externo (`docs/ONLINE.md`).
+
+**Ainda por fazer:** F8 (falta a prova dos 30 min), M9, o nível 3 sem D4 (D1–D3: contas, packs com Stripe, API para gráficas) e o nível 4. Fora do código: revisão **por falantes nativos** das traduções `web_*`, das de SEO e dos textos novos (≈ 100 chaves), mais volume por pedido.
 
 ## Quadro geral
 
