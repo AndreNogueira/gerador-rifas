@@ -38,7 +38,7 @@ const NIVEIS: Record<string, ObfuscatorOptions> = {
   medio: {
     ...BASE,
     stringArray: true,
-    stringArrayThreshold: 0.9,
+    stringArrayThreshold: 1, // todos os textos (com <1 cada texto tem sorte de ficar em claro: o build ficava aleatório e o verificar-dist falhava)
     stringArrayEncoding: ["base64"],
     rotateStringArray: true,
     shuffleStringArray: true,
