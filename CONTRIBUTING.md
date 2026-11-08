@@ -43,6 +43,13 @@ Estão explicadas em [`CLAUDE.md`](CLAUDE.md); em resumo:
 | Mexer no motor | `src/core` | os testes do `core`, `teste_folha`/`teste_canva` e a app Windows (ver `CLAUDE.md`) |
 | Mudar o deploy | `.github/workflows`, `Dockerfile`, `render.yaml` | só se testa de verdade em `main`; faz PRs pequenos |
 
+## Funcionalidade de utilizador: tutorial, vídeo e tradução (regra)
+
+Uma funcionalidade que o utilizador vê só está feita quando tem **um tópico no tutorial** (nas 18 línguas), **um vídeo por plataforma** (pt e en, gravado da própria interface),
+**uma entrada no Changelog** (pt + resumo nas outras 17 línguas) e, se faz sentido, **a mesma funcionalidade na app Windows**. O registo é `core/tutorial.py::FUNCIONALIDADES`; os passos,
+os comandos para gravar os vídeos e os testes que a verificam estão em [`CLAUDE.md`](CLAUDE.md) (secção «REGRA: funcionalidade de utilizador»). `tests/test_funcionalidades.py` e
+`tests/test_traducoes_paginas.py` falham se faltar alguma coisa.
+
 ## Versão e *rollback*
 
 - Uma mudança visível ao utilizador sobe `VERSAO` em `src/web/__init__.py` (minor para funcionalidades, patch para correções). O `/health` mostra-a, e serve para confirmar que o deploy chegou.

@@ -150,6 +150,7 @@ export interface Topico {
   titulo: string;
   texto: string;
   imagens: Imagem[];
+  video?: string; // o vídeo da funcionalidade (só os tópicos das funcionalidades o têm)
 }
 export interface Tutorial {
   topicos: Topico[];

@@ -53,6 +53,10 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_folha_controlo: "Folha de controlo (PDF)",
     web_copiar_ligacao: "Copiar ligação",
     web_ligacao_copiada: "Ligação copiada.",
+    web_changelog_sub: "O que mudou, versão a versão.",
+    web_changelog_resumo: "Resumo",
+    web_versao: "Versão {versao}",
+    tut_ver_video: "Ver o vídeo deste tópico",
     tut_titulo: "Tutorial",
     mi_video: "Vídeo tutorial",
     mi_sobre: "Acerca de…",
@@ -99,6 +103,9 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     sobre_texto: "{app}\nVersão {versao}\n\nGera PDFs.\n\nUsa X.",
   },
   en: {
+    web_changelog_sub: "What changed, version by version.",
+    web_changelog_resumo: "This is a translated summary.",
+    web_versao: "Version {versao}",
     app_nome: "Raffle Generator",
     m_idioma: "Language",
     c1_titulo: "Template (PDF)",
@@ -229,6 +236,20 @@ export class ServidorFalso {
             seccoes: [{ titulo: "Primeira secção", paragrafos: ["Um parágrafo de teste."] }],
           })
         : this.responder({ detail: "x" }, 404);
+    if (url === "/api/tutorial")
+      return this.responder({
+        topicos: [
+          { menu: "1   Template", titulo: "Template (PDF)", texto: "Escolha o template.", imagens: [] },
+          {
+            menu: "Galeria de templates",
+            titulo: "Galeria de templates",
+            texto: "Sem template do Canva? Escolha um desenho.",
+            imagens: [],
+            video: "/videos/web_galeria_pt.mp4",
+          },
+        ],
+        video: "",
+      });
     if (url === "/api/changelog")
       return this.responder({
         entradas: [

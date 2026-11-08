@@ -25,6 +25,7 @@ class Topico(BaseModel):
     titulo: str
     texto: str
     imagens: list[Imagem]
+    video: str = ""                   # URL do video desta funcionalidade (so os topicos das funcionalidades o tem), vazio se nao existe
 
 
 class Tutorial(BaseModel):
@@ -42,9 +43,11 @@ def _recorte(pasta: str, lg: str, estado: str, zona: str):
 def ver_tutorial(lg: str = Depends(lingua)) -> Tutorial:
     ajuda = config.pasta_assets() / "ajuda"
     with i18n.com_lingua(lg):
-        topicos = tutorial.lista_de_topicos()
+        topicos = tutorial.lista_de_topicos("web")
+    ids = tutorial.video_ids("web")
+    pasta_video = config.pasta_assets() / "video"
     saida = []
-    for menu, titulo, texto, imagens in topicos:
+    for (menu, titulo, texto, imagens), id_ in zip(topicos, ids, strict=True):
         lista = []
         for img in imagens:
             if img[0] == "fixa":
@@ -53,7 +56,8 @@ def ver_tutorial(lg: str = Depends(lingua)) -> Tutorial:
                 r = _recorte(str(ajuda), lg, img[1], img[2])
                 if r is not None:
                     lista.append(Imagem(url=f"/api/tutorial/recorte/{lg}/{img[1]}/{img[2]}.png", largura=round(r[1])))
-        saida.append(Topico(menu=menu, titulo=titulo, texto=texto, imagens=lista))
+        v = tutorial.video_da_funcionalidade(pasta_video, "web", id_, lg) if id_ else None
+        saida.append(Topico(menu=menu, titulo=titulo, texto=texto, imagens=lista, video=f"/videos/{v.name}" if v else ""))
     video = tutorial.ficheiro_video(config.pasta_assets() / "video", lg)
     return Tutorial(topicos=saida, video=f"/videos/{video.name}" if video else "")
 

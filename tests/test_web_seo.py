@@ -9,6 +9,7 @@ import pytest
 pytest.importorskip("fastapi", reason="a webapp precisa do grupo `web` (uv sync)")
 from fastapi.testclient import TestClient
 from web import app as modulo_app
+from core import tutorial
 from web import seo
 from web.app import criar_app
 
@@ -79,9 +80,9 @@ def test_a_pagina_inicial_tem_dados_estruturados_validos(publico):
         assert "ld+json" not in publico.get(caminho).text
 
 
-def test_o_tutorial_leva_o_texto_real_dos_oito_topicos(publico):
+def test_o_tutorial_leva_o_texto_real_de_todos_os_topicos(publico):
     h = publico.get("/tutorial").text
-    assert h.count("<section><h2>") == 8 and "{" not in h.split('<div id="raiz">')[1].split("<script")[0]
+    assert h.count("<section><h2>") == len(tutorial.lista_de_topicos("web")) == 8 + len(tutorial.funcionalidades("web")) and "{" not in h.split('<div id="raiz">')[1].split("<script")[0]
 
 
 def test_robots_txt(publico):

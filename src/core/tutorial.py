@@ -9,6 +9,7 @@ from __future__ import annotations
 import io
 import json
 import re
+from dataclasses import dataclass
 from pathlib import Path
 
 from .i18n import t
@@ -18,6 +19,34 @@ IMAGENS_FIXAS = ("modelo.jpg", "modelo1.jpg", "digitos.png", "folha.png")
 LINGUAS_COM_VIDEO = ("pt", "en")
 VIDEO_MIN_BYTES = 100_000
 ESTADOS_DE_CAPTURA = ("a", "b", "c")
+PLATAFORMAS = ("web", "windows")
+VIDEO_FUNC_MIN_BYTES = 20_000     # os videos das funcionalidades sao curtos (gravados da propria interface)
+
+
+@dataclass(frozen=True)
+class Funcionalidade:
+    """Uma funcionalidade de utilizador, com o seu topico no tutorial e o seu video. REGRA (CLAUDE.md): uma funcionalidade de utilizador so esta
+    feita quando esta na lista FUNCIONALIDADES, com texto nas 18 linguas (`tut_f_<id>_t` e `_b`, em idiomas/tutoriais.py) e um video por plataforma
+    (`<plataforma>_<id>_pt.mp4` e `_en.mp4` em assets/video/). `web`/`windows` dizem onde ela esta (chave do texto «Onde»)."""
+    id: str
+    plataformas: tuple
+    web: str = ""                     # chave do rotulo, na pagina inicial do site
+    windows: tuple = ()               # (chave do menu, chave do item) na app Windows
+    onde: bool = True                 # False: o texto nao diz «Onde» (nao ha um sitio unico)
+
+
+FUNCIONALIDADES = (
+    Funcionalidade("series", PLATAFORMAS, "web_prefixos", ("win_m_extras", "win_opcoes")),
+    Funcionalidade("lista", PLATAFORMAS, "web_exportar_csv", ("win_m_extras", "web_exportar_csv")),
+    Funcionalidade("marcas", PLATAFORMAS, "web_marcas", ("win_m_extras", "win_opcoes")),
+    Funcionalidade("galeria", PLATAFORMAS, "web_galeria", ("win_m_extras", "win_galeria")),
+    Funcionalidade("marca", PLATAFORMAS, "web_logotipo", ("win_m_extras", "win_opcoes")),
+    Funcionalidade("qr", ("web",), "web_qr"),
+    Funcionalidade("sorteio", PLATAFORMAS, "web_sorteio", ("win_m_extras", "web_sorteio")),
+    Funcionalidade("guardar", ("web",), onde=False),
+    Funcionalidade("instalar", ("web",), onde=False),
+    Funcionalidade("visual", PLATAFORMAS, "web_visual", ("m_ver", "web_visual")),
+)
 
 
 def caixas(pasta_ajuda: Path) -> dict:
@@ -28,8 +57,42 @@ def caixas(pasta_ajuda: Path) -> dict:
         return {}
 
 
-def lista_de_topicos() -> list:
-    """[(titulo no menu, titulo da pagina, texto, [imagens])]; imagem = ('fixa', ficheiro) | ('rec', estado, zona)."""
+def funcionalidades(plataforma: str) -> list:
+    """As funcionalidades que existem nesta plataforma («web» ou «windows»), pela ordem do tutorial."""
+    return [f for f in FUNCIONALIDADES if plataforma in f.plataformas]
+
+
+def _onde(f: Funcionalidade, plataforma: str) -> str:
+    if not f.onde:
+        return ""
+    if plataforma == "windows":
+        menu, item = f.windows
+        return t("tut_onde_menu", menu=t(menu).rstrip("…"), item=t(item).rstrip("…"))
+    return t("tut_onde_web", item=t(f.web).rstrip("…"))
+
+
+def topico_da_funcionalidade(f: Funcionalidade, plataforma: str) -> tuple:
+    """O topico (menu, titulo, texto, imagens) de uma funcionalidade: sem imagens (o video mostra-a), com o «Onde» desta plataforma."""
+    titulo = t(f"tut_f_{f.id}_t")
+    return (titulo, titulo, t(f"tut_f_{f.id}_b", onde=_onde(f, plataforma)).strip(), [])
+
+
+def video_ids(plataforma: str = "windows") -> list:
+    """Em paralelo com `lista_de_topicos(plataforma)`: o id da funcionalidade de cada topico (None nos 8 topicos de base, que tem o video geral)."""
+    return [None] * N_BASE + [f.id for f in funcionalidades(plataforma)]
+
+
+def lista_de_topicos(plataforma: str = "windows") -> list:
+    """[(titulo no menu, titulo da pagina, texto, [imagens])]; imagem = ('fixa', ficheiro) | ('rec', estado, zona). Os 8 primeiros sao os de
+    base (iguais nas duas plataformas, com as capturas da app Windows); seguem-se os das funcionalidades (`FUNCIONALIDADES`) que a `plataforma` tem."""
+    return _base() + [topico_da_funcionalidade(f, plataforma) for f in funcionalidades(plataforma)]
+
+
+N_BASE = 8
+
+
+def _base() -> list:
+    """Os 8 topicos de base."""
     ps = dict(previa=t("previa"), gerar=t("gerar"), ajustar=t("zoom_ajustar"), pasta=t("abrir_pasta"),
               de=t("de"), ate=t("ate"), algarismos=t("algarismos"), varios=t("modo_varios"), unico=t("modo_unico"),
               papel=t("lay_papel"), margem=t("lay_margem"), porfolha=t("lay_por_folha"),
@@ -51,8 +114,9 @@ def lista_de_topicos() -> list:
     ]
 
 
-def verificar_ajuda(pasta_ajuda: Path, pasta_video: Path, linguas) -> list:
-    """As imagens e os videos do tutorial existem (para todas as `linguas`). Devolve os problemas (lista vazia = tudo ok)."""
+def verificar_ajuda(pasta_ajuda: Path, pasta_video: Path, linguas, plataformas=PLATAFORMAS) -> list:
+    """As imagens e os videos do tutorial existem (para todas as `linguas`; os das funcionalidades, para as `plataformas` dadas: a app Windows so leva os seus).
+    Devolve os problemas (lista vazia = tudo ok)."""
     pasta_ajuda, pasta_video = Path(pasta_ajuda), Path(pasta_video)
     problemas = []
     for nome in IMAGENS_FIXAS:
@@ -62,6 +126,12 @@ def verificar_ajuda(pasta_ajuda: Path, pasta_video: Path, linguas) -> list:
         f = pasta_video / f"tutorial_{lg}.mp4"
         if not f.exists() or f.stat().st_size < VIDEO_MIN_BYTES:
             problemas.append(f"falta o video {f.name}")
+    for func in FUNCIONALIDADES:
+        for plataforma in (p for p in func.plataformas if p in plataformas):
+            for lg in LINGUAS_COM_VIDEO:
+                f = pasta_video / f"{plataforma}_{func.id}_{lg}.mp4"
+                if not f.exists() or f.stat().st_size < VIDEO_FUNC_MIN_BYTES:
+                    problemas.append(f"falta o video {f.name}")
     zonas = caixas(pasta_ajuda)
     for lg in linguas:
         for estado in ESTADOS_DE_CAPTURA:
@@ -75,6 +145,15 @@ def ficheiro_video(pasta_video: Path, lingua: str) -> Path | None:
     Na webapp serve-se como ficheiro estatico (<video>) em vez de abrir o leitor do sistema."""
     for lg in (lingua, "en", "pt"):
         f = Path(pasta_video) / f"tutorial_{lg}.mp4"
+        if f.exists():
+            return f
+    return None
+
+
+def video_da_funcionalidade(pasta_video: Path, plataforma: str, id_: str, lingua: str) -> Path | None:
+    """O video da funcionalidade `id_` nesta plataforma, na `lingua` (ou em ingles / portugues); None se nao ha nenhum."""
+    for lg in (lingua, "en", "pt"):
+        f = Path(pasta_video) / f"{plataforma}_{id_}_{lg}.mp4"
         if f.exists():
             return f
     return None

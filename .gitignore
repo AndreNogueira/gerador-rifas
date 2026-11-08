@@ -36,4 +36,5 @@ app/testes/teste - *.pdf
 
 # resultados dos testes e2e (Playwright)
 test-results/
+videos-gravados/
 playwright-report/
