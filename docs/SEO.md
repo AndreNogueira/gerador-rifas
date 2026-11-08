@@ -29,7 +29,7 @@ O canónico, o Open Graph e o sitemap precisam do URL certo. Ordem: variável **
 
 ## O que SÓ tu podes fazer
 
-1. **Google Search Console**: adiciona o site (verificação por DNS ou por ficheiro/meta), submete `…/sitemap.xml` e pede a indexação da página inicial. Sem isto o Google demora (muito) a encontrar um site novo.
+1. **Google Search Console**: adiciona uma propriedade do tipo **Prefixo do URL** (`https://gerador-rifas.onrender.com`; a de «Domínio» pede DNS e o `onrender.com` não é teu), verifica-a com a **etiqueta HTML** (copia só o valor do `content`, ex. `aB3…`, para a variável **`GOOGLE_VERIFICACAO`** do serviço no Render; o servidor escreve a `<meta name="google-site-verification">` na página inicial), submete `sitemap.xml` em *Sitemaps* e pede a indexação da página inicial em *Inspeção de URL*. Sem isto o Google demora (muito) a encontrar um site novo. Não tires a variável depois de verificar: o Google volta a conferir de tempos a tempos.
 2. **Bing Webmaster Tools**: importa o site da Search Console.
 3. Se o serviço **adormece** (plano gratuito do Render, 15 min), o primeiro pedido de um robô pode demorar ~1 min e dar *timeout*: ver «Para depois» abaixo.
 

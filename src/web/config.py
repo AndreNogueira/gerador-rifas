@@ -118,6 +118,13 @@ def donativo_url() -> str:
     return v if re.fullmatch(r"https://[^\s<>\"']{4,300}", v) else ""
 
 
+def google_verificacao() -> str:
+    """O codigo de verificacao do Google Search Console (so o valor do `content` da etiqueta `google-site-verification`): GOOGLE_VERIFICACAO.
+    E publico por natureza (vai no HTML da pagina inicial), mas nao se poe no repositorio. Invalido ou vazio = sem etiqueta."""
+    v = os.environ.get("GOOGLE_VERIFICACAO", "").strip()
+    return v if re.fullmatch(r"[A-Za-z0-9_\-]{20,120}", v) else ""
+
+
 def contacto_email() -> str:
     """E-mail publico de contacto: CONTACTO_EMAIL (nada no repositorio). Invalido ou vazio = sem contacto publico."""
     v = os.environ.get("CONTACTO_EMAIL", "").strip()
