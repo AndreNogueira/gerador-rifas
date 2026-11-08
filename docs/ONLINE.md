@@ -36,6 +36,8 @@ Segundo a [documentação do Render](https://render.com/docs/free) (consultada e
 | 3 | **Plano pago do Render** (*Starter*, sem adormecer) | pago por mês (ver o preço em render.com/pricing) | **tu**, no painel | A solução a sério: nunca adormece, sem o limite das 750 horas, e permite **disco persistente** (que resolve também as métricas). Não se mexe no código |
 | ✗ | GitHub Actions agendado | — | — | **Não recomendado**: os agendamentos atrasam-se muito (10–20 min), e a cada 10 min gastariam as ~2000 min/mês do plano gratuito num repositório privado |
 
+**Configurar o UptimeRobot:** *Add New Monitor* → tipo **HTTP(s)**, URL `https://gerador-rifas.onrender.com/health`, intervalo **5 minutos** (o mínimo do plano gratuito, abaixo dos 15 do Render), contacto de alerta = o teu e-mail. O `/health` aceita `GET` e `HEAD` (o método por omissão do UptimeRobot). Para também detetar um site "vivo mas avariado", usa um monitor de palavra-chave com `"estado":"ok"`.
+
 **Recomendação:** deixar a camada 1 e juntar já a 2 (cinco minutos no UptimeRobot). Quando o serviço começar a **cobrar**, passar à 3 no mesmo dia: um serviço pago não pode adormecer nem perder os ficheiros dos clientes (ver `docs/PLANO_PRODUTO.md`).
 
 ## Como confirmar que funciona
