@@ -226,7 +226,7 @@ def vista(s: SessaoEstado, lg: str, pasta: Path, desde: int = 0) -> Sessao:
 # ====================================================================== o formulario: folha, resumo, confirmacao
 def trabalho_dos_campos(c: Campos) -> core.Trabalho:
     """Os campos de texto -> `core.Trabalho` (levanta ErroRifas; chamar dentro de `i18n.com_lingua`)."""
-    return pedido.trabalho_de_campos("", c.nome, c.inicio, c.fim, c.max_ficheiro, c.digitos, c.modo)
+    return pedido.trabalho_de_campos("", c.nome, c.inicio, c.fim, c.max_ficheiro, c.digitos, c.modo, c.prefixos, c.saltar, c.cor_serie == "1")
 
 
 def folha_dos_campos(info, c: Campos):
@@ -253,7 +253,7 @@ def calcular(info, c: Campos, lg: str) -> Calculo:
             tr_ = trabalho_dos_campos(c)
             n = pedido.rifas_por_pagina(disp, info)
             texto, aviso = pedido.resumo_do_pedido(tr_, n, tem_template=info is not None)
-            if tr_.fim - tr_.inicio + 1 > config.max_numeros():          # avisa-se logo, nao so ao carregar em «Gerar»
+            if core.series.contar(tr_) > config.max_numeros():          # avisa-se logo, nao so ao carregar em «Gerar»
                 texto, aviso = i18n.traduzir("web_demasiados", lg, max=config.max_numeros()), True
             resumo = Resumo(texto=texto, aviso=aviso, max_ativo=c.modo == "varios")
         except core.ErroRifas as e:

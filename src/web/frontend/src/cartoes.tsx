@@ -307,6 +307,43 @@ export function CartaoNumeros({
           data-testid="max-ficheiro"
         />
       </label>
+      <div className="linha extras">
+        <label>
+          {t("web_prefixos")}
+          <input
+            value={campos.prefixos}
+            onChange={(e) => mudar("prefixos", e.target.value)}
+            placeholder="A-   /   A-, B-, C-"
+            maxLength={120}
+            autoComplete="off"
+            aria-describedby="dica-prefixos"
+            data-testid="prefixos"
+          />
+        </label>
+        <label>
+          {t("web_saltar")}
+          <input
+            value={campos.saltar}
+            onChange={(e) => mudar("saltar", e.target.value)}
+            placeholder="13, 100-110"
+            maxLength={300}
+            autoComplete="off"
+            data-testid="saltar"
+          />
+        </label>
+      </div>
+      <p className="suave dica" id="dica-prefixos">
+        {t("web_prefixos_dica")}
+      </p>
+      <label className="opcao">
+        <input
+          type="checkbox"
+          checked={campos.cor_serie === "1"}
+          onChange={(e) => mudar("cor_serie", e.target.checked ? "1" : "")}
+          data-testid="cor-serie"
+        />
+        {t("web_cor_serie")}
+      </label>
       <Estado cor={resumo?.aviso ? "aviso" : "suave"} testid="resumo">
         {resumo?.texto ?? ""}
       </Estado>

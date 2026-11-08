@@ -90,6 +90,9 @@ class Campos(BaseModel):
     papel: str = Field("A4", max_length=20)
     margem: str = Field("5", max_length=20)
     porfolha: str = Field("", max_length=20)
+    prefixos: str = Field("", max_length=120)      # «A-» ou «A-, B-, C-» (series); vazio = sem prefixo
+    saltar: str = Field("", max_length=300)        # «13, 100-110»: numeros que nunca se imprimem
+    cor_serie: str = Field("", max_length=1)       # «1» = uma cor para cada serie
 
 
 class FolhaInfo(BaseModel):

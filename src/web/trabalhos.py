@@ -98,11 +98,11 @@ def analisar(pasta: str, tpl_nome: str, alg_nome: str) -> tuple:
 
 
 def previa(pasta: str, tpl_nome: str, alg_nome: str, papel: str, margem: str, porfolha: str,
-           inicio: int, fim: int, digitos: int) -> tuple:
-    """PDF de 1 pagina com os primeiros numeros: ("ok", bytes, por_pagina) | erro."""
+           inicio: int, fim: int, digitos: int, prefixo: str = "", cor: tuple | None = None, saltar: tuple = ()) -> tuple:
+    """PDF de 1 pagina com os primeiros numeros: ("ok", bytes, por_pagina) | erro. `prefixo`, `cor` e `saltar`: ver core.series."""
     try:
         prep = _com_folha(_preparado(pasta, tpl_nome, alg_nome), papel, margem, porfolha)
-        return ("ok", core.pdf_da_previa(prep, inicio, digitos, fim), prep.por_pagina)
+        return ("ok", core.pdf_da_previa(prep, inicio, digitos, fim, prefixo, cor, saltar), prep.por_pagina)
     except Exception as e:  # noqa: BLE001
         return _erro(e)
 
@@ -159,13 +159,15 @@ class _Progresso:
 
 
 def gerar(pasta: str, tpl_nome: str, alg_nome: str, nome: str, inicio: int, fim: int, por_ficheiro: int | None,
-          digitos: int, papel: str, margem: str, porfolha: str) -> tuple:
+          digitos: int, papel: str, margem: str, porfolha: str, prefixos: tuple = (), saltar: tuple = (),
+          cor_por_serie: bool = False) -> tuple:
     """Gera os PDFs para `<pasta>/saida`. ("ok", [Resultado]) | ("cancelado",) | erro. O registo vai para `progresso.json`."""
     p = Path(pasta)
     prog = _Progresso(p / PROGRESSO)
     try:
         prep = _com_folha(_preparado(pasta, tpl_nome, alg_nome), papel, margem, porfolha)
-        tr = core.Trabalho(saida=p / "saida", nome=nome, inicio=inicio, fim=fim, por_ficheiro=por_ficheiro, digitos=digitos)
+        tr = core.Trabalho(saida=p / "saida", nome=nome, inicio=inicio, fim=fim, por_ficheiro=por_ficheiro, digitos=digitos,
+                           prefixos=prefixos, saltar=saltar, cor_por_serie=cor_por_serie)
         res = core.gerar(tr, prep, prog.log, prog.passo, Bandeira(p / CANCELAR))
         return ("ok", res)
     except Exception as e:  # noqa: BLE001

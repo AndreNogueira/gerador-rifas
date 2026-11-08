@@ -15,6 +15,9 @@ export const PADRAO: Campos = {
   papel: "A4",
   margem: "5",
   porfolha: "",
+  prefixos: "",
+  saltar: "",
+  cor_serie: "",
 };
 
 // O que se lembra entre visitas. NUNCA o nome dos ficheiros (cada rifa tem o seu) nem os algarismos/folha (vêm do template).
@@ -45,6 +48,9 @@ const NA_LIGACAO = {
   papel: "papel",
   margem: "margem",
   nome: "nome",
+  pre: "prefixos",
+  saltar: "saltar",
+  cor: "cor_serie",
 } as const satisfies Record<string, keyof Campos>;
 
 /** A ligação (`/?de=1&ate=100&…`) que repõe estes valores noutro browser. `base` = o endereço do site, com barra final. */
@@ -75,6 +81,11 @@ export function camposDaLigacao(pesquisa: string): Partial<Campos> {
   if (modo === "varios" || modo === "unico") saida.modo = modo;
   const papel = p.get("papel");
   if (papel && (PAPEIS as readonly string[]).includes(papel)) saida.papel = papel;
+  const prefixos = p.get("pre");
+  if (prefixos && /^[A-Za-z .\-/,]{1,120}$/.test(prefixos)) saida.prefixos = prefixos;
+  const saltar = p.get("saltar");
+  if (saltar && /^[0-9 ,-]{1,300}$/.test(saltar)) saida.saltar = saltar;
+  if (p.get("cor") === "1") saida.cor_serie = "1";
   const nome = p.get("nome");
   if (nome && nome.length <= 80 && [...nome].every((c) => c >= " " && c !== "<" && c !== ">"))
     saida.nome = nome; // sem controlo nem HTML

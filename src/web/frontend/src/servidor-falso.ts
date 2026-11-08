@@ -16,6 +16,10 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_contacto: "Contacto",
     web_donativo: "Donativo",
     web_algarismos_lembrados: "Reutilizámos os algarismos da última vez ({nome}).",
+    web_prefixos: "Prefixo ou séries",
+    web_prefixos_dica: "Texto antes dos algarismos.",
+    web_saltar: "Saltar números",
+    web_cor_serie: "Uma cor para cada série",
     web_copiar_ligacao: "Copiar ligação",
     web_ligacao_copiada: "Ligação copiada.",
     tut_titulo: "Tutorial",
@@ -88,6 +92,9 @@ export const CAMPOS_PADRAO: Campos = {
   papel: "A4",
   margem: "5",
   porfolha: "",
+  prefixos: "",
+  saltar: "",
+  cor_serie: "",
 };
 
 const trabalhoLivre = (): Trabalho => ({
