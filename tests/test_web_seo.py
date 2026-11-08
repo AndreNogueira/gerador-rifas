@@ -75,7 +75,7 @@ def test_a_pagina_inicial_tem_dados_estruturados_validos(publico):
     d = json.loads(blocos[0])
     assert d["@type"] == "WebApplication" and d["url"] == f"{URL}/" and d["offers"]["price"] == "0"
     assert len(d["inLanguage"]) == 18 and d["image"] == f"{URL}/og-imagem.png"
-    for caminho in ("/tutorial", "/video", "/sobre", "/termos", "/privacidade", "/contacto", "/changelog"):
+    for caminho in ("/tutorial", "/video", "/sobre", "/sorteio", "/termos", "/privacidade", "/contacto", "/changelog"):
         assert "ld+json" not in publico.get(caminho).text
 
 
@@ -98,7 +98,7 @@ def test_sitemap_so_tem_as_paginas_publicas(publico):
     assert r.status_code == 200 and r.headers["content-type"].startswith("application/xml")
     ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     urls = [e.text for e in ElementTree.fromstring(r.text).findall("s:url/s:loc", ns)]
-    assert urls == [f"{URL}/", f"{URL}/tutorial", f"{URL}/video", f"{URL}/sobre", f"{URL}/termos", f"{URL}/privacidade", f"{URL}/contacto", f"{URL}/changelog"]
+    assert urls == [f"{URL}/", f"{URL}/tutorial", f"{URL}/video", f"{URL}/sobre", f"{URL}/sorteio", f"{URL}/termos", f"{URL}/privacidade", f"{URL}/contacto", f"{URL}/changelog"]
 
 
 def test_rotas_desconhecidas_sao_404_a_serio_e_nao_se_indexam(publico):

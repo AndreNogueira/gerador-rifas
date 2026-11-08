@@ -165,6 +165,32 @@
   color: inherit;
   text-underline-offset: 3px;
 }
+.sorteio {
+  display: grid;
+  gap: 12px;
+
+  h1,
+  h2,
+  p {
+    margin: 0;
+  }
+  .sorteados {
+    display: grid;
+    gap: 8px;
+    padding: 12px 16px;
+    border: var(--borda) solid var(--linha);
+    border-radius: var(--raio-c);
+    background: var(--campo);
+  }
+  ol {
+    margin: 0;
+    padding-left: 2rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    columns: 2 8rem;
+  }
+}
 .texto-pagina {
   display: grid;
   gap: 10px;

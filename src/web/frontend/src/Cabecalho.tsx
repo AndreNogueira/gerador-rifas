@@ -7,6 +7,7 @@ import { VISUAIS, type Visual } from "./temas";
 const PAGINAS: readonly { para: string; chave: string; icone: NomeIcone }[] = [
   { para: "/tutorial", chave: "tut_titulo", icone: "livro" },
   { para: "/video", chave: "mi_video", icone: "video" },
+  { para: "/sorteio", chave: "web_sorteio", icone: "faiscas" },
   { para: "/sobre", chave: "mi_sobre", icone: "info" },
 ];
 
