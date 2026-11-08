@@ -4,6 +4,33 @@ Escrito para o dono do projeto, que escolhe quais fazer já. Junta as ideias de 
 
 **Como ler:** cada linha é **um PR** (ou dois), com o fluxo de `CONTRIBUTING.md` (`scripts/verificar.ps1` verde, testes, versão em `src/web/__init__.py`). **Tam.:** XS = uma tarde, S = um dia, M = uns dias, L = semanas, XL = um mês ou mais. **BD** = precisa da [base de dados](BASE_DE_DADOS.md). **Tu** = o que só tu podes dar ou decidir.
 
+## Estado (2026-11-08)
+
+Feitos todos os itens dos níveis 1 e 2 **exceto F8 e M9**, cada um num PR e com entrada no [Changelog](../src/web/CHANGELOG.md) do site.
+
+| ID | Funcionalidade | Estado | Versão | PR | O que falta fazer a quem gere o serviço |
+|---|---|---|---|---|---|
+| F1 | Tema automático por época | feito | 3.10.0 | #15 | — |
+| F2 | Remover `python-multipart` | feito | 3.10.0 | #15 | — |
+| F3 | Funil no painel | feito | 3.11.0 | #16 | `ADMIN_TOKEN` (sem ele não há painel) |
+| F4 | Lembrar os algarismos e o pedido | feito | 3.13.0 | #18 | — |
+| F5 | Partilhar a configuração por ligação | feito | 3.13.0 | #18 | — |
+| F6 | Instalar como app (PWA) | feito | 3.14.0 | #19 | — |
+| F7 | Termos, Privacidade, Contacto e donativo | feito (textos **provisórios**) | 3.12.0 | #17 | `DONATIVO_URL`, `CONTACTO_EMAIL`, `RESPONSAVEL`; rever os textos com um advogado |
+| F8 | Confirmar o proxy e o anti-sono no Render | **por fazer** | — | — | precisa do `ADMIN_TOKEN` e de 30 min sem visitas (ver `docs/ONLINE.md`) |
+| M1 | Séries, prefixos e saltar números | feito | 3.15.0 | #20 | — |
+| M2 | Exportar a lista (CSV) e folha de controlo | feito | 3.16.0 | #21 | — |
+| M3 | Talão, marcas de corte e sangria | feito (talão e sangria já existiam; marcas novas) | 3.17.0 | #22 | — |
+| M4 | Galeria de templates | feito (4 desenhos originais) | 3.18.0 | #23 | — |
+| M5 | Marca própria (logótipo e cor) | feito | 3.19.0 | #24 | — |
+| M6 | QR por bilhete | feito | 3.20.0 | #25 | `VERIFICACAO_CHAVE` (sem ela não há QR) e `PUBLIC_URL` certo |
+| M7 | Sorteio verificável | feito | 3.21.0 | #26 | — |
+| M8 | Testes e2e no CI | feito | — | #27 | — |
+| M9 | Métricas persistentes | **por fazer** (espera a escolha da base de dados) | — | — | decidir (`BASE_DE_DADOS.md`) |
+| M10 | Contraste dos temas | feito (medido, 9 temas × claro/escuro) | 3.22.0 | #28 | — |
+
+**Ainda por fazer:** F8, M9, o nível 3 (D1–D4: contas, packs com Stripe, API para gráficas, SEO por língua) e o nível 4. Fora do código: capturas do tutorial da web, pré-visualização por PR, revisão nativa das traduções `web_*` e as dos textos novos (≈ 100 chaves escritas sem falante nativo), mais volume por pedido.
+
 ## Quadro geral
 
 | Nível | O que é | Itens | Precisa de BD? |
