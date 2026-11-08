@@ -158,6 +158,8 @@ export function definirVisual(visual: string): void {
 }
 
 interface Opcoes {
+  /** Devolve o corpo como Blob (descarregar um ficheiro) em vez de JSON. */
+  bruto?: boolean;
   json?: unknown;
   ficheiro?: File;
   sinal?: AbortSignal;
@@ -196,6 +198,7 @@ async function pedir<T>(metodo: string, url: string, opcoes: Opcoes = {}): Promi
     throw new ErroApi(r.status, detalhe, tipo);
   }
   if (r.status === 204) return undefined as T;
+  if (opcoes.bruto) return (await r.blob()) as T;
   return (await r.json()) as T;
 }
 
@@ -206,6 +209,10 @@ export const api = {
   linguas: () => pedir<Linguas>("GET", "/api/linguas"),
   textos: (lingua: string) => pedir<Textos>("GET", `/api/textos/${encodeURIComponent(lingua)}`),
   tutorial: () => pedir<Tutorial>("GET", "/api/tutorial"),
+  /** A lista de bilhetes em CSV e a folha de controlo em PDF do pedido que está no formulário. */
+  listaCsv: (campos: Campos) => pedir<Blob>("POST", "/api/exportar/lista.csv", { json: campos, bruto: true }),
+  folhaDeControlo: (campos: Campos) =>
+    pedir<Blob>("POST", "/api/exportar/controlo.pdf", { json: campos, bruto: true }),
   publico: () => pedir<Publico>("GET", "/api/publico"),
   pagina: (nome: string) => pedir<PaginaDeTexto>("GET", `/api/pagina/${encodeURIComponent(nome)}`),
   changelog: () => pedir<{ entradas: EntradaChangelog[] }>("GET", "/api/changelog"),

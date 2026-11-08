@@ -4,6 +4,13 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.16.0 — 2026-11-08
+
+### Novo
+- **Exportar a lista de bilhetes (CSV):** um ficheiro que abre no Excel ou no Calc, com um bilhete por linha (série, número, e as colunas Nome, Contacto e Pago em branco). Respeita prefixos, séries e números saltados.
+- **Folha de controlo de vendas (PDF):** uma tabela A4 para imprimir e preencher à mão (36 bilhetes por página, com caixa de «pago»). Nas línguas cujas letras o PDF não escreve (grego, russo, chinês, polaco…) os cabeçalhos saem em inglês.
+- Nada fica guardado no servidor: a lista sai só do que está no formulário.
+
 ## 3.15.0 — 2026-11-08
 
 ### Novo

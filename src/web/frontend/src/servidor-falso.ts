@@ -20,6 +20,8 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_prefixos_dica: "Texto antes dos algarismos.",
     web_saltar: "Saltar números",
     web_cor_serie: "Uma cor para cada série",
+    web_exportar_csv: "Exportar lista (CSV)",
+    web_folha_controlo: "Folha de controlo (PDF)",
     web_copiar_ligacao: "Copiar ligação",
     web_ligacao_copiada: "Ligação copiada.",
     tut_titulo: "Tutorial",
@@ -128,6 +130,7 @@ export class ServidorFalso {
   passos: Trabalho[] = [];
   falhaSessaoPerdida = false;
   donativoUrl = "";
+  exportarErro = "";
   temContacto = false;
 
   nova(): Sessao {
@@ -167,6 +170,10 @@ export class ServidorFalso {
     });
 
     if (url === "/health") return this.responder({ estado: "ok", versao: "3.0.0" });
+    if (url === "/api/exportar/lista.csv" || url === "/api/exportar/controlo.pdf") {
+      if (this.exportarErro) return this.responder({ detail: this.exportarErro, tipo: "aviso" }, 422);
+      return Promise.resolve(new Response(new Blob([url.endsWith("csv") ? "csv" : "%PDF"]), { status: 200 }));
+    }
     if (url === "/api/publico")
       return this.responder({ donativo_url: this.donativoUrl, contacto: this.temContacto });
     const pg = /^\/api\/pagina\/(\w+)$/.exec(url);
