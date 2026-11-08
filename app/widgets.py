@@ -5,8 +5,10 @@ import sys
 import tkinter as tk
 
 import customtkinter as ctk
+from PIL import Image, ImageTk
 
 from tema import C, FONTE, cor_tk
+from tema import _rgb
 
 
 def repintar_so_o_necessario(janela) -> None:
@@ -181,3 +183,45 @@ def novo_menu(pai) -> tk.Menu:
                    activebackground=cor_tk(C["sel_menu"]), activeforeground=cor_tk(C["texto"]),
                    disabledforeground=cor_tk(C["suave"]), selectcolor=cor_tk(C["texto"]), relief="flat", bd=1,
                    font=(FONTE, 10), activeborderwidth=0)
+
+
+class Banda(tk.Canvas):
+    """A faixa de cor do topo: gradiente violeta -> magenta (as cores da marca), o logotipo e o nome da aplicacao.
+
+    Desenha-se de novo quando a largura muda (a imagem do gradiente e gerada com essa largura: sem degraus)."""
+
+    def __init__(self, master, titulo: str, versao: str, logo: Image.Image | None, altura: int = 58, escala: float = 1.0):
+        self._altura = max(40, int(altura * escala))
+        super().__init__(master, height=self._altura, highlightthickness=0, bd=0, bg=cor_tk(C["banda_a"]))
+        self._titulo, self._versao, self._escala = titulo, versao, escala
+        self._logo = logo.resize((int(self._altura * 0.74),) * 2, Image.LANCZOS) if logo is not None else None
+        self._logo_tk = ImageTk.PhotoImage(self._logo) if self._logo is not None else None
+        self._fundo = None
+        self._larg = 0
+        self.bind("<Configure>", self._desenhar)
+
+    def _gradiente(self, w: int) -> Image.Image:
+        a, b = _rgb(cor_tk(C["banda_a"])), _rgb(cor_tk(C["banda_b"]))
+        faixa = Image.new("RGB", (w, 1))
+        px = faixa.load()
+        for x in range(w):
+            t = x / max(1, w - 1)
+            px[x, 0] = tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
+        return faixa.resize((w, self._altura))
+
+    def _desenhar(self, e=None) -> None:
+        w = self.winfo_width()
+        if w < 20:
+            return
+        if w != self._larg:
+            self._fundo, self._larg = ImageTk.PhotoImage(self._gradiente(w)), w
+        self.delete("all")
+        self.create_image(0, 0, image=self._fundo, anchor="nw")
+        x = int(16 * self._escala)
+        if self._logo_tk is not None:
+            self.create_image(x, self._altura // 2, image=self._logo_tk, anchor="w")
+            x += self._logo_tk.width() + int(12 * self._escala)
+        self.create_text(x + 1, self._altura // 2 + 1, text=self._titulo, anchor="w", fill="#2A0F6B", font=(FONTE, 17, "bold"))
+        self.create_text(x, self._altura // 2, text=self._titulo, anchor="w", fill="#FFFFFF", font=(FONTE, 17, "bold"))
+        self.create_text(w - int(16 * self._escala), self._altura // 2, text=f"v{self._versao}", anchor="e", fill="#E9E0FF",
+                         font=(FONTE, 10))

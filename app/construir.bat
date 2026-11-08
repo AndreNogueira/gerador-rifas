@@ -28,10 +28,15 @@ set "PYTHONPATH=%~dp0..\src"
   --onefile-tempdir-spec="{CACHE_DIR}/GeradorRifas/{VERSION}" ^
   --company-name="Gerador de Rifas" --product-name="Gerador de Rifas" ^
   --file-description="Gerador de rifas a partir de templates PDF" ^
-  --file-version=2.2.0.0 --product-version=2.2.0.0 --copyright="Gerador de Rifas" ^
+  --file-version=2.3.0.0 --product-version=2.3.0.0 --copyright="Gerador de Rifas" ^
   app.py || exit /b 1
 
 rem Assinatura digital (autoassinada por defeito; com um certificado comprado: assinar.ps1 -Pfx ficheiro.pfx)
-powershell -NoProfile -ExecutionPolicy Bypass -File assinar.ps1 -Exe dist\GeradorRifas.exe
+rem (SEM_ASSINATURA=1, como no GitHub Actions, salta este passo: um certificado autoassinado criado no servidor nao vale nada)
+if defined SEM_ASSINATURA (
+  echo SEM_ASSINATURA definido: o .exe fica sem assinatura digital.
+) else (
+  powershell -NoProfile -ExecutionPolicy Bypass -File assinar.ps1 -Exe dist\GeradorRifas.exe
+)
 echo.
 echo Pronto: %~dp0dist\GeradorRifas.exe
