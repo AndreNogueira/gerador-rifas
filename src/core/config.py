@@ -18,6 +18,7 @@ from .motor import PAPEIS
 ENV_DADOS = "RIFAS_DADOS"            # variavel de ambiente: pasta onde se guarda o config.json
 NOME_CONFIG = "config.json"
 MODOS = ("varios", "unico")
+VISUAIS_CONFIG = ("auto", "premiado", "natal")           # o visual da app Windows (ver core.tema)
 # campos de texto guardados tal e qual (chave do config.json == chave devolvida por preferencias())
 CAMPOS_DE_TEXTO = ("algarismos", "saida", "inicio", "fim", "digitos", "max", "margem")
 
@@ -58,6 +59,8 @@ def preferencias(cfg: dict, caminhos: bool = True) -> dict:
     for chave in CAMPOS_DE_TEXTO:
         if cfg.get(chave, "") != "":
             saida[chave] = str(cfg[chave])
+    if cfg.get("visual") in VISUAIS_CONFIG:
+        saida["visual"] = cfg["visual"]
     if cfg.get("papel") in PAPEIS:
         saida["papel"] = cfg["papel"]
     if cfg.get("modo") in MODOS:
@@ -71,7 +74,10 @@ def preferencias(cfg: dict, caminhos: bool = True) -> dict:
 
 
 def para_gravar(lingua: str, tema: str, algarismos: str, saida: str, inicio: str, fim: str, digitos: str, max_ficheiro: str,
-                modo: str, papel: str, margem: str) -> dict:
-    """O que se escreve no config.json (e nada mais: sem template, sem nome dos ficheiros)."""
-    return {"lingua": lingua, "tema": tema, "algarismos": algarismos, "saida": saida, "inicio": inicio, "fim": fim,
-            "digitos": digitos, "max": max_ficheiro, "modo": modo, "papel": papel, "margem": margem}
+                modo: str, papel: str, margem: str, visual: str = "") -> dict:
+    """O que se escreve no config.json (e nada mais: sem template, sem nome dos ficheiros). `visual` so se escreve se tem valor."""
+    d = {"lingua": lingua, "tema": tema, "algarismos": algarismos, "saida": saida, "inicio": inicio, "fim": fim,
+         "digitos": digitos, "max": max_ficheiro, "modo": modo, "papel": papel, "margem": margem}
+    if visual:
+        d["visual"] = visual
+    return d

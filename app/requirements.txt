@@ -3,12 +3,12 @@ pypdf               # BSD-3-Clause
 pypdfium2           # BSD-3-Clause ou Apache-2.0 (PDFium: BSD-3)
 pillow              # MIT-CMU (HPND)
 customtkinter       # MIT
+reportlab           # BSD (a galeria de templates: desenha os PDFs e traz a letra Vera, livre)
 # --- so para construir o .exe (ferramentas; nao fazem parte do programa)
 nuitka              # compilador Python->C (AGPL-3.0 a ferramenta; o programa gerado NAO herda a licenca)
 ordered-set
 zstandard
 # --- so para os testes (testes\)
-reportlab           # BSD
 fonttools           # MIT
 psutil              # BSD-3-Clause
 pytest              # MIT (testes de caracterizacao em ..\tests)

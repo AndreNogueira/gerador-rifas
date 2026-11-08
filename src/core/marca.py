@@ -66,3 +66,16 @@ def cor_de_hex(txt: str) -> tuple | None:
     if not re.fullmatch(r"#[0-9A-Fa-f]{6}", txt):
         raise ErroRifas("err_cor")
     return tuple(round(int(txt[i:i + 2], 16) / 255, 3) for i in (1, 3, 5))
+
+
+def ler_ficheiro(caminho, posicao: str = "sd", tamanho: int = TAMANHO_PADRAO) -> Marca:
+    """Como `ler_logotipo`, a partir de um ficheiro (a app Windows). Recusa antes de ler o que e grande demais ou nao existe."""
+    from pathlib import Path
+    p = Path(caminho)
+    try:
+        if p.stat().st_size > MAX_MB * 1024 * 1024:
+            raise ErroRifas("err_logotipo", mb=MAX_MB)
+        dados = p.read_bytes()
+    except OSError:
+        raise ErroRifas("err_logotipo", mb=MAX_MB) from None
+    return ler_logotipo(dados, posicao, tamanho)

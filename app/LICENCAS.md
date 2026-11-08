@@ -25,8 +25,9 @@ versão anterior.
 |---|---|---|
 | [Nuitka](https://nuitka.net/) | AGPL-3.0 (a ferramenta) | Compila o Python para C. **O programa gerado não herda a AGPL**: o código compilado é do autor e o código C de execução que o Nuitka junta é Apache-2.0 (ver a documentação do Nuitka, «License»). |
 | zig (compilador de C que o Nuitka descarrega) | MIT | só compila; não fica no `.exe` |
-| reportlab (BSD), fontTools (MIT), psutil (BSD-3) | permissivas | só nos testes (`testes\`) e para criar os exemplos |
-| Letra Vera (Bitstream Vera, vem com o reportlab) | licença livre (permite usar e embutir) | só nos ficheiros de exemplo (`exemplos\`) |
+| reportlab (BSD) | permissiva | na app: a galeria de templates (desenha os PDFs; traz a letra Vera) |
+| fontTools (MIT), psutil (BSD-3) | permissivas | só nos testes (`testes\`) e para criar os exemplos |
+| Letra Vera (Bitstream Vera, vem com o reportlab) | licença livre (permite usar e embutir) | na galeria de templates e nos ficheiros de exemplo (`exemplos\`) |
 | [ffmpeg](https://ffmpeg.org/) + x264 (via `imageio-ffmpeg`) | GPL (o ffmpeg usado) | **só para gravar os vídeos do tutorial** (`testes\fazer_video.py`); não faz parte do programa nem vai no `.exe`. O que fica é o ficheiro `.mp4`, gerado por nós. |
 
 Se preferir não usar nem uma ferramenta AGPL só para construir, a alternativa é distribuir o código em Python

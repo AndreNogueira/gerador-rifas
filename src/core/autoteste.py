@@ -34,6 +34,32 @@ def gerar_exemplos(exemplos: Path, destino: Path) -> tuple:
     return linhas, codigo
 
 
+def gerar_galeria(destino: Path) -> tuple:
+    """Os 4 desenhos da galeria: cada um vira template + algarismos, prepara-se, e gera-se uma folha com serie («A-»), cor, saltos e marcas de corte
+    (o que a app Windows faz em «Extras»). Sem o reportlab (so a webapp e o .exe o trazem) a linha diz que se ignorou. Devolve (linhas, codigo)."""
+    try:
+        import reportlab  # noqa: F401
+    except ImportError:
+        return ["galeria: ignorada (sem reportlab)"], 0
+    from . import galeria
+    from .escolha_folha import escolher_folha, preparado_com_folha
+    destino = Path(destino) / "galeria"
+    destino.mkdir(parents=True, exist_ok=True)
+    (destino / "algarismos.pdf").write_bytes(galeria.criar_algarismos())
+    linhas, codigo = [], 0
+    for d in galeria.DESENHOS:
+        (destino / f"{d.id}.pdf").write_bytes(galeria.criar_template(d.id, galeria.Textos("Rifa", "Organizacao", ("1.o Premio",), "")))
+        prep = preparar(destino / f"{d.id}.pdf", destino / "algarismos.pdf")
+        esc = escolher_folha(prep.info, "A4", "8", "", marcas=True)
+        p = preparado_com_folha(prep, esc.disp)
+        res = gerar(Trabalho(saida=destino, nome=f"G-{d.id}", inicio=1, fim=12, digitos=3, prefixos=("A-",), saltar=((2, 3),),
+                             cor_numeros=(0.78, 0.1, 0.12)), p)
+        ok = all(r.ok for r in res) and p.disp.marcas
+        linhas.append(f"galeria {d.id}: {'ok' if ok else 'ERRO'} ({p.disp.n} por folha, {sum(r.paginas for r in res)} paginas)")
+        codigo |= 0 if ok else 1
+    return linhas, codigo
+
+
 def main(argv: list | None = None) -> int:
     """Auto-teste sem janela para CI/Linux (substitui `GeradorRifas.exe --selftest` fora do Windows):
     `python -m core <pasta_de_exemplos> <pasta_de_saida>`. Verifica as traducoes e gera os exemplos. Devolve 0 se tudo ok."""
@@ -48,9 +74,10 @@ def main(argv: list | None = None) -> int:
     probs = i18n.verificar_traducoes()
     linhas = [f"traducoes ({len(i18n.LINGUAS)} linguas): {'ok' if not probs else probs}"]
     codigo = int(bool(probs))
-    extra, cod = gerar_exemplos(exemplos, destino)
-    linhas += extra
-    codigo |= cod
+    for gerar_ in (gerar_exemplos, lambda e, d: gerar_galeria(d)):
+        extra, cod = gerar_(exemplos, destino)
+        linhas += extra
+        codigo |= cod
     linhas.append("RESULTADO: " + ("OK" if codigo == 0 else "FALHOU"))
     print("\n".join(linhas))
     return int(codigo)

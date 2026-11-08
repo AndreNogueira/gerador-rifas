@@ -1260,9 +1260,10 @@ def gerar(tr: Trabalho, prep: Preparado, log: Log = _sem_log,
     return resultados
 
 
-def pagina_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = None, dpi: int = 160) -> bytes:
-    """PNG da 1.a pagina, com os primeiros numeros do intervalo."""
-    return png_de_pagina(pdf_da_previa(prep, inicio, digitos, fim), dpi)
+def pagina_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = None, dpi: int = 160, prefixo: str = "",
+                  cor: tuple | None = None, saltar: tuple = (), marca=None) -> bytes:
+    """PNG da 1.a pagina, com os primeiros numeros do intervalo (e, como `pdf_da_previa`, prefixo, cor, saltos e logotipo)."""
+    return png_de_pagina(pdf_da_previa(prep, inicio, digitos, fim, prefixo, cor, saltar, marca), dpi)
 
 
 def pdf_da_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = None, prefixo: str = "",
