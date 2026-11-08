@@ -7,6 +7,9 @@ from web import config, textos_legais
 from web.app import criar_app
 
 
+PT = {"X-Lingua": "pt"}          # sem cabeçalho a língua é a do browser (inglês por omissão): estes testes verificam o texto português
+
+
 @pytest.fixture
 def c(tmp_path):
     with TestClient(criar_app(armazenamento=tmp_path)) as cliente:
@@ -17,7 +20,7 @@ def test_sem_configuracao_nao_ha_donativo_nem_contacto(c, monkeypatch):
     for v in ("DONATIVO_URL", "CONTACTO_EMAIL", "RESPONSAVEL"):
         monkeypatch.delenv(v, raising=False)
     assert c.get("/api/publico").json() == {"donativo_url": "", "contacto": False, "qr": False}
-    d = c.get("/api/pagina/contacto").json()
+    d = c.get("/api/pagina/contacto", headers=PT).json()
     assert "não há um contacto público" in d["seccoes"][0]["paragrafos"][0]
 
 
@@ -26,7 +29,7 @@ def test_a_configuracao_aparece_e_so_se_for_valida(c, monkeypatch):
     monkeypatch.setenv("CONTACTO_EMAIL", "ola@exemplo.pt")
     monkeypatch.setenv("RESPONSAVEL", "Ana <b>Silva</b>\nOutra linha")
     assert c.get("/api/publico").json() == {"donativo_url": "https://exemplo.pt/doar", "contacto": True, "qr": False}
-    texto = str(c.get("/api/pagina/termos").json()) + str(c.get("/api/pagina/contacto").json())
+    texto = str(c.get("/api/pagina/termos", headers=PT).json()) + str(c.get("/api/pagina/contacto", headers=PT).json())
     assert "ola@exemplo.pt" in texto and "Ana bSilva/bOutra linha" in texto and "<b>" not in texto
     for mau in ("http://inseguro.pt", "javascript:alert(1)", "https://a b.pt", ""):
         monkeypatch.setenv("DONATIVO_URL", mau)
@@ -38,10 +41,10 @@ def test_a_configuracao_aparece_e_so_se_for_valida(c, monkeypatch):
 
 def test_paginas_de_texto_tem_titulo_e_seccoes_e_o_desconhecido_e_404(c):
     for nome in textos_legais.PAGINAS:
-        d = c.get(f"/api/pagina/{nome}").json()
+        d = c.get(f"/api/pagina/{nome}", headers=PT).json()
         assert d["titulo"] and d["seccoes"] and all(s["titulo"] and s["paragrafos"] for s in d["seccoes"])
     assert c.get("/api/pagina/segredo").status_code == 404
-    assert "provisória" in c.get("/api/pagina/termos").json()["aviso"]       # o aviso de que falta revisao juridica nao pode desaparecer
+    assert "provisória" in c.get("/api/pagina/termos", headers=PT).json()["aviso"]       # o aviso de que falta revisao juridica nao pode desaparecer
 
 
 def test_o_texto_estatico_do_seo_escapa_html(monkeypatch, tmp_path):

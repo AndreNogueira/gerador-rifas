@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { api, ErroApi, type PaginaDeTexto } from "./api";
+import { useI18n } from "./i18n";
 import { Voltar } from "./paginas";
 
-/** Termos, privacidade e contacto: o texto vem do servidor (`textos_legais.py`), só em português. */
+/** Termos, privacidade e contacto: o texto vem do servidor (`textos_legais.py`) já na língua escolhida. */
 export function PaginaTexto({ nome }: { nome: string }) {
+  const { lingua, t } = useI18n();
   const [pagina, setPagina] = useState<PaginaDeTexto | null>(null);
   const [erro, setErro] = useState("");
+  // biome-ignore lint/correctness/useExhaustiveDependencies: a página pede-se de novo quando a língua muda
   useEffect(() => {
     let ativo = true;
     setPagina(null);
@@ -17,7 +20,10 @@ export function PaginaTexto({ nome }: { nome: string }) {
     return () => {
       ativo = false;
     };
-  }, [nome]);
+  }, [nome, lingua]);
+  useEffect(() => {
+    if (pagina) document.title = `${pagina.titulo} | ${t("app_nome")}`; // o título do separador acompanha a língua da página
+  }, [pagina, t]);
   return (
     <div className="pagina">
       <section className="cartao texto-pagina" data-testid={`pagina-${nome}`}>

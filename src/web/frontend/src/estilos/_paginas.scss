@@ -109,7 +109,8 @@
   background: none;
   border-color: transparent;
   color: var(--texto);
-  white-space: pre;
+  white-space: pre-wrap; // mantém o recuo dos tópicos de base e deixa os títulos compridos das funcionalidades quebrar em vez de passarem para baixo do cartão
+  overflow-wrap: anywhere;
   box-shadow: none;
   font-weight: 550;
 

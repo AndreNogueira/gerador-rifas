@@ -1,7 +1,7 @@
 """Textos da interface web acrescentados depois da versao 3.9: uma chave de cada vez, com as 18 linguas lado a lado.
 
 Cada chave tem de ter todas as linguas de `ORDEM` (um teste verifica-o). Juntam-se aos de `ui_<lingua>.py` em `TEXTOS` (ver
-`__init__.py`). Os nomes dos temas e as paginas Changelog, Termos e Privacidade em si sao so em portugues; aqui ficam so as etiquetas.
+`__init__.py`). Os nomes dos temas sao nomes proprios e nao se traduzem; os textos do Changelog, Termos e Privacidade vivem em `web/changelog/` e `web/legal/` (um ficheiro por lingua).
 Para acrescentar uma chave: um bloco novo em CHAVES (e subir as contagens em tests/test_i18n.py e tests/test_web_api.py).
 """
 CHAVES: dict[str, dict[str, str]] = {

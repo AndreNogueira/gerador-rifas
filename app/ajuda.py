@@ -38,7 +38,9 @@ class Tutorial(ctk.CTkToplevel):
         ico = BASE / "assets" / "icon.ico"
         if ico.exists():
             self.after(250, lambda: self._icone(ico))
-        self.topicos = lista_de_topicos()
+        self.topicos = lista_de_topicos("windows")
+        self.ids_video = tutorial.video_ids("windows")      # o id da funcionalidade de cada topico (None nos de base)
+        self.ids_video = tutorial.video_ids("windows")      # o id da funcionalidade de cada topico (None nos de base)
         self.indice = -1
         self._larg_desenhada = 0
         self._espera = None
@@ -48,9 +50,9 @@ class Tutorial(ctk.CTkToplevel):
 
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
-        lat = ctk.CTkFrame(self, width=280, corner_radius=0, fg_color=C["cartao"])
+        # com os topicos das funcionalidades sao 15: numa janela baixa o menu desloca-se
+        lat = ctk.CTkScrollableFrame(self, width=262, corner_radius=0, fg_color=C["cartao"])
         lat.grid(row=0, column=0, sticky="ns")
-        lat.grid_propagate(False)
         ctk.CTkLabel(lat, text=t("tut_titulo"), font=ctk.CTkFont(FONTE, 20, "bold"), text_color=C["texto"]).pack(
             anchor="w", padx=22, pady=(22, 14))
         self.b_top = []
@@ -153,6 +155,11 @@ class Tutorial(ctk.CTkToplevel):
             moldura = ctk.CTkFrame(pai, corner_radius=10, border_width=1, border_color=C["borda"], fg_color=C["cartao"])
             moldura.pack(anchor="w", padx=44, pady=(2, 14))
             ctk.CTkLabel(moldura, text="", image=ci).pack(padx=6, pady=6)
+        video = self._video(i)
+        if video is not None:
+            ctk.CTkButton(pai, text="▶  " + t("tut_ver_video"), command=lambda: ambiente.abrir(video), height=40, corner_radius=8,
+                          fg_color=C["acento"], hover_color=C["acento_h"], text_color=C["sobre_acento"],
+                          font=ctk.CTkFont(FONTE, 14, "bold")).pack(anchor="w", padx=44, pady=(2, 14))
         fonte = ctk.CTkFont(FONTE, 14)
         for linha in corpo.split("\n"):
             if not linha.strip():
@@ -171,6 +178,11 @@ class Tutorial(ctk.CTkToplevel):
         ctk.CTkFrame(pai, height=24, fg_color="transparent").pack()
         self.rol.tela.yview_moveto(0)
         self.after(30, self.rol._ajustar_regiao)
+
+    def _video(self, i: int):
+        """O video do topico `i` (so os das funcionalidades tem), na lingua atual, ou None."""
+        id_ = self.ids_video[i] if i < len(self.ids_video) else None
+        return tutorial.video_da_funcionalidade(BASE / "assets" / "video", "windows", id_, i18n.atual()) if id_ else None
 
     def _ao_redimensionar(self, e) -> None:
         if abs(e.width - self._larg_desenhada) < 28 or self.indice < 0:

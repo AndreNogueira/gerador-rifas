@@ -10,7 +10,7 @@ ASSETS = Path(__file__).resolve().parent.parent / "app" / "assets"
 
 
 def test_lista_de_topicos_estrutura():
-    top = tutorial.lista_de_topicos()
+    top = tutorial.lista_de_topicos()[:tutorial.N_BASE]            # os de base; os das funcionalidades vem a seguir (ver test_funcionalidades.py)
     assert len(top) == 8 and tutorial.TOPICO_ALGARISMOS == 3
     for titulo_menu, titulo, texto, imagens in top:
         assert titulo_menu.strip() and titulo and texto
@@ -40,7 +40,9 @@ def test_verificar_ajuda_pastas_vazias(tmp_path):
     probs = tutorial.verificar_ajuda(tmp_path, tmp_path, ["pt", "en"])
     assert probs[:4] == ["falta modelo.jpg", "falta modelo1.jpg", "falta digitos.png", "falta folha.png"]
     assert probs[4:6] == ["falta o video tutorial_pt.mp4", "falta o video tutorial_en.mp4"]
-    assert probs[6:] == [f"falta a captura {lg}_{e}" for lg in ("pt", "en") for e in "abc"]
+    n_func = sum(len(f.plataformas) for f in tutorial.FUNCIONALIDADES) * 2          # um video em pt e um em en por funcionalidade e plataforma
+    assert all(p.startswith("falta o video ") for p in probs[6:6 + n_func]) and len(probs[6:6 + n_func]) == n_func       # ver test_funcionalidades.py
+    assert probs[6 + n_func:] == [f"falta a captura {lg}_{e}" for lg in ("pt", "en") for e in "abc"]
 
 
 def test_verificar_ajuda_video_pequeno_conta_como_em_falta(tmp_path):

@@ -14,6 +14,7 @@ import os
 
 import ambiente          # noqa: F401  (poe ..\src no sys.path; o registo do Windows esta la)
 import customtkinter as ctk
+from core import tema as core_tema
 from core.tema import PADRAO, construir, contraste, cor_valida, legivel as _legivel, misturar, paleta_de_cor, texto_sobre   # noqa: F401
 from core.tema import hex_para_rgb as _rgb, rgb_para_hex as _hex                                                           # noqa: F401
 
@@ -23,21 +24,17 @@ C: dict = {}
 
 MARCA = (0x6A, 0x35, 0xF5)          # o violeta da marca (o mesmo de src/web/frontend: --destaque)
 
-# As cores fixas do tema «Premiado» (as mesmas de src/web/frontend/src/estilos/_tokens.scss): (claro, escuro)
-_MARCA_FIXAS = dict(
-    fundo=("#F3EFFE", "#0F0A22"), cartao=("#FFFFFF", "#1B1236"), barra=("#FBF9FF", "#150E2C"), borda=("#DDD5F5", "#35295A"),
-    texto=("#1D1240", "#F1ECFF"), suave=("#62597F", "#AA9FCF"), campo=("#F8F6FF", "#130C2A"),
-    acento=("#6A35F5", "#A68BFF"), acento_h=("#5628D8", "#C2AEFF"), link=("#5528D4", "#B9A5FF"),
-    acento_suave=("#E5DCFE", "#2F2160"), sel_menu=("#E9E2FD", "#2A1D52"),
-    ok=("#0B7A5F", "#3FE0B5"), erro=("#C9183A", "#FF7A90"), aviso=("#A05A00", "#FFB454"),
-    visor=("#E8E2F8", "#0D0820"),
-)
-# a faixa do topo, o magenta e as cores dos 4 passos
-_MARCA_EXTRAS = dict(
-    acento2=("#D62B8F", "#FF6FB5"), acento2_h=("#B81E78", "#FF9AC9"),
-    passo1=("#6A35F5", "#A68BFF"), passo2=("#D62B8F", "#FF6FB5"), passo3=("#EC6A08", "#FFA14D"), passo4=("#0E9F84", "#3FE0B5"),
-    banda_a=("#4A1FD6", "#3A1AC0"), banda_b=("#D62B8F", "#C42A92"),
-)
+# As cores dos visuais «Premiado» e «Natal» (as mesmas de src/web/frontend; a paleta vive em core/tema.py, sem Tk, para ter testes)
+VISUAL = "auto"          # «auto» (o Natal em dezembro, o Premiado nos outros meses), «premiado» ou «natal»
+
+
+def definir_visual(valor: str) -> None:
+    global VISUAL
+    VISUAL = valor if valor == "auto" or valor in core_tema.VISUAIS else "auto"
+
+
+def visual_efetivo() -> str:
+    return core_tema.visual_por_epoca() if VISUAL == "auto" else VISUAL
 
 
 # ------------------------------------------------------------------ Windows
@@ -75,9 +72,10 @@ def _par_rgb(par: tuple) -> tuple:
 def _paleta_completa() -> dict:
     p = construir(_paleta_pedida())
     if marca_ativa():
-        p.update(_MARCA_FIXAS)
+        fixas, extras = core_tema.PALETAS_VISUAIS[visual_efetivo()]
+        p.update(fixas)
         p["sobre_acento"] = tuple(texto_sobre(c) for c in _par_rgb(p["acento"]))
-        p.update(_MARCA_EXTRAS)
+        p.update(extras)
     else:                                   # cor do Windows: o magenta e os passos reutilizam o destaque
         p.update(acento2=p["acento"], acento2_h=p["acento_h"], banda_a=p["acento_h"], banda_b=p["acento"])
         for i in range(1, 5):
@@ -100,7 +98,7 @@ def atualizar() -> bool:
 
 def assinatura() -> tuple:
     """Muda quando o utilizador troca a cor de destaque do Windows (so conta se a app a segue)."""
-    return tuple(paleta_windows()) if _escolha() == "windows" else tuple(_paleta_pedida())
+    return (tuple(paleta_windows()) if _escolha() == "windows" else tuple(_paleta_pedida())) + (visual_efetivo(),)
 
 
 def cor_tk(par: tuple) -> str:

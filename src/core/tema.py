@@ -106,3 +106,51 @@ def variaveis_css(paleta: dict) -> dict:
     """{'claro': {'--rifas-fundo': '#F3F3F3', ...}, 'escuro': {...}} para a pagina (os nomes tem «_» trocado por «-»)."""
     return {modo: {"--rifas-" + nome.replace("_", "-"): par[i] for nome, par in paleta.items()}
             for i, modo in enumerate(("claro", "escuro"))}
+
+
+# ------------------------------------------------------------------ visuais (a app Windows e a webapp tem os mesmos nomes)
+VISUAIS = ("premiado", "natal")           # os da app Windows; a webapp tem mais (ver src/web/frontend/src/temas.ts)
+VISUAL_POR_OMISSAO = "premiado"
+
+
+def visual_por_epoca(hoje=None) -> str:
+    """O visual automatico: o Natal em dezembro, o Premiado nos outros meses (a mesma regra de `visualPorEpoca` no site)."""
+    import datetime
+    return "natal" if (hoje or datetime.date.today()).month == 12 else VISUAL_POR_OMISSAO
+
+
+# {visual: (cores fixas, cores extras)}; cada cor e (claro, escuro). Os valores do Premiado e do Natal sao os de
+# src/web/frontend/src/estilos (_tokens.scss e temas/_natal.scss); aqui servem a janela do Windows, que so conhece estes dois.
+PALETAS_VISUAIS = {
+    "premiado": (
+        dict(fundo=("#F3EFFE", "#0F0A22"), cartao=("#FFFFFF", "#1B1236"), barra=("#FBF9FF", "#150E2C"), borda=("#DDD5F5", "#35295A"),
+             texto=("#1D1240", "#F1ECFF"), suave=("#62597F", "#AA9FCF"), campo=("#F8F6FF", "#130C2A"),
+             acento=("#6A35F5", "#A68BFF"), acento_h=("#5628D8", "#C2AEFF"), link=("#5528D4", "#B9A5FF"),
+             acento_suave=("#E5DCFE", "#2F2160"), sel_menu=("#E9E2FD", "#2A1D52"),
+             ok=("#0B7A5F", "#3FE0B5"), erro=("#C9183A", "#FF7A90"), aviso=("#A05A00", "#FFB454"),
+             visor=("#E8E2F8", "#0D0820")),
+        dict(acento2=("#D62B8F", "#FF6FB5"), acento2_h=("#B81E78", "#FF9AC9"),
+             passo1=("#6A35F5", "#A68BFF"), passo2=("#D62B8F", "#FF6FB5"), passo3=("#EC6A08", "#FFA14D"), passo4=("#0E9F84", "#3FE0B5"),
+             banda_a=("#4A1FD6", "#3A1AC0"), banda_b=("#D62B8F", "#C42A92")),
+    ),
+    "natal": (
+        dict(fundo=("#EEF5EF", "#08150F"), cartao=("#FFFFFF", "#10281C"), barra=("#F7FBF8", "#0B1F15"), borda=("#CFE0D4", "#234A35"),
+             texto=("#12301F", "#F1FBF4"), suave=("#4C6A58", "#A6C7B2"), campo=("#F5FAF6", "#0B1F15"),
+             acento=("#0F6B3F", "#6FE3A0"), acento_h=("#0B5230", "#9BF0BE"), link=("#0B5A35", "#8EE8B3"),
+             acento_suave=("#D6ECDC", "#1A3D2B"), sel_menu=("#E2F0E6", "#16382A"),
+             ok=("#0B7A46", "#5FE39B"), erro=("#B50F1C", "#FF7B86"), aviso=("#8A5A00", "#FFCB5C"),
+             visor=("#E1ECE4", "#06120C")),
+        dict(acento2=("#C1121F", "#FF6B78"), acento2_h=("#9E0E19", "#FF909A"),
+             passo1=("#C1121F", "#FF6B78"), passo2=("#0F6B3F", "#6FE3A0"), passo3=("#B27700", "#FFCB5C"), passo4=("#1F6FB2", "#7CC0FF"),
+             banda_a=("#0A4A2B", "#06281A"), banda_b=("#14783F", "#0D4A2C")),
+    ),
+}
+
+
+def pares_de_contraste(paleta: dict) -> list:
+    """[(descricao, cor do texto, cor do fundo, minimo)] que a paleta de um visual tem de cumprir (WCAG AA), nos dois modos (indice 0 claro, 1 escuro).
+    O que se vai medir: o texto e o texto suave sobre o cartao e o fundo, os estados (ok, erro, aviso) e a ligacao sobre o cartao, e o
+    texto dos botoes sobre o destaque e o magenta. Os cinzentos desativados e o que e so decoracao ficam de fora (como no WCAG)."""
+    return [("texto/cartao", "texto", "cartao", 4.5), ("texto/fundo", "texto", "fundo", 4.5), ("suave/cartao", "suave", "cartao", 4.5),
+            ("suave/fundo", "suave", "fundo", 4.5), ("ok/cartao", "ok", "cartao", 4.5), ("erro/cartao", "erro", "cartao", 4.5),
+            ("aviso/cartao", "aviso", "cartao", 4.5), ("link/cartao", "link", "cartao", 4.5), ("texto/campo", "texto", "campo", 4.5)]

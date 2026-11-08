@@ -16,19 +16,21 @@ rem O resultado nao contem codigo Python nem bytecode (.pyc), so codigo maquina:
 rem --python-flag=no_docstrings/no_asserts: tira docstrings e assert do binario.
 rem --onefile-tempdir-spec: o .exe descompacta-se uma so vez para %%LOCALAPPDATA%% (arranques seguintes rapidos).
 rem O motor (pacote `core`) esta em ..\src: o Nuitka tem de o encontrar e incluir no executavel.
+rem Os videos do SITE (assets\video\web_*) nao vao no .exe: o tutorial da app so usa os `windows_*`.
 set "PYTHONPATH=%~dp0..\src"
 .venv\Scripts\python.exe -m nuitka --onefile --assume-yes-for-downloads --remove-output ^
   --output-dir=dist --output-filename=GeradorRifas.exe ^
   --windows-console-mode=disable --windows-icon-from-ico=assets\icon.ico ^
   --enable-plugin=tk-inter ^
-  --include-package=core --include-package-data=customtkinter --include-package-data=pypdfium2 --include-package-data=pypdfium2_raw ^
+  --include-package=core --include-package-data=customtkinter --include-package-data=pypdfium2 --include-package-data=pypdfium2_raw --include-package-data=reportlab ^
   --include-data-dir=assets=assets --include-data-dir=exemplos=exemplos ^
+  --noinclude-data-files=assets/video/web_* ^
   --python-flag=no_docstrings --python-flag=no_asserts --python-flag=no_warnings ^
-  --nofollow-import-to=reportlab --nofollow-import-to=segno --nofollow-import-to=fontTools --nofollow-import-to=psutil --nofollow-import-to=numpy ^
+  --nofollow-import-to=segno --nofollow-import-to=fontTools --nofollow-import-to=psutil --nofollow-import-to=numpy ^
   --onefile-tempdir-spec="{CACHE_DIR}/GeradorRifas/{VERSION}" ^
   --company-name="Gerador de Rifas" --product-name="Gerador de Rifas" ^
   --file-description="Gerador de rifas a partir de templates PDF" ^
-  --file-version=2.3.0.0 --product-version=2.3.0.0 --copyright="Gerador de Rifas" ^
+  --file-version=2.4.0.0 --product-version=2.4.0.0 --copyright="Gerador de Rifas" ^
   app.py || exit /b 1
 
 rem Assinatura digital (autoassinada por defeito; com um certificado comprado: assinar.ps1 -Pfx ficheiro.pfx)

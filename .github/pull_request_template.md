@@ -14,7 +14,8 @@
 - [ ] Se mexe em **`src/core`**: os testes do `core` passam e a app Windows continua a funcionar
 - [ ] Se afeta o **serviço público**: pensei nos limites (memória, 1 geração de cada vez, por IP)
 - [ ] Sem segredos, e versões novas **fixadas exatamente**
-- [ ] `VERSAO` em `src/web/__init__.py` atualizada **e uma entrada em `src/web/CHANGELOG.md`** (a página «Changelog» do site), se a mudança é visível ao utilizador
+- [ ] `VERSAO` em `src/web/__init__.py` atualizada **e uma entrada em `src/web/CHANGELOG.md`** (a página «Changelog» do site) **e em `src/web/changelog/<lingua>.md`** (as outras 17 línguas), se a mudança é visível ao utilizador
+- [ ] Se é uma **funcionalidade de utilizador**: entrada em `core/tutorial.py::FUNCIONALIDADES` + texto do tópico nas 18 línguas, **vídeo** (pt e en) para cada plataforma, resumo no Changelog das 17 línguas e a funcionalidade na **app Windows** (ou a razão por que não)
 - [ ] Documentação (`CLAUDE.md`, `README.md`, `docs/`) atualizada, se for caso disso
 
 ## Notas para quem revê

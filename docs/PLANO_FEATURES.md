@@ -29,6 +29,10 @@ Feitos todos os itens dos níveis 1 e 2 **exceto F8 e M9**, cada um num PR e com
 | M9 | Métricas persistentes | **por fazer** (espera a escolha da base de dados) | — | — | decidir (`BASE_DE_DADOS.md`) |
 | M10 | Contraste dos temas | feito (medido, 9 temas × claro/escuro) | 3.22.0 | #28 | — |
 
+**Depois (3.23.0 e app Windows 2.4.0, 2026-11-08):** cada funcionalidade de utilizador passou a ter **tópico no tutorial nas 18 línguas e vídeo em pt/en** (regra em `CLAUDE.md`, verificada por `tests/test_funcionalidades.py`);
+o Changelog, os Termos, a Privacidade e o Contacto estão nas 18 línguas; e a app Windows ganhou o menu «Extras» com as funcionalidades M1–M5 e M7, a lista (CSV) e a folha de controlo (M2) e o visual Natal automático (F1).
+Ficam só no site: o QR de verificação (M6: a chave que o assina não pode estar num `.exe` público), guardar/partilhar o pedido (F4/F5) e instalar como app (F6).
+
 **Ainda por fazer:** F8, M9, o nível 3 (D1–D4: contas, packs com Stripe, API para gráficas, SEO por língua) e o nível 4. Fora do código: capturas do tutorial da web, pré-visualização por PR, revisão nativa das traduções `web_*` e as dos textos novos (≈ 100 chaves escritas sem falante nativo), mais volume por pedido.
 
 ## Quadro geral

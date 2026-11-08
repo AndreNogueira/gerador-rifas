@@ -70,6 +70,18 @@ export function Tutorial() {
           <article className="cartao" data-testid="topico">
             <h2>{topico.titulo}</h2>
             <p className="texto-longo">{topico.texto}</p>
+            {topico.video && (
+              <video
+                className="video"
+                src={topico.video}
+                controls
+                preload="metadata"
+                aria-label={`${t("tut_ver_video")}: ${topico.titulo}`}
+                data-testid="video-topico"
+              >
+                <track kind="captions" />
+              </video>
+            )}
             {topico.imagens.map((img) => (
               <img
                 key={img.url}

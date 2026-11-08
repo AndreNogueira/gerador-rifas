@@ -7,8 +7,22 @@ couber. Gera vários PDFs ou **um único PDF com tudo**.
 
 **Executável:** `dist\GeradorRifas.exe` (compilado para código nativo; não precisa de instalar nada).
 **Descarregar:** na página de *Releases* do repositório público <https://github.com/AndreNogueira/gerador-rifas-windows>
-(só tem o programa, **sem código-fonte**; etiquetas `windows-vX.Y.Z`), junto com o `.sha256` para conferir o ficheiro. A versão atual é a 2.3.0: visual novo (faixa com o gradiente violeta → magenta e o ícone da
+(só tem o programa, **sem código-fonte**; etiquetas `windows-vX.Y.Z`), junto com o `.sha256` para conferir o ficheiro. A versão atual é a 2.4.0: traz o que o site ganhou desde a 3.10 (menu **Extras**, abaixo); a 2.3.0 trouxe o visual novo (faixa com o gradiente violeta → magenta e o ícone da
 marca, passos numerados com cores próprias, botão «Gerar» em magenta), as mesmas cores da webapp.
+
+## Extras (v2.4)
+
+O menu **Extras** abre janelas à parte (a janela principal e as capturas do tutorial ficam como estavam); tudo vale só para a sessão e «Limpar tudo» repõe-no:
+
+- **Séries, cor e logótipo…**: prefixos (`A-, B-, C-`: cada série tem os seus PDFs), números a saltar (`13, 100-110`), uma cor para cada série, a **cor dos números**, o **logótipo** da associação
+  (PNG ou JPG até 2 MB, num canto de cada rifa, só em templates de uma rifa) e as **marcas de corte** nas margens da folha (margem de pelo menos 3 mm).
+- **Galeria de templates…**: quatro desenhos prontos (Bosque, Quermesse, Natal, Gala) com título, organização, prémios e data; «Usar este template» cria o template e os algarismos.
+- **Sorteio…**: sorteio verificável (a mesma resposta que a página do site) com semente pública; há um botão para a aleatoriedade do drand (precisa de internet).
+- **Exportar lista (CSV)** e **Folha de controlo (PDF)**: a lista dos bilhetes do pedido (com prefixos e saltos) para o Excel, e uma tabela A4 para marcar quem pagou. Não precisam de template.
+- **Ver → Visual**: Automático (o **Natal** em dezembro), Premiado ou Natal; claro e escuro são independentes.
+
+O **QR de verificação**, o guardar/partilhar o pedido e o instalar como app só existem no site (o QR é assinado com uma chave do servidor, que não pode estar num `.exe` público).
+Cada funcionalidade tem o seu tópico no tutorial (F1) com um vídeo gravado da própria app.
 
 ## Como usar
 

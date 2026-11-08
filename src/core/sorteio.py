@@ -31,6 +31,21 @@ def _abaixo_de(m: int, semente: bytes, contador: int) -> int:
         j += 1
 
 
+def pedido(de: str, ate: str, quantos: str, semente: str, saltar: str = "") -> list[int]:
+    """O sorteio a partir dos campos de texto (a app Windows; a pagina do site valida o mesmo em TypeScript). Os erros sao `ErroRifas`
+    com as mesmas mensagens da pagina: `web_sorteio_erro_numeros` e `web_sorteio_erro_semente`. `saltar`: «13, 100-110»."""
+    from . import series
+    from .motor import ErroRifas
+    semente = semente.strip()
+    if not semente or len(semente) > MAX_SEMENTE:
+        raise ErroRifas("web_sorteio_erro_semente", max=MAX_SEMENTE)
+    try:
+        a, b, q = int(de.strip()), int(ate.strip()), int(quantos.strip())
+        return sortear(a, b, q, semente, series.ler_saltar(saltar))
+    except ValueError:
+        raise ErroRifas("web_sorteio_erro_numeros", max=f"{MAX_NUMEROS:,}".replace(",", " "), quantos=MAX_QUANTOS) from None
+
+
 def numeros_possiveis(de: int, ate: int, excluir: tuple = ()) -> list[int]:
     if ate < de:
         raise ValueError("intervalo vazio")

@@ -68,3 +68,11 @@ def resumo_do_pedido(tr: Trabalho, n: int, tem_template: bool) -> tuple:
     if tem_template and tr.por_ficheiro % n:
         return t("resumo_multiplo", n=n), True
     return txt, False
+
+
+def previa_png(prep, tr: Trabalho, dpi: int = 200) -> bytes:
+    """O PNG da pre-visualizacao do pedido `tr` (1.a pagina): com o prefixo e a cor da 1.a serie, os numeros saltados e o logotipo.
+    E o que a app Windows mostra no visor; a webapp faz o mesmo em PDF (trabalhos.previa)."""
+    from .motor import pagina_previa
+    return pagina_previa(prep, tr.inicio, tr.digitos, tr.fim, dpi, tr.prefixos[0] if tr.prefixos else "",
+                         series.cor_da_serie(tr, 0) or tr.cor_numeros, tr.saltar, tr.marca)

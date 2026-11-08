@@ -5,10 +5,11 @@ import { App } from "./App";
 import { ProvedorI18n } from "./i18n";
 import { ServidorFalso } from "./servidor-falso";
 
+let servidor: ServidorFalso;
 beforeEach(() => {
   localStorage.clear();
   window.history.pushState({}, "", "/");
-  new ServidorFalso().instalar();
+  servidor = new ServidorFalso().instalar();
 });
 afterEach(() => vi.unstubAllGlobals());
 
@@ -29,5 +30,19 @@ describe("changelog", () => {
     expect(versoes).toEqual(["versao-3.0.0", "versao-2.9.0"]);
     await waitFor(() => expect(document.title).toBe("Changelog | Gerador de Rifas"));
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+  });
+
+  it("pede o changelog na língua escolhida: em português é o completo, nas outras avisa que é um resumo traduzido", async () => {
+    abrir();
+    await userEvent.click(await screen.findByRole("link", { name: "Changelog" }));
+    await screen.findByTestId("versao-3.0.0");
+    expect(screen.queryByTestId("changelog-resumo")).toBeNull();
+    expect(screen.getByTestId("versao-3.0.0")).toHaveTextContent("Versão 3.0.0");
+    await userEvent.selectOptions(screen.getByTestId("lingua"), "en");
+    expect(await screen.findByTestId("changelog-resumo")).toHaveTextContent("This is a translated summary.");
+    expect(screen.getByTestId("versao-3.0.0")).toHaveTextContent("Version 3.0.0");
+    const pedidos = servidor.pedidos.filter((p) => p.url === "/api/changelog").map((p) => p.lingua);
+    expect(pedidos.at(0)).toBe("pt");
+    expect(pedidos.at(-1)).toBe("en"); // mudar de língua volta a pedir o texto
   });
 });

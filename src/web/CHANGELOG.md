@@ -4,6 +4,13 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.23.0 — 2026-11-08
+
+### Novo
+- **Tutorial e vídeo de cada funcionalidade:** o tutorial ganha um tópico por funcionalidade (séries, lista e folha de controlo, marcas de corte, galeria, marca própria, QR, sorteio, guardar e partilhar o pedido, instalar como app e temas), cada um com um vídeo curto, gravado na própria interface, em português e em inglês.
+- **Changelog, Termos, Privacidade e Contacto nas 18 línguas:** o texto aparece na língua escolhida. O Changelog tem um resumo traduzido de cada versão (o completo é o português); os textos legais são traduções sem revisão nativa e, em caso de divergência, vale a versão portuguesa.
+- **App Windows 2.4** com o que o site ganhou desde a 3.10: menu «Extras» com séries, prefixos e cor por série, números a saltar, cor dos números, logótipo, marcas de corte, galeria de templates, sorteio verificável e exportação da lista (CSV) e da folha de controlo; e o visual Natal automático em dezembro. O QR de verificação e instalar como app ficam só no site.
+
 ## 3.22.0 — 2026-11-08
 
 ### Melhorado

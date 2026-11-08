@@ -24,6 +24,36 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.getByTestId("pagina-privacidade")).toContainText("RGPD");
   });
 
+  test("o changelog, os termos e a privacidade aparecem na língua escolhida (resumo traduzido e aviso do português)", async ({
+    page,
+  }) => {
+    await page.goto("/changelog");
+    await expect(page.getByTestId("changelog-resumo")).toHaveCount(0); // em português é o completo
+    await page.getByTestId("lingua").selectOption("ja");
+    await expect(page.getByTestId("changelog-resumo")).toContainText("ポルトガル語");
+    await expect(page.getByTestId(/^versao-/).first()).toContainText("バージョン");
+    await page.getByRole("link", { name: "利用規約" }).click();
+    await expect(page.getByTestId("pagina-termos")).toContainText("ポルトガル語版が優先");
+    await expect(page).toHaveTitle(/利用規約 \| /);
+    await page.getByTestId("lingua").selectOption("en");
+    await expect(page.getByTestId("pagina-termos")).toContainText("the Portuguese one prevails");
+  });
+
+  test("o tutorial tem um tópico com vídeo por funcionalidade e o vídeo carrega a sério", async ({
+    page,
+  }) => {
+    await page.goto("/tutorial?p=11");
+    await expect(page.getByTestId("topico")).toContainText("Galeria de templates");
+    const video = page.getByTestId("video-topico");
+    await expect(video).toBeVisible();
+    await expect
+      .poll(() => video.evaluate((v: HTMLVideoElement) => v.videoWidth), { timeout: 20_000 })
+      .toBe(1280);
+    expect(await video.evaluate((v: HTMLVideoElement) => v.duration)).toBeGreaterThan(8);
+    await page.goto("/tutorial?p=3");
+    await expect(page.getByTestId("video-topico")).toHaveCount(0); // os tópicos de base não têm vídeo próprio
+  });
+
   test("uma página que não existe é um 404 a sério e o painel sem token não revela nada", async ({
     request,
   }) => {

@@ -54,7 +54,7 @@ def _corpo_inicio() -> str:
 
 def _corpo_tutorial() -> str:
     with i18n.com_lingua("pt"):
-        topicos = tutorial.lista_de_topicos()
+        topicos = tutorial.lista_de_topicos("web")
     secoes = "".join(f"<section><h2>{html.escape(titulo)}</h2>{_paragrafos(texto)}</section>" for _, titulo, texto, _ in topicos)
     return f'<h1>Tutorial</h1><p>Passo a passo para gerar as suas rifas numeradas.</p>{secoes}<p><a href="/">Voltar ao {NOME}</a></p>'
 

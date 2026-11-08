@@ -45,22 +45,13 @@ def _anexo(dados: bytes, tipo: str, nome: str) -> Response:
 def lista_csv(campos: Campos, lg: str = Depends(lingua)) -> Response:
     """Um CSV (UTF-8, separado por «;») com um bilhete por linha e as colunas Nome, Contacto e Pago em branco."""
     tr, bilhetes = _bilhetes(campos, lg)
-    cabecalhos = tuple(i18n.traduzir("web_csv_cabecalho", lg).split(";"))
-    base = core.nome_seguro(tr.nome) or "rifas"
-    return _anexo(controlo.csv_da_lista(bilhetes, cabecalhos), "text/csv; charset=utf-8", f"{base}.csv")
+    nome, dados = controlo.exportar_csv(tr, bilhetes, lg)
+    return _anexo(dados, "text/csv; charset=utf-8", nome)
 
 
 @router.post("/controlo.pdf", dependencies=[Depends(leve)])
 def controlo_pdf(campos: Campos, lg: str = Depends(lingua)) -> Response:
     """A folha de controlo de vendas (PDF A4, 36 bilhetes por pagina) para imprimir e preencher."""
     tr, bilhetes = _bilhetes(campos, lg)
-    cab = i18n.traduzir("web_csv_cabecalho", lg).split(";")[1:]            # Numero, Nome, Contacto, Pago (sem a serie: o numero ja a leva)
-    titulo = i18n.traduzir("web_folha_titulo", lg)
-    if not controlo.texto_cabe(titulo, *cab):                                # letras que a Helvetica do PDF nao tem: ingles
-        cab = i18n.traduzir("web_csv_cabecalho", "en").split(";")[1:]
-        titulo = i18n.traduzir("web_folha_titulo", "en")
-    if tr.nome:
-        titulo = f"{tr.nome}: {titulo}"
-    base = core.nome_seguro(tr.nome) or "rifas"
-    pdf = controlo.folha_de_controlo(titulo, [n for _, n in bilhetes], tuple(cab))
-    return _anexo(pdf, "application/pdf", f"Controlo - {base}.pdf")
+    nome, dados = controlo.exportar_folha(tr, bilhetes, lg)
+    return _anexo(dados, "application/pdf", nome)

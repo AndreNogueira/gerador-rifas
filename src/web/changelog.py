@@ -1,7 +1,8 @@
-"""O changelog do site: le `CHANGELOG.md` (a unica fonte) e devolve-o estruturado.
+"""O changelog do site: le `CHANGELOG.md` (o original, em portugues) e as traducoes `changelog/<lingua>.md` e devolve-os estruturados.
 
-Formato: `## <versao> — <data>`, depois `### <seccao>` e itens `- texto`. So portugues (como o painel). O texto nunca e HTML:
-quem o mostra escapa-o. Um teste garante que a primeira versao e a `VERSAO` do servico.
+Formato (o mesmo em todas as linguas): `## <versao> — <data>`, depois `### <seccao>` e itens `- texto`. O portugues e o completo; as outras 17 linguas
+tem um **resumo traduzido** de cada versao (as mesmas versoes, seccoes e itens, mais curtos; a pagina avisa-o). O texto nunca e HTML: quem o mostra
+escapa-o. Testes garantem que a primeira versao e a `VERSAO` do servico e que todas as linguas tem a mesma estrutura que o portugues.
 """
 from __future__ import annotations
 
@@ -10,7 +11,8 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
 
-FICHEIRO = Path(__file__).with_name("CHANGELOG.md")
+FICHEIRO = Path(__file__).with_name("CHANGELOG.md")          # o original, em portugues
+PASTA = Path(__file__).with_name("changelog")                # as traducoes: <lingua>.md
 _VERSAO = re.compile(r"^##\s+(\d+\.\d+\.\d+)\s*[—-]\s*(\d{4}-\d{2}-\d{2})\s*$")
 _SECCAO = re.compile(r"^###\s+(.+?)\s*$")
 
@@ -44,6 +46,13 @@ def ler(texto: str) -> list[Entrada]:
     return entradas
 
 
-@lru_cache(maxsize=1)
-def entradas() -> tuple[Entrada, ...]:
-    return tuple(ler(FICHEIRO.read_text(encoding="utf-8")))
+def ficheiro(lingua: str) -> Path:
+    """O ficheiro do changelog nesta lingua (o original em portugues; ou o portugues se nao ha traducao)."""
+    if lingua != "pt" and re.fullmatch(r"[a-z]{2}", lingua) and (PASTA / f"{lingua}.md").is_file():
+        return PASTA / f"{lingua}.md"
+    return FICHEIRO
+
+
+@lru_cache(maxsize=32)
+def entradas(lingua: str = "pt") -> tuple[Entrada, ...]:
+    return tuple(ler(ficheiro(lingua).read_text(encoding="utf-8")))

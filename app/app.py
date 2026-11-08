@@ -11,6 +11,8 @@ from __future__ import annotations
 import gc
 import io
 import os
+import shutil
+import tempfile
 import queue
 import sys
 import threading
@@ -27,6 +29,7 @@ from PIL import Image
 import ambiente          # poe ..\src no sys.path (tem de vir antes de ajuda/core)
 import ajuda
 import core
+import extras
 import icones
 import tema
 from core import i18n
@@ -35,7 +38,7 @@ from tema import C, FONTE, cor_tk
 from visor import Visor
 from widgets import Banda, BarraMenus, Dica, Rolavel, novo_menu, repintar_so_o_necessario
 
-VERSAO = "2.3.0"
+VERSAO = "2.4.0"
 BASE = Path(__file__).resolve().parent            # tambem certo no .exe compilado (recursos ao lado)
 DADOS = core.config.pasta_de_dados(ambiente.dados_por_defeito())     # RIFAS_DADOS, ou %APPDATA%\GeradorRifas
 CONFIG = DADOS / core.config.NOME_CONFIG
@@ -63,7 +66,7 @@ def verificar_traducoes() -> list:
 
 def verificar_ajuda() -> list:
     """As imagens do tutorial existem para todas as linguas."""
-    return core.tutorial.verificar_ajuda(ajuda.PASTA, BASE / "assets" / "video", i18n.LINGUAS)
+    return core.tutorial.verificar_ajuda(ajuda.PASTA, BASE / "assets" / "video", i18n.LINGUAS, ("windows",))      # os videos do site (web_*) nao vao no .exe
 
 
 def selftest(destino: Path) -> int:
@@ -90,11 +93,15 @@ def selftest(destino: Path) -> int:
                 tut.update()
             tut.destroy()
         app._mudar_lingua(i18n.LINGUAS["pt"])
+        for classe in (extras.Opcoes, extras.Galeria, extras.Sorteio):       # as janelas «Extras» abrem
+            j = classe(app)
+            j.update()
+            j.destroy()
         app.destroy()
         linhas.append(f"janela e tutorial construidos e reconstruidos em {len(i18n.LINGUAS)} linguas: ok")
-        extra, cod = core.autoteste.gerar_exemplos(BASE / "exemplos", destino)
-        linhas.extend(extra)
-        codigo |= cod
+        for extra, cod in (core.autoteste.gerar_exemplos(BASE / "exemplos", destino), core.autoteste.gerar_galeria(destino)):
+            linhas.extend(extra)
+            codigo |= cod
     except Exception:
         linhas.append("EXCECAO:\n" + traceback.format_exc())
         codigo = 1
@@ -111,6 +118,8 @@ class App(ctk.CTk):
         self.cfg = ler_config() if usar_config else {}
         modo = self.cfg.get("tema") if usar_config else "light"
         self.modo_tema = modo if modo in MODOS_TEMA else "system"
+        self.visual = core.config.preferencias(self.cfg).get("visual", "auto") if usar_config else "auto"
+        tema.definir_visual(self.visual)
         self._assin = tema.assinatura()
         tema.atualizar()
         tema.aplicar_modo(self.modo_tema)
@@ -143,6 +152,7 @@ class App(ctk.CTk):
         self.tut: ajuda.Tutorial | None = None
         self.w_ajuda: dict = {}
         self._sub_tema = None
+        self._sub_visual = None
         self._arrasto = (0, 0)
         self._nova_larg = None
         # estados dinamicos (re-desenhados ao mudar de lingua)
@@ -160,7 +170,15 @@ class App(ctk.CTk):
         self.v_digitos, self.v_max = ctk.StringVar(value="4"), ctk.StringVar(value="300")
         self.v_papel, self.v_margem = ctk.StringVar(value="A4"), ctk.StringVar(value=str(core.MARGEM_MM))
         self.v_porfolha = ctk.StringVar(value="")          # vazio = o maximo que couber
+        # opcoes das janelas «Extras» (so da sessao; ver extras.py): series, cor, logotipo e marcas de corte
+        self.v_prefixos, self.v_saltar = ctk.StringVar(), ctk.StringVar()
+        self.v_cor_serie, self.v_marcas = tk.BooleanVar(value=False), tk.BooleanVar(value=False)
+        self.v_cor_numeros, self.v_logo = ctk.StringVar(), ctk.StringVar()
+        self.v_logo_pos, self.v_logo_tam = ctk.StringVar(value="sd"), ctk.StringVar(value=str(core.marca.TAMANHO_PADRAO))
+        self._pasta_galeria: Path | None = None            # onde estao o template e os algarismos da galeria (temporaria)
+        self.w_extras: dict = {}
         self.v_tema = tk.StringVar(value=self.modo_tema)
+        self.v_visual = tk.StringVar(value=self.visual)
         self.v_lingua = tk.StringVar(value=i18n.atual())
         self.modo = "varios"       # "varios" | "unico"
 
@@ -182,6 +200,7 @@ class App(ctk.CTk):
 
     def destroy(self) -> None:
         self._a_fechar = True          # pára os ciclos "after" e evita callbacks pendentes
+        self._apagar_pasta_galeria()
         try:
             self.pool.shutdown(wait=False, cancel_futures=True)
         except Exception:
@@ -292,6 +311,7 @@ class App(ctk.CTk):
         self.menus.pack(side="left")
         self.menus.adicionar(t("m_ficheiro"), self._preencher_ficheiro)
         self.menus.adicionar(t("m_ver"), self._preencher_ver)
+        self.menus.adicionar(t("win_m_extras"), self._preencher_extras)
         self.menus.adicionar(t("m_idioma"), self._preencher_idioma)
         self.menus.adicionar(t("m_ajuda"), self._preencher_ajuda)
         escuro = ctk.get_appearance_mode() == "Dark"
@@ -386,7 +406,7 @@ class App(ctk.CTk):
         self.e_max.pack(side="left", padx=10)
         self.l_resumo = self._etiqueta(c)
         self.l_resumo.pack(fill="x", padx=16, pady=(5, 11))
-        for v in (self.v_inicio, self.v_fim, self.v_digitos, self.v_max):
+        for v in (self.v_inicio, self.v_fim, self.v_digitos, self.v_max, self.v_prefixos, self.v_saltar):
             v.trace_add("write", lambda *_: self._resumo())
 
         # 4. destino
@@ -475,7 +495,7 @@ class App(ctk.CTk):
                     row=1, column=i, sticky="w", padx=(12, 0))
         self.l_folha = self._etiqueta(f)
         self.l_folha.pack(fill="x", pady=(6, 0))
-        for v in (self.v_margem, self.v_porfolha):
+        for v in (self.v_margem, self.v_porfolha, self.v_marcas):
             v.trace_add("write", lambda *_: self._recalcular_folha())
         self.b_escolher_folha = [self.m_papel]
 
@@ -492,7 +512,7 @@ class App(ctk.CTk):
         if not self.f_folha.winfo_ismapped():
             self.f_folha.pack(fill="x", padx=16, pady=(0, 11), after=self.l_template)
         try:
-            esc = core.escolha_folha.escolher_folha(info, self.v_papel.get(), self.v_margem.get(), self.v_porfolha.get())
+            esc = core.escolha_folha.escolher_folha(info, self.v_papel.get(), self.v_margem.get(), self.v_porfolha.get(), self.v_marcas.get())
             self.disp = esc.disp
             self.st_folha = ("ok", self.disp, esc.acima)
         except core.ErroRifas as e:
@@ -600,6 +620,13 @@ class App(ctk.CTk):
         m.add_command(label=t("mi_reduzir") if self.visor.expandido else t("mi_expandir"), accelerator="F11",
                       command=self.visor._expandir)
         m.add_separator()
+        if self._sub_visual is None or not self._sub_visual.winfo_exists():
+            self._sub_visual = novo_menu(m)
+        self._sub_visual.delete(0, "end")
+        for valor, rotulo in (("auto", t("win_visual_auto")), ("premiado", "Premiado"), ("natal", "Natal")):
+            self._sub_visual.add_radiobutton(label=rotulo, variable=self.v_visual, value=valor,
+                                             command=lambda v=valor: self._definir_visual(v))
+        m.add_cascade(label=t("web_visual"), menu=self._sub_visual)
         if self._sub_tema is None or not self._sub_tema.winfo_exists():
             self._sub_tema = novo_menu(m)
         sub = self._sub_tema
@@ -608,6 +635,15 @@ class App(ctk.CTk):
             sub.add_radiobutton(label=t(chave), variable=self.v_tema, value=valor,
                                 command=lambda v=valor: self._definir_tema(v))
         m.add_cascade(label=t("mi_tema"), menu=sub)
+
+    def _preencher_extras(self, m: tk.Menu) -> None:
+        livre = "disabled" if self.a_gerar else "normal"
+        m.add_command(label=t("win_opcoes"), command=lambda: self._abrir_extra("opcoes", extras.Opcoes), state=livre)
+        m.add_command(label=t("win_galeria"), command=lambda: self._abrir_extra("galeria", extras.Galeria), state=livre)
+        m.add_command(label=t("web_sorteio") + "…", command=lambda: self._abrir_extra("sorteio", extras.Sorteio))
+        m.add_separator()
+        m.add_command(label=t("web_exportar_csv") + "…", command=self._exportar_csv)
+        m.add_command(label=t("web_folha_controlo"), command=self._exportar_folha)
 
     def _preencher_idioma(self, m: tk.Menu) -> None:
         self.v_lingua.set(i18n.atual())
@@ -715,6 +751,7 @@ class App(ctk.CTk):
             w.destroy()
         self.tut = None
         self._sub_tema = None
+        self._sub_visual = None
         self._construir()
         self._render_tudo()
         # Os widgets destruidos deixam lixo ciclico do Tk. Se fosse o fio de trabalho a apanha-lo (o pypdf aloca
@@ -740,6 +777,18 @@ class App(ctk.CTk):
         self.modo_tema = modo
         self.v_tema.set(modo)
         tema.aplicar_modo(modo)
+        self._reconstruir()
+        self._guardar_config()
+
+    def _definir_visual(self, valor: str) -> None:
+        """«auto» (por época), «premiado» ou «natal»: refaz as cores e a janela."""
+        if self.a_gerar:
+            self.v_visual.set(self.visual)
+            return
+        self.visual = valor
+        tema.definir_visual(valor)
+        self._assin = tema.assinatura()
+        tema.atualizar()
         self._reconstruir()
         self._guardar_config()
 
@@ -779,7 +828,8 @@ class App(ctk.CTk):
         gravar_config(core.config.para_gravar(
             lingua=i18n.atual(), tema=self.modo_tema, algarismos=self.v_alg.get(), saida=self.v_saida.get(),
             inicio=self.v_inicio.get(), fim=self.v_fim.get(), digitos=self.v_digitos.get(), max_ficheiro=self.v_max.get(),
-            modo=self.modo, papel=self.v_papel.get(), margem=self.v_margem.get()))
+            modo=self.modo, papel=self.v_papel.get(), margem=self.v_margem.get(),
+            visual=self.visual if self.visual != "auto" else ""))
 
     def _fechar(self) -> None:
         if self.a_gerar and not messagebox.askyesno(t("app_nome"), t("sair_a_gerar")):
@@ -828,10 +878,16 @@ class App(ctk.CTk):
         self._resumo()
 
     # -- resumo
-    def _trabalho(self) -> core.Trabalho:
-        return core.pedido.trabalho_de_campos(
+    def _trabalho(self, com_logotipo: bool = False) -> core.Trabalho:
+        """O pedido dos campos. O logotipo (um ficheiro a ler e validar) so entra quando se pede: o resumo, que corre a cada tecla, nao o le."""
+        tr = core.pedido.trabalho_de_campos(
             self.v_saida.get(), self.v_nome.get(), self.v_inicio.get(), self.v_fim.get(), self.v_max.get(),
-            self.v_digitos.get(), self.modo)
+            self.v_digitos.get(), self.modo, self.v_prefixos.get(), self.v_saltar.get(), self.v_cor_serie.get(), self.v_cor_numeros.get())
+        if com_logotipo and self.v_logo.get():
+            tam = self.v_logo_tam.get().strip()
+            tr.marca = core.marca.ler_ficheiro(self.v_logo.get(), self.v_logo_pos.get(),
+                                               int(tam) if tam.isdigit() else core.marca.TAMANHO_PADRAO)
+        return tr
 
     def _resumo(self) -> None:
         try:
@@ -849,6 +905,7 @@ class App(ctk.CTk):
             return
         self.token += 1
         token = self.token
+        gc.collect()          # o lixo do Tk (fontes) apanha-se aqui, no fio principal: no worker cada __del__ esperava pelo ciclo da interface
         alg = Path(self.v_alg.get()) if self.v_alg.get() else None
         self.prep = None
         self.st_tpl = ("analisar",)
@@ -893,9 +950,10 @@ class App(ctk.CTk):
         if not self.prep:
             return
         try:
-            tr = self._trabalho()
+            tr = self._trabalho(com_logotipo=True)
             if tr.fim < tr.inicio or not 1 <= tr.digitos <= core.MAX_DIGITOS:
                 raise core.ErroRifas("conf_numeros")
+            core.series.validar_extras(tr)
         except core.ErroRifas as e:
             messagebox.showwarning(t("app_nome"), str(e))
             return
@@ -906,7 +964,7 @@ class App(ctk.CTk):
 
         def trabalho() -> None:
             try:
-                png = core.pagina_previa(prep, tr.inicio, tr.digitos, tr.fim, dpi=200)
+                png = core.pedido.previa_png(prep, tr, dpi=200)
                 self.fila.put(("previa", png, tr, prep.por_pagina))
             except Exception as e:
                 self.fila.put(("previa_erro", e))
@@ -921,7 +979,7 @@ class App(ctk.CTk):
         if not self.prep:
             return
         try:
-            tr = self._trabalho()
+            tr = self._trabalho(com_logotipo=True)
             if not tr.nome:
                 self.e_nome.configure(border_color=C["erro"])
                 self.e_nome.focus_set()
@@ -977,6 +1035,74 @@ class App(ctk.CTk):
             except Exception as e:
                 self.fila.put(("erro", e, traceback.format_exc()))
         self.pool.submit(trabalho)
+
+    # -- janelas «Extras» (series/cor/logotipo, galeria, sorteio) e exportar a lista
+    def _abrir_extra(self, nome: str, classe) -> None:
+        j = self.w_extras.get(nome)
+        if j is not None and j.winfo_exists():
+            j.deiconify()
+            j.lift()
+            j.focus_force()
+            return
+        self.w_extras[nome] = classe(self)
+
+    def _bilhetes_do_pedido(self):
+        """(Trabalho, [(serie, numero)]) dos campos, ou None (e aviso) se o pedido nao serve. Nao precisa de template."""
+        try:
+            tr = self._trabalho()
+            if not 1 <= tr.digitos <= core.MAX_DIGITOS or tr.inicio < 0 or tr.fim < tr.inicio:
+                raise core.ErroRifas("conf_numeros")
+            core.series.validar_extras(tr)
+            return tr, core.series.bilhetes(tr)
+        except core.ErroRifas as e:
+            messagebox.showwarning(t("app_nome"), str(e))
+            return None
+
+    def _exportar(self, exportar, tipo: tuple) -> Path | None:
+        """Pergunta onde guardar e escreve o ficheiro que `exportar(tr, bilhetes, lingua)` devolve. O caminho, ou None se desistiu/falhou."""
+        r = self._bilhetes_do_pedido()
+        if r is None:
+            return None
+        tr, bilhetes = r
+        nome, dados = exportar(tr, bilhetes, i18n.atual())
+        p = filedialog.asksaveasfilename(title=t("win_guardar"), initialdir=self._dir_de(self.v_saida), initialfile=nome,
+                                         defaultextension=tipo[1][1:], filetypes=[tipo, (t("dlg_tipo_todos"), "*.*")])
+        if not p:
+            return None
+        try:
+            Path(p).write_bytes(dados)
+        except OSError as e:
+            messagebox.showerror(t("app_nome"), t("erro_inesperado", erro=e))
+            return None
+        self._set_estado("win_guardado", C["ok"], nome=Path(p).name)
+        return Path(p)
+
+    def _exportar_csv(self) -> Path | None:
+        return self._exportar(core.controlo.exportar_csv, ("CSV", "*.csv"))
+
+    def _exportar_folha(self) -> Path | None:
+        return self._exportar(core.controlo.exportar_folha, (t("dlg_tipo_pdf"), "*.pdf"))
+
+    def usar_galeria(self, desenho: str, modelo: bytes, algarismos: bytes) -> None:
+        """«Usar este template» da galeria: guarda o template e os algarismos numa pasta temporaria e continua como se os tivesse escolhido."""
+        if self._pasta_galeria is None or not self._pasta_galeria.exists():
+            self._pasta_galeria = Path(tempfile.mkdtemp(prefix="rifas-galeria-"))
+        tpl, alg = self._pasta_galeria / f"galeria-{desenho}.pdf", self._pasta_galeria / "algarismos.pdf"
+        tpl.write_bytes(modelo)
+        alg.write_bytes(algarismos)
+        self.v_template.set(str(tpl))
+        self.v_alg.set(str(alg))
+        self._analisar()
+
+    def _apagar_pasta_galeria(self) -> None:
+        if self._pasta_galeria is not None:
+            shutil.rmtree(self._pasta_galeria, ignore_errors=True)
+            self._pasta_galeria = None
+
+    def _ev_galeria(self, token: int, png: bytes | None, erro: Exception | None) -> None:
+        j = self.w_extras.get("galeria")
+        if j is not None and j.winfo_exists():
+            j.resultado(token, png, erro)
 
     # -- fila (worker -> interface)
     def _escrever_log(self, m: str) -> None:
@@ -1087,6 +1213,11 @@ class App(ctk.CTk):
                          (self.v_inicio, "1"), (self.v_fim, "1000"), (self.v_digitos, "4"), (self.v_max, "300"),
                          (self.v_porfolha, "")):
             v.set(valor)
+        for v, valor in ((self.v_prefixos, ""), (self.v_saltar, ""), (self.v_cor_serie, False), (self.v_marcas, False),
+                         (self.v_cor_numeros, ""), (self.v_logo, ""), (self.v_logo_pos, "sd"),
+                         (self.v_logo_tam, str(core.marca.TAMANHO_PADRAO))):
+            v.set(valor)
+        self._apagar_pasta_galeria()
         self.e_nome.delete(0, "end")
         self.e_nome.configure(border_color=C["borda"])
         self.st_tpl, self.st_alg = ("vazio",), ("vazio",)

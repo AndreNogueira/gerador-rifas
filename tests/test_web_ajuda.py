@@ -18,9 +18,9 @@ def cliente(tmp_path):
     return TestClient(criar_app(frontend=tmp_path, armazenamento=tmp_path / "dados"))
 
 
-def test_tutorial_tem_os_8_topicos_na_lingua_pedida(cliente):
+def test_tutorial_tem_os_topicos_na_lingua_pedida(cliente):
     pt = cliente.get("/api/tutorial", headers={"X-Lingua": "pt"}).json()
-    assert len(pt["topicos"]) == 8
+    assert len(pt["topicos"]) == 8 + len(tutorial.funcionalidades("web"))
     assert pt["topicos"][0]["titulo"] == i18n.TEXTOS["pt"]["tut_t0"]
     for t in pt["topicos"]:
         assert t["menu"] and t["titulo"] and t["texto"] and "{" not in t["texto"]      # sem marcadores por substituir
@@ -31,7 +31,7 @@ def test_tutorial_tem_os_8_topicos_na_lingua_pedida(cliente):
 @pytest.mark.parametrize("lingua", list(i18n.LINGUAS))
 def test_tutorial_em_todas_as_linguas_com_imagens_que_existem(cliente, lingua):
     d = cliente.get("/api/tutorial", headers={"X-Lingua": lingua}).json()
-    assert len(d["topicos"]) == 8
+    assert len(d["topicos"]) == 8 + len(tutorial.funcionalidades("web"))
     urls = [i["url"] for t in d["topicos"] for i in t["imagens"]]
     assert len(urls) >= 8
     for url in urls:

@@ -101,3 +101,29 @@ def folha_de_controlo(titulo: str, bilhetes: list, cabecalhos: tuple) -> bytes:
     saida = io.BytesIO()
     w.write(saida)
     return saida.getvalue()
+
+
+def nome_base(nome: str) -> str:
+    """O nome (sem caracteres perigosos) para os ficheiros exportados; «rifas» se o utilizador nao escreveu nenhum."""
+    from .motor import nome_seguro
+    return nome_seguro(nome) or "rifas"
+
+
+def exportar_csv(tr, bilhetes: list, lingua: str) -> tuple[str, bytes]:
+    """(nome do ficheiro, CSV) da lista de bilhetes de `tr`, com os cabecalhos em `lingua`. Serve a webapp e a app Windows."""
+    from .i18n import traduzir
+    cabecalhos = tuple(traduzir("web_csv_cabecalho", lingua).split(";"))
+    return f"{nome_base(tr.nome)}.csv", csv_da_lista(bilhetes, cabecalhos)
+
+
+def exportar_folha(tr, bilhetes: list, lingua: str) -> tuple[str, bytes]:
+    """(nome do ficheiro, PDF) da folha de controlo de vendas de `tr`. Nas linguas cujas letras a Helvetica do PDF nao tem, os textos saem em ingles."""
+    from .i18n import traduzir
+    cab = traduzir("web_csv_cabecalho", lingua).split(";")[1:]              # Numero, Nome, Contacto, Pago (sem a serie: o numero ja a leva)
+    titulo = traduzir("web_folha_titulo", lingua)
+    if not texto_cabe(titulo, *cab):
+        cab = traduzir("web_csv_cabecalho", "en").split(";")[1:]
+        titulo = traduzir("web_folha_titulo", "en")
+    if tr.nome:
+        titulo = f"{tr.nome}: {titulo}"
+    return f"Controlo - {nome_base(tr.nome)}.pdf", folha_de_controlo(titulo, [n for _, n in bilhetes], tuple(cab))
