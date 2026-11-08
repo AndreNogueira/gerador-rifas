@@ -42,9 +42,12 @@ class Observador:
     def _processos_filhos(self) -> list[psutil.Process]:
         atuais = {}
         for p in self._eu.children(recursive=True):
-            atuais[p.pid] = self._filhos.get(p.pid) or p
             if p.pid not in self._filhos:
-                p.cpu_percent(None)
+                try:
+                    p.cpu_percent(None)
+                except psutil.Error:                         # o processo acabou entre listar e ler (o motor reinicia): ignora-se
+                    continue
+            atuais[p.pid] = self._filhos.get(p.pid) or p
         self._filhos = atuais
         return list(atuais.values())
 
