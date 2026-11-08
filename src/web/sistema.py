@@ -37,7 +37,7 @@ class Observador:
         self._eu.cpu_percent(None)                           # a primeira leitura e sempre 0: serve de ponto de partida
         self._filhos: dict[int, psutil.Process] = {}
         self._disco: tuple[float, float] = (0.0, 0.0)
-        self._disco_em = 0.0
+        self._disco_em = float("-inf")                       # 0.0 falhava: o relogio monotonico de uma maquina acabada de ligar ainda vai abaixo de 55 s
 
     def _processos_filhos(self) -> list[psutil.Process]:
         atuais = {}
