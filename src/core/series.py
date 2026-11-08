@@ -94,6 +94,14 @@ def contar(tr: Trabalho) -> int:
     return len(numeros(tr.inicio, tr.fim, tr.saltar)) * max(1, len(tr.prefixos))
 
 
+def bilhetes(tr: Trabalho) -> list[tuple[str, str]]:
+    """Todos os bilhetes do pedido, por serie e por ordem: [(serie, numero formatado)] com a serie vazia se nao ha prefixos
+    e o numero ja com o prefixo («A-0001»). E o que as listas (CSV, folha de controlo) mostram."""
+    largura = max(tr.digitos, len(str(tr.fim)))
+    nums = numeros(tr.inicio, tr.fim, tr.saltar)
+    return [(etiqueta(p, i) if tr.prefixos else "", f"{p}{n:0{largura}d}") for i, p in enumerate(tr.prefixos or ("",)) for n in nums]
+
+
 def cor_da_serie(tr: Trabalho, indice: int) -> tuple | None:
     """A cor da serie `indice`, ou None (a do template) se nao ha varias series ou a cor por serie esta desligada."""
     if tr.cor_por_serie and len(tr.prefixos) > 1:

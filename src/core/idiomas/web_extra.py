@@ -153,6 +153,35 @@ CHAVES: dict[str, dict[str, str]] = {
         "tr": "Her seri için ayrı renk", "zh": "每个系列一种颜色", "ja": "シリーズごとに色を変える", "ko": "시리즈마다 다른 색",
         "hi": "हर श्रृंखला के लिए अलग रंग",
     },
+    "web_exportar_csv": {
+        "pt": "Exportar lista (CSV)", "en": "Export list (CSV)", "es": "Exportar lista (CSV)", "fr": "Exporter la liste (CSV)",
+        "de": "Liste exportieren (CSV)", "it": "Esporta elenco (CSV)", "nl": "Lijst exporteren (CSV)", "pl": "Eksportuj listę (CSV)",
+        "sv": "Exportera lista (CSV)", "cs": "Exportovat seznam (CSV)", "ro": "Exportă lista (CSV)", "el": "Εξαγωγή λίστας (CSV)",
+        "ru": "Экспорт списка (CSV)", "tr": "Listeyi dışa aktar (CSV)", "zh": "导出名单 (CSV)", "ja": "一覧を書き出す (CSV)",
+        "ko": "목록 내보내기 (CSV)", "hi": "सूची निर्यात करें (CSV)",
+    },
+    "web_folha_controlo": {
+        "pt": "Folha de controlo (PDF)", "en": "Control sheet (PDF)", "es": "Hoja de control (PDF)", "fr": "Feuille de suivi (PDF)",
+        "de": "Kontrollblatt (PDF)", "it": "Foglio di controllo (PDF)", "nl": "Controleblad (PDF)", "pl": "Arkusz kontrolny (PDF)",
+        "sv": "Kontrollblad (PDF)", "cs": "Kontrolní list (PDF)", "ro": "Fișă de control (PDF)", "el": "Φύλλο ελέγχου (PDF)",
+        "ru": "Контрольный лист (PDF)", "tr": "Kontrol çizelgesi (PDF)", "zh": "登记表 (PDF)", "ja": "管理シート (PDF)",
+        "ko": "관리 시트 (PDF)", "hi": "नियंत्रण पत्रक (PDF)",
+    },
+    "web_csv_cabecalho": {      # Serie;Numero;Nome;Contacto;Pago (separados por «;»: o CSV e a folha de controlo usam estas colunas)
+        "pt": "Série;Número;Nome;Contacto;Pago", "en": "Series;Number;Name;Contact;Paid", "es": "Serie;Número;Nombre;Contacto;Pagado",
+        "fr": "Série;Numéro;Nom;Contact;Payé", "de": "Serie;Nummer;Name;Kontakt;Bezahlt", "it": "Serie;Numero;Nome;Contatto;Pagato",
+        "nl": "Serie;Nummer;Naam;Contact;Betaald", "pl": "Seria;Numer;Imię;Kontakt;Zapłacono", "sv": "Serie;Nummer;Namn;Kontakt;Betalt",
+        "cs": "Série;Číslo;Jméno;Kontakt;Zaplaceno", "ro": "Serie;Număr;Nume;Contact;Plătit", "el": "Σειρά;Αριθμός;Όνομα;Επαφή;Πληρώθηκε",
+        "ru": "Серия;Номер;Имя;Контакт;Оплачено", "tr": "Seri;Numara;Ad;İletişim;Ödendi", "zh": "系列;号码;姓名;联系方式;已付款",
+        "ja": "シリーズ;番号;名前;連絡先;支払済み", "ko": "시리즈;번호;이름;연락처;결제", "hi": "श्रृंखला;संख्या;नाम;संपर्क;भुगतान",
+    },
+    "web_folha_titulo": {
+        "pt": "Controlo de vendas", "en": "Sales control sheet", "es": "Control de ventas", "fr": "Suivi des ventes",
+        "de": "Verkaufskontrolle", "it": "Controllo vendite", "nl": "Verkoopcontrole", "pl": "Kontrola sprzedaży",
+        "sv": "Försäljningskontroll", "cs": "Kontrola prodeje", "ro": "Control vânzări", "el": "Έλεγχος πωλήσεων",
+        "ru": "Контроль продаж", "tr": "Satış kontrolü", "zh": "销售登记表", "ja": "販売管理表", "ko": "판매 관리표",
+        "hi": "बिक्री नियंत्रण",
+    },
 }
 
 

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { Calculo, Campos, Sessao } from "./api";
+import { api, ErroApi, ErroRede } from "./api";
 import { CartaoAlgarismos, CartaoDestino, CartaoNumeros, CartaoTemplate } from "./cartoes";
 import { useDialogos } from "./dialogos";
 import { ligacaoDosCampos } from "./formulario";
@@ -7,6 +8,28 @@ import { useI18n } from "./i18n";
 import { Icone } from "./icones";
 import { Ligacao } from "./rota";
 import { aCorrer, useSessao } from "./sessao";
+
+/** Um nome para o ficheiro descarregado: sem o que o Windows não aceita e sem nada de caminhos. */
+export function nomeSeguro(nome: string): string {
+  return [...nome]
+    .filter((c) => c >= " " && !'<>:"/\\|?*'.includes(c))
+    .join("")
+    .trim()
+    .replace(/^[. ]+|[. ]+$/g, "")
+    .slice(0, 80);
+}
+
+/** Entrega um Blob como descarga. */
+export function guardarBlob(blob: Blob, nome: string): void {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = nome;
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 
 const TOPICO_ALGARISMOS = 3; // posição de «2 Algarismos» na lista do tutorial (core.tutorial.TOPICO_ALGARISMOS)
 
@@ -80,6 +103,17 @@ function Acoes({
   const s = useSessao();
   const sessao = s.sessao;
   const a_gerar = aCorrer(sessao);
+  /** Pede ao servidor a lista ou a folha de controlo e entrega-a como descarga (nada fica guardado no servidor). */
+  const exportar = async (pedir: () => Promise<Blob>, extensao: string, prefixo = "") => {
+    try {
+      const nome = `${prefixo}${nomeSeguro(campos.nome) || "rifas"}.${extensao}`;
+      guardarBlob(await pedir(), nome);
+    } catch (e) {
+      if (e instanceof ErroApi) aviso(e.message, e.tipo);
+      else if (e instanceof ErroRede) aviso(t("web_erro_rede"), "erro");
+      else throw e;
+    }
+  };
   const copiarLigacao = async () => {
     const ligacao = ligacaoDosCampos(campos, `${window.location.origin}/`);
     try {
@@ -139,6 +173,24 @@ function Acoes({
         >
           <Icone nome="ligacao" />
           {t("web_copiar_ligacao")}
+        </button>
+        <button
+          type="button"
+          className="texto"
+          onClick={() => void exportar(() => api.listaCsv(campos), "csv")}
+          data-testid="exportar-csv"
+        >
+          <Icone nome="descarregar" />
+          {t("web_exportar_csv")}
+        </button>
+        <button
+          type="button"
+          className="texto"
+          onClick={() => void exportar(() => api.folhaDeControlo(campos), "pdf", "Controlo - ")}
+          data-testid="exportar-controlo"
+        >
+          <Icone nome="descarregar" />
+          {t("web_folha_controlo")}
         </button>
       </div>
       <progress value={progresso} max={1} data-testid="progresso" aria-label={t("gerar")} />
