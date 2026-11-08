@@ -65,6 +65,7 @@
 
   // ---- cabeçalho
   --topo-texto: #ffffff;
+  --rodape-texto: var(--suave); // o texto do rodape (fica sobre o fundo da pagina: um tema com fundo escuro/colorido muda-o)
   --topo-sombra: 0 2px 14px rgb(20 4 70 / 40%);
   --marca-anel: 0 0 0 2px rgb(255 255 255 / 70%), 0 8px 20px rgb(20 4 70 / 45%);
   --pilula: rgb(20 6 60 / 32%);

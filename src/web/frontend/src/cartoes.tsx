@@ -30,7 +30,9 @@ export function Cartao({ passo, titulo, children }: { passo: number; titulo: str
           <Icone nome={ICONE_DO_PASSO[passo] ?? "bilhete"} tamanho={22} />
         </span>
         <span className="titulo-passo">{titulo}</span>
-        <span className="numero">{passo}</span>
+        <span className="numero" aria-hidden="true">
+          {passo}
+        </span>
       </h2>
       {children}
     </section>
