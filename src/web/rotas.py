@@ -302,7 +302,7 @@ async def previa(id_: str, campos: Campos, serv: Servico = Depends(servico), lg:
     t0 = time.perf_counter()
     try:
         r = await serv.motor.curto(trabalhos.previa, str(pasta), s.tpl_nome, s.alg_nome, campos.papel, campos.margem, campos.porfolha,
-                                   tr.inicio, tr.fim, tr.digitos, tr.prefixos[0] if tr.prefixos else "", core.series.cor_da_serie(tr, 0), tr.saltar)
+                                   tr.inicio, tr.fim, tr.digitos, tr.prefixos[0] if tr.prefixos else "", core.series.cor_da_serie(tr, 0), tr.saltar, campos.marcas == "1")
     except Ocupado:
         raise _ocupado(lg) from None
     except (asyncio.TimeoutError, BrokenProcessPool) as e:
@@ -390,7 +390,7 @@ async def gerar(id_: str, campos: Campos, serv: Servico = Depends(servico), lg: 
             (pasta / f).unlink(missing_ok=True)
         s.gerar = Geracao(estado="a_gerar", nome=tr.nome)
         args = (str(pasta), s.tpl_nome, s.alg_nome, tr.nome, tr.inicio, tr.fim, tr.por_ficheiro, tr.digitos, campos.papel, campos.margem,
-                campos.porfolha, tr.prefixos, tr.saltar, tr.cor_por_serie)
+                campos.porfolha, tr.prefixos, tr.saltar, tr.cor_por_serie, campos.marcas == "1")
         s.tarefa = asyncio.create_task(_geracao(serv, s, pasta, args))
     except BaseException:
         serv.motor.geracao = None

@@ -65,11 +65,11 @@ def _preparado(pasta: str, tpl_nome: str, alg_nome: str, log=None):
     return prep
 
 
-def _com_folha(prep, papel: str, margem: str, porfolha: str):
+def _com_folha(prep, papel: str, margem: str, porfolha: str, marcas: bool = False):
     """Template de uma so rifa: aplica a folha escolhida (recalculada aqui, nao atravessa o pickle)."""
     if not escolha_folha.tem_folha(prep.info):
         return prep
-    esc = escolha_folha.escolher_folha(prep.info, papel, margem, porfolha)
+    esc = escolha_folha.escolher_folha(prep.info, papel, margem, porfolha, marcas)
     return escolha_folha.preparado_com_folha(prep, esc.disp)
 
 
@@ -98,10 +98,11 @@ def analisar(pasta: str, tpl_nome: str, alg_nome: str) -> tuple:
 
 
 def previa(pasta: str, tpl_nome: str, alg_nome: str, papel: str, margem: str, porfolha: str,
-           inicio: int, fim: int, digitos: int, prefixo: str = "", cor: tuple | None = None, saltar: tuple = ()) -> tuple:
+           inicio: int, fim: int, digitos: int, prefixo: str = "", cor: tuple | None = None, saltar: tuple = (),
+           marcas: bool = False) -> tuple:
     """PDF de 1 pagina com os primeiros numeros: ("ok", bytes, por_pagina) | erro. `prefixo`, `cor` e `saltar`: ver core.series."""
     try:
-        prep = _com_folha(_preparado(pasta, tpl_nome, alg_nome), papel, margem, porfolha)
+        prep = _com_folha(_preparado(pasta, tpl_nome, alg_nome), papel, margem, porfolha, marcas)
         return ("ok", core.pdf_da_previa(prep, inicio, digitos, fim, prefixo, cor, saltar), prep.por_pagina)
     except Exception as e:  # noqa: BLE001
         return _erro(e)
@@ -160,12 +161,12 @@ class _Progresso:
 
 def gerar(pasta: str, tpl_nome: str, alg_nome: str, nome: str, inicio: int, fim: int, por_ficheiro: int | None,
           digitos: int, papel: str, margem: str, porfolha: str, prefixos: tuple = (), saltar: tuple = (),
-          cor_por_serie: bool = False) -> tuple:
+          cor_por_serie: bool = False, marcas: bool = False) -> tuple:
     """Gera os PDFs para `<pasta>/saida`. ("ok", [Resultado]) | ("cancelado",) | erro. O registo vai para `progresso.json`."""
     p = Path(pasta)
     prog = _Progresso(p / PROGRESSO)
     try:
-        prep = _com_folha(_preparado(pasta, tpl_nome, alg_nome), papel, margem, porfolha)
+        prep = _com_folha(_preparado(pasta, tpl_nome, alg_nome), papel, margem, porfolha, marcas)
         tr = core.Trabalho(saida=p / "saida", nome=nome, inicio=inicio, fim=fim, por_ficheiro=por_ficheiro, digitos=digitos,
                            prefixos=prefixos, saltar=saltar, cor_por_serie=cor_por_serie)
         res = core.gerar(tr, prep, prog.log, prog.passo, Bandeira(p / CANCELAR))

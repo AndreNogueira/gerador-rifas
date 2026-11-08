@@ -803,6 +803,7 @@ class Disposicao:
     maximo: int                # quantas cabem
     celula: Ret                # a rifa, no template (y para baixo)
     origem: str = "pagina"
+    marcas: bool = False       # marcas de corte nas margens da folha (ver Documento._ops_marcas)
 
     @property
     def n(self) -> int:
@@ -943,6 +944,7 @@ class Documento:
         self.largura, self.altura = prep.info.largura, prep.info.altura
         if self.disp is not None:
             self.largura, self.altura = self.disp.largura, self.disp.altura
+        self.marcas = self._ops_marcas()
 
     def _matriz_rifa(self, x: float, y: float, rot: int) -> str:
         """Matriz que leva a rifa (zona `bbox` do template) para a posicao (x, y) da folha (canto superior esquerdo,
@@ -952,6 +954,32 @@ class Documento:
         if rot == 0:
             return f"1 0 0 1 {_f(x - cx0)} {_f(alt - y - ch - cy0)}"
         return f"0 1 -1 0 {_f(x + ch + cy0)} {_f(alt - y - cw - cx0)}"
+
+    def _ops_marcas(self) -> str:
+        """Marcas de corte (tracos curtos pretos) NAS MARGENS da folha, a prolongar cada linha de corte da grelha: em cima e em
+        baixo para os cortes verticais, e à esquerda e à direita para os horizontais. Só onde a rifa toca no bordo da grelha (os
+        cortes interiores continuam-se pelas rifas vizinhas). Vazio se não há folha ou as marcas estão desligadas."""
+        d = self.disp
+        if d is None or not d.marcas or not d.posicoes:
+            return ""
+        cw, ch = d.celula.width, d.celula.height
+        caixas = [(x, y, x + (cw if rot == 0 else ch), y + (ch if rot == 0 else cw)) for x, y, rot in d.posicoes]
+        x0, y0 = min(c[0] for c in caixas), min(c[1] for c in caixas)
+        x1, y1 = max(c[2] for c in caixas), max(c[3] for c in caixas)
+        folga = 1.0 * MM                                     # a marca nao toca na zona de corte
+        comp = lambda livre: min(3.5 * MM, livre - folga)    # noqa: E731
+        tracos: set = set()
+        for ax, ay, bx, by in caixas:
+            if abs(ay - y0) < 0.01 and (c := comp(y0)) >= 1:
+                tracos |= {(round(v, 2), round(y0 - folga, 2), round(v, 2), round(y0 - folga - c, 2)) for v in (ax, bx)}
+            if abs(by - y1) < 0.01 and (c := comp(d.altura - y1)) >= 1:
+                tracos |= {(round(v, 2), round(y1 + folga, 2), round(v, 2), round(y1 + folga + c, 2)) for v in (ax, bx)}
+            if abs(ax - x0) < 0.01 and (c := comp(x0)) >= 1:
+                tracos |= {(round(x0 - folga, 2), round(v, 2), round(x0 - folga - c, 2), round(v, 2)) for v in (ay, by)}
+            if abs(bx - x1) < 0.01 and (c := comp(d.largura - x1)) >= 1:
+                tracos |= {(round(x1 + folga, 2), round(v, 2), round(x1 + folga + c, 2), round(v, 2)) for v in (ay, by)}
+        linhas = [f"{_f(a)} {_f(d.altura - b)} m {_f(c)} {_f(d.altura - e)} l S" for a, b, c, e in sorted(tracos)]
+        return "q 0 G 0.4 w\n" + "\n".join(linhas) + "\nQ\n" if linhas else ""
 
     def _escrever(self, slot: Slot, num: str, prefixo: str, cor: tuple | None) -> str:
         """Os operadores de um numero (e do prefixo, se houver) no sitio do numero de exemplo `slot`."""
@@ -985,7 +1013,7 @@ class Documento:
                 x, y, rot = self.disp.posicoes[i]
                 ops = "".join(self._escrever(s, num, prefixo, cor) for s in slots1)
                 partes.append(f"q {self._matriz_rifa(x, y, rot)} cm /Bg Do\n{ops}Q\n")
-            conteudo = "".join(partes)
+            conteudo = "".join(partes) + self.marcas
         else:
             ops = []
             for slot in self.info.slots:

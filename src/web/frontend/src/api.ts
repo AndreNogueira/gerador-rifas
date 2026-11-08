@@ -86,6 +86,8 @@ export interface Campos {
   saltar: string;
   /** «1» = uma cor para cada série. */
   cor_serie: string;
+  /** «1» = marcas de corte nas margens da folha (só templates de uma rifa). */
+  marcas: string;
 }
 export interface FolhaInfo {
   ativa: boolean;

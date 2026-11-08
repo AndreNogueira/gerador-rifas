@@ -21,9 +21,9 @@ def test_linguas_e_ordem():
     assert NOMES["zh"] == "简体中文" and NOMES["hi"] == "हिन्दी"
 
 
-def test_todas_as_linguas_tem_178_chaves_iguais_ao_portugues():
+def test_todas_as_linguas_tem_180_chaves_iguais_ao_portugues():
     ref = TEXTOS["pt"]
-    assert len(ref) == 178                  # 150 da app + 11 da interface web (web_*) + 17 em web_extra.py
+    assert len(ref) == 180                  # 150 da app + 11 da interface web (web_*) + 19 em web_extra.py
     for lg, textos in TEXTOS.items():
         assert textos.keys() == ref.keys(), lg
 
