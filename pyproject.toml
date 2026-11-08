@@ -22,6 +22,7 @@ web = [
     "psutil>=7.2.2",
     "segno",              # o QR de cada bilhete (core/qr.py): puro Python, sem dependencias
     "reportlab",          # a galeria de templates (core/galeria.py) cria os PDFs; tambem serve os testes (PDFs sinteticos)
+    "psycopg[binary]>=3.3.8",
 ]
 
 [tool.uv]

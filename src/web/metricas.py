@@ -4,16 +4,20 @@ PRIVACIDADE: so se guardam agregados e contagens. Nunca IPs (so um *hash com sal
 enderecos distintos na ultima hora e verificar o proxy), nomes de ficheiros, conteudo, ids de sessao nem textos de erro do utilizador.
 Os eventos levam apenas codigos (lingua, tema, tipo de dispositivo, estado) e numeros (quantos numeros, quanto tempo).
 
-ARMAZENAMENTO: SQLite na pasta de armazenamento (`metricas.sqlite3`). Os eventos e os pedidos ficam num *buffer* em memoria e vao
-para o disco de 30 em 30 s, por isso um pedido nunca espera pelo disco. Retencao: 35 dias (sistema e pedidos), 90 dias (eventos).
-O disco do plano gratuito do Render e EFEMERO: o servico perde estes dados quando adormece ou e atualizado (o painel diz desde quando
-ha dados). Para os guardar de vez e preciso um disco persistente ou uma base externa (ver docs/ADMIN.md).
+ARMAZENAMENTO: por omissao SQLite na pasta de armazenamento (`metricas.sqlite3`); com `DATABASE_URL` (Postgres, p.ex. Neon) usa essa base.
+Os eventos e os pedidos ficam num *buffer* em memoria e so depois vao para a base, por isso um pedido nunca espera por ela: no SQLite de
+30 em 30 s; no Postgres de `METRICAS_BD_MIN` em `METRICAS_BD_MIN` minutos (60 por omissao), para a computacao do Neon poder suspender
+(o plano gratuito tem horas de computacao limitadas), e sempre ao terminar. Retencao: 35 dias (sistema e pedidos), 90 dias (eventos).
+O disco do plano gratuito do Render e EFEMERO: com SQLite o servico perde estes dados quando adormece ou e atualizado (o painel diz
+desde quando ha dados); com `DATABASE_URL` sobrevivem (ver docs/ADMIN.md e docs/BASE_DE_DADOS.md).
 """
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import ipaddress
 import json
+import logging
 import os
 import re
 import secrets
@@ -22,6 +26,8 @@ import threading
 import time
 from collections import deque
 from pathlib import Path
+
+log = logging.getLogger(__name__)
 
 LIMITES_MS = (5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000)      # +1 balde para o que passa do ultimo
 RETENCAO_SISTEMA_S = 35 * 86400
@@ -33,12 +39,122 @@ DURACAO_BALDES = (5, 15, 30, 60, 120, 300)              # segundos, para o histo
 _ROBOS = re.compile(r"bot|crawl|spider|slurp|preview|facebookexternalhit|headless|curl|wget|python-requests|httpx", re.I)
 _MOVEL = re.compile(r"Mobi|Android|iPhone|iPad", re.I)
 
-_ESQUEMA = """
-CREATE TABLE IF NOT EXISTS sistema(ts INTEGER PRIMARY KEY, cpu REAL, mem_srv REAL, mem_motor REAL, mem_cont REAL, disco REAL, sessoes INTEGER, geracoes INTEGER);
-CREATE TABLE IF NOT EXISTS pedidos(ts INTEGER, grupo TEXT, n INTEGER, e4 INTEGER, e5 INTEGER, soma_ms REAL, max_ms REAL, hist TEXT, PRIMARY KEY(ts, grupo));
-CREATE TABLE IF NOT EXISTS eventos(ts INTEGER, tipo TEXT, a TEXT, b TEXT, c TEXT, v1 REAL, v2 REAL, v3 REAL);
-CREATE INDEX IF NOT EXISTS ix_eventos ON eventos(tipo, ts);
-"""
+# SQL que serve ao SQLite e ao Postgres (BIGINT/DOUBLE PRECISION, `?` traduzido para `%s` pelo adaptador, upsert com ON CONFLICT)
+_ESQUEMA = (
+    "CREATE TABLE IF NOT EXISTS sistema(ts BIGINT PRIMARY KEY, cpu DOUBLE PRECISION, mem_srv DOUBLE PRECISION, mem_motor DOUBLE PRECISION, "
+    "mem_cont DOUBLE PRECISION, disco DOUBLE PRECISION, sessoes INTEGER, geracoes INTEGER)",
+    "CREATE TABLE IF NOT EXISTS pedidos(ts BIGINT, grupo TEXT, n INTEGER, e4 INTEGER, e5 INTEGER, soma_ms DOUBLE PRECISION, "
+    "max_ms DOUBLE PRECISION, hist TEXT, PRIMARY KEY(ts, grupo))",
+    "CREATE TABLE IF NOT EXISTS eventos(ts BIGINT, tipo TEXT, a TEXT, b TEXT, c TEXT, v1 DOUBLE PRECISION, v2 DOUBLE PRECISION, v3 DOUBLE PRECISION)",
+    "CREATE INDEX IF NOT EXISTS ix_eventos ON eventos(tipo, ts)",
+)
+_UPSERT_SISTEMA = ("INSERT INTO sistema VALUES (?,?,?,?,?,?,?,?) ON CONFLICT(ts) DO UPDATE SET cpu=excluded.cpu, mem_srv=excluded.mem_srv, "
+                   "mem_motor=excluded.mem_motor, mem_cont=excluded.mem_cont, disco=excluded.disco, sessoes=excluded.sessoes, geracoes=excluded.geracoes")
+_UPSERT_PEDIDOS = ("INSERT INTO pedidos VALUES (?,?,?,?,?,?,?,?) ON CONFLICT(ts, grupo) DO UPDATE SET n=excluded.n, e4=excluded.e4, "
+                   "e5=excluded.e5, soma_ms=excluded.soma_ms, max_ms=excluded.max_ms, hist=excluded.hist")
+INTERVALO_BD_PADRAO_MIN = 60                  # Postgres: de quanto em quanto tempo o buffer vai para a base (a computacao do Neon suspende aos 5 min)
+BUFFER_MAXIMO = 5000                          # ... ou logo que haja tantos registos por gravar
+PAUSA_APOS_FALHA_S = 30                       # sem tentar a base depois de uma falha
+BUFFER_LIMITE_FALHAS = 50_000                 # se a base estiver em baixo, o buffer nao cresce sem fim: deita fora o mais antigo
+
+
+class _Sqlite:
+    """O armazenamento local (por omissao): um ficheiro, ou memoria se `caminho` for None."""
+    tipo = "sqlite"
+
+    def __init__(self, caminho: Path | None):
+        self.caminho = caminho
+        self._lig: sqlite3.Connection | None = None
+
+    def _ligacao(self) -> sqlite3.Connection:
+        if self._lig is None:
+            if self.caminho is not None:
+                Path(self.caminho).parent.mkdir(parents=True, exist_ok=True)
+            self._lig = sqlite3.connect(str(self.caminho) if self.caminho else ":memory:", check_same_thread=False)
+            self._lig.execute("PRAGMA journal_mode=WAL")
+            self._lig.execute("PRAGMA synchronous=NORMAL")
+            for instrucao in _ESQUEMA:
+                self._lig.execute(instrucao)
+        return self._lig
+
+    @property
+    def ligado(self) -> bool:
+        return self._lig is not None
+
+    def executar(self, sql: str, args: tuple = ()) -> list[tuple]:
+        return self._ligacao().execute(sql, args).fetchall()
+
+    def muitos(self, sql: str, linhas: list[tuple]) -> None:
+        if linhas:
+            self._ligacao().executemany(sql, linhas)
+
+    def confirmar(self) -> None:
+        self._ligacao().commit()
+
+    def anular(self) -> None:
+        if self._lig is not None:
+            self._lig.rollback()
+
+    def fechar(self) -> None:
+        if self._lig is not None:
+            self._lig.close()
+            self._lig = None
+
+
+class _Postgres:
+    """O armazenamento persistente (`DATABASE_URL`). Liga-se so quando e preciso e volta a ligar-se se a base a tiver fechado
+    (o Neon suspende a computacao e corta as ligacoes inativas). O URL leva a palavra-passe: nunca vai para um log nem para o painel."""
+    tipo = "postgres"
+
+    def __init__(self, url: str):
+        self._url = url
+        self._lig = None
+
+    def _ligacao(self):
+        if self._lig is None or self._lig.closed:
+            import psycopg                                   # so quando ha DATABASE_URL: sem ele a app nem precisa do driver
+
+            self._lig = psycopg.connect(self._url, connect_timeout=10)
+            for instrucao in _ESQUEMA:
+                self._lig.execute(instrucao)
+            self._lig.commit()
+        return self._lig
+
+    @property
+    def ligado(self) -> bool:
+        return self._lig is not None and not self._lig.closed
+
+    def executar(self, sql: str, args: tuple = ()) -> list[tuple]:
+        cur = self._ligacao().execute(sql.replace("?", "%s"), args)
+        return cur.fetchall() if cur.description else []
+
+    def muitos(self, sql: str, linhas: list[tuple]) -> None:
+        if linhas:
+            with self._ligacao().cursor() as cur:
+                cur.executemany(sql.replace("?", "%s"), linhas)
+
+    def confirmar(self) -> None:
+        self._ligacao().commit()
+
+    def anular(self) -> None:
+        if self._lig is not None and not self._lig.closed:
+            self._lig.rollback()
+
+    def fechar(self) -> None:
+        if self._lig is not None:
+            try:
+                self._lig.close()
+            finally:
+                self._lig = None
+
+
+def _erro_de_ligacao(e: Exception) -> bool:
+    """Ligacao cortada ou impossivel (a base suspendeu, rede): vale a pena voltar a ligar e repetir uma vez."""
+    try:
+        import psycopg
+    except ImportError:
+        return False
+    return isinstance(e, psycopg.OperationalError | psycopg.InterfaceError)
 
 
 def dispositivo(user_agent: str) -> str:
@@ -126,12 +242,17 @@ def _privado(ip: str) -> bool:
 
 
 class Metricas:
-    def __init__(self, caminho: Path | None = None, relogio=time.time):
+    def __init__(self, caminho: Path | None = None, relogio=time.time, url_bd: str = "", intervalo_bd_min: float = INTERVALO_BD_PADRAO_MIN):
         self.caminho = caminho
         self._agora = relogio
         self.arranque = int(relogio())
-        self._trava = threading.Lock()
-        self._ligacao: sqlite3.Connection | None = None
+        self._trava = threading.Lock()                     # os buffers em memoria (nunca se espera pela base com ela tomada)
+        self._trava_bd = threading.Lock()                  # a base (uma operacao de cada vez)
+        self._armazem = _Postgres(url_bd) if url_bd else _Sqlite(caminho)
+        self._intervalo_bd_s = max(60.0, float(intervalo_bd_min) * 60)
+        self._ultimo_descarrego = float(relogio())
+        self.erro_bd = False                               # a ultima operacao na base falhou (o painel avisa)
+        self._bloqueado_ate = 0.0                          # depois de uma falha, nao se volta a tentar durante um bocado (nem cada consulta do painel espera)
         self._eventos: list[tuple] = []
         self._amostras: list[tuple] = []
         self._pedidos: dict[tuple[int, str], list] = {}
@@ -165,20 +286,60 @@ class Metricas:
         with self._trava:
             self._amostras.append((int(self._agora()), cpu, mem_srv, mem_motor, mem_cont, disco, sessoes, geracoes))
 
-    # ------------------------------------------------------------------ disco
-    def _db(self) -> sqlite3.Connection:
-        if self._ligacao is None:
-            if self.caminho is not None:
-                Path(self.caminho).parent.mkdir(parents=True, exist_ok=True)
-            self._ligacao = sqlite3.connect(str(self.caminho) if self.caminho else ":memory:", check_same_thread=False)
-            self._ligacao.execute("PRAGMA journal_mode=WAL")
-            self._ligacao.execute("PRAGMA synchronous=NORMAL")
-            self._ligacao.executescript(_ESQUEMA)
-        return self._ligacao
+    # ------------------------------------------------------------------ base de dados
+    @property
+    def persistente(self) -> bool:
+        """Se os dados sobrevivem a um reinicio do servico (base externa): o painel deixa de avisar que se perdem."""
+        return self._armazem.tipo == "postgres"
+
+    def estado_bd(self) -> dict:
+        return {"tipo": self._armazem.tipo, "erro": self.erro_bd, "intervalo_min": round(self._intervalo_bd_s / 60) if self.persistente else 0}
+
+    def _com_nova_tentativa(self, operacao):
+        """Corre `operacao()`; se uma ligacao que existia tiver sido cortada (Neon suspenso), fecha-a e tenta mais uma vez.
+        Se nem sequer foi possivel ligar, nao se insiste: a base esta em baixo."""
+        tinha_ligacao = self._armazem.ligado
+        try:
+            return operacao()
+        except Exception as e:  # noqa: BLE001 - so se repete o que parece uma ligacao cortada
+            if not tinha_ligacao or not _erro_de_ligacao(e):
+                raise
+            self._armazem.fechar()
+            return operacao()
+
+    def descarregar_periodico(self) -> None:
+        """Chamado de 30 em 30 s. No SQLite grava sempre; no Postgres so de `METRICAS_BD_MIN` em `METRICAS_BD_MIN` minutos (ou com muitos
+        registos por gravar), para a base poder suspender entre gravacoes. Uma falha nao perde nada: o buffer fica para a vez seguinte."""
+        if self.persistente:
+            with self._trava:
+                pendentes = len(self._eventos) + len(self._amostras) + len(self._pedidos)
+                devido = self._agora() - self._ultimo_descarrego >= self._intervalo_bd_s or pendentes >= BUFFER_MAXIMO
+            if not devido:
+                return
+        self.descarregar()
+
+    def _repor(self, eventos: list, amostras: list, fechados: dict) -> None:
+        """Devolve ao buffer o que nao chegou a ser gravado (a base falhou)."""
+        with self._trava:
+            self._eventos = (eventos + self._eventos)[-BUFFER_LIMITE_FALHAS:]
+            self._amostras = (amostras + self._amostras)[-BUFFER_LIMITE_FALHAS:]
+            for chave, v in fechados.items():
+                atual = self._pedidos.get(chave)
+                if atual is None:
+                    self._pedidos[chave] = v
+                else:
+                    atual[0] += v[0]
+                    atual[1] += v[1]
+                    atual[2] += v[2]
+                    atual[3] += v[3]
+                    atual[4] = max(atual[4], v[4])
+                    atual[5] = _somar(atual[5], v[5])
 
     def descarregar(self, tudo: bool = False) -> None:
-        """Passa o buffer para o SQLite (os minutos de pedidos ja fechados; todos se `tudo`) e apaga o que passou da retencao."""
+        """Passa o buffer para a base (os minutos de pedidos ja fechados; todos se `tudo`) e apaga o que passou da retencao."""
         agora = int(self._agora())
+        if agora < self._bloqueado_ate:
+            return                                          # a base falhou ha pouco: o buffer fica como esta ate a pausa acabar
         with self._trava:
             eventos, self._eventos = self._eventos, []
             amostras, self._amostras = self._amostras, []
@@ -186,32 +347,59 @@ class Metricas:
             fechados = {k: v for k, v in self._pedidos.items() if tudo or k[0] < minuto}
             for k in fechados:
                 del self._pedidos[k]
-            db = self._db()
-            db.executemany("INSERT INTO eventos VALUES (?,?,?,?,?,?,?,?)", eventos)
-            db.executemany("INSERT OR REPLACE INTO sistema VALUES (?,?,?,?,?,?,?,?)", amostras)
-            for (ts, grupo), (n, e4, e5, soma, mx, hist) in fechados.items():
-                antigo = db.execute("SELECT n,e4,e5,soma_ms,max_ms,hist FROM pedidos WHERE ts=? AND grupo=?", (ts, grupo)).fetchone()
-                if antigo:
-                    n, e4, e5, soma, mx = n + antigo[0], e4 + antigo[1], e5 + antigo[2], soma + antigo[3], max(mx, antigo[4])
-                    hist = _somar(hist, json.loads(antigo[5]))
-                db.execute("INSERT OR REPLACE INTO pedidos VALUES (?,?,?,?,?,?,?,?)", (ts, grupo, n, e4, e5, soma, mx, json.dumps(hist)))
-            db.execute("DELETE FROM sistema WHERE ts < ?", (agora - RETENCAO_SISTEMA_S,))
-            db.execute("DELETE FROM pedidos WHERE ts < ?", (agora - RETENCAO_SISTEMA_S,))
-            db.execute("DELETE FROM eventos WHERE ts < ?", (agora - RETENCAO_EVENTOS_S,))
-            db.commit()
+            self._ultimo_descarrego = float(self._agora())
+        with self._trava_bd:
+            try:
+                self._com_nova_tentativa(lambda: self._gravar(agora, eventos, amostras, fechados))
+                self.erro_bd = False
+            except Exception as e:
+                self._armazem.anular()
+                self.erro_bd = True
+                self._bloqueado_ate = self._agora() + PAUSA_APOS_FALHA_S
+                self._repor(eventos, amostras, fechados)
+                log.warning("metricas: nao foi possivel gravar (%s); fica no buffer", type(e).__name__)     # nunca a mensagem: pode ter o endereco da base
+                raise
+
+    def _gravar(self, agora: int, eventos: list, amostras: list, fechados: dict) -> None:
+        db = self._armazem
+        db.muitos("INSERT INTO eventos VALUES (?,?,?,?,?,?,?,?)", eventos)
+        db.muitos(_UPSERT_SISTEMA, amostras)
+        for (ts, grupo), (n, e4, e5, soma, mx, hist) in fechados.items():
+            antigo = db.executar("SELECT n,e4,e5,soma_ms,max_ms,hist FROM pedidos WHERE ts=? AND grupo=?", (ts, grupo))
+            if antigo:
+                a = antigo[0]
+                n, e4, e5, soma, mx = n + a[0], e4 + a[1], e5 + a[2], soma + a[3], max(mx, a[4])
+                hist = _somar(hist, json.loads(a[5]))
+            db.executar(_UPSERT_PEDIDOS, (ts, grupo, n, e4, e5, soma, mx, json.dumps(hist)))
+        db.executar("DELETE FROM sistema WHERE ts < ?", (agora - RETENCAO_SISTEMA_S,))
+        db.executar("DELETE FROM pedidos WHERE ts < ?", (agora - RETENCAO_SISTEMA_S,))
+        db.executar("DELETE FROM eventos WHERE ts < ?", (agora - RETENCAO_EVENTOS_S,))
+        db.confirmar()
 
     def fechar(self) -> None:
-        self.descarregar(tudo=True)
-        with self._trava:
-            if self._ligacao is not None:
-                self._ligacao.close()
-                self._ligacao = None
+        with contextlib.suppress(Exception):               # a base em baixo nao pode impedir o servico de terminar
+            self.descarregar(tudo=True)
+        with self._trava_bd:
+            self._armazem.fechar()
 
     # ------------------------------------------------------------------ consultas (para o painel)
     def _consultar(self, sql: str, args: tuple = ()) -> list[tuple]:
-        self.descarregar(tudo=True)                         # o painel ve sempre o que ja aconteceu (ate o minuto em curso)
-        with self._trava:
-            return self._db().execute(sql, args).fetchall()
+        if self._agora() < self._bloqueado_ate:
+            return []                                       # a base esta em baixo: o painel mostra o aviso sem esperar por cada consulta
+        with contextlib.suppress(Exception):
+            self.descarregar(tudo=True)                     # o painel ve sempre o que ja aconteceu (ate o minuto em curso)
+        with self._trava_bd:
+            try:
+                resultado = self._com_nova_tentativa(lambda: self._armazem.executar(sql, args))
+                self._armazem.confirmar()                   # fecha a transacao de leitura (o Postgres abre uma a cada consulta)
+                self.erro_bd = False
+                return resultado
+            except Exception as e:
+                self._armazem.anular()
+                self.erro_bd = True
+                self._bloqueado_ate = self._agora() + PAUSA_APOS_FALHA_S
+                log.warning("metricas: consulta falhou (%s)", type(e).__name__)
+                return []                                   # o painel mostra o aviso em vez de partir
 
     def dados_desde(self) -> int:
         """O instante do dado mais antigo (ou o arranque): o painel diz «dados desde…» por causa do disco efemero."""
@@ -274,7 +462,8 @@ class Metricas:
     def resumo(self, desde: int) -> dict:
         """Totais e distribuicoes do intervalo."""
         def n(tipo: str, onde: str = "", args: tuple = ()) -> int:
-            return self._consultar(f"SELECT COUNT(*) FROM eventos WHERE tipo=? AND ts>=? {onde}", (tipo, desde, *args))[0][0]  # noqa: S608
+            linhas = self._consultar(f"SELECT COUNT(*) FROM eventos WHERE tipo=? AND ts>=? {onde}", (tipo, desde, *args))  # noqa: S608
+            return linhas[0][0] if linhas else 0                  # sem linhas = a base esta em baixo
         gens = self._consultar("SELECT a, COUNT(*), SUM(v2), SUM(v3) FROM eventos WHERE tipo='geracao' AND ts>=? GROUP BY a", (desde,))
         duracoes = sorted(r[0] for r in self._consultar("SELECT v1 FROM eventos WHERE tipo='geracao' AND a='ok' AND ts>=?", (desde,)))
         hist = [0] * (len(DURACAO_BALDES) + 1)
