@@ -38,12 +38,20 @@ export function useTema(): [Tema, (t: Tema) => void] {
   return [tema, mudar];
 }
 
+/**
+ * O tema para quem nunca escolheu um: «Premiado», e em dezembro «Natal». Escolher o que seria o automático não deixa rasto
+ * (volta ao automático); escolher outro (incluindo «Premiado» em dezembro) fica guardado. O `index.html` repete esta regra.
+ */
+export function visualPorEpoca(hoje: Date = new Date()): Visual {
+  return hoje.getMonth() === 11 ? "natal" : VISUAL_POR_OMISSAO;
+}
+
 function visualLido(): Visual {
   try {
     const v = localStorage.getItem(CHAVE_VISUAL);
-    return visualValido(v) ? v : VISUAL_POR_OMISSAO;
+    return visualValido(v) ? v : visualPorEpoca();
   } catch {
-    return VISUAL_POR_OMISSAO;
+    return visualPorEpoca();
   }
 }
 
@@ -58,7 +66,7 @@ export function useVisual(): [Visual, (v: Visual) => void] {
   const mudar = useCallback((v: Visual) => {
     setVisual(v);
     try {
-      if (v === VISUAL_POR_OMISSAO) localStorage.removeItem(CHAVE_VISUAL);
+      if (v === visualPorEpoca()) localStorage.removeItem(CHAVE_VISUAL);
       else localStorage.setItem(CHAVE_VISUAL, v);
     } catch {
       /* sem armazenamento */

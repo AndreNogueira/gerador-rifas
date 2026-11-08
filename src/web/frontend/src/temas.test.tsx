@@ -7,6 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 import { ProvedorI18n } from "./i18n";
 import { ServidorFalso } from "./servidor-falso";
+import { visualPorEpoca } from "./tema";
 import { VISUAIS, VISUAL_POR_OMISSAO, visualValido } from "./temas";
 
 function abrir() {
@@ -21,9 +22,35 @@ const raiz = document.documentElement;
 beforeEach(() => {
   localStorage.clear();
   raiz.removeAttribute("data-visual");
+  vi.useFakeTimers({ toFake: ["Date"] }); // o tema automático depende do mês: os testes fixam-no em junho
+  vi.setSystemTime(new Date(2026, 5, 10));
   new ServidorFalso().instalar();
 });
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
+});
+
+describe("tema por época", () => {
+  it("em dezembro o tema automático é o Natal; nos outros meses o Premiado", () => {
+    expect(visualPorEpoca(new Date(2026, 11, 1))).toBe("natal");
+    expect(visualPorEpoca(new Date(2026, 11, 31))).toBe("natal");
+    expect(visualPorEpoca(new Date(2026, 10, 30))).toBe(VISUAL_POR_OMISSAO);
+    expect(visualPorEpoca(new Date(2027, 0, 1))).toBe(VISUAL_POR_OMISSAO);
+  });
+
+  it("em dezembro arranca em Natal sem guardar nada, e escolher o Premiado fica guardado", async () => {
+    vi.setSystemTime(new Date(2026, 11, 20));
+    abrir();
+    const seletor = await screen.findByTestId("visual");
+    expect(raiz.getAttribute("data-visual")).toBe("natal");
+    expect(localStorage.getItem("rifas.visual")).toBeNull();
+    await userEvent.selectOptions(seletor, "premiado");
+    expect(localStorage.getItem("rifas.visual")).toBe("premiado");
+    await userEvent.selectOptions(seletor, "natal"); // voltar ao automático não deixa rasto
+    expect(localStorage.getItem("rifas.visual")).toBeNull();
+  });
+});
 
 describe("temas visuais", () => {
   it("arranca no tema por omissão e não guarda nada", async () => {

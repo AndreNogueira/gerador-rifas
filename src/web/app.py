@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, config, rotas, rotas_ajuda, seo
+from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, seo
 from .limites import Limitador
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
@@ -81,6 +81,21 @@ class Textos(BaseModel):
 class Saude(BaseModel):
     estado: str
     versao: str
+
+
+class SeccaoChangelog(BaseModel):
+    titulo: str
+    itens: list[str]
+
+
+class EntradaChangelog(BaseModel):
+    versao: str
+    data: str
+    seccoes: list[SeccaoChangelog]
+
+
+class Changelog(BaseModel):
+    entradas: list[EntradaChangelog]
 
 
 async def _limpeza_periodica(servico: Servico, cada_s: float) -> None:
@@ -152,6 +167,13 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     def saude() -> Saude:
         """Para o Render e para o Docker (HEALTHCHECK): 200 enquanto o servidor responde."""
         return Saude(estado="ok", versao=VERSAO)
+
+    @app.get("/api/changelog", response_model=Changelog, tags=["sistema"])
+    def changelog_api(resposta: Response) -> Changelog:
+        """O changelog (`src/web/CHANGELOG.md`): o que mudou em cada versao, so em portugues."""
+        resposta.headers["Cache-Control"] = "public, max-age=300"
+        return Changelog(entradas=[EntradaChangelog(versao=e.versao, data=e.data, seccoes=[SeccaoChangelog(titulo=s.titulo, itens=s.itens)
+                                                                                           for s in e.seccoes]) for e in changelog.entradas()])
 
     @app.get("/api/linguas", response_model=Linguas, tags=["textos"])
     def linguas(accept_language: str | None = Header(default=None)) -> Linguas:

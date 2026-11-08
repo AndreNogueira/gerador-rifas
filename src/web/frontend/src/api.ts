@@ -95,6 +95,12 @@ export interface Calculo {
   confirmar: string;
 }
 
+export interface EntradaChangelog {
+  versao: string;
+  data: string;
+  seccoes: { titulo: string; itens: string[] }[];
+}
+
 export interface Imagem {
   url: string;
   largura: number | null;
@@ -184,6 +190,7 @@ export const api = {
   linguas: () => pedir<Linguas>("GET", "/api/linguas"),
   textos: (lingua: string) => pedir<Textos>("GET", `/api/textos/${encodeURIComponent(lingua)}`),
   tutorial: () => pedir<Tutorial>("GET", "/api/tutorial"),
+  changelog: () => pedir<{ entradas: EntradaChangelog[] }>("GET", "/api/changelog"),
   criarSessao: () => pedir<Sessao>("POST", "/api/sessoes"),
   sessao: (id: string, desde = 0) => pedir<Sessao>("GET", `${s(id)}?desde=${desde}`),
   apagarSessao: (id: string) => pedir<void>("DELETE", s(id)),
