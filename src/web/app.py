@@ -269,6 +269,8 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             if alvo.suffix in _NAO_SERVIR:
                 return JSONResponse({"detail": "Rota inexistente"}, status_code=404)
             cabecalhos = {"Cache-Control": "public, max-age=31536000, immutable"} if alvo.parent.name == "assets" else {}
+            if alvo.name == "sw.js":                                                  # o browser tem de ver sempre a versao nova do service worker
+                cabecalhos = {"Cache-Control": "no-cache"}
             return _enviar(alvo, request, cabecalhos)
         rota = "/" if caminho in ("", "index.html") else "/" + caminho.rstrip("/")
         if caminho.endswith("/") and caminho != "" and rota in seo.ROTAS:          # /tutorial/ -> /tutorial

@@ -10,6 +10,7 @@ import { Gerador } from "./Gerador";
 import { useI18n } from "./i18n";
 import { PaginaTexto } from "./PaginaTexto";
 import { Sobre, Tutorial, Video } from "./paginas";
+import { registarServiceWorker } from "./pwa";
 import { Ligacao, useLocalizacao } from "./rota";
 import { ProvedorSessao, useSessao } from "./sessao";
 import { useTema, useVisual } from "./tema";
@@ -54,7 +55,10 @@ function Aplicacao() {
   useEffect(() => {
     api
       .saude()
-      .then((s) => setVersao(s.versao))
+      .then((s) => {
+        setVersao(s.versao);
+        void registarServiceWorker(s.versao);
+      })
       .catch(() => setVersao(""));
     api
       .publico()
