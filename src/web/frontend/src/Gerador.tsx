@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { Calculo, Campos, Sessao } from "./api";
 import { CartaoAlgarismos, CartaoDestino, CartaoNumeros, CartaoTemplate } from "./cartoes";
+import { useDialogos } from "./dialogos";
+import { ligacaoDosCampos } from "./formulario";
 import { useI18n } from "./i18n";
 import { Icone } from "./icones";
 import { Ligacao } from "./rota";
@@ -39,6 +41,7 @@ export function Gerador({ campos, calculo, mudar, reiniciar }: Props) {
             sessao={s.sessao}
             ocupado={s.ocupado}
             bloqueado={a_gerar}
+            lembrado={s.algarismosLembrados}
             aoEscolher={(f) => void s.carregarAlgarismos(f)}
             aoPedirAjuda={
               <Ligacao para={`/tutorial?p=${TOPICO_ALGARISMOS}`} className="ajuda">
@@ -73,9 +76,19 @@ function Acoes({
   aoLimpar: () => Promise<void>;
 }) {
   const { t } = useI18n();
+  const { aviso } = useDialogos();
   const s = useSessao();
   const sessao = s.sessao;
   const a_gerar = aCorrer(sessao);
+  const copiarLigacao = async () => {
+    const ligacao = ligacaoDosCampos(campos, `${window.location.origin}/`);
+    try {
+      await navigator.clipboard.writeText(ligacao);
+      aviso(t("web_ligacao_copiada"), "aviso");
+    } catch {
+      aviso(ligacao, "aviso"); // sem acesso à área de transferência: mostra-se a ligação para copiar à mão
+    }
+  };
   const registoEl = useRef<HTMLPreElement>(null);
   const linhas = s.registo.length;
   // o registo desliza para a linha mais recente
@@ -117,6 +130,15 @@ function Acoes({
         >
           <Icone nome="lixo" />
           {t("limpar")}
+        </button>
+        <button
+          type="button"
+          className="texto"
+          onClick={() => void copiarLigacao()}
+          data-testid="copiar-ligacao"
+        >
+          <Icone nome="ligacao" />
+          {t("web_copiar_ligacao")}
         </button>
       </div>
       <progress value={progresso} max={1} data-testid="progresso" aria-label={t("gerar")} />
