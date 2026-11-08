@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.24.0 — 2026-11-08
+
+### İyileştirildi
+- **Siteden ekran görüntüleriyle eğitim:** eğitimin temel konuları artık Windows uygulaması yerine sitenin kendisini, 18 dilin hepsinde gösteriyor.
+
 ## 3.23.0 — 2026-11-08
 
 ### Yeni

@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.24.0 — 2026-11-08
+
+### Förbättrat
+- **Handledning med skärmbilder av webbplatsen:** handledningens grundämnen visar nu själva webbplatsen, på alla 18 språk, i stället för Windows-appen.
+
 ## 3.23.0 — 2026-11-08
 
 ### Nytt

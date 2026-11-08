@@ -64,7 +64,7 @@ def ver_tutorial(lg: str = Depends(lingua)) -> Tutorial:
 
 @router.get("/tutorial/recorte/{lg}/{estado}/{zona}.png")
 def recorte(lg: str, estado: str, zona: str) -> Response:
-    if lg not in i18n.LINGUAS or estado not in tutorial.ESTADOS_DE_CAPTURA or not re.fullmatch(r"[a-z0-9]{1,20}", zona):
+    if lg not in i18n.LINGUAS or estado not in (*tutorial.ESTADOS_DE_CAPTURA, *tutorial.ESTADOS_WEB) or not re.fullmatch(r"[a-z0-9]{1,20}", zona):
         raise ErroApi(404, "Imagem inexistente", "erro")
     r = _recorte(str(config.pasta_assets() / "ajuda"), lg, estado, zona)
     if r is None:

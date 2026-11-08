@@ -19,7 +19,8 @@
     "teste": "vitest run",
     "lint": "biome check .",
     "e2e": "playwright test",
-    "videos": "node scripts/videos.mjs"
+    "videos": "node scripts/videos.mjs",
+    "capturas": "node scripts/capturas.mjs"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "5.3.0",

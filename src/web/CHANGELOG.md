@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.24.0 — 2026-11-08
+
+### Melhorado
+- **Tutorial com capturas do site:** os tópicos de base do tutorial mostram agora o próprio site, nas 18 línguas, em vez da app Windows.
+
 ## 3.23.0 — 2026-11-08
 
 ### Novo

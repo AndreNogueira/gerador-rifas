@@ -18,7 +18,8 @@ TOPICO_ALGARISMOS = 3          # posicao do topico «2 Algarismos» na lista
 IMAGENS_FIXAS = ("modelo.jpg", "modelo1.jpg", "digitos.png", "folha.png")
 LINGUAS_COM_VIDEO = ("pt", "en")
 VIDEO_MIN_BYTES = 100_000
-ESTADOS_DE_CAPTURA = ("a", "b", "c")
+ESTADOS_DE_CAPTURA = ("a", "b", "c")          # capturas da app Windows (<lg>_a.png ...)
+ESTADOS_WEB = ("wa", "wb", "wc")               # capturas do site (<lg>_wa.png ...; e2e/capturas.spec.ts): os mesmos 3 estados, com o prefixo «w»
 PLATAFORMAS = ("web", "windows")
 VIDEO_FUNC_MIN_BYTES = 20_000     # os videos das funcionalidades sao curtos (gravados da propria interface)
 
@@ -85,14 +86,14 @@ def video_ids(plataforma: str = "windows") -> list:
 def lista_de_topicos(plataforma: str = "windows") -> list:
     """[(titulo no menu, titulo da pagina, texto, [imagens])]; imagem = ('fixa', ficheiro) | ('rec', estado, zona). Os 8 primeiros sao os de
     base (iguais nas duas plataformas, com as capturas da app Windows); seguem-se os das funcionalidades (`FUNCIONALIDADES`) que a `plataforma` tem."""
-    return _base() + [topico_da_funcionalidade(f, plataforma) for f in funcionalidades(plataforma)]
+    return _base(plataforma) + [topico_da_funcionalidade(f, plataforma) for f in funcionalidades(plataforma)]
 
 
 N_BASE = 8
 
 
-def _base() -> list:
-    """Os 8 topicos de base."""
+def _base(plataforma: str = "windows") -> list:
+    """Os 8 topicos de base; as imagens `('rec', estado, zona)` sao as capturas da `plataforma` (no site, estado «a» -> «wa»)."""
     ps = dict(previa=t("previa"), gerar=t("gerar"), ajustar=t("zoom_ajustar"), pasta=t("abrir_pasta"),
               de=t("de"), ate=t("ate"), algarismos=t("algarismos"), varios=t("modo_varios"), unico=t("modo_unico"),
               papel=t("lay_papel"), margem=t("lay_margem"), porfolha=t("lay_por_folha"),
@@ -100,7 +101,7 @@ def _base() -> list:
 
     def curto(s: str) -> str:               # "Algarismos 0-9 (obrigatorio)" -> "Algarismos 0-9"
         return re.sub(r"\s*[（(][^)）]*[)）]\s*$", "", s)
-    return [
+    topicos = [
         (t("tut_t0"), t("tut_t0"), t("tut_b0", **ps) + "\n\n" + t("tut_video", **ps), [("rec", "a", "janela")]),
         ("1   " + curto(t("c1_titulo")), t("c1_titulo"), t("tut_b1"), [("fixa", "modelo.jpg"), ("rec", "a", "c1")]),
         ("      " + t("tut_t_uma"), t("tut_t_uma"), t("tut_b_uma", **ps),
@@ -112,6 +113,9 @@ def _base() -> list:
          [("rec", "a", "barra"), ("rec", "b", "acoes")]),
         (t("tut_t6"), t("tut_t6"), t("tut_b6"), []),
     ]
+    if plataforma == "web":
+        topicos = [(m, ti, tx, [("rec", "w" + im[1], im[2]) if im[0] == "rec" else im for im in imgs]) for m, ti, tx, imgs in topicos]
+    return topicos
 
 
 def verificar_ajuda(pasta_ajuda: Path, pasta_video: Path, linguas, plataformas=PLATAFORMAS) -> list:
@@ -134,7 +138,7 @@ def verificar_ajuda(pasta_ajuda: Path, pasta_video: Path, linguas, plataformas=P
                     problemas.append(f"falta o video {f.name}")
     zonas = caixas(pasta_ajuda)
     for lg in linguas:
-        for estado in ESTADOS_DE_CAPTURA:
+        for estado in [e for p in plataformas for e in (ESTADOS_DE_CAPTURA if p == "windows" else ESTADOS_WEB)]:
             if not (pasta_ajuda / f"{lg}_{estado}.png").exists() or estado not in zonas.get(lg, {}):
                 problemas.append(f"falta a captura {lg}_{estado}")
     return problemas

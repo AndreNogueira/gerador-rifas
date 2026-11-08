@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.24.0 — 2026-11-08
+
+### Ulepszono
+- **Samouczek ze zrzutami ekranu strony:** podstawowe tematy samouczka pokazują teraz samą stronę, we wszystkich 18 językach, zamiast aplikacji Windows.
+
 ## 3.23.0 — 2026-11-08
 
 ### Nowości

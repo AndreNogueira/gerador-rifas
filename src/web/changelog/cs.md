@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.24.0 — 2026-11-08
+
+### Vylepšeno
+- **Návod se snímky obrazovky webu:** základní témata návodu nyní ukazují samotný web, ve všech 18 jazycích, místo aplikace pro Windows.
+
 ## 3.23.0 — 2026-11-08
 
 ### Novinky

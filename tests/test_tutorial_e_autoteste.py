@@ -42,7 +42,7 @@ def test_verificar_ajuda_pastas_vazias(tmp_path):
     assert probs[4:6] == ["falta o video tutorial_pt.mp4", "falta o video tutorial_en.mp4"]
     n_func = sum(len(f.plataformas) for f in tutorial.FUNCIONALIDADES) * 2          # um video em pt e um em en por funcionalidade e plataforma
     assert all(p.startswith("falta o video ") for p in probs[6:6 + n_func]) and len(probs[6:6 + n_func]) == n_func       # ver test_funcionalidades.py
-    assert probs[6 + n_func:] == [f"falta a captura {lg}_{e}" for lg in ("pt", "en") for e in "abc"]
+    assert probs[6 + n_func:] == [f"falta a captura {lg}_{e}" for lg in ("pt", "en") for e in ("wa", "wb", "wc", "a", "b", "c")]       # as do site e as da app Windows
 
 
 def test_verificar_ajuda_video_pequeno_conta_como_em_falta(tmp_path):
@@ -99,3 +99,33 @@ def test_recorte_inexistente_devolve_none(estado, zona):
 
 def test_recorte_pasta_sem_ajuda_devolve_none(tmp_path):
     assert tutorial.recorte(tmp_path, "pt", "a", "c1") is None
+
+
+# ------------------------------------------------------------------ capturas do site (e2e/capturas.spec.ts) em vez das da app Windows
+def _estados(plataforma):
+    return {im[1] for _, _, _, imgs in tutorial.lista_de_topicos(plataforma)[:tutorial.N_BASE] for im in imgs if im[0] == "rec"}
+
+
+def test_o_site_usa_as_suas_capturas_e_a_app_windows_as_dela():
+    assert _estados("web") == {"wa", "wb", "wc"} and _estados("windows") == {"a", "b", "c"}
+    web, windows = tutorial.lista_de_topicos("web")[:tutorial.N_BASE], tutorial.lista_de_topicos("windows")[:tutorial.N_BASE]
+    assert [[("rec", im[1][1:], im[2]) if im[0] == "rec" else im for im in t[3]] for t in web] == [t[3] for t in windows]      # mesma estrutura
+
+
+@pytest.mark.parametrize("lg", list(i18n.LINGUAS))
+def test_as_capturas_do_site_existem_e_as_zonas_cabem_na_imagem(lg):
+    from PIL import Image
+    zonas = tutorial.caixas(ASSETS / "ajuda")[lg]
+    for estado in tutorial.ESTADOS_WEB:
+        with Image.open(ASSETS / "ajuda" / f"{lg}_{estado}.png") as im:
+            largura, altura = im.size
+        for nome, caixa in ((k, v) for k, v in zonas[estado].items() if k != "escala"):
+            x0, y0, x1, y1 = caixa
+            assert 0 <= x0 < x1 <= largura and 0 <= y0 < y1 <= altura and x1 - x0 > 50 and y1 - y0 > 20, (lg, estado, nome, caixa, im.size)
+
+
+def test_verificar_ajuda_exige_as_capturas_da_plataforma(tmp_path):
+    so_web = tutorial.verificar_ajuda(tmp_path, tmp_path, ["pt"], ("web",))
+    so_windows = tutorial.verificar_ajuda(tmp_path, tmp_path, ["pt"], ("windows",))
+    assert "falta a captura pt_wa" in so_web and "falta a captura pt_a" not in so_web
+    assert "falta a captura pt_a" in so_windows and "falta a captura pt_wa" not in so_windows
