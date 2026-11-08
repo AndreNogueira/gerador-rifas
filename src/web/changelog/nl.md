@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.25.0 — 2026-11-08
+
+### Nieuw
+- **Eén adres per taal voor zoekmachines:** elke taal heeft een eigen adres (/en, /ja/tutorial…) met titel, beschrijving en tekst in die taal, en de site vertelt Google welke versies gelijkwaardig zijn (hreflang). Portugees blijft op /. De gekozen taal staat nu in de adresbalk.
+
 ## 3.24.1 — 2026-11-08
 
 ### Verbeterd

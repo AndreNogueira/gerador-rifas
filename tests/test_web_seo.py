@@ -99,7 +99,9 @@ def test_sitemap_so_tem_as_paginas_publicas(publico):
     assert r.status_code == 200 and r.headers["content-type"].startswith("application/xml")
     ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     urls = [e.text for e in ElementTree.fromstring(r.text).findall("s:url/s:loc", ns)]
-    assert urls == [f"{URL}/", f"{URL}/tutorial", f"{URL}/video", f"{URL}/sobre", f"{URL}/sorteio", f"{URL}/termos", f"{URL}/privacidade", f"{URL}/contacto", f"{URL}/changelog"]
+    paginas = ["/", "/tutorial", "/video", "/sobre", "/sorteio", "/termos", "/privacidade", "/contacto", "/changelog"]
+    assert urls[::18] == [f"{URL}{c}" for c in paginas]                    # por pagina: primeiro o portugues (sem prefixo), depois as 17 com prefixo (ver test_web_seo_linguas.py)
+    assert len(urls) == 9 * 18 and len(set(urls)) == len(urls)
 
 
 def test_rotas_desconhecidas_sao_404_a_serio_e_nao_se_indexam(publico):
@@ -147,7 +149,7 @@ def test_url_publico_invalido_e_ignorado(cliente, monkeypatch, valor):
 
 
 def test_o_html_nao_se_deixa_injetar_pelo_titulo_nem_pelo_url(publico):
-    h = seo.renderizar(INDEX, seo.Pagina("/x", 'a"><script>alert(1)</script>', "d" * 70, lambda: "<h1>x</h1>"), 'https://a"b')
+    h = seo.renderizar(INDEX, seo.Pagina("/x", "d_inicio", lambda lg: "<h1>x</h1>", titulo_fixo='a"><script>alert(1)</script>'), 'https://a"b')
     assert "<script>alert" not in h and "&quot;&gt;&lt;script&gt;" in h
 
 

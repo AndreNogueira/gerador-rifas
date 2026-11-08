@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.25.0 — 2026-11-08
+
+### Novo
+- **Um endereço por língua para os motores de pesquisa:** cada língua tem o seu endereço (/en, /ja/tutorial…) com título, descrição e texto nessa língua, e o site diz ao Google quais as versões equivalentes (hreflang). O português continua em /. A língua escolhida passa a aparecer na barra de endereço.
+
 ## 3.24.1 — 2026-11-08
 
 ### Melhorado

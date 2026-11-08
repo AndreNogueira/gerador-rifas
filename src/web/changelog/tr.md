@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.25.0 — 2026-11-08
+
+### Yeni
+- **Arama motorları için dil başına bir adres:** her dilin kendi adresi (/en, /ja/tutorial…) ve o dilde başlık, açıklama ve metni var; site Google'a hangi sürümlerin eşdeğer olduğunu bildirir (hreflang). Portekizce / adresinde kalır. Seçilen dil artık adres çubuğunda görünür.
+
 ## 3.24.1 — 2026-11-08
 
 ### İyileştirildi

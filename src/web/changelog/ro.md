@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.25.0 — 2026-11-08
+
+### Noutăți
+- **O adresă pentru fiecare limbă, pentru motoarele de căutare:** fiecare limbă are adresa ei (/en, /ja/tutorial…), cu titlu, descriere și text în acea limbă, iar site-ul spune Google care versiuni sunt echivalente (hreflang). Portugheza rămâne la /. Limba aleasă apare acum în bara de adrese.
+
 ## 3.24.1 — 2026-11-08
 
 ### Îmbunătățit

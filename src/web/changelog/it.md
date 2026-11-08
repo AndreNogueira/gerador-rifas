@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.25.0 — 2026-11-08
+
+### Novità
+- **Un indirizzo per lingua per i motori di ricerca:** ogni lingua ha il proprio indirizzo (/en, /ja/tutorial…) con titolo, descrizione e testo in quella lingua, e il sito indica a Google quali versioni sono equivalenti (hreflang). Il portoghese resta su /. La lingua scelta compare ora nella barra degli indirizzi.
+
 ## 3.24.1 — 2026-11-08
 
 ### Migliorato

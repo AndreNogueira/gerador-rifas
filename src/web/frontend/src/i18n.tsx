@@ -1,5 +1,6 @@
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from "react";
 import { api, definirLingua, type Lingua } from "./api";
+import { definirLinguaDaRota, linguaDoCaminho } from "./rota";
 
 export type Params = Record<string, string | number>;
 
@@ -45,8 +46,11 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
       .linguas()
       .then((l) => {
         setLinguas(l.linguas);
+        // a língua do URL (`/en/tutorial`) ganha à guardada, que ganha à do browser
+        const doUrl = linguaDoCaminho();
         const guardada = lerGuardada();
-        setEscolhida(l.linguas.some((x) => x.codigo === guardada) ? guardada : l.por_defeito);
+        const existe = (c: string | null) => l.linguas.some((x) => x.codigo === c);
+        setEscolhida(existe(doUrl) ? doUrl : existe(guardada) ? guardada : l.por_defeito);
       })
       .catch((e: Error) => setErro(e.message));
   }, []);
@@ -60,6 +64,7 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
         if (!atual) return;
         definirLingua(r.lingua); // antes de os componentes pedirem à API na língua nova
         document.documentElement.lang = r.lingua;
+        definirLinguaDaRota(r.lingua); // o URL passa a ter o prefixo desta língua
         setCarregados({ lingua: r.lingua, textos: r.textos });
         try {
           localStorage.setItem(CHAVE, r.lingua);

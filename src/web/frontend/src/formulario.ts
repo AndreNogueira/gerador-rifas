@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api, type Calculo, type Campos, type Sessao } from "./api";
 import { useI18n } from "./i18n";
+import { semPrefixo } from "./rota";
 
 export const PAPEIS = ["A4", "A3", "A5", "Letter", "Legal"] as const;
 
@@ -109,7 +110,7 @@ export function camposDaLigacao(pesquisa: string): Partial<Campos> {
 /** O que a ligação trouxe, lido uma única vez ao arrancar (e logo apagado do endereço). */
 function daLigacaoDeArranque(): Partial<Campos> {
   try {
-    if (window.location.pathname !== "/" || !window.location.search) return {};
+    if (semPrefixo(window.location.pathname) !== "/" || !window.location.search) return {};
     const campos = camposDaLigacao(window.location.search);
     window.history.replaceState(null, "", window.location.pathname);
     return campos;
