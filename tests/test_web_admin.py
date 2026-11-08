@@ -228,6 +228,22 @@ def test_o_observador_le_o_sistema(tmp_path):
     assert d["sessoes_ativas"] == 3 and d["motor_reinicios"] == 2 and d["cpu_nucleos"] >= 1 and d["cpu"] >= 0
 
 
+def test_um_filho_que_desaparece_a_meio_da_leitura_nao_derruba_o_observador(tmp_path):
+    import psutil
+
+    class Fantasma:                       # o processo do motor acabou entre `children()` e a 1.a leitura de CPU
+        pid = 999_999
+
+        def cpu_percent(self, _=None):
+            raise psutil.NoSuchProcess(self.pid)
+
+    o = Observador(tmp_path)
+    o._eu = type("Eu", (), {"children": lambda self, recursive: [Fantasma()], "cpu_percent": lambda self, _=None: 0.0,
+                            "memory_info": psutil.Process().memory_info})()
+    d = o.ler(sessoes=0, geracao_em_curso=False, reinicios_motor=0)
+    assert d["motor_vivo"] is False and d["mem_motor_mb"] == 0.0
+
+
 def test_config_metricas_efemeras(monkeypatch):
     assert config.metricas_efemeras() is False
     monkeypatch.setenv("RENDER", "true")
