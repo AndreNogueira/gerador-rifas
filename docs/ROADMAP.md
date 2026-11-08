@@ -1,6 +1,6 @@
 # Roteiro: incrementos para fazer em PRs pequenos
 
-Cada linha é um PR (ou dois). **Tamanho:** XS = uma tarde, S = um dia, M = uns dias, L = semanas. Escolhe uma, abre uma issue com o [modelo](../.github/ISSUE_TEMPLATE/funcionalidade.yml) e segue o [fluxo](../CONTRIBUTING.md). Está ordenado por valor a dividir pelo esforço, não por obrigação.
+**O plano comercial e as funcionalidades pensadas por valor (galeria de templates, séries, QR, sorteio verificável, contas, packs pagos) estão em [`PLANO_PRODUTO.md`](PLANO_PRODUTO.md).** Cada linha é um PR (ou dois). **Tamanho:** XS = uma tarde, S = um dia, M = uns dias, L = semanas. Escolhe uma, abre uma issue com o [modelo](../.github/ISSUE_TEMPLATE/funcionalidade.yml) e segue o [fluxo](../CONTRIBUTING.md). Está ordenado por valor a dividir pelo esforço, não por obrigação.
 
 ## Para o utilizador
 
