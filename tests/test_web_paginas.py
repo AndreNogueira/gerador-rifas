@@ -46,7 +46,10 @@ def test_paginas_de_texto_tem_titulo_e_seccoes_e_o_desconhecido_e_404(c):
 
 def test_o_texto_estatico_do_seo_escapa_html(monkeypatch, tmp_path):
     monkeypatch.setenv("RESPONSAVEL", "A&B")
-    with TestClient(criar_app(armazenamento=tmp_path)) as c:
+    dist = tmp_path / "dist"
+    dist.mkdir()
+    (dist / "index.html").write_text('<html><head><!--seo:cabecalho--></head><body><div id="raiz"><!--seo:corpo--></div></body></html>', encoding="utf-8")
+    with TestClient(criar_app(frontend=dist, armazenamento=tmp_path / "dados")) as c:
         h = c.get("/termos").text
         assert "A&amp;B" in h and "A&B" not in h.split('<div id="raiz">')[1]
 
