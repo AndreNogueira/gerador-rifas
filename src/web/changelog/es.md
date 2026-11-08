@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.24.1 — 2026-11-08
+
+### Mejorado
+- **Casillas alineadas:** «Un color por serie» y las demás casillas quedan junto a su texto, no al otro extremo de la tarjeta.
+
 ## 3.24.0 — 2026-11-08
 
 ### Mejorado

@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.24.1 — 2026-11-08
+
+### Migliorato
+- **Caselle allineate:** «Un colore per serie» e le altre caselle ora stanno accanto al loro testo, non all'estremità opposta della scheda.
+
 ## 3.24.0 — 2026-11-08
 
 ### Migliorato

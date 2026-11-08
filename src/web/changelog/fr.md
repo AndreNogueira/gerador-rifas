@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.24.1 — 2026-11-08
+
+### Amélioré
+- **Cases à cocher alignées :** « Une couleur par série » et les autres cases se placent à côté de leur texte, et non plus à l'autre bout de la carte.
+
 ## 3.24.0 — 2026-11-08
 
 ### Amélioré

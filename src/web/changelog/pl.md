@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.24.1 — 2026-11-08
+
+### Ulepszono
+- **Wyrównane pola wyboru:** „Jeden kolor na serię” i pozostałe pola stoją teraz obok tekstu, a nie na drugim końcu karty.
+
 ## 3.24.0 — 2026-11-08
 
 ### Ulepszono

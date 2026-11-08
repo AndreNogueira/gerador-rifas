@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.24.1 — 2026-11-08
+
+### Îmbunătățit
+- **Căsuțe de bifat aliniate:** «O culoare pentru fiecare serie» și celelalte căsuțe stau acum lângă text, nu la celălalt capăt al cardului.
+
 ## 3.24.0 — 2026-11-08
 
 ### Îmbunătățit

@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.24.1 — 2026-11-08
+
+### Förbättrat
+- **Kryssrutor justerade:** ”En färg per serie” och de andra rutorna sitter nu bredvid sin text i stället för i andra änden av kortet.
+
 ## 3.24.0 — 2026-11-08
 
 ### Förbättrat
