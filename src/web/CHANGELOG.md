@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.12.0 — 2026-11-08
+
+### Novo
+- Páginas **Termos de utilização**, **Política de privacidade** e **Contacto**, com ligações no rodapé. São versões provisórias, a rever com apoio jurídico antes de o serviço cobrar.
+- **Botão de donativo** no rodapé: só aparece quando o dono configura a ligação (`DONATIVO_URL`). O contacto (`CONTACTO_EMAIL`) e o nome do responsável (`RESPONSAVEL`) também vêm da configuração do servidor, nunca do código.
+
 ## 3.11.0 — 2026-11-08
 
 ### Novo

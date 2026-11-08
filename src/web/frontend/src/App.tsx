@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Admin } from "./Admin";
-import { api } from "./api";
+import { api, type Publico } from "./api";
 import { Cabecalho } from "./Cabecalho";
 import { Changelog } from "./Changelog";
 import { ProvedorDialogos } from "./dialogos";
@@ -8,16 +8,27 @@ import { registarEcra } from "./ecra";
 import { useFormulario } from "./formulario";
 import { Gerador } from "./Gerador";
 import { useI18n } from "./i18n";
+import { PaginaTexto } from "./PaginaTexto";
 import { Sobre, Tutorial, Video } from "./paginas";
 import { Ligacao, useLocalizacao } from "./rota";
 import { ProvedorSessao, useSessao } from "./sessao";
 import { useTema, useVisual } from "./tema";
 
+/** Páginas só em português (como o painel): o título do separador não se traduz. */
+const TITULOS_PT: Record<string, string> = {
+  "/changelog": "Changelog",
+  "/termos": "Termos de utilização",
+  "/privacidade": "Política de privacidade",
+  "/contacto": "Contacto",
+  "/admin": "Painel",
+};
+
 function Aplicacao() {
   const [tema, mudarTema] = useTema();
   const [visual, mudarVisual] = useVisual();
   const [versao, setVersao] = useState("");
-  const caminho = useLocalizacao().split("?")[0];
+  const [publico, setPublico] = useState<Publico>({ donativo_url: "", contacto: false });
+  const caminho = useLocalizacao().split("?")[0] ?? "/";
   const { sessao } = useSessao();
   const { t } = useI18n();
   // o formulário vive aqui para não se perder ao ir ao tutorial e voltar
@@ -26,18 +37,12 @@ function Aplicacao() {
   // o título do separador acompanha a página e a língua (o servidor já entrega o certo em português para quem não corre JS)
   useEffect(() => {
     const nome = t("app_nome");
-    const pagina =
-      caminho === "/tutorial"
-        ? t("tut_titulo")
-        : caminho === "/video"
-          ? t("mi_video")
-          : caminho === "/sobre"
-            ? t("mi_sobre")
-            : caminho === "/changelog"
-              ? "Changelog" // só em português
-              : caminho === "/admin"
-                ? "Painel" // o painel é só em português
-                : "";
+    const traduzidas: Record<string, string> = {
+      "/tutorial": t("tut_titulo"),
+      "/video": t("mi_video"),
+      "/sobre": t("mi_sobre"),
+    };
+    const pagina = traduzidas[caminho] ?? TITULOS_PT[caminho] ?? "";
     document.title = pagina ? `${pagina.replace(/…$/, "")} | ${nome}` : nome;
   }, [caminho, t]);
 
@@ -51,6 +56,10 @@ function Aplicacao() {
       .saude()
       .then((s) => setVersao(s.versao))
       .catch(() => setVersao(""));
+    api
+      .publico()
+      .then(setPublico)
+      .catch(() => undefined); // sem isto o rodapé só não mostra o donativo e o contacto
   }, []);
 
   return (
@@ -65,6 +74,8 @@ function Aplicacao() {
           <Sobre versao={versao} />
         ) : caminho === "/changelog" ? (
           <Changelog />
+        ) : caminho === "/termos" || caminho === "/privacidade" || caminho === "/contacto" ? (
+          <PaginaTexto nome={caminho.slice(1)} />
         ) : caminho === "/admin" ? (
           <Admin />
         ) : (
@@ -73,7 +84,18 @@ function Aplicacao() {
       </main>
       {versao && (
         <footer className="rodape">
-          v{versao} · <Ligacao para="/changelog">Changelog</Ligacao>
+          <span>v{versao}</span>
+          <nav aria-label="Informação">
+            <Ligacao para="/changelog">Changelog</Ligacao>
+            <Ligacao para="/termos">{t("web_termos")}</Ligacao>
+            <Ligacao para="/privacidade">{t("web_privacidade")}</Ligacao>
+            {publico.contacto && <Ligacao para="/contacto">{t("web_contacto")}</Ligacao>}
+            {publico.donativo_url && (
+              <a href={publico.donativo_url} target="_blank" rel="noopener noreferrer" data-testid="donativo">
+                {t("web_donativo")}
+              </a>
+            )}
+          </nav>
         </footer>
       )}
     </>

@@ -113,7 +113,24 @@
 .rodape {
   color: var(--suave);
   font-size: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
   padding-block: 28px max(28px, env(safe-area-inset-bottom));
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 4px;
+  }
+  // alvos de toque confortaveis (44 px de altura) em ecras de toque
+  nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 8px;
+  }
 }
 .pagina {
   display: grid;

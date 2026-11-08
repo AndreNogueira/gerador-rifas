@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, seo
+from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, seo, textos_legais
 from .limites import Limitador
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
@@ -98,6 +98,22 @@ class Changelog(BaseModel):
     entradas: list[EntradaChangelog]
 
 
+class SeccaoTexto(BaseModel):
+    titulo: str
+    paragrafos: list[str]
+
+
+class PaginaTexto(BaseModel):
+    titulo: str
+    aviso: str
+    seccoes: list[SeccaoTexto]
+
+
+class Publico(BaseModel):
+    donativo_url: str          # vazio = sem botao de donativo
+    contacto: bool             # ha um e-mail publico configurado (o endereco so aparece na pagina «Contacto»)
+
+
 async def _limpeza_periodica(servico: Servico, cada_s: float) -> None:
     """Apaga as sessoes inativas (e os seus ficheiros) de tempos a tempos."""
     while True:
@@ -174,6 +190,20 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         resposta.headers["Cache-Control"] = "public, max-age=300"
         return Changelog(entradas=[EntradaChangelog(versao=e.versao, data=e.data, seccoes=[SeccaoChangelog(titulo=s.titulo, itens=s.itens)
                                                                                            for s in e.seccoes]) for e in changelog.entradas()])
+
+    @app.get("/api/publico", response_model=Publico, tags=["sistema"])
+    def publico(resposta: Response) -> Publico:
+        """O que o dono configurou para o publico (variaveis de ambiente): ligacao de donativo e se ha contacto."""
+        resposta.headers["Cache-Control"] = "public, max-age=300"
+        return Publico(donativo_url=config.donativo_url(), contacto=bool(config.contacto_email()))
+
+    @app.get("/api/pagina/{nome}", response_model=PaginaTexto, tags=["sistema"])
+    def pagina_de_texto(nome: str, resposta: Response) -> PaginaTexto:
+        """Termos, privacidade e contacto (`textos_legais.py`), so em portugues."""
+        if nome not in textos_legais.PAGINAS:
+            raise HTTPException(404, "Página desconhecida")
+        resposta.headers["Cache-Control"] = "public, max-age=300"
+        return PaginaTexto(**textos_legais.PAGINAS[nome]())
 
     @app.get("/api/linguas", response_model=Linguas, tags=["textos"])
     def linguas(accept_language: str | None = Header(default=None)) -> Linguas:

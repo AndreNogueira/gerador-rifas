@@ -19,7 +19,7 @@ from dataclasses import dataclass
 from core import i18n, tutorial
 from fastapi import Request
 
-from . import VERSAO, changelog, config
+from . import VERSAO, changelog, config, textos_legais
 
 NOME = "Gerador de Rifas"
 IMAGEM = "/og-imagem.png"           # 1200x630, em frontend/public
@@ -83,6 +83,16 @@ def _corpo_changelog() -> str:
     return f'<h1>Changelog</h1><p>O que mudou no {NOME}, versão a versão.</p>{"".join(blocos)}<p><a href="/">Voltar ao {NOME}</a></p>'
 
 
+def _corpo_texto(nome: str) -> Callable[[], str]:
+    def corpo() -> str:
+        d = textos_legais.PAGINAS[nome]()
+        aviso = f"<p><em>{html.escape(d['aviso'])}</em></p>" if d["aviso"] else ""
+        secoes = "".join(f"<section><h2>{html.escape(s['titulo'])}</h2>{''.join(f'<p>{html.escape(p)}</p>' for p in s['paragrafos'])}</section>"
+                         for s in d["seccoes"])
+        return f'<h1>{html.escape(d["titulo"])}</h1>{aviso}{secoes}<p><a href="/">Voltar ao {NOME}</a></p>'
+    return corpo
+
+
 @dataclass(frozen=True)
 class Pagina:
     caminho: str
@@ -106,6 +116,15 @@ ROTAS: dict[str, Pagina] = {p.caminho: p for p in (
     Pagina("/sobre", f"Acerca do {NOME}",
            "O que é o Gerador de Rifas, como funciona e o que usa. O mesmo motor da aplicação para Windows, agora no browser.",
            _corpo_sobre),
+    Pagina("/termos", f"Termos de utilização | {NOME}",
+           "As regras de utilização do Gerador de Rifas: o que o serviço faz, o que não faz e quem é responsável pela rifa.",
+           _corpo_texto("termos")),
+    Pagina("/privacidade", f"Política de privacidade | {NOME}",
+           "Que dados o Gerador de Rifas trata (quase nenhuns), durante quanto tempo e que direitos tem, segundo o RGPD.",
+           _corpo_texto("privacidade")),
+    Pagina("/contacto", f"Contacto | {NOME}",
+           "Como falar com quem gere o Gerador de Rifas: dúvidas, erros e sugestões sobre as suas rifas numeradas.",
+           _corpo_texto("contacto")),
     Pagina("/changelog", f"Changelog: o que mudou | {NOME}",
            "Tudo o que mudou no Gerador de Rifas, versão a versão: novas funcionalidades, melhorias e correções.",
            _corpo_changelog),
