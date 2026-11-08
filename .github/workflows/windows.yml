@@ -1,5 +1,8 @@
-# Compila a app Windows (Nuitka -> GeradorRifas.exe), corre o auto-teste e publica o .exe numa *release* do GitHub.
+# Compila a app Windows (Nuitka -> GeradorRifas.exe), corre o auto-teste e publica o .exe numa *release* do repositorio PUBLICO
+# AndreNogueira/gerador-rifas-windows (so tem um README: o GitHub nao deixa tirar os arquivos «Source code» de uma release,
+# por isso o .exe nao fica numa release deste repositorio, que tem o codigo).
 # Uso: git tag windows-v2.3.0 && git push origin windows-v2.3.0   (ou «Run workflow» com o nome da etiqueta)
+# Precisa do secret RELEASES_TOKEN (fine-grained token so para o repositorio publico, Contents: Read and write; ver app/README.md).
 # Demora 15-25 min (o Nuitka traduz o Python para C e compila). NAO corre em cada push: so com a etiqueta.
 # O .exe sai SEM assinatura digital (um certificado autoassinado criado no servidor do GitHub nao tem valor): para assinar,
 # usa o assinar.ps1 com o teu certificado (ver app/README.md).
@@ -11,11 +14,11 @@ on:
   workflow_dispatch:
     inputs:
       etiqueta:
-        description: "Etiqueta da release (p.ex. windows-v2.3.0); tem de existir ou ser criada a partir de main"
+        description: "Etiqueta da release (p.ex. windows-v2.3.0)"
         required: true
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: windows-${{ github.ref }}
@@ -29,7 +32,17 @@ jobs:
     env:
       ETIQUETA: ${{ github.event.inputs.etiqueta || github.ref_name }}
       SEM_ASSINATURA: "1"
+      DESTINO: AndreNogueira/gerador-rifas-windows
     steps:
+      - name: Verificar o secret RELEASES_TOKEN (antes de gastar 20 minutos a compilar)
+        shell: pwsh
+        env:
+          RELEASES_TOKEN: ${{ secrets.RELEASES_TOKEN }}
+        run: |
+          if (-not $env:RELEASES_TOKEN) {
+            Write-Host "::error::Falta o secret RELEASES_TOKEN (token com Contents: Read and write no repositorio $env:DESTINO). Ver app/README.md."
+            exit 1
+          }
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.3
       - name: Compilar (app/construir.bat)
@@ -52,18 +65,19 @@ jobs:
           $h = (Get-FileHash .\dist\GeradorRifas.exe -Algorithm SHA256).Hash.ToLower()
           "$h  GeradorRifas.exe" | Set-Content -Encoding ascii .\dist\GeradorRifas.exe.sha256
           Write-Host $h
-      - name: Publicar na release
+      - name: Publicar na release do repositorio publico
         shell: pwsh
         working-directory: app
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASES_TOKEN }}
         run: |
           $versao = $env:ETIQUETA -replace '^windows-v', ''
           $hash = (Get-Content .\dist\GeradorRifas.exe.sha256).Split(' ')[0]
-          $notas = "App Windows $versao. Descarrega **GeradorRifas.exe** (nao precisa de instalar nada).`n`nSHA-256: ``$hash```n`nO ficheiro NAO esta assinado digitalmente: o Windows SmartScreen pode avisar na primeira vez («Mais informacoes» > «Executar mesmo assim»). Compilado pelo GitHub Actions a partir da etiqueta $($env:ETIQUETA)."
-          $existe = gh release view $env:ETIQUETA 2>$null
+          $notas = "App Windows $versao. Descarrega **GeradorRifas.exe** (nao precisa de instalar nada).`n`nSHA-256: ``$hash```n`nO ficheiro NAO esta assinado digitalmente: o Windows SmartScreen pode avisar na primeira vez («Mais informacoes» > «Executar mesmo assim»)."
+          gh release view $env:ETIQUETA --repo $env:DESTINO 2>$null | Out-Null
           if ($LASTEXITCODE -eq 0) {
-            gh release upload $env:ETIQUETA .\dist\GeradorRifas.exe .\dist\GeradorRifas.exe.sha256 --clobber
+            gh release upload $env:ETIQUETA .\dist\GeradorRifas.exe .\dist\GeradorRifas.exe.sha256 --clobber --repo $env:DESTINO
           } else {
-            gh release create $env:ETIQUETA .\dist\GeradorRifas.exe .\dist\GeradorRifas.exe.sha256 --title "Gerador de Rifas $versao (Windows)" --notes $notas --target $env:GITHUB_SHA
+            gh release create $env:ETIQUETA .\dist\GeradorRifas.exe .\dist\GeradorRifas.exe.sha256 --title "Gerador de Rifas $versao (Windows)" --notes $notas --latest --repo $env:DESTINO
           }
+          if ($LASTEXITCODE -ne 0) { exit 1 }
