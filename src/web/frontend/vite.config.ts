@@ -15,5 +15,11 @@ export default defineConfig({
     modulePreload: false, // um só JS: não há nada para pré-carregar
   },
   // 20 s: os testes dos temas compilam os 9 temas com o Sass, o que numa máquina ocupada passa dos 5 s por omissão
-  test: { environment: "jsdom", globals: true, setupFiles: ["./src/teste-setup.ts"], testTimeout: 20000 },
+  test: {
+    environment: "jsdom",
+    globals: true,
+    exclude: ["e2e/**", "node_modules/**", "dist/**"],
+    setupFiles: ["./src/teste-setup.ts"],
+    testTimeout: 20000,
+  },
 });
