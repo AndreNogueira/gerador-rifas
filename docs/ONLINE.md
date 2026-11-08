@@ -56,3 +56,7 @@ O rodapé tem sempre Changelog, Termos e Privacidade. Três variáveis do **Rend
 | `RESPONSAVEL` | nome de quem gere o serviço, nas páginas Termos e Privacidade. |
 
 Os textos das páginas estão em `src/web/textos_legais.py`: são **provisórios** e têm de ser revistos por um advogado antes de o serviço cobrar (`docs/PLANO_PRODUTO.md` §5).
+
+## QR de verificação nos bilhetes
+
+Com a variável `VERIFICACAO_CHAVE` no **Render** (Environment; pelo menos 16 caracteres, **nunca** no repositório) o gerador oferece um QR em cada bilhete dos templates de uma só rifa. Ler o QR abre `<site>/V/<código>`, uma página que confirma que o código foi emitido por este serviço para aquele bilhete (assinatura HMAC; não há base de dados). **Não prova que o bilhete foi pago nem que ganhou.** `PUBLIC_URL` tem de ser o endereço real do site (o QR leva-o). Se se trocar a chave, os QR já impressos deixam de validar: não a mudes depois de imprimir. `MAX_NUMEROS_QR` (10 000 por omissão) é o teto de números de um pedido com QR.

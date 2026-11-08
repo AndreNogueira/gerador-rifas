@@ -98,6 +98,9 @@ class Campos(BaseModel):
     logo_posicao: str = Field("sd", max_length=2)  # onde fica o logotipo em cada rifa: se | sd | ie | id
     logo_tamanho: str = Field("25", max_length=3)  # altura do logotipo em % da rifa (10 a 40)
     cor_numeros: str = Field("", max_length=7)     # «#RRGGBB»: a cor dos numeros (vazio = a do template)
+    qr: str = Field("", max_length=1)              # «1» = um QR de verificacao em cada rifa (so em modo folha)
+    qr_posicao: str = Field("ie", max_length=2)
+    qr_tamanho: str = Field("28", max_length=3)    # lado do QR em % da altura da rifa (20 a 40)
 
 
 class FolhaInfo(BaseModel):

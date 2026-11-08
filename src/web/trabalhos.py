@@ -83,6 +83,14 @@ def _marca(pasta: str, posicao: str, tamanho: str):
     return None
 
 
+def _qr(dados: tuple | None):
+    """(base, chave, evento, posicao, tamanho) -> core.qr.Qr (a chave atravessa o processo so como argumento: nao se regista em lado nenhum)."""
+    if not dados:
+        return None
+    base, chave, evento, posicao, tamanho = dados
+    return core.qr.Qr(base, chave.encode(), evento, posicao, tamanho)
+
+
 def _logs(lista: list) -> list:
     return [{"chave": getattr(m, "chave", ""), "params": dict(getattr(m, "params", {}) or {}), "texto": str(m)} for m in lista]
 
@@ -109,11 +117,11 @@ def analisar(pasta: str, tpl_nome: str, alg_nome: str) -> tuple:
 
 def previa(pasta: str, tpl_nome: str, alg_nome: str, papel: str, margem: str, porfolha: str,
            inicio: int, fim: int, digitos: int, prefixo: str = "", cor: tuple | None = None, saltar: tuple = (),
-           marcas: bool = False, logo_posicao: str = "sd", logo_tamanho: str = "25") -> tuple:
+           marcas: bool = False, logo_posicao: str = "sd", logo_tamanho: str = "25", qr: tuple | None = None) -> tuple:
     """PDF de 1 pagina com os primeiros numeros: ("ok", bytes, por_pagina) | erro. `prefixo`, `cor` e `saltar`: ver core.series."""
     try:
         prep = _com_folha(_preparado(pasta, tpl_nome, alg_nome), papel, margem, porfolha, marcas)
-        return ("ok", core.pdf_da_previa(prep, inicio, digitos, fim, prefixo, cor, saltar, _marca(pasta, logo_posicao, logo_tamanho)), prep.por_pagina)
+        return ("ok", core.pdf_da_previa(prep, inicio, digitos, fim, prefixo, cor, saltar, _marca(pasta, logo_posicao, logo_tamanho), _qr(qr)), prep.por_pagina)
     except Exception as e:  # noqa: BLE001
         return _erro(e)
 
@@ -181,7 +189,7 @@ class _Progresso:
 def gerar(pasta: str, tpl_nome: str, alg_nome: str, nome: str, inicio: int, fim: int, por_ficheiro: int | None,
           digitos: int, papel: str, margem: str, porfolha: str, prefixos: tuple = (), saltar: tuple = (),
           cor_por_serie: bool = False, marcas: bool = False, logo_posicao: str = "sd", logo_tamanho: str = "25",
-          cor_numeros: tuple | None = None) -> tuple:
+          cor_numeros: tuple | None = None, qr: tuple | None = None) -> tuple:
     """Gera os PDFs para `<pasta>/saida`. ("ok", [Resultado]) | ("cancelado",) | erro. O registo vai para `progresso.json`."""
     p = Path(pasta)
     prog = _Progresso(p / PROGRESSO)
@@ -189,7 +197,7 @@ def gerar(pasta: str, tpl_nome: str, alg_nome: str, nome: str, inicio: int, fim:
         prep = _com_folha(_preparado(pasta, tpl_nome, alg_nome), papel, margem, porfolha, marcas)
         tr = core.Trabalho(saida=p / "saida", nome=nome, inicio=inicio, fim=fim, por_ficheiro=por_ficheiro, digitos=digitos,
                            prefixos=prefixos, saltar=saltar, cor_por_serie=cor_por_serie, cor_numeros=cor_numeros,
-                           marca=_marca(pasta, logo_posicao, logo_tamanho))
+                           marca=_marca(pasta, logo_posicao, logo_tamanho), qr=_qr(qr))
         res = core.gerar(tr, prep, prog.log, prog.passo, Bandeira(p / CANCELAR))
         return ("ok", res)
     except Exception as e:  # noqa: BLE001

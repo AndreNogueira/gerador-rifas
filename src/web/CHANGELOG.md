@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.20.0 — 2026-11-08
+
+### Novo
+- **QR em cada bilhete:** um código QR de verificação num canto de cada rifa (templates de uma só rifa, escolhendo o canto e o tamanho). Ler o QR abre uma página que confirma que o código foi emitido por este serviço para aquele bilhete, na língua de quem lê. É assinado com uma chave que só o servidor tem: não há nada guardado numa base de dados. A página diz que isto **não prova** que o bilhete foi pago nem que ganhou: isso é com quem organiza a rifa.
+- Só aparece quando o dono do serviço configura a chave (`VERIFICACAO_CHAVE`). Os pedidos com QR têm um teto próprio de 10 000 números (`MAX_NUMEROS_QR`): cada QR custa tempo de CPU.
+
 ## 3.19.0 — 2026-11-08
 
 ### Novo

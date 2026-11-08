@@ -28,7 +28,7 @@ function Aplicacao() {
   const [tema, mudarTema] = useTema();
   const [visual, mudarVisual] = useVisual();
   const [versao, setVersao] = useState("");
-  const [publico, setPublico] = useState<Publico>({ donativo_url: "", contacto: false });
+  const [publico, setPublico] = useState<Publico>({ donativo_url: "", contacto: false, qr: false });
   const caminho = useLocalizacao().split("?")[0] ?? "/";
   const { sessao } = useSessao();
   const { t } = useI18n();

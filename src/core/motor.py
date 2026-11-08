@@ -912,7 +912,7 @@ class Documento:
     """Um PDF de saida: o fundo (template sem numeros) e guardado uma so vez como Form XObject e cada
     pagina so tem a referencia a ele + os numeros."""
 
-    def __init__(self, prep: Preparado, marca=None):
+    def __init__(self, prep: Preparado, marca=None, qr=None):
         self.info = prep.info
         self.caixa = prep.info.caixa
         self.disp = prep.disp
@@ -946,6 +946,7 @@ class Documento:
             self.largura, self.altura = self.disp.largura, self.disp.altura
         self.marcas = self._ops_marcas()
         self.logo = self._logotipo(marca) if self.disp is not None and marca is not None else ""
+        self.qr = qr if self.disp is not None else None
 
     def _matriz_rifa(self, x: float, y: float, rot: int) -> str:
         """Matriz que leva a rifa (zona `bbox` do template) para a posicao (x, y) da folha (canto superior esquerdo,
@@ -983,6 +984,17 @@ class Documento:
         x = x0 + folga if marca.posicao in ("se", "ie") else x1 - folga - lar
         y = y1 - folga - alt if marca.posicao in ("se", "sd") else y0 + folga
         return f"q {_f(lar)} 0 0 {_f(alt)} {_f(x)} {_f(y)} cm /Logo Do Q\n"
+
+    def _ops_qr(self, prefixo: str, num: str) -> str:
+        """O QR de verificacao deste bilhete, num canto da rifa (coordenadas do template, dentro do q...Q da rifa)."""
+        from . import qr as modulo_qr
+        q = self.qr
+        x0, y0, x1, y1 = self.bbox
+        lado = min((y1 - y0) * q.tamanho / 100, (x1 - x0) * 0.45)
+        folga = 5.0
+        x = x0 + folga if q.posicao in ("se", "ie") else x1 - folga - lado
+        y = y1 - folga - lado if q.posicao in ("se", "sd") else y0 + folga
+        return modulo_qr.ops_pdf(modulo_qr.modulos(modulo_qr.url(q, prefixo.strip(), num)), x, y, lado)
 
     def _ops_marcas(self) -> str:
         """Marcas de corte (tracos curtos pretos) NAS MARGENS da folha, a prolongar cada linha de corte da grelha: em cima e em
@@ -1041,7 +1053,8 @@ class Documento:
             for i, num in enumerate(linha):
                 x, y, rot = self.disp.posicoes[i]
                 ops = "".join(self._escrever(s, num, prefixo, cor) for s in slots1)
-                partes.append(f"q {self._matriz_rifa(x, y, rot)} cm /Bg Do\n{self.logo}{ops}Q\n")
+                qr = self._ops_qr(prefixo, num) if self.qr is not None else ""
+                partes.append(f"q {self._matriz_rifa(x, y, rot)} cm /Bg Do\n{self.logo}{qr}{ops}Q\n")
             conteudo = "".join(partes) + self.marcas
         else:
             ops = []
@@ -1081,6 +1094,7 @@ class Trabalho:
     cor_por_serie: bool = False         # com varias series, uma cor para cada
     marca: object | None = None         # core.marca.Marca: o logotipo em cada rifa (so templates de uma rifa, em folha)
     cor_numeros: tuple | None = None    # (r, g, b) 0..1: a cor dos numeros (a da serie, se ha, ganha)
+    qr: object | None = None            # core.qr.Qr: um QR de verificacao em cada rifa (so em modo folha)
 
 
 @dataclass
@@ -1134,8 +1148,8 @@ def linhas_de_numeros(a: int, b: int, n_campos: int, largura: int) -> list:
 
 
 def _montar(linhas: list, prep: Preparado, progresso: Callable[[], None] | None = None,
-            cancelar: threading.Event | None = None, prefixo: str = "", cor: tuple | None = None, marca=None) -> Documento:
-    doc = Documento(prep, marca)
+            cancelar: threading.Event | None = None, prefixo: str = "", cor: tuple | None = None, marca=None, qr=None) -> Documento:
+    doc = Documento(prep, marca, qr)
     for row in linhas:
         if cancelar is not None and cancelar.is_set():
             raise Cancelado()
@@ -1228,7 +1242,7 @@ def gerar(tr: Trabalho, prep: Preparado, log: Log = _sem_log,
         nums = [f"{i:0{largura}d}" for i in parte.numeros]
         linhas = [nums[i:i + por_pagina] for i in range(0, len(nums), por_pagina)]
         log(msg("log_a_gerar", nome=destino.name, paginas=len(linhas)))
-        doc = _montar(linhas, prep, passo, cancelar, parte.prefixo, parte.cor, tr.marca)
+        doc = _montar(linhas, prep, passo, cancelar, parte.prefixo, parte.cor, tr.marca, tr.qr)
         try:
             doc.gravar(destino)
         except Exception as e:
@@ -1252,7 +1266,7 @@ def pagina_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = 
 
 
 def pdf_da_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = None, prefixo: str = "",
-                  cor: tuple | None = None, saltar: tuple = (), marca=None) -> bytes:
+                  cor: tuple | None = None, saltar: tuple = (), marca=None, qr=None) -> bytes:
     """PDF de 1 pagina (bytes) com os primeiros numeros do intervalo: o que `pagina_previa` desenha, mas ainda vetorial
     (a webapp mostra-o no browser com PDF.js). `prefixo`, `cor` e `saltar`: como num pedido com series (ver series.py)."""
     n = prep.por_pagina
@@ -1264,7 +1278,7 @@ def pdf_da_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = 
     else:
         ultimo = inicio + n - 1 if fim is None else min(fim, inicio + n - 1)
         linhas = linhas_de_numeros(inicio, ultimo, n, largura)[:1]
-    doc = _montar(linhas, prep, prefixo=prefixo, cor=cor, marca=marca)
+    doc = _montar(linhas, prep, prefixo=prefixo, cor=cor, marca=marca, qr=qr)
     buf = io.BytesIO()
     doc.gravar(buf)
     return buf.getvalue()

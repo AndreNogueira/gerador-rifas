@@ -1,4 +1,5 @@
-import type { Campos } from "./api";
+import { useEffect, useState } from "react";
+import { api, type Campos } from "./api";
 import { useI18n } from "./i18n";
 import { aCorrer, useSessao } from "./sessao";
 
@@ -24,6 +25,14 @@ export function MarcaPropria({
   const s = useSessao();
   const sessao = s.sessao;
   const parado = !sessao || aCorrer(sessao) || s.ocupado !== null;
+  // o QR de verificação só se oferece se o servidor tem a chave que o assina (VERIFICACAO_CHAVE)
+  const [temQr, setTemQr] = useState(false);
+  useEffect(() => {
+    api
+      .publico()
+      .then((p) => setTemQr(p.qr))
+      .catch(() => undefined);
+  }, []);
   return (
     <div className="marca-propria">
       <label>
@@ -106,6 +115,49 @@ export function MarcaPropria({
               />
             </label>
           </div>
+          {temQr && (
+            <>
+              <label className="opcao">
+                <input
+                  type="checkbox"
+                  checked={campos.qr === "1"}
+                  onChange={(e) => mudar("qr", e.target.checked ? "1" : "")}
+                  data-testid="qr"
+                />
+                {t("web_qr")}
+              </label>
+              {campos.qr === "1" && (
+                <div className="linha extras">
+                  <label>
+                    {t("web_qr_posicao")}
+                    <select
+                      value={campos.qr_posicao}
+                      onChange={(e) => mudar("qr_posicao", e.target.value)}
+                      data-testid="qr-posicao"
+                    >
+                      {POSICOES.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.seta}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    {t("web_qr_tamanho")}
+                    <input
+                      type="range"
+                      min={20}
+                      max={40}
+                      step={2}
+                      value={Number(campos.qr_tamanho) || 28}
+                      onChange={(e) => mudar("qr_tamanho", e.target.value)}
+                      data-testid="qr-tamanho"
+                    />
+                  </label>
+                </div>
+              )}
+            </>
+          )}
         </>
       )}
     </div>

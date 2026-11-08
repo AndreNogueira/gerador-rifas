@@ -19,7 +19,7 @@ from core.armazenamento import ArmazenamentoCheio
 from fastapi import APIRouter, Depends, Request, Response
 from fastapi.responses import FileResponse, StreamingResponse
 
-from . import config, trabalhos
+from . import config, seo, trabalhos
 from .limites import Limitador, ler_corpo
 from .manter_acordado import EstadoAcordado
 from .metricas import Metricas, classe_do_ecra, dispositivo, familia, modelo_limpo
@@ -304,6 +304,18 @@ def calcular_formulario(id_: str, campos: Campos, serv: Servico = Depends(servic
     return calcular(s.info, campos, lg)
 
 
+def _qr_dos_campos(c: Campos, request: Request, lg: str) -> tuple | None:
+    """Os dados do QR de verificacao (base do site, chave, evento, canto, tamanho) ou None. Sem `VERIFICACAO_CHAVE` pedir QR e um aviso."""
+    if c.qr != "1":
+        return None
+    chave = config.verificacao_chave()
+    if not chave:
+        raise ErroApi(422, i18n.traduzir("err_qr_indisponivel", lg), "aviso")
+    posicao = c.qr_posicao if c.qr_posicao in core.qr.POSICOES else "ie"
+    tamanho = min(max(int(c.qr_tamanho), core.qr.TAMANHO_MIN), core.qr.TAMANHO_MAX) if c.qr_tamanho.isdigit() else core.qr.TAMANHO_PADRAO
+    return (seo.url_publica(request), chave, core.qr.evento_limpo(c.nome), posicao, tamanho)
+
+
 def _validar(s: SessaoEstado, c: Campos, lg: str, pasta: Path, geracao: bool) -> core.Trabalho:
     """As mesmas verificacoes da app antes de pre-visualizar/gerar; os erros do motor saem como aviso (ErroApi 422)."""
     if s.analise is None or s.analise[0] != "ok":
@@ -319,6 +331,8 @@ def _validar(s: SessaoEstado, c: Campos, lg: str, pasta: Path, geracao: bool) ->
                     raise core.ErroRifas("err_nome")
                 if core.series.contar(tr) > config.max_numeros():          # numeros do intervalo (sem os saltados) x series
                     raise core.ErroRifas("web_demasiados", max=config.max_numeros())
+                if c.qr == "1" and disp is not None and core.series.contar(tr) > config.max_numeros_qr():
+                    raise core.ErroRifas("web_demasiados", max=config.max_numeros_qr())      # o QR custa CPU: teto proprio
                 tr.saida = pasta / "saida"
                 core.planear(tr, pedido.rifas_por_pagina(disp, s.info))        # valida tudo antes de comecar
             return tr
@@ -328,16 +342,17 @@ def _validar(s: SessaoEstado, c: Campos, lg: str, pasta: Path, geracao: bool) ->
 
 # ------------------------------------------------------------------ pre-visualizar
 @router.post("/{id_}/previa", response_model=Sessao, dependencies=[Depends(pesado)])
-async def previa(id_: str, campos: Campos, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Sessao:
+async def previa(id_: str, campos: Campos, request: Request, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Sessao:
     s, pasta = _sessao(serv, id_)
     if s.a_correr:
         raise _ocupado(lg)
     tr = _validar(s, campos, lg, pasta, geracao=False)
+    qr = _qr_dos_campos(campos, request, lg)
     t0 = time.perf_counter()
     try:
         r = await serv.motor.curto(trabalhos.previa, str(pasta), s.tpl_nome, s.alg_nome, campos.papel, campos.margem, campos.porfolha,
                                    tr.inicio, tr.fim, tr.digitos, tr.prefixos[0] if tr.prefixos else "", core.series.cor_da_serie(tr, 0) or tr.cor_numeros, tr.saltar, campos.marcas == "1",
-                                   campos.logo_posicao, campos.logo_tamanho)
+                                   campos.logo_posicao, campos.logo_tamanho, qr)
     except Ocupado:
         raise _ocupado(lg) from None
     except (asyncio.TimeoutError, BrokenProcessPool) as e:
@@ -410,11 +425,12 @@ async def _geracao_interna(serv: Servico, s: SessaoEstado, pasta: Path, args: tu
 
 
 @router.post("/{id_}/gerar", response_model=Sessao, status_code=202, dependencies=[Depends(pesado)])
-async def gerar(id_: str, campos: Campos, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Sessao:
+async def gerar(id_: str, campos: Campos, request: Request, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Sessao:
     s, pasta = _sessao(serv, id_)
     if s.a_correr:
         raise _ocupado(lg)
     tr = _validar(s, campos, lg, pasta, geracao=True)
+    qr = _qr_dos_campos(campos, request, lg)
     if not serv.motor.reservar(s.id):                        # so uma geracao de cada vez em todo o servidor
         raise _ocupado(lg)
     try:
@@ -426,7 +442,7 @@ async def gerar(id_: str, campos: Campos, serv: Servico = Depends(servico), lg: 
         s.gerar = Geracao(estado="a_gerar", nome=tr.nome)
         args = (str(pasta), s.tpl_nome, s.alg_nome, tr.nome, tr.inicio, tr.fim, tr.por_ficheiro, tr.digitos, campos.papel, campos.margem,
                 campos.porfolha, tr.prefixos, tr.saltar, tr.cor_por_serie, campos.marcas == "1", campos.logo_posicao, campos.logo_tamanho,
-                tr.cor_numeros)
+                tr.cor_numeros, qr)
         s.tarefa = asyncio.create_task(_geracao(serv, s, pasta, args))
     except BaseException:
         serv.motor.geracao = None

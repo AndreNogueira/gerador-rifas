@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, rotas_galeria, rotas_listas, seo, textos_legais
+from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
 from .limites import Limitador
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
@@ -112,6 +112,7 @@ class PaginaTexto(BaseModel):
 class Publico(BaseModel):
     donativo_url: str          # vazio = sem botao de donativo
     contacto: bool             # ha um e-mail publico configurado (o endereco so aparece na pagina «Contacto»)
+    qr: bool = False           # o servidor tem a chave que assina os QR dos bilhetes (VERIFICACAO_CHAVE)
 
 
 async def _limpeza_periodica(servico: Servico, cada_s: float) -> None:
@@ -195,7 +196,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     def publico(resposta: Response) -> Publico:
         """O que o dono configurou para o publico (variaveis de ambiente): ligacao de donativo e se ha contacto."""
         resposta.headers["Cache-Control"] = "public, max-age=300"
-        return Publico(donativo_url=config.donativo_url(), contacto=bool(config.contacto_email()))
+        return Publico(donativo_url=config.donativo_url(), contacto=bool(config.contacto_email()), qr=bool(config.verificacao_chave()))
 
     @app.get("/api/pagina/{nome}", response_model=PaginaTexto, tags=["sistema"])
     def pagina_de_texto(nome: str, resposta: Response) -> PaginaTexto:
@@ -224,6 +225,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     app.include_router(rotas.router_ecra)
     app.include_router(rotas_listas.router)
     app.include_router(rotas_galeria.router)
+    app.include_router(rotas_verificar.router)
     app.include_router(admin.router)
 
     # imagens do tutorial e videos (os mesmos ficheiros da app Windows); tem de vir antes do «fallback» do frontend

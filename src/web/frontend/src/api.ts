@@ -96,6 +96,10 @@ export interface Campos {
   logo_tamanho: string;
   /** «#RRGGBB»: a cor dos números; vazio = a do template. */
   cor_numeros: string;
+  /** «1» = um QR de verificação em cada rifa (só templates de uma rifa e com a chave configurada no servidor). */
+  qr: string;
+  qr_posicao: string;
+  qr_tamanho: string;
 }
 export interface FolhaInfo {
   ativa: boolean;
@@ -133,6 +137,8 @@ export interface PaginaDeTexto {
 export interface Publico {
   donativo_url: string;
   contacto: boolean;
+  /** O servidor tem a chave que assina os QR dos bilhetes. */
+  qr: boolean;
 }
 
 export interface Imagem {

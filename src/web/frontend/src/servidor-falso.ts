@@ -22,6 +22,9 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_cor_serie: "Uma cor para cada série",
     web_marcas: "Marcas de corte",
     web_cor_numeros: "Cor dos números",
+    web_qr: "Código QR de verificação em cada bilhete",
+    web_qr_posicao: "Posição do QR",
+    web_qr_tamanho: "Tamanho do QR",
     web_logotipo: "Logótipo (PNG ou JPG)",
     web_logo_posicao: "Posição do logótipo",
     web_logo_tamanho: "Tamanho do logótipo",
@@ -113,6 +116,9 @@ export const CAMPOS_PADRAO: Campos = {
   logo_posicao: "sd",
   logo_tamanho: "25",
   cor_numeros: "",
+  qr: "",
+  qr_posicao: "ie",
+  qr_tamanho: "28",
 };
 
 const trabalhoLivre = (): Trabalho => ({
@@ -150,6 +156,7 @@ export class ServidorFalso {
   galeriaErro = "";
   logotipoErro = "";
   temContacto = false;
+  temQr = false;
 
   nova(): Sessao {
     const id = `sessao${this.proximoId++}`;
@@ -198,7 +205,7 @@ export class ServidorFalso {
       return Promise.resolve(new Response(new Blob(["png"]), { status: 200 }));
     }
     if (url === "/api/publico")
-      return this.responder({ donativo_url: this.donativoUrl, contacto: this.temContacto });
+      return this.responder({ donativo_url: this.donativoUrl, contacto: this.temContacto, qr: this.temQr });
     const pg = /^\/api\/pagina\/(\w+)$/.exec(url);
     if (pg?.[1])
       return ["termos", "privacidade", "contacto"].includes(pg[1])
