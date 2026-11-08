@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.21.0 — 2026-11-08
+
+### Novo
+- **Sorteio verificável** (página «Sorteio»): sorteia números de um intervalo (com números a saltar) de forma que qualquer pessoa possa repetir o sorteio e obter o mesmo resultado. O resultado só depende dos números, de quantos se sorteiam e de uma **semente pública** (por exemplo o resultado de uma lotaria, ou a aleatoriedade pública do drand, que um botão vai buscar). Faz-se tudo no browser, nada vai ao servidor, e «Copiar ligação» partilha um endereço que repete o mesmo sorteio.
+- O método está descrito passo a passo na documentação e há uma implementação de referência: o site e a referência dão os mesmos números nos mesmos testes.
+
 ## 3.20.0 — 2026-11-08
 
 ### Novo

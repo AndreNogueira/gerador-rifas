@@ -75,6 +75,18 @@ def _corpo_sobre() -> str:
     return f'<h1>Acerca do {NOME}</h1>{_paragrafos(resumo)}<p><a href="/">Voltar ao {NOME}</a></p>'
 
 
+def _corpo_sorteio() -> str:
+    return (
+        "<h1>Sorteio verificável</h1>"
+        "<p>Sorteie os números premiados de uma rifa de forma que qualquer pessoa possa repetir o sorteio e confirmar o resultado. "
+        "O resultado só depende dos números, de quantos se sorteiam, dos números a saltar e de uma semente pública que escolhe: "
+        "por exemplo o resultado de uma lotaria pública, conhecido só depois de fechadas as vendas.</p>"
+        "<h2>Como funciona</h2><p>Os números possíveis ordenam-se; para cada prémio, o SHA-256 da semente e da posição escolhe um dos que faltam. "
+        "Faz-se tudo no seu browser, sem enviar nada ao servidor, e a ligação que se copia repete o mesmo sorteio.</p>"
+        f'<p><a href="/">Voltar ao {NOME}</a></p>'
+    )
+
+
 def _corpo_changelog() -> str:
     blocos = []
     for e in list(changelog.entradas())[:6]:
@@ -116,6 +128,9 @@ ROTAS: dict[str, Pagina] = {p.caminho: p for p in (
     Pagina("/sobre", f"Acerca do {NOME}",
            "O que é o Gerador de Rifas, como funciona e o que usa. O mesmo motor da aplicação para Windows, agora no browser.",
            _corpo_sobre),
+    Pagina("/sorteio", f"Sorteio verificável de números | {NOME}",
+           "Sorteie números premiados de forma que qualquer pessoa possa repetir o sorteio e confirmar o resultado, com uma semente pública.",
+           _corpo_sorteio),
     Pagina("/termos", f"Termos de utilização | {NOME}",
            "As regras de utilização do Gerador de Rifas: o que o serviço faz, o que não faz e quem é responsável pela rifa.",
            _corpo_texto("termos")),

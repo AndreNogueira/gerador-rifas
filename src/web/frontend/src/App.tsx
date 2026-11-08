@@ -12,6 +12,7 @@ import { PaginaTexto } from "./PaginaTexto";
 import { Sobre, Tutorial, Video } from "./paginas";
 import { registarServiceWorker } from "./pwa";
 import { Ligacao, useLocalizacao } from "./rota";
+import { Sorteio } from "./Sorteio";
 import { ProvedorSessao, useSessao } from "./sessao";
 import { useTema, useVisual } from "./tema";
 
@@ -42,6 +43,7 @@ function Aplicacao() {
       "/tutorial": t("tut_titulo"),
       "/video": t("mi_video"),
       "/sobre": t("mi_sobre"),
+      "/sorteio": t("web_sorteio"),
     };
     const pagina = traduzidas[caminho] ?? TITULOS_PT[caminho] ?? "";
     document.title = pagina ? `${pagina.replace(/…$/, "")} | ${nome}` : nome;
@@ -76,6 +78,8 @@ function Aplicacao() {
           <Video />
         ) : caminho === "/sobre" ? (
           <Sobre versao={versao} />
+        ) : caminho === "/sorteio" ? (
+          <Sorteio />
         ) : caminho === "/changelog" ? (
           <Changelog />
         ) : caminho === "/termos" || caminho === "/privacidade" || caminho === "/contacto" ? (
