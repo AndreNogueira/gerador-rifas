@@ -223,7 +223,8 @@
 .barras-h {
   margin: 0;
 
-  ul {
+  ul,
+  ol {
     display: grid;
     gap: 6px;
     margin: 0;
@@ -241,6 +242,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  &.funil li {
+    grid-template-columns: minmax(6rem, 11rem) 1fr minmax(6rem, auto);
   }
   .pista {
     height: 0.8rem;

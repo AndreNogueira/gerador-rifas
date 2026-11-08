@@ -7,7 +7,16 @@ import {
   NaoAutenticado,
   type VeredictoProxy,
 } from "./admin-api";
-import { BarrasH, CORES, formatarNumero, GraficoBarras, GraficoLinhas, Medidor, Rosca } from "./graficos";
+import {
+  BarrasH,
+  CORES,
+  Funil,
+  formatarNumero,
+  GraficoBarras,
+  GraficoLinhas,
+  Medidor,
+  Rosca,
+} from "./graficos";
 import { Icone } from "./icones";
 
 /*
@@ -591,6 +600,12 @@ export function Admin() {
           />
         </div>
         <div className="graficos">
+          <Grafico
+            titulo="Funil de utilização"
+            como="Quantos eventos há em cada etapa, da abertura do gerador à descarga, e que parte da etapa anterior chegou à seguinte. Conta eventos, não pessoas (não se guarda nada que as identifique): onde cai mais é onde há que melhorar (por exemplo, muitas sessões sem template mostram que o passo do Canva é a barreira)."
+          >
+            <Funil titulo="Funil de utilização" etapas={r?.funil ?? []} cor={CORES[1]} />
+          </Grafico>
           <Grafico
             titulo="Sessões novas"
             como="Cada barra são as sessões abertas nesse intervalo: mostra quando as pessoas chegam."

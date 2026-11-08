@@ -283,6 +283,10 @@ class Metricas:
         rotulos = [f"até {lim} s" if lim < 60 else f"até {lim // 60} min" for lim in DURACAO_BALDES] + [f"mais de {DURACAO_BALDES[-1] // 60} min"]
         def pct(p: float) -> float | None:
             return round(duracoes[min(len(duracoes) - 1, int(p * len(duracoes)))], 1) if duracoes else None
+        # funil: quantos EVENTOS de cada etapa (nao pessoas: nao se guarda nada que as identifique); cada passo e a etapa seguinte da vida de uma geracao
+        funil = [("Sessões abertas", n("sessao")), ("Template carregado", n("template", "AND a IN ('ok','alg')")),
+                 ("Algarismos prontos", n("algarismos", "AND a='ok'")), ("Pré-visualização", n("previa", "AND a='ok'")),
+                 ("Geração concluída", sum(r[1] for r in gens if r[0] in ("ok", "erros"))), ("Descarga", n("descarga"))]
         return {
             "sessoes": n("sessao"),
             "previas": {"ok": n("previa", "AND a='ok'"), "erro": n("previa", "AND a<>'ok'")},
@@ -292,6 +296,7 @@ class Metricas:
             "numeros": int(sum(r[2] or 0 for r in gens if r[0] in ("ok", "erros"))),
             "paginas": int(sum(r[3] or 0 for r in gens if r[0] in ("ok", "erros"))),
             "descargas": self._contar("descarga", "a", desde),
+            "funil": [{"chave": k, "n": v} for k, v in funil],
             "duracao": {"mediana_s": pct(0.5), "p95_s": pct(0.95), "max_s": round(duracoes[-1], 1) if duracoes else None,
                         "histograma": [{"chave": k, "n": v} for k, v in zip(rotulos, hist, strict=True)]},
             "linguas": self._contar("sessao", "a", desde),

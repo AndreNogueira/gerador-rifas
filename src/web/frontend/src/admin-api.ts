@@ -95,6 +95,7 @@ export interface Resumo {
   numeros: number;
   paginas: number;
   descargas: Contagem[];
+  funil: Contagem[];
   duracao: { mediana_s: number | null; p95_s: number | null; max_s: number | null; histograma: Contagem[] };
   linguas: Contagem[];
   temas: Contagem[];

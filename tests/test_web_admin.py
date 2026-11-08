@@ -187,6 +187,9 @@ def test_o_painel_mostra_o_que_aconteceu_sem_dados_pessoais(tmp_path, monkeypatc
         assert r["geracoes"] == {"ok": 1} and r["numeros"] == 20 and r["paginas"] > 0
         assert r["descargas"] == [{"chave": "zip", "n": 1}] and r["duracao"]["mediana_s"] is not None and r["duracao"]["mediana_s"] >= 0   # 0.0 num runner rapido (arredonda a 0,1 s)
         assert r["paginas_vistas"] == [{"chave": "/", "n": 1}] and r["robos"] == 1
+        # o funil conta eventos por etapa (nao pessoas): 2 sessoes, 1 template, 1 algarismos, 1 pre-visualizacao, 1 geracao, 1 descarga
+        assert [(f["chave"], f["n"]) for f in r["funil"]] == [("Sessões abertas", 2), ("Template carregado", 1), ("Algarismos prontos", 1),
+                                                                 ("Pré-visualização", 1), ("Geração concluída", 1), ("Descarga", 1)]
         pedidos = {t["pedido"]: t for t in d["tabela_pedidos"]}
         assert pedidos["POST /api/sessoes"]["n"] == 2 and pedidos["POST /api/sessoes/{id_}/gerar"]["n"] == 1
         assert pedidos["GET /api/sessoes/{id_}/trabalho"]["sondagem"] is True
