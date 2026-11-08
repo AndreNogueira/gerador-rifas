@@ -1,0 +1,132 @@
+# Changelog (streszczenie po polsku)
+
+Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
+
+## 3.23.0 — 2026-11-08
+
+### Nowości
+- **Samouczek i film do każdej funkcji:** samouczek ma temat dla każdej funkcji (serie, lista i arkusz kontrolny, znaczniki cięcia, galeria, własna marka, QR, losowanie, zapisywanie i udostępnianie, instalacja jako aplikacja, motywy), każdy z krótkim filmem nagranym w samym interfejsie, po portugalsku i angielsku.
+- **Changelog, Regulamin, Prywatność i Kontakt w 18 językach:** tekst pojawia się w wybranym języku. Changelog ma przetłumaczone streszczenie każdej wersji (pełny jest po portugalsku); teksty prawne to tłumaczenia bez weryfikacji przez native speakerów, a w razie różnic obowiązuje wersja portugalska.
+- **Aplikacja Windows 2.4** z tym, co strona zyskała od wersji 3.10: menu „Dodatki” z seriami, prefiksami i kolorem serii, pomijanymi numerami, kolorem numerów, logo, znacznikami cięcia, galerią szablonów, weryfikowalnym losowaniem oraz eksportem listy (CSV) i arkusza kontrolnego; do tego automatyczny wygląd świąteczny w grudniu. Weryfikacja QR i instalacja jako aplikacja zostają tylko na stronie.
+
+## 3.22.0 — 2026-11-08
+
+### Ulepszono
+- **Kontrast 9 motywów zmierzony naprawdę:** test w przeglądarce mierzy tekst względem rzeczywistych pikseli tła, w trybie jasnym i ciemnym (WCAG AA); to, co nie przechodziło, poprawiono.
+- Duże dekoracyjne numery kroków nie są już czytane przez czytniki ekranu.
+
+## 3.21.0 — 2026-11-08
+
+### Nowości
+- **Weryfikowalne losowanie** (strona „Losowanie”): losuje numery z zakresu (z numerami do pominięcia) tak, że każdy może je powtórzyć i uzyskać ten sam wynik, dzięki publicznemu ziarnu. Wszystko dzieje się w przeglądarce, a „Kopiuj link” udostępnia to samo losowanie.
+- Metodę opisano krok po kroku, wraz z implementacją referencyjną dającą te same numery co strona.
+
+## 3.20.0 — 2026-11-08
+
+### Nowości
+- **QR na każdym losie:** kod QR weryfikacji w rogu każdego losu (szablony z jednym losem), z wyborem rogu i rozmiaru. Skan otwiera stronę potwierdzającą, że ten serwis wydał kod dla tego losu. Podpisany kluczem znanym tylko serwerowi; bez bazy danych. Nie dowodzi wpłaty ani wygranej.
+- Pojawia się tylko, gdy właściciel serwisu ustawi klucz. Zamówienia z QR mają limit 10 000 numerów.
+
+## 3.19.0 — 2026-11-08
+
+### Nowości
+- **Własna marka:** kolor numerów (każdy szablon; kolor serii ma pierwszeństwo) i **logo** stowarzyszenia na każdym losie (PNG lub JPG do 2 MB, szablony z jednym losem), z rogiem i rozmiarem (10–40 %). PNG zachowuje przezroczystość.
+- Logo zostaje tylko w sesji (znika z nią i po „Wyczyść wszystko”) i widać je w podglądzie.
+
+## 3.18.0 — 2026-11-08
+
+### Nowości
+- **Galeria szablonów:** wybierz jeden z czterech wzorów (Bosque, Quermesse, Natal i Gala), wpisz tytuł, organizację, do trzech nagród i datę, obejrzyj podgląd i kliknij „Użyj tego szablonu”: szablon i cyfry są gotowe. Każdy wzór to los z odcinkiem.
+- Wzory są oryginalne dla tego projektu, w wolnej czcionce Vera. Czcionka ma tylko alfabet łaciński: inne litery wywołują ostrzeżenie.
+
+## 3.17.0 — 2026-11-08
+
+### Nowości
+- **Znaczniki cięcia:** pole w panelu arkusza (szablony z jednym losem) rysuje krótkie kreski na marginesach, przedłużające każdą linię cięcia. Potrzeba co najmniej 3 mm marginesu.
+- **Odcinek** (numer dwa razy na losie) już działał: teraz jest przetestowany i opisany.
+- **Spad** jest już uwzględniany: jeśli PDF z Canvy ma TrimBox mniejszy niż strona, los to tylko to, co jest w środku.
+
+## 3.16.0 — 2026-11-08
+
+### Nowości
+- **Eksport listy losów (CSV):** plik dla Excela lub Calc, jeden los w wierszu (seria, numer i puste kolumny Imię, Kontakt, Zapłacono), z prefiksami, seriami i pominiętymi numerami.
+- **Arkusz kontrolny sprzedaży (PDF):** tabela A4 do wydruku i ręcznego wypełniania (36 losów na stronie, z polem „zapłacono”). W językach, których liter PDF nie umie zapisać, nagłówki są po angielsku.
+- Nic nie jest zapisywane na serwerze: lista powstaje tylko z formularza.
+
+## 3.15.0 — 2026-11-08
+
+### Nowości
+- **Serie i prefiksy:** tekst przed cyframi (A- daje A-0001). Przy kilku seriach oddzielonych przecinkami każda powtarza zakres i ma własne PDF. Prefiks dopuszcza litery, spację, kropkę, myślnik i ukośnik (do 6 znaków, bez cyfr).
+- **Pomijanie numerów:** 13, 100-110 usuwa te numery z ciągu (podsumowanie, pliki i weryfikacja liczą tylko to, co się drukuje).
+- **Osobny kolor dla każdej serii.**
+- Wszystko to trafia też do „Kopiuj link” i do podglądu.
+
+## 3.14.0 — 2026-11-08
+
+### Nowości
+- **Instalacja jako aplikacja (PWA):** zainstaluj stronę na telefonie lub komputerze; powłoka aplikacji otwiera się nawet offline (generowanie nadal wymaga serwera). Prosty service worker zapisuje tylko stronę, pliki aplikacji i teksty interfejsu i nigdy nie dotyka Twoich plików ani żądań generowania.
+
+## 3.13.0 — 2026-11-08
+
+### Nowości
+- **Zapamiętanie pliku z cyframi:** kto wróci za rok, nie musi go powtarzać. Zostaje tylko w Twojej przeglądarce (nigdy na serwerze) i jest używany z nowym szablonem; wybór innego go zastępuje, a „Wyczyść wszystko” usuwa.
+- **Kopiuj link:** przycisk kopiujący link z wartościami formularza (od, do, tryb, maksimum na plik, papier, margines i nazwa). Kto go otworzy, zobaczy te same wartości; pliki nigdy nie trafiają do linku.
+
+## 3.12.0 — 2026-11-08
+
+### Nowości
+- Strony **Regulamin**, **Polityka prywatności** i **Kontakt**, z linkami w stopce. To wersje tymczasowe, do sprawdzenia z pomocą prawną, zanim serwis zacznie pobierać opłaty.
+- **Przycisk darowizny** w stopce: pojawia się tylko, gdy właściciel ustawi link. Adres e-mail kontaktowy i nazwa osoby odpowiedzialnej też pochodzą z konfiguracji serwera, nigdy z kodu.
+
+## 3.11.0 — 2026-11-08
+
+### Nowości
+- **Lejek użycia** w panelu administracyjnym: ile zdarzeń jest na każdym etapie (sesja, szablon, cyfry, podgląd, generowanie, pobranie) i jaka część poprzedniego etapu dotarła do następnego. Pokazuje, gdzie ludzie rezygnują. Liczy zdarzenia, nie osoby.
+
+## 3.10.0 — 2026-11-08
+
+### Nowości
+- Ta strona: **Changelog**, ze wszystkim, co się zmienia, wersja po wersji.
+- W **grudniu** automatycznym motywem jest **Boże Narodzenie** (dla tych, którzy nigdy żadnego nie wybrali). Wybór innego motywu nadal jest zapamiętywany.
+
+### Ulepszono
+- Jedna zależność mniej na serwerze (`python-multipart` nie był już używany: pliki przychodzą jako surowe ciało).
+
+## 3.9.0 — 2026-11-08
+
+### Nowości
+- Układ dla **dużych ekranów** (4K, ultrapanoramiczne) i **nowych telefonów**: zwarty nagłówek i przyciski 44 px.
+- Podgląd pokazuje obraz, gdy przeglądarka nie potrafi wyświetlić PDF na stronie (Chrome na Androidzie).
+- Panel administracyjny rejestruje **typ ekranu** (klasa, rozmiar, rodzina), nie zapisując nic osobistego.
+- Serwis wywołuje sam siebie co 10 minut, żeby nie zasnąć.
+
+## 3.8.0 — 2026-11-08
+
+### Nowości
+- **Panel administracyjny** (tylko dla właściciela, z hasłem) z wykresami i objaśnieniami systemu i użycia: tylko sumy, nigdy dane osobowe.
+
+## 3.7.0 — 2026-11-08
+
+### Nowości
+- **SEO**: tytuł, opis i tekst dla każdej strony, `robots.txt`, `sitemap.xml` i prawdziwy błąd 404 dla stron, które nie istnieją.
+
+## 3.6.0 — 2026-11-08
+
+### Ulepszono
+- Strona dostarcza **jeden plik JavaScript**, zaciemniony i wstępnie skompresowany: to, co jest przesyłane, jest znacznie mniejsze niż wcześniej.
+
+## 3.5.0 — 2026-11-08
+
+### Nowości
+- Motyw **Matrix Gamer**: deszcz zielonych znaków i neonowa poświata.
+
+## 3.4.0 — 2026-11-08
+
+### Ulepszono
+- Style przechodzą na **Sass** i wychodzą jako **jeden CSS**. Struktura strony jest taka sama w każdym motywie: motyw zmienia tylko kolory i formatowanie.
+
+## 3.3.0 — 2026-11-07
+
+### Nowości
+- **Motywy**: Premiado (nowy wygląd domyślny) i siedem kolejnych (Quermesse, Arcade, Brutalista, Risografia, Janela 98, Gala i Natal), każdy jasny i ciemny.
+- Nowa ikona aplikacji.

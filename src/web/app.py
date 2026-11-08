@@ -13,7 +13,7 @@ from pathlib import Path
 
 from core import i18n
 from core.armazenamento import ArmazenamentoLocal
-from fastapi import FastAPI, Header, HTTPException, Request, Response
+from fastapi import Depends, FastAPI, Header, HTTPException, Request, Response
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse, Response as RespostaSimples
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -186,11 +186,12 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         return Saude(estado="ok", versao=VERSAO)
 
     @app.get("/api/changelog", response_model=Changelog, tags=["sistema"])
-    def changelog_api(resposta: Response) -> Changelog:
-        """O changelog (`src/web/CHANGELOG.md`): o que mudou em cada versao, so em portugues."""
+    def changelog_api(resposta: Response, lg: str = Depends(rotas.lingua)) -> Changelog:
+        """O changelog (`src/web/CHANGELOG.md`: o original, em portugues; `changelog/<lingua>.md`: um resumo traduzido) na lingua do pedido (X-Lingua)."""
         resposta.headers["Cache-Control"] = "public, max-age=300"
+        resposta.headers["Vary"] = "X-Lingua, Accept-Language"        # a resposta depende da lingua: as caches nao a podem misturar
         return Changelog(entradas=[EntradaChangelog(versao=e.versao, data=e.data, seccoes=[SeccaoChangelog(titulo=s.titulo, itens=s.itens)
-                                                                                           for s in e.seccoes]) for e in changelog.entradas()])
+                                                                                           for s in e.seccoes]) for e in changelog.entradas(lg)])
 
     @app.get("/api/publico", response_model=Publico, tags=["sistema"])
     def publico(resposta: Response) -> Publico:
@@ -199,12 +200,13 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         return Publico(donativo_url=config.donativo_url(), contacto=bool(config.contacto_email()), qr=bool(config.verificacao_chave()))
 
     @app.get("/api/pagina/{nome}", response_model=PaginaTexto, tags=["sistema"])
-    def pagina_de_texto(nome: str, resposta: Response) -> PaginaTexto:
-        """Termos, privacidade e contacto (`textos_legais.py`), so em portugues."""
+    def pagina_de_texto(nome: str, resposta: Response, lg: str = Depends(rotas.lingua)) -> PaginaTexto:
+        """Termos, privacidade e contacto (`textos_legais.py`, `legal/<lingua>.py`) na lingua do pedido (X-Lingua)."""
         if nome not in textos_legais.PAGINAS:
             raise HTTPException(404, "Página desconhecida")
         resposta.headers["Cache-Control"] = "public, max-age=300"
-        return PaginaTexto(**textos_legais.PAGINAS[nome]())
+        resposta.headers["Vary"] = "X-Lingua, Accept-Language"        # a resposta depende da lingua: as caches nao a podem misturar
+        return PaginaTexto(**textos_legais.pagina(nome, lg))
 
     @app.get("/api/linguas", response_model=Linguas, tags=["textos"])
     def linguas(accept_language: str | None = Header(default=None)) -> Linguas:

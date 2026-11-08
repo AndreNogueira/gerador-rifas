@@ -16,12 +16,10 @@ import { Sorteio } from "./Sorteio";
 import { ProvedorSessao, useSessao } from "./sessao";
 import { useTema, useVisual } from "./tema";
 
-/** Páginas só em português (como o painel): o título do separador não se traduz. */
+/** Páginas com título fixo: «Changelog» é um nome e o painel é só em português. Os Termos, a Privacidade e o Contacto põem o título que o servidor
+ * entrega, já na língua escolhida (ver PaginaTexto). */
 const TITULOS_PT: Record<string, string> = {
   "/changelog": "Changelog",
-  "/termos": "Termos de utilização",
-  "/privacidade": "Política de privacidade",
-  "/contacto": "Contacto",
   "/admin": "Painel",
 };
 

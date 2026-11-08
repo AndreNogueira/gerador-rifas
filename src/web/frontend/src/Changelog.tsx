@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 import { api, type EntradaChangelog, ErroApi } from "./api";
+import { useI18n } from "./i18n";
 import { Voltar } from "./paginas";
 
-/** O changelog (`src/web/CHANGELOG.md`): só em português, como o painel (é a história do produto, não a interface). */
+/** O changelog: em português é o completo (`src/web/CHANGELOG.md`); nas outras línguas o servidor devolve um resumo traduzido de cada versão. */
 export function Changelog() {
+  const { t, lingua } = useI18n();
   const [entradas, setEntradas] = useState<EntradaChangelog[] | null>(null);
   const [erro, setErro] = useState("");
+  // biome-ignore lint/correctness/useExhaustiveDependencies: o changelog pede-se de novo quando a língua muda
   useEffect(() => {
     let ativo = true;
+    setErro("");
     api
       .changelog()
       .then((d) => ativo && setEntradas(d.entradas))
@@ -15,18 +19,23 @@ export function Changelog() {
     return () => {
       ativo = false;
     };
-  }, []);
+  }, [lingua]);
   return (
     <div className="pagina">
       <section className="cartao changelog">
         <h1>Changelog</h1>
-        <p className="suave">O que mudou, versão a versão (só em português).</p>
+        <p className="suave">{t("web_changelog_sub")}</p>
+        {lingua !== "pt" && (
+          <p className="aviso-pagina" data-testid="changelog-resumo">
+            {t("web_changelog_resumo")}
+          </p>
+        )}
         {erro && <p role="alert">{erro}</p>}
         {!entradas && !erro && <p aria-busy="true">…</p>}
         {entradas?.map((e) => (
           <article key={e.versao} data-testid={`versao-${e.versao}`}>
             <h2>
-              Versão {e.versao} <time dateTime={e.data}>{e.data}</time>
+              {t("web_versao", { versao: e.versao })} <time dateTime={e.data}>{e.data}</time>
             </h2>
             {e.seccoes.map((s) => (
               <div key={s.titulo}>

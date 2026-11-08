@@ -1,0 +1,132 @@
+# Changelog (shrnutí česky)
+
+Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
+
+## 3.23.0 — 2026-11-08
+
+### Novinky
+- **Návod a video ke každé funkci:** návod má téma pro každou funkci (řady, seznam a kontrolní list, ořezové značky, galerie, vlastní značka, QR, losování, ukládání a sdílení, instalace jako aplikace, motivy), každé s krátkým videem nahraným přímo v rozhraní, v portugalštině a angličtině.
+- **Changelog, Podmínky, Soukromí a Kontakt v 18 jazycích:** text se zobrazí ve zvoleném jazyce. Changelog má přeložené shrnutí každé verze (úplný je portugalský); právní texty jsou překlady bez kontroly rodilými mluvčími a při rozdílech platí portugalská verze.
+- **Aplikace pro Windows 2.4** s tím, co web získal od verze 3.10: nabídka „Doplňky“ s řadami, předponami a barvou řady, vynechanými čísly, barvou čísel, logem, ořezovými značkami, galerií šablon, ověřitelným losováním a exportem seznamu (CSV) a kontrolního listu; a automatický vánoční vzhled v prosinci. Ověřovací QR a instalace jako aplikace zůstávají jen na webu.
+
+## 3.22.0 — 2026-11-08
+
+### Vylepšeno
+- **Kontrast 9 motivů skutečně změřen:** test v prohlížeči měří text proti skutečným pixelům pozadí, ve světlém i tmavém režimu (WCAG AA), a co neprošlo, bylo opraveno.
+- Velká dekorativní čísla kroků už čtečky obrazovky nečtou.
+
+## 3.21.0 — 2026-11-08
+
+### Novinky
+- **Ověřitelné losování** (stránka „Losování“): losuje čísla z rozsahu (s vynechanými čísly) tak, aby je kdokoli mohl zopakovat a získat stejný výsledek, s veřejným semínkem. Probíhá v prohlížeči a „Kopírovat odkaz“ sdílí totéž losování.
+- Metoda je popsána krok za krokem, s referenční implementací, která dává stejná čísla jako web.
+
+## 3.20.0 — 2026-11-08
+
+### Novinky
+- **QR na každém losu:** ověřovací QR kód v rohu každého losu (šablony s jedním losem), s volbou rohu a velikosti. Po naskenování se otevře stránka potvrzující, že tato služba vydala kód pro daný los. Podepsáno klíčem, který má jen server; bez databáze. Nedokazuje platbu ani výhru.
+- Objeví se, jen když majitel služby nastaví klíč. Zakázky s QR mají strop 10 000 čísel.
+
+## 3.19.0 — 2026-11-08
+
+### Novinky
+- **Vlastní značka:** barva čísel (jakákoli šablona; barva řady má přednost) a **logo** spolku na každém losu (PNG nebo JPG do 2 MB, šablony s jedním losem), s rohem a velikostí (10 až 40 %). PNG zachová průhlednost.
+- Logo zůstává jen v relaci (smaže se s ní i příkazem „Vymazat vše“) a vidíte ho v náhledu.
+
+## 3.18.0 — 2026-11-08
+
+### Novinky
+- **Galerie šablon:** vyberte jeden ze čtyř návrhů (Bosque, Quermesse, Natal a Gala), napište název, organizaci, až tři ceny a datum, prohlédněte si náhled a klikněte na „Použít tuto šablonu“: šablona i číslice jsou hotové. Každý návrh je los s útržkem.
+- Návrhy jsou původní pro tento projekt, ve volném písmu Vera. Písmo má jen latinku: u jiných písmen se zobrazí upozornění.
+
+## 3.17.0 — 2026-11-08
+
+### Novinky
+- **Ořezové značky:** zaškrtávací pole v panelu listu (šablony s jedním losem) nakreslí krátké čárky na okrajích, které prodlužují každou řeznou linii. Vyžaduje alespoň 3 mm okraj.
+- **Útržek** (číslo dvakrát na každém losu) fungoval už dřív: nyní je otestován a zdokumentován.
+- **Spadávka** se už respektuje: má-li PDF z Canvy menší TrimBox než stránka, los je jen to, co leží uvnitř.
+
+## 3.16.0 — 2026-11-08
+
+### Novinky
+- **Export seznamu losů (CSV):** soubor pro Excel nebo Calc, jeden los na řádek (řada, číslo a prázdné sloupce Jméno, Kontakt, Zaplaceno), s předponami, řadami a vynechanými čísly.
+- **Kontrolní list prodeje (PDF):** tabulka A4 k vytištění a ručnímu vyplnění (36 losů na stránku, s polem „zaplaceno“). V jazycích, jejichž písmena PDF nenapíše, jsou záhlaví anglicky.
+- Na serveru se nic neukládá: seznam vzniká jen z formuláře.
+
+## 3.15.0 — 2026-11-08
+
+### Novinky
+- **Řady a předpony:** text před číslicemi (A- dá A-0001). U více řad oddělených čárkami každá opakuje rozsah a má vlastní PDF. Předpona smí obsahovat písmena, mezeru, tečku, pomlčku a lomítko (nejvýše 6 znaků, bez číslic).
+- **Vynechání čísel:** 13, 100-110 odebere tato čísla z řady (souhrn, soubory i kontrola počítají jen to, co se tiskne).
+- **Barva pro každou řadu.**
+- To vše je také v „Kopírovat odkaz“ a v náhledu.
+
+## 3.14.0 — 2026-11-08
+
+### Novinky
+- **Instalace jako aplikace (PWA):** nainstalujte web v telefonu nebo počítači; kostra aplikace se otevře i bez sítě (generování stále potřebuje server). Jednoduchý service worker ukládá jen stránku, soubory aplikace a texty rozhraní a nikdy se nedotkne vašich souborů ani požadavků na generování.
+
+## 3.13.0 — 2026-11-08
+
+### Novinky
+- **Zapamatování souboru s číslicemi:** kdo se vrátí příští rok, nemusí ho opakovat. Zůstává jen ve vašem prohlížeči (nikdy na serveru) a použije se s novou šablonou; výběr jiného ho nahradí a „Vymazat vše“ ho smaže.
+- **Kopírovat odkaz:** tlačítko, které zkopíruje odkaz s hodnotami formuláře (od, do, režim, maximum na soubor, papír, okraj a název). Kdo ho otevře, uvidí stejné hodnoty; soubory v odkazu nikdy nejsou.
+
+## 3.12.0 — 2026-11-08
+
+### Novinky
+- Stránky **Podmínky použití**, **Zásady ochrany soukromí** a **Kontakt**, odkazované v patičce. Jsou to předběžné verze, které je třeba před zpoplatněním služby zkontrolovat s právní pomocí.
+- **Tlačítko pro dary** v patičce: objeví se, jen když majitel nastaví odkaz. Kontaktní e-mail a jméno odpovědné osoby také pocházejí z konfigurace serveru, nikdy z kódu.
+
+## 3.11.0 — 2026-11-08
+
+### Novinky
+- **Trychtýř používání** v administraci: kolik událostí je v každém kroku (relace, šablona, číslice, náhled, generování, stažení) a jaká část předchozího kroku došla k dalšímu. Ukazuje, kde lidé končí. Počítá události, ne osoby.
+
+## 3.10.0 — 2026-11-08
+
+### Novinky
+- Tato stránka: **Changelog** se vším, co se mění, verze po verzi.
+- V **prosinci** je automatickým motivem **Vánoce** (pro toho, kdo žádný nezvolil). Volba jiného motivu se dál pamatuje.
+
+### Vylepšeno
+- O jednu závislost méně na serveru (`python-multipart` se už nepoužíval: soubory přicházejí jako surové tělo).
+
+## 3.9.0 — 2026-11-08
+
+### Novinky
+- Rozvržení pro **velké obrazovky** (4K, ultraširoké) a **nové telefony**: kompaktní záhlaví a tlačítka 44 px.
+- Náhled ukazuje obrázek, když prohlížeč neumí zobrazit PDF na stránce (Chrome v Androidu).
+- Administrace zaznamenává **typ obrazovky** (třída, velikost, rodina), aniž by ukládala cokoli osobního.
+- Služba se sama volá každých 10 minut, aby neusnula.
+
+## 3.8.0 — 2026-11-08
+
+### Novinky
+- **Administrace** (jen pro majitele, s heslem) s grafy a vysvětlením systému a používání: jen souhrny, nikdy osobní údaje.
+
+## 3.7.0 — 2026-11-08
+
+### Novinky
+- **SEO**: název, popis a text pro každou stránku, `robots.txt`, `sitemap.xml` a skutečná chyba 404 u neexistujících stránek.
+
+## 3.6.0 — 2026-11-08
+
+### Vylepšeno
+- Web dodává **jediný soubor JavaScriptu**, zakódovaný a předem zkomprimovaný: to, co se přenáší, je mnohem menší než dřív.
+
+## 3.5.0 — 2026-11-08
+
+### Novinky
+- Motiv **Matrix Gamer**: déšť zelených znaků a neonová záře.
+
+## 3.4.0 — 2026-11-08
+
+### Vylepšeno
+- Styly přecházejí na **Sass** a vycházejí jako **jediné CSS**. Struktura stránky je ve všech motivech stejná: motiv mění jen barvy a formátování.
+
+## 3.3.0 — 2026-11-07
+
+### Novinky
+- **Motivy**: Premiado (nový výchozí vzhled) a sedm dalších (Quermesse, Arcade, Brutalista, Risografia, Janela 98, Gala a Natal), každý světlý i tmavý.
+- Nová ikona aplikace.

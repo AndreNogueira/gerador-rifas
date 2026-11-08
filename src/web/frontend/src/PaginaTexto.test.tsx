@@ -50,7 +50,21 @@ describe("rodapé e páginas de texto", () => {
     await userEvent.click(await screen.findByRole("link", { name: "Termos" }));
     expect(await screen.findByTestId("pagina-termos")).toHaveTextContent("Um parágrafo de teste.");
     expect(screen.getByText("Versão provisória de teste.")).toBeInTheDocument();
-    await waitFor(() => expect(document.title).toBe("Termos de utilização | Gerador de Rifas"));
+    await waitFor(() => expect(document.title).toBe("Página termos | Gerador de Rifas"));
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+  });
+
+  it("as páginas de texto voltam a pedir-se quando a língua muda (o texto vem do servidor, já traduzido)", async () => {
+    abrir();
+    await userEvent.click(await screen.findByRole("link", { name: "Privacidade" }));
+    await screen.findByTestId("pagina-privacidade");
+    await userEvent.selectOptions(screen.getByTestId("lingua"), "en");
+    await waitFor(() => {
+      const linguas = servidor.pedidos
+        .filter((p) => p.url === "/api/pagina/privacidade")
+        .map((p) => p.lingua);
+      expect(linguas.at(0)).toBe("pt");
+      expect(linguas.at(-1)).toBe("en");
+    });
   });
 });
