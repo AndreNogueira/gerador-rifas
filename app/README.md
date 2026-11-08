@@ -6,8 +6,8 @@ página** (5, 12, …) ou **uma só rifa**: nesse caso o programa enche a folha 
 couber. Gera vários PDFs ou **um único PDF com tudo**.
 
 **Executável:** `dist\GeradorRifas.exe` (compilado para código nativo; não precisa de instalar nada).
-**Descarregar:** na página de *Releases* do repositório no GitHub (etiquetas `windows-vX.Y.Z`), junto com o `.sha256`
-para conferir o ficheiro. A versão atual é a 2.3.0: visual novo (faixa com o gradiente violeta → magenta e o ícone da
+**Descarregar:** na página de *Releases* do repositório público <https://github.com/AndreNogueira/gerador-rifas-windows>
+(só tem o programa, **sem código-fonte**; etiquetas `windows-vX.Y.Z`), junto com o `.sha256` para conferir o ficheiro. A versão atual é a 2.3.0: visual novo (faixa com o gradiente violeta → magenta e o ícone da
 marca, passos numerados com cores próprias, botão «Gerar» em magenta), as mesmas cores da webapp.
 
 ## Como usar
@@ -156,14 +156,19 @@ Para correr sem construir: `.venv\Scripts\python.exe app.py`.
 ### Publicar uma versão no GitHub
 
 O fluxo `.github/workflows/windows.yml` compila o `.exe` num servidor Windows do GitHub (15–25 min), corre o
-`--selftest` e anexa `GeradorRifas.exe` + `GeradorRifas.exe.sha256` a uma *release*:
+`--selftest` e anexa `GeradorRifas.exe` + `GeradorRifas.exe.sha256` a uma *release* **do repositório público
+`AndreNogueira/gerador-rifas-windows`** (o GitHub não deixa tirar os arquivos «Source code» de uma release: por isso o
+`.exe` vai para um repositório que só tem um README, e o código fica no repositório privado):
 
 ```
 git tag windows-v2.3.0 && git push origin windows-v2.3.0      # ou Actions › Windows › Run workflow
 ```
+**Uma vez:** criar um *fine-grained personal access token* (GitHub › Settings › Developer settings), só para o repositório
+`gerador-rifas-windows`, com *Contents: Read and write*, e guardá-lo como *secret* **`RELEASES_TOKEN`** no repositório
+privado (Settings › Secrets and variables › Actions). O `GITHUB_TOKEN` automático só escreve no próprio repositório.
 O `.exe` do GitHub sai **sem assinatura** (`SEM_ASSINATURA=1`; um certificado autoassinado criado no servidor não vale
-nada). Para publicar um `.exe` assinado, construa em casa e use `gh release upload windows-v2.3.0 dist\GeradorRifas.exe --clobber`.
-Se o repositório for privado, só quem tem acesso a ele consegue descarregar.
+nada). Para publicar um `.exe` assinado, construa em casa e use
+`gh release upload windows-v2.3.0 dist\GeradorRifas.exe --clobber --repo AndreNogueira/gerador-rifas-windows`.
 
 ## Assinatura digital e SmartScreen
 
