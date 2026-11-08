@@ -15,6 +15,9 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_privacidade: "Privacidade",
     web_contacto: "Contacto",
     web_donativo: "Donativo",
+    web_algarismos_lembrados: "Reutilizámos os algarismos da última vez ({nome}).",
+    web_copiar_ligacao: "Copiar ligação",
+    web_ligacao_copiada: "Ligação copiada.",
     tut_titulo: "Tutorial",
     mi_video: "Vídeo tutorial",
     mi_sobre: "Acerca de…",
@@ -219,6 +222,14 @@ export class ServidorFalso {
             tem_modelo: true,
             modelo_url: `/api/sessoes/${id}/modelo.pdf`,
             template: { nome, estado: "ok" as const, texto: `✔ 5 bilhetes\n${nome}`, detalhe: "" },
+            algarismos: s.algarismos.nome
+              ? s.algarismos
+              : {
+                  nome: "",
+                  estado: "precisa" as const,
+                  texto: "Falta o ficheiro dos algarismos.",
+                  detalhe: "",
+                },
             info: { n_campos: 5, primeiro: "0001", ultimo: "0005", digitos: 4, tem_folha: false },
           };
       this.sessoes.set(id, novo);

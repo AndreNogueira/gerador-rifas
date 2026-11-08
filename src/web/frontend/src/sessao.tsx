@@ -11,6 +11,7 @@ import {
 import { api, type Campos, ErroApi, ErroRede, type Sessao } from "./api";
 import { useDialogos } from "./dialogos";
 import { useI18n } from "./i18n";
+import { esquecerAlgarismos, guardarAlgarismos, lerAlgarismos } from "./memoria";
 
 export type Ocupado = "template" | "algarismos" | "previa" | "gerar" | null;
 const CHAVE = "rifas.sessao";
@@ -31,6 +32,8 @@ interface Contexto {
   /** `confirmacao`: texto a confirmar antes de gerar (muitas rifas por folha); vazio = não pergunta. */
   pedirGerar: (c: Campos, confirmacao: string) => Promise<void>;
   cancelar: () => Promise<void>;
+  /** O nome do ficheiro dos algarismos reutilizado da última vez nesta sessão ("" se não houve). */
+  algarismosLembrados: string;
   /** «Limpar tudo»: apaga os ficheiros no servidor e começa uma sessão nova. */
   limpar: () => Promise<void>;
 }
@@ -62,6 +65,8 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
   const id = useRef<string | null>(null);
   const desde = useRef(0);
   const iniciou = useRef(false);
+  const [lembrado, setLembrado] = useState<{ sessao: string; nome: string } | null>(null);
+  const tentouLembrar = useRef(new Set<string>());
 
   /** Troca o estado pelo que o servidor devolveu (com o registo completo, no idioma do pedido). */
   const aplicar = useCallback((s: Sessao) => {
@@ -182,18 +187,46 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
     [aviso],
   );
 
+  // ---- já há template mas faltam os algarismos: reutiliza os da última vez (guardados só neste browser), uma vez por sessão
+  useEffect(() => {
+    if (!sessao || ocupado !== null || sessao.algarismos.estado !== "precisa") return;
+    const sid = sessao.sessao;
+    if (tentouLembrar.current.has(sid)) return;
+    tentouLembrar.current.add(sid);
+    void lerAlgarismos().then((f) => {
+      if (!f || id.current !== sid) return;
+      void executar(
+        "algarismos",
+        () => api.algarismos(sid, f),
+        (s) => {
+          if (s.algarismos.estado === "ok") setLembrado({ sessao: s.sessao, nome: f.name });
+          else void esquecerAlgarismos(); // já não serve (ficheiro estragado): não insiste
+        },
+      );
+    });
+  }, [sessao, ocupado, executar]);
+
   const valor = useMemo<Contexto>(
     () => ({
       sessao,
       registo,
       ocupado,
+      algarismosLembrados: lembrado && lembrado.sessao === sessao?.sessao ? lembrado.nome : "",
       carregarTemplate: (f) =>
         id.current
           ? executar("template", () => api.template(id.current as string, f), mostrarErrosDeFicheiros)
           : Promise.resolve(),
       carregarAlgarismos: (f) =>
         id.current
-          ? executar("algarismos", () => api.algarismos(id.current as string, f), mostrarErrosDeFicheiros)
+          ? executar(
+              "algarismos",
+              () => api.algarismos(id.current as string, f),
+              (s) => {
+                mostrarErrosDeFicheiros(s);
+                setLembrado(null);
+                if (s.algarismos.estado === "ok") void guardarAlgarismos(f); // para a próxima vez
+              },
+            )
           : Promise.resolve(),
       pedirPrevia: (c) =>
         id.current ? executar("previa", () => api.previa(id.current as string, c)) : Promise.resolve(),
@@ -216,13 +249,15 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
         try {
           if (antigo) await api.apagarSessao(antigo);
           guardar(null);
+          await esquecerAlgarismos(); // «Limpar tudo» apaga também o que ficou neste browser
+          setLembrado(null);
           await novaSessao();
         } catch (e) {
           await falhar(e);
         }
       },
     }),
-    [sessao, registo, ocupado, executar, mostrarErrosDeFicheiros, confirmar, t, falhar, novaSessao],
+    [sessao, registo, ocupado, lembrado, executar, mostrarErrosDeFicheiros, confirmar, t, falhar, novaSessao],
   );
 
   return <Ctx.Provider value={valor}>{children}</Ctx.Provider>;

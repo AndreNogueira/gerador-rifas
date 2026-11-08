@@ -36,6 +36,63 @@ function lembrados(): Partial<Campos> {
   }
 }
 
+/** Os campos que vão na ligação para partilhar (nunca ficheiros; os algarismos e a folha vêm do template). */
+const NA_LIGACAO = {
+  de: "inicio",
+  ate: "fim",
+  modo: "modo",
+  max: "max_ficheiro",
+  papel: "papel",
+  margem: "margem",
+  nome: "nome",
+} as const satisfies Record<string, keyof Campos>;
+
+/** A ligação (`/?de=1&ate=100&…`) que repõe estes valores noutro browser. `base` = o endereço do site, com barra final. */
+export function ligacaoDosCampos(campos: Campos, base: string): string {
+  const p = new URLSearchParams();
+  for (const [curto, campo] of Object.entries(NA_LIGACAO)) {
+    const v = campos[campo as keyof Campos];
+    if (v !== "") p.set(curto, v);
+  }
+  return `${base}?${p.toString()}`;
+}
+
+/** Lê uma ligação partilhada: só valores que o formulário aceitaria; tudo o resto ignora-se (o servidor valida outra vez). */
+export function camposDaLigacao(pesquisa: string): Partial<Campos> {
+  const p = new URLSearchParams(pesquisa);
+  const saida: Partial<Campos> = {};
+  const numero = (v: string | null, max: number) =>
+    v !== null && /^\d{1,9}$/.test(v) && v.length <= max ? v : null;
+  const de = numero(p.get("de"), 9);
+  const ate = numero(p.get("ate"), 9);
+  const maximo = numero(p.get("max"), 9);
+  const margem = numero(p.get("margem"), 3);
+  if (de) saida.inicio = de;
+  if (ate) saida.fim = ate;
+  if (maximo) saida.max_ficheiro = maximo;
+  if (margem) saida.margem = margem;
+  const modo = p.get("modo");
+  if (modo === "varios" || modo === "unico") saida.modo = modo;
+  const papel = p.get("papel");
+  if (papel && (PAPEIS as readonly string[]).includes(papel)) saida.papel = papel;
+  const nome = p.get("nome");
+  if (nome && nome.length <= 80 && [...nome].every((c) => c >= " " && c !== "<" && c !== ">"))
+    saida.nome = nome; // sem controlo nem HTML
+  return saida;
+}
+
+/** O que a ligação trouxe, lido uma única vez ao arrancar (e logo apagado do endereço). */
+function daLigacaoDeArranque(): Partial<Campos> {
+  try {
+    if (window.location.pathname !== "/" || !window.location.search) return {};
+    const campos = camposDaLigacao(window.location.search);
+    window.history.replaceState(null, "", window.location.pathname);
+    return campos;
+  } catch {
+    return {};
+  }
+}
+
 export interface Formulario {
   campos: Campos;
   /** O painel da folha e o resumo, calculados pelo servidor (null até chegar o primeiro). */
@@ -47,7 +104,11 @@ export interface Formulario {
 
 export function useFormulario(sessao: Sessao | null): Formulario {
   const { lingua } = useI18n();
-  const [campos, setCampos] = useState<Campos>(() => ({ ...PADRAO, ...lembrados() }));
+  const [campos, setCampos] = useState<Campos>(() => ({
+    ...PADRAO,
+    ...lembrados(),
+    ...daLigacaoDeArranque(),
+  }));
   const [calculo, setCalculo] = useState<Calculo | null>(null);
   const visto = useRef("");
 

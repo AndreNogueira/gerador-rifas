@@ -209,7 +209,8 @@ export function CartaoAlgarismos({
   bloqueado,
   aoEscolher,
   aoPedirAjuda,
-}: PropsComuns & { aoEscolher: (f: File) => void; aoPedirAjuda: ReactNode }) {
+  lembrado = "",
+}: PropsComuns & { aoEscolher: (f: File) => void; aoPedirAjuda: ReactNode; lembrado?: string }) {
   const { t } = useI18n();
   const ficheiro = sessao?.algarismos;
   return (
@@ -229,6 +230,11 @@ export function CartaoAlgarismos({
         <Estado cor={ficheiro ? COR_DO_ESTADO[ficheiro.estado] : "suave"} testid="estado-algarismos">
           {ficheiro?.texto ?? ""}
         </Estado>
+      )}
+      {lembrado && ficheiro?.estado === "ok" && (
+        <p className="suave" data-testid="algarismos-lembrados">
+          {t("web_algarismos_lembrados", { nome: lembrado })}
+        </p>
       )}
       {aoPedirAjuda}
     </Cartao>

@@ -78,8 +78,9 @@ def privacidade() -> dict:
                             "O endereço IP é usado apenas em memória, durante instantes, para limitar o número de pedidos por minuto, e não é guardado por nós. "
                             "O fornecedor de alojamento (Render, em Frankfurt, na União Europeia) pode registar endereços IP nos seus registos técnicos."]},
             {"titulo": "No seu browser",
-             "paragrafos": ["Guardamos no seu browser (armazenamento local) só preferências: a língua, o tema visual e o modo claro ou escuro. "
-                            "Não usamos cookies de publicidade nem de seguimento."]},
+             "paragrafos": ["Guardamos no seu browser (armazenamento local) as suas preferências: a língua, o tema visual, o modo claro ou escuro e os "
+                            "últimos valores do formulário. Para não repetir o trabalho de um ano para o outro, o ficheiro dos algarismos também pode ficar "
+                            "guardado no seu browser (nunca no nosso servidor); «Limpar tudo» apaga-o. Não usamos cookies de publicidade nem de seguimento."]},
             {"titulo": "Base legal e conservação",
              "paragrafos": ["Tratamos estes dados por interesse legítimo em prestar o serviço e o manter seguro (RGPD, artigo 6.º, n.º 1, alínea f). "
                             "Os ficheiros duram minutos; as contagens agregadas não identificam ninguém."]},

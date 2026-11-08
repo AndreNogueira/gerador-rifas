@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.13.0 — 2026-11-08
+
+### Novo
+- **Lembrar o ficheiro dos algarismos:** quem volta no ano seguinte já não o repete. Fica guardado só no seu browser (nunca no servidor) e é reutilizado quando carrega um template novo; escolher outro troca-o e «Limpar tudo» apaga-o.
+- **Copiar ligação:** um botão que copia uma ligação com os valores do formulário (de, até, modo, máximo por ficheiro, papel, margem e nome). Quem a abrir vê os mesmos valores; os ficheiros nunca vão na ligação.
+
 ## 3.12.0 — 2026-11-08
 
 ### Novo
