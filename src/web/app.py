@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
+import mimetypes
 from pathlib import Path
 
 from core import i18n
@@ -22,6 +23,40 @@ from .modelos import ErroApi
 from .rotas import Servico
 from .sessoes import Sessoes
 from .trabalhos import Motor
+
+
+_NAO_SERVIR = {".map", ".br", ".gz"}          # mapas e versoes comprimidas: so se entregam como `Content-Encoding` do original
+
+
+def _aceita(accept_encoding: str, nome: str) -> bool:
+    """Se o `Accept-Encoding` aceita a codificacao `nome` (respeita `;q=0`)."""
+    for parte in accept_encoding.split(","):
+        cod, _, resto = parte.strip().partition(";")
+        if cod.strip().lower() != nome:
+            continue
+        q = "1"
+        resto = resto.strip()
+        if resto.startswith("q="):
+            q = resto[2:].strip()
+        try:
+            return float(q) > 0
+        except ValueError:
+            return False
+    return False
+
+
+def _enviar(alvo: Path, request: Request, cabecalhos: dict[str, str]) -> FileResponse:
+    """O ficheiro, ou a sua versao `.br`/`.gz` se existir e o browser a aceitar (nunca re-comprime: so entrega)."""
+    media = mimetypes.guess_type(alvo.name)[0]
+    ae = request.headers.get("accept-encoding", "")
+    tem_comprimidos = False
+    for codificacao, extensao in (("br", ".br"), ("gzip", ".gz")):
+        comprimido = alvo.with_name(alvo.name + extensao)
+        if comprimido.is_file():
+            tem_comprimidos = True
+            if _aceita(ae, codificacao):
+                return FileResponse(comprimido, media_type=media, headers={**cabecalhos, "Content-Encoding": codificacao, "Vary": "Accept-Encoding"})
+    return FileResponse(alvo, headers={**cabecalhos, **({"Vary": "Accept-Encoding"} if tem_comprimidos else {})})
 
 
 class Lingua(BaseModel):
@@ -109,8 +144,11 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             app.mount(rota, StaticFiles(directory=assets / sub), name=sub)
 
     @app.get("/{caminho:path}", include_in_schema=False)
-    def frontend_estatico(caminho: str):
-        """Ficheiros do frontend; qualquer outra rota devolve o index.html (o React trata das paginas). `/api...` nunca cai aqui."""
+    def frontend_estatico(caminho: str, request: Request):
+        """Ficheiros do frontend; qualquer outra rota devolve o index.html (o React trata das paginas). `/api...` nunca cai aqui.
+
+        O `dist` traz cada ficheiro de texto ja comprimido (`.br`, `.gz`): entrega-se o que o browser aceita, sem gastar CPU.
+        Os mapas (`.map`) e as proprias versoes comprimidas nunca se servem como ficheiros soltos."""
         if caminho == "api" or caminho.startswith("api/"):
             return JSONResponse({"detail": "Rota inexistente"}, status_code=404)
         index = pasta / "index.html"
@@ -118,8 +156,10 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             return JSONResponse({"detail": "Frontend por compilar: cd src/web/frontend && pnpm install && pnpm build"}, status_code=503)
         alvo = (pasta / caminho).resolve()
         if caminho and alvo.is_relative_to(pasta) and alvo.is_file():
+            if alvo.suffix in _NAO_SERVIR:
+                return JSONResponse({"detail": "Rota inexistente"}, status_code=404)
             cabecalhos = {"Cache-Control": "public, max-age=31536000, immutable"} if alvo.parent.name == "assets" else {}
-            return FileResponse(alvo, headers=cabecalhos)
-        return FileResponse(index, headers={"Cache-Control": "no-cache"})
+            return _enviar(alvo, request, cabecalhos)
+        return _enviar(index, request, {"Cache-Control": "no-cache"})
 
     return app
