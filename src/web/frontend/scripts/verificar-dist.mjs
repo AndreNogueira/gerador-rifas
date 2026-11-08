@@ -19,6 +19,10 @@ if (js.length !== 1) erros.push(`esperava 1 .js em dist/assets e há ${js.length
 const mapas = [...ficheiros, ...readdirSync(dist)].filter((f) => f.endsWith(".map"));
 if (mapas.length) erros.push(`não pode haver mapas (.map): ${mapas.join(", ")}`);
 
+// o service worker (PWA): um ficheiro à parte, na raiz, legível e SEM a versão no nome (o registo leva `?v=`); não conta como «um só JS»
+// porque as páginas não o carregam como script: só o registam.
+if (!readdirSync(dist).includes("sw.js")) erros.push("falta dist/sw.js (o service worker da PWA, de public/sw.js)");
+
 const html = readFileSync(join(dist, "index.html"), "utf8");
 const conta = (re) => [...html.matchAll(re)].length;
 if (conta(/<link[^>]+rel="stylesheet"[^>]*>/g) !== 1) erros.push("o index.html deve ligar exatamente 1 folha de estilos");

@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.14.0 — 2026-11-08
+
+### Novo
+- **Instalar como app (PWA):** o Gerador de Rifas pode ser instalado no telemóvel e no computador e a casca da app abre mesmo sem rede (gerar continua a precisar do servidor). Um *service worker* simples guarda só a página, os ficheiros da app e os textos da interface; nunca toca nos teus ficheiros nem nos pedidos de geração.
+
 ## 3.13.0 — 2026-11-08
 
 ### Novo

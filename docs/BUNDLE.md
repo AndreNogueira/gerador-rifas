@@ -1,6 +1,7 @@
 # O JS e o CSS que a app entrega
 
-A app entrega ao browser **um só ficheiro de JS e um só de CSS** (`dist/assets/index-*.js`, `style-*.css`), sem mapas, e cada um já comprimido (`.br`, `.gz`). `pnpm build` encadeia: `tsc` → `vite build` → `scripts/comprimir-dist.mjs` → `scripts/verificar-dist.mjs`, que **falha** se:
+A app entrega ao browser **um só ficheiro de JS e um só de CSS** (`dist/assets/index-*.js`, `style-*.css`), sem mapas, e cada um já comprimido (`.br`, `.gz`). (Há ainda `dist/sw.js`, o *service worker* da PWA: um ficheiro à parte, legível, que as páginas não carregam como script, só registam com `?v=<versão>`; guarda a «casca» da app para abrir sem rede e **nunca** toca em `/api` (exceto os textos), `/health`, `/admin`, `/ajuda` e `/videos`. O servidor entrega-o com `Cache-Control: no-cache`.)
+`pnpm build` encadeia: `tsc` → `vite build` → `scripts/comprimir-dist.mjs` → `scripts/verificar-dist.mjs`, que **falha** se:
 
 - não houver exatamente 1 `.js` e 1 `.css` em `dist/assets`, ou o `index.html` não ligar 1 de cada;
 - houver um mapa (`.map`), um `<style>` embutido ou um `modulepreload`;
