@@ -23,7 +23,7 @@ function useTutorial(): { dados: TutorialDados | null; erro: string } {
   return { dados, erro };
 }
 
-function Voltar() {
+export function Voltar() {
   const { t } = useI18n();
   return (
     <Ligacao para="/" className="botao secundario voltar">

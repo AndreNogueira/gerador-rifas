@@ -151,6 +151,21 @@ export class ServidorFalso {
     });
 
     if (url === "/health") return this.responder({ estado: "ok", versao: "3.0.0" });
+    if (url === "/api/changelog")
+      return this.responder({
+        entradas: [
+          {
+            versao: "3.0.0",
+            data: "2026-11-08",
+            seccoes: [{ titulo: "Novo", itens: ["Uma novidade de teste."] }],
+          },
+          {
+            versao: "2.9.0",
+            data: "2026-10-01",
+            seccoes: [{ titulo: "Corrigido", itens: ["Um erro de teste."] }],
+          },
+        ],
+      });
     if (url === "/api/linguas")
       return this.responder({
         por_defeito: "pt",

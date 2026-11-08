@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { Admin } from "./Admin";
 import { api } from "./api";
 import { Cabecalho } from "./Cabecalho";
+import { Changelog } from "./Changelog";
 import { ProvedorDialogos } from "./dialogos";
 import { registarEcra } from "./ecra";
 import { useFormulario } from "./formulario";
 import { Gerador } from "./Gerador";
 import { useI18n } from "./i18n";
 import { Sobre, Tutorial, Video } from "./paginas";
-import { useLocalizacao } from "./rota";
+import { Ligacao, useLocalizacao } from "./rota";
 import { ProvedorSessao, useSessao } from "./sessao";
 import { useTema, useVisual } from "./tema";
 
@@ -32,9 +33,11 @@ function Aplicacao() {
           ? t("mi_video")
           : caminho === "/sobre"
             ? t("mi_sobre")
-            : caminho === "/admin"
-              ? "Painel" // o painel é só em português
-              : "";
+            : caminho === "/changelog"
+              ? "Changelog" // só em português
+              : caminho === "/admin"
+                ? "Painel" // o painel é só em português
+                : "";
     document.title = pagina ? `${pagina.replace(/…$/, "")} | ${nome}` : nome;
   }, [caminho, t]);
 
@@ -60,13 +63,19 @@ function Aplicacao() {
           <Video />
         ) : caminho === "/sobre" ? (
           <Sobre versao={versao} />
+        ) : caminho === "/changelog" ? (
+          <Changelog />
         ) : caminho === "/admin" ? (
           <Admin />
         ) : (
           <Gerador {...formulario} />
         )}
       </main>
-      {versao && <footer className="rodape">v{versao}</footer>}
+      {versao && (
+        <footer className="rodape">
+          v{versao} · <Ligacao para="/changelog">Changelog</Ligacao>
+        </footer>
+      )}
     </>
   );
 }

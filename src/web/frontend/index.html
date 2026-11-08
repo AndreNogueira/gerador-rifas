@@ -15,7 +15,9 @@
         var raiz = document.documentElement;
         var visual = localStorage.getItem("rifas.visual");
         var modo = localStorage.getItem("rifas.tema");
+        // sem escolha guardada: «Premiado», e em dezembro «Natal» (a mesma regra de visualPorEpoca em src/tema.ts)
         if (visual) raiz.setAttribute("data-visual", visual);
+        else if (new Date().getMonth() === 11) raiz.setAttribute("data-visual", "natal");
         if (modo === "claro" || modo === "escuro") raiz.setAttribute("data-tema", modo === "claro" ? "light" : "dark");
       } catch (e) {}
     </script>

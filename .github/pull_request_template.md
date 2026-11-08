@@ -14,7 +14,7 @@
 - [ ] Se mexe em **`src/core`**: os testes do `core` passam e a app Windows continua a funcionar
 - [ ] Se afeta o **serviço público**: pensei nos limites (memória, 1 geração de cada vez, por IP)
 - [ ] Sem segredos, e versões novas **fixadas exatamente**
-- [ ] `VERSAO` em `src/web/__init__.py` atualizada, se a mudança é visível ao utilizador
+- [ ] `VERSAO` em `src/web/__init__.py` atualizada **e uma entrada em `src/web/CHANGELOG.md`** (a página «Changelog» do site), se a mudança é visível ao utilizador
 - [ ] Documentação (`CLAUDE.md`, `README.md`, `docs/`) atualizada, se for caso disso
 
 ## Notas para quem revê

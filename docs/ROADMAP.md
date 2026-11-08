@@ -8,7 +8,6 @@
 |---|---|---|---|
 | 1 | **Lembrar o ficheiro dos algarismos** entre sessões | S | A app Windows lembra-o; aqui a sessão perde-o. Guardar no browser (IndexedDB) e reenviar ao servidor ao retomar. Nada fica no servidor. |
 | 2 | **Capturas do tutorial da web** | M | As atuais são da app Windows. Gerar com Playwright nas 18 línguas (`/api/tutorial/recorte`) e trocar `rotas_ajuda`. |
-| 3 | **Tema automático por época** | XS | «Natal» em dezembro, se o utilizador nunca escolheu um tema. O registo está em `src/temas.ts`. |
 | 4 | **Mais temas** | S cada | `docs/TEMAS.md` tem a receita. Ideias: Halloween, Verão/Praia, Jornal antigo, Terminal verde, Cartaz de circo. |
 | 5 | **SEO por língua** | L | Um URL por língua (`/en/`, `/es/`…) com o texto traduzido no HTML e `hreflang`: hoje só o português se posiciona (`docs/SEO.md`). Antes disso: páginas de «como fazer» (rifas para a escola, a associação…). |
 | 6 | **Instalar como app (PWA)** | S | O `manifest.webmanifest` e os ícones já existem; falta um *service worker* que guarde só a «casca» (a geração precisa sempre do servidor). |
@@ -24,7 +23,6 @@
 | 11 | **Métricas que sobrevivem** | M | O disco do Render gratuito é efémero: disco persistente (pago) ou base externa para o histórico do painel (`docs/ADMIN.md`). |
 | 12 | **Medir no Render a sério** | S | Os tempos e o `MAX_NUMEROS` (30 000) partiram de um contentor com 0,1 CPU assumido; repetir no Render e ajustar. |
 | 13 | **Revisão nativa das traduções `web_*`** | S por língua | Foram escritas sem falante nativo (11 chaves). |
-| 14 | **Remover `python-multipart`** | XS | Já não é usada (uploads em corpo cru). |
 
 ## Plataforma
 

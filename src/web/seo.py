@@ -19,7 +19,7 @@ from dataclasses import dataclass
 from core import i18n, tutorial
 from fastapi import Request
 
-from . import VERSAO, config
+from . import VERSAO, changelog, config
 
 NOME = "Gerador de Rifas"
 IMAGEM = "/og-imagem.png"           # 1200x630, em frontend/public
@@ -75,6 +75,14 @@ def _corpo_sobre() -> str:
     return f'<h1>Acerca do {NOME}</h1>{_paragrafos(resumo)}<p><a href="/">Voltar ao {NOME}</a></p>'
 
 
+def _corpo_changelog() -> str:
+    blocos = []
+    for e in list(changelog.entradas())[:6]:
+        itens = "".join(f"<h3>{html.escape(s.titulo)}</h3><ul>{''.join(f'<li>{html.escape(i)}</li>' for i in s.itens)}</ul>" for s in e.seccoes)
+        blocos.append(f"<section><h2>Versão {html.escape(e.versao)} ({html.escape(e.data)})</h2>{itens}</section>")
+    return f'<h1>Changelog</h1><p>O que mudou no {NOME}, versão a versão.</p>{"".join(blocos)}<p><a href="/">Voltar ao {NOME}</a></p>'
+
+
 @dataclass(frozen=True)
 class Pagina:
     caminho: str
@@ -98,6 +106,9 @@ ROTAS: dict[str, Pagina] = {p.caminho: p for p in (
     Pagina("/sobre", f"Acerca do {NOME}",
            "O que é o Gerador de Rifas, como funciona e o que usa. O mesmo motor da aplicação para Windows, agora no browser.",
            _corpo_sobre),
+    Pagina("/changelog", f"Changelog: o que mudou | {NOME}",
+           "Tudo o que mudou no Gerador de Rifas, versão a versão: novas funcionalidades, melhorias e correções.",
+           _corpo_changelog),
 )}
 
 
