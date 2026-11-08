@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { brotliCompressSync, constants, gzipSync } from "node:zlib";
 
 const dist = new URL("../dist/", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
-const COMPRIMIVEL = /\.(js|css|html|svg|webmanifest|json|txt|xml)$/;
+const COMPRIMIVEL = /\.(js|css|svg|webmanifest|json|txt|xml)$/; // o index.html não: o servidor monta-o por rota (SEO)
 const MINIMO = 256; // abaixo disto não compensa
 
 let total = 0;

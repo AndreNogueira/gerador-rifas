@@ -95,6 +95,15 @@ a {
   overflow: hidden;
   clip-path: inset(50%);
 }
+// o texto que o servidor mete no HTML para os motores de pesquisa e as redes sociais: o React substitui-o ao arrancar, e até lá não se vê
+.seo-estatico {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 .icone {
   flex: none;
   vertical-align: -0.2em;

@@ -119,9 +119,11 @@ def test_a_documentacao_openapi_existe_em_api(cliente):
 
 # ------------------------------------------------------------------ ficheiros do frontend
 def test_raiz_e_rotas_do_react_devolvem_o_index(cliente):
-    for caminho in ("/", "/tutorial", "/sobre/qualquer/coisa"):
+    for caminho in ("/", "/tutorial", "/video", "/sobre"):
         r = cliente.get(caminho)
         assert r.status_code == 200 and "<div id=raiz>" in r.text and r.headers["cache-control"] == "no-cache", caminho
+    r = cliente.get("/sobre/qualquer/coisa")            # rota que nao existe: 404 a serio (sem «soft 404»), mas a SPA arranca na mesma
+    assert r.status_code == 404 and "<div id=raiz>" in r.text and r.headers["cache-control"] == "no-cache"
 
 
 def test_ficheiros_com_hash_sao_cacheados_para_sempre(cliente):
