@@ -1,0 +1,77 @@
+// Gala: art déco. Dourado sobre azul-noite, molduras duplas, raios de leque e insígnias chanfradas; letra «Marcellus»
+// nos títulos e «Jost» no texto. Claro = pérola com azul-marinho e ouro velho.
+@use "../tema" as *;
+
+@include tema(gala) {
+  --t-ouro: light-dark(#a47a1c, #e6c56e);
+
+  --fundo: light-dark(#eceff5, #0a101f);
+  --cartao: light-dark(#fbfcff, #121a30);
+  --texto: light-dark(#0d1b34, #f6eedb);
+  --suave: light-dark(#56627d, #aeb4c8);
+  --linha: light-dark(#cdd3e0, #2a3454);
+  --campo: light-dark(#f2f4fa, #0c1326);
+  --destaque: light-dark(#8a6516, #e6c56e);
+  --destaque-2: light-dark(#0f7a5c, #35d6a4);
+  --ok: light-dark(#0b7a56, #46e0ac);
+  --aviso: light-dark(#8a5a00, #ffc861);
+  --erro: light-dark(#b0102e, #ff7d94);
+  --sombra-cor: light-dark(#0d1b34, #000000);
+  --passo-1: light-dark(#8a6516, #e6c56e);
+  --passo-2: light-dark(#0f7a5c, #35d6a4);
+  --passo-3: light-dark(#a3112f, #ff7d94);
+  --passo-4: light-dark(#1d4ea8, #7ba6ff);
+
+  --fonte: "Jost Variable", "Century Gothic", system-ui, sans-serif;
+  --fonte-titulo: "Marcellus", "Trajan Pro", Georgia, serif;
+  --peso-titulo: 400;
+  --peso-marca: 400;
+  --peso-numero: 400;
+  --raio: 3px;
+  --raio-c: 2px;
+  --entalhe: 0.8rem;
+  --filtro-coluna: drop-shadow(0 10px 16px color-mix(in srgb, var(--sombra-cor) 28%, transparent));
+
+  // a faixa: azul-noite com os raios de leque dourados e o recorte em degraus
+  --banda:
+    repeating-conic-gradient(from 270deg at 50% 118%, rgb(230 197 110 / 22%) 0 2.5deg, transparent 2.5deg 9deg),
+    linear-gradient(180deg, light-dark(#0b1a33, #070c19), light-dark(#14284d, #0f1a33) 80%, light-dark(#0b1a33, #070c19));
+  --banda-forma: polygon(0 0, 100% 0, 100% 78%, 97% 78%, 97% 88%, 94% 88%, 94% 100%, 6% 100%, 6% 88%, 3% 88%, 3% 78%, 0 78%);
+  --banda-borda: 2px solid #e6c56e;
+  --topo-sombra: 0 2px 16px rgb(0 0 0 / 60%);
+  --marca-anel: 0 0 0 2px #e6c56e, 0 8px 20px rgb(0 0 0 / 55%);
+  --pilula: rgb(230 197 110 / 12%);
+  --pilula-anel: 0 0 0 1px rgb(230 197 110 / 55%);
+  --nav-ativo: #e6c56e;
+  --nav-ativo-texto: #0b1a33;
+
+  --botao-1: #f1d98c;
+  --botao-2: #c9a13f;
+  --botao-texto: #0b1a33;
+  --botao-borda-cor: #8a6a1c;
+  --botao-sombra: 0 6px 16px -8px rgb(201 161 63 / 80%);
+  --botao-sombra-hover: 0 10px 22px -8px rgb(201 161 63 / 90%);
+  --entrega-1: #0f7a5c;
+  --entrega-2: #35b58a;
+
+  // a moldura dupla dourada do bilhete
+  --cartao-anel-extra:
+    inset 0 0 0 1px color-mix(in srgb, var(--t-ouro) 70%, transparent),
+    inset 0 0 0 5px var(--cartao),
+    inset 0 0 0 6px color-mix(in srgb, var(--t-ouro) 38%, transparent);
+  --cabecalho-tinta: 14%;
+  --insignia-luz: 55%;
+  --insignia-escuro: 30%;
+  --insignia-cor: light-dark(#ffffff, #0b1a33);
+  --insignia-raio: 0px;
+  --insignia-rot: none;
+  --insignia-sombra: 0 0 0 0 transparent;
+  --insignia-forma: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
+  --numero-pct: 80%;
+
+  --progresso-raio: 0px;
+  --progresso-barra: linear-gradient(90deg, #c9a13f, #f1d98c);
+  --visor-barra: linear-gradient(90deg, transparent, #e6c56e, transparent);
+  --visor-anel: inset 0 0 0 1px color-mix(in srgb, var(--t-ouro) 70%, transparent), inset 0 0 0 5px var(--cartao), inset 0 0 0 6px color-mix(in srgb, var(--t-ouro) 38%, transparent);
+  --dialogo-topo: var(--t-ouro);
+}

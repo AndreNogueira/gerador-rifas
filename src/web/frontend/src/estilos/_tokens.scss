@@ -1,0 +1,127 @@
+// As variáveis que um TEMA pode mudar, com os valores do tema «Premiado» (que é também o de reserva).
+//
+// Regra de ouro: um tema muda só cores, letra, raios, sombras e fundos. NUNCA a estrutura (tamanhos, margens, espaços,
+// ordem, o que se vê ou não): isso vive em `_geometria.scss` e nas regras da base. O teste `temas.test.tsx` compila cada
+// `temas/_<id>.scss` e falha se um tema declarar algo que não esteja neste ficheiro.
+//
+// Cuidado: um valor que usa `var(--cor)` (a cor do passo) não pode ser guardado aqui, porque `--cor` só existe dentro de
+// cada bilhete. Por isso há parâmetros (percentagens) e não receitas: a base é que junta `--cor` aos parâmetros.
+
+:root {
+  color-scheme: light dark;
+
+  // ---- cores
+  --fundo: light-dark(#f3effe, #0f0a22);
+  --cartao: light-dark(#ffffff, #1b1236);
+  --texto: light-dark(#1d1240, #f1ecff);
+  --suave: light-dark(#62597f, #aa9fcf);
+  --linha: light-dark(#ddd5f5, #35295a);
+  --campo: light-dark(#f8f6ff, #130c2a);
+  --destaque: light-dark(#6a35f5, #a68bff);
+  --destaque-2: light-dark(#d62b8f, #ff6fb5);
+  --ok: light-dark(#0b7a5f, #3fe0b5);
+  --aviso: light-dark(#a05a00, #ffb454);
+  --erro: light-dark(#c9183a, #ff7a90);
+  --sombra-cor: light-dark(#2c1478, #000000);
+  --passo-1: light-dark(#6a35f5, #a68bff);
+  --passo-2: light-dark(#d62b8f, #ff6fb5);
+  --passo-3: light-dark(#ec6a08, #ffa14d);
+  --passo-4: light-dark(#0e9f84, #3fe0b5);
+
+  // ---- letra (família e peso; o tamanho e o espaçamento são da base)
+  --fonte: "Bricolage Grotesque Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fonte-titulo: var(--fonte);
+  --peso-titulo: 750;
+  --fonte-numero: var(--fonte-titulo);
+  --peso-marca: 800; // o nome da app no cabeçalho
+  --peso-numero: 800; // o número grande de cada passo
+  --ligaduras: normal; // `none` desliga as ligaduras (fi, fl) em letras de pixel
+  --brilho-titulo: none; // text-shadow dos títulos e dos números
+  --brilho-botao: none; // text-shadow dos botões
+
+  // ---- raios e sombras
+  --raio: 18px;
+  --raio-c: 12px;
+  --entalhe: 0.7rem; // raio dos entalhes laterais do bilhete (0 = sem entalhes)
+  --filtro-coluna: drop-shadow(0 10px 18px color-mix(in srgb, var(--sombra-cor) 18%, transparent));
+  --sombra-visor: 0 10px 28px -10px color-mix(in srgb, var(--sombra-cor) 35%, transparent);
+
+  // ---- a faixa atrás do cabeçalho e a decoração da página (só pintura: não ocupam espaço)
+  --banda:
+    radial-gradient(circle at 80% 30%, rgb(255 255 255 / 16%) 0 0.35rem, transparent 0.4rem) 0 0 / 3.2rem 3.2rem,
+    linear-gradient(115deg, light-dark(#4a1fd6, #3a1ac0) 0%, light-dark(#7b2fe8, #7a25cf) 45%, light-dark(#d62b8f, #c42a92) 100%);
+  --banda-forma: ellipse(130% 100% at 50% 0%);
+  --banda-mascara: none;
+  --banda-borda: none; // border-bottom da faixa
+  --banda-mistura: normal;
+  --banda-animacao: none; // `desliza 28s linear infinite` para a deslocar
+  --banda-desliza: 0 0; // para onde o fundo da faixa se desloca (uma posição por camada)
+  --deco-pagina: none; // fundo fixo por trás de tudo (ex.: a chuva do Matrix)
+  --deco-pagina-opacidade: 0;
+  --deco-pagina-animacao: none;
+  --deco-pagina-desliza: 0 0;
+
+  // ---- cabeçalho
+  --topo-texto: #ffffff;
+  --topo-sombra: 0 2px 14px rgb(20 4 70 / 40%);
+  --marca-anel: 0 0 0 2px rgb(255 255 255 / 70%), 0 8px 20px rgb(20 4 70 / 45%);
+  --pilula: rgb(20 6 60 / 32%);
+  --pilula-texto: #ffffff;
+  --pilula-anel: 0 0 0 0 transparent; // contorno e relevo das pílulas (box-shadow)
+  --nav-ativo: #ffd84a;
+  --nav-ativo-texto: #2a1068;
+
+  // ---- botões
+  --botao-1: #6a35f5;
+  --botao-2: #d62b8f;
+  --botao-texto: #ffffff;
+  --botao-anel: 0 0 0 0 transparent; // contorno e relevo (box-shadow)
+  --botao-borda-cor: transparent;
+  --botao-sec-sombra: 0 0 0 0 transparent;
+  --botao-sombra: 0 8px 18px -8px rgb(214 43 143 / 70%);
+  --botao-sombra-hover: 0 12px 22px -8px rgb(214 43 143 / 75%);
+  --botao-hover: translateY(-1px);
+  --botao-ativo: translateY(1px);
+  --entrega-1: #0e9f84;
+  --entrega-2: #1ab6d6;
+
+  // ---- campos
+  --campo-anel: 0 0 0 0 transparent; // relevo dos campos
+  --campo-anel-foco: 0 0 0 4px color-mix(in srgb, var(--destaque) 22%, transparent);
+
+  // ---- o bilhete (cada passo)
+  --faixa-topo: none; // desenho (fundo) nos primeiros píxeis do bilhete: o toldo, a bengala doce...
+  --faixa-topo-altura: 0px;
+  --anel-largura: 0px; // contorno interior do bilhete, na cor do passo misturada com `--anel-cor`
+  --anel-tinta: 0%; // 0% = só `--anel-cor`; 100% = só a cor do passo
+  --anel-cor: transparent;
+  --cartao-anel-extra: 0 0 0 0 transparent; // mais sombras interiores (molduras, relevo)
+  --picotado-estilo: dashed;
+  --cabecalho-tinta: 16%; // quanto da cor do passo tinge o cabeçalho do bilhete
+  --cabecalho-tinta-fim: 0%;
+  --cabecalho-fim: 70%;
+  --cabecalho-angulo: 95deg;
+  --cabecalho-fundo-extra: none; // desenho por cima da tinta (ex.: barra de título, retícula)
+  --cabecalho-texto: currentcolor;
+  --insignia-luz: 30%; // quanto branco se mistura na cor do passo (brilho)
+  --insignia-escuro: 20%; // quanto preto (sombra)
+  --insignia-cor: #ffffff;
+  --insignia-raio: 13px;
+  --insignia-sombra: 0 6px 14px -6px var(--sombra-cor);
+  --insignia-rot: rotate(-5deg);
+  --insignia-forma: none; // clip-path
+  --numero-pct: 55%;
+  --numero-sombra: none;
+  --zona-estilo: dashed;
+  --modo-ativo-tinta: 14%;
+  --modo-ativo-texto: currentcolor;
+
+  // ---- progresso, visor e diálogos
+  --progresso-raio: 999px;
+  --progresso-fundo: color-mix(in srgb, var(--destaque) 16%, var(--campo));
+  --progresso-barra: linear-gradient(90deg, var(--botao-1), var(--botao-2) 70%, var(--passo-3));
+  --visor-barra: linear-gradient(90deg, var(--botao-1), var(--botao-2), var(--passo-3));
+  --visor-anel: 0 0 0 0 transparent;
+  --dialogo-sombra: 0 30px 70px -20px rgb(20 4 70 / 65%);
+  --dialogo-topo: var(--destaque);
+}

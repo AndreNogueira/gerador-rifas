@@ -1,0 +1,88 @@
+// Brutalista (neobrutalismo): contornos grossos, sombras duras sem desfoque, cores chapadas, letra «Space Grotesk».
+// No escuro os contornos passam a branco e as sombras a amarelo.
+@use "../tema" as *;
+
+@include tema(brutalista) {
+  --t-tinta: light-dark(#0a0a0a, #f5f5f5);
+  --t-solida: light-dark(#0a0a0a, #ffe14d);
+
+  --fundo: light-dark(#ffe14d, #121212);
+  --cartao: light-dark(#ffffff, #1e1e1e);
+  --texto: light-dark(#0a0a0a, #f5f5f5);
+  --suave: light-dark(#4a4a4a, #b8b8b8);
+  --linha: var(--t-tinta);
+  --campo: light-dark(#ffffff, #151515);
+  --destaque: light-dark(#2433e6, #8ea2ff);
+  --destaque-2: light-dark(#ff3d81, #ff6aa0);
+  --ok: light-dark(#087a4a, #4ae39b);
+  --aviso: light-dark(#8a5200, #ffb84a);
+  --erro: light-dark(#d10f3a, #ff6a86);
+  --sombra-cor: var(--t-solida);
+  --passo-1: light-dark(#2433e6, #8ea2ff);
+  --passo-2: light-dark(#ff3d81, #ff6aa0);
+  --passo-3: light-dark(#ff8a00, #ffa940);
+  --passo-4: light-dark(#00a86b, #4ae39b);
+
+  --fonte: "Space Grotesk Variable", system-ui, sans-serif;
+  --peso-titulo: 800;
+  --peso-marca: 800;
+  --raio: 6px;
+  --raio-c: 4px;
+  --entalhe: 0px;
+  --filtro-coluna: drop-shadow(6px 6px 0 var(--t-solida));
+  --sombra-visor: 6px 6px 0 var(--t-solida);
+
+  // faixa rosa chapada com um traço preto na base
+  --banda:
+    linear-gradient(180deg, transparent calc(62% - 3px), #0a0a0a calc(62% - 3px) 62%, transparent 62%),
+    linear-gradient(180deg, var(--destaque-2) 0 62%, transparent 62%);
+  --banda-forma: none;
+  --topo-texto: #0a0a0a;
+  --topo-sombra: none;
+  --marca-anel: 0 0 0 3px #0a0a0a, 3px 3px 0 3px #0a0a0a;
+  --pilula: #ffffff;
+  --pilula-texto: #0a0a0a;
+  --pilula-anel: 0 0 0 3px #0a0a0a, 3px 3px 0 3px #0a0a0a;
+  --nav-ativo: #ffe14d;
+  --nav-ativo-texto: #0a0a0a;
+
+  --botao-1: light-dark(#ff3d81, #ff6aa0);
+  --botao-2: light-dark(#ff3d81, #ff6aa0);
+  --botao-texto: #0a0a0a;
+  --botao-borda-cor: var(--t-tinta);
+  --botao-anel: 0 0 0 1px var(--t-tinta);
+  --botao-sombra: 4px 4px 0 var(--t-solida);
+  --botao-sombra-hover: 6px 6px 0 var(--t-solida);
+  --botao-sec-sombra: 3px 3px 0 var(--t-tinta);
+  --botao-hover: translate(-2px, -2px);
+  --botao-ativo: translate(4px, 4px);
+  --entrega-1: light-dark(#00c27a, #4ae39b);
+  --entrega-2: light-dark(#00c27a, #4ae39b);
+
+  --campo-anel: 0 0 0 1px var(--t-tinta);
+  --campo-anel-foco: 4px 4px 0 var(--t-solida);
+
+  --anel-largura: 3px;
+  --anel-tinta: 0%;
+  --anel-cor: var(--t-tinta);
+  --picotado-estilo: solid;
+  --cabecalho-tinta: 38%;
+  --cabecalho-tinta-fim: 38%;
+  --cabecalho-fim: 100%;
+  --insignia-luz: 0%;
+  --insignia-escuro: 0%;
+  --insignia-cor: #0a0a0a;
+  --insignia-raio: 4px;
+  --insignia-rot: none;
+  --insignia-sombra: 0 0 0 3px var(--t-tinta), 3px 3px 0 3px var(--t-tinta);
+  --numero-pct: 100%;
+  --modo-ativo-tinta: 100%;
+  --modo-ativo-texto: #0a0a0a;
+
+  --progresso-raio: 4px;
+  --progresso-fundo: var(--cartao);
+  --progresso-barra: var(--destaque-2);
+  --visor-barra: var(--destaque-2);
+  --visor-anel: 0 0 0 3px var(--t-tinta);
+  --dialogo-sombra: 8px 8px 0 var(--t-solida), 0 0 0 3px var(--t-tinta);
+}

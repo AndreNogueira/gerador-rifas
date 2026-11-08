@@ -26,7 +26,11 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual }: Props) {
     <header className="topo">
       <Ligacao para="/" className="marca">
         <img src="/icone.svg" alt="" width={46} height={46} />
-        <h1>{t("app_nome")}</h1>
+        {caminho === "/" ? (
+          <h1 className="nome">{t("app_nome")}</h1>
+        ) : (
+          <p className="nome">{t("app_nome")}</p>
+        )}
       </Ligacao>
       <nav className="navegacao" aria-label={t("app_nome")}>
         {PAGINAS.map((p) => (

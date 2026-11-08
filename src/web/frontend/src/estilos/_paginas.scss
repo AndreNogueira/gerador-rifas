@@ -1,0 +1,177 @@
+// Visor do PDF, tutorial, vídeo, «Acerca de» e diálogos.
+
+.visor {
+  position: sticky;
+  top: 10px;
+  padding: 16px;
+  background: var(--cartao);
+  border-radius: var(--raio);
+  box-shadow: var(--visor-anel), var(--sombra-visor);
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 6px;
+    background: var(--visor-barra);
+  }
+}
+.expandido .visor {
+  position: static;
+}
+.visor-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  h2 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: var(--brilho-titulo);
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+}
+.pdf {
+  width: 100%;
+  height: 78vh;
+  min-height: 420px;
+  margin-top: 12px;
+  border: var(--borda) solid var(--linha);
+  border-radius: var(--raio-c);
+  background: #fff;
+}
+.vazio {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 56px 20px;
+  text-align: center;
+  border: 2px var(--zona-estilo) var(--linha);
+  border-radius: calc(var(--raio-c) + 2px);
+  background:
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--destaque) 12%, transparent), transparent 70%), var(--campo);
+
+  .icone {
+    color: var(--destaque);
+    transform: rotate(-8deg);
+  }
+  p {
+    margin: 0;
+    max-width: 28rem;
+  }
+}
+
+// ---------- tutorial, vídeo, acerca de
+.tutorial {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+  align-items: start;
+}
+@media (max-width: 800px) {
+  .tutorial {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.topicos {
+  display: grid;
+  gap: 4px;
+  background: var(--cartao);
+  border-radius: var(--raio);
+  padding: 8px;
+  box-shadow: var(--visor-anel), var(--sombra-visor);
+}
+.topico {
+  justify-content: flex-start;
+  text-align: left;
+  background: none;
+  border-color: transparent;
+  color: var(--texto);
+  white-space: pre;
+  box-shadow: none;
+  font-weight: 550;
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--destaque) 10%, transparent);
+    box-shadow: none;
+  }
+  &.atual {
+    background: linear-gradient(120deg, var(--botao-1), var(--botao-2));
+    color: var(--botao-texto);
+    font-weight: 700;
+  }
+}
+.pagina .cartao,
+.sobre {
+  padding: 22px;
+  box-shadow: var(--visor-anel), var(--sombra-visor);
+}
+.texto-longo {
+  white-space: pre-line;
+  margin: 0;
+  max-width: 68ch;
+}
+.imagem-tutorial {
+  max-width: 100%;
+  height: auto;
+  border: var(--borda) solid var(--linha);
+  border-radius: var(--raio-c);
+}
+.video {
+  width: 100%;
+  max-width: 56rem;
+  background: #000;
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-visor);
+}
+.voltar {
+  justify-self: start;
+}
+
+// ---------- diálogo
+.dialogo {
+  max-width: min(32rem, calc(100vw - 32px));
+  border: 0;
+  border-radius: calc(var(--raio) + 2px);
+  background: var(--cartao);
+  color: var(--texto);
+  padding: 22px 24px 20px;
+  box-shadow: var(--dialogo-sombra);
+  border-top: 6px solid var(--dialogo-topo);
+
+  &::backdrop {
+    background: rgb(15 6 40 / 55%);
+    backdrop-filter: blur(3px);
+  }
+  &.erro {
+    border-top-color: var(--erro);
+  }
+  &.aviso {
+    border-top-color: var(--aviso);
+  }
+  &.confirmar {
+    border-top-color: var(--destaque-2);
+  }
+}
+.dialogo-texto {
+  margin: 0 0 18px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.dialogo-botoes {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}

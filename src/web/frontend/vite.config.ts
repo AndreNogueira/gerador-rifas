@@ -7,6 +7,6 @@ const api = process.env.API_URL ?? "http://127.0.0.1:8080";
 export default defineConfig({
   plugins: [react()],
   server: { proxy: { "/api": api, "/health": api } },
-  build: { outDir: "dist", sourcemap: true },
+  build: { outDir: "dist", sourcemap: true, cssCodeSplit: false },
   test: { environment: "jsdom", globals: true, setupFiles: ["./src/teste-setup.ts"] },
 });

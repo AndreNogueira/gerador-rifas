@@ -1,0 +1,89 @@
+// Risografia: impressão de duas tintas (rosa fluorescente e azul) sobre papel. Círculos de tinta que se sobrepõem
+// (multiplicam) na faixa, retícula de pontos por trás da página e sombras «mal registadas». Escuro = o mesmo papel,
+// com a página escura e a faixa impressa em papel claro.
+@use "../tema" as *;
+
+@include tema(risografia) {
+  --t-papel: light-dark(#f3efe6, #17171d);
+  --t-tinta: light-dark(#1b2a52, #f1efe8);
+  --t-rosa: light-dark(#ff48b0, #ff5cbc);
+  --t-azul: light-dark(#0078bf, #3da5ff);
+
+  --fundo: var(--t-papel);
+  --cartao: light-dark(#fffdf8, #1f1f27);
+  --texto: var(--t-tinta);
+  --suave: light-dark(#4d5a7d, #aaa8c0);
+  --linha: light-dark(#c9d4e6, #3a3a4c);
+  --campo: light-dark(#f8f5ec, #16161c);
+  --destaque: light-dark(#0068a8, #5db4ff);
+  --destaque-2: light-dark(#e0208f, #ff5cbc);
+  --ok: light-dark(#00774a, #4be0a0);
+  --aviso: light-dark(#8a5000, #ffc24a);
+  --erro: light-dark(#c4143a, #ff6a86);
+  --sombra-cor: var(--t-rosa);
+  --passo-1: light-dark(#0068a8, #5db4ff);
+  --passo-2: light-dark(#e0208f, #ff5cbc);
+  --passo-3: light-dark(#e65100, #ff9a52);
+  --passo-4: light-dark(#00864f, #4be0a0);
+
+  --fonte: "Space Grotesk Variable", system-ui, sans-serif;
+  --fonte-titulo: "Fraunces Variable", Georgia, serif;
+  --peso-titulo: 800;
+  --peso-marca: 900;
+  --peso-numero: 900;
+  --raio: 4px;
+  --raio-c: 3px;
+  --entalhe: 0.65rem;
+  --filtro-coluna: drop-shadow(4px 4px 0 var(--t-rosa));
+  --sombra-visor: 4px 4px 0 var(--t-rosa);
+
+  // a faixa: quatro círculos de tinta sobre papel claro, que se multiplicam onde se cruzam
+  --banda:
+    radial-gradient(circle at 16% 38%, #ffe800 0 5.2rem, transparent 5.25rem),
+    radial-gradient(circle at 60% 52%, var(--t-azul) 0 7rem, transparent 7.05rem),
+    radial-gradient(circle at 78% 40%, var(--t-rosa) 0 8rem, transparent 8.05rem),
+    radial-gradient(circle at 92% 90%, #00a95c 0 4rem, transparent 4.05rem),
+    light-dark(#f3efe6, #e9e4d6);
+  --banda-forma: none;
+  --banda-mistura: multiply;
+  // a retícula de pontos de impressão por trás de tudo
+  --deco-pagina: radial-gradient(circle at 1.5px 1.5px, var(--t-rosa) 1.2px, transparent 1.7px) 0 0 / 8px 8px;
+  --deco-pagina-opacidade: 0.22;
+  --topo-texto: #1b2a52;
+  --topo-sombra: 2px 2px 0 var(--t-rosa);
+  --marca-anel: 0 0 0 2px #1b2a52, 4px 4px 0 var(--t-azul);
+  --pilula: rgb(255 253 248 / 82%);
+  --pilula-texto: #1b2a52;
+  --pilula-anel: 0 0 0 2px #1b2a52;
+  --nav-ativo: #ffe800;
+  --nav-ativo-texto: #1b2a52;
+
+  --botao-1: var(--t-rosa);
+  --botao-2: var(--t-rosa);
+  --botao-texto: light-dark(#1b2a52, #17171d);
+  --botao-borda-cor: var(--t-tinta);
+  --botao-sombra: 3px 3px 0 var(--t-azul);
+  --botao-sombra-hover: 5px 5px 0 var(--t-azul);
+  --botao-sec-sombra: 3px 3px 0 var(--t-azul);
+  --botao-hover: translate(-2px, -2px);
+  --botao-ativo: translate(2px, 2px);
+  --entrega-1: #00a95c;
+  --entrega-2: #00a95c;
+
+  --cartao-anel-extra: inset 0 0 0 2px var(--t-azul);
+  --cabecalho-fundo-extra: radial-gradient(circle at 1.5px 1.5px, color-mix(in srgb, var(--t-rosa) 45%, transparent) 1.1px, transparent 1.6px) 0 0 / 6px 6px;
+  --cabecalho-tinta: 8%;
+  --insignia-luz: 0%;
+  --insignia-escuro: 0%;
+  --insignia-cor: light-dark(#ffffff, #17171d);
+  --insignia-raio: 50%;
+  --insignia-rot: none;
+  --insignia-sombra: 3px 3px 0 var(--t-azul);
+  --numero-pct: 100%;
+  --numero-sombra: 2px 2px 0 color-mix(in srgb, var(--t-azul) 45%, transparent);
+
+  --progresso-barra: var(--t-rosa);
+  --visor-barra: repeating-linear-gradient(90deg, var(--t-rosa) 0 14px, var(--t-azul) 14px 28px);
+  --visor-anel: inset 0 0 0 2px var(--t-azul);
+  --dialogo-sombra: 6px 6px 0 var(--t-rosa);
+}

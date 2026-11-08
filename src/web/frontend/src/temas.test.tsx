@@ -2,6 +2,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import * as sass from "sass";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 import { ProvedorI18n } from "./i18n";
@@ -63,27 +64,41 @@ describe("temas visuais", () => {
   });
 });
 
-/** Separa «a, b» nas vírgulas de topo (as de dentro de `:not(a, b)` não contam). */
-function listaDeSeletores(texto: string): string[] {
-  const partes: string[] = [];
+/** Declarações de um bloco CSS, separadas por «;» fora de parênteses. */
+function declaracoes(corpo: string): [string, string][] {
+  const saida: [string, string][] = [];
   let nivel = 0;
   let atual = "";
-  for (const c of texto) {
+  const fechar = () => {
+    const i = atual.indexOf(":");
+    if (i > 0) saida.push([atual.slice(0, i).trim(), atual.slice(i + 1).trim()]);
+    atual = "";
+  };
+  for (const c of corpo) {
     if (c === "(") nivel++;
     if (c === ")") nivel--;
-    if (c === "," && nivel === 0) {
-      partes.push(atual);
-      atual = "";
-    } else atual += c;
+    if (c === ";" && nivel === 0) fechar();
+    else atual += c;
   }
-  partes.push(atual);
-  return partes;
+  if (atual.trim()) fechar();
+  return saida;
 }
 
+const raizSrc = join(process.cwd(), "src");
+const pastaTemas = join(raizSrc, "estilos", "temas");
+const nomesDe = (ficheiro: string) =>
+  new Set(
+    [...readFileSync(join(raizSrc, "estilos", ficheiro), "utf8").matchAll(/^\s*(--[a-z0-9-]+)\s*:/gm)].map(
+      (m) => m[1] as string,
+    ),
+  );
+const PERMITIDAS = nomesDe("_tokens.scss"); // o que um tema pode mudar
+const GEOMETRIA = nomesDe("_geometria.scss"); // o que NUNCA muda com o tema
+
 describe("registo dos temas", () => {
-  const pasta = join(process.cwd(), "src", "temas");
-  const ficheiros = readdirSync(pasta).filter((f) => f.endsWith(".css"));
-  const principal = readFileSync(join(process.cwd(), "src", "main.tsx"), "utf8");
+  const ficheiros = readdirSync(pastaTemas).filter((f) => f.endsWith(".scss") && f !== "_index.scss");
+  const indice = readFileSync(join(pastaTemas, "_index.scss"), "utf8");
+  const idDe = (f: string) => f.replace(/^_/, "").replace(/\.scss$/, "");
 
   it("tem ids únicos e válidos", () => {
     const ids = VISUAIS.map((v) => v.id);
@@ -92,33 +107,68 @@ describe("registo dos temas", () => {
     expect(visualValido("xpto")).toBe(false);
   });
 
-  it("cada tema (menos o de omissão, que vive em estilos.css) tem a sua folha, importada em main.tsx", () => {
+  it("cada tema (menos o de omissão, que vive em _tokens.scss) tem a sua folha, juntada em _index.scss", () => {
     for (const v of VISUAIS) {
       if (v.id === VISUAL_POR_OMISSAO) continue;
-      expect(ficheiros, `falta temas/${v.id}.css`).toContain(`${v.id}.css`);
-      expect(principal, `main.tsx não importa temas/${v.id}.css`).toContain(`./temas/${v.id}.css`);
+      expect(ficheiros, `falta estilos/temas/_${v.id}.scss`).toContain(`_${v.id}.scss`);
+      expect(indice, `_index.scss não faz @forward "${v.id}"`).toContain(`@forward "${v.id}";`);
     }
   });
 
   it("não há folhas de temas por registar", () => {
     const ids: string[] = VISUAIS.map((v) => v.id);
-    for (const f of ficheiros)
-      expect(ids, `temas/${f} não está em temas.ts`).toContain(f.replace(/\.css$/, ""));
+    for (const f of ficheiros) expect(ids, `${f} não está em temas.ts`).toContain(idDe(f));
+  });
+});
+
+describe("a estrutura não muda com o tema", () => {
+  const ficheiros = readdirSync(pastaTemas).filter((f) => f.endsWith(".scss") && f !== "_index.scss");
+
+  it("os ficheiros de tokens e de geometria declaram variáveis (senão este teste não protegia nada)", () => {
+    expect(PERMITIDAS.size).toBeGreaterThan(60);
+    expect(GEOMETRIA.has("--corte")).toBe(true);
   });
 
-  it("cada folha só mexe no seu tema (nada de seletores soltos)", () => {
-    for (const f of ficheiros) {
-      const css = readFileSync(join(pasta, f), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
-      const id = f.replace(/\.css$/, "");
-      const seletores = [...css.matchAll(/(^|\})\s*([^{}@\s][^{}]*)\{/g)].map((m) => (m[2] ?? "").trim());
-      for (const s of seletores) {
-        if (/^(from|to|\d+%)$/.test(s)) continue; // passos de @keyframes
-        for (const parte of listaDeSeletores(s)) {
-          expect(parte.trim(), `${f}: «${parte.trim()}» não começa por :root[data-visual="${id}"]`).toMatch(
-            new RegExp(`^:root\\[data-visual="${id}"\\]`),
-          );
+  for (const f of ficheiros) {
+    const id = f.replace(/^_/, "").replace(/\.scss$/, "");
+    it(`${id}: um só bloco :root[data-visual="${id}"], só com variáveis permitidas`, () => {
+      const css = sass
+        .compile(join(pastaTemas, f), { style: "expanded" })
+        .css.replace(/\/\*[\s\S]*?\*\//g, "");
+      expect(css, "um tema não pode ter @-regras (@media, @keyframes…)").not.toMatch(/@/);
+      const blocos = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)];
+      expect(blocos, "um tema é UM bloco").toHaveLength(1);
+      const [, seletor, corpo] = blocos[0] as RegExpMatchArray;
+      // o Sass tira as aspas do atributo ([data-visual=natal]): é o mesmo seletor
+      expect((seletor ?? "").trim().replaceAll('"', "")).toBe(`:root[data-visual=${id}]`);
+      for (const [nome] of declaracoes(corpo ?? "")) {
+        expect(nome.startsWith("--"), `${id}: «${nome}» não é uma variável (só se mudam variáveis)`).toBe(
+          true,
+        );
+        expect(GEOMETRIA.has(nome), `${id}: «${nome}» é geometria (fixa em todos os temas)`).toBe(false);
+        expect(
+          PERMITIDAS.has(nome) || nome.startsWith("--t-"),
+          `${id}: «${nome}» não está em _tokens.scss (junta-a lá, com o valor do Premiado, antes de a usar)`,
+        ).toBe(true);
+      }
+    });
+  }
+
+  it("a app só tem um ponto de entrada de estilos (main.scss) e nenhum CSS solto", () => {
+    const entradas: string[] = [];
+    const ver = (pasta: string) => {
+      for (const e of readdirSync(pasta, { withFileTypes: true })) {
+        const caminho = join(pasta, e.name);
+        if (e.isDirectory()) ver(caminho);
+        else if (/\.(css|scss)$/.test(e.name) && !caminho.includes(join("src", "estilos")))
+          entradas.push(caminho);
+        else if (/\.tsx?$/.test(e.name) && !e.name.endsWith(".test.tsx")) {
+          for (const m of readFileSync(caminho, "utf8").matchAll(/^import\s+"([^"]+\.s?css)"/gm))
+            entradas.push(`${e.name}: ${m[1]}`);
         }
       }
-    }
+    };
+    ver(raizSrc);
+    expect(entradas).toEqual(["main.tsx: ./estilos/main.scss"]);
   });
 });

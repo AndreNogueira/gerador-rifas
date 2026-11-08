@@ -1,0 +1,88 @@
+// Janela 98: um computador dos anos 90. Secretária verde-azulada, janelas cinzentas com o relevo clássico (sombras interiores)
+// e uma barra de título azul em cada passo. No escuro a mesma secretária, à noite.
+@use "../tema" as *;
+
+@include tema(janela98) {
+  --t-claro: light-dark(#ffffff, #7a7a84);
+  --t-medio: light-dark(#dfdfdf, #5a5a64);
+  --t-sombra-1: light-dark(#808080, #2a2a30);
+  --t-sombra-2: light-dark(#404040, #101014);
+  --t-barra-1: light-dark(#000080, #1b1b6e);
+  --t-barra-2: light-dark(#1084d0, #4a6fd0);
+  // o relevo saliente (janelas, botões) e o reentrante (campos)
+  --t-saliente: inset -1px -1px var(--t-sombra-2), inset 1px 1px var(--t-claro), inset -2px -2px var(--t-sombra-1), inset 2px 2px var(--t-medio);
+  --t-reentrante: inset 1px 1px var(--t-sombra-1), inset -1px -1px var(--t-claro), inset 2px 2px var(--t-sombra-2), inset -2px -2px var(--t-medio);
+
+  --fundo: light-dark(#008080, #0d2b2b);
+  --cartao: light-dark(#c0c0c0, #3b3b40);
+  --texto: light-dark(#000000, #f0f0f0);
+  --suave: light-dark(#404040, #c4c4cc);
+  --linha: light-dark(#808080, #1c1c20);
+  --campo: light-dark(#ffffff, #1b1b20);
+  --destaque: light-dark(#000080, #9db8ff);
+  --destaque-2: light-dark(#c00000, #ff8a8a);
+  --ok: light-dark(#006400, #6ee06e);
+  --aviso: light-dark(#7a4a00, #ffcb5c);
+  --erro: light-dark(#b00000, #ff7b7b);
+  --sombra-cor: #000000;
+  --passo-1: light-dark(#000080, #7f9cff);
+  --passo-2: light-dark(#800080, #e09cff);
+  --passo-3: light-dark(#804000, #ffb066);
+  --passo-4: light-dark(#006060, #66e0d0);
+
+  --fonte: Tahoma, "MS Sans Serif", Verdana, "Segoe UI", sans-serif;
+  --peso-titulo: 700;
+  --peso-marca: 700;
+  --raio: 0px;
+  --raio-c: 0px;
+  --entalhe: 0px;
+  --filtro-coluna: none;
+  --sombra-visor: 3px 3px 0 rgb(0 0 0 / 40%);
+
+  --banda: none;
+  --banda-forma: none;
+  --topo-texto: #ffffff;
+  --topo-sombra: 2px 2px 0 #000000;
+  --marca-anel: 0 0 0 0 transparent;
+  --pilula: #c0c0c0;
+  --pilula-texto: #000000;
+  --pilula-anel: var(--t-saliente);
+  --nav-ativo: #ffffff;
+  --nav-ativo-texto: #000000;
+
+  --botao-1: light-dark(#c0c0c0, #4a4a52);
+  --botao-2: light-dark(#c0c0c0, #4a4a52);
+  --botao-texto: light-dark(#000000, #f0f0f0);
+  --botao-borda-cor: transparent;
+  --botao-anel: var(--t-saliente);
+  --botao-sombra: 0 0 0 0 transparent;
+  --botao-sombra-hover: 0 0 0 0 transparent;
+  --botao-sec-sombra: 0 0 0 0 transparent;
+  --botao-hover: none;
+  --botao-ativo: none;
+  --entrega-1: light-dark(#c0c0c0, #4a4a52);
+  --entrega-2: light-dark(#c0c0c0, #4a4a52);
+
+  --campo-anel: var(--t-reentrante);
+  --campo-anel-foco: 0 0 0 0 transparent;
+
+  --cartao-anel-extra: var(--t-saliente);
+  --picotado-estilo: solid;
+  --cabecalho-fundo-extra: linear-gradient(90deg, var(--t-barra-1), var(--t-barra-2));
+  --cabecalho-texto: #ffffff;
+  --insignia-luz: 0%;
+  --insignia-escuro: 0%;
+  --insignia-raio: 0px;
+  --insignia-rot: none;
+  --insignia-sombra: 0 0 0 0 transparent;
+  --numero-pct: 100%;
+  --zona-estilo: groove;
+
+  --progresso-raio: 0px;
+  --progresso-fundo: var(--campo);
+  --progresso-barra: repeating-linear-gradient(90deg, var(--t-barra-1) 0 10px, transparent 10px 12px);
+  --visor-barra: linear-gradient(90deg, var(--t-barra-1), var(--t-barra-2));
+  --visor-anel: var(--t-saliente);
+  --dialogo-sombra: var(--t-saliente), 4px 4px 0 rgb(0 0 0 / 40%);
+  --dialogo-topo: var(--t-barra-1);
+}

@@ -1,0 +1,7 @@
+// Um tema = UM bloco `:root[data-visual="<id>"]` só com variáveis de `_tokens.scss` (mais auxiliares `--t-…` do próprio tema).
+// A estrutura não se mexe: ver `_geometria.scss`.
+@mixin tema($id) {
+  :root[data-visual="#{$id}"] {
+    @content;
+  }
+}
