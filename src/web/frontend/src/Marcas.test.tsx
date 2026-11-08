@@ -45,7 +45,7 @@ describe("marcas de corte", () => {
     expect(caixa).toBeChecked();
     await waitFor(() => {
       const pedidos = servidor.chamadas("POST", /\/calcular$/);
-      expect((pedidos[pedidos.length - 1]?.corpo as Campos).marcas).toBe("1");
+      expect((pedidos[pedidos.length - 1]?.corpo as Campos | undefined)?.marcas).toBe("1");
     });
   });
 
