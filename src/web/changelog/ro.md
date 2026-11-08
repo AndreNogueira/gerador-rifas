@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.24.0 — 2026-11-08
+
+### Îmbunătățit
+- **Tutorial cu capturi de ecran ale site-ului:** subiectele de bază ale tutorialului arată acum site-ul în sine, în toate cele 18 limbi, în loc de aplicația Windows.
+
 ## 3.23.0 — 2026-11-08
 
 ### Noutăți

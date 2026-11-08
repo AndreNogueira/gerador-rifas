@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.24.0 — 2026-11-08
+
+### Verbeterd
+- **Tutorial met schermafbeeldingen van de site:** de basisonderwerpen van de tutorial tonen nu de site zelf, in alle 18 talen, in plaats van de Windows-app.
+
 ## 3.23.0 — 2026-11-08
 
 ### Nieuw

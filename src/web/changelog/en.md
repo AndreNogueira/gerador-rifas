@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.24.0 — 2026-11-08
+
+### Improved
+- **Tutorial with screenshots of the site:** the basic tutorial topics now show the site itself, in all 18 languages, instead of the Windows app.
+
 ## 3.23.0 — 2026-11-08
 
 ### New

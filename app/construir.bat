@@ -25,6 +25,7 @@ set "PYTHONPATH=%~dp0..\src"
   --include-package=core --include-package-data=customtkinter --include-package-data=pypdfium2 --include-package-data=pypdfium2_raw --include-package-data=reportlab ^
   --include-data-dir=assets=assets --include-data-dir=exemplos=exemplos ^
   --noinclude-data-files=assets/video/web_* ^
+  --noinclude-data-files=assets/ajuda/*_w?.png ^
   --python-flag=no_docstrings --python-flag=no_asserts --python-flag=no_warnings ^
   --nofollow-import-to=segno --nofollow-import-to=fontTools --nofollow-import-to=psutil --nofollow-import-to=numpy ^
   --onefile-tempdir-spec="{CACHE_DIR}/GeradorRifas/{VERSION}" ^

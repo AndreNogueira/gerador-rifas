@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.24.0 — 2026-11-08
+
+### Migliorato
+- **Tutorial con schermate del sito:** gli argomenti di base del tutorial mostrano ora il sito stesso, in tutte le 18 lingue, invece dell'app Windows.
+
 ## 3.23.0 — 2026-11-08
 
 ### Novità
