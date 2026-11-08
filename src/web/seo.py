@@ -232,6 +232,9 @@ def cabecalho(pagina: Pagina, base: str, lg: str = "pt") -> str:
             f'<meta name="twitter:image:alt" content="{_e(alt)}" />',
         ]
     if pagina.caminho == "/":
+        verificacao = config.google_verificacao()
+        if verificacao:                                      # Search Console: o Google procura-a na pagina inicial
+            linhas.append(f'<meta name="google-site-verification" content="{_e(verificacao)}" />')
         linhas.append(f'<script type="application/ld+json">{_json_ld(_dados_estruturados(base, lg))}</script>')
     return "\n    ".join(linhas)
 

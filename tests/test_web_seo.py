@@ -69,6 +69,26 @@ def test_cada_pagina_tem_titulo_descricao_canonico_og_e_um_h1(publico, caminho):
     assert "<!--seo:" not in h
 
 
+CODIGO_GOOGLE = "aB3_dE-fG7hI9jK1lM2nO4pQ6rS8tU0vW"
+
+
+def test_verificacao_do_google_so_na_pagina_inicial_e_so_se_definida(publico, monkeypatch):
+    monkeypatch.delenv("GOOGLE_VERIFICACAO", raising=False)
+    assert "google-site-verification" not in publico.get("/").text
+    monkeypatch.setenv("GOOGLE_VERIFICACAO", CODIGO_GOOGLE)
+    for caminho in ("/", "/en"):
+        h = publico.get(caminho).text
+        assert _meta(h, "name", "google-site-verification") == CODIGO_GOOGLE
+        assert h.count("google-site-verification") == 1
+    assert "google-site-verification" not in publico.get("/tutorial").text
+
+
+@pytest.mark.parametrize("valor", ['curto', 'x" /><script>alert(1)</script>' + "a" * 30, "tem espacos " * 4, "a" * 200])
+def test_verificacao_do_google_invalida_e_ignorada(publico, monkeypatch, valor):
+    monkeypatch.setenv("GOOGLE_VERIFICACAO", valor)
+    assert "google-site-verification" not in publico.get("/").text
+
+
 def test_a_pagina_inicial_tem_dados_estruturados_validos(publico):
     h = publico.get("/").text
     blocos = re.findall(r'<script type="application/ld\+json">(.*?)</script>', h)
