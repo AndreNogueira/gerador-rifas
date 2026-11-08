@@ -283,7 +283,7 @@ def _validar(s: SessaoEstado, c: Campos, lg: str, pasta: Path, geracao: bool) ->
             if geracao:
                 if not tr.nome:
                     raise core.ErroRifas("err_nome")
-                if tr.fim - tr.inicio + 1 > config.max_numeros():
+                if core.series.contar(tr) > config.max_numeros():          # numeros do intervalo (sem os saltados) x series
                     raise core.ErroRifas("web_demasiados", max=config.max_numeros())
                 tr.saida = pasta / "saida"
                 core.planear(tr, pedido.rifas_por_pagina(disp, s.info))        # valida tudo antes de comecar
@@ -302,7 +302,7 @@ async def previa(id_: str, campos: Campos, serv: Servico = Depends(servico), lg:
     t0 = time.perf_counter()
     try:
         r = await serv.motor.curto(trabalhos.previa, str(pasta), s.tpl_nome, s.alg_nome, campos.papel, campos.margem, campos.porfolha,
-                                   tr.inicio, tr.fim, tr.digitos)
+                                   tr.inicio, tr.fim, tr.digitos, tr.prefixos[0] if tr.prefixos else "", core.series.cor_da_serie(tr, 0), tr.saltar)
     except Ocupado:
         raise _ocupado(lg) from None
     except (asyncio.TimeoutError, BrokenProcessPool) as e:
@@ -390,7 +390,7 @@ async def gerar(id_: str, campos: Campos, serv: Servico = Depends(servico), lg: 
             (pasta / f).unlink(missing_ok=True)
         s.gerar = Geracao(estado="a_gerar", nome=tr.nome)
         args = (str(pasta), s.tpl_nome, s.alg_nome, tr.nome, tr.inicio, tr.fim, tr.por_ficheiro, tr.digitos, campos.papel, campos.margem,
-                campos.porfolha)
+                campos.porfolha, tr.prefixos, tr.saltar, tr.cor_por_serie)
         s.tarefa = asyncio.create_task(_geracao(serv, s, pasta, args))
     except BaseException:
         serv.motor.geracao = None

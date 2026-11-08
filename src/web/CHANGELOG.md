@@ -4,6 +4,14 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.15.0 — 2026-11-08
+
+### Novo
+- **Séries e prefixos:** um texto antes dos algarismos (`A-` dá A-0001). Com várias séries separadas por vírgulas (`A-, B-, C-`) cada uma repete o intervalo e tem os seus próprios PDFs (`Rifa - A - 0001 - 0300.pdf`); com «Um único PDF», sai um por série. O prefixo aceita letras, espaço, ponto, hífen e barra (até 6 caracteres, sem algarismos) e desenha-se em Helvetica-Bold, do tamanho e da cor dos algarismos.
+- **Saltar números:** `13, 100-110` tira esses números da sequência (o resumo, os ficheiros e a verificação contam só os que se imprimem).
+- **Uma cor para cada série:** cada série fica com a sua cor (no prefixo e nos algarismos).
+- Tudo isto também vai na ligação de «Copiar ligação» e na pré-visualização.
+
 ## 3.14.0 — 2026-11-08
 
 ### Novo

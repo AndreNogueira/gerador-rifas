@@ -382,14 +382,14 @@ class _CtxLetra:
     def __init__(self, letra: LetraPDF, doc: "Documento"):
         self.l, self.doc = letra, doc
 
-    def ops(self, slot: Slot, texto: str) -> str:
+    def ops(self, slot: Slot, texto: str, cor: tuple | None = None) -> str:
         l = self.l
         k = fator_ajuste(slot, texto)
         tam = slot.tamanho * k
         larg = sum(l.larguras[d] for d in texto) / 1000 * tam
         x, y = _origem_pdf(slot, larg, self.doc.caixa, -0.35 * slot.tamanho * (1 - k))   # mantem o centro vertical
         hexa = "".join(l.codigos[d].to_bytes(l.n_bytes, "big").hex() for d in texto)
-        r, g, b = slot.cor
+        r, g, b = cor or slot.cor
         return (f"BT /FD {_f(tam)} Tf {_f(r)} {_f(g)} {_f(b)} rg {_matriz_texto(slot.rot, x, y)} "
                 f"<{hexa}> Tj ET\n")
 
@@ -699,13 +699,18 @@ class _CtxImagem:
         self.g, self.doc = g, doc
         self.nomes: dict = {}
         for s in doc.info.slots:
-            if s.cor not in self.nomes:
-                k = len(self.nomes)
-                self.nomes[s.cor] = k
-                for d, gl in enumerate(g.glifos):
-                    doc.xobjetos[NameObject(f"/G{k}_{d}")] = _img_xobject(doc.w, gl.mascara, s.cor)
+            self._nome(s.cor)
 
-    def ops(self, slot: Slot, texto: str) -> str:
+    def _nome(self, cor: tuple) -> int:
+        """O indice dos 10 algarismos desta cor (cria-os, uma so vez, quando aparece uma cor nova: a cor por serie)."""
+        if cor not in self.nomes:
+            k = len(self.nomes)
+            self.nomes[cor] = k
+            for d, gl in enumerate(self.g.glifos):
+                self.doc.xobjetos[NameObject(f"/G{k}_{d}")] = _img_xobject(self.doc.w, gl.mascara, cor)
+        return self.nomes[cor]
+
+    def ops(self, slot: Slot, texto: str, cor: tuple | None = None) -> str:
         g, caixa = self.g, self.doc.caixa
         c = g.calib[id(slot)]
         k = fator_ajuste(slot, texto)         # mais algarismos que o exemplo: tudo encolhe em torno do centro
@@ -726,7 +731,7 @@ class _CtxImagem:
             for i, w in enumerate(larguras):
                 inicios.append(u)
                 u += w + (gaps[i] if i < n - 1 else 0)
-        ci = self.nomes[slot.cor]
+        ci = self._nome(cor or slot.cor)
         partes = []
         for d, w, ua in zip(texto, larguras, inicios):
             x1, y1 = _xy(ua, topo, slot.rot)
@@ -927,7 +932,10 @@ class Documento:
         helv = DictionaryObject({NameObject("/Type"): NameObject("/Font"), NameObject("/Subtype"): NameObject("/Type1"),
                                  NameObject("/BaseFont"): NameObject("/Helvetica"),
                                  NameObject("/Encoding"): NameObject("/WinAnsiEncoding")})
-        self.fontes = DictionaryObject({NameObject("/FH"): self.w._add_object(helv)})
+        helv_b = DictionaryObject({NameObject("/Type"): NameObject("/Font"), NameObject("/Subtype"): NameObject("/Type1"),
+                                   NameObject("/BaseFont"): NameObject("/Helvetica-Bold"),
+                                   NameObject("/Encoding"): NameObject("/WinAnsiEncoding")})
+        self.fontes = DictionaryObject({NameObject("/FH"): self.w._add_object(helv), NameObject("/FB"): self.w._add_object(helv_b)})
         self.ctxs = {id(e): e.contexto(self) for e in prep.escritores.values()}
         self.prep = prep
         self.recursos = self.w._add_object(DictionaryObject({NameObject("/XObject"): self.xobjetos,
@@ -945,7 +953,29 @@ class Documento:
             return f"1 0 0 1 {_f(x - cx0)} {_f(alt - y - ch - cy0)}"
         return f"0 1 -1 0 {_f(x + ch + cy0)} {_f(alt - y - cw - cx0)}"
 
-    def adicionar_linha(self, linha: list) -> None:
+    def _escrever(self, slot: Slot, num: str, prefixo: str, cor: tuple | None) -> str:
+        """Os operadores de um numero (e do prefixo, se houver) no sitio do numero de exemplo `slot`."""
+        ops = self.ctxs[id(self.prep.escritores[slot.fonte])].ops(slot, num, cor)
+        if prefixo:
+            ops += self._ops_prefixo(slot, num, prefixo, cor)
+        return ops
+
+    def _ops_prefixo(self, slot: Slot, num: str, prefixo: str, cor: tuple | None) -> str:
+        """O prefixo em Helvetica-Bold, com o mesmo tamanho e cor dos algarismos, a terminar um pouco antes do 1.o algarismo
+        (os algarismos ficam exatamente onde estariam sem prefixo: o prefixo cresce para a esquerda)."""
+        from .series import largura_do_prefixo
+        k = fator_ajuste(slot, num)
+        tam = slot.tamanho * k
+        bloco = slot.avanco * min(1.0, len(num) / max(len(slot.texto), 1))        # largura aproximada do numero, centrado na caixa
+        u = slot.avanco / 2 - bloco / 2 - 0.15 * tam - largura_do_prefixo(prefixo, tam)
+        eu, ev = EIXOS[slot.rot]
+        dv = -0.35 * slot.tamanho * (1 - k)
+        x = slot.origem[0] + eu[0] * u + ev[0] * dv + self.caixa[0]
+        y = self.caixa[3] - (slot.origem[1] + eu[1] * u + ev[1] * dv)
+        r, g, b = cor or slot.cor
+        return f"BT /FB {_f(tam)} Tf {_f(r)} {_f(g)} {_f(b)} rg {_matriz_texto(slot.rot, x, y)} ({prefixo}) Tj ET\n"
+
+    def adicionar_linha(self, linha: list, prefixo: str = "", cor: tuple | None = None) -> None:
         if self.disp is not None:
             # todas as rifas da folha sao o mesmo desenho (campo 1): cada uma e o fundo + os numeros, tudo dentro
             # de um q...Q com a matriz da posicao (os numeros e a calibracao ficam nas coordenadas do template)
@@ -953,14 +983,14 @@ class Documento:
             partes = []
             for i, num in enumerate(linha):
                 x, y, rot = self.disp.posicoes[i]
-                ops = "".join(self.ctxs[id(self.prep.escritores[s.fonte])].ops(s, num) for s in slots1)
+                ops = "".join(self._escrever(s, num, prefixo, cor) for s in slots1)
                 partes.append(f"q {self._matriz_rifa(x, y, rot)} cm /Bg Do\n{ops}Q\n")
             conteudo = "".join(partes)
         else:
             ops = []
             for slot in self.info.slots:
                 if slot.campo <= len(linha):
-                    ops.append(self.ctxs[id(self.prep.escritores[slot.fonte])].ops(slot, linha[slot.campo - 1]))
+                    ops.append(self._escrever(slot, linha[slot.campo - 1], prefixo, cor))
             conteudo = "/Bg Do\n" + "".join(ops)
         w = self.w
         pg = w.add_blank_page(width=self.largura, height=self.altura)
@@ -988,6 +1018,10 @@ class Trabalho:
     fim: int = 100
     por_ficheiro: int | None = None     # None = tudo num unico PDF
     digitos: int = 4
+    # series e saltos (ver series.py); por omissao nada disto muda o resultado
+    prefixos: tuple = ()                # texto antes dos algarismos; com mais de um, cada um e uma serie com os seus ficheiros
+    saltar: tuple = ()                  # ((a, b), ...) numeros que nunca se imprimem
+    cor_por_serie: bool = False         # com varias series, uma cor para cada
 
 
 @dataclass
@@ -1012,6 +1046,9 @@ def validar(tr: Trabalho, por_pagina: int) -> None:
         raise ErroRifas("err_intervalo")
     if not 1 <= tr.digitos <= MAX_DIGITOS:
         raise ErroRifas("err_digitos", max=MAX_DIGITOS)
+    if tr.prefixos or tr.saltar:
+        from .series import validar_extras
+        validar_extras(tr)
     if tr.por_ficheiro is not None:
         if tr.por_ficheiro < 1:
             raise ErroRifas("err_max")
@@ -1038,12 +1075,12 @@ def linhas_de_numeros(a: int, b: int, n_campos: int, largura: int) -> list:
 
 
 def _montar(linhas: list, prep: Preparado, progresso: Callable[[], None] | None = None,
-            cancelar: threading.Event | None = None) -> Documento:
+            cancelar: threading.Event | None = None, prefixo: str = "", cor: tuple | None = None) -> Documento:
     doc = Documento(prep)
     for row in linhas:
         if cancelar is not None and cancelar.is_set():
             raise Cancelado()
-        doc.adicionar_linha(row)
+        doc.adicionar_linha(row, prefixo, cor)
         if progresso:
             progresso()
     return doc
@@ -1096,9 +1133,10 @@ def gerar(tr: Trabalho, prep: Preparado, log: Log = _sem_log,
           progresso: Callable[[int, int], None] | None = None,
           cancelar: threading.Event | None = None) -> list:
     """Gera os PDFs. progresso(feitas, total) conta paginas. Devolve [Resultado]."""
+    from .series import planear_partes
     info = prep.info
     por_pagina = prep.por_pagina
-    plano = planear(tr, por_pagina)
+    partes = planear_partes(tr, por_pagina)
     largura = max(tr.digitos, len(str(tr.fim)))
     if prep.disp is not None:
         d = prep.disp
@@ -1108,14 +1146,15 @@ def gerar(tr: Trabalho, prep: Preparado, log: Log = _sem_log,
     if largura > len(info.primeiro):
         log(msg("aviso_algarismos", exemplo=len(info.primeiro), largura=largura,
               pct=round(100 * len(info.primeiro) / largura)))
-    if (tr.fim - tr.inicio + 1) % por_pagina:
-        log(msg("aviso_multiplo", qtd=tr.fim - tr.inicio + 1, n=por_pagina))
+    qtd_serie = sum(len(p.numeros) for p in partes) // max(1, len(tr.prefixos))
+    if qtd_serie % por_pagina:
+        log(msg("aviso_multiplo", qtd=qtd_serie, n=por_pagina))
     try:
         tr.saida.mkdir(parents=True, exist_ok=True)
     except OSError as e:
         raise ErroRifas("err_pasta", erro=str(e)) from e
 
-    total = sum(-(-(b - a + 1) // por_pagina) for _, a, b in plano)
+    total = sum(-(-len(p.numeros) // por_pagina) for p in partes)
     feitas = 0
 
     def passo():
@@ -1125,10 +1164,12 @@ def gerar(tr: Trabalho, prep: Preparado, log: Log = _sem_log,
             progresso(feitas, total)
 
     resultados = []
-    for destino, a, b in plano:
-        linhas = linhas_de_numeros(a, b, por_pagina, largura)
+    for parte in partes:
+        destino = parte.destino
+        nums = [f"{i:0{largura}d}" for i in parte.numeros]
+        linhas = [nums[i:i + por_pagina] for i in range(0, len(nums), por_pagina)]
         log(msg("log_a_gerar", nome=destino.name, paginas=len(linhas)))
-        doc = _montar(linhas, prep, passo, cancelar)
+        doc = _montar(linhas, prep, passo, cancelar, parte.prefixo, parte.cor)
         try:
             doc.gravar(destino)
         except Exception as e:
@@ -1151,14 +1192,20 @@ def pagina_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = 
     return png_de_pagina(pdf_da_previa(prep, inicio, digitos, fim), dpi)
 
 
-def pdf_da_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = None) -> bytes:
+def pdf_da_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = None, prefixo: str = "",
+                  cor: tuple | None = None, saltar: tuple = ()) -> bytes:
     """PDF de 1 pagina (bytes) com os primeiros numeros do intervalo: o que `pagina_previa` desenha, mas ainda vetorial
-    (a webapp mostra-o no browser com PDF.js)."""
+    (a webapp mostra-o no browser com PDF.js). `prefixo`, `cor` e `saltar`: como num pedido com series (ver series.py)."""
     n = prep.por_pagina
     largura = max(digitos, len(str(fim if fim is not None else inicio + n)))
-    ultimo = inicio + n - 1 if fim is None else min(fim, inicio + n - 1)
-    linhas = linhas_de_numeros(inicio, ultimo, n, largura)[:1]
-    doc = _montar(linhas, prep)
+    if saltar:      # os numeros a saltar nao entram: os primeiros `n` que sobram
+        from .series import numeros
+        teto = fim if fim is not None else inicio + n + sum(b - a + 1 for a, b in saltar)
+        linhas = [[f"{i:0{largura}d}" for i in numeros(inicio, teto, saltar)[:n]]]
+    else:
+        ultimo = inicio + n - 1 if fim is None else min(fim, inicio + n - 1)
+        linhas = linhas_de_numeros(inicio, ultimo, n, largura)[:1]
+    doc = _montar(linhas, prep, prefixo=prefixo, cor=cor)
     buf = io.BytesIO()
     doc.gravar(buf)
     return buf.getvalue()

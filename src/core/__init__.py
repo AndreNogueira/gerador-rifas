@@ -11,4 +11,4 @@ from .motor import (  # noqa: F401  (privados usados pelos testes)
     _abrir_leitor, _arrumar, _f, _matriz_texto, _mesma_letra, _origem_pdf, _rot_de, _uv, _xy,
 )
 from . import (armazenamento, autoteste, config, entradas, escolha_folha, i18n, idiomas, pdftexto, pedido, saida,  # noqa: F401
-               sistema, tema, tutorial)
+               series, sistema, tema, tutorial)

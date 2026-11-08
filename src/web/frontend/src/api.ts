@@ -80,6 +80,12 @@ export interface Campos {
   papel: string;
   margem: string;
   porfolha: string;
+  /** Prefixo («A-») ou séries («A-, B-, C-»); vazio = sem prefixo. */
+  prefixos: string;
+  /** Números ou intervalos que nunca se imprimem («13, 100-110»). */
+  saltar: string;
+  /** «1» = uma cor para cada série. */
+  cor_serie: string;
 }
 export interface FolhaInfo {
   ativa: boolean;
