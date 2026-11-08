@@ -3,5 +3,6 @@
 :root {
   --corte: 3.6rem; // altura do cabeçalho do bilhete = onde ficam o picotado e os entalhes
   --banda-altura: 17rem; // a faixa atrás do cabeçalho
+  --fonte-controlos: "Bricolage Grotesque Variable", system-ui, -apple-system, "Segoe UI", sans-serif; // botões e seletores do cabeçalho: a largura do texto decide em que linha cabem, por isso não muda com o tema
   --borda: 2px; // espessura dos contornos dos controlos (o relevo/espessura extra faz-se com sombras)
 }

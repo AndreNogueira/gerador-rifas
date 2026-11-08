@@ -37,7 +37,7 @@
   // o nome da app: `h1` só no ecrã principal (nas outras páginas o `h1` é o da página)
   .nome {
     margin: 0;
-    font-family: var(--fonte-titulo);
+    font-family: var(--fonte-marca);
     font-weight: var(--peso-marca);
     font-size: 1.7rem;
     line-height: 1.2;
@@ -52,6 +52,7 @@
 }
 .navegacao a,
 .seletor {
+  font-family: var(--fonte-controlos);
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -89,6 +90,7 @@
   }
   select {
     width: auto;
+    font-family: var(--fonte-controlos);
     padding: 7px 4px;
     border: 0;
     background: transparent;
@@ -124,6 +126,26 @@
   > p[aria-busy],
   > p[role="alert"] {
     color: var(--topo-texto);
+  }
+}
+
+// em ecrã largo o cabeçalho é sempre UMA linha, seja qual for a letra do tema: é o nome da app que encolhe (com reticências)
+@media (min-width: 1100px) {
+  .topo {
+    flex-wrap: nowrap;
+  }
+  .marca {
+    min-width: 0;
+
+    .nome {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .navegacao,
+  .definicoes {
+    flex: none;
   }
 }
 
