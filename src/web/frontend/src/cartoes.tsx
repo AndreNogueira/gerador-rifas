@@ -4,6 +4,7 @@ import { PAPEIS } from "./formulario";
 import { Galeria } from "./Galeria";
 import { useI18n } from "./i18n";
 import { Icone, type NomeIcone } from "./icones";
+import { MarcaPropria } from "./MarcaPropria";
 import type { Ocupado } from "./sessao";
 
 const COR_DO_ESTADO: Record<Ficheiro["estado"], Cor> = {
@@ -355,6 +356,7 @@ export function CartaoNumeros({
         />
         {t("web_cor_serie")}
       </label>
+      <MarcaPropria campos={campos} mudar={mudar} />
       <Estado cor={resumo?.aviso ? "aviso" : "suave"} testid="resumo">
         {resumo?.texto ?? ""}
       </Estado>

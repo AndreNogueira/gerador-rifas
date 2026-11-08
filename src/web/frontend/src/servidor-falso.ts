@@ -21,6 +21,11 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_saltar: "Saltar números",
     web_cor_serie: "Uma cor para cada série",
     web_marcas: "Marcas de corte",
+    web_cor_numeros: "Cor dos números",
+    web_logotipo: "Logótipo (PNG ou JPG)",
+    web_logo_posicao: "Posição do logótipo",
+    web_logo_tamanho: "Tamanho do logótipo",
+    web_logo_remover: "Remover logótipo",
     web_galeria: "Sem template? Escolha um da galeria",
     web_galeria_usar: "Usar este template",
     web_galeria_titulo: "Título",
@@ -105,6 +110,9 @@ export const CAMPOS_PADRAO: Campos = {
   saltar: "",
   cor_serie: "",
   marcas: "",
+  logo_posicao: "sd",
+  logo_tamanho: "25",
+  cor_numeros: "",
 };
 
 const trabalhoLivre = (): Trabalho => ({
@@ -140,6 +148,7 @@ export class ServidorFalso {
   donativoUrl = "";
   exportarErro = "";
   galeriaErro = "";
+  logotipoErro = "";
   temContacto = false;
 
   nova(): Sessao {
@@ -154,6 +163,7 @@ export class ServidorFalso {
       modelo_url: "",
       previa: null,
       avisos: [],
+      logotipo: "",
       trabalho: trabalhoLivre(),
     };
     this.sessoes.set(id, s);
@@ -259,6 +269,14 @@ export class ServidorFalso {
                 },
             info: { n_campos: 5, primeiro: "0001", ultimo: "0005", digitos: 4, tem_folha: false },
           };
+      this.sessoes.set(id, novo);
+      return this.responder(novo);
+    }
+    if (acao === "logotipo" && (metodo === "PUT" || metodo === "DELETE")) {
+      if (metodo === "PUT" && this.logotipoErro)
+        return this.responder({ detail: this.logotipoErro, tipo: "aviso" }, 422);
+      const nome = metodo === "PUT" ? decodeURIComponent(cab["X-Nome"] ?? "") : "";
+      const novo: Sessao = { ...s, logotipo: nome };
       this.sessoes.set(id, novo);
       return this.responder(novo);
     }

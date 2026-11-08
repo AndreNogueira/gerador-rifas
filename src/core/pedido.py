@@ -9,7 +9,7 @@ import math
 from pathlib import Path
 
 from .i18n import t
-from . import series
+from . import marca, series
 from .motor import ErroRifas, InfoTemplate, Trabalho
 
 
@@ -23,7 +23,7 @@ def ler_inteiro(txt: str, campo: str) -> int:
 
 
 def trabalho_de_campos(saida: str, nome: str, inicio: str, fim: str, max_ficheiro: str, digitos: str, modo: str,
-                       prefixos: str = "", saltar: str = "", cor_serie: bool = False) -> Trabalho:
+                       prefixos: str = "", saltar: str = "", cor_serie: bool = False, cor_numeros: str = "") -> Trabalho:
     """Os 6 campos de texto + o modo («varios» | «unico») -> Trabalho. A ordem em que os campos se leem (e portanto qual
     o erro que aparece primeiro) e: De, Ate, Maximo por ficheiro (so no modo «varios»), Algarismos e, por fim, os prefixos
     (series) e os numeros a saltar (opcionais: vazios nao mudam nada)."""
@@ -37,6 +37,7 @@ def trabalho_de_campos(saida: str, nome: str, inicio: str, fim: str, max_ficheir
     tr.prefixos = series.ler_prefixos(prefixos)
     tr.saltar = series.ler_saltar(saltar)
     tr.cor_por_serie = bool(cor_serie)
+    tr.cor_numeros = marca.cor_de_hex(cor_numeros)
     return tr
 
 

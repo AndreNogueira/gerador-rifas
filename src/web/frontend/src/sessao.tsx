@@ -13,7 +13,7 @@ import { useDialogos } from "./dialogos";
 import { useI18n } from "./i18n";
 import { esquecerAlgarismos, guardarAlgarismos, lerAlgarismos } from "./memoria";
 
-export type Ocupado = "template" | "algarismos" | "previa" | "gerar" | null;
+export type Ocupado = "template" | "algarismos" | "logotipo" | "previa" | "gerar" | null;
 const CHAVE = "rifas.sessao";
 const A_CORRER = ["a_gerar", "a_cancelar"];
 const INTERVALO_MS = 500;
@@ -28,6 +28,9 @@ interface Contexto {
   ocupado: Ocupado;
   carregarTemplate: (f: File) => Promise<void>;
   carregarAlgarismos: (f: File) => Promise<void>;
+  /** O logótipo da marca própria (PNG ou JPG): o servidor valida-o; só conta em templates de uma rifa. */
+  carregarLogotipo: (f: File) => Promise<void>;
+  removerLogotipo: () => Promise<void>;
   /** «Usar este template» da galeria: o servidor cria o template e os algarismos na sessão. */
   usarGaleria: (dados: DadosGaleria) => Promise<void>;
   pedirPrevia: (c: Campos) => Promise<void>;
@@ -229,6 +232,12 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
                 if (s.algarismos.estado === "ok") void guardarAlgarismos(f); // para a próxima vez
               },
             )
+          : Promise.resolve(),
+      carregarLogotipo: (f) =>
+        id.current ? executar("logotipo", () => api.logotipo(id.current as string, f)) : Promise.resolve(),
+      removerLogotipo: () =>
+        id.current
+          ? executar("logotipo", () => api.removerLogotipo(id.current as string))
           : Promise.resolve(),
       usarGaleria: (dados) =>
         id.current
