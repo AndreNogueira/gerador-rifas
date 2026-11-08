@@ -20,6 +20,7 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_prefixos_dica: "Texto antes dos algarismos.",
     web_saltar: "Saltar números",
     web_cor_serie: "Uma cor para cada série",
+    web_marcas: "Marcas de corte",
     web_exportar_csv: "Exportar lista (CSV)",
     web_folha_controlo: "Folha de controlo (PDF)",
     web_copiar_ligacao: "Copiar ligação",
@@ -97,6 +98,7 @@ export const CAMPOS_PADRAO: Campos = {
   prefixos: "",
   saltar: "",
   cor_serie: "",
+  marcas: "",
 };
 
 const trabalhoLivre = (): Trabalho => ({

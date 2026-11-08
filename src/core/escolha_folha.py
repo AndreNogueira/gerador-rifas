@@ -12,6 +12,7 @@ from .i18n import t
 from .motor import (AVISO_POR_PAGINA, MM, Disposicao, ErroRifas, InfoTemplate, Preparado, disposicao_da_folha)
 
 MARGEM_MAX_MM = 50
+MARGEM_MIN_MARCAS_MM = 3      # as marcas de corte precisam de espaco na margem (traco de 3,5 mm a 1 mm da rifa)
 
 
 @dataclass
@@ -36,10 +37,13 @@ def ler_margem(txt: str) -> int:
     return m
 
 
-def escolher_folha(info: InfoTemplate, papel: str, margem_txt: str, porfolha_txt: str) -> EscolhaFolha:
+def escolher_folha(info: InfoTemplate, papel: str, margem_txt: str, porfolha_txt: str, marcas: bool = False) -> EscolhaFolha:
     """Disposicao da folha para os valores escritos. `porfolha_txt` vazio = o maximo que couber; um valor acima do maximo
-    fica no maximo (e `acima` = True). Levanta ErroRifas (int_invalido, err_rifa_grande, err_folha_varias)."""
+    fica no maximo (e `acima` = True). `marcas`: marcas de corte nas margens (pedem pelo menos 3 mm de margem).
+    Levanta ErroRifas (int_invalido, err_rifa_grande, err_folha_varias, err_marcas)."""
     m = ler_margem(margem_txt)
+    if marcas and m < MARGEM_MIN_MARCAS_MM:
+        raise ErroRifas("err_marcas", min=MARGEM_MIN_MARCAS_MM)
     base = disposicao_da_folha(info, papel, m)
     txt = porfolha_txt.strip()
     try:
@@ -48,7 +52,7 @@ def escolher_folha(info: InfoTemplate, papel: str, margem_txt: str, porfolha_txt
             raise ValueError
     except ValueError:
         raise ErroRifas("int_invalido", campo=t("lay_por_folha"))
-    return EscolhaFolha(disposicao_da_folha(info, papel, m, pedido), pedido > base.maximo)
+    return EscolhaFolha(replace(disposicao_da_folha(info, papel, m, pedido), marcas=marcas), pedido > base.maximo)
 
 
 def texto_da_folha(disp: Disposicao, acima: bool) -> tuple:

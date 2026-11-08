@@ -192,6 +192,15 @@ export function CartaoTemplate({
               />
             </label>
           </div>
+          <label className="opcao">
+            <input
+              type="checkbox"
+              checked={campos.marcas === "1"}
+              onChange={(e) => mudar("marcas", e.target.checked ? "1" : "")}
+              data-testid="marcas"
+            />
+            {t("web_marcas")}
+          </label>
           {folha && (
             <Estado cor={folha.erro ? "erro" : folha.aviso ? "aviso" : "suave"} testid="texto-folha">
               {folha.texto}

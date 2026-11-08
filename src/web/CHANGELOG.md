@@ -4,6 +4,13 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.17.0 — 2026-11-08
+
+### Novo
+- **Marcas de corte:** uma caixa no painel da folha (templates de uma só rifa repetida na folha) que desenha traços curtos nas margens, a prolongar cada linha de corte da grelha, para cortar a direito. Pedem pelo menos 3 mm de margem.
+- O **talão e o canhoto** (o número duas vezes em cada bilhete) já funcionavam: o template leva o número no canhoto e na parte principal e os dois saem iguais. Agora está testado e documentado.
+- A **sangria** já é respeitada: se o PDF do Canva tem uma caixa de corte (TrimBox) menor do que a página, a rifa é só o que está dentro dela.
+
 ## 3.16.0 — 2026-11-08
 
 ### Novo

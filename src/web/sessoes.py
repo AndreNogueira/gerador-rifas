@@ -233,7 +233,7 @@ def folha_dos_campos(info, c: Campos):
     """(Disposicao | None, EscolhaFolha | None) da folha escolhida; levanta ErroRifas se nao cabe. Chamar dentro de com_lingua."""
     if not escolha_folha.tem_folha(info):
         return None, None
-    esc = escolha_folha.escolher_folha(info, c.papel, c.margem, c.porfolha)
+    esc = escolha_folha.escolher_folha(info, c.papel, c.margem, c.porfolha, c.marcas == "1")
     return esc.disp, esc
 
 
@@ -243,7 +243,7 @@ def calcular(info, c: Campos, lg: str) -> Calculo:
     with i18n.com_lingua(lg):
         if escolha_folha.tem_folha(info):
             try:
-                esc = escolha_folha.escolher_folha(info, c.papel, c.margem, c.porfolha)
+                esc = escolha_folha.escolher_folha(info, c.papel, c.margem, c.porfolha, c.marcas == "1")
                 disp = esc.disp
                 texto, aviso = escolha_folha.texto_da_folha(disp, esc.acima)
                 folha = FolhaInfo(texto=texto, aviso=aviso, n=disp.n, maximo=disp.maximo)
