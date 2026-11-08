@@ -58,3 +58,6 @@ os comandos para gravar os vídeos e os testes que a verificam estão em [`CLAUD
 ## Dependências
 
 O [Dependabot](.github/dependabot.yml) abre PRs semanais (agrupados) para Python (`uv`), frontend (`npm`/pnpm) e GitHub Actions. O CI valida-os como a qualquer PR. As tags do `Dockerfile` (`PYTHON`, `NODE`, `UV`) atualizam-se à mão, com o mesmo cuidado de as fixar exatamente.
+
+## Ver o PR a funcionar antes do merge
+Põe a etiqueta `preview` no PR: o robô comenta com um endereço temporário (40 minutos) com a app desse ramo. Detalhes e limites em `docs/PREVIEW.md`.

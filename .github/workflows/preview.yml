@@ -1,0 +1,97 @@
+# Pré-visualização de um PR: poe a app do PR a correr no GitHub Actions e abre-a ao mundo por um túnel temporário (Cloudflare «quick tunnel»,
+# sem conta nem chave). Como usar: põe a etiqueta «preview» no PR; em ~3 minutos o robô comenta com o endereço (https://….trycloudflare.com).
+# Dura 40 minutos (ou até o PR receber um push, que reinicia com o código novo); no fim o robô tira a etiqueta e o endereço deixa de existir.
+# Porquê assim e não no Render: o serviço do Render é uma IMAGEM (ghcr.io + deploy hook) e o Render só faz pré-visualizações de serviços ligados
+# ao Git; um segundo serviço gratuito gastaria as mesmas 750 horas/mês. Aqui não há conta nem custo extra além dos minutos do Actions (≈ 45 por pré-visualização).
+# Só corre para PRs do próprio repositório (um fork não tem acesso à etiqueta nem aos segredos) e quem põe etiquetas tem de ter permissão de escrita.
+# O túnel mostra o código do PR a quem tiver o endereço: não ponhas nada secreto num PR com esta etiqueta. A app corre SEM `ADMIN_TOKEN` (sem painel).
+name: Pré-visualização
+
+on:
+  pull_request:
+    types: [labeled, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true          # um push novo (ou a etiqueta outra vez) substitui a pré-visualização anterior
+
+env:
+  CLOUDFLARED_VERSAO: "2026.10.7"
+  CLOUDFLARED_SHA256: "1f99fb518b83dec2ba8d870a7cc991d82a77e6196295a3d2754ba17ab9f91872"
+  MINUTOS: "40"
+
+jobs:
+  preview:
+    name: pré-visualização do PR
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      ((github.event.action == 'labeled' && github.event.label.name == 'preview') ||
+       (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'preview')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR: ${{ github.event.pull_request.number }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.7"
+          python-version: "3.15"
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: src/web/frontend/package.json
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: pnpm
+          cache-dependency-path: src/web/frontend/pnpm-lock.yaml
+      - run: uv sync --frozen
+      - name: Compilar o frontend
+        working-directory: src/web/frontend
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run build
+      - name: Instalar o cloudflared (versão e SHA-256 fixos)
+        run: |
+          curl -fsSL -o cloudflared "https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSAO}/cloudflared-linux-amd64"
+          echo "${CLOUDFLARED_SHA256}  cloudflared" | sha256sum -c -
+          chmod +x cloudflared
+      - name: Abrir o túnel
+        run: |
+          ./cloudflared tunnel --no-autoupdate --url http://127.0.0.1:8080 > tunel.log 2>&1 &
+          for i in $(seq 1 45); do
+            URL=$(grep -oE 'https://[a-z0-9-]+\.trycloudflare\.com' tunel.log | head -1 || true)
+            [ -n "$URL" ] && break
+            sleep 2
+          done
+          [ -n "$URL" ] || { cat tunel.log; echo "::error::o túnel não abriu"; exit 1; }
+          echo "URL=$URL" >> "$GITHUB_ENV"
+      - name: Arrancar a app (PUBLIC_URL = o endereço do túnel)
+        run: |
+          export PORT=8080 HOST=127.0.0.1 PUBLIC_URL="$URL" KEEPALIVE=0 VERIFICACAO_CHAVE="$(openssl rand -hex 16)"
+          nohup uv run --no-sync python -m src.web > app.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -fsS "$URL/health" > /dev/null 2>&1 && exit 0
+            sleep 2
+          done
+          cat app.log; tail -20 tunel.log; echo "::error::a app não respondeu pelo túnel"; exit 1
+      - name: Comentar no PR com o endereço
+        run: |
+          corpo="**Pré-visualização deste PR:** ${URL}
+
+          Commit \`${HEAD_SHA:0:7}\`. Fica no ar ${MINUTOS} minutos (ou até um push novo) e depois o endereço deixa de existir. É a app deste ramo, sem painel de administração e com dados de teste que se perdem ao terminar."
+          gh pr comment "$PR" --edit-last --create-if-none --body "$corpo"
+      - name: Manter no ar
+        run: sleep $(( MINUTOS * 60 ))
+      - name: Terminar (também se for cancelado por um push novo ou falhar)
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "cancelled" ]; then exit 0; fi         # substituída por outra execução: ela comenta
+          gh pr comment "$PR" --edit-last --create-if-none --body "Pré-visualização terminada. Para outra, tira e volta a pôr a etiqueta \`preview\`." || true
+          gh pr edit "$PR" --remove-label preview || true
