@@ -3,6 +3,7 @@ import { Admin } from "./Admin";
 import { api } from "./api";
 import { Cabecalho } from "./Cabecalho";
 import { ProvedorDialogos } from "./dialogos";
+import { registarEcra } from "./ecra";
 import { useFormulario } from "./formulario";
 import { Gerador } from "./Gerador";
 import { useI18n } from "./i18n";
@@ -36,6 +37,11 @@ function Aplicacao() {
               : "";
     document.title = pagina ? `${pagina.replace(/…$/, "")} | ${nome}` : nome;
   }, [caminho, t]);
+
+  // o tipo de ecra, para as estatisticas (uma vez por separador; o painel do dono nao conta)
+  useEffect(() => {
+    if (window.location.pathname !== "/admin") void registarEcra();
+  }, []);
 
   useEffect(() => {
     api

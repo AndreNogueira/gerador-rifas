@@ -27,10 +27,11 @@ Tudo com uma explicação em linguagem simples ao lado («Como ler»).
 
 | Secção | O que mostra |
 |---|---|
-| **Agora** | CPU, memória do servidor, do motor e total face ao limite (512 MB no Render gratuito), disco, sessões ativas, se há uma geração a correr, estado do motor e quantos reinícios teve |
+| **Agora** | CPU, o **anti-sono** (ver `docs/ONLINE.md`), memória do servidor, do motor e total face ao limite (512 MB no Render gratuito), disco, sessões ativas, se há uma geração a correr, estado do motor e quantos reinícios teve |
 | **Sistema ao longo do tempo** | gráficos de CPU, memória (com a linha do limite) e sessões ativas |
 | **Pedidos à API** | pedidos e erros por intervalo, tempo de resposta (típico e dos mais lentos) e uma tabela por tipo de pedido |
 | **Utilização** | sessões, pré-visualizações, gerações (ok, com erros, canceladas, falhadas), números e páginas gerados, duração das gerações, descargas, e distribuições por língua, tema, dispositivo, páginas vistas, erros devolvidos e motivos de falha |
+| **Ecrãs e dispositivos** | tipo de ecrã (telemóvel, tablet, computador Full HD/QHD/4K/ultra-wide), tamanhos de ecrã mais comuns (p.ex. `393×852 @3x`), família ou modelo do aparelho, largura da janela e se há toque |
 | **Proxy e limite por IP** | verifica se os IPs reais dos visitantes chegam ao servidor (ver abaixo) |
 | **Limites em vigor** | os valores que o servidor está a aplicar |
 
@@ -38,7 +39,7 @@ Os intervalos são a última hora, 6 horas, 24 horas, 7 dias e 30 dias. Os núme
 
 ## Privacidade: só agregados
 
-**Nunca se guarda** um IP, um nome de ficheiro, o conteúdo de um ficheiro, o *User-Agent*, nem um texto de erro do utilizador. Cada evento leva só **códigos** (a língua, o tema, o tipo de dispositivo: computador, telemóvel ou robô, o estado) e **números** (quantos números se geraram, quanto tempo demorou). Para o teste do proxy, o IP vira um *hash* com sal aleatório (muda a cada arranque), só em memória e só da última hora. `tests/test_web_metricas.py` e `tests/test_web_admin.py` verificam que não há IPs no disco nem nomes de ficheiros nas respostas.
+**Nunca se guarda** um IP, um nome de ficheiro, o conteúdo de um ficheiro, o *User-Agent*, nem um texto de erro do utilizador. Cada evento leva só **códigos** (a língua, o tema, o tipo de dispositivo: computador, telemóvel ou robô, o estado; e o **tamanho do ecrã e da janela**, a família do aparelho e, nos Chrome de Android que o dizem, o **modelo** do telemóvel, só em agregado) e **números** (quantos números se geraram, quanto tempo demorou). Para o teste do proxy, o IP vira um *hash* com sal aleatório (muda a cada arranque), só em memória e só da última hora. `tests/test_web_metricas.py` e `tests/test_web_admin.py` verificam que não há IPs no disco nem nomes de ficheiros nas respostas.
 
 ## Os dados são temporários no Render gratuito (decisão tua)
 

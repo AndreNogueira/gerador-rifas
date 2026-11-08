@@ -381,6 +381,19 @@ export function Admin() {
             explica="Só se gera uma rifa de cada vez em todo o servidor: enquanto uma corre, as outras pessoas recebem «ocupado»."
           />
           <Numero
+            rotulo="Anti-sono"
+            valor={estado.acordado.ativo ? `ativo (${estado.acordado.cada_min} min)` : "desligado"}
+            sub={
+              !estado.acordado.ativo
+                ? "só atua no Render"
+                : estado.acordado.ultima_em === null
+                  ? "ainda sem chamadas"
+                  : `${estado.acordado.ultima_ok ? "último pedido ok" : "último pedido FALHOU"} há ${duracao(estado.agora - estado.acordado.ultima_em)}`
+            }
+            alerta={estado.acordado.ativo && estado.acordado.ultima_ok === false}
+            explica="O plano gratuito do Render adormece o serviço após 15 min sem visitas. Para isso não acontecer, o serviço chama o seu próprio /health de 10 em 10 min pelo endereço público. Não acorda um serviço que já adormeceu (ver docs/ONLINE.md)."
+          />
+          <Numero
             rotulo="Motor"
             valor={sis.motor_vivo ? "a correr" : "parado"}
             sub={`${sis.motor_reinicios} reinício(s)`}
@@ -648,6 +661,45 @@ export function Admin() {
             como="Motivo das gerações que o motor não acabou (uma regra do pedido, tempo excedido, o motor morreu…)."
           >
             <BarrasH titulo="Falhas" itens={r?.falhas ?? []} cor="var(--erro)" />
+          </Grafico>
+        </div>
+      </Seccao>
+
+      <Seccao
+        id="ecras"
+        titulo="Ecrãs e dispositivos"
+        explica="Com que ecrãs e aparelhos o site é visitado (uma contagem por separador aberto, sem robôs). Guardam-se só o tamanho do ecrã e da janela, a família do aparelho e, nos Chrome que o dizem, o modelo do telemóvel: nunca o IP nem o navegador completo."
+      >
+        <div className="graficos">
+          <Grafico
+            titulo="Tipo de ecrã"
+            como="Telemóvel, tablet ou computador (este por tamanho: Full HD, QHD, 4K, ultra-wide). Mostra se vale a pena afinar o desenho para telemóveis ou para ecrãs grandes."
+          >
+            <Rosca titulo="Tipo de ecrã" itens={r?.classes_de_ecra ?? []} />
+          </Grafico>
+          <Grafico
+            titulo="Ecrãs mais comuns"
+            como="Tamanho do ecrã em pixéis CSS e a densidade de pixéis (3x é típico dos iPhone recentes, 2x–3x dos Android topo de gama). Os telemóveis recentes repetem-se muito: 393×852 @3x é o iPhone 15/16."
+          >
+            <BarrasH titulo="Ecrãs mais comuns" itens={r?.ecras ?? []} cor={CORES[1]} />
+          </Grafico>
+          <Grafico
+            titulo="Aparelhos"
+            como="A família (iPhone, iPad, Android, Windows, Mac…) ou, nos Chrome de Android que o dizem, o modelo do telemóvel (p.ex. «Pixel 9»). O iPhone nunca diz o modelo."
+          >
+            <BarrasH titulo="Aparelhos" itens={r?.dispositivos_detalhe ?? []} cor={CORES[2]} />
+          </Grafico>
+          <Grafico
+            titulo="Largura da janela"
+            como="A largura da janela do browser (não a do ecrã). Janelas estreitas num ecrã grande são pessoas com o browser a meio do ecrã."
+          >
+            <BarrasH titulo="Largura da janela" itens={r?.janelas ?? []} cor={CORES[3]} />
+          </Grafico>
+          <Grafico
+            titulo="Toque"
+            como="Ecrãs com toque (telemóveis, tablets e alguns portáteis) ou só com rato e teclado."
+          >
+            <Rosca titulo="Toque" itens={r?.toque ?? []} />
           </Grafico>
         </div>
       </Seccao>

@@ -106,6 +106,9 @@ def estado(request: Request, serv: Servico = Depends(servico)) -> dict:
                     "pedidos_pesados_por_min": config.pedidos_pesados_por_min(), "pedidos_leves_por_min": config.pedidos_leves_por_min(),
                     "forwarded_allow_ips": config.proxies_de_confianca()},
         "proxy": serv.metricas.proxy(),
+        "acordado": {"ativo": serv.acordado.ativo, "cada_min": round(serv.acordado.cada_s / 60, 1), "chamadas": serv.acordado.chamadas,
+                     "falhas": serv.acordado.falhas, "ultima_em": int(serv.acordado.ultima_em) or None, "ultima_ok": serv.acordado.ultima_ok,
+                     "ultimo_ms": serv.acordado.ultimo_ms},
         "intervalos": list(INTERVALOS),
     }
 

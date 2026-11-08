@@ -34,6 +34,15 @@ export interface Estado {
     xff_pct: number | null;
     veredicto: VeredictoProxy;
   };
+  acordado: {
+    ativo: boolean;
+    cada_min: number;
+    chamadas: number;
+    falhas: number;
+    ultima_em: number | null;
+    ultima_ok: boolean | null;
+    ultimo_ms: number;
+  };
   intervalos: string[];
 }
 export interface PontoSistema {
@@ -94,6 +103,11 @@ export interface Resumo {
   robos: number;
   erros_http: Contagem[];
   falhas: Contagem[];
+  classes_de_ecra: Contagem[];
+  ecras: Contagem[];
+  dispositivos_detalhe: Contagem[];
+  janelas: Contagem[];
+  toque: Contagem[];
   reinicios_motor: number;
   arranques: number;
 }

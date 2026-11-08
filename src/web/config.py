@@ -117,3 +117,25 @@ def metricas_efemeras() -> bool:
     """Se as metricas se perdem quando o servico reinicia: no Render (variavel RENDER) o disco e efemero, a menos que o dono diga onde
     fica um disco persistente (RIFAS_METRICAS)."""
     return bool(os.environ.get("RENDER")) and not os.environ.get("RIFAS_METRICAS", "").strip()
+
+
+def manter_acordado() -> tuple[str, float]:
+    """(URL a chamar, segundos entre chamadas) para o servico nao adormecer por inatividade; ("", 0) se desligado.
+    No Render gratuito o servico adormece apos 15 min sem pedidos que venham de fora: o proprio servico chama-se a si (pelo URL
+    publico, que passa pelo proxy do Render) de 10 em 10 min. KEEPALIVE=0 desliga; KEEPALIVE_URL define outro URL;
+    KEEPALIVE_MIN muda o intervalo (1 a 14). Fora do Render nao faz nada, a nao ser que se defina KEEPALIVE_URL."""
+    if os.environ.get("KEEPALIVE", "").strip().lower() in ("0", "nao", "não", "false", "off"):
+        return "", 0.0
+    url = ""
+    for nome in ("KEEPALIVE_URL", "RENDER_EXTERNAL_URL"):
+        v = os.environ.get(nome, "").strip().rstrip("/")
+        if re.fullmatch(r"https?://[A-Za-z0-9.\-]+(:\d+)?", v):
+            url = v
+            break
+    if not url:
+        return "", 0.0
+    try:
+        minutos = min(14.0, max(1.0, float(os.environ.get("KEEPALIVE_MIN", "10"))))
+    except ValueError:
+        minutos = 10.0
+    return url, minutos * 60

@@ -111,3 +111,14 @@ class Calculo(BaseModel):
     folha: FolhaInfo | None = None   # None: o template nao e de uma so rifa
     resumo: Resumo
     confirmar: str = ""            # texto a confirmar antes de gerar (muitas rifas por folha), vazio se nao e preciso
+
+
+class Ecra(BaseModel):
+    """O que o browser diz do seu ecra (para as metricas do painel de administracao)."""
+    ecra_l: int = Field(ge=100, le=20000)         # largura e altura do ECRA em px CSS
+    ecra_a: int = Field(ge=100, le=20000)
+    janela_l: int = Field(ge=50, le=20000)        # largura e altura da JANELA (viewport)
+    janela_a: int = Field(ge=50, le=20000)
+    dpr: float = Field(ge=0.5, le=8)              # densidade de pixeis (2 e 3 nos telemoveis recentes)
+    toque: bool = False
+    modelo: str = Field(default="", max_length=80)  # `navigator.userAgentData` (so o Chrome o da); vazio se nao se sabe
