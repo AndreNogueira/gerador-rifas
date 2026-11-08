@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Projeto em português (pt-PT): comentários, docs e mensagens ao utilizador em português. Plano de produto e monetização: `docs/PLANO_PRODUTO.md` (preços e leis ainda por confirmar). Análise completa da migração: `docs/MIGRATION_PLAN.md`
+Projeto em português (pt-PT): comentários, docs e mensagens ao utilizador em português. Plano de produto e monetização: `docs/PLANO_PRODUTO.md` (preços e leis ainda por confirmar); funcionalidades por dificuldade e ondas: `docs/PLANO_FEATURES.md`; base de dados externa (comparação e recomendação, por decidir): `docs/BASE_DE_DADOS.md`. Análise completa da migração: `docs/MIGRATION_PLAN.md`
 (abordagem B decidida). Plano de execução (fases, API): `webapp/PLANO.md`.
 
 ## Objetivo da migração
