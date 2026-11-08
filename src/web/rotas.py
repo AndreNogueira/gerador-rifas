@@ -7,9 +7,10 @@ from __future__ import annotations
 
 import asyncio
 import shutil
+import time
 import urllib.parse
 from concurrent.futures.process import BrokenProcessPool
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import core
@@ -20,9 +21,11 @@ from fastapi.responses import FileResponse, StreamingResponse
 
 from . import config, trabalhos
 from .limites import Limitador, ler_corpo
+from .metricas import Metricas, dispositivo
 from .modelos import Calculo, Campos, ErroApi, Sessao, TrabalhoEstado
 from .sessoes import (Geracao, SessaoEstado, Sessoes, calcular, folha_dos_campos, ler_progresso, texto_de_erro,
                       trabalho_dos_campos, vista, _trabalho)
+from .sistema import Observador
 from .trabalhos import CANCELAR, PROGRESSO, Motor, Ocupado
 
 
@@ -31,9 +34,17 @@ class Servico:
     sessoes: Sessoes
     motor: Motor
     limitador: Limitador
+    metricas: Metricas = field(default_factory=Metricas)           # contagens para o painel de administracao (sem dados pessoais)
+    observador: Observador | None = None
+
+    def __post_init__(self) -> None:
+        if self.observador is None:
+            self.observador = Observador(self.sessoes.armazem.raiz)
 
 
 router = APIRouter(prefix="/api/sessoes", tags=["sessoes"])
+# os ids de `temas.ts`: o que o cliente diz (X-Visual) so entra nas metricas se estiver aqui
+_VISUAIS = frozenset({"premiado", "quermesse", "arcade", "brutalista", "risografia", "janela98", "gala", "natal", "matrix"})
 
 
 # ------------------------------------------------------------------ dependencias
@@ -54,6 +65,7 @@ def _ip(request: Request) -> str:
 def _limite(categoria: str, maximo):
     def verificar(request: Request, serv: Servico = Depends(servico)) -> None:
         if not serv.limitador.permitir(_ip(request), categoria, maximo()):
+            serv.metricas.evento("limite", categoria)
             raise ErroApi(429, i18n.traduzir("web_ocupado", lingua(request)), "aviso")
     return verificar
 
@@ -117,10 +129,13 @@ def _guardar(serv: Servico, s: SessaoEstado, nome: str, dados: bytes, lg: str) -
 
 # ------------------------------------------------------------------ sessao
 @router.post("", response_model=Sessao, status_code=201, dependencies=[Depends(leve)])
-def criar(serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Sessao:
+def criar(request: Request, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Sessao:
     s = serv.sessoes.criar()
     if s is None:
+        serv.metricas.evento("limite", "sessoes")
         raise _ocupado(lg)
+    visual = request.headers.get("x-visual", "")
+    serv.metricas.evento("sessao", lg, visual if visual in _VISUAIS else "outro", dispositivo(request.headers.get("user-agent", "")))
     return vista(s, lg, serv.sessoes.pasta(s))
 
 
@@ -158,9 +173,11 @@ async def carregar_template(id_: str, request: Request, serv: Servico = Depends(
     if entradas.detetar_tipo(dados) != "pdf":                # o tipo REAL, pelos bytes (o nome do cliente nao conta)
         (pasta / "template.pdf").unlink(missing_ok=True)
         s.analise = ("erro", "err_abrir_template", {"erro": f"«{nome}»"}, [])
+        serv.metricas.evento("template", "tipo_invalido")
         return vista(s, lg, pasta)
     _guardar(serv, s, "template.pdf", dados, lg)
     await _analisar(s, serv, pasta, lg)
+    serv.metricas.evento("template", "ok" if s.analise and s.analise[0] in ("ok", "alg") else (s.analise[0] if s.analise else "erro"), v2=len(dados) / 1024)   # «alg»: o template esta bem, faltam os algarismos
     return vista(s, lg, pasta)
 
 
@@ -174,6 +191,7 @@ async def carregar_algarismos(id_: str, request: Request, serv: Servico = Depend
     tipo = entradas.detetar_tipo(dados)
     if tipo is None:
         s.alg_erro, s.alg_nome = ("erro", "err_formato", {}), nome
+        serv.metricas.evento("algarismos", "tipo_invalido")
         return vista(s, lg, pasta)
     for antigo in serv.sessoes.armazem.listar(s.id):
         if antigo.startswith("algarismos."):
@@ -184,6 +202,7 @@ async def carregar_algarismos(id_: str, request: Request, serv: Servico = Depend
     s.gerar = Geracao()
     if (pasta / "template.pdf").is_file():
         await _analisar(s, serv, pasta, lg)
+    serv.metricas.evento("algarismos", "ok" if s.analise is None or s.analise[0] == "ok" else s.analise[0], v2=len(dados) / 1024)
     return vista(s, lg, pasta)
 
 
@@ -246,6 +265,7 @@ async def previa(id_: str, campos: Campos, serv: Servico = Depends(servico), lg:
     if s.a_correr:
         raise _ocupado(lg)
     tr = _validar(s, campos, lg, pasta, geracao=False)
+    t0 = time.perf_counter()
     try:
         r = await serv.motor.curto(trabalhos.previa, str(pasta), s.tpl_nome, s.alg_nome, campos.papel, campos.margem, campos.porfolha,
                                    tr.inicio, tr.fim, tr.digitos)
@@ -254,7 +274,9 @@ async def previa(id_: str, campos: Campos, serv: Servico = Depends(servico), lg:
     except (asyncio.TimeoutError, BrokenProcessPool) as e:
         raise ErroApi(500, i18n.traduzir("erro_inesperado", lg, erro=_motivo(e)), "erro") from None
     if r[0] != "ok":
+        serv.metricas.evento("previa", r[0], v1=(time.perf_counter() - t0) * 1000)
         _levantar(r, lg)
+    serv.metricas.evento("previa", "ok", v1=(time.perf_counter() - t0) * 1000)
     _guardar(serv, s, "previa.pdf", r[1], lg)
     s.previa_n += 1
     s.previa_titulo = ("previa_titulo_n", {"de": tr.inicio, "ate": min(tr.fim, tr.inicio + r[2] - 1)})
@@ -262,7 +284,33 @@ async def previa(id_: str, campos: Campos, serv: Servico = Depends(servico), lg:
 
 
 # ------------------------------------------------------------------ gerar, acompanhar, cancelar, descarregar
+def _motivo_da_falha(g: Geracao) -> str:
+    """Uma etiqueta CURTA e sem dados do utilizador para a falha de uma geracao (a chave da regra do motor, ou a categoria)."""
+    if g.erro is None:
+        return ""
+    if g.erro[0] in ("erro", "alg"):
+        return str(g.erro[1])
+    texto = str(g.erro[1])
+    if texto.startswith("tempo excedido"):
+        return "tempo"
+    if "motor foi interrompido" in texto:
+        return "motor"
+    return texto.split(":", 1)[0][:30]
+
+
 async def _geracao(serv: Servico, s: SessaoEstado, pasta: Path, args: tuple) -> None:
+    """Corre a geracao e regista nas metricas como acabou (sem nomes de ficheiros nem conteudo: so estado, numeros e duracao)."""
+    t0 = time.perf_counter()
+    try:
+        await _geracao_interna(serv, s, pasta, args)
+    finally:
+        g = s.gerar
+        numeros = max(0, args[5] - args[4] + 1)
+        serv.metricas.evento("geracao", g.estado, _motivo_da_falha(g), "unico" if args[6] >= numeros else "varios",
+                             v1=time.perf_counter() - t0, v2=numeros, v3=g.total or 0)
+
+
+async def _geracao_interna(serv: Servico, s: SessaoEstado, pasta: Path, args: tuple) -> None:
     """A tarefa que espera pelo processo do motor e passa o resultado para o estado da sessao."""
     g = s.gerar
     try:
@@ -355,6 +403,7 @@ def descarregar(id_: str, serv: Servico = Depends(servico), lg: str = Depends(li
     e = s.gerar.entrega
     if e is None or s.gerar.estado not in ("ok", "erros"):
         raise ErroApi(404, "Nada para descarregar", "erro")
+    serv.metricas.evento("descarga", e.tipo, v2=len(e.ficheiros))
     cabecalhos = {"Content-Disposition": _cabecalho_download(e.nome), "Cache-Control": "no-store"}
     if e.tipo == "pdf":
         cabecalhos["Content-Length"] = str(e.ficheiros[0].stat().st_size)

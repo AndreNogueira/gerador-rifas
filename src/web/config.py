@@ -104,3 +104,16 @@ def url_publica() -> str:
         if re.fullmatch(r"https?://[A-Za-z0-9.\-]+(:\d+)?", v):
             return v
     return ""
+
+
+def admin_token() -> str:
+    """A palavra-passe do painel de administracao (variavel ADMIN_TOKEN, no Render em Environment; NUNCA no repositorio). Vazia, ou com
+    menos de 12 caracteres, o painel nao existe (404)."""
+    t = os.environ.get("ADMIN_TOKEN", "").strip()
+    return t if len(t) >= 12 else ""
+
+
+def metricas_efemeras() -> bool:
+    """Se as metricas se perdem quando o servico reinicia: no Render (variavel RENDER) o disco e efemero, a menos que o dono diga onde
+    fica um disco persistente (RIFAS_METRICAS)."""
+    return bool(os.environ.get("RENDER")) and not os.environ.get("RIFAS_METRICAS", "").strip()

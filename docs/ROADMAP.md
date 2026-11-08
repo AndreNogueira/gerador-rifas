@@ -20,16 +20,17 @@ Cada linha é um PR (ou dois). **Tamanho:** XS = uma tarde, S = um dia, M = uns 
 |---|---|---|---|
 | 8 | **Auditoria de contraste dos temas** | M | Os 8 temas × claro/escuro foram vistos, não medidos. Correr axe/Lighthouse e acertar as cores (Arcade, Brutalista e Natal são os mais arriscados). |
 | 9 | **Testes e2e com Playwright no CI** | M | O fluxo completo (template → pré-visualizar → gerar → descarregar) com as fixtures de `tests/fixtures/`. Hoje só se faz à mão. |
-| 10 | **Rever o limite por IP atrás do Render** | S | Confirmar nos logs que o IP real chega (`FORWARDED_ALLOW_IPS`); senão o limite fica global. |
-| 11 | **Medir no Render a sério** | S | Os tempos e o `MAX_NUMEROS` (30 000) partiram de um contentor com 0,1 CPU assumido; repetir no Render e ajustar. |
-| 12 | **Revisão nativa das traduções `web_*`** | S por língua | Foram escritas sem falante nativo (11 chaves). |
-| 13 | **Remover `python-multipart`** | XS | Já não é usada (uploads em corpo cru). |
+| 10 | **Confirmar o proxy no Render** | XS | O painel (`/admin`, «Proxy e limite por IP») diz se os IPs reais chegam; falta olhá-lo com visitantes a sério e, se der «problema», definir `FORWARDED_ALLOW_IPS=*`. |
+| 11 | **Métricas que sobrevivem** | M | O disco do Render gratuito é efémero: disco persistente (pago) ou base externa para o histórico do painel (`docs/ADMIN.md`). |
+| 12 | **Medir no Render a sério** | S | Os tempos e o `MAX_NUMEROS` (30 000) partiram de um contentor com 0,1 CPU assumido; repetir no Render e ajustar. |
+| 13 | **Revisão nativa das traduções `web_*`** | S por língua | Foram escritas sem falante nativo (11 chaves). |
+| 14 | **Remover `python-multipart`** | XS | Já não é usada (uploads em corpo cru). |
 
 ## Plataforma
 
 | # | Incremento | Tam. | Notas |
 |---|---|---|---|
-| 14 | **Pré-visualização por PR** | M | Um deploy efémero por PR (Render *Preview Environments* ou imagem `pr-<n>`). |
-| 15 | **Subir a app Windows para Python 3.15** | M | Hoje fica na 3.13 (Nuitka demora 10–20 min e o `--selftest` tem de dar igual). Decisão em aberto. |
-| 16 | **Contas e pagamento** | L | O serviço será pago mais tarde. Desenhar antes os planos (limites por conta), a faturação e a proteção da privacidade dos ficheiros. |
-| 17 | **Observabilidade** | S | Registo estruturado dos pedidos e um painel de erros/tempos, sem guardar conteúdo dos ficheiros. |
+| 15 | **Pré-visualização por PR** | M | Um deploy efémero por PR (Render *Preview Environments* ou imagem `pr-<n>`). |
+| 16 | **Subir a app Windows para Python 3.15** | M | Hoje fica na 3.13 (Nuitka demora 10–20 min e o `--selftest` tem de dar igual). Decisão em aberto. |
+| 17 | **Contas e pagamento** | L | O serviço será pago mais tarde. Desenhar antes os planos (limites por conta), a faturação e a proteção da privacidade dos ficheiros. |
+| 18 | **Observabilidade** | S | Registo estruturado dos pedidos e um painel de erros/tempos, sem guardar conteúdo dos ficheiros. |
