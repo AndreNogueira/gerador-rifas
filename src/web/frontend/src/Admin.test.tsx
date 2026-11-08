@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Admin } from "./Admin";
 import type { Dados, Estado } from "./admin-api";
-import { escalaY, formatarNumero, GraficoBarras, GraficoLinhas, Medidor } from "./graficos";
+import { escalaY, Funil, formatarNumero, GraficoBarras, GraficoLinhas, Medidor } from "./graficos";
 
 const AGORA = 1_800_000_000;
 const ESTADO: Estado = {
@@ -112,6 +112,14 @@ const DADOS: Dados = {
     numeros: 4200,
     paginas: 840,
     descargas: [{ chave: "zip", n: 4 }],
+    funil: [
+      { chave: "Sessões abertas", n: 12 },
+      { chave: "Template carregado", n: 11 },
+      { chave: "Algarismos prontos", n: 10 },
+      { chave: "Pré-visualização", n: 8 },
+      { chave: "Geração concluída", n: 5 },
+      { chave: "Descarga", n: 4 },
+    ],
     duracao: {
       mediana_s: 14,
       p95_s: 70,
@@ -245,6 +253,11 @@ describe("painel de administração", () => {
     const tabela = screen.getByTestId("admin-tabela-pedidos");
     expect(within(tabela).getByText("POST /api/sessoes")).toBeInTheDocument();
     expect(within(tabela).getByText(/\(progresso\)/)).toBeInTheDocument();
+    // o funil: cada etapa com a parte da anterior que chegou lá
+    const funil = screen.getByRole("figure", { name: "Funil de utilização" });
+    expect(within(funil).getAllByRole("listitem")).toHaveLength(6);
+    expect(within(funil).getByText(/92 % da etapa anterior/)).toBeInTheDocument(); // 11 de 12 sessões
+    expect(within(funil).getAllByText(/80 % da etapa anterior/)).toHaveLength(2); // 8 de 10 e 4 descargas de 5 gerações
     // o anti-sono e os ecrãs
     expect(screen.getByText("ativo (10 min)")).toBeInTheDocument();
     expect(screen.getByText(/último pedido ok há 5 min/)).toBeInTheDocument();
@@ -345,6 +358,31 @@ describe("gráficos", () => {
     expect(screen.getByText("Ainda sem dados neste intervalo")).toBeInTheDocument();
     render(<GraficoBarras titulo="Y" pontos={[]} desde={0} ate={100} passo={60} nome="n" />);
     expect(screen.getAllByText("Ainda sem dados neste intervalo")).toHaveLength(2);
+  });
+
+  it("o funil sem dados diz que não há dados e não divide por zero", () => {
+    render(
+      <Funil
+        titulo="F"
+        etapas={[
+          { chave: "a", n: 0 },
+          { chave: "b", n: 0 },
+        ]}
+      />,
+    );
+    expect(screen.getByText("Sem dados neste intervalo")).toBeInTheDocument();
+    render(
+      <Funil
+        titulo="G"
+        etapas={[
+          { chave: "a", n: 4 },
+          { chave: "b", n: 0 },
+          { chave: "c", n: 2 },
+        ]}
+      />,
+    );
+    expect(screen.getByText(/0 % da etapa anterior/)).toBeInTheDocument();
+    expect(screen.queryByText(/Infinity|NaN/)).toBeNull(); // c vem depois de b = 0: sem percentagem
   });
 
   it("o medidor avisa a partir de 85 % do limite", () => {

@@ -379,6 +379,56 @@ export function BarrasH({
   );
 }
 
+/**
+ * O funil: cada etapa com a largura relativa à 1.ª e, ao lado, que parte da etapa anterior chegou aqui. Conta eventos, não pessoas
+ * (não se guarda nada que identifique alguém), por isso as etapas podem passar a anterior (p.ex. várias descargas de uma geração).
+ */
+export function Funil({
+  titulo,
+  etapas,
+  cor = CORES[0],
+}: {
+  titulo: string;
+  etapas: { chave: string; n: number }[];
+  cor?: string;
+}) {
+  const base = Math.max(1, etapas[0]?.n ?? 0);
+  return (
+    <figure className="barras-h funil" aria-label={titulo}>
+      {etapas.every((e) => e.n === 0) ? (
+        <p className="suave">Sem dados neste intervalo</p>
+      ) : (
+        <ol>
+          {etapas.map((e, i) => {
+            const antes = etapas[i - 1]?.n ?? 0;
+            return (
+              <li key={e.chave}>
+                <span className="nome">{e.chave}</span>
+                <span className="pista">
+                  <span
+                    className="barra"
+                    style={{ width: `${Math.min(100, (e.n / base) * 100)}%`, background: cor }}
+                  />
+                </span>
+                <span className="valor">
+                  {formatarNumero(e.n)}{" "}
+                  <small>
+                    {i === 0
+                      ? ""
+                      : antes > 0
+                        ? `(${Math.round((e.n / antes) * 100)} % da etapa anterior)`
+                        : ""}
+                  </small>
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      )}
+    </figure>
+  );
+}
+
 /** Uma rosca (distribuição com poucas partes, como o tipo de dispositivo). */
 export function Rosca({ titulo, itens }: { titulo: string; itens: { chave: string; n: number }[] }) {
   const total = itens.reduce((a, i) => a + i.n, 0);
