@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import type { Calculo, Campos, Cor, Ficheiro, Sessao } from "./api";
 import { PAPEIS } from "./formulario";
+import { Galeria } from "./Galeria";
 import { useI18n } from "./i18n";
 import { Icone, type NomeIcone } from "./icones";
 import type { Ocupado } from "./sessao";
@@ -155,6 +156,7 @@ export function CartaoTemplate({
           {ficheiro?.texto ?? ""}
         </Estado>
       )}
+      <Galeria desativado={bloqueado || !sessao || ocupado !== null} />
       {sessao?.info?.tem_folha && (
         <div className="folha">
           <p className="suave">{t("lay_info")}</p>

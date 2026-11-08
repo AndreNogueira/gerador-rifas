@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { api, type Campos, ErroApi, ErroRede, type Sessao } from "./api";
+import { api, type Campos, type DadosGaleria, ErroApi, ErroRede, type Sessao } from "./api";
 import { useDialogos } from "./dialogos";
 import { useI18n } from "./i18n";
 import { esquecerAlgarismos, guardarAlgarismos, lerAlgarismos } from "./memoria";
@@ -28,6 +28,8 @@ interface Contexto {
   ocupado: Ocupado;
   carregarTemplate: (f: File) => Promise<void>;
   carregarAlgarismos: (f: File) => Promise<void>;
+  /** «Usar este template» da galeria: o servidor cria o template e os algarismos na sessão. */
+  usarGaleria: (dados: DadosGaleria) => Promise<void>;
   pedirPrevia: (c: Campos) => Promise<void>;
   /** `confirmacao`: texto a confirmar antes de gerar (muitas rifas por folha); vazio = não pergunta. */
   pedirGerar: (c: Campos, confirmacao: string) => Promise<void>;
@@ -225,6 +227,17 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
                 mostrarErrosDeFicheiros(s);
                 setLembrado(null);
                 if (s.algarismos.estado === "ok") void guardarAlgarismos(f); // para a próxima vez
+              },
+            )
+          : Promise.resolve(),
+      usarGaleria: (dados) =>
+        id.current
+          ? executar(
+              "template",
+              () => api.usarGaleria(id.current as string, dados),
+              (s) => {
+                mostrarErrosDeFicheiros(s);
+                setLembrado(null);
               },
             )
           : Promise.resolve(),
