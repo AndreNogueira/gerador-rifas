@@ -114,6 +114,7 @@ cd src/web/frontend && pnpm install                          # (o pnpm 12 vem de
 pnpm dev                                                     # Vite em http://localhost:5173 com proxy de /api e /health para :8080 (correr antes `python -m src.web`)
 pnpm build                                                   # tsc --noEmit + vite build -> dist/ (o que o FastAPI serve)
 pnpm tipos | pnpm teste | pnpm lint                          # tsc 7, Vitest 5, Biome
+pnpm exec playwright install chromium && pnpm build && pnpm e2e   # e2e: um browser a sério contra a app compilada (o Playwright arranca `uv run python -m src.web` na porta 8123, com VERIFICACAO_CHAVE de teste; `e2e/*.spec.ts`; o CI corre-os no trabalho «e2e»); `scripts/verificar.ps1 -E2e` junta-os
 docker build --target web -t gerador-rifas . && docker run --rm -p 8080:8080 gerador-rifas
 ```
 Se um teste falhar depois de uma alteração: é regressão, ou o comportamento mudou de propósito e o teste deve ser atualizado conscientemente. Fixtures em `tests/fixtures/`.

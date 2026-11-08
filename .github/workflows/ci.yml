@@ -72,6 +72,42 @@ jobs:
       - run: pnpm run teste
       - run: pnpm run build
 
+  e2e:
+    name: e2e (Playwright, Chromium)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.7"
+          python-version: "3.15"
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: src/web/frontend/package.json
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: pnpm
+          cache-dependency-path: src/web/frontend/pnpm-lock.yaml
+      - run: uv sync --frozen
+      - name: Compilar o frontend (o que o FastAPI serve)
+        working-directory: src/web/frontend
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run build
+      - name: Instalar o Chromium do Playwright
+        working-directory: src/web/frontend
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Testes e2e (a app compilada num browser a sério)
+        working-directory: src/web/frontend
+        run: pnpm run e2e
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: resultados-e2e
+          path: src/web/frontend/test-results/
+          retention-days: 7
+
   docker:
     name: imagem Docker (testes dentro do build)
     runs-on: ubuntu-latest

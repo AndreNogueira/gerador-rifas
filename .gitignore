@@ -33,3 +33,7 @@ build/
 
 # PDFs gerados pela app durante os testes (os templates e as letras do Canva em app/testes/ ficam)
 app/testes/teste - *.pdf
+
+# resultados dos testes e2e (Playwright)
+test-results/
+playwright-report/

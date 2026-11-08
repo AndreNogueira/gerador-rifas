@@ -1,8 +1,9 @@
 # Corre em local o mesmo que o CI: ruff, pytest, e no frontend Biome, tsc, Vitest e build. Uso (a partir da raiz):
 #   powershell -File scripts/verificar.ps1            # tudo, menos o Docker
 #   powershell -File scripts/verificar.ps1 -Docker    # junta a construcao das imagens (precisa do Docker a correr)
+#   powershell -File scripts/verificar.ps1 -E2e       # junta os testes e2e (Playwright; uma vez: pnpm exec playwright install chromium)
 # Este ficheiro e so ASCII de proposito: o PowerShell 5.1 le UTF-8 sem BOM como ANSI.
-param([switch]$Docker)
+param([switch]$Docker, [switch]$E2e)
 
 $raiz = Split-Path -Parent $PSScriptRoot
 $falhas = @()
@@ -25,6 +26,10 @@ Passo "frontend: Biome" $front { pnpm run lint }
 Passo "frontend: tsc"   $front { pnpm run tipos }
 Passo "frontend: Vitest" $front { pnpm run teste }
 Passo "frontend: build" $front { pnpm run build }
+
+if ($E2e) {
+    Passo "frontend: e2e (Playwright)" $front { pnpm run e2e }
+}
 
 if ($Docker) {
     Passo "docker: testes" $raiz { docker build --target testes -t gerador-rifas-testes . }
