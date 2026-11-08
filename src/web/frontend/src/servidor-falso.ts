@@ -11,6 +11,10 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     mi_tema_escuro: "Escuro",
     web_tema_auto: "Automático",
     web_visual: "Estilo",
+    web_termos: "Termos",
+    web_privacidade: "Privacidade",
+    web_contacto: "Contacto",
+    web_donativo: "Donativo",
     tut_titulo: "Tutorial",
     mi_video: "Vídeo tutorial",
     mi_sobre: "Acerca de…",
@@ -113,6 +117,8 @@ export class ServidorFalso {
   /** o estado do trabalho a devolver enquanto "gera": uma lista que se vai gastando */
   passos: Trabalho[] = [];
   falhaSessaoPerdida = false;
+  donativoUrl = "";
+  temContacto = false;
 
   nova(): Sessao {
     const id = `sessao${this.proximoId++}`;
@@ -151,6 +157,17 @@ export class ServidorFalso {
     });
 
     if (url === "/health") return this.responder({ estado: "ok", versao: "3.0.0" });
+    if (url === "/api/publico")
+      return this.responder({ donativo_url: this.donativoUrl, contacto: this.temContacto });
+    const pg = /^\/api\/pagina\/(\w+)$/.exec(url);
+    if (pg?.[1])
+      return ["termos", "privacidade", "contacto"].includes(pg[1])
+        ? this.responder({
+            titulo: `Página ${pg[1]}`,
+            aviso: "Versão provisória de teste.",
+            seccoes: [{ titulo: "Primeira secção", paragrafos: ["Um parágrafo de teste."] }],
+          })
+        : this.responder({ detail: "x" }, 404);
     if (url === "/api/changelog")
       return this.responder({
         entradas: [

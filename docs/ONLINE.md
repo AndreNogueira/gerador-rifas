@@ -44,3 +44,15 @@ Segundo a [documentação do Render](https://render.com/docs/free) (consultada e
 2. Abre `https://<site>/admin` → cartão **Anti-sono**: deve dizer «ativo (10 min)» e «último pedido ok há N min» com N < 10.
 3. Abre o site: deve responder logo (sem a página de «a carregar» de ~1 minuto).
 4. Se o cartão disser «FALHOU», o `RENDER_EXTERNAL_URL` pode não ser o público: define `KEEPALIVE_URL` com o endereço certo.
+
+## Rodapé: donativo, contacto e responsável
+
+O rodapé tem sempre Changelog, Termos e Privacidade. Três variáveis do **Render** (Environment; nada disto vai para o repositório) completam-no:
+
+| Variável | Efeito |
+|---|---|
+| `DONATIVO_URL` | ligação `https://…` (MB Way, PayPal, Ko-fi…): aparece o botão «Donativo». Outra coisa que não `https://` é ignorada. |
+| `CONTACTO_EMAIL` | e-mail público: aparece a ligação «Contacto» e o endereço nas páginas Contacto, Termos e Privacidade. |
+| `RESPONSAVEL` | nome de quem gere o serviço, nas páginas Termos e Privacidade. |
+
+Os textos das páginas estão em `src/web/textos_legais.py`: são **provisórios** e têm de ser revistos por um advogado antes de o serviço cobrar (`docs/PLANO_PRODUTO.md` §5).

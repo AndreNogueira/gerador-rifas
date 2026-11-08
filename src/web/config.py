@@ -106,6 +106,23 @@ def url_publica() -> str:
     return ""
 
 
+def donativo_url() -> str:
+    """Ligacao para donativos (MB Way, PayPal, Ko-fi...): DONATIVO_URL. So `https://` (outra coisa ignora-se); vazio = sem botao."""
+    v = os.environ.get("DONATIVO_URL", "").strip()
+    return v if re.fullmatch(r"https://[^\s<>\"']{4,300}", v) else ""
+
+
+def contacto_email() -> str:
+    """E-mail publico de contacto: CONTACTO_EMAIL (nada no repositorio). Invalido ou vazio = sem contacto publico."""
+    v = os.environ.get("CONTACTO_EMAIL", "").strip()
+    return v if re.fullmatch(r"[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9.-]{1,190}\.[A-Za-z]{2,24}", v) else ""
+
+
+def responsavel() -> str:
+    """Nome de quem responde pelo servico (nas paginas Termos e Privacidade): RESPONSAVEL. Sem texto HTML nem quebras de linha."""
+    return re.sub(r"[<>\r\n]", "", os.environ.get("RESPONSAVEL", "")).strip()[:100]
+
+
 def admin_token() -> str:
     """A palavra-passe do painel de administracao (variavel ADMIN_TOKEN, no Render em Environment; NUNCA no repositorio). Vazia, ou com
     menos de 12 caracteres, o painel nao existe (404)."""
