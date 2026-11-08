@@ -141,7 +141,7 @@ def planear_partes(tr: Trabalho, por_pagina: int) -> list[Parte]:
     com_serie = len(tr.prefixos) > 1
     partes: list[Parte] = []
     for i, prefixo in enumerate(series):
-        cor = cor_da_serie(tr, i)
+        cor = cor_da_serie(tr, i) or tr.cor_numeros
         blocos = [nums] if tr.por_ficheiro is None else [nums[k:k + tr.por_ficheiro] for k in range(0, len(nums), tr.por_ficheiro)]
         nome = f"{base} - {etiqueta(prefixo, i)}" if com_serie else base
         for bloco in blocos:

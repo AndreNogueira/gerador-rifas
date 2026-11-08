@@ -912,7 +912,7 @@ class Documento:
     """Um PDF de saida: o fundo (template sem numeros) e guardado uma so vez como Form XObject e cada
     pagina so tem a referencia a ele + os numeros."""
 
-    def __init__(self, prep: Preparado):
+    def __init__(self, prep: Preparado, marca=None):
         self.info = prep.info
         self.caixa = prep.info.caixa
         self.disp = prep.disp
@@ -945,6 +945,7 @@ class Documento:
         if self.disp is not None:
             self.largura, self.altura = self.disp.largura, self.disp.altura
         self.marcas = self._ops_marcas()
+        self.logo = self._logotipo(marca) if self.disp is not None and marca is not None else ""
 
     def _matriz_rifa(self, x: float, y: float, rot: int) -> str:
         """Matriz que leva a rifa (zona `bbox` do template) para a posicao (x, y) da folha (canto superior esquerdo,
@@ -954,6 +955,34 @@ class Documento:
         if rot == 0:
             return f"1 0 0 1 {_f(x - cx0)} {_f(alt - y - ch - cy0)}"
         return f"0 1 -1 0 {_f(x + ch + cy0)} {_f(alt - y - cw - cx0)}"
+
+    def _logotipo(self, marca) -> str:
+        """Embebe o logotipo (uma so vez neste PDF) e devolve os operadores que o desenham num canto da rifa, em coordenadas do
+        template (dentro do q...Q de cada rifa na folha)."""
+        w = self.w
+        img = DecodedStreamObject()
+        img.set_data(marca.rgb)
+        img.update({NameObject("/Type"): NameObject("/XObject"), NameObject("/Subtype"): NameObject("/Image"),
+                    NameObject("/Width"): NumberObject(marca.largura), NameObject("/Height"): NumberObject(marca.altura),
+                    NameObject("/ColorSpace"): NameObject("/DeviceRGB"), NameObject("/BitsPerComponent"): NumberObject(8)})
+        if marca.alfa is not None:
+            sm = DecodedStreamObject()
+            sm.set_data(marca.alfa)
+            sm.update({NameObject("/Type"): NameObject("/XObject"), NameObject("/Subtype"): NameObject("/Image"),
+                       NameObject("/Width"): NumberObject(marca.largura), NameObject("/Height"): NumberObject(marca.altura),
+                       NameObject("/ColorSpace"): NameObject("/DeviceGray"), NameObject("/BitsPerComponent"): NumberObject(8)})
+            img[NameObject("/SMask")] = w._add_object(sm.flate_encode())
+        self.xobjetos[NameObject("/Logo")] = w._add_object(img.flate_encode())
+        x0, y0, x1, y1 = self.bbox
+        alt = (y1 - y0) * marca.tamanho / 100
+        lar = alt * marca.largura / marca.altura
+        if lar > (x1 - x0) * 0.45:                                         # um logotipo muito largo nunca passa de 45 % da rifa
+            lar = (x1 - x0) * 0.45
+            alt = lar * marca.altura / marca.largura
+        folga = 8.0
+        x = x0 + folga if marca.posicao in ("se", "ie") else x1 - folga - lar
+        y = y1 - folga - alt if marca.posicao in ("se", "sd") else y0 + folga
+        return f"q {_f(lar)} 0 0 {_f(alt)} {_f(x)} {_f(y)} cm /Logo Do Q\n"
 
     def _ops_marcas(self) -> str:
         """Marcas de corte (tracos curtos pretos) NAS MARGENS da folha, a prolongar cada linha de corte da grelha: em cima e em
@@ -1012,7 +1041,7 @@ class Documento:
             for i, num in enumerate(linha):
                 x, y, rot = self.disp.posicoes[i]
                 ops = "".join(self._escrever(s, num, prefixo, cor) for s in slots1)
-                partes.append(f"q {self._matriz_rifa(x, y, rot)} cm /Bg Do\n{ops}Q\n")
+                partes.append(f"q {self._matriz_rifa(x, y, rot)} cm /Bg Do\n{self.logo}{ops}Q\n")
             conteudo = "".join(partes) + self.marcas
         else:
             ops = []
@@ -1050,6 +1079,8 @@ class Trabalho:
     prefixos: tuple = ()                # texto antes dos algarismos; com mais de um, cada um e uma serie com os seus ficheiros
     saltar: tuple = ()                  # ((a, b), ...) numeros que nunca se imprimem
     cor_por_serie: bool = False         # com varias series, uma cor para cada
+    marca: object | None = None         # core.marca.Marca: o logotipo em cada rifa (so templates de uma rifa, em folha)
+    cor_numeros: tuple | None = None    # (r, g, b) 0..1: a cor dos numeros (a da serie, se ha, ganha)
 
 
 @dataclass
@@ -1103,8 +1134,8 @@ def linhas_de_numeros(a: int, b: int, n_campos: int, largura: int) -> list:
 
 
 def _montar(linhas: list, prep: Preparado, progresso: Callable[[], None] | None = None,
-            cancelar: threading.Event | None = None, prefixo: str = "", cor: tuple | None = None) -> Documento:
-    doc = Documento(prep)
+            cancelar: threading.Event | None = None, prefixo: str = "", cor: tuple | None = None, marca=None) -> Documento:
+    doc = Documento(prep, marca)
     for row in linhas:
         if cancelar is not None and cancelar.is_set():
             raise Cancelado()
@@ -1197,7 +1228,7 @@ def gerar(tr: Trabalho, prep: Preparado, log: Log = _sem_log,
         nums = [f"{i:0{largura}d}" for i in parte.numeros]
         linhas = [nums[i:i + por_pagina] for i in range(0, len(nums), por_pagina)]
         log(msg("log_a_gerar", nome=destino.name, paginas=len(linhas)))
-        doc = _montar(linhas, prep, passo, cancelar, parte.prefixo, parte.cor)
+        doc = _montar(linhas, prep, passo, cancelar, parte.prefixo, parte.cor, tr.marca)
         try:
             doc.gravar(destino)
         except Exception as e:
@@ -1221,7 +1252,7 @@ def pagina_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = 
 
 
 def pdf_da_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = None, prefixo: str = "",
-                  cor: tuple | None = None, saltar: tuple = ()) -> bytes:
+                  cor: tuple | None = None, saltar: tuple = (), marca=None) -> bytes:
     """PDF de 1 pagina (bytes) com os primeiros numeros do intervalo: o que `pagina_previa` desenha, mas ainda vetorial
     (a webapp mostra-o no browser com PDF.js). `prefixo`, `cor` e `saltar`: como num pedido com series (ver series.py)."""
     n = prep.por_pagina
@@ -1233,7 +1264,7 @@ def pdf_da_previa(prep: Preparado, inicio: int, digitos: int, fim: int | None = 
     else:
         ultimo = inicio + n - 1 if fim is None else min(fim, inicio + n - 1)
         linhas = linhas_de_numeros(inicio, ultimo, n, largura)[:1]
-    doc = _montar(linhas, prep, prefixo=prefixo, cor=cor)
+    doc = _montar(linhas, prep, prefixo=prefixo, cor=cor, marca=marca)
     buf = io.BytesIO()
     doc.gravar(buf)
     return buf.getvalue()

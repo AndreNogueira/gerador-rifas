@@ -64,6 +64,7 @@ class SessaoEstado:
     ultimo: float = field(default_factory=time.time)
     tpl_nome: str = ""
     alg_nome: str = ""
+    logo_nome: str = ""               # o logotipo da marca propria (o ficheiro e `logotipo.png|jpg` na pasta da sessao)
     analise: tuple | None = None      # a resposta de `trabalhos.analisar`
     alg_erro: tuple | None = None     # um ficheiro de algarismos recusado pelo tipo (nao chegou a ser guardado)
     previa_n: int = 0
@@ -220,13 +221,13 @@ def vista(s: SessaoEstado, lg: str, pasta: Path, desde: int = 0) -> Sessao:
         tem_modelo=tem_modelo, modelo_url=f"/api/sessoes/{s.id}/modelo.pdf" if tem_modelo else "",
         previa=PreviaInfo(n=s.previa_n, titulo=i18n.traduzir(s.previa_titulo[0], lg, **s.previa_titulo[1]),
                           url=f"/api/sessoes/{s.id}/previa.pdf?n={s.previa_n}") if s.previa_titulo else None,
-        avisos=avisos, trabalho=_trabalho(s, lg, desde, pasta))
+        avisos=avisos, logotipo=s.logo_nome, trabalho=_trabalho(s, lg, desde, pasta))
 
 
 # ====================================================================== o formulario: folha, resumo, confirmacao
 def trabalho_dos_campos(c: Campos) -> core.Trabalho:
     """Os campos de texto -> `core.Trabalho` (levanta ErroRifas; chamar dentro de `i18n.com_lingua`)."""
-    return pedido.trabalho_de_campos("", c.nome, c.inicio, c.fim, c.max_ficheiro, c.digitos, c.modo, c.prefixos, c.saltar, c.cor_serie == "1")
+    return pedido.trabalho_de_campos("", c.nome, c.inicio, c.fim, c.max_ficheiro, c.digitos, c.modo, c.prefixos, c.saltar, c.cor_serie == "1", c.cor_numeros)
 
 
 def folha_dos_campos(info, c: Campos):

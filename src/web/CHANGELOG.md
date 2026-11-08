@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.19.0 — 2026-11-08
+
+### Novo
+- **Marca própria:** a **cor dos números** (um seletor de cor; vale para qualquer template e, com várias séries coloridas, a cor da série ganha) e o **logótipo da associação** em cada rifa (PNG ou JPG até 2 MB, nos templates de uma só rifa que a folha repete): escolhe-se o canto (↖ ↗ ↙ ↘) e o tamanho (10 a 40 % da altura da rifa). O PNG mantém a transparência.
+- O logótipo fica só na sessão (apaga-se com ela e com «Limpar tudo») e vê-se logo na pré-visualização.
+
 ## 3.18.0 — 2026-11-08
 
 ### Novo

@@ -208,6 +208,40 @@ async def carregar_algarismos(id_: str, request: Request, serv: Servico = Depend
     return vista(s, lg, pasta)
 
 
+@router.put("/{id_}/logotipo", response_model=Sessao, dependencies=[Depends(pesado)])
+async def carregar_logotipo(id_: str, request: Request, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Sessao:
+    """O logotipo da marca propria (PNG ou JPG, ate 2 MB): valida-se (tipo real, tamanho, imagem inteira) antes de se guardar."""
+    s, pasta = _sessao(serv, id_)
+    if s.a_correr:
+        raise _ocupado(lg)
+    aviso = i18n.traduzir("err_logotipo", lg, mb=core.marca.MAX_MB)
+    dados = await ler_corpo(request, core.marca.MAX_MB * 1024 * 1024, aviso)
+    try:
+        core.marca.ler_logotipo(dados)
+    except core.ErroRifas as e:
+        serv.metricas.evento("logotipo", "invalido")
+        raise ErroApi(422, e.em(lg), "aviso") from None
+    for antigo in pasta.glob("logotipo.*"):
+        antigo.unlink(missing_ok=True)
+    _guardar(serv, s, f"logotipo.{entradas.detetar_tipo(dados)}", dados, lg)
+    s.logo_nome = _nome_do_ficheiro(request) or "logotipo"
+    _limpar_previa(s, pasta)
+    serv.metricas.evento("logotipo", "ok", v2=len(dados) / 1024)
+    return vista(s, lg, pasta)
+
+
+@router.delete("/{id_}/logotipo", response_model=Sessao, dependencies=[Depends(leve)])
+def remover_logotipo(id_: str, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Sessao:
+    s, pasta = _sessao(serv, id_)
+    if s.a_correr:
+        raise _ocupado(lg)
+    for antigo in pasta.glob("logotipo.*"):
+        antigo.unlink(missing_ok=True)
+    s.logo_nome = ""
+    _limpar_previa(s, pasta)
+    return vista(s, lg, pasta)
+
+
 def _pdf_inline(caminho: Path) -> FileResponse:
     """Para o visor do browser: inline, sem cache, sem adivinhar o tipo."""
     return FileResponse(caminho, media_type=saida.MEDIA_PDF,
@@ -302,7 +336,8 @@ async def previa(id_: str, campos: Campos, serv: Servico = Depends(servico), lg:
     t0 = time.perf_counter()
     try:
         r = await serv.motor.curto(trabalhos.previa, str(pasta), s.tpl_nome, s.alg_nome, campos.papel, campos.margem, campos.porfolha,
-                                   tr.inicio, tr.fim, tr.digitos, tr.prefixos[0] if tr.prefixos else "", core.series.cor_da_serie(tr, 0), tr.saltar, campos.marcas == "1")
+                                   tr.inicio, tr.fim, tr.digitos, tr.prefixos[0] if tr.prefixos else "", core.series.cor_da_serie(tr, 0) or tr.cor_numeros, tr.saltar, campos.marcas == "1",
+                                   campos.logo_posicao, campos.logo_tamanho)
     except Ocupado:
         raise _ocupado(lg) from None
     except (asyncio.TimeoutError, BrokenProcessPool) as e:
@@ -390,7 +425,8 @@ async def gerar(id_: str, campos: Campos, serv: Servico = Depends(servico), lg: 
             (pasta / f).unlink(missing_ok=True)
         s.gerar = Geracao(estado="a_gerar", nome=tr.nome)
         args = (str(pasta), s.tpl_nome, s.alg_nome, tr.nome, tr.inicio, tr.fim, tr.por_ficheiro, tr.digitos, campos.papel, campos.margem,
-                campos.porfolha, tr.prefixos, tr.saltar, tr.cor_por_serie, campos.marcas == "1")
+                campos.porfolha, tr.prefixos, tr.saltar, tr.cor_por_serie, campos.marcas == "1", campos.logo_posicao, campos.logo_tamanho,
+                tr.cor_numeros)
         s.tarefa = asyncio.create_task(_geracao(serv, s, pasta, args))
     except BaseException:
         serv.motor.geracao = None

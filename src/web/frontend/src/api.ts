@@ -66,6 +66,8 @@ export interface Sessao {
   modelo_url: string;
   previa: PreviaInfo | null;
   avisos: string[];
+  /** O nome do logótipo carregado ("" = nenhum). */
+  logotipo: string;
   trabalho: Trabalho;
 }
 
@@ -88,6 +90,12 @@ export interface Campos {
   cor_serie: string;
   /** «1» = marcas de corte nas margens da folha (só templates de uma rifa). */
   marcas: string;
+  /** Onde fica o logótipo em cada rifa: se | sd | ie | id. */
+  logo_posicao: string;
+  /** Altura do logótipo em % da rifa (10 a 40). */
+  logo_tamanho: string;
+  /** «#RRGGBB»: a cor dos números; vazio = a do template. */
+  cor_numeros: string;
 }
 export interface FolhaInfo {
   ativa: boolean;
@@ -225,6 +233,8 @@ export const api = {
       bruto: true,
       sinal,
     }),
+  logotipo: (id: string, ficheiro: File) => pedir<Sessao>("PUT", `${s(id)}/logotipo`, { ficheiro }),
+  removerLogotipo: (id: string) => pedir<Sessao>("DELETE", `${s(id)}/logotipo`),
   usarGaleria: (id: string, dados: DadosGaleria) =>
     pedir<Sessao>("POST", `${s(id)}/galeria`, { json: dados }),
   /** A lista de bilhetes em CSV e a folha de controlo em PDF do pedido que está no formulário. */

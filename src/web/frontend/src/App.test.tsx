@@ -323,6 +323,7 @@ describe("sessão devolvida pelo servidor", () => {
         "algarismos",
         "avisos",
         "info",
+        "logotipo",
         "modelo_url",
         "previa",
         "pronto",
