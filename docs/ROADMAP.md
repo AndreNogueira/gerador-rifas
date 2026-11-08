@@ -17,8 +17,6 @@
 
 | # | Incremento | Tam. | Notas |
 |---|---|---|---|
-| 8 | **Auditoria de contraste dos temas** | M | Os 8 temas × claro/escuro foram vistos, não medidos. Correr axe/Lighthouse e acertar as cores (Arcade, Brutalista e Natal são os mais arriscados). |
-| 9 | **Testes e2e com Playwright no CI** | M | O fluxo completo (template → pré-visualizar → gerar → descarregar) com as fixtures de `tests/fixtures/`. Hoje só se faz à mão. |
 | 10 | **Confirmar o proxy e o anti-sono no Render** | XS | O painel (`/admin`) diz se os IPs reais chegam («Proxy e limite por IP») e se o serviço está a chamar-se («Anti-sono»); falta olhá-los com visitantes e 30 min sem visitas. Se der «problema», definir `FORWARDED_ALLOW_IPS=*`. |
 | 11 | **Métricas que sobrevivem** | M | O disco do Render gratuito é efémero: disco persistente (pago) ou base externa para o histórico do painel (`docs/ADMIN.md`). |
 | 12 | **Medir no Render a sério** | S | Os tempos e o `MAX_NUMEROS` (30 000) partiram de um contentor com 0,1 CPU assumido; repetir no Render e ajustar. |

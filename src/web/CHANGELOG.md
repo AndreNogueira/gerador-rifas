@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.22.0 — 2026-11-08
+
+### Melhorado
+- **Contraste dos 9 temas medido de verdade:** um teste num browser renderiza as páginas em claro e em escuro, em cada tema, e mede o contraste do texto contra os pixéis reais do fundo (WCAG AA: 4,5 para texto normal e 3 para texto grande). Corrigido o que não passava: o texto de exemplo dos campos (agora na cor suave do tema), o texto do rodapé do tema Janela 98, os botões em gradiente dos temas Quermesse e Matrix Gamer, e o cor-de-rosa do passo 2 nos temas Arcade, Brutalista e Risografia, além de uma cor do Janela 98 escuro.
+- O grande número decorativo de cada passo deixa de ser lido pelos leitores de ecrã (o título já diz o passo).
+
 ## 3.21.0 — 2026-11-08
 
 ### Novo

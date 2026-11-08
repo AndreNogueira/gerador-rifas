@@ -64,10 +64,10 @@ O que isto custou aos temas já feitos: **Janela 98** perdeu a barra de título 
 3. **Letras**: só se forem necessárias, de `@fontsource` / `@fontsource-variable`, **versão exata** (`pnpm add -E …`), importadas em `src/main.tsx`. O browser só descarrega as que o tema usa. Mantém um *fallback* de sistema.
 4. **Falta uma variável?** Junta-a a `_tokens.scss` com o valor do Premiado e usa-a na base (nas regras de `_base`, `_gerador`…). Nunca resolvas isso no tema com `padding`/`margin`: o teste não deixa.
 5. **Vê-o a sério**: `pnpm build`, `python -m src.web`, carrega os ficheiros de `tests/fixtures/`, e olha para o ecrã principal, o tutorial e um diálogo, em claro e escuro, em largo e em telemóvel (390 px). Junta capturas ao PR.
-6. **Acessibilidade**: texto com contraste suficiente (≥ 4,5:1; ≥ 3:1 para texto grande e ícones), foco visível (`:focus-visible` usa `--destaque-2`), nada essencial só em cor. Movimento só discreto: a base respeita `prefers-reduced-motion`.
+6. **Acessibilidade**: texto com contraste suficiente (≥ 4,5:1; ≥ 3:1 para texto grande e ícones) — **mede-se**: `pnpm build && pnpm e2e -g contraste` corre o teste `e2e/contraste.spec.ts` nos 9 temas em claro e escuro e diz o que não passa; foco visível (`:focus-visible` usa `--destaque-2`), nada essencial só em cor. Movimento só discreto: a base respeita `prefers-reduced-motion`.
 
 ## Limites conhecidos
 
-- Os contrastes foram **vistos**, não medidos (ver `docs/ROADMAP.md`).
+- O contraste está **medido** (`e2e/contraste.spec.ts`, WCAG AA) no ecrã principal (com a galeria aberta), no sorteio, no tutorial e nos termos, em claro e escuro. Não cobre o que só aparece depois de uma ação (diálogos, erros, o estado «a gerar»), o foco nem o *hover*, e isenta os controlos desativados (como o WCAG). O axe-core **não serve** aqui: marca como «incompleto» todo o texto sobre gradientes e padrões (medido: só avaliava 2 elementos em 16 das 18 combinações), por isso o teste mede o texto contra os pixéis reais do fundo (`e2e/ajuda-contraste.ts`).
 - Os nomes dos temas não estão traduzidos (são nomes próprios); o rótulo do seletor («Estilo») está nas 18 línguas.
 - O PDF.js do browser (visor) mantém sempre o seu aspeto, em qualquer tema.

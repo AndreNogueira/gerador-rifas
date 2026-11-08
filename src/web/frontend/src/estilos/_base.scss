@@ -116,6 +116,10 @@ a {
 
 // ---------- controlos
 select,
+::placeholder {
+  color: var(--suave); // o cinzento por omissao do browser nao chega a 4,5:1 sobre os campos (medido: 3,7 a 4,4 nos 9 temas)
+  opacity: 1;
+}
 input:not([type="radio"], [type="file"]),
 button,
 .botao {
