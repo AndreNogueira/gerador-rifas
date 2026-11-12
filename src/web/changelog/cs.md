@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.30.0 — 2026-11-12
+
+### Novinky
+- **Stránky „Jak na to“:** dva psané návody, „Pro školy“ a „Pro spolky“ (odkazy v patičce), s postupem krok za krokem, jak uspořádat tombolu: navrhnout los, série pro třídu nebo prodejce, tisk s ořezovými značkami, hlídání prodeje a ověřitelné losování. Jsou ve všech 18 jazycích a připomínají ověřit na obecním úřadě, zda tombola vyžaduje povolení.
+
 ## 3.29.0 — 2026-11-12
 
 ### Vylepšeno

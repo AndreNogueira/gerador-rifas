@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.30.0 — 2026-11-12
+
+### Novo
+- **Páginas «Como fazer»:** dois guias escritos, «Para escolas» e «Para associações» (ligações no rodapé), com o passo a passo para fazer uma rifa: desenhar o bilhete, uma série por turma ou vendedor, imprimir com marcas de corte, controlar as vendas e fazer um sorteio verificável. Estão nas 18 línguas e lembram de confirmar na câmara municipal se a rifa precisa de licença.
+
 ## 3.29.0 — 2026-11-12
 
 ### Melhorado

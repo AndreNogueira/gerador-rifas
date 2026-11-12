@@ -9,7 +9,7 @@
 | 1 | **Lembrar o ficheiro dos algarismos** entre sessões | S | A app Windows lembra-o; aqui a sessão perde-o. Guardar no browser (IndexedDB) e reenviar ao servidor ao retomar. Nada fica no servidor. |
 | 2 | ~~**Capturas do tutorial da web**~~ (feito, 3.24) | M | As atuais são da app Windows. Gerar com Playwright nas 18 línguas (`/api/tutorial/recorte`) e trocar `rotas_ajuda`. |
 | 4 | ~~**Mais temas**~~ (feito, 3.26: Halloween, Praia, Jornal antigo, Terminal verde, Cartaz de circo) | S cada | `docs/TEMAS.md` tem a receita. |
-| 5 | ~~**SEO por língua**~~ (feito, 3.25; faltam as páginas de «como fazer») | L | Um URL por língua (`/en/`, `/es/`…) com o texto traduzido no HTML e `hreflang`: hoje só o português se posiciona (`docs/SEO.md`). Antes disso: páginas de «como fazer» (rifas para a escola, a associação…). |
+| 5 | ~~**SEO por língua**~~ (feito, 3.25; páginas de «como fazer» para escolas e associações: feitas, 3.30; faltam outras, p.ex. clubes, igrejas, festas de bairro) | L | Um URL por língua (`/en/`, `/es/`…) com o texto traduzido no HTML e `hreflang`: hoje só o português se posiciona (`docs/SEO.md`). Antes disso: páginas de «como fazer» (rifas para a escola, a associação…). |
 | 6 | **Instalar como app (PWA)** | S | O `manifest.webmanifest` e os ícones já existem; falta um *service worker* que guarde só a «casca» (a geração precisa sempre do servidor). |
 | 7 | **Partilhar a configuração por link** | S | Os campos (de, até, modo…) no URL; nunca os ficheiros. |
 

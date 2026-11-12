@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.30.0 — 2026-11-12
+
+### New
+- **“How to” pages:** two written guides, “For schools” and “For associations” (links in the footer), with the step-by-step to run a raffle: design the ticket, one series per class or seller, print with cut marks, track sales and hold a verifiable draw. They are in all 18 languages and remind you to check with your local authority whether the raffle needs a licence.
+
 ## 3.29.0 — 2026-11-12
 
 ### Improved

@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
+from . import VERSAO, admin, changelog, config, guias, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
 from .limites import Limitador
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
@@ -107,6 +107,19 @@ class PaginaTexto(BaseModel):
     titulo: str
     aviso: str
     seccoes: list[SeccaoTexto]
+
+
+class PassoGuia(BaseModel):
+    titulo: str
+    texto: str
+
+
+class GuiaTexto(BaseModel):
+    titulo: str
+    intro: str
+    passos: list[PassoGuia]
+    dicas: list[str]
+    fim: str
 
 
 class Publico(BaseModel):
@@ -212,6 +225,15 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         resposta.headers["Cache-Control"] = "public, max-age=300"
         resposta.headers["Vary"] = "X-Lingua, Accept-Language"        # a resposta depende da lingua: as caches nao a podem misturar
         return PaginaTexto(**textos_legais.pagina(nome, lg))
+
+    @app.get("/api/guia/{nome}", response_model=GuiaTexto, tags=["sistema"])
+    def guia_de_como_fazer(nome: str, resposta: Response, lg: str = Depends(rotas.lingua)) -> GuiaTexto:
+        """Os guias «como fazer» (`guias/`: escolas e associacoes) na lingua do pedido (X-Lingua)."""
+        if nome not in guias.NOMES:
+            raise HTTPException(404, "Guia desconhecido")
+        resposta.headers["Cache-Control"] = "public, max-age=300"
+        resposta.headers["Vary"] = "X-Lingua, Accept-Language"
+        return GuiaTexto(**guias.guia(nome, lg))
 
     @app.get("/api/linguas", response_model=Linguas, tags=["textos"])
     def linguas(accept_language: str | None = Header(default=None)) -> Linguas:

@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.30.0 — 2026-11-12
+
+### Nouveautés
+- **Pages « Comment faire » :** deux guides écrits, « Pour les écoles » et « Pour les associations » (liens en bas de page), avec la marche à suivre pour organiser une tombola : dessiner le billet, une série par classe ou vendeur, imprimer avec des repères de coupe, suivre les ventes et faire un tirage vérifiable. Ils sont dans les 18 langues et rappellent de vérifier auprès de la mairie si la tombola exige une autorisation.
+
 ## 3.29.0 — 2026-11-12
 
 ### Amélioré

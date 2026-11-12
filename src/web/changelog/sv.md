@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.30.0 — 2026-11-12
+
+### Nytt
+- **Sidor ”Så gör du”:** två skrivna guider, ”För skolor” och ”För föreningar” (länkar i sidfoten), med steg för steg för ett lotteri: designa lotten, en serie per klass eller säljare, skriva ut med klippmärken, följa försäljningen och göra en kontrollerbar dragning. De finns på alla 18 språk och påminner om att kontrollera med kommunen om lotteriet kräver tillstånd.
+
 ## 3.29.0 — 2026-11-12
 
 ### Förbättrat

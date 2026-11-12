@@ -119,9 +119,9 @@ def test_sitemap_so_tem_as_paginas_publicas(publico):
     assert r.status_code == 200 and r.headers["content-type"].startswith("application/xml")
     ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     urls = [e.text for e in ElementTree.fromstring(r.text).findall("s:url/s:loc", ns)]
-    paginas = ["/", "/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/termos", "/privacidade", "/contacto", "/changelog"]
+    paginas = ["/", "/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/rifas-para-escolas", "/rifas-para-associacoes", "/termos", "/privacidade", "/contacto", "/changelog"]
     assert urls[::18] == [f"{URL}{c}" for c in paginas]                    # por pagina: primeiro o portugues (sem prefixo), depois as 17 com prefixo (ver test_web_seo_linguas.py)
-    assert len(urls) == 10 * 18 and len(set(urls)) == len(urls)
+    assert len(urls) == 12 * 18 and len(set(urls)) == len(urls)
 
 
 def test_rotas_desconhecidas_sao_404_a_serio_e_nao_se_indexam(publico):

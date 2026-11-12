@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.30.0 — 2026-11-12
+
+### Yeni
+- **„Nasıl yapılır” sayfaları:** iki yazılı rehber, „Okullar için” ve „Dernekler için” (alt bilgideki bağlantılar), bir çekilişin adım adım anlatımıyla: bileti tasarlama, sınıf veya satıcı başına bir seri, kesim işaretleriyle yazdırma, satışları izleme ve doğrulanabilir çekiliş. 18 dilin hepsinde var ve çekilişin izin gerektirip gerektirmediğini belediyeden öğrenmenizi hatırlatır.
+
 ## 3.29.0 — 2026-11-12
 
 ### İyileştirildi

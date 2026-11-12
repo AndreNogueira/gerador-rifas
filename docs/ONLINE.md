@@ -62,3 +62,18 @@ Os textos das páginas estão em `src/web/textos_legais.py`: são **provisórios
 ## QR de verificação nos bilhetes
 
 Com a variável `VERIFICACAO_CHAVE` no **Render** (Environment; pelo menos 16 caracteres, **nunca** no repositório) o gerador oferece um QR em cada bilhete dos templates de uma só rifa. Ler o QR abre `<site>/V/<código>`, uma página que confirma que o código foi emitido por este serviço para aquele bilhete (assinatura HMAC; não há base de dados). **Não prova que o bilhete foi pago nem que ganhou.** `PUBLIC_URL` tem de ser o endereço real do site (o QR leva-o). Se se trocar a chave, os QR já impressos deixam de validar: não a mudes depois de imprimir. `MAX_NUMEROS_QR` (10 000 por omissão) é o teto de números de um pedido com QR.
+
+## Monitores do UptimeRobot (conta gratuita: 50 monitores, verificação de 5 em 5 minutos)
+
+Criados em 2026-11-12, com o aviso por e-mail para o dono:
+
+| Monitor | O que verifica |
+|---|---|
+| Gerador Rifas | `/health` (o original; também ajuda a manter o Render acordado) |
+| página inicial (texto) | a página `/` tem a frase «Gerador de Rifas» (apanha uma página em branco ou um erro do frontend) |
+| sitemap.xml | `/sitemap.xml` tem `sitemaps.org` (o SEO depende dele) |
+| vídeos do tutorial | `HEAD /videos/tutorial_pt.mp4` (confirma que os vídeos foram descarregados do armazenamento, ver `docs/ASSETS.md`) |
+| Armazenamento de ficheiros | `HEAD` do `.zip` no bucket do Neon (se falhar, o site arranca sem vídeos) |
+| ads.txt | `/ads.txt` tem `f08c47fec0942fa0`; **em pausa** até a AdSense estar ligada (sem `ADSENSE_CLIENTE` o `/ads.txt` dá 404): retomar nessa altura |
+
+Página de estado pública (sem texto de SEO: o `noIndex` e os avisos de SSL e de domínio são do plano pago): <https://stats.uptimerobot.com/U1cH2J3Enj>. Quando se publica um `.zip` novo dos assets, trocar o URL do monitor «Armazenamento de ficheiros».

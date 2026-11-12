@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.30.0 — 2026-11-12
+
+### Nieuw
+- **‘Zo doe je dat’-pagina’s:** twee geschreven gidsen, ‘Voor scholen’ en ‘Voor verenigingen’ (links in de voettekst), met het stappenplan voor een loterij: het lot ontwerpen, een reeks per klas of verkoper, printen met knipmarkeringen, de verkoop bijhouden en een controleerbare trekking houden. Ze staan in alle 18 talen en herinneren u eraan bij de gemeente na te gaan of een vergunning nodig is.
+
 ## 3.29.0 — 2026-11-12
 
 ### Verbeterd

@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.30.0 — 2026-11-12
+
+### Noutăți
+- **Pagini „Cum se face”:** două ghiduri scrise, „Pentru școli” și „Pentru asociații” (linkuri în subsol), cu pașii pentru o tombolă: desenarea biletului, o serie pe clasă sau vânzător, tipărire cu semne de tăiere, controlul vânzărilor și o tragere verificabilă. Sunt în toate cele 18 limbi și amintesc să verifici la primărie dacă tombola cere autorizație.
+
 ## 3.29.0 — 2026-11-12
 
 ### Îmbunătățit

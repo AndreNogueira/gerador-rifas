@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.30.0 — 2026-11-12
+
+### Novedades
+- **Páginas «Cómo hacer»:** dos guías escritas, «Para colegios» y «Para asociaciones» (enlaces en el pie), con el paso a paso para hacer una rifa: diseñar el boleto, una serie por clase o vendedor, imprimir con marcas de corte, controlar las ventas y hacer un sorteo verificable. Están en las 18 lenguas y recuerdan consultar en el ayuntamiento si la rifa necesita licencia.
+
 ## 3.29.0 — 2026-11-12
 
 ### Mejorado

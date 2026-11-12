@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.30.0 — 2026-11-12
+
+### Nowości
+- **Strony „Jak to zrobić”:** dwa pisane poradniki, „Dla szkół” i „Dla stowarzyszeń” (linki w stopce), z instrukcją krok po kroku, jak zorganizować loterię: zaprojektować los, seria na klasę lub sprzedawcę, wydrukować ze znacznikami cięcia, kontrolować sprzedaż i przeprowadzić weryfikowalne losowanie. Są we wszystkich 18 językach i przypominają, by sprawdzić w urzędzie gminy, czy loteria wymaga zezwolenia.
+
 ## 3.29.0 — 2026-11-12
 
 ### Ulepszono
