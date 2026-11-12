@@ -49,6 +49,24 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_galeria_organizacao: "Organização ou evento",
     web_galeria_premios: "Prémios (uma linha cada, até 3)",
     web_galeria_data: "Data do sorteio",
+    web_editor: "Editor de templates",
+    web_editor_intro: "Desenhe a sua rifa sem o Canva.",
+    web_editor_texto: "Texto",
+    web_editor_retangulo: "Retângulo",
+    web_editor_linha: "Linha",
+    web_editor_numero: "Número 0001",
+    web_editor_modelo: "Começar com um modelo",
+    web_editor_cor: "Cor",
+    web_editor_contorno: "Contorno",
+    web_editor_tamanho: "Tamanho",
+    web_editor_negrito: "Negrito",
+    web_editor_apagar: "Apagar",
+    web_editor_fundo: "Fundo",
+    web_editor_pagina: "Tamanho da rifa (largura × altura, pt)",
+    web_editor_rodar: "Rodar 90°",
+    err_editor_numero: "O desenho tem de ter o número 0001 uma vez, ou duas (talão e parte principal).",
+    err_editor_digitos:
+      "O texto «{texto}» tem algarismos que o programa confundiria com o número do bilhete.",
     web_exportar_csv: "Exportar lista (CSV)",
     web_folha_controlo: "Folha de controlo (PDF)",
     web_copiar_ligacao: "Copiar ligação",
@@ -337,6 +355,20 @@ export class ServidorFalso {
           detalhe: "",
         },
         algarismos: { nome: "galeria.pdf", estado: "ok", texto: "✔ letra Vera", detalhe: "" },
+        info: { n_campos: 1, primeiro: "0001", ultimo: "0001", digitos: 4, tem_folha: true },
+      };
+      this.sessoes.set(id, novo);
+      return this.responder(novo);
+    }
+    if (acao === "editor" && metodo === "POST") {
+      if (this.galeriaErro) return this.responder({ detail: this.galeriaErro, tipo: "aviso" }, 422);
+      const novo: Sessao = {
+        ...s,
+        pronto: true,
+        tem_modelo: true,
+        modelo_url: `/api/sessoes/${id}/modelo.pdf`,
+        template: { nome: "editor.pdf", estado: "ok", texto: "✔ 1 bilhete (editor)", detalhe: "" },
+        algarismos: { nome: "editor-algarismos.pdf", estado: "ok", texto: "✔ letra Vera", detalhe: "" },
         info: { n_campos: 1, primeiro: "0001", ultimo: "0001", digitos: 4, tem_folha: true },
       };
       this.sessoes.set(id, novo);

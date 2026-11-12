@@ -244,6 +244,8 @@ export const api = {
   removerLogotipo: (id: string) => pedir<Sessao>("DELETE", `${s(id)}/logotipo`),
   usarGaleria: (id: string, dados: DadosGaleria) =>
     pedir<Sessao>("POST", `${s(id)}/galeria`, { json: dados }),
+  /** «Usar este template» do editor: o servidor desenha o PDF do desenho e cria o template e os algarismos na sessão. */
+  usarEditor: (id: string, desenho: unknown) => pedir<Sessao>("POST", `${s(id)}/editor`, { json: desenho }),
   /** A lista de bilhetes em CSV e a folha de controlo em PDF do pedido que está no formulário. */
   listaCsv: (campos: Campos) => pedir<Blob>("POST", "/api/exportar/lista.csv", { json: campos, bruto: true }),
   folhaDeControlo: (campos: Campos) =>

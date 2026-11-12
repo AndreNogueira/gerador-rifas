@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.27.0 — 2026-11-12
+
+### Yeni
+- **Şablon düzenleyici:** Canva şablonu yerine bileti sitede tasarlayın (1. adımdan bağlantılı “Şablon düzenleyici” sayfası): metin, dikdörtgen, çizgi ve 0001 numarasını ekleyin (bir kez, koçanlıysa iki kez), her öğeyi fare veya ok tuşlarıyla yerine sürükleyin, renkleri, boyutları ve arka planı değiştirin ve “Bu şablonu kullan”a basın. Ekran PDF ile aynı Vera yazı tipini kullanır; gördüğünüz neyse çıktı odur; taslak yalnızca tarayıcıda kalır. Metinler 0123 gibi diziler içeremez; program bunları bilet numarası sanırdı (ekran ve sunucu uyarır).
+
 ## 3.26.0 — 2026-11-12
 
 ### Yeni

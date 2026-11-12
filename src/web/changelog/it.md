@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.27.0 — 2026-11-12
+
+### Novità
+- **Editor di modelli:** invece di un modello di Canva, disegni il biglietto sul sito (pagina «Editor di modelli», collegata dal passo 1): aggiunga testi, rettangoli, linee e il numero 0001 (una volta, o due con la matrice), trascini ogni elemento con il mouse o le frecce, cambi colori, dimensioni e sfondo e prema «Usa questo modello». Lo schermo usa il carattere Vera, lo stesso del PDF: ciò che vede è ciò che ottiene; la bozza resta solo nel browser. I testi non possono contenere sequenze come 0123, che il programma confonderebbe con il numero del biglietto (lo schermo e il server avvisano).
+
 ## 3.26.0 — 2026-11-12
 
 ### Novità

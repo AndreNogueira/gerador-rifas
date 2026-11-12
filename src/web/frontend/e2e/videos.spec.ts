@@ -270,6 +270,75 @@ const CENAS: Cena[] = [
     },
   },
   {
+    id: "editor",
+    rodar: async (page, T) => {
+      await page.goto("/");
+      await legenda(
+        page,
+        T("Sem Canva? Desenhe a sua rifa no editor", "No Canva? Design your ticket in the editor"),
+        2200,
+      );
+      await clicar(page, page.getByTestId("ligacao-editor"));
+      await expect(page.getByTestId("editor-tela")).toBeVisible();
+      await legenda(
+        page,
+        T("Começa com um modelo de rifa com talão", "It starts with a sample ticket with a stub"),
+        2400,
+      );
+      await clicar(page, page.getByTestId("el-texto").first());
+      await escrever(page, page.getByTestId("editor-texto"), T("RIFA DE NATAL", "CHRISTMAS RAFFLE"));
+      await legenda(
+        page,
+        T(
+          "Escolha um elemento e mude o texto, a cor e o tamanho",
+          "Pick an element and change its text, color and size",
+        ),
+        3000,
+      );
+      const alvo = page.getByTestId("el-texto").nth(1);
+      const caixa = await alvo.boundingBox();
+      if (caixa) {
+        await page.mouse.move(caixa.x + caixa.width / 2, caixa.y + caixa.height / 2);
+        await page.mouse.down();
+        await page.mouse.move(caixa.x + caixa.width / 2 + 90, caixa.y + caixa.height / 2 + 6, { steps: 14 });
+        await page.mouse.up();
+      }
+      await legenda(
+        page,
+        T(
+          "Arraste os elementos para o sítio (ou use as setas)",
+          "Drag the elements into place (or use the arrow keys)",
+        ),
+        2800,
+      );
+      await clicar(page, page.getByTestId("add-retangulo"));
+      await legenda(
+        page,
+        T(
+          "Junte textos, retângulos, linhas e o número 0001 (uma ou duas vezes)",
+          "Add texts, rectangles, lines and the number 0001 (once or twice)",
+        ),
+        3200,
+      );
+      await clicar(page, page.getByTestId("editor-apagar"));
+      await clicar(page, page.getByTestId("editor-usar"));
+      await expect(page.getByTestId("estado-template")).toContainText("editor");
+      await legenda(
+        page,
+        T(
+          "«Usar este template»: o template e os algarismos ficam prontos",
+          "“Use this template”: the template and the digits are ready",
+        ),
+        3200,
+      );
+      await legenda(
+        page,
+        T("Só falta escolher os números e gerar", "All that is left is choosing the numbers and generating"),
+        2400,
+      );
+    },
+  },
+  {
     id: "marca",
     template: UMA_RIFA,
     rodar: async (page, T) => {

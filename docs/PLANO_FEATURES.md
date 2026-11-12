@@ -35,6 +35,8 @@ Ficam só no site: o QR de verificação (M6: a chave que o assina não pode est
 
 **Depois (3.24–3.25, 2026-11-08):** capturas do tutorial do site nas 18 línguas (`pnpm capturas`), **D4 feito** (SEO por língua: um URL por língua, `hreflang`, sitemap × 18), pré-visualização por PR (etiqueta `preview`, `docs/PREVIEW.md`), verificação do Google Search Console e monitor externo (`docs/ONLINE.md`).
 
+**Depois (3.26–3.27, 2026-11-12):** 5 temas novos (Halloween, Praia, Jornal antigo, Terminal verde, Cartaz de circo) e **X1** (editor de templates: `src/core/editor.py`, página `/editor`; a primeira versão não tem imagens, o logótipo já se junta nos Extras).
+
 **Ainda por fazer:** F8 (falta a prova dos 30 min), M9, o nível 3 sem D4 (D1–D3: contas, packs com Stripe, API para gráficas) e o nível 4. Fora do código: revisão **por falantes nativos** das traduções `web_*`, das de SEO e dos textos novos (≈ 100 chaves), mais volume por pedido.
 
 ## Quadro geral
@@ -89,7 +91,7 @@ Fora do código mas na mesma categoria: **capturas do tutorial da web** (M, Play
 
 | ID | Funcionalidade | Tam. | Porque fica para o fim |
 |---|---|---|---|
-| X1 | **Editor de templates no site** (sem Canva) | XL | produto novo; é um editor de PDF |
+| X1 | ~~**Editor de templates no site** (sem Canva)~~ **feito (3.27, versão simples: texto, retângulo, linha e número; sem imagens)** | XL | produto novo; é um editor de PDF |
 | X2 | **Página pública da rifa com reserva e pagamento de números** | XL | **evitar até haver parecer jurídico**: passa de «gerar bilhetes» a «operar a rifa» |
 | X3 | **Integração com serviços de impressão** | M–L | depende de parceiros e de comissões |
 

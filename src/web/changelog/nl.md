@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.27.0 — 2026-11-12
+
+### Nieuw
+- **Sjablooneditor:** in plaats van een Canva-sjabloon ontwerpt u het lot op de site (pagina ‘Sjablooneditor’, gelinkt vanaf stap 1): voeg teksten, rechthoeken, lijnen en het nummer 0001 toe (eenmaal, of tweemaal met controlestrook), sleep elk element met de muis of de pijltjestoetsen op zijn plek, wijzig kleuren, formaten en achtergrond en klik op ‘Dit sjabloon gebruiken’. Het scherm gebruikt het lettertype Vera, hetzelfde als de pdf: wat u ziet is wat u krijgt; het concept blijft alleen in de browser. Teksten mogen geen reeksen als 0123 bevatten, die het programma met het lotnummer zou verwarren (scherm en server waarschuwen).
+
 ## 3.26.0 — 2026-11-12
 
 ### Nieuw

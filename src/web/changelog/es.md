@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.27.0 — 2026-11-12
+
+### Novedades
+- **Editor de plantillas:** en lugar de usar una plantilla de Canva, diseñe la rifa en el sitio (página «Editor de plantillas», enlazada desde el paso 1): añada textos, rectángulos, líneas y el número 0001 (una vez, o dos si tiene talón), arrastre cada elemento con el ratón o las flechas, cambie colores, tamaños y el fondo, y pulse «Usar esta plantilla». La pantalla usa la letra Vera, la misma del PDF, así que lo que ve es lo que sale; el borrador queda solo en el navegador. Los textos no pueden contener secuencias como 0123, que el programa confundiría con el número del boleto (la pantalla y el servidor avisan).
+
 ## 3.26.0 — 2026-11-12
 
 ### Novedades

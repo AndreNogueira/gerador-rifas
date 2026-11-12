@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.27.0 — 2026-11-12
+
+### Noutăți
+- **Editor de șabloane:** în loc de un șablon Canva, proiectați biletul pe site (pagina „Editor de șabloane”, legată de la pasul 1): adăugați texte, dreptunghiuri, linii și numărul 0001 (o dată, sau de două ori cu cotor), trageți fiecare element cu mouse-ul sau cu săgețile, schimbați culorile, dimensiunile și fundalul și apăsați „Folosește acest șablon”. Ecranul folosește fontul Vera, același ca PDF-ul, deci ce vedeți obțineți; ciorna rămâne doar în browser. Textele nu pot conține secvențe ca 0123, pe care programul le-ar confunda cu numărul biletului (avertizează ecranul și serverul).
+
 ## 3.26.0 — 2026-11-12
 
 ### Noutăți

@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.27.0 — 2026-11-12
+
+### Nowości
+- **Edytor szablonów:** zamiast szablonu z Canvy zaprojektuj los na stronie (strona „Edytor szablonów”, z linkiem od kroku 1): dodaj teksty, prostokąty, linie i numer 0001 (raz, a przy odcinku dwa razy), przeciągaj każdy element myszą lub strzałkami, zmieniaj kolory, rozmiary i tło, a potem kliknij „Użyj tego szablonu”. Ekran używa czcionki Vera, tej samej co PDF, więc to, co widzisz, to dostaniesz; szkic zostaje tylko w przeglądarce. Teksty nie mogą zawierać ciągów takich jak 0123, które program pomyliłby z numerem losu (ostrzega ekran i serwer).
+
 ## 3.26.0 — 2026-11-12
 
 ### Nowości

@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.27.0 — 2026-11-12
+
+### Nytt
+- **Mallredigerare:** i stället för en Canva-mall gör du lotten på webbplatsen (sidan ”Mallredigerare”, länkad från steg 1): lägg till texter, rektanglar, linjer och numret 0001 (en gång, eller två med talong), dra varje element på plats med musen eller piltangenterna, ändra färger, storlekar och bakgrund och tryck på ”Använd den här mallen”. Skärmen använder typsnittet Vera, samma som PDF:en, så det du ser är det du får; utkastet finns bara i webbläsaren. Texter får inte innehålla sekvenser som 0123, som programmet skulle förväxla med lottnumret (skärmen och servern varnar).
+
 ## 3.26.0 — 2026-11-12
 
 ### Nytt

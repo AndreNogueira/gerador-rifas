@@ -4,6 +4,7 @@ import { api, type Publico } from "./api";
 import { Cabecalho } from "./Cabecalho";
 import { Changelog } from "./Changelog";
 import { ProvedorDialogos } from "./dialogos";
+import { Editor } from "./Editor";
 import { registarEcra } from "./ecra";
 import { useFormulario } from "./formulario";
 import { Gerador } from "./Gerador";
@@ -42,6 +43,7 @@ function Aplicacao() {
       "/video": t("mi_video"),
       "/sobre": t("mi_sobre"),
       "/sorteio": t("web_sorteio"),
+      "/editor": t("web_editor"),
     };
     const pagina = traduzidas[caminho] ?? TITULOS_PT[caminho] ?? "";
     document.title = pagina ? `${pagina.replace(/…$/, "")} | ${nome}` : nome;
@@ -78,6 +80,8 @@ function Aplicacao() {
           <Sobre versao={versao} />
         ) : caminho === "/sorteio" ? (
           <Sorteio />
+        ) : caminho === "/editor" ? (
+          <Editor />
         ) : caminho === "/changelog" ? (
           <Changelog />
         ) : caminho === "/termos" || caminho === "/privacidade" || caminho === "/contacto" ? (
