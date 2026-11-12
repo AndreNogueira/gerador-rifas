@@ -24,7 +24,7 @@ docker build --target web -t gerador-rifas . && docker run --rm -p 8080:8080 ger
 
 | Workflow | Quando | O que faz |
 |---|---|---|
-| [`ci.yml`](.github/workflows/ci.yml) | cada push e pull request | `ruff`; `pytest` (Linux e Windows, Python 3.13 e 3.15); frontend (Biome, `tsc`, Vitest, build); constrói a imagem Docker (`testes` e `web`) |
+| [`ci.yml`](.github/workflows/ci.yml) | cada push e pull request (um PR só de documentação não corre) | **num PR:** `ruff`, `pytest` em Linux (Python 3.15) e o frontend (Biome, `tsc`, Vitest, build). **Em `main`, ou num PR com a etiqueta `completo`:** também `pytest` em Windows, as métricas em Postgres, o e2e (Playwright) e a imagem Docker (`testes` e `web`). Poupa minutos do plano gratuito do GitHub; o resto corre-se com `scripts/verificar.ps1 -Docker -E2e` |
 | [`deploy.yml`](.github/workflows/deploy.yml) | push para `main`, **só depois de o CI passar** | publica a imagem em `ghcr.io/<dono>/<repo>:latest` e `:sha-<commit>`; manda o Render puxar essa imagem |
 
 Alojamento: **Render** (web service gratuito, a partir de uma imagem Docker). Nenhum segredo está nos ficheiros: o repositório só usa os *secrets* abaixo.

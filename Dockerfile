@@ -2,7 +2,7 @@
 # Substitui o build do .exe (Nuitka + assinatura) da app Windows: aqui o resultado e uma imagem Linux.
 #   docker build --target testes -t gerador-rifas-testes .     corre pytest, o auto-teste e os testes/build do frontend (falha se algo falhar)
 #   docker build --target web -t gerador-rifas .              a webapp (FastAPI + React): docker run -p 8080:8080 gerador-rifas
-# Versoes exatas (as ultimas em 2026-11-07): Python 3.15.2 (a app Windows usa 3.13; o CI testa as duas), Node 26.13.0 (LTS desde 2026-10-28),
+# Versoes exatas (as ultimas em 2026-11-07): Python 3.15.2 (a app Windows usa a mesma desde a 2.5), Node 26.13.0 (LTS desde 2026-10-28),
 # uv 0.13.7, pnpm 12.18.0 (o do package.json). Para atualizar: confirmar a tag com `docker manifest inspect` e voltar a correr os testes.
 ARG PYTHON=3.15.2
 ARG NODE=26.13.0

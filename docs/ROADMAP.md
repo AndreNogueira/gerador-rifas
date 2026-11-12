@@ -27,6 +27,6 @@
 | # | Incremento | Tam. | Notas |
 |---|---|---|---|
 | 15 | ~~**Pré-visualização por PR**~~ (feito: etiqueta `preview`, `docs/PREVIEW.md`) | M | Um deploy efémero por PR (Render *Preview Environments* ou imagem `pr-<n>`). |
-| 16 | **Subir a app Windows para Python 3.15** | M | Hoje fica na 3.13 (Nuitka demora 10–20 min e o `--selftest` tem de dar igual). Decisão em aberto. |
+| 16 | ~~**Subir a app Windows para Python 3.15**~~ (feito na 2.5: `--selftest` igual, GUI testada em Tk 9; o `.exe` compilado: ver `app/README.md`) | M | |
 | 17 | **Contas e pagamento** | L | O serviço será pago mais tarde. Desenhar antes os planos (limites por conta), a faturação e a proteção da privacidade dos ficheiros. |
 | 18 | **Observabilidade** | S | Registo estruturado dos pedidos e um painel de erros/tempos, sem guardar conteúdo dos ficheiros. |
