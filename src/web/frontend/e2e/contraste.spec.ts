@@ -21,7 +21,7 @@ const TEMAS = [
   "circo",
 ] as const;
 const MODOS = ["claro", "escuro"] as const;
-const PAGINAS = ["/", "/sorteio", "/tutorial", "/termos"] as const;
+const PAGINAS = ["/", "/sorteio", "/tutorial", "/termos", "/editor"] as const;
 
 async function abrir(page: Page, caminho: string, tema: string, modo: string) {
   await page.addInitScript(

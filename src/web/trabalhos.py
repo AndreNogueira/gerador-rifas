@@ -135,6 +135,15 @@ def galeria_png(desenho: str, titulo: str, organizacao: str, premios: tuple, dat
         return _erro(e)
 
 
+def editor_png(desenho: dict, dpi: int = 110) -> tuple:
+    """O PNG de um desenho do editor de templates: (\"ok\", bytes) | erro (letras que a Vera nao tem, algarismos que o motor confundiria, limites)."""
+    try:
+        pdf = core.editor.criar_template(core.editor.de_dict(desenho))
+        return ("ok", core.png_de_pagina(pdf, dpi))
+    except Exception as e:  # noqa: BLE001
+        return _erro(e)
+
+
 def png(pdf: str, dpi: int = 150) -> tuple:
     """A 1.a pagina de um PDF como PNG (para os browsers que nao mostram PDFs, como o Chrome do Android): (\"ok\", bytes) | erro."""
     try:

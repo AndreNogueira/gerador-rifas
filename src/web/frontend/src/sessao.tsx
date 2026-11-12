@@ -33,6 +33,8 @@ interface Contexto {
   removerLogotipo: () => Promise<void>;
   /** «Usar este template» da galeria: o servidor cria o template e os algarismos na sessão. */
   usarGaleria: (dados: DadosGaleria) => Promise<void>;
+  /** «Usar este template» do editor: `depois` corre quando o template ficou na sessão (sem erro). */
+  usarEditor: (desenho: unknown, depois?: () => void) => Promise<void>;
   pedirPrevia: (c: Campos) => Promise<void>;
   /** `confirmacao`: texto a confirmar antes de gerar (muitas rifas por folha); vazio = não pergunta. */
   pedirGerar: (c: Campos, confirmacao: string) => Promise<void>;
@@ -247,6 +249,18 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
               (s) => {
                 mostrarErrosDeFicheiros(s);
                 setLembrado(null);
+              },
+            )
+          : Promise.resolve(),
+      usarEditor: (desenho, depois) =>
+        id.current
+          ? executar(
+              "template",
+              () => api.usarEditor(id.current as string, desenho),
+              (s) => {
+                mostrarErrosDeFicheiros(s);
+                setLembrado(null);
+                if (s.template.estado !== "erro") depois?.();
               },
             )
           : Promise.resolve(),

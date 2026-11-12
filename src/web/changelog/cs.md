@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.27.0 — 2026-11-12
+
+### Novinky
+- **Editor šablon:** místo šablony z Canvy navrhněte los na webu (stránka „Editor šablon“, odkaz od kroku 1): přidejte texty, obdélníky, čáry a číslo 0001 (jednou, nebo dvakrát s útržkem), každý prvek přetáhněte myší nebo šipkami, změňte barvy, velikosti a pozadí a klikněte na „Použít tuto šablonu“. Obrazovka používá písmo Vera jako PDF, takže co vidíte, to dostanete; koncept zůstává jen v prohlížeči. Texty nesmí obsahovat řady jako 0123, které by program zaměnil s číslem losu (upozorní obrazovka i server).
+
 ## 3.26.0 — 2026-11-12
 
 ### Novinky

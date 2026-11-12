@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.27.0 — 2026-11-12
+
+### Novo
+- **Editor de templates:** em vez de usar um template do Canva, desenhe a rifa no site (página «Editor de templates», ligada a partir do passo 1): junte textos, retângulos, linhas e o número 0001 (uma vez, ou duas se tiver talão), arraste cada elemento para o sítio com o rato ou as setas, mude cores, tamanhos e o fundo, e carregue em «Usar este template». O ecrã usa a letra Vera, a mesma do PDF, por isso o que se vê é o que sai; o rascunho fica só no browser. Os textos não podem ter sequências como 0123, que o programa confundiria com o número do bilhete (o ecrã e o servidor avisam).
+
 ## 3.26.0 — 2026-11-12
 
 ### Novo

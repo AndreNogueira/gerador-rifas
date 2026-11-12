@@ -78,7 +78,7 @@ def test_topicos_e_ids_de_video_andam_em_paralelo_e_os_de_base_vem_primeiro(plat
 
 def test_o_windows_nao_mostra_o_que_so_existe_no_site():
     windows = {f.id for f in tutorial.funcionalidades("windows")}
-    assert {"qr", "guardar", "instalar"}.isdisjoint(windows) and {"series", "galeria", "sorteio", "visual"} <= windows
+    assert {"qr", "editor", "guardar", "instalar"}.isdisjoint(windows) and {"series", "galeria", "sorteio", "visual"} <= windows
     assert {f.id for f in tutorial.funcionalidades("web")} == set(IDS)
 
 

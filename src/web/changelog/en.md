@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.27.0 — 2026-11-12
+
+### New
+- **Template editor:** instead of using a Canva template, design the ticket on the site (the “Template editor” page, linked from step 1): add texts, rectangles, lines and the number 0001 (once, or twice if it has a stub), drag each element into place with the mouse or arrow keys, change colors, sizes and the background, and press “Use this template”. The screen uses the Vera font, the same as the PDF, so what you see is what you get; the draft stays only in the browser. Texts can't contain sequences like 0123, which the program would mistake for the ticket number (the screen and the server warn you).
+
 ## 3.26.0 — 2026-11-12
 
 ### New

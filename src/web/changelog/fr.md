@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.27.0 — 2026-11-12
+
+### Nouveautés
+- **Éditeur de modèles :** au lieu d'un modèle Canva, dessinez le billet sur le site (page « Éditeur de modèles », liée depuis l'étape 1) : ajoutez des textes, des rectangles, des lignes et le numéro 0001 (une fois, ou deux avec un talon), faites glisser chaque élément à la souris ou avec les flèches, changez couleurs, tailles et fond, puis cliquez sur « Utiliser ce modèle ». L'écran utilise la police Vera, la même que le PDF : ce que vous voyez est ce que vous obtenez ; le brouillon reste dans le navigateur. Les textes ne peuvent pas contenir de suites comme 0123, que le programme confondrait avec le numéro du billet (l'écran et le serveur vous avertissent).
+
 ## 3.26.0 — 2026-11-12
 
 ### Nouveautés

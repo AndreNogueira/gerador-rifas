@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
+from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
 from .limites import Limitador
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
@@ -229,6 +229,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     app.include_router(rotas.router_ecra)
     app.include_router(rotas_listas.router)
     app.include_router(rotas_galeria.router)
+    app.include_router(rotas_editor.router)
     app.include_router(rotas_verificar.router)
     app.include_router(admin.router)
 

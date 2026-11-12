@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.27.0 — 2026-11-12
+
+### Neu
+- **Vorlageneditor:** Statt einer Canva-Vorlage gestalten Sie das Los auf der Website (Seite „Vorlageneditor“, verlinkt ab Schritt 1): Fügen Sie Texte, Rechtecke, Linien und die Nummer 0001 hinzu (einmal, mit Abschnitt zweimal), ziehen Sie jedes Element mit Maus oder Pfeiltasten an seinen Platz, ändern Sie Farben, Größen und Hintergrund und klicken Sie auf „Diese Vorlage verwenden“. Der Bildschirm nutzt die Schrift Vera wie das PDF: Was Sie sehen, bekommen Sie; der Entwurf bleibt nur im Browser. Texte dürfen keine Folgen wie 0123 enthalten, die das Programm mit der Losnummer verwechseln würde (Bildschirm und Server warnen).
+
 ## 3.26.0 — 2026-11-12
 
 ### Neu

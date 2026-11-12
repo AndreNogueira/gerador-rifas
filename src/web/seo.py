@@ -108,6 +108,10 @@ def _corpo_sorteio(lg: str) -> str:
     return f"<h1>{html.escape(_nome_pagina('web_sorteio')(lg))}</h1><p>{html.escape(texto('d_sorteio', lg))}</p>{_voltar(lg)}"
 
 
+def _corpo_editor(lg: str) -> str:
+    return f"<h1>{html.escape(_nome_pagina('web_editor')(lg))}</h1><p>{html.escape(texto('d_editor', lg))}</p>{_voltar(lg)}"
+
+
 def _corpo_changelog(lg: str) -> str:
     blocos = []
     for e in list(changelog.entradas(lg))[:6]:
@@ -154,6 +158,7 @@ ROTAS: dict[str, Pagina] = {p.caminho: p for p in (
     Pagina("/video", "d_video", _corpo_video, _nome_pagina("mi_video")),
     Pagina("/sobre", "d_sobre", _corpo_sobre, _nome_pagina("mi_sobre")),
     Pagina("/sorteio", "d_sorteio", _corpo_sorteio, _nome_pagina("web_sorteio")),
+    Pagina("/editor", "d_editor", _corpo_editor, _nome_pagina("web_editor")),
     Pagina("/termos", "d_termos", _corpo_texto("termos"), lambda lg: textos_legais.pagina("termos", lg)["titulo"]),
     Pagina("/privacidade", "d_privacidade", _corpo_texto("privacidade"), lambda lg: textos_legais.pagina("privacidade", lg)["titulo"]),
     Pagina("/contacto", "d_contacto", _corpo_texto("contacto"), lambda lg: textos_legais.pagina("contacto", lg)["titulo"]),

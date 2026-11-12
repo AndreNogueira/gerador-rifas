@@ -5,6 +5,7 @@ import { Galeria } from "./Galeria";
 import { useI18n } from "./i18n";
 import { Icone, type NomeIcone } from "./icones";
 import { MarcaPropria } from "./MarcaPropria";
+import { Ligacao } from "./rota";
 import type { Ocupado } from "./sessao";
 
 const COR_DO_ESTADO: Record<Ficheiro["estado"], Cor> = {
@@ -160,6 +161,11 @@ export function CartaoTemplate({
         </Estado>
       )}
       <Galeria desativado={bloqueado || !sessao || ocupado !== null} />
+      <p className="suave">
+        <Ligacao para="/editor" className="editor-ligacao" data-testid="ligacao-editor">
+          {t("web_editor")} →
+        </Ligacao>
+      </p>
       {sessao?.info?.tem_folha && (
         <div className="folha">
           <p className="suave">{t("lay_info")}</p>
