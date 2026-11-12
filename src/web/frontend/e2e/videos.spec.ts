@@ -485,7 +485,7 @@ const CENAS: Cena[] = [
         T("Escolha o tema no seletor do cabeçalho", "Pick the theme in the header selector"),
         1000,
       );
-      for (const v of ["quermesse", "gala", "matrix", "natal", "premiado"]) {
+      for (const v of ["halloween", "praia", "jornal", "terminal", "circo", "natal", "premiado"]) {
         await ir(page, page.getByTestId("visual"));
         await page.getByTestId("visual").selectOption(v);
         await pausa(page, 1700);

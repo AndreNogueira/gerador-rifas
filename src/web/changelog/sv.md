@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.26.0 — 2026-11-12
+
+### Nytt
+- **Fem nya teman:** Halloween, Strand, Gammal tidning, Grön terminal och Cirkusaffisch, alla i ljust och mörkt. Webbplatsen har nu 14 teman; layouten är densamma i alla (bara färger och utseende ändras).
+
 ## 3.25.0 — 2026-11-08
 
 ### Nytt

@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.26.0 — 2026-11-12
+
+### Neu
+- **Fünf neue Designs:** Halloween, Strand, Alte Zeitung, Grünes Terminal und Zirkusplakat, jeweils hell und dunkel. Die Website hat jetzt 14 Designs; der Aufbau ist überall gleich (nur Farben und Aussehen ändern sich).
+
 ## 3.25.0 — 2026-11-08
 
 ### Neu

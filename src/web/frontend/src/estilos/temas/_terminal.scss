@@ -1,0 +1,90 @@
+// Terminal verde: um monitor de fósforo verde, simples e plano. Tudo em «JetBrains Mono», cantos retos, contornos de uma linha e
+// linhas de varrimento por trás da página (sem chuva de caracteres: essa é do Matrix Gamer). Escuro = verde sobre preto;
+// claro = a mesma saída impressa em papel de listagem.
+@use "../tema" as *;
+
+@include tema(terminal) {
+  --t-verde: light-dark(#0b6b1f, #3dff6e);
+
+  --fundo: light-dark(#e9f1e4, #040a05);
+  --cartao: light-dark(#f7fbf4, #09140b);
+  --texto: light-dark(#0a2a0f, #b8ffc7);
+  --suave: light-dark(#3f6347, #6fcf88);
+  --linha: light-dark(#b9d0b4, #14451d);
+  --campo: light-dark(#eef6ea, #060e07);
+  --destaque: var(--t-verde);
+  --destaque-2: light-dark(#8a5a00, #ffc400);
+  --ok: light-dark(#0b6b1f, #3dff6e);
+  --aviso: light-dark(#8a5a00, #ffc400);
+  --erro: light-dark(#b0102a, #ff6b7e);
+  --sombra-cor: light-dark(#0a2a0f, #000000);
+  --passo-1: light-dark(#0b6b1f, #3dff6e);
+  --passo-2: light-dark(#8a5a00, #ffc400);
+  --passo-3: light-dark(#0a6b78, #4fe3f0);
+  --passo-4: light-dark(#a3126b, #ff7ad0);
+
+  --fonte: "JetBrains Mono Variable", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --fonte-titulo: "JetBrains Mono Variable", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --fonte-marca: "JetBrains Mono Variable", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --peso-titulo: 700;
+  --peso-marca: 800;
+  --peso-numero: 800;
+  --espaco-marca: -0.04em;
+  --ligaduras: none;
+  --raio: 0px;
+  --raio-c: 0px;
+  --entalhe: 0px;
+  --filtro-coluna: none;
+  --sombra-visor: 0 0 0 1px var(--t-verde);
+
+  // fundo preto-esverdeado com as linhas de varrimento de um CRT (só pintura)
+  --banda:
+    repeating-linear-gradient(0deg, rgb(61 255 110 / 9%) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, light-dark(#0c2a12, #020603), light-dark(#10381a, #07140a));
+  --banda-forma: none;
+  --banda-borda: 2px solid #3dff6e;
+  --deco-pagina: repeating-linear-gradient(0deg, rgb(0 0 0 / 55%) 0 1px, transparent 1px 3px);
+  --deco-pagina-opacidade: 0.18;
+  --topo-sombra: 0 2px 0 rgb(61 255 110 / 35%);
+  --topo-texto: #b8ffc7;
+  --marca-anel: 0 0 0 1px #3dff6e;
+  --pilula: rgb(61 255 110 / 10%);
+  --pilula-texto: #b8ffc7;
+  --pilula-anel: 0 0 0 1px rgb(61 255 110 / 60%);
+  --nav-ativo: #3dff6e;
+  --nav-ativo-texto: #041a09;
+
+  --botao-1: var(--t-verde);
+  --botao-2: var(--t-verde);
+  --botao-texto: light-dark(#f7fbf4, #041a09);
+  --botao-borda-cor: var(--t-verde);
+  --botao-sombra: none;
+  --botao-sombra-hover: 0 0 0 1px var(--t-verde);
+  --botao-hover: none;
+  --botao-ativo: translateY(1px);
+  --entrega-1: var(--t-verde);
+  --entrega-2: var(--t-verde);
+  --campo-anel: inset 0 0 0 1px color-mix(in srgb, var(--t-verde) 50%, transparent);
+  --campo-anel-foco: 0 0 0 2px color-mix(in srgb, var(--t-verde) 70%, transparent);
+
+  --anel-largura: 1px;
+  --anel-tinta: 100%;
+  --anel-cor: var(--t-verde);
+  --picotado-estilo: dashed;
+  --cabecalho-tinta: 0%;
+  --insignia-raio: 0px;
+  --insignia-rot: none;
+  --insignia-cor: light-dark(#f7fbf4, #041a09);
+  --insignia-luz: 0%;
+  --insignia-escuro: 0%;
+  --insignia-sombra: none;
+  --numero-pct: 100%;
+  --zona-estilo: dashed;
+
+  --progresso-raio: 0px;
+  --progresso-fundo: var(--campo);
+  --progresso-barra: repeating-linear-gradient(90deg, var(--t-verde) 0 8px, transparent 8px 11px);
+  --visor-barra: repeating-linear-gradient(90deg, var(--t-verde) 0 8px, transparent 8px 11px);
+  --dialogo-sombra: 0 0 0 1px var(--t-verde), 0 20px 50px -20px rgb(0 0 0 / 80%);
+  --dialogo-topo: var(--t-verde);
+}

@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.26.0 — 2026-11-12
+
+### Novedades
+- **Cinco temas nuevos:** Halloween, Playa, Periódico antiguo, Terminal verde y Cartel de circo, cada uno en claro y oscuro. El sitio pasa a tener 14 temas; la estructura es la misma en todos (solo cambian los colores y el aspecto).
+
 ## 3.25.0 — 2026-11-08
 
 ### Novedades

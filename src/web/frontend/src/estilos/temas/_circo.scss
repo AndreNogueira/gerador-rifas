@@ -1,0 +1,68 @@
+// Cartaz de circo: o grande circo de outros tempos. Faixa = a lona às riscas vermelhas e creme, com festo, letra de cartaz
+// «Rye», bilhetes com o toldo às riscas e dourado a sublinhar. Claro = cartaz sobre papel creme; escuro = o circo à noite.
+@use "../tema" as *;
+
+@include tema(circo) {
+  --fundo: light-dark(#fbeccb, #1b0f1f);
+  --cartao: light-dark(#fffaf0, #2b1830);
+  --texto: light-dark(#2f1020, #fbeccb);
+  --suave: light-dark(#715048, #cdb1c9);
+  --linha: light-dark(#e9cf94, #4b2f55);
+  --campo: light-dark(#fff4dd, #20122a);
+  --destaque: light-dark(#b50f2a, #ff6b80);
+  --destaque-2: light-dark(#1f3f8f, #8aaeff);
+  --ok: light-dark(#1b7a45, #5fe39a);
+  --aviso: light-dark(#8a5a00, #ffc94d);
+  --erro: light-dark(#b50f2a, #ff7b8c);
+  --sombra-cor: light-dark(#5a1018, #000000);
+  --passo-1: light-dark(#b50f2a, #ff6b80);
+  --passo-2: light-dark(#1f3f8f, #8aaeff);
+  --passo-3: light-dark(#8a5a00, #ffc94d);
+  --passo-4: light-dark(#1b7a45, #5fe39a);
+
+  --fonte-titulo: "Rye", Georgia, serif;
+  --peso-titulo: 400;
+  --peso-marca: 400;
+  --peso-numero: 400;
+  --raio: 8px;
+  --raio-c: 6px;
+  --filtro-coluna: drop-shadow(0 6px 0 color-mix(in srgb, var(--sombra-cor) 25%, transparent));
+
+  // a lona: riscas vermelhas e vinho, com o festo de triângulos recortado por baixo
+  --banda:
+    repeating-linear-gradient(90deg, light-dark(#b50f2a, #7a0b1d) 0 3rem, light-dark(#8a0c20, #560813) 3rem 6rem);
+  --banda-forma: none;
+  --banda-mascara:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 1.2rem) no-repeat,
+    conic-gradient(from -45deg at 50% 0, #0000 0 90deg, #000 0 270deg, #0000 0) bottom / 2.4rem 1.2rem repeat-x;
+  --topo-sombra: 0 3px 0 #6e0a19;
+  --pilula: rgb(60 4 14 / 55%);
+  --nav-ativo: #ffd23f;
+  --nav-ativo-texto: #3d0a14;
+
+  --botao-1: #b50f2a;
+  --botao-2: #d6282f;
+  --botao-texto: #ffffff;
+  --botao-borda-cor: #ffd23f;
+  --botao-anel: 0 0 0 2px #ffd23f;
+  --botao-sombra: 0 4px 0 #6e0a19;
+  --botao-sombra-hover: 0 6px 0 #6e0a19;
+  --botao-hover: translateY(-2px);
+  --botao-ativo: translateY(3px);
+  --entrega-1: #1f3f8f;
+  --entrega-2: #2f5bc2;
+
+  // o toldo: riscas vermelhas e creme no topo de cada bilhete
+  --faixa-topo: repeating-linear-gradient(90deg, #b50f2a 0 14px, #fff1c9 14px 28px);
+  --faixa-topo-altura: 12px;
+  --cartao-anel-extra: inset 0 0 0 2px color-mix(in srgb, #d9a520 55%, transparent);
+  --cabecalho-tinta: 0%;
+  --insignia-raio: 50%;
+  --insignia-rot: none;
+  --insignia-cor: #ffffff;
+  --insignia-escuro: 28%;
+  --insignia-sombra: 0 3px 0 rgb(0 0 0 / 28%), inset 0 0 0 2px #ffd23f;
+  --visor-barra: repeating-linear-gradient(90deg, #b50f2a 0 14px, #fff1c9 14px 28px);
+  --progresso-barra: repeating-linear-gradient(90deg, #b50f2a 0 14px, #fff1c9 14px 28px);
+  --dialogo-topo: #d9a520;
+}

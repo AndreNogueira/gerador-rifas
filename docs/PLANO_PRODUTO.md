@@ -4,7 +4,7 @@ Escrito para o dono do projeto. Os números de preços são **hipóteses para te
 
 ## 1. Ponto de partida
 
-- **O que existe:** uma webapp pública e sem contas que gera as rifas numeradas a partir de um template do Canva (template + algarismos → pré-visualização → PDF/ZIP), em 18 línguas e 9 temas, com painel de métricas (`/admin`), e a app Windows com o mesmo motor.
+- **O que existe:** uma webapp pública e sem contas que gera as rifas numeradas a partir de um template do Canva (template + algarismos → pré-visualização → PDF/ZIP), em 18 línguas e 14 temas, com painel de métricas (`/admin`), e a app Windows com o mesmo motor.
 - **O que já é um ponto forte:** é rápido, não pede registo, e **apaga os ficheiros em 30 minutos** (bom argumento de privacidade para associações e escolas).
 - **O que limita o negócio hoje** (`docs/ONLINE.md`, `docs/ADMIN.md`): o Render gratuito adormece, não tem disco persistente, só tem 750 horas por mês, e o próprio Render diz para **não o usar em produção**. Um serviço que cobra dinheiro não pode viver aí.
 

@@ -1,0 +1,83 @@
+// Jornal antigo: a primeira página de um jornal impresso. Papel de jornal, tinta preta e um vermelho de tipografia, títulos
+// em «Playfair Display» e texto em «Source Serif 4», filetes duplos em vez de sombras. Claro = jornal de ontem; escuro = a
+// gráfica de madrugada (tinta clara sobre papel carvão).
+@use "../tema" as *;
+
+@include tema(jornal) {
+  --t-tinta: light-dark(#1b1913, #efe7d2);
+
+  --fundo: light-dark(#ebe4d1, #14120e);
+  --cartao: light-dark(#f8f3e4, #201d16);
+  --texto: light-dark(#1b1913, #efe7d2);
+  --suave: light-dark(#5b5546, #b9b09a);
+  --linha: light-dark(#cbbf9f, #3a352a);
+  --campo: light-dark(#f2ecda, #181510);
+  --destaque: light-dark(#8e1b14, #ff8a7d);
+  --destaque-2: light-dark(#2d4a6b, #8fb6e0);
+  --ok: light-dark(#2f6b2a, #8fd68a);
+  --aviso: light-dark(#7a5200, #f0c060);
+  --erro: light-dark(#a3140f, #ff8a80);
+  --sombra-cor: light-dark(#1b1913, #000000);
+  --passo-1: light-dark(#8e1b14, #ff8a7d);
+  --passo-2: light-dark(#2d4a6b, #8fb6e0);
+  --passo-3: light-dark(#6b5200, #f0c060);
+  --passo-4: light-dark(#2f6b2a, #8fd68a);
+
+  --fonte: "Source Serif 4 Variable", Georgia, "Times New Roman", serif;
+  --fonte-titulo: "Playfair Display Variable", Georgia, serif;
+  --peso-titulo: 800;
+  --peso-marca: 900;
+  --peso-numero: 900;
+  --raio: 2px;
+  --raio-c: 1px;
+  --entalhe: 0px;
+  --filtro-coluna: drop-shadow(3px 3px 0 color-mix(in srgb, var(--sombra-cor) 22%, transparent));
+  --sombra-visor: 4px 4px 0 color-mix(in srgb, var(--sombra-cor) 25%, transparent);
+
+  // o cabeçalho do jornal: tinta preta com filetes de linhas finas e um filete duplo por baixo
+  --banda:
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 7%) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, light-dark(#1b1913, #0b0a08), light-dark(#2b2820, #1b1913));
+  --banda-forma: none;
+  --banda-borda: 5px double #efe7d2;
+  --topo-sombra: 0 3px 0 rgb(0 0 0 / 35%);
+  --marca-anel: 0 0 0 2px #efe7d2, 0 0 0 4px #1b1913;
+  --pilula: rgb(239 231 210 / 14%);
+  --pilula-anel: 0 0 0 1px rgb(239 231 210 / 55%);
+  --nav-ativo: #efe7d2;
+  --nav-ativo-texto: #1b1913;
+
+  --botao-1: #8e1b14;
+  --botao-2: #8e1b14;
+  --botao-texto: #f8f3e4;
+  --botao-borda-cor: #1b1913;
+  --botao-anel: 0 0 0 1px #1b1913;
+  --botao-sombra: 3px 3px 0 #1b1913;
+  --botao-sombra-hover: 5px 5px 0 #1b1913;
+  --botao-hover: translate(-1px, -1px);
+  --botao-ativo: translate(2px, 2px);
+  --entrega-1: #2d4a6b;
+  --entrega-2: #2d4a6b;
+  --campo-anel: inset 0 0 0 1px color-mix(in srgb, var(--t-tinta) 35%, transparent);
+
+  // o bilhete é uma coluna de jornal: filete grosso por cima e filete fino por baixo
+  --faixa-topo: linear-gradient(var(--t-tinta), var(--t-tinta));
+  --faixa-topo-altura: 4px;
+  --cartao-anel-extra: inset 0 0 0 1px color-mix(in srgb, var(--t-tinta) 55%, transparent);
+  --picotado-estilo: dotted;
+  --cabecalho-tinta: 0%;
+  --insignia-raio: 0px;
+  --insignia-rot: none;
+  --insignia-cor: light-dark(#f8f3e4, #14120e);
+  --insignia-luz: 0%;
+  --insignia-escuro: 18%;
+  --insignia-sombra: 0 0 0 1px var(--t-tinta);
+  --numero-pct: 85%;
+  --zona-estilo: solid;
+
+  --progresso-raio: 0px;
+  --progresso-barra: repeating-linear-gradient(90deg, #8e1b14 0 6px, #1b1913 6px 12px);
+  --visor-barra: repeating-linear-gradient(90deg, #8e1b14 0 6px, #1b1913 6px 12px);
+  --dialogo-sombra: 6px 6px 0 rgb(0 0 0 / 55%);
+  --dialogo-topo: var(--t-tinta);
+}

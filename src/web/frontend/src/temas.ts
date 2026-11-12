@@ -24,6 +24,27 @@ export const VISUAIS = [
     descricao: "Chuva de caracteres verdes e o brilho de neon de um HUD de jogo.",
   },
   { id: "natal", nome: "Natal", descricao: "A rifa de Natal: verde, vermelho, dourado e neve a cair." },
+  {
+    id: "halloween",
+    nome: "Halloween",
+    descricao: "A noite das bruxas: laranja de abóbora, roxo e uma lua cheia.",
+  },
+  { id: "praia", nome: "Praia", descricao: "O verão: mar turquesa, sol e areia, com letra redonda." },
+  {
+    id: "jornal",
+    nome: "Jornal antigo",
+    descricao: "Primeira página de jornal impresso: tinta, papel e filetes.",
+  },
+  {
+    id: "terminal",
+    nome: "Terminal verde",
+    descricao: "Um monitor de fósforo verde: letra monoespaçada e linhas de varrimento.",
+  },
+  {
+    id: "circo",
+    nome: "Cartaz de circo",
+    descricao: "A lona às riscas, letra de cartaz e dourado, como um circo antigo.",
+  },
 ] as const;
 
 export type Visual = (typeof VISUAIS)[number]["id"];

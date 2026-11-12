@@ -14,7 +14,7 @@ export default defineConfig({
     cssCodeSplit: false, // UM só CSS
     modulePreload: false, // um só JS: não há nada para pré-carregar
   },
-  // 20 s: os testes dos temas compilam os 9 temas com o Sass, o que numa máquina ocupada passa dos 5 s por omissão
+  // 20 s: os testes dos temas compilam os 14 temas com o Sass, o que numa máquina ocupada passa dos 5 s por omissão
   test: {
     environment: "jsdom",
     globals: true,

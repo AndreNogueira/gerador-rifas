@@ -46,7 +46,7 @@ class Servico:
 
 router = APIRouter(prefix="/api/sessoes", tags=["sessoes"])
 # os ids de `temas.ts`: o que o cliente diz (X-Visual) so entra nas metricas se estiver aqui
-_VISUAIS = frozenset({"premiado", "quermesse", "arcade", "brutalista", "risografia", "janela98", "gala", "natal", "matrix"})
+_VISUAIS = frozenset({"premiado", "quermesse", "arcade", "brutalista", "risografia", "janela98", "gala", "natal", "matrix", "halloween", "praia", "jornal", "terminal", "circo"})
 
 
 # ------------------------------------------------------------------ dependencias

@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.26.0 — 2026-11-12
+
+### Yeni
+- **Beş yeni tema:** Cadılar Bayramı, Plaj, Eski gazete, Yeşil terminal ve Sirk afişi; her biri açık ve koyu modda. Sitede artık 14 tema var; yerleşim hepsinde aynıdır (yalnızca renkler ve görünüm değişir).
+
 ## 3.25.0 — 2026-11-08
 
 ### Yeni

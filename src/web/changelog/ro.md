@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.26.0 — 2026-11-12
+
+### Noutăți
+- **Cinci teme noi:** Halloween, Plajă, Ziar vechi, Terminal verde și Afiș de circ, fiecare în variantă luminoasă și întunecată. Site-ul are acum 14 teme; structura este aceeași în toate (se schimbă doar culorile și aspectul).
+
 ## 3.25.0 — 2026-11-08
 
 ### Noutăți
