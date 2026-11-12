@@ -8,6 +8,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import mimetypes
+import os
 import time
 from pathlib import Path
 
@@ -19,6 +20,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
+from .assets_remotos import AssetsRemotos
 from .limites import Limitador
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
@@ -148,8 +150,14 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     servico = Servico(Sessoes(armazem), motor or Motor(tempo_maximo_s=config.tempo_maximo_geracao_min() * 60), Limitador(),
                       metricas or Metricas(caminho_por_defeito(armazem.raiz), url_bd=config.database_url(), intervalo_bd_min=config.metricas_bd_min()), Observador(armazem.raiz))
 
+    assets_rem = None
+    if config.assets_zip_url() and not os.environ.get("RIFAS_ASSETS", "").strip():       # videos e capturas fora da imagem Docker (ver assets_remotos.py)
+        assets_rem = AssetsRemotos(config.assets_zip_url(), config.assets_sha256(), config.pasta_assets(), ao_ficar_pronto=rotas_ajuda.esquecer_recortes)
+
     @contextlib.asynccontextmanager
     async def ciclo_de_vida(app: FastAPI):
+        if assets_rem is not None:
+            assets_rem.garantir()                            # em segundo plano: o servidor arranca (e o /health responde) sem esperar
         armazem.limpar_antigas(0)                            # pastas de um arranque anterior (nao ha sessoes em memoria para elas)
         limpeza = asyncio.create_task(_limpeza_periodica(servico, 60))
         amostrador = asyncio.create_task(_amostrar(servico, 30))
@@ -176,6 +184,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     app = FastAPI(title="Gerador de Rifas", version=VERSAO, docs_url="/api/docs", redoc_url=None, openapi_url="/api/openapi.json",
                   lifespan=ciclo_de_vida)
     app.state.servico = servico
+    app.state.assets = assets_rem
 
     @app.exception_handler(ErroApi)
     async def _erro_api(_: Request, e: ErroApi) -> JSONResponse:
