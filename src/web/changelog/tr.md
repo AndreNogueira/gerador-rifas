@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.28.0 — 2026-11-12
+
+### Yeni
+- **Google reklamları (hazır, kapalı):** site; ana sayfanın, öğreticinin, “Hakkında”nın, çekilişin ve değişiklik günlüğünün sonunda bir Google reklam bloğu (AdSense) gösterebilir. Reklamlar düzenleyicide, oluşturulan dosyalarda, bilet doğrulamada, panelde veya Windows uygulamasında asla görünmez; Avrupa Ekonomik Alanı ve Birleşik Krallık'ta ise yalnızca Google'ın onay mesajında seçim yaptıktan sonra görünür. Gizlilik Politikası, reklamlar açıkken bunu 18 dilde de belirtir; şimdilik hizmet sahibi yapılandırana kadar kapalıdır.
+
 ## 3.27.0 — 2026-11-12
 
 ### Yeni

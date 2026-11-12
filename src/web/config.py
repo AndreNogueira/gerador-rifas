@@ -118,6 +118,20 @@ def donativo_url() -> str:
     return v if re.fullmatch(r"https://[^\s<>\"']{4,300}", v) else ""
 
 
+def adsense_cliente() -> str:
+    """O identificador de editor da Google AdSense (`ca-pub-` e 10 a 20 algarismos): ADSENSE_CLIENTE. Publico por natureza (vai no HTML e no `ads.txt`),
+    mas nao se poe no repositorio. Vazio ou invalido = **sem anuncios** (nada se carrega da Google). Ver `docs/ADSENSE.md`."""
+    v = os.environ.get("ADSENSE_CLIENTE", "").strip()
+    return v if re.fullmatch(r"ca-pub-\d{10,20}", v) else ""
+
+
+def adsense_slot() -> str:
+    """O bloco de anuncios (so os algarismos do `data-ad-slot`): ADSENSE_SLOT. Sem ele a pagina carrega o script da Google (verificacao do site e mensagem de
+    consentimento) mas nao mostra nenhum bloco. Sem `ADSENSE_CLIENTE` nao vale."""
+    v = os.environ.get("ADSENSE_SLOT", "").strip()
+    return v if adsense_cliente() and re.fullmatch(r"\d{6,20}", v) else ""
+
+
 def google_verificacao() -> str:
     """O codigo de verificacao do Google Search Console (so o valor do `content` da etiqueta `google-site-verification`): GOOGLE_VERIFICACAO.
     E publico por natureza (vai no HTML da pagina inicial), mas nao se poe no repositorio. Invalido ou vazio = sem etiqueta."""

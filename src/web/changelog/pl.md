@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.28.0 — 2026-11-12
+
+### Nowości
+- **Reklamy Google (przygotowane, wyłączone):** strona może pokazywać blok reklam Google (AdSense) na końcu strony głównej, samouczka, „O programie”, losowania i changeloga. Nigdy nie pojawiają się w edytorze, w wygenerowanych plikach, przy weryfikacji losów, w panelu ani w aplikacji Windows, a w Europejskim Obszarze Gospodarczym i Wielkiej Brytanii dopiero po wyborze w komunikacie o zgodzie Google. Polityka prywatności mówi o tym, we wszystkich 18 językach, gdy reklamy są włączone; na razie są wyłączone, dopóki właściciel usługi ich nie skonfiguruje.
+
 ## 3.27.0 — 2026-11-12
 
 ### Nowości

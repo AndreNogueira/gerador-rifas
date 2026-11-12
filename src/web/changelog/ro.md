@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.28.0 — 2026-11-12
+
+### Noutăți
+- **Reclame Google (pregătite, dezactivate):** site-ul poate afișa un bloc de reclame Google (AdSense) la sfârșitul paginii de start, al tutorialului, al „Despre”, al tragerii și al changelog-ului. Nu apar niciodată în editor, în fișierele generate, la verificarea biletelor, în panou sau în aplicația Windows, iar în Spațiul Economic European și în Regatul Unit doar după ce alegeți în mesajul de consimțământ al Google. Politica de confidențialitate o spune, în cele 18 limbi, când reclamele sunt active; deocamdată sunt dezactivate până când proprietarul serviciului le configurează.
+
 ## 3.27.0 — 2026-11-12
 
 ### Noutăți

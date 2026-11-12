@@ -139,6 +139,10 @@ export interface Publico {
   contacto: boolean;
   /** O servidor tem a chave que assina os QR dos bilhetes. */
   qr: boolean;
+  /** Identificador da AdSense (ca-pub-…): vazio = sem anúncios. */
+  anuncios_cliente: string;
+  /** Bloco de anúncios: vazio = o script carrega-se mas não se mostra nenhum bloco. */
+  anuncios_slot: string;
 }
 
 export interface Imagem {

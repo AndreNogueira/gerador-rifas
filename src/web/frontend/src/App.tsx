@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Admin } from "./Admin";
+import { Anuncio } from "./Anuncio";
 import { api, type Publico } from "./api";
 import { Cabecalho } from "./Cabecalho";
 import { Changelog } from "./Changelog";
@@ -28,7 +29,13 @@ function Aplicacao() {
   const [tema, mudarTema] = useTema();
   const [visual, mudarVisual] = useVisual();
   const [versao, setVersao] = useState("");
-  const [publico, setPublico] = useState<Publico>({ donativo_url: "", contacto: false, qr: false });
+  const [publico, setPublico] = useState<Publico>({
+    donativo_url: "",
+    contacto: false,
+    qr: false,
+    anuncios_cliente: "",
+    anuncios_slot: "",
+  });
   const caminho = useLocalizacao().split("?")[0] ?? "/";
   const { sessao } = useSessao();
   const { t } = useI18n();
@@ -92,6 +99,7 @@ function Aplicacao() {
           <Gerador {...formulario} />
         )}
       </main>
+      <Anuncio key={caminho} publico={publico} caminho={caminho} />
       {versao && (
         <footer className="rodape">
           <span>v{versao}</span>

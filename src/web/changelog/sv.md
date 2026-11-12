@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.28.0 — 2026-11-12
+
+### Nytt
+- **Google-annonser (förberedda, avstängda):** webbplatsen kan visa ett block med Google-annonser (AdSense) längst ned på startsidan, i handledningen, under ”Om”, vid dragningen och i changeloggen. De visas aldrig i redigeraren, i de skapade filerna, vid lottkontrollen, i panelen eller i Windows-appen, och i Europeiska ekonomiska samarbetsområdet och Storbritannien först efter ditt val i Googles samtyckesmeddelande. Integritetspolicyn säger det, på alla 18 språk, när annonser är på; just nu är de avstängda tills tjänstens ägare ställer in dem.
+
 ## 3.27.0 — 2026-11-12
 
 ### Nytt

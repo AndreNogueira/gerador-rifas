@@ -203,6 +203,9 @@ def _url(base: str, caminho: str, lg: str) -> str:
     return f"{base}/" if c == "/" else f"{base}{c}"
 
 
+ADSENSE_JS = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+
+
 def cabecalho(pagina: Pagina, base: str, lg: str = "pt") -> str:
     """O bloco do `<head>` desta pagina na lingua `lg` (o canonico e o hreflang apontam para o URL de cada lingua)."""
     url = _url(base, pagina.caminho, lg)
@@ -236,6 +239,9 @@ def cabecalho(pagina: Pagina, base: str, lg: str = "pt") -> str:
             f'<meta name="twitter:image" content="{_e(imagem)}" />',
             f'<meta name="twitter:image:alt" content="{_e(alt)}" />',
         ]
+    cliente = config.adsense_cliente()
+    if cliente and pagina.indexavel:                         # AdSense (so com ADSENSE_CLIENTE): o script traz tambem a mensagem de consentimento do EEE
+        linhas.append(f'<script async src="{ADSENSE_JS}?client={_e(cliente)}" crossorigin="anonymous"></script>')
     if pagina.caminho == "/":
         verificacao = config.google_verificacao()
         if verificacao:                                      # Search Console: o Google procura-a na pagina inicial

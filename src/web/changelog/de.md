@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.28.0 — 2026-11-12
+
+### Neu
+- **Google-Anzeigen (vorbereitet, ausgeschaltet):** Die Website kann am Ende der Startseite, des Tutorials, von „Über“, der Ziehung und des Changelogs einen Block mit Google-Anzeigen (AdSense) zeigen. Sie erscheinen nie im Editor, in den erzeugten Dateien, bei der Losprüfung, im Dashboard oder in der Windows-App, und im Europäischen Wirtschaftsraum und im Vereinigten Königreich erst nach Ihrer Wahl in der Einwilligungsmeldung von Google. Die Datenschutzerklärung sagt das in allen 18 Sprachen, wenn Anzeigen aktiv sind; derzeit sind sie aus, bis der Betreiber sie einrichtet.
+
 ## 3.27.0 — 2026-11-12
 
 ### Neu
