@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.29.0 — 2026-11-12
+
+### Melhorado
+- **Anúncios nas laterais:** quando os anúncios estão ligados (por agora não estão), em ecrãs largos aparecem nas duas laterais do conteúdo, um de cada lado, fixos e sem mexer na página; nos outros ecrãs fica um só bloco no fim da página. Continuam a não aparecer no editor, nos ficheiros gerados nem na app Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Novo

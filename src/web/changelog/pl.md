@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.29.0 — 2026-11-12
+
+### Ulepszono
+- **Reklamy po bokach:** gdy reklamy są włączone (na razie nie są), na szerokich ekranach pojawiają się po obu stronach treści, po jednej z każdej strony, stałe i bez przesuwania strony; na innych ekranach jest jeden blok na końcu strony. Nadal nie pojawiają się w edytorze, w wygenerowanych plikach ani w aplikacji Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Nowości

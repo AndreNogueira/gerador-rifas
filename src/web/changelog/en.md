@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.29.0 — 2026-11-12
+
+### Improved
+- **Ads on the sides:** when ads are on (they are not for now), on wide screens they appear on both sides of the content, one on each side, fixed and without moving the page; on other screens there is a single block at the end of the page. They still never appear in the editor, in the generated files or in the Windows app.
+
 ## 3.28.0 — 2026-11-12
 
 ### New

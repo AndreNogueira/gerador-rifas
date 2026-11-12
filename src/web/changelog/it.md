@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.29.0 — 2026-11-12
+
+### Migliorato
+- **Annunci ai lati:** quando gli annunci sono attivi (per ora non lo sono), sugli schermi larghi compaiono ai due lati del contenuto, uno per lato, fissi e senza spostare la pagina; sugli altri schermi c'è un solo blocco in fondo alla pagina. Continuano a non comparire nell'editor, nei file generati né nell'app Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Novità

@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.29.0 — 2026-11-12
+
+### Mejorado
+- **Anuncios en los laterales:** cuando los anuncios están activos (por ahora no lo están), en pantallas anchas aparecen a ambos lados del contenido, uno a cada lado, fijos y sin mover la página; en las demás pantallas queda un solo bloque al final de la página. Siguen sin aparecer en el editor, en los archivos generados ni en la app de Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Novedades

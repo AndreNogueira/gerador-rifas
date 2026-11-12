@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.29.0 — 2026-11-12
+
+### Verbeterd
+- **Advertenties aan de zijkanten:** als advertenties aan staan (voorlopig niet), verschijnen ze op brede schermen aan beide kanten van de inhoud, één per kant, vast en zonder de pagina te verschuiven; op andere schermen is er één blok onderaan de pagina. Ze verschijnen nog steeds niet in de editor, in de gegenereerde bestanden of in de Windows-app.
+
 ## 3.28.0 — 2026-11-12
 
 ### Nieuw

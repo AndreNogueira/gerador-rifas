@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.29.0 — 2026-11-12
+
+### Vylepšeno
+- **Reklamy po stranách:** když jsou reklamy zapnuté (zatím nejsou), na širokých obrazovkách se zobrazují po obou stranách obsahu, po jedné z každé strany, pevné a bez posouvání stránky; na ostatních obrazovkách je jeden blok na konci stránky. Stále se nezobrazují v editoru, ve vytvořených souborech ani v aplikaci pro Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Novinky

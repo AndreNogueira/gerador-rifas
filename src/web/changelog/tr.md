@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.29.0 — 2026-11-12
+
+### İyileştirildi
+- **Yanlarda reklamlar:** reklamlar açıkken (şimdilik kapalı), geniş ekranlarda içeriğin iki yanında, her yanda bir tane, sabit olarak ve sayfayı kaydırmadan görünür; diğer ekranlarda sayfanın sonunda tek bir blok bulunur. Düzenleyicide, oluşturulan dosyalarda ve Windows uygulamasında yine hiç görünmez.
+
 ## 3.28.0 — 2026-11-12
 
 ### Yeni

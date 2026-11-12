@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.29.0 — 2026-11-12
+
+### Îmbunătățit
+- **Reclame în lateral:** când reclamele sunt active (deocamdată nu sunt), pe ecranele late apar în ambele părți ale conținutului, câte una pe fiecare parte, fixe și fără a muta pagina; pe celelalte ecrane există un singur bloc la sfârșitul paginii. Tot nu apar în editor, în fișierele generate sau în aplicația Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Noutăți
