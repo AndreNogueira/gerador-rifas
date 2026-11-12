@@ -121,3 +121,79 @@ def test_o_texto_e_o_numero_ancoram_na_linha_de_base_e_rodam_a_volta_do_ponto():
         tp.close()
     finally:
         doc.close()
+
+
+# ------------------------------------------------------------------ imagens (o logótipo dentro do desenho)
+def _data_url(formato="PNG", tamanho=(40, 20), cor=(200, 30, 30, 255)) -> str:
+    import base64
+    import io
+
+    from PIL import Image
+    b = io.BytesIO()
+    imagem = Image.new("RGBA" if formato == "PNG" else "RGB", tamanho, cor if formato == "PNG" else cor[:3])
+    imagem.save(b, formato)
+    mime = "png" if formato == "PNG" else "jpeg"
+    return f"data:image/{mime};base64," + base64.b64encode(b.getvalue()).decode()
+
+
+@pytest.mark.parametrize("formato", ["PNG", "JPEG"])
+def test_a_imagem_entra_no_template_e_o_motor_continua_a_aceita_lo(tmp_path, algarismos, formato):
+    import io
+
+    import pypdfium2 as pdfium
+    d = _desenho([dict(tipo="imagem", x=20, y=20, w=80, h=40, dados=_data_url(formato))])
+    pdf = editor.criar_template(editor.de_dict(d))
+    doc = pdfium.PdfDocument(io.BytesIO(pdf))
+    try:
+        assert len(list(doc[0].get_objects(filter=[pdfium.raw.FPDF_PAGEOBJ_IMAGE]))) == 1
+        pixeis = doc[0].render(scale=2).to_pil().convert("RGB")
+        assert pixeis.getpixel((int(60 * 2), int(40 * 2)))[0] > 150 and pixeis.getpixel((int(60 * 2), int(40 * 2)))[1] < 100     # o vermelho da imagem
+    finally:
+        doc.close()
+    p = tmp_path / "t.pdf"
+    p.write_bytes(pdf)
+    assert core.preparar(p, algarismos).info.n_numeros == {1: 2}
+
+
+@pytest.mark.parametrize("dados", [
+    "", None, 5, "data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=", "data:image/png;base64,nao-e-base64!!", "data:image/png;base64,AAAA",
+    "data:text/html;base64,PGgxPg==", "http://exemplo.pt/x.png", "data:image/png;base64," + "A" * 1_400_000,
+])
+def test_imagens_que_nao_prestam_sao_recusadas(dados):
+    d = _desenho([dict(tipo="imagem", x=0, y=0, w=10, h=10, dados=dados)])
+    assert erro_de(editor.de_dict, d)[:2] == ("ErroRifas", "err_editor_imagem")
+
+
+def test_o_tipo_real_conta_nao_o_que_o_texto_diz():
+    import base64
+    import io
+
+    from PIL import Image
+    b = io.BytesIO()
+    Image.new("RGB", (4, 4)).save(b, "GIF")
+    d = _desenho([dict(tipo="imagem", x=0, y=0, w=10, h=10, dados="data:image/png;base64," + base64.b64encode(b.getvalue()).decode())])
+    assert erro_de(editor.de_dict, d)[:2] == ("ErroRifas", "err_editor_imagem")           # um GIF com o nome de PNG
+
+
+def test_imagem_enorme_em_pixeis_e_mais_de_cinco_imagens_sao_recusadas(monkeypatch):
+    grande = _desenho([dict(tipo="imagem", x=0, y=0, w=10, h=10, dados=_data_url(tamanho=(2100, 4)))])
+    assert erro_de(editor.de_dict, grande)[:2] == ("ErroRifas", "err_editor_imagem")
+    seis = _desenho([dict(tipo="imagem", x=i, y=0, w=5, h=5, dados=_data_url()) for i in range(6)])
+    assert erro_de(editor.de_dict, seis)[:2] == ("ErroRifas", "err_editor_limite")
+    assert erro_de(editor.de_dict, _desenho([dict(tipo="imagem", x=0, y=0, w=0, h=10, dados=_data_url())]))[:2] == ("ErroRifas", "err_editor_limite")
+
+
+def test_a_imagem_e_recodificada_sem_metadados():
+    import base64
+    import io
+
+    from PIL import Image
+    b = io.BytesIO()
+    im = Image.new("RGB", (8, 8), (1, 2, 3))
+    exif = Image.Exif()
+    exif[0x010E] = "SEGREDO-EXIF"
+    im.save(b, "JPEG", exif=exif)
+    assert b"SEGREDO-EXIF" in b.getvalue()
+    d = editor.de_dict(_desenho([dict(tipo="imagem", x=0, y=0, w=10, h=10, dados="data:image/jpeg;base64," + base64.b64encode(b.getvalue()).decode())]))
+    imagem = next(e for e in d.elementos if e.tipo == "imagem")
+    assert imagem.imagem[:8] == b"\x89PNG\r\n\x1a\n" and b"SEGREDO-EXIF" not in imagem.imagem

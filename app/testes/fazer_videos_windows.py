@@ -224,6 +224,52 @@ def cena_galeria(a, g, T):
     g.segundos(2.4, T("Só falta escolher os números e gerar", "All that is left is choosing the numbers and generating"))
 
 
+def cena_editor(a, g, T):
+    g.segundos(2.0, T("Sem Canva? Desenhe a sua rifa no editor", "No Canva? Design your ticket in the editor"))
+    g.segundos(1.2, T("Menu «Extras» → «Editor de templates…»", "Menu “Extras” → “Template editor…”"))
+    j = abrir(a, "editor", extras.EditorTemplates, "+120+60")
+    esperar(a, lambda: j._foto is not None, 8)
+    g.segundos(2.4, T("Começa com um modelo de rifa com talão", "It starts with a sample ticket with a stub"))
+    titulo = next(e for e in j.m.elementos if e.texto == "TÍTULO DA RIFA")
+    x0, y0, x1, y1 = j.m.caixa(titulo.id)
+    px, py = j._px((x0 + x1) / 2, (y0 + y1) / 2)
+    j.tela.event_generate("<ButtonPress-1>", x=int(px), y=int(py))
+    a.update()
+    esperar(a, lambda: False, 0.5)
+    g.legenda = T("Escolha um elemento e mude o texto", "Pick an element and change its text")
+    g.escrever(j.var_texto, T("RIFA DE NATAL", "CHRISTMAS RAFFLE"), 2)
+    esperar(a, lambda: not j._espera, 4)
+    g.segundos(1.6)
+    g.legenda = T("Arraste os elementos para o sítio (ou use as setas)", "Drag the elements into place (or use the arrow keys)")
+    for i in range(1, 13):
+        j.tela.event_generate("<B1-Motion>", x=int(px) + i * 8, y=int(py) + i)
+        a.update()
+        g.quadro()
+        time.sleep(0.04)
+    j.tela.event_generate("<ButtonRelease-1>", x=int(px) + 96, y=int(py) + 12)
+    esperar(a, lambda: not j._espera, 4)
+    g.segundos(2.0)
+    g.legenda = T("Desfazer, refazer e duplicar", "Undo, redo and duplicate")
+    j._a_desfazer()
+    esperar(a, lambda: not j._espera, 4)
+    g.segundos(1.4)
+    j._a_refazer()
+    j._a_duplicar()
+    esperar(a, lambda: not j._espera, 4)
+    g.segundos(2.0)
+    j._a_apagar()
+    j.acrescentar("retangulo")
+    esperar(a, lambda: not j._espera, 4)
+    g.segundos(2.0, T("Junte textos, retângulos, linhas e o número 0001 (uma ou duas vezes)",
+                      "Add texts, rectangles, lines and the number 0001 (once or twice)"))
+    j._a_apagar()
+    g.segundos(1.0, T("«Usar este template»: o template e os algarismos ficam prontos", "“Use this template”: the template and the digits are ready"))
+    j._usar()
+    esperar(a, lambda: a.prep is not None)
+    g.segundos(3.0)
+    g.segundos(2.4, T("Só falta escolher os números e gerar", "All that is left is choosing the numbers and generating"))
+
+
 def cena_marca(a, g, T):
     g.segundos(1.8, T("Marca própria: cor e logótipo", "Your brand: color and logo"))
     logo = Path(tempfile.mkdtemp(prefix="rifas-video-")) / "logotipo.png"
@@ -282,7 +328,7 @@ def cena_visual(a, g, T):
     a._definir_visual("auto")
 
 
-CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria),
+CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria), "editor": (None, cena_editor),
          "marca": (UMA_RIFA, cena_marca), "sorteio": (VARIAS, cena_sorteio), "visual": (VARIAS, cena_visual)}
 
 
