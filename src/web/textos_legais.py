@@ -13,7 +13,7 @@ import importlib
 from collections.abc import Callable
 from functools import lru_cache
 
-from . import config
+from . import config, legal_anuncios
 
 NOMES = ("termos", "privacidade", "contacto")
 
@@ -53,6 +53,8 @@ def pagina(nome: str, lingua: str = "pt") -> dict:
     saida = copy.deepcopy(mod.TEXTOS[nome])
     for s in saida["seccoes"]:
         s["paragrafos"] = [p.format_map(valores) for p in s["paragrafos"]]
+    if nome == "privacidade" and config.adsense_cliente():           # com anuncios o texto «sem anuncios» deixava de ser verdade
+        legal_anuncios.aplicar(saida, lingua if lingua in legal_anuncios.TEXTOS else "pt")
     return saida
 
 

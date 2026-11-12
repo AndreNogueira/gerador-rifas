@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.28.0 — 2026-11-12
+
+### Nieuw
+- **Google-advertenties (voorbereid, uitgeschakeld):** de site kan onderaan de startpagina, de handleiding, ‘Over’, de trekking en de changelog een blok Google-advertenties (AdSense) tonen. Ze verschijnen nooit in de editor, in de gegenereerde bestanden, bij de loscontrole, in het dashboard of in de Windows-app, en in de Europese Economische Ruimte en het Verenigd Koninkrijk pas nadat u hebt gekozen in het toestemmingsbericht van Google. Het privacybeleid zegt dat, in alle 18 talen, wanneer advertenties aan staan; voorlopig staan ze uit tot de eigenaar van de dienst ze instelt.
+
 ## 3.27.0 — 2026-11-12
 
 ### Nieuw

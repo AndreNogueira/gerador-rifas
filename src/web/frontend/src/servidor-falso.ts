@@ -49,6 +49,7 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_galeria_organizacao: "Organização ou evento",
     web_galeria_premios: "Prémios (uma linha cada, até 3)",
     web_galeria_data: "Data do sorteio",
+    web_publicidade: "Publicidade",
     web_editor: "Editor de templates",
     web_editor_intro: "Desenhe a sua rifa sem o Canva.",
     web_editor_texto: "Texto",
@@ -193,6 +194,8 @@ export class ServidorFalso {
   donativoUrl = "";
   exportarErro = "";
   galeriaErro = "";
+  anunciosCliente = "";
+  anunciosSlot = "";
   logotipoErro = "";
   temContacto = false;
   temQr = false;
@@ -244,7 +247,13 @@ export class ServidorFalso {
       return Promise.resolve(new Response(new Blob(["png"]), { status: 200 }));
     }
     if (url === "/api/publico")
-      return this.responder({ donativo_url: this.donativoUrl, contacto: this.temContacto, qr: this.temQr });
+      return this.responder({
+        donativo_url: this.donativoUrl,
+        contacto: this.temContacto,
+        qr: this.temQr,
+        anuncios_cliente: this.anunciosCliente,
+        anuncios_slot: this.anunciosSlot,
+      });
     const pg = /^\/api\/pagina\/(\w+)$/.exec(url);
     if (pg?.[1])
       return ["termos", "privacidade", "contacto"].includes(pg[1])

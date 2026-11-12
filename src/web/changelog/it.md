@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.28.0 — 2026-11-12
+
+### Novità
+- **Annunci di Google (predisposti, disattivati):** il sito può mostrare un blocco di annunci di Google (AdSense) in fondo alla pagina iniziale, al tutorial, a «Informazioni», all'estrazione e al changelog. Non compaiono mai nell'editor, nei file generati, nella verifica dei biglietti, nel pannello né nell'app Windows, e nello Spazio economico europeo e nel Regno Unito solo dopo la sua scelta nel messaggio di consenso di Google. L'informativa sulla privacy lo dice, nelle 18 lingue, quando gli annunci sono attivi; per ora sono disattivati finché il titolare del servizio non li configura.
+
 ## 3.27.0 — 2026-11-12
 
 ### Novità

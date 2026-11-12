@@ -113,6 +113,8 @@ class Publico(BaseModel):
     donativo_url: str          # vazio = sem botao de donativo
     contacto: bool             # ha um e-mail publico configurado (o endereco so aparece na pagina «Contacto»)
     qr: bool = False           # o servidor tem a chave que assina os QR dos bilhetes (VERIFICACAO_CHAVE)
+    anuncios_cliente: str = ""  # identificador da AdSense (ca-pub-…): vazio = sem anuncios (ADSENSE_CLIENTE)
+    anuncios_slot: str = ""     # bloco de anuncios: vazio = o script carrega-se mas nao se mostra nenhum bloco (ADSENSE_SLOT)
 
 
 async def _limpeza_periodica(servico: Servico, cada_s: float) -> None:
@@ -199,7 +201,8 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     def publico(resposta: Response) -> Publico:
         """O que o dono configurou para o publico (variaveis de ambiente): ligacao de donativo e se ha contacto."""
         resposta.headers["Cache-Control"] = "public, max-age=300"
-        return Publico(donativo_url=config.donativo_url(), contacto=bool(config.contacto_email()), qr=bool(config.verificacao_chave()))
+        return Publico(donativo_url=config.donativo_url(), contacto=bool(config.contacto_email()), qr=bool(config.verificacao_chave()),
+                       anuncios_cliente=config.adsense_cliente(), anuncios_slot=config.adsense_slot())
 
     @app.get("/api/pagina/{nome}", response_model=PaginaTexto, tags=["sistema"])
     def pagina_de_texto(nome: str, resposta: Response, lg: str = Depends(rotas.lingua)) -> PaginaTexto:
@@ -256,6 +259,15 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     @app.get("/robots.txt", include_in_schema=False)
     def robots_txt(request: Request) -> PlainTextResponse:
         return PlainTextResponse(seo.robots(seo.url_publica(request)), headers={"Cache-Control": "public, max-age=3600"})
+
+    @app.get("/ads.txt", include_in_schema=False)
+    def ads_txt() -> PlainTextResponse:
+        """O `ads.txt` que a Google AdSense pede (so existe com ADSENSE_CLIENTE): quem pode vender anuncios deste site."""
+        cliente = config.adsense_cliente()
+        if not cliente:
+            raise HTTPException(404, "Sem anúncios")
+        linha = f"google.com, pub-{cliente.removeprefix('ca-pub-')}, DIRECT, f08c47fec0942fa0"
+        return PlainTextResponse(linha + chr(10), headers={"Cache-Control": "public, max-age=3600"})
 
     @app.get("/sitemap.xml", include_in_schema=False)
     def sitemap_xml(request: Request) -> RespostaSimples:

@@ -247,3 +247,28 @@
     font-size: 0.86rem;
   }
 }
+
+// O bloco de anúncios (AdSense), só quando o dono o configura: altura reservada (sem saltos), longe dos botões, e some se a Google não tiver anúncio.
+.anuncio {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  max-width: 960px;
+  min-height: 140px;
+  margin: 48px auto 8px;
+
+  &:has(ins[data-ad-status="unfilled"]) {
+    display: none;
+  }
+  .anuncio-rotulo {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--rodape-texto);
+  }
+  ins {
+    display: block;
+    width: 100%;
+    min-height: 110px;
+  }
+}

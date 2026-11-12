@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.28.0 — 2026-11-12
+
+### Novo
+- **Anúncios da Google (preparados, desligados):** o site pode mostrar um bloco de anúncios da Google (AdSense) no fim da página inicial, do tutorial, do «Acerca de», do sorteio e do changelog. Nunca aparecem no editor, nos ficheiros gerados, na verificação de bilhetes, no painel nem na app Windows, e no Espaço Económico Europeu e no Reino Unido só depois de escolher na mensagem de consentimento da Google. A Política de privacidade passa a dizê-lo, nas 18 línguas, quando os anúncios estão ligados; por agora estão desligados, até o dono do serviço os configurar.
+
 ## 3.27.0 — 2026-11-12
 
 ### Novo

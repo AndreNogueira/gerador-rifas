@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.28.0 — 2026-11-12
+
+### Novinky
+- **Reklamy Google (připravené, vypnuté):** web může na konci úvodní stránky, návodu, „O programu“, losování a changelogu zobrazit blok reklam Google (AdSense). Nikdy se nezobrazují v editoru, ve vytvořených souborech, při ověřování losů, v panelu ani v aplikaci pro Windows a v Evropském hospodářském prostoru a ve Spojeném království až po vaší volbě ve zprávě o souhlasu od Google. Zásady ochrany soukromí to ve všech 18 jazycích uvádějí, když jsou reklamy zapnuté; zatím jsou vypnuté, dokud je provozovatel služby nenastaví.
+
 ## 3.27.0 — 2026-11-12
 
 ### Novinky

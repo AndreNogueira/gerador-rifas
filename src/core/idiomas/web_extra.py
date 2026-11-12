@@ -968,6 +968,26 @@ CHAVES: dict[str, dict[str, str]] = {
         "ko": "이 텍스트는 편집기에서 사용할 수 없습니다(“{car}”). 라틴 문자만 사용할 수 있습니다.",
         "hi": "यह टेक्स्ट संपादक में उपयोग नहीं किया जा सकता (“{car}”): केवल लैटिन अक्षर स्वीकार हैं।",
     },
+    "web_publicidade": {
+        "pt": "Publicidade",
+        "en": "Advertisement",
+        "es": "Publicidad",
+        "fr": "Publicité",
+        "de": "Werbung",
+        "it": "Pubblicità",
+        "nl": "Advertentie",
+        "pl": "Reklama",
+        "sv": "Annons",
+        "cs": "Reklama",
+        "ro": "Publicitate",
+        "el": "Διαφήμιση",
+        "ru": "Реклама",
+        "tr": "Reklam",
+        "zh": "广告",
+        "ja": "広告",
+        "ko": "광고",
+        "hi": "विज्ञापन",
+    },
 }
 
 

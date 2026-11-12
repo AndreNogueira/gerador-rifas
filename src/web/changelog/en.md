@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.28.0 — 2026-11-12
+
+### New
+- **Google ads (prepared, switched off):** the site can show a Google ads block (AdSense) at the end of the home page, the tutorial, “About”, the draw and the changelog. They never appear in the editor, in the generated files, in ticket verification, in the dashboard or in the Windows app, and in the European Economic Area and the United Kingdom only after you choose in Google's consent message. The Privacy Policy says so, in all 18 languages, when ads are on; for now they are off until the owner of the service configures them.
+
 ## 3.27.0 — 2026-11-12
 
 ### New

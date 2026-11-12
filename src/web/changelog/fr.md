@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.28.0 — 2026-11-12
+
+### Nouveautés
+- **Publicités Google (préparées, désactivées) :** le site peut afficher un bloc de publicités Google (AdSense) à la fin de la page d'accueil, du tutoriel, de « À propos », du tirage et du changelog. Elles n'apparaissent jamais dans l'éditeur, dans les fichiers générés, dans la vérification des billets, dans le tableau de bord ni dans l'appli Windows, et dans l'Espace économique européen et au Royaume-Uni seulement après votre choix dans le message de consentement de Google. La politique de confidentialité le dit, dans les 18 langues, quand les publicités sont activées ; pour l'instant elles sont désactivées jusqu'à ce que le propriétaire du service les configure.
+
 ## 3.27.0 — 2026-11-12
 
 ### Nouveautés
