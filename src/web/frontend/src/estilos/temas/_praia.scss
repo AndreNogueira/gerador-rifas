@@ -1,0 +1,61 @@
+// Praia: o verão. Faixa de mar turquesa com sol e ondas, bilhetes com uma risca de onda no topo, letra redonda «Fredoka».
+// Claro = areia ao meio-dia; escuro = a praia à noite, com o mar azul-petróleo.
+@use "../tema" as *;
+
+@include tema(praia) {
+  --fundo: light-dark(#fff6e0, #07222b);
+  --cartao: light-dark(#fffdf6, #0d3441);
+  --texto: light-dark(#0b3140, #fdf3dc);
+  --suave: light-dark(#4f6d74, #a9d2d8);
+  --linha: light-dark(#f0dcaa, #1d5565);
+  --campo: light-dark(#fffaeb, #082a35);
+  --destaque: light-dark(#00718a, #4fd8ef);
+  --destaque-2: light-dark(#c8374a, #ff8190);
+  --ok: light-dark(#0b7a5a, #4ee3b0);
+  --aviso: light-dark(#8f5400, #ffc65c);
+  --erro: light-dark(#b8132f, #ff7f93);
+  --sombra-cor: light-dark(#0b4052, #000000);
+  --passo-1: light-dark(#00718a, #4fd8ef);
+  --passo-2: light-dark(#c8374a, #ff8190);
+  --passo-3: light-dark(#a35b00, #ffc65c);
+  --passo-4: light-dark(#17803d, #6ee79a);
+
+  --fonte-titulo: "Fredoka Variable", system-ui, sans-serif;
+  --peso-titulo: 650;
+  --peso-marca: 700;
+  --peso-numero: 700;
+  --raio: 22px;
+  --raio-c: 14px;
+  --filtro-coluna: drop-shadow(0 10px 16px color-mix(in srgb, var(--sombra-cor) 20%, transparent));
+
+  // o sol, a espuma das ondas e o mar (do turquesa ao azul-petróleo)
+  --banda:
+    radial-gradient(circle at 88% 30%, rgb(255 226 122 / 30%) 0 1.4rem, rgb(255 226 122 / 12%) 1.45rem 2.6rem, transparent 2.7rem),
+    radial-gradient(circle at 50% 100%, rgb(255 255 255 / 14%) 0 0.9rem, transparent 0.95rem) 0 calc(100% - 0.2rem) / 3.6rem 1.4rem repeat-x,
+    linear-gradient(180deg, light-dark(#0a7f9b, #0a6f86) 0%, light-dark(#065e77, #07505f) 100%);
+  --banda-forma: ellipse(135% 100% at 50% 0%);
+  --topo-sombra: 0 2px 14px rgb(0 60 80 / 35%);
+  --marca-anel: 0 0 0 2px #ffe27a, 0 8px 20px rgb(0 60 80 / 40%);
+  --pilula: rgb(0 50 70 / 34%);
+  --nav-ativo: #ffe27a;
+  --nav-ativo-texto: #0b3140;
+
+  --botao-1: #c2410c;
+  --botao-2: #b8203f;
+  --botao-texto: #ffffff;
+  --botao-sombra: 0 8px 18px -8px rgb(184 32 63 / 70%);
+  --botao-sombra-hover: 0 12px 22px -8px rgb(184 32 63 / 80%);
+  --entrega-1: #00718a;
+  --entrega-2: #0a7f9b;
+
+  // uma onda no topo de cada bilhete
+  --faixa-topo:
+    radial-gradient(circle at 10px 0, transparent 0 6px, #17b8d0 6.5px 10px, transparent 10.5px) 0 0 / 20px 100% repeat-x,
+    linear-gradient(#17b8d0, #17b8d0);
+  --faixa-topo-altura: 10px;
+  --cabecalho-tinta: 12%;
+  --insignia-raio: 50%;
+  --insignia-cor: #062833;
+  --insignia-rot: none;
+  --visor-barra: linear-gradient(90deg, #17b8d0, #ffe27a, #ff8a5c);
+}

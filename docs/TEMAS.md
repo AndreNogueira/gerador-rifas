@@ -13,6 +13,11 @@ A webapp tem vários **temas** (escolhidos no cabeçalho, ícone da paleta); cad
 | **Gala** | art déco | Marcellus + Jost | dourado sobre azul-noite, molduras duplas, raios de leque, insígnias chanfradas |
 | **Natal** | rifa de Natal | Fraunces + Bricolage | verde-pinheiro, risca de bengala doce, luzinhas e neve a cair devagar |
 | **Matrix Gamer** | chuva de caracteres e HUD de jogo | Orbitron + JetBrains Mono | chuva verde em duas velocidades (`assets/matrix-chuva.svg`), brilho de neon, insígnias hexagonais, RGB nos passos, barra de vida em blocos |
+| **Halloween** | a noite das bruxas | Creepster | faixa roxa com lua cheia, laranja de abóbora, risca de teia (laranja e roxa) no topo de cada bilhete |
+| **Praia** | o verão | Fredoka | faixa de mar turquesa com sol e espuma, coral e areia, onda no topo de cada bilhete |
+| **Jornal antigo** | primeira página de um jornal | Playfair Display + Source Serif 4 | papel e tinta, cantos retos, filetes e sombras duras, cabeçalho com filete duplo |
+| **Terminal verde** | monitor de fósforo | JetBrains Mono | verde sobre preto (papel de listagem no claro), linhas de varrimento, contornos de uma linha, progresso em blocos; sem chuva (essa é do Matrix) |
+| **Cartaz de circo** | o grande circo de outros tempos | Rye | lona às riscas vermelhas e creme com festo, toldo em cada bilhete, contorno dourado |
 
 ## A regra: a estrutura nunca muda, só cores e formatação
 
@@ -64,7 +69,7 @@ O que isto custou aos temas já feitos: **Janela 98** perdeu a barra de título 
 3. **Letras**: só se forem necessárias, de `@fontsource` / `@fontsource-variable`, **versão exata** (`pnpm add -E …`), importadas em `src/main.tsx`. O browser só descarrega as que o tema usa. Mantém um *fallback* de sistema.
 4. **Falta uma variável?** Junta-a a `_tokens.scss` com o valor do Premiado e usa-a na base (nas regras de `_base`, `_gerador`…). Nunca resolvas isso no tema com `padding`/`margin`: o teste não deixa.
 5. **Vê-o a sério**: `pnpm build`, `python -m src.web`, carrega os ficheiros de `tests/fixtures/`, e olha para o ecrã principal, o tutorial e um diálogo, em claro e escuro, em largo e em telemóvel (390 px). Junta capturas ao PR.
-6. **Acessibilidade**: texto com contraste suficiente (≥ 4,5:1; ≥ 3:1 para texto grande e ícones) — **mede-se**: `pnpm build && pnpm e2e -g contraste` corre o teste `e2e/contraste.spec.ts` nos 9 temas em claro e escuro e diz o que não passa; foco visível (`:focus-visible` usa `--destaque-2`), nada essencial só em cor. Movimento só discreto: a base respeita `prefers-reduced-motion`.
+6. **Acessibilidade**: texto com contraste suficiente (≥ 4,5:1; ≥ 3:1 para texto grande e ícones) — **mede-se**: `pnpm build && pnpm e2e -g contraste` corre o teste `e2e/contraste.spec.ts` nos 14 temas em claro e escuro e diz o que não passa; foco visível (`:focus-visible` usa `--destaque-2`), nada essencial só em cor. Movimento só discreto: a base respeita `prefers-reduced-motion`.
 
 ## Limites conhecidos
 

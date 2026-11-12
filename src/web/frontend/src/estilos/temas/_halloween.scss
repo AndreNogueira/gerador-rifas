@@ -1,0 +1,60 @@
+// Halloween: a noite das bruxas. Faixa roxo-escura com lua cheia e morcegos, bilhetes com a risca de teia laranja e roxa,
+// títulos em letra «Creepster». Claro = pergaminho de abóbora; escuro = noite de nevoeiro roxo.
+@use "../tema" as *;
+
+@include tema(halloween) {
+  --fundo: light-dark(#fff1e0, #130a1d);
+  --cartao: light-dark(#fffaf3, #1f1230);
+  --texto: light-dark(#2a1238, #fbeedd);
+  --suave: light-dark(#6a4a63, #c4aad8);
+  --linha: light-dark(#f0cfa6, #3d2659);
+  --campo: light-dark(#fff6ea, #170c26);
+  --destaque: light-dark(#b8480a, #ff9a3d);
+  --destaque-2: light-dark(#6a1fb0, #c892ff);
+  --ok: light-dark(#13734a, #55e3a0);
+  --aviso: light-dark(#8f5000, #ffc15c);
+  --erro: light-dark(#b50f2d, #ff7a92);
+  --sombra-cor: light-dark(#3a1050, #000000);
+  --passo-1: light-dark(#b8480a, #ff9a3d);
+  --passo-2: light-dark(#6a1fb0, #c892ff);
+  --passo-3: light-dark(#2f7d12, #8fe35a);
+  --passo-4: light-dark(#a3174f, #ff7ab0);
+
+  --fonte-titulo: "Creepster", "Chiller", Georgia, serif;
+  --peso-titulo: 400;
+  --peso-marca: 400;
+  --peso-numero: 400;
+  --espaco-marca: 0.02em;
+  --raio: 14px;
+  --raio-c: 9px;
+  --filtro-coluna: drop-shadow(0 8px 14px color-mix(in srgb, var(--sombra-cor) 30%, transparent));
+
+  // a lua, três morcegos (triângulos) e o roxo da noite por baixo
+  --banda:
+    radial-gradient(circle at 86% 42%, #ffe9a8 0 1.5rem, rgb(255 233 168 / 28%) 1.55rem 2.6rem, transparent 2.7rem),
+    radial-gradient(circle at 24% 38%, #000 0 0.2rem, transparent 0.24rem) 0 0 / 14rem 100% no-repeat,
+    radial-gradient(circle at 58% 62%, #000 0 0.16rem, transparent 0.2rem) 0 0 / 22rem 100% no-repeat,
+    linear-gradient(115deg, light-dark(#2a0f45, #1a0a2c) 0%, light-dark(#4a1a6e, #35154f) 55%, light-dark(#b8480a, #8a3305) 130%);
+  --banda-forma: ellipse(130% 100% at 50% 0%);
+  --topo-sombra: 0 2px 16px rgb(20 0 40 / 55%);
+  --marca-anel: 0 0 0 2px #ff9a3d, 0 8px 20px rgb(20 0 40 / 55%);
+  --pilula: rgb(20 4 40 / 40%);
+  --nav-ativo: #ff9a3d;
+  --nav-ativo-texto: #2a0f45;
+
+  --botao-1: #ffa94d;
+  --botao-2: #ff7a18;
+  --botao-texto: #2a0f45;
+  --botao-sombra: 0 8px 18px -8px rgb(255 122 24 / 75%);
+  --botao-sombra-hover: 0 12px 22px -8px rgb(255 122 24 / 85%);
+  --entrega-1: #3e9a1a;
+  --entrega-2: #6ccb3a;
+
+  // a teia: riscas laranja e roxas no topo de cada bilhete
+  --faixa-topo: repeating-linear-gradient(135deg, #ff7a18 0 10px, #4a1a6e 10px 20px);
+  --faixa-topo-altura: 9px;
+  --insignia-raio: 50%;
+  --insignia-cor: #1a0a2c;
+  --insignia-rot: none;
+  --visor-barra: repeating-linear-gradient(135deg, #ff7a18 0 10px, #4a1a6e 10px 20px);
+}

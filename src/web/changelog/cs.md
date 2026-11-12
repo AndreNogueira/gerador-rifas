@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.26.0 — 2026-11-12
+
+### Novinky
+- **Pět nových motivů:** Halloween, Pláž, Staré noviny, Zelený terminál a Cirkusový plakát, každý ve světlé i tmavé verzi. Web má nyní 14 motivů; rozvržení je ve všech stejné (mění se jen barvy a vzhled).
+
 ## 3.25.0 — 2026-11-08
 
 ### Novinky

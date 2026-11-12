@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.26.0 — 2026-11-12
+
+### Nouveautés
+- **Cinq nouveaux thèmes :** Halloween, Plage, Vieux journal, Terminal vert et Affiche de cirque, chacun en clair et en sombre. Le site compte désormais 14 thèmes ; la structure est la même partout (seuls les couleurs et l'aspect changent).
+
 ## 3.25.0 — 2026-11-08
 
 ### Nouveautés

@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.26.0 — 2026-11-12
+
+### Novo
+- **Cinco temas novos:** Halloween, Praia, Jornal antigo, Terminal verde e Cartaz de circo, cada um com claro e escuro. O site passa a ter 14 temas; a estrutura continua igual em todos (só mudam cores e formatação).
+
 ## 3.25.0 — 2026-11-08
 
 ### Novo

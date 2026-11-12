@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.26.0 — 2026-11-12
+
+### New
+- **Five new themes:** Halloween, Beach, Old newspaper, Green terminal and Circus poster, each with light and dark. The site now has 14 themes; the layout is the same in all of them (only colors and styling change).
+
 ## 3.25.0 — 2026-11-08
 
 ### New

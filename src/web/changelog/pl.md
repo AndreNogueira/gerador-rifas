@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.26.0 — 2026-11-12
+
+### Nowości
+- **Pięć nowych motywów:** Halloween, Plaża, Stara gazeta, Zielony terminal i Plakat cyrkowy, każdy w wersji jasnej i ciemnej. Strona ma teraz 14 motywów; układ jest wszędzie taki sam (zmieniają się tylko kolory i wygląd).
+
 ## 3.25.0 — 2026-11-08
 
 ### Nowości

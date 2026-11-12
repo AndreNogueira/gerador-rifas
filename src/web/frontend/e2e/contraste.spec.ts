@@ -1,7 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 import { medirContraste } from "./ajuda-contraste";
 
-// M10: o contraste dos 9 temas medido a sério num browser (WCAG AA), em claro e em escuro, na página inicial (com a galeria aberta), no
+// M10: o contraste dos 14 temas medido a sério num browser (WCAG AA), em claro e em escuro, na página inicial (com a galeria aberta), no
 // sorteio e nas páginas de texto. Mede o texto contra os pixéis reais do fundo (ver ajuda-contraste.ts: o axe não mede gradientes).
 // Quem muda as cores de um tema volta a correr isto: `pnpm e2e -g contraste`.
 const TEMAS = [
@@ -14,6 +14,11 @@ const TEMAS = [
   "gala",
   "matrix",
   "natal",
+  "halloween",
+  "praia",
+  "jornal",
+  "terminal",
+  "circo",
 ] as const;
 const MODOS = ["claro", "escuro"] as const;
 const PAGINAS = ["/", "/sorteio", "/tutorial", "/termos"] as const;

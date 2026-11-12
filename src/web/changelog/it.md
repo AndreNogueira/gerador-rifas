@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.26.0 — 2026-11-12
+
+### Novità
+- **Cinque nuovi temi:** Halloween, Spiaggia, Giornale antico, Terminale verde e Manifesto del circo, ciascuno in chiaro e scuro. Il sito ha ora 14 temi; la struttura è uguale in tutti (cambiano solo colori e aspetto).
+
 ## 3.25.0 — 2026-11-08
 
 ### Novità

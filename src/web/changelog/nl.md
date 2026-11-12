@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.26.0 — 2026-11-12
+
+### Nieuw
+- **Vijf nieuwe thema's:** Halloween, Strand, Oude krant, Groene terminal en Circusaffiche, elk in licht en donker. De site heeft nu 14 thema's; de indeling is overal hetzelfde (alleen kleuren en uiterlijk veranderen).
+
 ## 3.25.0 — 2026-11-08
 
 ### Nieuw
