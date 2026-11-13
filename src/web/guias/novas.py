@@ -1,4 +1,4 @@
-"""Os guias «como fazer» nas línguas de um ficheiro só (catalão, ucraniano, indonésio, vietnamita): juntam-se a `escolas.DADOS` e `associacoes.DADOS` em `__init__.py`.
+"""Os guias «como fazer» nas línguas de um ficheiro só (catalão, ucraniano, indonésio, vietnamita): juntam-se aos de `escolas.DADOS`, `associacoes.DADOS`, `clubes.DADOS`, `bombeiros.DADOS` e `festas.DADOS` em `__init__.py`.
 
 Mesmo formato dos outros: título, introdução, 5 passos (título, texto), 3 dicas e uma frase final. Sem revisão nativa; as regras de licença de uma rifa variam por país,
 por isso o 1.º passo de ambos manda confirmar com a autoridade local. Ver docs/LINGUAS.md.
@@ -143,5 +143,220 @@ ASSOCIACOES = {
             "Giữ lại danh sách, kết quả bốc thăm và liên kết để trình bày tại đại hội.",
         ],
         "fim": "Miễn phí, không cần đăng ký và tệp của bạn không được lưu trên máy chủ.",
+    },
+}
+
+
+# ---------------------------------------------------------------- guias de clubes, bombeiros e festas (3.34.0)
+CLUBES = {
+    "ca": {
+        "titulo": "Com fer una rifa per al club",
+        "intro": "Una rifa és una manera senzilla que el club recapti fons per a equipaments, desplaçaments o la temporada vinent. Amb el Generador de Rifes feu butlletes numerades, amb l'escut del club, en pocs minuts: sense Canva ni programes per instal·lar.",
+        "passos": [
+            ("Acordeu l'essencial", "Decidiu els premis (sovint oferts per patrocinadors i socis), el preu de la butlleta, quantes butlletes s'imprimiran i la data del sorteig, per exemple en un partit a casa o al sopar de socis. Abans de vendre, consulteu a l'ajuntament si la rifa necessita llicència o comunicació: les normes depenen del tipus de rifa."),
+            ("Dissenyeu la butlleta amb l'escut", "A la galeria trieu un disseny (Futebol, Retro…) i escriviu el nom del club, els premis i la data. Afegiu l'escut com a logotip (PNG o JPG) i trieu per als números els colors del club. Si voleu alguna cosa a mida, feu servir l'Editor de plantilles."),
+            ("Una sèrie per equip o venedor", "A «Prefix o sèries» escriviu, per exemple, A-, B-, C-: cada equip, categoria o venedor rep les seves butlletes (A-0001, B-0001…) i els seus fitxers, i així se sap qui ha venut més. Podeu donar un color a cada sèrie."),
+            ("Imprimiu i retalleu", "Trieu el paper (l'A4 sol anar bé) i les marques de tall: el programa omple el full de butlletes. Imprimiu i retalleu per les marques; amb paper de color distingiu les sèries. Les butlletes tenen taló, per això el número apareix dues vegades."),
+            ("Controleu les vendes i sortegeu", "Exporteu la llista de butlletes (CSV) i el full de control de vendes per lliurar a cada entrenador o venedor. El dia del sorteig feu servir la pàgina «Sorteig»: amb una llavor pública (per exemple, la loteria) qualsevol soci pot comprovar el resultat."),
+        ],
+        "dicas": [
+            "Doneu a cada equip o venedor un interval de números i apunteu qui s'endú cada bloc de butlletes.",
+            "Veneu als partits i als esdeveniments del club i demaneu a qui compra que escrigui el nom i el contacte al taló.",
+            "Anuncieu el resultat a les xarxes socials i al web del club, amb l'enllaç del sorteig, perquè tothom pugui comprovar-lo.",
+        ],
+        "fim": "El servei és gratuït, no cal registre i no guarda els vostres fitxers. Podeu començar ara mateix.",
+    },
+    "uk": {
+        "titulo": "Як провести лотерею для клубу",
+        "intro": "Лотерея — простий спосіб для клубу зібрати кошти на форму, поїздки чи наступний сезон. З Генератором лотерей ви за кілька хвилин зробите пронумеровані квитки з емблемою клубу: без Canva і без встановлення програм.",
+        "passos": [
+            ("Домовтеся про головне", "Вирішіть, які будуть призи (їх часто дарують спонсори та члени клубу), ціну квитка, скільки квитків друкувати і дату розіграшу, наприклад на домашньому матчі чи клубній вечері. Перед продажем дізнайтеся в місцевій владі, чи потрібні для лотереї дозвіл або повідомлення: правила залежать від виду лотереї."),
+            ("Створіть квиток з емблемою", "У галереї виберіть дизайн (Futebol, Retro…) і напишіть назву клубу, призи та дату. Додайте емблему як логотип (PNG або JPG) і виберіть для номерів кольори клубу. Якщо хочете щось своє, скористайтеся Редактором шаблонів."),
+            ("Одна серія на команду чи продавця", "У полі «Префікс або серії» напишіть, наприклад, A-, B-, C-: кожна команда, вікова група чи продавець отримає свої квитки (A-0001, B-0001…) і свої файли, тож видно, хто продав найбільше. Кожній серії можна дати колір."),
+            ("Друк і вирізання", "Виберіть папір (зазвичай підходить A4) і мітки для обрізання: програма заповнює аркуш квитками. Надрукуйте й різіть по мітках; кольоровий папір допоможе розрізнити серії. У квитків є корінець, тому номер зазначено двічі."),
+            ("Облік продажів і розіграш", "Експортуйте список квитків (CSV) і контрольний аркуш продажів, щоб передати кожному тренеру чи продавцю. У день розіграшу відкрийте сторінку «Розіграш»: з публічним зерном (наприклад, результатом лотереї) будь-який член клубу зможе перевірити підсумок."),
+        ],
+        "dicas": [
+            "Дайте кожній команді чи продавцю діапазон номерів і записуйте, хто взяв який блок квитків.",
+            "Продавайте на матчах і клубних заходах та просіть покупців писати ім'я й контакт на корінці.",
+            "Оголосіть результат у соцмережах і на сайті клубу з посиланням на розіграш, щоб кожен міг його перевірити.",
+        ],
+        "fim": "Сервіс безкоштовний, без реєстрації й не зберігає ваших файлів. Можна починати вже зараз.",
+    },
+    "id": {
+        "titulo": "Cara membuat undian untuk klub",
+        "intro": "Undian adalah cara sederhana bagi klub untuk menggalang dana bagi perlengkapan, perjalanan, atau musim depan. Dengan Pembuat Undian Anda bisa membuat tiket bernomor berlogo klub dalam beberapa menit: tanpa Canva dan tanpa memasang program.",
+        "passos": [
+            ("Sepakati hal pokok", "Tentukan hadiah (sering disumbangkan sponsor dan anggota), harga tiket, jumlah tiket yang dicetak, dan tanggal pengundian, misalnya saat pertandingan kandang atau makan malam anggota. Sebelum menjual, tanyakan ke pemerintah setempat apakah undian memerlukan izin atau pemberitahuan: aturannya bergantung pada jenis undian."),
+            ("Rancang tiket dengan lambang klub", "Di galeri pilih desain (Futebol, Retro…) dan tulis nama klub, hadiah, dan tanggal. Tambahkan lambang klub sebagai logo (PNG atau JPG) dan pilih warna klub untuk nomor. Untuk desain sendiri, gunakan Editor templat."),
+            ("Satu seri per tim atau penjual", "Di «Awalan atau seri» tulis, misalnya, A-, B-, C-: setiap tim, kelompok umur, atau penjual mendapat tiket (A-0001, B-0001…) dan berkasnya sendiri, sehingga terlihat siapa yang paling banyak menjual. Setiap seri bisa diberi warna."),
+            ("Cetak dan gunting", "Pilih kertas (biasanya A4 cukup) dan tanda potong: program memenuhi lembar dengan tiket. Cetak lalu gunting mengikuti tanda; kertas berwarna membantu membedakan seri. Tiket punya kupon, jadi nomornya muncul dua kali."),
+            ("Pantau penjualan dan lakukan pengundian", "Ekspor daftar tiket (CSV) dan lembar kontrol penjualan untuk diberikan kepada setiap pelatih atau penjual. Pada hari pengundian gunakan halaman «Pengundian»: dengan seed publik (misalnya hasil lotere) setiap anggota dapat memastikan hasilnya."),
+        ],
+        "dicas": [
+            "Beri setiap tim atau penjual rentang nomor dan catat siapa yang membawa tiap blok tiket.",
+            "Jual di pertandingan dan acara klub, dan minta pembeli menulis nama dan kontak pada kupon.",
+            "Umumkan hasil di media sosial dan situs klub beserta tautan pengundian agar semua orang bisa memeriksanya.",
+        ],
+        "fim": "Layanan ini gratis, tanpa pendaftaran dan tidak menyimpan berkas Anda. Anda bisa mulai sekarang.",
+    },
+    "vi": {
+        "titulo": "Cách tổ chức bốc thăm cho câu lạc bộ",
+        "intro": "Bốc thăm là cách đơn giản để câu lạc bộ gây quỹ mua trang phục, đi thi đấu xa hoặc chuẩn bị mùa giải sau. Với Trình tạo vé số, bạn làm vé đánh số có huy hiệu câu lạc bộ chỉ trong vài phút: không cần Canva, không cần cài phần mềm.",
+        "passos": [
+            ("Thống nhất những điều cơ bản", "Quyết định giải thưởng (thường do nhà tài trợ và hội viên tặng), giá vé, số vé sẽ in và ngày bốc thăm, chẳng hạn trong trận đấu trên sân nhà hoặc bữa tối của hội viên. Trước khi bán, hãy hỏi chính quyền địa phương xem cuộc bốc thăm có cần giấy phép hay thông báo không: quy định phụ thuộc vào loại hình."),
+            ("Thiết kế vé có huy hiệu", "Trong thư viện, chọn một mẫu (Futebol, Retro…) rồi viết tên câu lạc bộ, giải thưởng và ngày. Thêm huy hiệu làm logo (PNG hoặc JPG) và chọn màu của câu lạc bộ cho các số. Muốn mẫu riêng, hãy dùng Trình chỉnh sửa mẫu."),
+            ("Mỗi đội hoặc người bán một sê-ri", "Ở «Tiền tố hoặc sê-ri», gõ chẳng hạn A-, B-, C-: mỗi đội, mỗi nhóm tuổi hoặc người bán nhận vé (A-0001, B-0001…) và tệp riêng, nhờ đó biết ai bán nhiều nhất. Có thể gán cho mỗi sê-ri một màu."),
+            ("In và cắt", "Chọn giấy (thường A4 là đủ) và dấu cắt: chương trình xếp đầy tờ giấy bằng vé. In rồi cắt theo dấu; dùng giấy màu để phân biệt các sê-ri. Vé có cuống nên số xuất hiện hai lần."),
+            ("Theo dõi doanh số và bốc thăm", "Xuất danh sách vé (CSV) và bảng kiểm soát doanh số để đưa cho từng huấn luyện viên hoặc người bán. Đến ngày bốc thăm, dùng trang «Bốc thăm»: với hạt giống công khai (ví dụ kết quả xổ số), hội viên nào cũng có thể kiểm chứng kết quả."),
+        ],
+        "dicas": [
+            "Giao cho mỗi đội hoặc người bán một dải số và ghi lại ai nhận từng xấp vé.",
+            "Bán tại các trận đấu và sự kiện của câu lạc bộ, và nhờ người mua viết tên cùng liên lạc lên cuống vé.",
+            "Công bố kết quả trên mạng xã hội và trang web của câu lạc bộ, kèm liên kết bốc thăm để ai cũng kiểm tra được.",
+        ],
+        "fim": "Dịch vụ miễn phí, không cần đăng ký và không lưu tệp của bạn. Bạn có thể bắt đầu ngay.",
+    },
+}
+
+BOMBEIROS = {
+    "ca": {
+        "titulo": "Com fer una rifa per als bombers",
+        "intro": "Les rifes són una ajuda tradicional per als cossos de bombers voluntaris: equipament, vehicles i la festa anual. Amb el Generador de Rifes feu butlletes numerades, amb l'escut del cos, en pocs minuts: sense Canva ni programes per instal·lar.",
+        "passos": [
+            ("Acordeu l'essencial", "Decidiu els premis (sovint oferts pel comerç i les empreses de la zona), el preu de la butlleta, quantes butlletes s'imprimiran i la data del sorteig, per exemple l'aniversari del cos. Abans de vendre, consulteu a l'ajuntament si la rifa necessita llicència o comunicació: les normes depenen del tipus de rifa."),
+            ("Dissenyeu la butlleta", "A la galeria trieu un disseny (Bombeiros, Solidária…) i escriviu el nom del cos, els premis i la data. Afegiu l'escut com a logotip (PNG o JPG) i trieu el color dels números. Si voleu alguna cosa a mida, feu servir l'Editor de plantilles."),
+            ("Una sèrie per venedor o barri", "A «Prefix o sèries» escriviu, per exemple, A-, B-, C-: cada venedor, parc o barri rep les seves butlletes (A-0001, B-0001…) i els seus fitxers, i així se sap qui ha venut més. A «Omet números» traieu els que queden reservats."),
+            ("Imprimiu i retalleu", "Trieu el paper (l'A4 sol anar bé) i les marques de tall: el programa omple el full de butlletes. Imprimiu i retalleu per les marques; amb paper de color distingiu les sèries. Les butlletes tenen taló, per això el número apareix dues vegades."),
+            ("Controleu les vendes i sortegeu", "Exporteu la llista de butlletes (CSV) i el full de control de vendes per lliurar a cada venedor. El dia del sorteig feu servir la pàgina «Sorteig»: amb una llavor pública (per exemple, la loteria) qualsevol persona pot comprovar el resultat."),
+        ],
+        "dicas": [
+            "Lliureu els blocs de butlletes contra una llista i apunteu qui s'endú cada bloc.",
+            "Escriviu a la butlleta el contacte del cos i la data límit per recollir els premis.",
+            "Agraïu en públic a qui ha ofert premis i publiqueu el resultat amb l'enllaç del sorteig.",
+        ],
+        "fim": "El servei és gratuït, no cal registre i no guarda els vostres fitxers. Podeu començar ara mateix.",
+    },
+    "uk": {
+        "titulo": "Як провести лотерею для пожежної команди",
+        "intro": "Лотереї — традиційна допомога добровільним пожежним командам: на спорядження, машини та щорічне свято. З Генератором лотерей ви за кілька хвилин зробите пронумеровані квитки з емблемою команди: без Canva і без встановлення програм.",
+        "passos": [
+            ("Домовтеся про головне", "Вирішіть, які будуть призи (їх часто дарують місцеві крамниці та підприємства), ціну квитка, скільки квитків друкувати і дату розіграшу, наприклад у річницю команди. Перед продажем дізнайтеся в місцевій владі, чи потрібні для лотереї дозвіл або повідомлення: правила залежать від виду лотереї."),
+            ("Створіть квиток", "У галереї виберіть дизайн (Bombeiros, Solidária…) і напишіть назву команди, призи та дату. Додайте емблему як логотип (PNG або JPG) і виберіть колір номерів. Якщо хочете щось своє, скористайтеся Редактором шаблонів."),
+            ("Одна серія на продавця чи район", "У полі «Префікс або серії» напишіть, наприклад, A-, B-, C-: кожен продавець, частина чи район отримає свої квитки (A-0001, B-0001…) і свої файли, тож видно, хто продав найбільше. У «Пропустити номери» приберіть зарезервовані номери."),
+            ("Друк і вирізання", "Виберіть папір (зазвичай підходить A4) і мітки для обрізання: програма заповнює аркуш квитками. Надрукуйте й різіть по мітках; кольоровий папір допоможе розрізнити серії. У квитків є корінець, тому номер зазначено двічі."),
+            ("Облік продажів і розіграш", "Експортуйте список квитків (CSV) і контрольний аркуш продажів, щоб передати кожному продавцю. У день розіграшу відкрийте сторінку «Розіграш»: з публічним зерном (наприклад, результатом лотереї) будь-хто зможе перевірити підсумок."),
+        ],
+        "dicas": [
+            "Видавайте блоки квитків під запис у списку й відзначайте, хто який блок узяв.",
+            "Напишіть на квитку контакт команди та строк отримання призів.",
+            "Публічно подякуйте тим, хто дав призи, і опублікуйте результат з посиланням на розіграш.",
+        ],
+        "fim": "Сервіс безкоштовний, без реєстрації й не зберігає ваших файлів. Можна починати вже зараз.",
+    },
+    "id": {
+        "titulo": "Cara membuat undian untuk pemadam kebakaran",
+        "intro": "Undian adalah dukungan tradisional bagi regu pemadam kebakaran sukarela: untuk peralatan, kendaraan, dan perayaan tahunan. Dengan Pembuat Undian Anda bisa membuat tiket bernomor berlambang regu dalam beberapa menit: tanpa Canva dan tanpa memasang program.",
+        "passos": [
+            ("Sepakati hal pokok", "Tentukan hadiah (sering disumbangkan toko dan usaha setempat), harga tiket, jumlah tiket yang dicetak, dan tanggal pengundian, misalnya pada hari jadi regu. Sebelum menjual, tanyakan ke pemerintah setempat apakah undian memerlukan izin atau pemberitahuan: aturannya bergantung pada jenis undian."),
+            ("Rancang tiket", "Di galeri pilih desain (Bombeiros, Solidária…) dan tulis nama regu, hadiah, dan tanggal. Tambahkan lambang regu sebagai logo (PNG atau JPG) dan pilih warna nomor. Untuk desain sendiri, gunakan Editor templat."),
+            ("Satu seri per penjual atau wilayah", "Di «Awalan atau seri» tulis, misalnya, A-, B-, C-: setiap penjual, pos, atau wilayah mendapat tiket (A-0001, B-0001…) dan berkasnya sendiri, sehingga terlihat siapa yang paling banyak menjual. Di «Lewati nomor» keluarkan nomor yang dicadangkan."),
+            ("Cetak dan gunting", "Pilih kertas (biasanya A4 cukup) dan tanda potong: program memenuhi lembar dengan tiket. Cetak lalu gunting mengikuti tanda; kertas berwarna membantu membedakan seri. Tiket punya kupon, jadi nomornya muncul dua kali."),
+            ("Pantau penjualan dan lakukan pengundian", "Ekspor daftar tiket (CSV) dan lembar kontrol penjualan untuk diberikan kepada setiap penjual. Pada hari pengundian gunakan halaman «Pengundian»: dengan seed publik (misalnya hasil lotere) siapa pun dapat memastikan hasilnya."),
+        ],
+        "dicas": [
+            "Serahkan blok tiket dengan mencatatnya di daftar dan catat siapa yang membawa tiap blok.",
+            "Tulis di tiket kontak regu dan batas waktu pengambilan hadiah.",
+            "Ucapkan terima kasih secara terbuka kepada penyumbang hadiah dan umumkan hasil beserta tautan pengundian.",
+        ],
+        "fim": "Layanan ini gratis, tanpa pendaftaran dan tidak menyimpan berkas Anda. Anda bisa mulai sekarang.",
+    },
+    "vi": {
+        "titulo": "Cách tổ chức bốc thăm cho đội cứu hỏa",
+        "intro": "Bốc thăm là cách hỗ trợ truyền thống cho các đội cứu hỏa tình nguyện: mua trang thiết bị, xe cộ và tổ chức lễ hội hằng năm. Với Trình tạo vé số, bạn làm vé đánh số có huy hiệu của đội chỉ trong vài phút: không cần Canva, không cần cài phần mềm.",
+        "passos": [
+            ("Thống nhất những điều cơ bản", "Quyết định giải thưởng (thường do cửa hàng và doanh nghiệp trong vùng tặng), giá vé, số vé sẽ in và ngày bốc thăm, chẳng hạn vào ngày kỷ niệm của đội. Trước khi bán, hãy hỏi chính quyền địa phương xem cuộc bốc thăm có cần giấy phép hay thông báo không: quy định phụ thuộc vào loại hình."),
+            ("Thiết kế vé", "Trong thư viện, chọn một mẫu (Bombeiros, Solidária…) rồi viết tên đội, giải thưởng và ngày. Thêm huy hiệu làm logo (PNG hoặc JPG) và chọn màu cho các số. Muốn mẫu riêng, hãy dùng Trình chỉnh sửa mẫu."),
+            ("Mỗi người bán hoặc khu vực một sê-ri", "Ở «Tiền tố hoặc sê-ri», gõ chẳng hạn A-, B-, C-: mỗi người bán, đồn hoặc khu vực nhận vé (A-0001, B-0001…) và tệp riêng, nhờ đó biết ai bán nhiều nhất. Ở «Bỏ qua các số», loại những số để dành."),
+            ("In và cắt", "Chọn giấy (thường A4 là đủ) và dấu cắt: chương trình xếp đầy tờ giấy bằng vé. In rồi cắt theo dấu; dùng giấy màu để phân biệt các sê-ri. Vé có cuống nên số xuất hiện hai lần."),
+            ("Theo dõi doanh số và bốc thăm", "Xuất danh sách vé (CSV) và bảng kiểm soát doanh số để đưa cho từng người bán. Đến ngày bốc thăm, dùng trang «Bốc thăm»: với hạt giống công khai (ví dụ kết quả xổ số), ai cũng có thể kiểm chứng kết quả."),
+        ],
+        "dicas": [
+            "Chỉ giao các xấp vé khi đã ghi vào danh sách, và ghi lại ai nhận xấp nào.",
+            "Viết lên vé thông tin liên lạc của đội và hạn nhận giải thưởng.",
+            "Công khai cảm ơn những người tặng giải thưởng và công bố kết quả kèm liên kết bốc thăm.",
+        ],
+        "fim": "Dịch vụ miễn phí, không cần đăng ký và không lưu tệp của bạn. Bạn có thể bắt đầu ngay.",
+    },
+}
+
+FESTAS = {
+    "ca": {
+        "titulo": "Com fer una rifa per a la festa del barri",
+        "intro": "En una festa de barri, de poble o en una revetlla, la rifa anima la nit i ajuda a pagar les despeses de la comissió de festes. Amb el Generador de Rifes feu butlletes numerades en pocs minuts: sense Canva ni programes per instal·lar. Dissenyeu, imprimiu i retalleu.",
+        "passos": [
+            ("Acordeu l'essencial", "Decidiu els premis (cistelles i regals dels comerciants de la zona), el preu de la butlleta, quantes butlletes s'imprimiran i l'hora del sorteig durant la festa. Abans de vendre, consulteu a l'ajuntament si la rifa necessita llicència o comunicació: les normes depenen del tipus de rifa."),
+            ("Dissenyeu la butlleta", "A la galeria trieu un disseny (Arraial, Santos Populares…) i escriviu el nom de la festa, els premis, el lloc i la data. Si voleu alguna cosa a mida, feu servir l'Editor de plantilles i afegiu textos, línies i rectangles."),
+            ("Una sèrie per dia o venedor", "A «Prefix o sèries» escriviu, per exemple, A-, B-, C- (divendres, dissabte i diumenge, o una per carrer o venedor): cada sèrie té les seves butlletes (A-0001, B-0001…) i els seus fitxers, i així se sap què ha venut cadascú. Podeu donar un color a cada sèrie."),
+            ("Imprimiu i retalleu", "Trieu el paper (l'A4 sol anar bé) i les marques de tall: el programa omple el full de butlletes. Imprimiu i retalleu per les marques; amb paper de color distingiu les sèries. Les butlletes tenen taló, per això el número apareix dues vegades."),
+            ("Controleu les vendes i sortegeu", "Exporteu la llista de butlletes (CSV) i el full de control de vendes per lliurar a cada venedor. A l'hora del sorteig feu servir la pàgina «Sorteig»: amb una llavor pública (per exemple, la loteria) qui sigui present pot comprovar el resultat des del mòbil."),
+        ],
+        "dicas": [
+            "Imprimiu més butlletes de les que penseu vendre: en una festa, les vendes solen pujar en les últimes hores.",
+            "Anuncieu el sorteig al cartell i per megafonia, amb l'hora, i demaneu a qui compra que escrigui el contacte al taló.",
+            "Guardeu els talons en una caixa fins al sorteig i comproveu el número premiat amb el taló a la mà.",
+        ],
+        "fim": "El servei és gratuït, no cal registre i no guarda els vostres fitxers. Podeu començar ara mateix.",
+    },
+    "uk": {
+        "titulo": "Як провести лотерею на святі району",
+        "intro": "На святі району, села чи вуличному гулянні лотерея оживляє вечір і допомагає покрити витрати оргкомітету. З Генератором лотерей ви за кілька хвилин зробите пронумеровані квитки: без Canva і без встановлення програм. Створіть, надрукуйте й розріжте.",
+        "passos": [
+            ("Домовтеся про головне", "Вирішіть, які будуть призи (кошики й подарунки від місцевих торговців), ціну квитка, скільки квитків друкувати і час розіграшу під час свята. Перед продажем дізнайтеся в місцевій владі, чи потрібні для лотереї дозвіл або повідомлення: правила залежать від виду лотереї."),
+            ("Створіть квиток", "У галереї виберіть дизайн (Arraial, Santos Populares…) і напишіть назву свята, призи, місце й дату. Якщо хочете щось своє, скористайтеся Редактором шаблонів і додайте тексти, лінії та прямокутники."),
+            ("Одна серія на день чи продавця", "У полі «Префікс або серії» напишіть, наприклад, A-, B-, C- (п'ятниця, субота й неділя або по одній на вулицю чи продавця): у кожної серії свої квитки (A-0001, B-0001…) і свої файли, тож видно, скільки продав кожен. Кожній серії можна дати колір."),
+            ("Друк і вирізання", "Виберіть папір (зазвичай підходить A4) і мітки для обрізання: програма заповнює аркуш квитками. Надрукуйте й різіть по мітках; кольоровий папір допоможе розрізнити серії. У квитків є корінець, тому номер зазначено двічі."),
+            ("Облік продажів і розіграш", "Експортуйте список квитків (CSV) і контрольний аркуш продажів, щоб передати кожному продавцю. Під час розіграшу відкрийте сторінку «Розіграш»: з публічним зерном (наприклад, результатом лотереї) будь-хто з присутніх зможе перевірити підсумок на телефоні."),
+        ],
+        "dicas": [
+            "Друкуйте більше квитків, ніж розраховуєте продати: на святі продажі зазвичай зростають в останні години.",
+            "Оголосіть розіграш на афіші й через гучномовець, із часом, і попросіть покупців написати контакт на корінці.",
+            "Зберігайте корінці в коробці до розіграшу й перевіряйте виграшний номер із корінцем у руках.",
+        ],
+        "fim": "Сервіс безкоштовний, без реєстрації й не зберігає ваших файлів. Можна починати вже зараз.",
+    },
+    "id": {
+        "titulo": "Cara membuat undian untuk pesta warga",
+        "intro": "Di pesta warga, perayaan desa, atau festival jalanan, undian memeriahkan malam dan membantu menutup biaya panitia. Dengan Pembuat Undian Anda bisa membuat tiket bernomor dalam beberapa menit: tanpa Canva dan tanpa memasang program. Rancang, cetak, dan gunting.",
+        "passos": [
+            ("Sepakati hal pokok", "Tentukan hadiah (keranjang dan hadiah dari pedagang setempat), harga tiket, jumlah tiket yang dicetak, dan jam pengundian selama acara. Sebelum menjual, tanyakan ke pemerintah setempat apakah undian memerlukan izin atau pemberitahuan: aturannya bergantung pada jenis undian."),
+            ("Rancang tiket", "Di galeri pilih desain (Arraial, Santos Populares…) dan tulis nama acara, hadiah, tempat, dan tanggal. Untuk desain sendiri, gunakan Editor templat dan tambahkan teks, garis, dan persegi panjang."),
+            ("Satu seri per hari atau penjual", "Di «Awalan atau seri» tulis, misalnya, A-, B-, C- (Jumat, Sabtu, dan Minggu, atau satu per jalan atau penjual): setiap seri punya tiket (A-0001, B-0001…) dan berkasnya sendiri, sehingga terlihat berapa yang dijual masing-masing. Setiap seri bisa diberi warna."),
+            ("Cetak dan gunting", "Pilih kertas (biasanya A4 cukup) dan tanda potong: program memenuhi lembar dengan tiket. Cetak lalu gunting mengikuti tanda; kertas berwarna membantu membedakan seri. Tiket punya kupon, jadi nomornya muncul dua kali."),
+            ("Pantau penjualan dan lakukan pengundian", "Ekspor daftar tiket (CSV) dan lembar kontrol penjualan untuk diberikan kepada setiap penjual. Saat pengundian gunakan halaman «Pengundian»: dengan seed publik (misalnya hasil lotere) siapa pun yang hadir dapat memastikan hasilnya lewat ponsel."),
+        ],
+        "dicas": [
+            "Cetak lebih banyak tiket daripada perkiraan penjualan: di sebuah pesta, penjualan biasanya naik pada jam-jam terakhir.",
+            "Umumkan pengundian di poster dan lewat pengeras suara, beserta jamnya, dan minta pembeli menulis kontak pada kupon.",
+            "Simpan kupon dalam kotak sampai pengundian dan periksa nomor pemenang dengan kupon di tangan.",
+        ],
+        "fim": "Layanan ini gratis, tanpa pendaftaran dan tidak menyimpan berkas Anda. Anda bisa mulai sekarang.",
+    },
+    "vi": {
+        "titulo": "Cách tổ chức bốc thăm cho lễ hội khu phố",
+        "intro": "Trong lễ hội khu phố, hội làng hay lễ hội đường phố, bốc thăm làm buổi tối thêm vui và giúp trang trải chi phí của ban tổ chức. Với Trình tạo vé số, bạn làm vé đánh số chỉ trong vài phút: không cần Canva, không cần cài phần mềm. Thiết kế, in và cắt.",
+        "passos": [
+            ("Thống nhất những điều cơ bản", "Quyết định giải thưởng (giỏ quà và quà tặng của các tiểu thương trong vùng), giá vé, số vé sẽ in và giờ bốc thăm trong lúc diễn ra lễ hội. Trước khi bán, hãy hỏi chính quyền địa phương xem cuộc bốc thăm có cần giấy phép hay thông báo không: quy định phụ thuộc vào loại hình."),
+            ("Thiết kế vé", "Trong thư viện, chọn một mẫu (Arraial, Santos Populares…) rồi viết tên lễ hội, giải thưởng, địa điểm và ngày. Muốn mẫu riêng, hãy dùng Trình chỉnh sửa mẫu và thêm văn bản, đường kẻ, hình chữ nhật."),
+            ("Mỗi ngày hoặc người bán một sê-ri", "Ở «Tiền tố hoặc sê-ri», gõ chẳng hạn A-, B-, C- (thứ Sáu, thứ Bảy và Chủ nhật, hoặc mỗi con phố hay người bán một sê-ri): mỗi sê-ri có vé (A-0001, B-0001…) và tệp riêng, nhờ đó biết mỗi người bán được bao nhiêu. Có thể gán cho mỗi sê-ri một màu."),
+            ("In và cắt", "Chọn giấy (thường A4 là đủ) và dấu cắt: chương trình xếp đầy tờ giấy bằng vé. In rồi cắt theo dấu; dùng giấy màu để phân biệt các sê-ri. Vé có cuống nên số xuất hiện hai lần."),
+            ("Theo dõi doanh số và bốc thăm", "Xuất danh sách vé (CSV) và bảng kiểm soát doanh số để đưa cho từng người bán. Đến giờ bốc thăm, dùng trang «Bốc thăm»: với hạt giống công khai (ví dụ kết quả xổ số), ai có mặt cũng có thể kiểm chứng kết quả trên điện thoại."),
+        ],
+        "dicas": [
+            "In nhiều vé hơn dự kiến bán được: ở lễ hội, doanh số thường tăng vào những giờ cuối.",
+            "Thông báo giờ bốc thăm trên áp phích và qua loa, và nhờ người mua viết thông tin liên lạc lên cuống vé.",
+            "Giữ các cuống vé trong một chiếc hộp cho đến lúc bốc thăm và đối chiếu số trúng thưởng với cuống vé trên tay.",
+        ],
+        "fim": "Dịch vụ miễn phí, không cần đăng ký và không lưu tệp của bạn. Bạn có thể bắt đầu ngay.",
     },
 }

@@ -248,7 +248,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
 
     @app.get("/api/guia/{nome}", response_model=GuiaTexto, tags=["sistema"])
     def guia_de_como_fazer(nome: str, resposta: Response, lg: str = Depends(rotas.lingua)) -> GuiaTexto:
-        """Os guias «como fazer» (`guias/`: escolas e associacoes) na lingua do pedido (X-Lingua)."""
+        """Os guias «como fazer» (`guias/`: escolas, associacoes, clubes, bombeiros e festas) na lingua do pedido (X-Lingua)."""
         if nome not in guias.NOMES:
             raise HTTPException(404, "Guia desconhecido")
         resposta.headers["Cache-Control"] = "public, max-age=300"

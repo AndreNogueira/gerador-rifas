@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.34.0 — 2026-11-13
+
+### Nytt
+- **Tre nya «Så gör du»-guider:** «För klubbar», «För brandkåren» och «För grannskapsfester» (länkar i sidfoten), med steg för steg hur du ordnar ett lotteri i varje fall. De finns på alla 22 språk och påminner om att kontrollera med kommunen om lotteriet kräver tillstånd.
+
 ## 3.33.0 — 2026-11-13
 
 ### Nytt

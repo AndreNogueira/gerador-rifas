@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.34.0 — 2026-11-13
+
+### Novità
+- **Tre nuove guide «Come fare»:** «Per i club», «Per i vigili del fuoco» e «Per le feste di quartiere» (link a piè di pagina), con il passo passo per fare una lotteria in ogni caso. Sono in tutte le 22 lingue e ricordano di verificare in Comune se la lotteria richiede un'autorizzazione.
+
 ## 3.33.0 — 2026-11-13
 
 ### Novità

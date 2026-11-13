@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.34.0 — 2026-11-13
+
+### Novetats
+- **Tres guies «Com fer» noves:** «Per a clubs», «Per als bombers» i «Per a festes de barri» (enllaços al peu), amb el pas a pas per fer una rifa en cada cas. Són a les 22 llengües i recorden consultar a l'ajuntament si la rifa necessita llicència.
+
 ## 3.33.0 — 2026-11-13
 
 ### Novetats

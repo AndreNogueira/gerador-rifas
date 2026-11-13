@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.34.0 — 2026-11-13
+
+### Yeni
+- **Üç yeni «Nasıl yapılır» rehberi:** «Kulüpler için», «İtfaiye için» ve «Mahalle şenlikleri için» (altbilgide bağlantılar), her durumda çekilişin adım adım nasıl yapılacağını anlatır. 22 dilin hepsinde var ve çekilişin izin gerektirip gerektirmediğini belediyeye sormayı hatırlatır.
+
 ## 3.33.0 — 2026-11-13
 
 ### Yeni

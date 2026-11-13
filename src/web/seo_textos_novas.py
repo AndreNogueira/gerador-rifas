@@ -62,6 +62,24 @@ CHAVES: dict[str, dict[str, str]] = {
         "id": "Cara membuat undian untuk organisasi: tiket dengan kupon, satu seri per penjual, tanda potong, kontrol penjualan dan pengundian yang terverifikasi.",
         "vi": "Cách tổ chức bốc thăm cho hội nhóm: vé mang phong cách của bạn có cuống, mỗi người bán một sê-ri, dấu cắt, kiểm soát doanh số và bốc thăm kiểm chứng được.",
     },
+    "d_guia_clubes": {
+        "ca": "Com fer una rifa per al club: butlletes amb l'escut i taló, una sèrie per equip o venedor, marques de tall, control de vendes i sorteig verificable.",
+        "uk": "Як провести лотерею для клубу: квитки з емблемою й корінцем, серія на команду чи продавця, мітки для обрізання, облік продажів і перевірюваний розіграш.",
+        "id": "Cara membuat undian untuk klub: tiket berlambang dengan kupon, satu seri per tim atau penjual, tanda potong, kontrol penjualan, pengundian terverifikasi.",
+        "vi": "Cách tổ chức bốc thăm cho câu lạc bộ: vé có huy hiệu và cuống, mỗi đội hoặc người bán một sê-ri, dấu cắt, kiểm soát doanh số và bốc thăm kiểm chứng được.",
+    },
+    "d_guia_bombeiros": {
+        "ca": "Com fer una rifa per als bombers: butlletes amb l'escut i taló, una sèrie per venedor, marques de tall, control de vendes i sorteig verificable.",
+        "uk": "Як провести лотерею для пожежної команди: квитки з емблемою й корінцем, серія на продавця, мітки для обрізання, облік продажів і перевірюваний розіграш.",
+        "id": "Cara membuat undian untuk pemadam kebakaran: tiket berlambang dengan kupon, satu seri per penjual, tanda potong, kontrol penjualan, pengundian terverifikasi.",
+        "vi": "Cách tổ chức bốc thăm cho đội cứu hỏa: vé có huy hiệu và cuống, mỗi người bán một sê-ri, dấu cắt, kiểm soát doanh số và bốc thăm kiểm chứng được.",
+    },
+    "d_guia_festas": {
+        "ca": "Com fer una rifa per a la festa del barri: butlletes amb taló, una sèrie per dia o venedor, marques de tall, control de vendes i sorteig verificable.",
+        "uk": "Як провести лотерею на святі району: квитки з корінцем, серія на день чи продавця, мітки для обрізання, облік продажів і перевірюваний розіграш.",
+        "id": "Cara membuat undian untuk pesta warga: tiket dengan kupon, satu seri per hari atau penjual, tanda potong, kontrol penjualan, pengundian terverifikasi.",
+        "vi": "Cách tổ chức bốc thăm cho lễ hội khu phố: vé có cuống, mỗi ngày hoặc người bán một sê-ri, dấu cắt, kiểm soát doanh số và bốc thăm kiểm chứng được.",
+    },
     "d_termos": {
         "ca": "Les normes d'ús del Generador de Rifes: què fa el servei, què no fa i qui és responsable de la rifa.",
         "uk": "Правила користування Генератором лотерей: що робить сервіс, чого не робить і хто відповідає за лотерею.",

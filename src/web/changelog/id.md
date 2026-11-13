@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.34.0 — 2026-11-13
+
+### Baru
+- **Tiga panduan «Cara membuat» baru:** «Untuk klub», «Untuk pemadam kebakaran» dan «Untuk pesta warga» (tautan di bagian bawah), berisi langkah demi langkah membuat undian di setiap kasus. Tersedia dalam 22 bahasa dan mengingatkan untuk bertanya ke pemerintah setempat apakah undian memerlukan izin.
+
 ## 3.33.0 — 2026-11-13
 
 ### Baru

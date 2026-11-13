@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.34.0 — 2026-11-13
+
+### Mới
+- **Ba hướng dẫn «Cách làm» mới:** «Cho câu lạc bộ», «Cho đội cứu hỏa» và «Cho lễ hội khu phố» (liên kết ở chân trang), hướng dẫn từng bước tổ chức bốc thăm trong mỗi trường hợp. Có đủ 22 ngôn ngữ và nhắc hỏi chính quyền địa phương xem có cần giấy phép không.
+
 ## 3.33.0 — 2026-11-13
 
 ### Mới
