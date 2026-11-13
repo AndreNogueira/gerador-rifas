@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.39.0 — 2026-11-13
+
+### New
+- **Windows app 2.7:** the gallery and the template editor now accept extended Latin, Vietnamese, Greek, Cyrillic, Chinese, Japanese and Korean, like the site since 3.37 (Hindi, Arabic and Hebrew are still missing). Download it from the Changelog page.
+
 ## 3.38.0 — 2026-11-13
 
 ### New

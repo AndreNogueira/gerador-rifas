@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.39.0 — 2026-11-13
+
+### Noutăți
+- **Aplicația Windows 2.7:** galeria și editorul de șabloane acceptă acum latina extinsă, vietnameza, greaca, chirilica, chineza, japoneza și coreeana, ca site-ul din versiunea 3.37 (hindi, araba și ebraica încă lipsesc). Se descarcă din pagina Changelog.
+
 ## 3.38.0 — 2026-11-13
 
 ### Noutăți

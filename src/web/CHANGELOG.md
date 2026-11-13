@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.39.0 — 2026-11-13
+
+### Novo
+- **App Windows 2.7:** a galeria e o editor de templates passam a aceitar latim estendido, vietnamita, grego, cirílico, chinês, japonês e coreano, como o site desde a 3.37 (o hindi, o árabe e o hebraico continuam por fazer). Descarrega-se na página do Changelog.
+
 ## 3.38.0 — 2026-11-13
 
 ### Novo

@@ -44,7 +44,7 @@ for /f "tokens=1,2 delims=;" %%a in ('.venv\Scripts\python.exe tcl_dirs.py') do 
   --onefile-tempdir-spec="{CACHE_DIR}/GeradorRifas/{VERSION}" ^
   --company-name="Gerador de Rifas" --product-name="Gerador de Rifas" ^
   --file-description="Gerador de rifas a partir de templates PDF" ^
-  --file-version=2.6.0.0 --product-version=2.6.0.0 --copyright="Gerador de Rifas" ^
+  --file-version=2.7.0.0 --product-version=2.7.0.0 --copyright="Gerador de Rifas" ^
   app.py || exit /b 1
 
 rem Assinatura digital (autoassinada por defeito; com um certificado comprado: assinar.ps1 -Pfx ficheiro.pfx)

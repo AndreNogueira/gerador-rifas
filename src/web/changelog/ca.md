@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.39.0 — 2026-11-13
+
+### Novetats
+- **App de Windows 2.7:** la galeria i l'editor de plantilles accepten ara llatí estès, vietnamita, grec, ciríl·lic, xinès, japonès i coreà, com el lloc des de la 3.37 (el hindi, l'àrab i l'hebreu encara no hi són). Es descarrega des de la pàgina del Changelog.
+
 ## 3.38.0 — 2026-11-13
 
 ### Novetats

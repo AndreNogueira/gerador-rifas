@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.39.0 — 2026-11-13
+
+### Nytt
+- **Windows-appen 2.7:** galleriet och mallredigeraren godtar nu utökad latin, vietnamesiska, grekiska, kyrilliska, kinesiska, japanska och koreanska, som webbplatsen sedan 3.37 (hindi, arabiska och hebreiska saknas fortfarande). Laddas ner från Changelog-sidan.
+
 ## 3.38.0 — 2026-11-13
 
 ### Nytt
