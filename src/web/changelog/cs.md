@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.38.0 — 2026-11-13
+
+### Novinky
+- **Tlačítko «Sdílet»:** v patičce a po vygenerování souborů na kartě s výsledkem. Otevře krátký seznam (sdílení telefonu nebo počítače, WhatsApp, Telegram, Facebook, e-mail a «Kopírovat odkaz»), aby o generátoru věděly další spolky, školy a výbory slavností. Odkazy obsahují jen adresu webu v použitém jazyce: žádné sledování a nic se neukládá. Má téma v návodu a video.
+
 ## 3.37.0 — 2026-11-13
 
 ### Novinky

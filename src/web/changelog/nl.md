@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.38.0 — 2026-11-13
+
+### Nieuw
+- **Knop «Delen»:** onderaan de pagina en, na het genereren van de bestanden, op de leveringskaart. Hij opent een korte lijst (het deelmenu van telefoon of computer, WhatsApp, Telegram, Facebook, e-mail en «Link kopiëren») om andere verenigingen, scholen en feestcomités kennis te laten maken met de generator. De links bevatten alleen het adres van de site in de gebruikte taal: geen tracking, er wordt niets bewaard. Met een onderwerp in de tutorial en een video.
+
 ## 3.37.0 — 2026-11-13
 
 ### Nieuw

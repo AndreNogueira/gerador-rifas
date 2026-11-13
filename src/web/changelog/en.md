@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.38.0 — 2026-11-13
+
+### New
+- **“Share” button:** in the footer and, after generating the files, on the delivery card. It opens a short list (your phone's or computer's share sheet, WhatsApp, Telegram, Facebook, e-mail and “Copy link”) to let other associations, schools and festival committees know about the generator. The links carry only the site address in the language you are using: no tracking and nothing stored. It has a tutorial topic and a video.
+
 ## 3.37.0 — 2026-11-13
 
 ### New

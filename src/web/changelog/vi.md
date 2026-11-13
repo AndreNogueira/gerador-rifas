@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.38.0 — 2026-11-13
+
+### Mới
+- **Nút «Chia sẻ»:** ở chân trang và, sau khi tạo tệp, trên thẻ giao tệp. Nút mở một danh sách ngắn (chia sẻ của điện thoại hoặc máy tính, WhatsApp, Telegram, Facebook, email và «Sao chép liên kết») để các hội nhóm, trường học và ban tổ chức lễ hội khác biết đến trình tạo này. Liên kết chỉ chứa địa chỉ trang web theo ngôn ngữ bạn đang dùng: không theo dõi và không lưu gì cả. Có chủ đề trong hướng dẫn và video.
+
 ## 3.37.0 — 2026-11-13
 
 ### Mới

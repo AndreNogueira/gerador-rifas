@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.38.0 — 2026-11-13
+
+### Noutăți
+- **Butonul «Distribuie»:** în subsol și, după generarea fișierelor, pe cardul de livrare. Deschide o listă scurtă (partajarea telefonului sau a computerului, WhatsApp, Telegram, Facebook, e-mail și «Copiază linkul») ca alte asociații, școli și comitete de sărbători să afle de generator. Linkurile conțin doar adresa site-ului în limba folosită: fără urmărire și fără să se salveze nimic. Are un subiect în tutorial și un videoclip.
+
 ## 3.37.0 — 2026-11-13
 
 ### Noutăți

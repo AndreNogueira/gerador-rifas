@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.38.0 — 2026-11-13
+
+### Nowości
+- **Przycisk «Udostępnij»:** w stopce i, po wygenerowaniu plików, na karcie pobierania. Otwiera krótką listę (udostępnianie telefonu lub komputera, WhatsApp, Telegram, Facebook, e-mail i «Kopiuj link»), by poznały generator inne stowarzyszenia, szkoły i komitety festynów. Linki zawierają tylko adres strony w używanym języku: bez śledzenia i bez zapisywania czegokolwiek. Ma temat w samouczku i wideo.
+
 ## 3.37.0 — 2026-11-13
 
 ### Nowości

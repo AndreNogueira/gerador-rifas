@@ -81,6 +81,7 @@ def test_o_windows_nao_mostra_o_que_so_existe_no_site():
     assert {"qr", "guardar", "instalar"}.isdisjoint(windows) and {"series", "galeria", "editor", "sorteio", "visual"} <= windows
     assert "pedido" in windows                                                   # guardar/abrir o pedido em ficheiro: a versão da app para o «guardar» do site
     assert {f.id for f in tutorial.funcionalidades("web")} == set(IDS) - {"pedido"}
+    assert "partilhar" not in windows                                            # o botão «Partilhar» é do site (as redes e o «partilhar» do browser)
 
 
 @pytest.mark.parametrize("lg", list(i18n.LINGUAS))
