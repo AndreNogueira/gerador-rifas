@@ -1,4 +1,4 @@
-"""Os textos de SEO (título da página inicial, descrições, introdução) nas 18 línguas, lado a lado.
+"""Os textos de SEO (título da página inicial, descrições, introdução) nas línguas, lado a lado (as 18 primeiras aqui; as de um ficheiro só em `seo_textos_novas.py`).
 
 Ficam aqui, e não em `core/idiomas`, porque só o servidor os usa (vão para o HTML que os robôs leem, nunca para o browser) e assim não
 engordam `/api/textos` nem mexem na contagem de chaves de `tests/test_i18n.py`. `tests/test_web_seo_linguas.py` verifica que cada chave tem as 18
@@ -268,24 +268,24 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "रैफ़ल जनरेटर में हुए सभी बदलाव, संस्करण-दर-संस्करण: नई सुविधाएँ, सुधार और बग-फ़िक्स।",
     },
     "intro": {
-        "pt": "Crie rifas numeradas em PDF a partir de um template do Canva: escolha os números, veja a pré-visualização e descarregue os PDFs prontos a imprimir. É grátis, não precisa de registo e funciona em 18 línguas.",
-        "en": "Create numbered raffle tickets as PDF from a Canva template: pick the numbers, preview them and download print-ready PDFs. It is free, needs no sign-up and works in 18 languages.",
-        "es": "Cree rifas numeradas en PDF a partir de una plantilla de Canva: elija los números, vea la vista previa y descargue los PDF listos para imprimir. Es gratis, no necesita registro y funciona en 18 idiomas.",
-        "fr": "Créez des tickets numérotés en PDF à partir d'un modèle Canva : choisissez les numéros, prévisualisez et téléchargez des PDF prêts à imprimer. C'est gratuit, sans inscription et en 18 langues.",
-        "de": "Erstellen Sie nummerierte Lose als PDF aus einer Canva-Vorlage: Nummern wählen, Vorschau ansehen und druckfertige PDFs herunterladen. Kostenlos, ohne Anmeldung und in 18 Sprachen.",
-        "it": "Crea biglietti numerati in PDF da un modello Canva: scegli i numeri, guarda l'anteprima e scarica PDF pronti per la stampa. È gratis, senza registrazione e in 18 lingue.",
-        "nl": "Maak genummerde loten als pdf vanuit een Canva-sjabloon: kies de nummers, bekijk het voorbeeld en download afdrukklare pdf's. Gratis, zonder account en in 18 talen.",
-        "pl": "Twórz numerowane losy w PDF z szablonu Canva: wybierz numery, zobacz podgląd i pobierz pliki gotowe do druku. Za darmo, bez rejestracji i w 18 językach.",
-        "sv": "Skapa numrerade lotter som PDF från en Canva-mall: välj nummer, förhandsgranska och ladda ner utskriftsklara PDF-filer. Gratis, utan registrering och på 18 språk.",
-        "cs": "Vytvářejte číslované losy v PDF ze šablony Canva: vyberte čísla, prohlédněte náhled a stáhněte PDF připravená k tisku. Zdarma, bez registrace a v 18 jazycích.",
-        "ro": "Creați bilete numerotate în PDF dintr-un șablon Canva: alegeți numerele, vedeți previzualizarea și descărcați PDF-uri gata de tipărit. Gratuit, fără cont și în 18 limbi.",
-        "el": "Φτιάξτε αριθμημένα λαχεία σε PDF από πρότυπο του Canva: διαλέξτε αριθμούς, δείτε την προεπισκόπηση και κατεβάστε PDF έτοιμα για εκτύπωση. Δωρεάν, χωρίς εγγραφή και σε 18 γλώσσες.",
-        "ru": "Создавайте пронумерованные билеты в PDF из шаблона Canva: выберите номера, посмотрите предпросмотр и скачайте PDF, готовые к печати. Бесплатно, без регистрации, на 18 языках.",
-        "tr": "Canva şablonundan numaralı çekiliş biletlerini PDF olarak oluşturun: numaraları seçin, önizleyin ve baskıya hazır PDF'leri indirin. Ücretsiz, kayıt gerektirmez ve 18 dilde çalışır.",
-        "zh": "用 Canva 模板生成带编号的抽奖券 PDF：选择号码、预览并下载可直接打印的 PDF。免费，无需注册，支持 18 种语言。",
-        "ja": "Canvaのテンプレートから番号付きのくじ券をPDFで作成。番号を選んでプレビューし、印刷用PDFをダウンロードできます。無料・登録不要・18言語対応。",
-        "ko": "Canva 템플릿으로 번호가 매겨진 추첨권 PDF를 만드세요. 번호를 고르고 미리 본 뒤 인쇄용 PDF를 내려받습니다. 무료이며 가입이 필요 없고 18개 언어를 지원합니다.",
-        "hi": "Canva टेम्पलेट से क्रमांकित रैफ़ल टिकट PDF में बनाएँ: नंबर चुनें, प्रीव्यू देखें और प्रिंट के लिए तैयार PDF डाउनलोड करें। मुफ़्त, पंजीकरण नहीं, 18 भाषाओं में।",
+        "pt": "Crie rifas numeradas em PDF a partir de um template do Canva: escolha os números, veja a pré-visualização e descarregue os PDFs prontos a imprimir. É grátis, não precisa de registo e funciona em 22 línguas.",
+        "en": "Create numbered raffle tickets as PDF from a Canva template: pick the numbers, preview them and download print-ready PDFs. It is free, needs no sign-up and works in 22 languages.",
+        "es": "Cree rifas numeradas en PDF a partir de una plantilla de Canva: elija los números, vea la vista previa y descargue los PDF listos para imprimir. Es gratis, no necesita registro y funciona en 22 idiomas.",
+        "fr": "Créez des tickets numérotés en PDF à partir d'un modèle Canva : choisissez les numéros, prévisualisez et téléchargez des PDF prêts à imprimer. C'est gratuit, sans inscription et en 22 langues.",
+        "de": "Erstellen Sie nummerierte Lose als PDF aus einer Canva-Vorlage: Nummern wählen, Vorschau ansehen und druckfertige PDFs herunterladen. Kostenlos, ohne Anmeldung und in 22 Sprachen.",
+        "it": "Crea biglietti numerati in PDF da un modello Canva: scegli i numeri, guarda l'anteprima e scarica PDF pronti per la stampa. È gratis, senza registrazione e in 22 lingue.",
+        "nl": "Maak genummerde loten als pdf vanuit een Canva-sjabloon: kies de nummers, bekijk het voorbeeld en download afdrukklare pdf's. Gratis, zonder account en in 22 talen.",
+        "pl": "Twórz numerowane losy w PDF z szablonu Canva: wybierz numery, zobacz podgląd i pobierz pliki gotowe do druku. Za darmo, bez rejestracji i w 22 językach.",
+        "sv": "Skapa numrerade lotter som PDF från en Canva-mall: välj nummer, förhandsgranska och ladda ner utskriftsklara PDF-filer. Gratis, utan registrering och på 22 språk.",
+        "cs": "Vytvářejte číslované losy v PDF ze šablony Canva: vyberte čísla, prohlédněte náhled a stáhněte PDF připravená k tisku. Zdarma, bez registrace a v 22 jazycích.",
+        "ro": "Creați bilete numerotate în PDF dintr-un șablon Canva: alegeți numerele, vedeți previzualizarea și descărcați PDF-uri gata de tipărit. Gratuit, fără cont și în 22 limbi.",
+        "el": "Φτιάξτε αριθμημένα λαχεία σε PDF από πρότυπο του Canva: διαλέξτε αριθμούς, δείτε την προεπισκόπηση και κατεβάστε PDF έτοιμα για εκτύπωση. Δωρεάν, χωρίς εγγραφή και σε 22 γλώσσες.",
+        "ru": "Создавайте пронумерованные билеты в PDF из шаблона Canva: выберите номера, посмотрите предпросмотр и скачайте PDF, готовые к печати. Бесплатно, без регистрации, на 22 языках.",
+        "tr": "Canva şablonundan numaralı çekiliş biletlerini PDF olarak oluşturun: numaraları seçin, önizleyin ve baskıya hazır PDF'leri indirin. Ücretsiz, kayıt gerektirmez ve 22 dilde çalışır.",
+        "zh": "用 Canva 模板生成带编号的抽奖券 PDF：选择号码、预览并下载可直接打印的 PDF。免费，无需注册，支持 22 种语言。",
+        "ja": "Canvaのテンプレートから番号付きのくじ券をPDFで作成。番号を選んでプレビューし、印刷用PDFをダウンロードできます。無料・登録不要・22言語対応。",
+        "ko": "Canva 템플릿으로 번호가 매겨진 추첨권 PDF를 만드세요. 번호를 고르고 미리 본 뒤 인쇄용 PDF를 내려받습니다. 무료이며 가입이 필요 없고 22개 언어를 지원합니다.",
+        "hi": "Canva टेम्पलेट से क्रमांकित रैफ़ल टिकट PDF में बनाएँ: नंबर चुनें, प्रीव्यू देखें और प्रिंट के लिए तैयार PDF डाउनलोड करें। मुफ़्त, पंजीकरण नहीं, 22 भाषाओं में।",
     },
     "como": {
         "pt": "Como funciona", "en": "How it works", "es": "Cómo funciona", "fr": "Comment ça marche", "de": "So funktioniert es",
@@ -346,6 +346,13 @@ LOCALE_OG = {"pt": "pt_PT", "en": "en_US", "es": "es_ES", "fr": "fr_FR", "de": "
              "sv": "sv_SE", "cs": "cs_CZ", "ro": "ro_RO", "el": "el_GR", "ru": "ru_RU", "tr": "tr_TR", "zh": "zh_CN", "ja": "ja_JP",
              "ko": "ko_KR", "hi": "hi_IN"}
 
+
+# as linguas de um ficheiro so (catalao, ucraniano, indonesio, vietnamita): ver `seo_textos_novas.py` e docs/LINGUAS.md
+from . import seo_textos_novas as _novas  # noqa: E402
+
+for _chave, _valores in _novas.CHAVES.items():
+    CHAVES[_chave].update(_valores)
+LOCALE_OG.update(_novas.LOCALE_OG)
 
 # Os textos editados no painel (guardados na base de dados, `seo_bd.py`): (chave, lingua) -> texto. Mandam sobre os de cima, que continuam a ser o
 # valor por omissao e o recurso se a base estiver em baixo ou o texto editado nao servir. Substitui-se o dicionario inteiro (nunca se muda no sitio).

@@ -4,6 +4,13 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.33.0 — 2026-11-13
+
+### Novo
+- **API pública em lote** (`/api/v1`, com Swagger em `/api/v1/docs`): permite a outros programas gerar vários pedidos de rifas a partir de um só template, com chave, quotas diárias e limites. Quem usa o site passa sempre à frente.
+- **Quatro línguas novas:** catalão, ucraniano, indonésio e vietnamita. O site e a app Windows passam a ter 22 línguas, com tutorial, termos, privacidade, guias «como fazer» e capturas.
+- **Textos para os motores de pesquisa editáveis por língua:** o dono edita no painel de administração os títulos, as descrições e os guias de cada língua, guardados na base de dados e sem novo deploy.
+
 ## 3.32.0 — 2026-11-13
 
 ### Novo

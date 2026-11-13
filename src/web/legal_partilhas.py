@@ -51,3 +51,12 @@ def aplicar(pagina: dict, lingua: str) -> dict:
     d = TEXTOS.get(lingua, TEXTOS["pt"])
     pagina["seccoes"].insert(2, {"titulo": d["titulo"], "paragrafos": list(d["paragrafos"])})
     return pagina
+
+
+# as linguas novas trazem estes textos no seu proprio `legal/<lingua>.py` (ver docs/LINGUAS.md)
+from importlib import import_module  # noqa: E402
+
+from .legal import LINGUAS_NOVAS  # noqa: E402
+
+for _lg in LINGUAS_NOVAS:
+    TEXTOS[_lg] = import_module(f"{__package__}.legal.{_lg}").PARTILHAS

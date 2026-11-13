@@ -55,7 +55,7 @@ def test_health_funciona_sem_frontend_compilado(tmp_path):
 def test_linguas_sao_as_18_e_por_defeito_vem_do_browser(cliente):
     r = cliente.get("/api/linguas", headers={"Accept-Language": "ja-JP,ja;q=0.9,en;q=0.8"})
     d = r.json()
-    assert [x["codigo"] for x in d["linguas"]] == list(i18n.LINGUAS) and len(d["linguas"]) == 18
+    assert [x["codigo"] for x in d["linguas"]] == list(i18n.LINGUAS) and len(d["linguas"]) == 22
     assert d["linguas"][0] == {"codigo": "pt", "nome": "Português"}
     assert d["por_defeito"] == "ja"
 

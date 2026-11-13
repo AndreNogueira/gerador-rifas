@@ -30,6 +30,10 @@ const LINGUAS = [
   "ro",
   "sv",
   "el",
+  "ca",
+  "uk",
+  "id",
+  "vi",
 ];
 const LOCAL: Record<string, string> = { pt: "pt-PT", en: "en-US", zh: "zh-CN" };
 const VISTA = { width: 1240, height: 1000 };

@@ -2,6 +2,13 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.33.0 — 2026-11-13
+
+### New
+- **Public API for batches** (`/api/v1`, with Swagger at `/api/v1/docs`): lets other programs generate several raffle jobs from a single template, with a key, daily quotas and limits. People using the site always go first.
+- **Four new languages:** Catalan, Ukrainian, Indonesian and Vietnamese. The site and the Windows app now speak 22 languages, with tutorial, terms, privacy, how-to guides and screenshots.
+- **Search-engine texts editable per language:** the owner edits the titles, descriptions and guides of each language in the admin panel, stored in the database, with no new deploy.
+
 ## 3.32.0 — 2026-11-13
 
 ### New

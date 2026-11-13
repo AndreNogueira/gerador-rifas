@@ -2,6 +2,13 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.33.0 — 2026-11-13
+
+### Novità
+- **API pubblica per lotti** (`/api/v1`, con Swagger su `/api/v1/docs`): permette ad altri programmi di generare più richieste di biglietti da un solo modello, con chiave, quote giornaliere e limiti. Chi usa il sito passa sempre per primo.
+- **Quattro nuove lingue:** catalano, ucraino, indonesiano e vietnamita. Il sito e l'app Windows passano a 22 lingue, con tutorial, termini, privacy, guide pratiche e schermate.
+- **Testi per i motori di ricerca modificabili per lingua:** il proprietario modifica nel pannello di amministrazione titoli, descrizioni e guide di ogni lingua, salvati nel database e senza nuovo deploy.
+
 ## 3.32.0 — 2026-11-13
 
 ### Novità

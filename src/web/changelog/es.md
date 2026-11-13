@@ -2,6 +2,13 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.33.0 — 2026-11-13
+
+### Novedades
+- **API pública por lotes** (`/api/v1`, con Swagger en `/api/v1/docs`): permite que otros programas generen varios pedidos de rifas a partir de una sola plantilla, con clave, cuotas diarias y límites. Quien usa el sitio pasa siempre primero.
+- **Cuatro idiomas nuevos:** catalán, ucraniano, indonesio y vietnamita. El sitio y la app de Windows pasan a tener 22 idiomas, con tutorial, términos, privacidad, guías «cómo hacerlo» y capturas.
+- **Textos para los buscadores editables por idioma:** el dueño edita en el panel de administración los títulos, las descripciones y las guías de cada idioma, guardados en la base de datos y sin nuevo despliegue.
+
 ## 3.32.0 — 2026-11-13
 
 ### Novedades

@@ -15,10 +15,10 @@ PARAMS = re.compile(r"\{(\w+)\}")
 
 
 def test_linguas_e_ordem():
-    assert ORDEM == ["pt", "en", "es", "fr", "de", "it", "nl", "pl", "sv", "cs", "ro", "el", "ru", "tr", "zh", "ja", "ko", "hi"]
+    assert ORDEM == ["pt", "en", "es", "fr", "de", "it", "nl", "pl", "sv", "cs", "ro", "el", "ru", "tr", "zh", "ja", "ko", "hi", "ca", "uk", "id", "vi"]
     assert list(NOMES) == ORDEM and list(TEXTOS) == ORDEM
     assert list(i18n.LINGUAS.items())[:3] == [("pt", "Português"), ("en", "English"), ("es", "Español")]
-    assert NOMES["zh"] == "简体中文" and NOMES["hi"] == "हिन्दी"
+    assert NOMES["zh"] == "简体中文" and NOMES["hi"] == "हिन्दी" and NOMES["ca"] == "Català" and NOMES["uk"] == "Українська"
 
 
 def test_todas_as_linguas_tem_285_chaves_iguais_ao_portugues():

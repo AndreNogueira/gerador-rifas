@@ -142,7 +142,7 @@ def test_o_sitemap_lista_cada_pagina_em_todas_as_linguas_com_as_alternativas(c):
     ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9", "x": "http://www.w3.org/1999/xhtml"}
     raiz = ElementTree.fromstring(r.text)
     entradas = raiz.findall("s:url", ns)
-    assert len(entradas) == len(seo.ROTAS) * 18
+    assert len(entradas) == len(seo.ROTAS) * len(i18n.LINGUAS)
     for e in entradas:
         links = e.findall("x:link", ns)
         assert [(lk.get("hreflang")) for lk in links] == LINGUAS + ["x-default"]

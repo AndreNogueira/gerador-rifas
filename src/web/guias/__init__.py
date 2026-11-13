@@ -1,4 +1,4 @@
-"""As páginas de «como fazer» (SEO e leitura): `/rifas-para-escolas` e `/rifas-para-associacoes`, nas 18 línguas.
+"""As páginas de «como fazer» (SEO e leitura): `/rifas-para-escolas` e `/rifas-para-associacoes`, nas línguas (as 18 primeiras em `escolas.py`/`associacoes.py`, as de um ficheiro só em `novas.py`).
 
 Cada guia é um texto com título, introdução, 5 passos (título e texto), 3 dicas e uma frase final (`escolas.py`, `associacoes.py`; uma língua por entrada,
 as traduções sem revisão nativa). A API entrega-o na língua do pedido (`/api/guia/{nome}`), o React desenha-o (`Guia.tsx`) e o `seo.py` põe o mesmo texto
@@ -7,9 +7,11 @@ no HTML estático. As regras de licença de uma rifa variam por país e por tipo
 from __future__ import annotations
 
 from ..seo_textos import sobreposto
-from . import associacoes, escolas
+from . import associacoes, escolas, novas
 
 DADOS = {"escolas": escolas.DADOS, "associacoes": associacoes.DADOS}
+DADOS["escolas"].update(novas.ESCOLAS)               # as linguas de um ficheiro so (docs/LINGUAS.md)
+DADOS["associacoes"].update(novas.ASSOCIACOES)
 CAMINHOS = {"escolas": "/rifas-para-escolas", "associacoes": "/rifas-para-associacoes"}
 NOMES = tuple(DADOS)
 N_PASSOS, N_DICAS = 5, 3
