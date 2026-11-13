@@ -15,9 +15,10 @@ import hmac
 import time
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from . import VERSAO, config
+from .chaves_api import QUOTA_PADRAO
 from .metricas import INTERVALOS
 from .rotas import Servico, servico
 
@@ -132,3 +133,36 @@ def dados(intervalo: str = "6h", serv: Servico = Depends(servico)) -> dict:
         "tabela_pedidos": m.tabela_pedidos(desde),
         "resumo": m.resumo(desde),
     }
+
+
+# ------------------------------------------------------------------ chaves da API publica v1 (/api/v1): criam-se e revogam-se aqui, nunca no repositorio
+class NovaChave(BaseModel):
+    nome: str = Field(min_length=1, max_length=60)
+    quota_dia: int = Field(QUOTA_PADRAO, ge=1, le=100_000_000)             # numeros por dia
+
+
+@router.get("/chaves", dependencies=[Depends(exigir)])
+def chaves(serv: Servico = Depends(servico)) -> list[dict]:
+    """As chaves (sem o segredo: so o prefixo) e o que gastaram hoje."""
+    saida = []
+    for c in serv.chaves.listar():
+        usados, lotes = serv.chaves.uso_hoje(c)
+        saida.append({"id": c.id, "nome": c.nome, "prefixo": c.prefixo, "criada": c.criada, "ativa": c.ativa, "quota_dia": c.quota,
+                      "usados_hoje": usados, "lotes_hoje": lotes})
+    return saida
+
+
+@router.post("/chaves", status_code=201, dependencies=[Depends(exigir)])
+def criar_chave(n: NovaChave, serv: Servico = Depends(servico)) -> dict:
+    """Cria uma chave. A chave em claro **so aparece nesta resposta** (guarda-se o SHA-256); nao fica em nenhum log."""
+    info, chave = serv.chaves.criar(n.nome.strip(), n.quota_dia)
+    serv.metricas.evento("admin", "chave_criada")
+    return {"id": info.id, "nome": info.nome, "prefixo": info.prefixo, "quota_dia": info.quota, "chave": chave}
+
+
+@router.delete("/chaves/{id_}", status_code=204, dependencies=[Depends(exigir)])
+def revogar_chave(id_: str, serv: Servico = Depends(servico)) -> Response:
+    if not serv.chaves.revogar(id_):
+        raise HTTPException(404, "Chave inexistente", headers=_SEM_CACHE)
+    serv.metricas.evento("admin", "chave_revogada")
+    return Response(status_code=204, headers=_SEM_CACHE)

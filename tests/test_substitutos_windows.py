@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pytest
 
-from core import config, i18n, sistema, tema, tutorial
+from core import config, galeria, i18n, sistema, tema, tutorial
 
 RAIZ = Path(__file__).resolve().parent.parent
 
@@ -238,8 +238,9 @@ def test_python_m_core_corre_o_autoteste(tmp_path):
     assert r.returncode == 0, r.stderr
     linhas = r.stdout.strip().splitlines()
     assert linhas[0] == "traducoes (18 linguas): ok" and linhas[-1] == "RESULTADO: OK"
-    assert len(linhas) == 10 + 4          # traducoes + RESULTADO + 8 exemplos + os 4 desenhos da galeria
-    assert [l.split(":")[0] for l in linhas[-5:-1]] == ["galeria bosque", "galeria quermesse", "galeria natal", "galeria gala"]
+    assert len(linhas) == 10 + 24         # traducoes + RESULTADO + 8 exemplos + os 24 desenhos da galeria
+    assert [l.split(":")[0] for l in linhas[-25:-21]] == ["galeria bosque", "galeria quermesse", "galeria natal", "galeria gala"]
+    assert [l.split(":")[0] for l in linhas[-25:-1]] == [f"galeria {d.id}" for d in galeria.DESENHOS]
 
 
 def test_python_m_core_sem_argumentos():

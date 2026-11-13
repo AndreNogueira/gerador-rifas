@@ -18,7 +18,8 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, changelog, config, guias, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
+from . import VERSAO, admin, api_v1, changelog, config, guias, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
+from .chaves_api import Chaves
 from .limites import Limitador
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
@@ -156,7 +157,7 @@ async def _amostrar(servico: Servico, cada_s: float) -> None:
 
 
 def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, motor: Motor | None = None,
-              metricas: Metricas | None = None, partilhas: Partilhas | None = None) -> FastAPI:
+              metricas: Metricas | None = None, partilhas: Partilhas | None = None, chaves: Chaves | None = None) -> FastAPI:
     """`frontend`: pasta do frontend compilado; `armazenamento`: onde ficam as sessoes (RIFAS_ARMAZENAMENTO); `motor`, `metricas`: para os testes."""
     pasta = (frontend or config.pasta_frontend()).resolve()
     armazem = ArmazenamentoLocal(armazenamento, limite_bytes=config.limite_sessao_mb() * 1024 * 1024)
@@ -164,6 +165,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
                       metricas or Metricas(caminho_por_defeito(armazem.raiz), url_bd=config.database_url(), intervalo_bd_min=config.metricas_bd_min()), Observador(armazem.raiz))
 
     servico.partilhas = partilhas if partilhas is not None else (Partilhas(config.database_url()) if config.database_url() else None)
+    servico.chaves = chaves if chaves is not None else Chaves(config.database_url(), armazem.raiz / "api.sqlite3")
 
     @contextlib.asynccontextmanager
     async def ciclo_de_vida(app: FastAPI):
@@ -262,6 +264,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     app.include_router(rotas_editor.router)
     app.include_router(rotas_verificar.router)
     app.include_router(admin.router)
+    app.mount("/api/v1", api_v1.criar_api_v1(servico), name="api_v1")      # a API publica em lote, com o seu Swagger em /api/v1/docs
 
     # imagens do tutorial e videos (os mesmos ficheiros da app Windows); tem de vir antes do «fallback» do frontend
     assets = config.pasta_assets()
