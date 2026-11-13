@@ -144,8 +144,8 @@ def test_passado_o_prazo_a_ligacao_deixa_de_existir_e_cada_acesso_renova(com_bd)
 
 def test_o_guardado_que_o_editor_ja_nao_aceita_nunca_sai(com_bd):
     com_bd.mem.linhas["lixo12345678"] = [json.dumps({"largura": 9999, "altura": 152, "fundo": "#fff", "elementos": []}), com_bd.mem.agora]
-    with pytest.raises(Exception):                                                  # de.dict recusa: nunca devolve um desenho que o editor recusaria
-        com_bd.get("/api/editor/partilha/lixo12345678")
+    r = com_bd.get("/api/editor/partilha/lixo12345678")                              # de.dict recusa: nunca devolve um desenho que o editor recusaria (500, com o id do pedido)
+    assert r.status_code == 500 and "9999" not in r.text and r.json()["id"] == r.headers["x-request-id"]
 
 
 def test_nada_sobre_quem_partilha_fica_guardado_nem_nas_metricas(com_bd):
