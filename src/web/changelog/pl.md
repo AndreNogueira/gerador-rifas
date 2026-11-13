@@ -2,6 +2,15 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.31.0 — 2026-11-13
+
+### Nowości
+- **Edytor szablonów v2:** cofnij i ponów (Ctrl+Z, Ctrl+Y), duplikuj (Ctrl+D), zmiana kolejności rysowania, dodawanie logo (PNG lub JPG) i **udostępnianie projektu linkiem**: jest przechowywany 90 dni od ostatniego dostępu, bez obrazów i bez danych o osobie udostępniającej (pojawia się tylko, gdy usługa ma bazę danych). Polityka prywatności o tym mówi.
+- **Aplikacja Windows 2.5:** dostaje edytor szablonów (menu Dodatki) i przechodzi na Pythona 3.15.
+
+### Ulepszono
+- Changelog ma link do pobrania aplikacji Windows.
+
 ## 3.30.0 — 2026-11-12
 
 ### Nowości

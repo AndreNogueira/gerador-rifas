@@ -2,6 +2,15 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.31.0 — 2026-11-13
+
+### Nouveautés
+- **Éditeur de modèles v2 :** annuler et rétablir (Ctrl+Z, Ctrl+Y), dupliquer (Ctrl+D), changer l'ordre de superposition, ajouter le logo (PNG ou JPG) et **partager le dessin par lien** : il est conservé 90 jours après le dernier accès, sans images et sans données sur qui partage (il n'apparaît que si le service a une base de données). La politique de confidentialité le dit.
+- **Appli Windows 2.5 :** reçoit l'éditeur de modèles (menu Extras) et passe à Python 3.15.
+
+### Amélioré
+- Le Changelog a un lien pour télécharger l'appli Windows.
+
 ## 3.30.0 — 2026-11-12
 
 ### Nouveautés

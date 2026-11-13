@@ -2,6 +2,15 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.31.0 — 2026-11-13
+
+### Novinky
+- **Editor šablon v2:** zpět a znovu (Ctrl+Z, Ctrl+Y), duplikovat (Ctrl+D), změna pořadí kreslení, přidání loga (PNG nebo JPG) a **sdílení návrhu odkazem**: uchovává se 90 dní od posledního přístupu, bez obrázků a bez údajů o tom, kdo sdílí (zobrazí se jen tehdy, když služba má databázi). Zásady ochrany soukromí to uvádějí.
+- **Aplikace pro Windows 2.5:** dostává editor šablon (nabídka Extra) a přechází na Python 3.15.
+
+### Vylepšeno
+- Changelog má odkaz ke stažení aplikace pro Windows.
+
 ## 3.30.0 — 2026-11-12
 
 ### Novinky

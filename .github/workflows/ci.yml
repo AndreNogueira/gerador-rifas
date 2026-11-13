@@ -83,7 +83,7 @@ jobs:
           version: "0.13.7"
           python-version: "3.15"
       - run: uv sync --frozen
-      - run: uv run --no-sync python -m pytest -q tests/test_web_metricas.py tests/test_web_metricas_bd.py -rs
+      - run: uv run --no-sync python -m pytest -q tests/test_web_metricas.py tests/test_web_metricas_bd.py tests/test_web_partilhas.py -rs
 
   frontend:
     name: frontend (Node 26, pnpm)

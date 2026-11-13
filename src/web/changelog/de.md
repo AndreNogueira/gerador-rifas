@@ -2,6 +2,15 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.31.0 — 2026-11-13
+
+### Neu
+- **Vorlageneditor v2:** rückgängig und wiederholen (Strg+Z, Strg+Y), duplizieren (Strg+D), Reihenfolge ändern, Logo (PNG oder JPG) einfügen und den **Entwurf per Link teilen**: Er wird 90 Tage nach dem letzten Zugriff gespeichert, ohne Bilder und ohne Daten über den Teilenden (erscheint nur, wenn der Dienst eine Datenbank hat). Die Datenschutzerklärung nennt das.
+- **Windows-App 2.5:** bekommt den Vorlageneditor (Menü Extras) und läuft mit Python 3.15.
+
+### Verbessert
+- Der Changelog hat einen Link zum Herunterladen der Windows-App.
+
 ## 3.30.0 — 2026-11-12
 
 ### Neu

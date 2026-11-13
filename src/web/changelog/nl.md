@@ -2,6 +2,15 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.31.0 — 2026-11-13
+
+### Nieuw
+- **Sjablooneditor v2:** ongedaan maken en opnieuw (Ctrl+Z, Ctrl+Y), dupliceren (Ctrl+D), de tekenvolgorde wijzigen, het logo (PNG of JPG) toevoegen en **het ontwerp via een link delen**: het wordt 90 dagen na de laatste toegang bewaard, zonder afbeeldingen en zonder gegevens over wie deelt (verschijnt alleen als de dienst een database heeft). Het privacybeleid zegt dat.
+- **Windows-app 2.5:** krijgt de sjablooneditor (menu Extra's) en gaat naar Python 3.15.
+
+### Verbeterd
+- De Changelog heeft een link om de Windows-app te downloaden.
+
 ## 3.30.0 — 2026-11-12
 
 ### Nieuw

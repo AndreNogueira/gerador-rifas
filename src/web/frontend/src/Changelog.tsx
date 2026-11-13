@@ -3,6 +3,10 @@ import { api, type EntradaChangelog, ErroApi } from "./api";
 import { useI18n } from "./i18n";
 import { Voltar } from "./paginas";
 
+/** A última versão da app Windows, descarregada direto do repositório público (só tem o programa, sem código-fonte). */
+export const DESCARGA_WINDOWS =
+  "https://github.com/AndreNogueira/gerador-rifas-windows/releases/latest/download/GeradorRifas.exe";
+
 /** O changelog: em português é o completo (`src/web/CHANGELOG.md`); nas outras línguas o servidor devolve um resumo traduzido de cada versão. */
 export function Changelog() {
   const { t, lingua } = useI18n();
@@ -25,6 +29,16 @@ export function Changelog() {
       <section className="cartao changelog">
         <h1>Changelog</h1>
         <p className="suave">{t("web_changelog_sub")}</p>
+        <p>
+          <a
+            className="botao secundario"
+            href={DESCARGA_WINDOWS}
+            rel="noopener noreferrer"
+            data-testid="descarga-windows"
+          >
+            {t("web_changelog_windows")}
+          </a>
+        </p>
         {lingua !== "pt" && (
           <p className="aviso-pagina" data-testid="changelog-resumo">
             {t("web_changelog_resumo")}

@@ -50,6 +50,7 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_galeria_premios: "Prémios (uma linha cada, até 3)",
     web_galeria_data: "Data do sorteio",
     web_publicidade: "Publicidade",
+    web_changelog_windows: "Descarregar a app Windows (.exe)",
     web_guia_escolas: "Para escolas",
     web_guia_associacoes: "Para associações",
     web_editor: "Editor de templates",

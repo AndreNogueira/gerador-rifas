@@ -1248,6 +1248,26 @@ CHAVES: dict[str, dict[str, str]] = {
         "ko": "이미지가 올바르지 않습니다. PNG 또는 JPG(1 MB, 2000 픽셀 이하)를 사용하세요.",
         "hi": "छवि मान्य नहीं है: PNG या JPG उपयोग करें (1 MB और 2000 पिक्सेल तक)।",
     },
+    "web_changelog_windows": {
+        "pt": "Descarregar a app Windows (.exe)",
+        "en": "Download the Windows app (.exe)",
+        "es": "Descargar la app de Windows (.exe)",
+        "fr": "Télécharger l'appli Windows (.exe)",
+        "de": "Windows-App herunterladen (.exe)",
+        "it": "Scarica l'app per Windows (.exe)",
+        "nl": "Windows-app downloaden (.exe)",
+        "pl": "Pobierz aplikację dla Windows (.exe)",
+        "sv": "Ladda ner Windows-appen (.exe)",
+        "cs": "Stáhnout aplikaci pro Windows (.exe)",
+        "ro": "Descarcă aplicația pentru Windows (.exe)",
+        "el": "Λήψη της εφαρμογής Windows (.exe)",
+        "ru": "Скачать приложение для Windows (.exe)",
+        "tr": "Windows uygulamasını indir (.exe)",
+        "zh": "下载 Windows 应用（.exe）",
+        "ja": "Windows アプリをダウンロード（.exe）",
+        "ko": "Windows 앱 다운로드(.exe)",
+        "hi": "Windows ऐप डाउनलोड करें (.exe)",
+    },
 }
 
 
