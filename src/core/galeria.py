@@ -12,7 +12,7 @@ import math
 from dataclasses import dataclass
 from pathlib import Path
 
-from . import galeria_enfeites
+from . import galeria_enfeites, letras
 from .motor import ErroRifas
 
 LARGURA, ALTURA = 535.0, 152.0           # a rifa (pt)
@@ -79,7 +79,7 @@ DESENHOS += (
 )
 POR_ID = {d.id: d for d in DESENHOS}
 assert len(POR_ID) == len(DESENHOS) == 24
-_REGISTADA = False
+_REGISTADA = False             # (a registar das letras e do `core.letras`)
 
 
 def _fontes() -> Path:
@@ -88,14 +88,8 @@ def _fontes() -> Path:
 
 
 def _registar() -> None:
-    global _REGISTADA
-    if _REGISTADA:
-        return
-    from reportlab.pdfbase import pdfmetrics
-    from reportlab.pdfbase.ttfonts import TTFont
-    for nome, ficheiro in (("Vera", "Vera.ttf"), ("VeraBd", "VeraBd.ttf")):
-        pdfmetrics.registerFont(TTFont(nome, str(_fontes() / ficheiro)))
-    _REGISTADA = True
+    """Regista as letras (Vera, DejaVu e as Noto de chinês, japonês e coreano; ver `core.letras`)."""
+    letras.registar()
 
 
 def _largura(texto: str, fonte: str, tamanho: float) -> float:
@@ -111,10 +105,8 @@ def _ajustar(texto: str, fonte: str, tamanho: float, maximo: float, minimo: floa
 
 
 def validar(textos: Textos) -> None:
-    """Os textos cabem e a letra Vera tem todas as letras (so alfabeto latino e algumas pontuacoes). Levanta err_galeria_texto."""
+    """Os textos cabem e ha letra para todos (latinas, gregas, cirilicas, vietnamitas, chines, japones e coreano: `core.letras`). Levanta err_galeria_texto."""
     _registar()
-    from reportlab.pdfbase import pdfmetrics
-    face = pdfmetrics.getFont("Vera").face
     todos = [textos.titulo, textos.organizacao, *textos.premios, textos.data]
     limites = [MAX_TITULO, MAX_ORGANIZACAO, *([MAX_PREMIO] * len(textos.premios)), MAX_DATA]
     if len(textos.premios) > 3:
@@ -122,9 +114,9 @@ def validar(textos: Textos) -> None:
     for t, m in zip(todos, limites, strict=True):
         if len(t) > m:
             raise ErroRifas("err_galeria_texto", car=t[:14] + "…")
-        for c in t:
-            if c != " " and (not c.isprintable() or ord(c) not in face.charToGlyph):
-                raise ErroRifas("err_galeria_texto", car=c)
+        falta = letras.em_falta(t)
+        if falta:
+            raise ErroRifas("err_galeria_texto", car=falta)
 
 
 # ------------------------------------------------------------------ o desenho
@@ -232,24 +224,28 @@ def _rifa(c, d: Desenho, x: float, yb: float, w: float, h: float, textos: Textos
     _enfeite(c, d, x, yb, w, h, bx)
     largura_titulo = (w - 148 - 12) - (bx + 44)
     if textos.titulo.strip():
-        tam = _ajustar(textos.titulo, "VeraBd", 21, largura_titulo, 11)
+        f = letras.fonte(textos.titulo, True)
+        tam = _ajustar(textos.titulo, f, 21, largura_titulo, 11)
         c.setFillColorRGB(*d.principal)
-        c.setFont("VeraBd", tam)
+        c.setFont(f, tam)
         c.drawString(bx + 44, yb + h - 33, textos.titulo)
     if textos.organizacao.strip():
-        tam = _ajustar(textos.organizacao, "Vera", 8.5, largura_titulo, 5.5)
+        f = letras.fonte(textos.organizacao)
+        tam = _ajustar(textos.organizacao, f, 8.5, largura_titulo, 5.5)
         c.setFillColorRGB(0.35, 0.35, 0.35)
-        c.setFont("Vera", tam)
+        c.setFont(f, tam)
         c.drawString(bx + 44, yb + h - 47, textos.organizacao)
     c.setFillColorRGB(0.15, 0.15, 0.15)
     for i, linha in enumerate(p for p in textos.premios if p.strip()):
-        tam = _ajustar(linha, "Vera", 9.5, w - 148 - 12 - bx + x, 6)
-        c.setFont("Vera", tam)
+        f = letras.fonte(linha)
+        tam = _ajustar(linha, f, 9.5, w - 148 - 12 - bx + x, 6)
+        c.setFont(f, tam)
         c.drawString(bx, yb + h - 70 - i * 13, linha)
     if textos.data.strip():
-        tam = _ajustar(textos.data, "VeraBd", 10.5, w - 148 - 12 - bx + x, 7)
+        f = letras.fonte(textos.data, True)
+        tam = _ajustar(textos.data, f, 10.5, w - 148 - 12 - bx + x, 7)
         c.setFillColorRGB(*d.principal)
-        c.setFont("VeraBd", tam)
+        c.setFont(f, tam)
         c.drawString(bx, yb + 14, textos.data)
     # o numero na parte principal (caixa) e os campos a preencher
     ex = x + w - 148

@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.37.0 — 2026-11-13
+
+### Nieuw
+- **Meer letters in de galerij en de sjablooneditor:** teksten mogen nu uitgebreid Latijn (Pools, Tsjechisch, Roemeens, Turks…), **Vietnamees, Grieks, Cyrillisch (Russisch, Oekraïens)**, **Chinees, Japans en Koreaans** bevatten. Hindi, Arabisch en Hebreeuws ontbreken nog (ze hebben een schrijftechniek nodig die de PDF-generator niet heeft) en geven een waarschuwing in plaats van een kapot beeld. In de pdf's verandert alleen de ingevoerde tekst; wat al hetzelfde was, blijft hetzelfde.
+
 ## 3.36.0 — 2026-11-13
 
 ### Nieuw

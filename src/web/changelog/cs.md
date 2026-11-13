@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.37.0 — 2026-11-13
+
+### Novinky
+- **Více písmen v galerii a v editoru šablon:** texty mohou nově obsahovat rozšířenou latinku (polštinu, češtinu, rumunštinu, turečtinu…), **vietnamštinu, řečtinu, cyrilici (ruštinu, ukrajinštinu)**, **čínštinu, japonštinu a korejštinu**. Hindština, arabština a hebrejština zatím chybí (potřebují techniku psaní, kterou generátor PDF nemá) a místo rozbitého obrázku ukážou varování. V PDF se mění jen napsaný text; co vycházelo stejně, vychází stejně.
+
 ## 3.36.0 — 2026-11-13
 
 ### Novinky

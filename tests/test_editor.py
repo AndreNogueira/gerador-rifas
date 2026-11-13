@@ -76,9 +76,10 @@ def test_o_numero_aparece_uma_ou_duas_vezes(numeros):
     assert erro_de(editor.de_dict, d)[:2] == ("ErroRifas", "err_editor_numero")
 
 
-def test_letras_que_a_vera_nao_tem_sao_recusadas():
-    d = _desenho([dict(tipo="texto", x=5, y=5, texto="Рифа")])
-    assert erro_de(editor.de_dict, d)[:2] == ("ErroRifas", "err_editor_letra")
+def test_letras_que_nenhuma_familia_tem_sao_recusadas():
+    for texto in ("हिन्दी", "العربية", "שלום", "😀"):
+        d = _desenho([dict(tipo="texto", x=5, y=5, texto=texto)])
+        assert erro_de(editor.de_dict, d)[:2] == ("ErroRifas", "err_editor_letra"), texto
 
 
 @pytest.mark.parametrize("alteracao", [

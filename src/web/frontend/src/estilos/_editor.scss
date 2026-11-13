@@ -9,6 +9,18 @@
   src: url("/fontes/VeraBd.ttf") format("truetype");
   font-display: swap;
 }
+// A Vera só tem o latim básico: o DejaVu (a mesma letra, alargada) cobre o resto do latim, o vietnamita, o grego e o cirílico, como no PDF (`core.letras`).
+// O chinês, o japonês e o coreano usam as letras do sistema (o PDF leva as Noto Sans), por isso o SVG pode diferir um pouco no desenho e na largura.
+@font-face {
+  font-family: "DejaVuEditor";
+  src: url("/fontes/DejaVuSans.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "DejaVuEditorBd";
+  src: url("/fontes/DejaVuSans-Bold.ttf") format("truetype");
+  font-display: swap;
+}
 
 .pagina.pagina-larga {
   max-width: 1200px;

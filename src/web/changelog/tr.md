@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.37.0 — 2026-11-13
+
+### Yeni
+- **Galeride ve şablon düzenleyicide daha fazla harf:** metinlerde artık genişletilmiş Latin (Lehçe, Çekçe, Rumence, Türkçe…), **Vietnamca, Yunanca, Kiril (Rusça, Ukraynaca)**, **Çince, Japonca ve Korece** kullanılabilir. Hintçe, Arapça ve İbranice henüz yok (PDF üreticisinde olmayan bir yazı teknolojisi gerektiriyorlar) ve bozuk bir görüntü yerine uyarı gösterirler. PDF'lerde yalnızca yazılan metin değişir; zaten aynı çıkan aynı kalır.
+
 ## 3.36.0 — 2026-11-13
 
 ### Yeni

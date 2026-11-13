@@ -73,8 +73,9 @@ def test_os_mesmos_textos_dao_os_mesmos_bytes():
 
 
 @pytest.mark.parametrize("textos,car", [
-    (galeria.Textos(titulo="系列"), "系"),                                                       # a Vera nao tem ideogramas
-    (galeria.Textos(organizacao="Ελλάδα"), "Ε"),
+    (galeria.Textos(titulo="हिन्दी"), "ह"),                                                       # nenhuma letra tem devanagari (precisa de «shaping»)
+    (galeria.Textos(organizacao="العربية"), "ا"),
+    (galeria.Textos(titulo="日本語 हि"), "ह"),                                                       # tudo no mesmo texto tem de existir numa so familia
     (galeria.Textos(premios=("ok", "x\x00y")), "\x00"),
     (galeria.Textos(titulo="A" * (galeria.MAX_TITULO + 1)), "A" * 14 + "…"),                  # demasiado comprido
     (galeria.Textos(premios=("a", "b", "c", "d")), "…"),

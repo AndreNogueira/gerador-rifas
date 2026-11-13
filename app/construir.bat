@@ -36,7 +36,7 @@ for /f "tokens=1,2 delims=;" %%a in ('.venv\Scripts\python.exe tcl_dirs.py') do 
   --windows-console-mode=disable --windows-icon-from-ico=assets\icon.ico ^
   --enable-plugin=tk-inter %TCLTK% ^
   --include-package=core --include-package-data=customtkinter --include-package-data=pypdfium2 --include-package-data=pypdfium2_raw --include-package-data=reportlab ^
-  --include-data-dir=assets=assets --include-data-dir=exemplos=exemplos ^
+  --include-data-dir=assets=assets --include-data-dir=exemplos=exemplos --include-data-dir=..\src\core\fontes=core\fontes ^
   --noinclude-data-files=assets/video/web_* ^
   --noinclude-data-files=assets/ajuda/*_w?.png ^
   --python-flag=no_docstrings --python-flag=no_asserts --python-flag=no_warnings ^

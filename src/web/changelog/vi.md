@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.37.0 — 2026-11-13
+
+### Mới
+- **Thêm nhiều chữ trong thư viện và trình chỉnh sửa mẫu:** văn bản giờ có thể dùng Latin mở rộng (Ba Lan, Séc, Romania, Thổ Nhĩ Kỳ…), **tiếng Việt, Hy Lạp, Kirin (Nga, Ukraina)**, và **Trung, Nhật, Hàn**. Tiếng Hindi, Ả Rập và Do Thái vẫn chưa có (cần công nghệ chữ viết mà bộ tạo PDF không có) và sẽ hiện cảnh báo thay vì một hình ảnh bị hỏng. Trong PDF chỉ phần văn bản bạn nhập thay đổi; những gì vốn đã giống nhau vẫn giữ nguyên.
+
 ## 3.36.0 — 2026-11-13
 
 ### Mới
