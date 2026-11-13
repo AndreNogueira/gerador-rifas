@@ -167,6 +167,7 @@ python app.py --selftest <pasta>                                        # auto-t
 correr `dist\GeradorRifas.exe --selftest <pasta>`.
 
 `docker` só funciona depois de abrir o Rancher Desktop e escolher o motor dockerd (moby).
+**Memória (regra):** o Rancher Desktop deixa a `vmmem` do WSL a segurar ~15 GB mesmo sem contentores, e já fez matar uma compilação do `.exe`. **Antes** de compilar a app (`construir.bat`, Nuitka), do `pytest` completo ou dos e2e, corre `powershell -File scripts\liberar_memoria.ps1` (fecha o Rancher e o WSL; `-ManterRancher` só mostra os números) e só o reabras para o Docker; fecha-o outra vez no fim. Não matar Chrome, VS Code nem processos python alheios.
 
 ## Armadilhas do motor
 
