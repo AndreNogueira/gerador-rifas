@@ -227,7 +227,7 @@ def cena_galeria(a, g, T):
 def cena_editor(a, g, T):
     g.segundos(2.0, T("Sem Canva? Desenhe a sua rifa no editor", "No Canva? Design your ticket in the editor"))
     g.segundos(1.2, T("Menu «Extras» → «Editor de templates…»", "Menu “Extras” → “Template editor…”"))
-    j = abrir(a, "editor", extras.EditorTemplates, "+120+60")
+    j = abrir(a, "editor", extras.EditorTemplates, "960x600+150+70")
     esperar(a, lambda: j._foto is not None, 8)
     g.segundos(2.4, T("Começa com um modelo de rifa com talão", "It starts with a sample ticket with a stub"))
     titulo = next(e for e in j.m.elementos if e.texto == "TÍTULO DA RIFA")

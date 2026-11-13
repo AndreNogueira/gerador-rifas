@@ -330,8 +330,8 @@ class EditorTemplates(Janela):
     MARGEM = 10
 
     def __init__(self, app):
-        super().__init__(app, t("web_editor").rstrip("…"), 1260, 780)
-        self.minsize(1120, 660)
+        super().__init__(app, t("web_editor").rstrip("…"), 1180, 740)
+        self.minsize(940, 580)
         self.m = editor_modelo.Modelo()
         self.sel: int | None = None
         self.token = 0
