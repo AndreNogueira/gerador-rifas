@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` 的翻译摘要：版本、分节和条目相同，但更简短。完整内容为葡萄牙语。
 
+## 3.32.0 — 2026-11-13
+
+### 新增
+- **图库新增 20 个模板（共 24 个）：**Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema。全部为本项目原创绘制，带存根，网站和 Windows 应用都有（应用中的图库改为下拉列表）。
+
 ## 3.31.0 — 2026-11-13
 
 ### 新增

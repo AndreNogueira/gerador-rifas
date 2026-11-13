@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.32.0 — 2026-11-13
+
+### Nieuw
+- **20 nieuwe sjablonen in de galerij (24 in totaal):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Allemaal voor dit project helemaal zelf getekend, met controlestrook, op de site en in de Windows-app (waar de galerij een keuzelijst wordt).
+
 ## 3.31.0 — 2026-11-13
 
 ### Nieuw

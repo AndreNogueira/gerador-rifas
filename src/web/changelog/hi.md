@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` का अनुवादित सारांश: वही संस्करण, खंड और बिंदु, पर संक्षिप्त। पूरा पाठ पुर्तगाली में है।
 
+## 3.32.0 — 2026-11-13
+
+### नया
+- **गैलरी में 20 नए टेम्पलेट (कुल 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema। सभी इस प्रोजेक्ट के लिए शुरू से बनाए गए हैं, पर्ची सहित, साइट और Windows ऐप में (ऐप में गैलरी अब ड्रॉप-डाउन सूची है)।
+
 ## 3.31.0 — 2026-11-13
 
 ### नया

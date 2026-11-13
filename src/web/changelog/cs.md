@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.32.0 — 2026-11-13
+
+### Novinky
+- **20 nových šablon v galerii (celkem 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Všechny nakreslené od nuly pro tento projekt, s útržkem, na webu i v aplikaci pro Windows (kde se galerie mění na rozbalovací seznam).
+
 ## 3.31.0 — 2026-11-13
 
 ### Novinky

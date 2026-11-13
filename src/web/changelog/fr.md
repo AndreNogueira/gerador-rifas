@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.32.0 — 2026-11-13
+
+### Nouveautés
+- **20 nouveaux modèles dans la galerie (24 au total) :** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Tous dessinés de zéro pour ce projet, avec talon, sur le site et dans l'appli Windows (où la galerie devient une liste déroulante).
+
 ## 3.31.0 — 2026-11-13
 
 ### Nouveautés

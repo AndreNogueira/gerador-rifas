@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.32.0 — 2026-11-13
+
+### Novedades
+- **20 plantillas nuevas en la galería (24 en total):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Todas dibujadas desde cero para este proyecto, con talón, en el sitio y en la app de Windows (donde la galería pasa a ser una lista desplegable).
+
 ## 3.31.0 — 2026-11-13
 
 ### Novedades

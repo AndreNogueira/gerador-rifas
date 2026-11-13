@@ -2,6 +2,11 @@
 
 Μεταφρασμένη περίληψη του `../CHANGELOG.md`: ίδιες εκδόσεις, ενότητες και σημεία, πιο σύντομα. Το πλήρες κείμενο είναι στα πορτογαλικά.
 
+## 3.32.0 — 2026-11-13
+
+### Νέα
+- **20 νέα πρότυπα στη συλλογή (24 συνολικά):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Όλα σχεδιασμένα από το μηδέν για αυτό το έργο, με στέλεχος, στον ιστότοπο και στην εφαρμογή Windows (όπου η συλλογή γίνεται αναπτυσσόμενη λίστα).
+
 ## 3.31.0 — 2026-11-13
 
 ### Νέα

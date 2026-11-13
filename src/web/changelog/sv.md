@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.32.0 — 2026-11-13
+
+### Nytt
+- **20 nya mallar i galleriet (24 totalt):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Alla ritade från grunden för det här projektet, med talong, på webbplatsen och i Windows-appen (där galleriet blir en rullgardinslista).
+
 ## 3.31.0 — 2026-11-13
 
 ### Nytt

@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.32.0 — 2026-11-13
+
+### Neu
+- **20 neue Vorlagen in der Galerie (24 insgesamt):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Alle für dieses Projekt neu gezeichnet, mit Abschnitt, auf der Website und in der Windows-App (wo die Galerie zur Auswahlliste wird).
+
 ## 3.31.0 — 2026-11-13
 
 ### Neu

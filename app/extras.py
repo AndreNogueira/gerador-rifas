@@ -170,10 +170,10 @@ class Galeria(Janela):
         esq = ctk.CTkFrame(self, fg_color="transparent", width=360)
         esq.grid(row=0, column=0, sticky="ns", padx=(14, 0), pady=12)
         self.etiqueta(esq, t("web_galeria"), wraplength=330).pack(fill="x", pady=(0, 6))
-        self.seg = ctk.CTkSegmentedButton(
-            esq, values=[d.nome for d in galeria.DESENHOS], corner_radius=8, height=34, selected_color=C["acento_suave"],
-            selected_hover_color=C["acento_suave"], unselected_color=C["campo"], unselected_hover_color=C["borda"],
-            text_color=C["texto"], fg_color=C["campo"], command=self._desenho)
+        self.seg = ctk.CTkOptionMenu(                       # 24 desenhos: uma lista suspensa (um botão segmentado não os comporta)
+            esq, values=[d.nome for d in galeria.DESENHOS], corner_radius=8, height=34, fg_color=C["campo"], button_color=C["borda"],
+            button_hover_color=C["acento_suave"], text_color=C["texto"], dropdown_fg_color=C["cartao"], dropdown_text_color=C["texto"],
+            dropdown_hover_color=C["acento_suave"], font=ctk.CTkFont(FONTE, 13), command=self._desenho)
         self.seg.set(galeria.DESENHOS[0].nome)
         self.seg.pack(fill="x", pady=(0, 8))
         for chave, rotulo, maximo in (("titulo", t("web_galeria_titulo"), galeria.MAX_TITULO),

@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.32.0 — 2026-11-13
+
+### Nowości
+- **20 nowych szablonów w galerii (razem 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Wszystkie narysowane od zera na potrzeby tego projektu, z odcinkiem, na stronie i w aplikacji Windows (gdzie galeria staje się listą rozwijaną).
+
 ## 3.31.0 — 2026-11-13
 
 ### Nowości

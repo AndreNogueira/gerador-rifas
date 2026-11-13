@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` の翻訳要約です。バージョン・セクション・項目は同じで、より短くしてあります。全文はポルトガル語です。
 
+## 3.32.0 — 2026-11-13
+
+### 新機能
+- **ギャラリーに新テンプレート20種（合計24種）：**Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema。すべて本プロジェクトのために一から描いたもので、半券付き。サイトと Windows アプリで使えます（アプリのギャラリーはドロップダウンリストになりました）。
+
 ## 3.31.0 — 2026-11-13
 
 ### 新機能

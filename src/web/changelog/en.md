@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.32.0 — 2026-11-13
+
+### New
+- **20 new templates in the gallery (24 in total):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. All drawn from scratch for this project, with a stub, on the site and in the Windows app (where the gallery becomes a drop-down list).
+
 ## 3.31.0 — 2026-11-13
 
 ### New

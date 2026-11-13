@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.32.0 — 2026-11-13
+
+### Yeni
+- **Galeride 20 yeni şablon (toplam 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Hepsi bu proje için sıfırdan çizildi, koçanlı, sitede ve Windows uygulamasında (burada galeri açılır listeye dönüşür).
+
 ## 3.31.0 — 2026-11-13
 
 ### Yeni

@@ -2,6 +2,11 @@
 
 Переведённая сводка `../CHANGELOG.md`: те же версии, разделы и пункты, короче. Полный текст — на португальском.
 
+## 3.32.0 — 2026-11-13
+
+### Новое
+- **20 новых шаблонов в галерее (всего 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Все нарисованы с нуля для этого проекта, с корешком, на сайте и в приложении для Windows (где галерея становится выпадающим списком).
+
 ## 3.31.0 — 2026-11-13
 
 ### Новое

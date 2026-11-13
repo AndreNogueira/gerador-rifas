@@ -210,7 +210,7 @@ def cena_galeria(a, g, T):
     esperar(a, lambda: j._foto is not None, 8)
     j.seg.set("Natal")
     j._desenho("Natal")
-    g.segundos(2.0, T("Escolha um dos quatro desenhos", "Pick one of the four designs"))
+    g.segundos(2.0, T("Escolha um dos 24 desenhos", "Pick one of the 24 designs"))
     g.legenda = T("Escreva o título, a organização, os prémios e a data", "Write the title, the organization, the prizes and the date")
     g.escrever(j.v["titulo"], T("Rifa de Natal", "Christmas raffle"), 2)
     j.v["organizacao"].set(T("Associação Exemplo", "Example Association"))

@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.32.0 — 2026-11-13
+
+### Noutăți
+- **20 de șabloane noi în galerie (24 în total):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Toate desenate de la zero pentru acest proiect, cu cotor, pe site și în aplicația Windows (unde galeria devine o listă derulantă).
+
 ## 3.31.0 — 2026-11-13
 
 ### Noutăți

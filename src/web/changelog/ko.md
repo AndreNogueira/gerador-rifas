@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md`의 번역 요약입니다. 버전, 구역, 항목은 같고 더 짧습니다. 전체 내용은 포르투갈어입니다.
 
+## 3.32.0 — 2026-11-13
+
+### 새 기능
+- **갤러리에 새 템플릿 20개(총 24개):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. 모두 이 프로젝트를 위해 처음부터 그렸고 부본이 있으며, 사이트와 Windows 앱에서 쓸 수 있습니다(앱의 갤러리는 드롭다운 목록이 되었습니다).
+
 ## 3.31.0 — 2026-11-13
 
 ### 새 기능
