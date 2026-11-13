@@ -7,7 +7,7 @@ couber. Gera vários PDFs ou **um único PDF com tudo**.
 
 **Executável:** `dist\GeradorRifas.exe` (compilado para código nativo; não precisa de instalar nada).
 **Descarregar:** na página de *Releases* do repositório público <https://github.com/AndreNogueira/gerador-rifas-windows>
-(só tem o programa, **sem código-fonte**; etiquetas `windows-vX.Y.Z`), junto com o `.sha256` para conferir o ficheiro. A versão atual é a 2.4.0: traz o que o site ganhou desde a 3.10 (menu **Extras**, abaixo); a 2.3.0 trouxe o visual novo (faixa com o gradiente violeta → magenta e o ícone da
+(só tem o programa, **sem código-fonte**; etiquetas `windows-vX.Y.Z`), junto com o `.sha256` para conferir o ficheiro. A versão atual é a 2.5.0: **editor de templates** (menu Extras) e Python 3.15; a 2.4.0 trouxe o que o site ganhou desde a 3.10 (menu **Extras**, abaixo); a 2.3.0 trouxe o visual novo (faixa com o gradiente violeta → magenta e o ícone da
 marca, passos numerados com cores próprias, botão «Gerar» em magenta), as mesmas cores da webapp.
 
 ## Extras (v2.4)
