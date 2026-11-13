@@ -281,3 +281,25 @@ def test_as_metricas_da_api_nao_levam_a_chave(cliente):
     texto = repr(cliente.serv.metricas._eventos)
     assert cliente.chave not in texto and cliente.chave[:7] not in texto.replace("api_v1", "") and "Rifa 0" not in texto
     assert "lote_arrancado" in texto and "api_geracao" in texto
+
+
+# ------------------------------------------------------------------ o mesmo SQL no Postgres a sério (precisa de TEST_DATABASE_URL; o CI tem um contentor)
+import os  # noqa: E402
+
+URL_PG = os.environ.get("TEST_DATABASE_URL", "")
+
+
+@pytest.mark.skipif(not URL_PG, reason="sem TEST_DATABASE_URL")
+def test_chaves_e_quotas_no_postgres():
+    ch = chaves_api.Chaves(url_bd=URL_PG)
+    ch._executar("DELETE FROM api_uso")
+    ch._executar("DELETE FROM api_chaves")
+    info, chave = ch.criar("pg", 100)
+    assert ch.autenticar(chave).id == info.id and ch.autenticar(chave + "x") is None
+    assert [c.nome for c in ch.listar()] == ["pg"]
+    assert ch.consumir(info, 60) and not ch.consumir(info, 41) and ch.uso_hoje(info) == (60, 1)
+    assert ch.consumir(info, 40) and not ch.consumir(info, 1)
+    ch.devolver(info, 40)
+    assert ch.uso_hoje(info) == (60, 1)
+    assert ch.revogar(info.id) and not ch.revogar(info.id) and ch.autenticar(chave) is None
+    assert chave.encode() not in repr(ch._executar("SELECT * FROM api_chaves")).encode()           # so o hash na base

@@ -160,3 +160,21 @@ def test_o_titulo_dos_robos_e_dos_paineis_nao_se_edita(cliente):
     assert seo.ADMIN.titulo("pt").startswith("Painel")
     with pytest.raises(ValueError):
         seo_bd.validar("titulo:/admin", "pt", "x")
+
+
+# ------------------------------------------------------------------ o mesmo SQL no Postgres a sério (precisa de TEST_DATABASE_URL)
+import os  # noqa: E402
+
+URL_PG = os.environ.get("TEST_DATABASE_URL", "")
+
+
+@pytest.mark.skipif(not URL_PG, reason="sem TEST_DATABASE_URL")
+def test_seo_no_postgres():
+    bd = seo_bd.SeoBd(url_bd=URL_PG)
+    bd._executar("DELETE FROM seo_textos_bd")
+    assert bd.persistente and bd.atualizar() == 0
+    bd.definir("d_inicio", "pt", DESC_OK)
+    bd.definir("d_inicio", "pt", DESC_OK + " Edição.")                       # o upsert troca o valor
+    assert seo_textos.sobreposto("d_inicio", "pt") == DESC_OK + " Edição."
+    assert bd._executar("SELECT count(*) FROM seo_textos_bd")[0][0] == 1
+    assert bd.repor("d_inicio", "pt") and not bd.repor("d_inicio", "pt") and seo_textos.sobreposto("d_inicio", "pt") is None
