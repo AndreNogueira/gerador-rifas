@@ -18,6 +18,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from pydantic import BaseModel, Field
 
 from . import VERSAO, config
+from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
 from .metricas import INTERVALOS
 from .rotas import Servico, servico
@@ -165,4 +166,39 @@ def revogar_chave(id_: str, serv: Servico = Depends(servico)) -> Response:
     if not serv.chaves.revogar(id_):
         raise HTTPException(404, "Chave inexistente", headers=_SEM_CACHE)
     serv.metricas.evento("admin", "chave_revogada")
+    return Response(status_code=204, headers=_SEM_CACHE)
+
+
+# ------------------------------------------------------------------ SEO por lingua (titulos, descricoes e guias) editado na base de dados
+class TextoSeo(BaseModel):
+    chave: str = Field(max_length=120)
+    lingua: str = Field(max_length=5)
+    valor: str = Field(max_length=2000)
+
+
+@router.get("/seo", dependencies=[Depends(exigir)])
+def seo_ver(lingua: str = "pt", serv: Servico = Depends(servico)) -> dict:
+    """Os textos de SEO editaveis numa lingua: o do codigo e o editado. `persistente`: false = a base e local e some quando o Render adormece."""
+    from core import i18n
+    if lingua not in i18n.LINGUAS:
+        raise HTTPException(422, "Língua desconhecida", headers=_SEM_CACHE)
+    return {"lingua": lingua, "linguas": list(i18n.LINGUAS), "persistente": serv.seo.persistente, "erro": serv.seo.erro,
+            "limites": {"titulo": seo_bd.LARGURA_TITULO, "descricao": list(seo_bd.LARGURA_DESCRICAO), "max": seo_bd.VALOR_MAX},
+            "itens": serv.seo.vista(lingua)}
+
+
+@router.put("/seo", dependencies=[Depends(exigir)])
+def seo_guardar(t: TextoSeo, serv: Servico = Depends(servico)) -> dict:
+    try:
+        valor = serv.seo.definir(t.chave, t.lingua, t.valor)
+    except ValueError as e:
+        raise HTTPException(422, str(e), headers=_SEM_CACHE) from None
+    serv.metricas.evento("admin", "seo_editado")
+    return {"chave": t.chave, "lingua": t.lingua, "valor": valor}
+
+
+@router.delete("/seo", status_code=204, dependencies=[Depends(exigir)])
+def seo_repor(chave: str, lingua: str, serv: Servico = Depends(servico)) -> Response:
+    serv.seo.repor(chave, lingua)
+    serv.metricas.evento("admin", "seo_reposto")
     return Response(status_code=204, headers=_SEM_CACHE)

@@ -40,6 +40,7 @@ class Servico:
     acordado: EstadoAcordado = field(default_factory=EstadoAcordado)       # o anti-sono (ver manter_acordado.py)
     partilhas: object | None = None                                         # `partilhas.Partilhas` (desenhos do editor partilhados por ligacao): so com DATABASE_URL
     chaves: object | None = None                                            # `chaves_api.Chaves`: as chaves da API publica v1 (Postgres, ou SQLite local)
+    seo: object | None = None                                               # `seo_bd.SeoBd`: os textos de SEO editados no painel (Postgres, ou SQLite local)
 
     def __post_init__(self) -> None:
         if self.observador is None:

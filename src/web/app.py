@@ -21,11 +21,13 @@ from pydantic import BaseModel
 from . import VERSAO, admin, api_v1, changelog, config, guias, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
 from .chaves_api import Chaves
 from .limites import Limitador
+from . import seo_textos
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
 from .partilhas import Partilhas
 from .rotas import Servico
+from .seo_bd import SeoBd
 from .sessoes import Sessoes
 from .sistema import Observador
 from .trabalhos import Motor
@@ -156,8 +158,15 @@ async def _amostrar(servico: Servico, cada_s: float) -> None:
         await asyncio.sleep(cada_s)
 
 
+async def _atualizar_seo(servico: Servico, cada_s: float) -> None:
+    """Le de minuto a minuto os textos de SEO editados no painel (a 1.a vez ja no arranque). Nenhum pedido de pagina consulta a base."""
+    while True:
+        await asyncio.to_thread(servico.seo.atualizar)
+        await asyncio.sleep(cada_s)
+
+
 def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, motor: Motor | None = None,
-              metricas: Metricas | None = None, partilhas: Partilhas | None = None, chaves: Chaves | None = None) -> FastAPI:
+              metricas: Metricas | None = None, partilhas: Partilhas | None = None, chaves: Chaves | None = None, seo_bd: SeoBd | None = None) -> FastAPI:
     """`frontend`: pasta do frontend compilado; `armazenamento`: onde ficam as sessoes (RIFAS_ARMAZENAMENTO); `motor`, `metricas`: para os testes."""
     pasta = (frontend or config.pasta_frontend()).resolve()
     armazem = ArmazenamentoLocal(armazenamento, limite_bytes=config.limite_sessao_mb() * 1024 * 1024)
@@ -166,11 +175,14 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
 
     servico.partilhas = partilhas if partilhas is not None else (Partilhas(config.database_url()) if config.database_url() else None)
     servico.chaves = chaves if chaves is not None else Chaves(config.database_url(), armazem.raiz / "api.sqlite3")
+    servico.seo = seo_bd if seo_bd is not None else SeoBd(config.database_url(), armazem.raiz / "seo.sqlite3")
+    seo_textos.definir_sobreposicoes({})                 # cada app comeca com os textos do codigo; os editados chegam da base (`_atualizar_seo`)
 
     @contextlib.asynccontextmanager
     async def ciclo_de_vida(app: FastAPI):
         armazem.limpar_antigas(0)                            # pastas de um arranque anterior (nao ha sessoes em memoria para elas)
         limpeza = asyncio.create_task(_limpeza_periodica(servico, 60))
+        seo_tarefa = asyncio.create_task(_atualizar_seo(servico, 60))
         amostrador = asyncio.create_task(_amostrar(servico, 30))
         url_acordado, cada_s = config.manter_acordado()
         acordado = None
@@ -185,6 +197,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             yield
         finally:
             limpeza.cancel()
+            seo_tarefa.cancel()
             amostrador.cancel()
             if acordado is not None:
                 acordado.cancel()

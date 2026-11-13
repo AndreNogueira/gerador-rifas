@@ -22,7 +22,7 @@ from core import i18n, tutorial
 from fastapi import Request
 
 from . import VERSAO, changelog, config, guias, textos_legais
-from .seo_textos import LOCALE_OG, texto
+from .seo_textos import LOCALE_OG, sobreposto, texto
 
 NOME = "Gerador de Rifas"           # o nome em portugues; em cada lingua vem de `app_nome` (ver `_app`)
 IMAGEM = "/og-imagem.png"           # 1200x630, em frontend/public
@@ -152,6 +152,10 @@ class Pagina:
     descricao_fixa: str = ""
 
     def titulo(self, lg: str = "pt") -> str:                 # ate ~65 caracteres
+        editado = sobreposto(f"titulo:{self.caminho}", lg)   # o titulo desta pagina editado no painel (base de dados)
+        return editado if editado and not self.titulo_fixo else self.titulo_padrao(lg)
+
+    def titulo_padrao(self, lg: str = "pt") -> str:          # o do codigo, sem o editado no painel
         if self.titulo_fixo:
             return self.titulo_fixo
         if self.nome is None:

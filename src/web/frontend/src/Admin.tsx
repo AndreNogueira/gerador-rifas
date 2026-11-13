@@ -1,4 +1,5 @@
 import { type FormEvent, type ReactNode, useCallback, useEffect, useState } from "react";
+import { AdminSeo } from "./AdminSeo";
 import {
   adminApi,
   type Dados,
@@ -782,6 +783,8 @@ export function Admin() {
           </div>
         </dl>
       </Seccao>
+
+      <AdminSeo />
     </div>
   );
 }

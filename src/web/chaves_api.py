@@ -9,10 +9,11 @@ from __future__ import annotations
 
 import hashlib
 import secrets
-import sqlite3
 import time
 from dataclasses import dataclass
 from pathlib import Path
+
+from .bd_simples import BaseSql
 
 PREFIXO = "rk_"
 CACHE_S = 60
@@ -42,43 +43,13 @@ def _dia(agora: float) -> int:
     return int(agora // 86400)
 
 
-class Chaves:
+class Chaves(BaseSql):
+    ESQUEMA = _ESQUEMA
+
     def __init__(self, url_bd: str = "", caminho: Path | None = None, relogio=time.time):
-        if not url_bd and caminho is None:
-            raise ValueError("precisa de url_bd ou de um caminho SQLite")
-        self._url, self._caminho, self._relogio = url_bd, caminho, relogio
-        self._pronto = False
+        super().__init__(url_bd, caminho)
+        self._relogio = relogio
         self._cache: dict = {}                            # hash -> (InfoChave, expira)
-
-    @property
-    def persistente(self) -> bool:
-        return bool(self._url)
-
-    # -- base de dados (Postgres ou SQLite: o mesmo SQL, `%s` vira `?`)
-    def _executar(self, sql: str, args: tuple = ()) -> list[tuple]:
-        if self._url:
-            import psycopg                                   # so com DATABASE_URL
-
-            with psycopg.connect(self._url, connect_timeout=10) as lig:
-                if not self._pronto:
-                    for s in _ESQUEMA:
-                        lig.execute(s)
-                    self._pronto = True
-                cur = lig.execute(sql, args)
-                return cur.fetchall() if cur.description else []
-        self._caminho.parent.mkdir(parents=True, exist_ok=True)
-        lig = sqlite3.connect(self._caminho, timeout=10)
-        try:
-            if not self._pronto:
-                for s in _ESQUEMA:
-                    lig.execute(s)
-                self._pronto = True
-            cur = lig.execute(sql.replace("%s", "?"), args)
-            linhas = cur.fetchall() if cur.description else []
-            lig.commit()
-            return linhas
-        finally:
-            lig.close()
 
     @staticmethod
     def _info(linha: tuple) -> InfoChave:

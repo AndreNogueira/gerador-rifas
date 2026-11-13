@@ -347,8 +347,33 @@ LOCALE_OG = {"pt": "pt_PT", "en": "en_US", "es": "es_ES", "fr": "fr_FR", "de": "
              "ko": "ko_KR", "hi": "hi_IN"}
 
 
-def texto(chave: str, lingua: str, **params) -> str:
-    """O texto de SEO `chave` na `lingua` (cai no inglês e depois no português), com os {parâmetros} preenchidos."""
+# Os textos editados no painel (guardados na base de dados, `seo_bd.py`): (chave, lingua) -> texto. Mandam sobre os de cima, que continuam a ser o
+# valor por omissao e o recurso se a base estiver em baixo ou o texto editado nao servir. Substitui-se o dicionario inteiro (nunca se muda no sitio).
+SOBREPOSTOS: dict[tuple[str, str], str] = {}
+
+
+def definir_sobreposicoes(novos: dict[tuple[str, str], str]) -> None:
+    global SOBREPOSTOS
+    SOBREPOSTOS = dict(novos)
+
+
+def sobreposto(chave: str, lingua: str) -> str | None:
+    return SOBREPOSTOS.get((chave, lingua))
+
+
+def padrao(chave: str, lingua: str) -> str:
+    """O texto de SEO `chave` na `lingua` como esta no codigo (sem o editado no painel): cai no ingles."""
     por_lingua = CHAVES[chave]
-    t = por_lingua.get(lingua) or por_lingua["en"]
+    return por_lingua.get(lingua) or por_lingua["en"]
+
+
+def texto(chave: str, lingua: str, **params) -> str:
+    """O texto de SEO `chave` na `lingua` (o editado no painel, senao o do codigo: cai no ingles), com os {parametros} preenchidos."""
+    editado = SOBREPOSTOS.get((chave, lingua))
+    if editado is not None:
+        try:
+            return editado.format(**params) if params else editado
+        except (KeyError, IndexError, ValueError):
+            pass                                              # um texto editado com parametros que nao existem nunca parte uma pagina
+    t = padrao(chave, lingua)
     return t.format(**params) if params else t
