@@ -79,7 +79,8 @@ def test_topicos_e_ids_de_video_andam_em_paralelo_e_os_de_base_vem_primeiro(plat
 def test_o_windows_nao_mostra_o_que_so_existe_no_site():
     windows = {f.id for f in tutorial.funcionalidades("windows")}
     assert {"qr", "guardar", "instalar"}.isdisjoint(windows) and {"series", "galeria", "editor", "sorteio", "visual"} <= windows
-    assert {f.id for f in tutorial.funcionalidades("web")} == set(IDS)
+    assert "pedido" in windows                                                   # guardar/abrir o pedido em ficheiro: a versão da app para o «guardar» do site
+    assert {f.id for f in tutorial.funcionalidades("web")} == set(IDS) - {"pedido"}
 
 
 @pytest.mark.parametrize("lg", list(i18n.LINGUAS))

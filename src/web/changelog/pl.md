@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.35.0 — 2026-11-13
+
+### Nowości
+- **Aplikacja Windows 2.6:** menu «Extras» zyskuje «Zapisz zamówienie…» i «Otwórz zamówienie…» (plik .rifas z numerami, nazwą, seriami, kolorami i znacznikami cięcia, bez szablonu i ścieżek), edytor szablonów potrafi dodawać obrazy (PNG lub JPG), a «Widok → Wygląd» zmienia się z 2 na 14 motywów strony (tylko kolory). Dochodzi też to, co przyszło od wersji 2.4: edytor, 24 wzory z galerii i 22 języki.
+
 ## 3.34.0 — 2026-11-13
 
 ### Nowości

@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.35.0 — 2026-11-13
+
+### Yeni
+- **Windows uygulaması 2.6:** «Extras» menüsüne «Talebi kaydet…» ve «Talebi aç…» geldi (numaraları, adı, serileri, renkleri ve kesim işaretlerini içeren, şablon ve yol içermeyen bir .rifas dosyası), şablon düzenleyici resim (PNG veya JPG) ekleyebiliyor ve «Görünüm → Görsel» 2 temadan sitenin 14 temasına çıkıyor (yalnızca renkler). 2.4'ten beri gelenleri de getiriyor: düzenleyici, galerinin 24 tasarımı ve 22 dil.
+
 ## 3.34.0 — 2026-11-13
 
 ### Yeni

@@ -145,7 +145,7 @@ def test_carregar_um_desenho_do_site_ignora_o_que_nao_conhece_e_apaga_o_historic
     m.adicionar("linha")
     m.carregar({"largura": 300, "altura": 100, "fundo": "#fafafa", "elementos": [
         {"tipo": "numero", "x": 5, "y": 50, "tamanho": 12, "cor": "#000000", "campo_novo": 1},
-        {"tipo": "imagem", "x": 0, "y": 0, "w": 5, "h": 5, "dados": "data:..."},          # imagens só existem no site
+        {"tipo": "imagem", "x": 0, "y": 0, "w": 5, "h": 5, "dados": "data:..."},          # uma imagem sem dados a sério deita-se fora
         {"tipo": "outra-coisa"}]})
     assert tipos(m) == ["numero"] and (m.largura, m.altura) == (300, 100) and not m.pode_desfazer()
     assert m.desenho().largura == 300

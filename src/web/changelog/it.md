@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.35.0 — 2026-11-13
+
+### Novità
+- **App Windows 2.6:** il menu «Extras» guadagna «Salva richiesta…» e «Apri richiesta…» (un file .rifas con i numeri, il nome, le serie, i colori e i segni di taglio, senza modello né percorsi), l'editor di modelli può aggiungere immagini (PNG o JPG) e «Vista → Visuale» passa da 2 ai 14 temi del sito (solo i colori). Porta anche ciò che è arrivato dalla 2.4: l'editor, i 24 disegni della galleria e le 22 lingue.
+
 ## 3.34.0 — 2026-11-13
 
 ### Novità

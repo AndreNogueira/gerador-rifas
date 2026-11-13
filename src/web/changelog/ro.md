@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.35.0 — 2026-11-13
+
+### Noutăți
+- **Aplicația Windows 2.6:** meniul «Extras» primește «Salvează cererea…» și «Deschide cererea…» (un fișier .rifas cu numerele, numele, seriile, culorile și marcajele de tăiere, fără șablon sau căi), editorul de șabloane poate adăuga imagini (PNG sau JPG), iar «Vizualizare → Vizual» trece de la 2 la cele 14 teme ale site-ului (doar culorile). Aduce și ce a apărut de la 2.4: editorul, cele 24 de modele din galerie și cele 22 de limbi.
+
 ## 3.34.0 — 2026-11-13
 
 ### Noutăți

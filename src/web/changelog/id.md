@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.35.0 — 2026-11-13
+
+### Baru
+- **Aplikasi Windows 2.6:** menu «Extras» mendapat «Simpan permintaan…» dan «Buka permintaan…» (berkas .rifas berisi nomor, nama, seri, warna, dan tanda potong, tanpa templat dan jalur), editor templat bisa menambahkan gambar (PNG atau JPG), dan «Tampilan → Visual» berkembang dari 2 menjadi 14 tema situs (hanya warna). Termasuk juga yang datang sejak 2.4: editor, 24 desain galeri, dan 22 bahasa.
+
 ## 3.34.0 — 2026-11-13
 
 ### Baru

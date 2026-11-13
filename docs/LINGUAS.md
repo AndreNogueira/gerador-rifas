@@ -6,7 +6,7 @@ Sem revisão por falantes nativos (o aviso das páginas legais diz que, havendo 
 
 ## Lista (por esta ordem)
 
-1. **Interface e tutoriais** — `src/core/idiomas/<lg>.py` com `NOME` (o nome da língua nela própria) e `T` com **todas** as chaves de `i18n.TEXTOS["en"]` (hoje 285), mesmos `{parâmetros}` e mesmo
+1. **Interface e tutoriais** — `src/core/idiomas/<lg>.py` com `NOME` (o nome da língua nela própria) e `T` com **todas** as chaves de `i18n.TEXTOS["en"]` (hoje 293), mesmos `{parâmetros}` e mesmo
    número de linhas nos textos longos. Copiar `ca.py` e traduzir; registar em `idiomas/__init__.py` (`import`, `ORDEM`, `_MODULOS`). `tests/test_i18n.py` verifica chaves e parâmetros.
    (`id` importa-se como `id_`: o nome do módulo esconde o `id` do Python.)
 2. **Páginas legais** — `src/web/legal/<lg>.py`: `FRASES`, `AVISO`, `TEXTOS` (Termos, Privacidade, Contacto, mesmas secções e parágrafos que `pt.py`), mais `ANUNCIOS` (texto da privacidade quando há

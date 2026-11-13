@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.35.0 — 2026-11-13
+
+### Nytt
+- **Windows-appen 2.6:** menyn «Extras» får «Spara beställning…» och «Öppna beställning…» (en .rifas-fil med nummer, namn, serier, färger och skärmärken, utan mall och sökvägar), mallredigeraren kan lägga till bilder (PNG eller JPG) och «Visa → Visuellt» går från 2 till webbplatsens 14 teman (bara färgerna). Dessutom det som kommit sedan 2.4: redigeraren, galleriets 24 designer och de 22 språken.
+
 ## 3.34.0 — 2026-11-13
 
 ### Nytt

@@ -23,7 +23,7 @@ def test_linguas_e_ordem():
 
 def test_todas_as_linguas_tem_285_chaves_iguais_ao_portugues():
     ref = TEXTOS["pt"]
-    assert len(ref) == 288                  # 150 da app + 11 web (web_*) + 92 em web_extra.py + 35 em textos_novos.py e tutoriais.py
+    assert len(ref) == 293                  # 150 da app + 11 web (web_*) + 95 em web_extra.py + 37 em textos_novos.py e tutoriais.py
     for lg, textos in TEXTOS.items():
         assert textos.keys() == ref.keys(), lg
 

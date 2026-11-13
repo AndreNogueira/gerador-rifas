@@ -342,7 +342,7 @@ class EditorTemplates(Janela):
         self.botoes: dict[str, ctk.CTkButton] = {}
         self.etiqueta(self, t("web_editor_intro"), wraplength=1180).pack(fill="x", padx=16, pady=(12, 0))
         self._barra((("texto", "web_editor_texto"), ("retangulo", "web_editor_retangulo"), ("linha", "web_editor_linha"),
-                     ("numero", "web_editor_numero")), lambda tipo: (lambda: self.acrescentar(tipo)), "+ ")
+                     ("numero", "web_editor_numero"), ("imagem", "web_editor_imagem")), lambda tipo: (lambda: self.acrescentar(tipo)), "+ ")
         self._barra((("desfazer", "web_editor_desfazer"), ("refazer", "web_editor_refazer"), ("duplicar", "web_editor_duplicar"),
                      ("frente", "web_editor_frente"), ("tras", "web_editor_tras"), ("apagar", "web_editor_apagar"),
                      ("modelo", "web_editor_modelo")), lambda nome: getattr(self, "_a_" + nome), "")
@@ -433,13 +433,14 @@ class EditorTemplates(Janela):
         e = m.por_id(self.sel) if self.sel is not None else None
         if e is None:
             return
-        nomes = {"texto": "web_editor_texto", "retangulo": "web_editor_retangulo", "linha": "web_editor_linha", "numero": "web_editor_numero"}
+        nomes = {"texto": "web_editor_texto", "retangulo": "web_editor_retangulo", "linha": "web_editor_linha", "numero": "web_editor_numero",
+                 "imagem": "web_editor_imagem"}
         self.etiqueta(self.insp, t(nomes[e.tipo]), wraplength=290, suave=False).pack(fill="x", pady=(14, 2))
         linha = ctk.CTkFrame(self.insp, fg_color="transparent")
         linha.pack(fill="x")
         self._campo_num(linha, "X", e.x, lambda v: self._definir(x=v))
         self._campo_num(linha, "Y", e.y, lambda v: self._definir(y=v))
-        if e.tipo in ("retangulo", "linha"):
+        if e.tipo in ("retangulo", "linha", "imagem"):
             linha = ctk.CTkFrame(self.insp, fg_color="transparent")
             linha.pack(fill="x", pady=(6, 0))
             self._campo_num(linha, "W", e.w, lambda v: self._definir(w=v))
@@ -493,8 +494,25 @@ class EditorTemplates(Janela):
         if render:
             self._agendar(120)
 
-    def acrescentar(self, tipo: str) -> None:
+    def acrescentar(self, tipo: str, ficheiro: str | None = None) -> None:
+        """Junta um elemento; a imagem pede o ficheiro (PNG ou JPG) numa janela, ou recebe-o já em `ficheiro` (os testes)."""
+        if tipo == "imagem":
+            self._juntar_imagem(ficheiro)
+            return
         novo = self.m.adicionar(tipo)
+        if novo is not None:
+            self.sel = novo
+            self._mudou(inspetor=True)
+
+    def _juntar_imagem(self, ficheiro: str | None = None) -> None:
+        ficheiro = ficheiro or filedialog.askopenfilename(parent=self, title=t("web_editor_imagem"), filetypes=[("PNG / JPG", "*.png *.jpg *.jpeg")])
+        if not ficheiro:
+            return
+        try:
+            novo = self.m.adicionar_imagem(Path(ficheiro).read_bytes())
+        except (core.ErroRifas, OSError) as e:
+            self.l_erro.configure(text=t("web_editor_imagem_invalida") if isinstance(e, OSError) else str(e))
+            return
         if novo is not None:
             self.sel = novo
             self._mudou(inspetor=True)

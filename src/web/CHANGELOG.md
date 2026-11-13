@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.35.0 — 2026-11-13
+
+### Novo
+- **App Windows 2.6:** o menu «Extras» ganha «Guardar pedido…» e «Abrir pedido…» (um ficheiro .rifas com os números, o nome, as séries, as cores e as marcas de corte, sem template nem caminhos), o editor de templates passa a juntar imagens (PNG ou JPG) e «Ver → Visual» passa de 2 para os 14 temas do site (só as cores). Junta ainda o que veio desde a 2.4: o editor, os 24 desenhos da galeria e as 22 línguas.
+
 ## 3.34.0 — 2026-11-13
 
 ### Novo

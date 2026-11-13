@@ -139,12 +139,16 @@ def test_paleta_cumpre_o_contraste_wcag_aa(visual, modo):
 
 
 def test_as_paletas_dos_visuais_tem_as_mesmas_chaves():
-    (f1, e1), (f2, e2) = tema.PALETAS_VISUAIS["premiado"], tema.PALETAS_VISUAIS["natal"]
-    assert f1.keys() == f2.keys() and e1.keys() == e2.keys()
+    (f1, e1) = tema.PALETAS_VISUAIS["premiado"]
+    assert set(tema.PALETAS_VISUAIS) == set(tema.VISUAIS) == set(tema.NOMES_VISUAIS) and len(tema.VISUAIS) == 14
+    for visual, (f2, e2) in tema.PALETAS_VISUAIS.items():
+        assert f1.keys() == f2.keys() and e1.keys() == e2.keys(), visual
+        assert all(len(par) == 2 and all(len(c) == 7 and c[0] == "#" for c in par) for par in {**f2, **e2}.values()), visual
 
 
 def test_visual_no_config():
     assert config.preferencias({"visual": "natal"})["visual"] == "natal"
-    assert "visual" not in config.preferencias({"visual": "gala"}) and "visual" not in config.preferencias({})
+    assert config.preferencias({"visual": "gala"})["visual"] == "gala" and config.preferencias({"visual": "auto"})["visual"] == "auto"
+    assert "visual" not in config.preferencias({"visual": "nao-existe"}) and "visual" not in config.preferencias({})
     base = dict(lingua="pt", tema="system", algarismos="", saida="", inicio="1", fim="9", digitos="4", max_ficheiro="3", modo="varios", papel="A4", margem="5")
     assert "visual" not in config.para_gravar(**base) and config.para_gravar(**base, visual="natal")["visual"] == "natal"
