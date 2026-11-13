@@ -17,6 +17,12 @@ class Limitador:
     def __init__(self):
         self._pedidos: dict = {}
 
+    def esgotado(self, ip: str, categoria: str, maximo: int, agora: float | None = None) -> bool:
+        """True se (ip, categoria) ja gastou `maximo` na ultima janela. So espreita: nao conta como um pedido."""
+        agora = time.monotonic() if agora is None else agora
+        fila = self._pedidos.get((ip, categoria))
+        return bool(fila) and sum(1 for t in fila if agora - t <= self.JANELA) >= maximo
+
     def permitir(self, ip: str, categoria: str, maximo: int, agora: float | None = None) -> bool:
         agora = time.monotonic() if agora is None else agora
         fila = self._pedidos.setdefault((ip, categoria), deque())

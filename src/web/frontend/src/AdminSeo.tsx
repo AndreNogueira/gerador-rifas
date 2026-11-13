@@ -30,11 +30,13 @@ function Linha({
   lingua,
   vista,
   aoMudar,
+  leitura,
 }: {
   item: ItemSeo;
   lingua: string;
   vista: VistaSeo;
   aoMudar: () => void;
+  leitura: boolean;
 }) {
   const [texto, setTexto] = useState(item.valor ?? item.padrao);
   const [msg, setMsg] = useState<{ ok: boolean; texto: string } | null>(null);
@@ -95,12 +97,12 @@ function Linha({
         <button
           type="button"
           onClick={() => void guardar()}
-          disabled={texto.trim() === (item.valor ?? item.padrao)}
+          disabled={leitura || texto.trim() === (item.valor ?? item.padrao)}
         >
           Guardar
         </button>
         {editado && (
-          <button type="button" className="secundario" onClick={() => void repor()}>
+          <button type="button" className="secundario" onClick={() => void repor()} disabled={leitura}>
             Repor o original
           </button>
         )}
@@ -114,7 +116,7 @@ function Linha({
   );
 }
 
-export function AdminSeo() {
+export function AdminSeo({ leitura = false }: { leitura?: boolean }) {
   const [aberto, setAberto] = useState(false);
   const [lingua, setLingua] = useState("pt");
   const [vista, setVista] = useState<VistaSeo | null>(null);
@@ -203,6 +205,7 @@ export function AdminSeo() {
               lingua={lingua}
               vista={vista}
               aoMudar={() => void carregar()}
+              leitura={leitura}
             />
           ))}
         </ul>

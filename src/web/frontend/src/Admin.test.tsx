@@ -303,6 +303,15 @@ describe("painel de administração", () => {
     expect(screen.queryByTestId("admin-bd-ok")).not.toBeInTheDocument();
   });
 
+  it("quem entrou só com leitura (CLAUDE_TOKEN) vê o aviso e não pode guardar textos de SEO", async () => {
+    ESTADO = { ...ESTADO_INICIAL, papel: "leitura" };
+    render(<Admin />);
+    await userEvent.type(await screen.findByTestId("admin-token"), palavraCerta);
+    await userEvent.click(screen.getByTestId("admin-entrar"));
+    await screen.findByRole("heading", { name: "Agora" });
+    expect(screen.getByTestId("admin-so-leitura")).toHaveTextContent(/Só de leitura/);
+  });
+
   it("mudar o intervalo pede os dados desse intervalo", async () => {
     render(<Admin />);
     await userEvent.type(await screen.findByTestId("admin-token"), palavraCerta);
