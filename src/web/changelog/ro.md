@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.36.0 — 2026-11-13
+
+### Noutăți
+- **Ghid «Cum faci» pentru parohii:** «Pentru parohii» (link în subsol), cu pașii pentru a face o tombolă parohială: hramuri, târguri, reparații, pachete de Crăciun și catehism. Este în toate cele 22 de limbi și amintește să verifici la primărie dacă tombola cere autorizație.
+
 ## 3.35.0 — 2026-11-13
 
 ### Noutăți

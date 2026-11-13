@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.36.0 — 2026-11-13
+
+### Novinky
+- **Návod «Jak na to» pro farnosti:** «Pro farnosti» (odkaz v patičce), s postupem krok za krokem, jak uspořádat farní tombolu: poutě, farní dny, opravy, vánoční balíčky a náboženství. Je ve všech 22 jazycích a připomíná, že se na obecním úřadě má ověřit, zda tombola vyžaduje povolení.
+
 ## 3.35.0 — 2026-11-13
 
 ### Novinky

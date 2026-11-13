@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.36.0 — 2026-11-13
+
+### Novedades
+- **Guía «Cómo hacer» para parroquias:** «Para parroquias» (enlace en el pie), con el paso a paso para hacer una rifa para la parroquia: fiestas del patrón, verbenas, obras, cestas de Navidad y catequesis. Está en las 22 lenguas y recuerda consultar en el ayuntamiento si la rifa necesita licencia.
+
 ## 3.35.0 — 2026-11-13
 
 ### Novedades

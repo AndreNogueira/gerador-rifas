@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.36.0 — 2026-11-13
+
+### Nouveautés
+- **Guide « Comment faire » pour les paroisses :** « Pour les paroisses » (lien en bas de page), avec la marche à suivre pour organiser une tombola paroissiale : fêtes patronales, kermesses, travaux, paniers de Noël et catéchisme. Il existe en 22 langues et rappelle de vérifier auprès de la mairie si la tombola exige une autorisation.
+
 ## 3.35.0 — 2026-11-13
 
 ### Nouveautés

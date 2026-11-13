@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.36.0 — 2026-11-13
+
+### Neu
+- **„So geht’s“-Anleitung für Pfarreien:** „Für Pfarreien“ (Link in der Fußzeile), mit der Schritt-für-Schritt-Anleitung für eine Pfarrtombola: Patronatsfeste, Pfarrfeste, Reparaturen, Weihnachtskörbe und Katechese. Sie gibt es in allen 22 Sprachen; sie erinnert daran, beim Ordnungsamt zu klären, ob die Tombola genehmigungspflichtig ist.
+
 ## 3.35.0 — 2026-11-13
 
 ### Neu

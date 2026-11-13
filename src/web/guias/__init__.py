@@ -1,4 +1,4 @@
-"""As páginas de «como fazer» (SEO e leitura): `/rifas-para-escolas`, `/rifas-para-associacoes`, `/rifas-para-clubes`, `/rifas-para-bombeiros` e `/rifas-para-festas`, nas línguas
+"""As páginas de «como fazer» (SEO e leitura): `/rifas-para-escolas`, `/rifas-para-associacoes`, `/rifas-para-clubes`, `/rifas-para-bombeiros`, `/rifas-para-festas` e `/rifas-para-igrejas`, nas línguas
 (as 18 primeiras em `<guia>.py`, as de um ficheiro só em `novas.py`).
 
 Cada guia é um texto com título, introdução, 5 passos (título e texto), 3 dicas e uma frase final (um módulo por guia; uma língua por entrada,
@@ -8,10 +8,10 @@ no HTML estático. As regras de licença de uma rifa variam por país e por tipo
 from __future__ import annotations
 
 from ..seo_textos import sobreposto
-from . import associacoes, bombeiros, clubes, escolas, festas, novas
+from . import associacoes, bombeiros, clubes, escolas, festas, igrejas, novas
 
-DADOS = {"escolas": escolas.DADOS, "associacoes": associacoes.DADOS, "clubes": clubes.DADOS, "bombeiros": bombeiros.DADOS, "festas": festas.DADOS}
-for _nome, _novas in (("escolas", novas.ESCOLAS), ("associacoes", novas.ASSOCIACOES), ("clubes", novas.CLUBES), ("bombeiros", novas.BOMBEIROS), ("festas", novas.FESTAS)):
+DADOS = {"escolas": escolas.DADOS, "associacoes": associacoes.DADOS, "clubes": clubes.DADOS, "bombeiros": bombeiros.DADOS, "festas": festas.DADOS, "igrejas": igrejas.DADOS}
+for _nome, _novas in (("escolas", novas.ESCOLAS), ("associacoes", novas.ASSOCIACOES), ("clubes", novas.CLUBES), ("bombeiros", novas.BOMBEIROS), ("festas", novas.FESTAS), ("igrejas", novas.IGREJAS)):
     DADOS[_nome].update(_novas)                       # as linguas de um ficheiro so (docs/LINGUAS.md)
 CAMINHOS = {nome: f"/rifas-para-{nome}" for nome in DADOS}
 NOMES = tuple(DADOS)

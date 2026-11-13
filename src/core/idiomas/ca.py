@@ -246,6 +246,7 @@ T = {
     "web_guia_clubes": "Per a clubs",
     "web_guia_bombeiros": "Per als bombers",
     "web_guia_festas": "Per a festes de barri",
+    "web_guia_igrejas": "Per a parròquies",
     "win_guardar_pedido": "Desa la sol·licitud…",
     "win_abrir_pedido": "Obre una sol·licitud…",
     "err_pedido_ficheiro": "Aquest fitxer no és una sol·licitud del Generador de Rifes (o està malmès).",

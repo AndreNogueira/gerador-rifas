@@ -11,6 +11,7 @@ export const GUIAS: Record<string, string> = {
   "/rifas-para-clubes": "clubes",
   "/rifas-para-bombeiros": "bombeiros",
   "/rifas-para-festas": "festas",
+  "/rifas-para-igrejas": "igrejas",
 };
 
 /**

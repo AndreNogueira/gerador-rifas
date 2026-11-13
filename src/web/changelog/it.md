@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.36.0 — 2026-11-13
+
+### Novità
+- **Guida «Come fare» per le parrocchie:** «Per le parrocchie» (link a piè di pagina), con il passo passo per fare una lotteria parrocchiale: feste del patrono, sagre, lavori, cesti di Natale e catechismo. È in tutte le 22 lingue e ricorda di verificare in Comune se la lotteria richiede un'autorizzazione.
+
 ## 3.35.0 — 2026-11-13
 
 ### Novità

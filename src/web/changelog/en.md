@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.36.0 — 2026-11-13
+
+### New
+- **“How to” guide for parishes:** “For parishes” (link in the footer), with the step-by-step to run a raffle for your parish: patron saint feasts, fairs, repairs, Christmas hampers and catechism. It is in all 22 languages and reminds you to check with your local authority whether the raffle needs a licence.
+
 ## 3.35.0 — 2026-11-13
 
 ### New

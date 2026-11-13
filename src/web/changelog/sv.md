@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.36.0 — 2026-11-13
+
+### Nytt
+- **«Så gör du»-guide för församlingar:** «För församlingar» (länk i sidfoten), med steg för steg hur du ordnar ett församlingslotteri: basarer, fester, underhåll, julkorgar och konfirmation. Den finns på alla 22 språk och påminner om att kontrollera med kommunen om lotteriet kräver tillstånd.
+
 ## 3.35.0 — 2026-11-13
 
 ### Nytt

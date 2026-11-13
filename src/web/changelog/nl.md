@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.36.0 — 2026-11-13
+
+### Nieuw
+- **«Zo doet u het»-gids voor parochies:** «Voor parochies» (link onderaan), met de stappen voor een parochieloterij: patroonsfeesten, kermissen, herstellingen, kerstpakketten en catechese. Hij staat in alle 22 talen en herinnert u eraan bij de gemeente na te gaan of de loterij een vergunning nodig heeft.
+
 ## 3.35.0 — 2026-11-13
 
 ### Nieuw

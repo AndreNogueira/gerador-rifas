@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.36.0 — 2026-11-13
+
+### Mới
+- **Hướng dẫn «Cách làm» cho giáo xứ:** «Cho giáo xứ» (liên kết ở chân trang), hướng dẫn từng bước tổ chức bốc thăm giáo xứ: lễ bổn mạng, hội chợ, sửa chữa, quà Giáng sinh và lớp giáo lý. Có đủ 22 ngôn ngữ và nhắc hỏi chính quyền địa phương xem có cần giấy phép không.
+
 ## 3.35.0 — 2026-11-13
 
 ### Mới

@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.36.0 — 2026-11-13
+
+### Yeni
+- **Cemaatler için «Nasıl yapılır» rehberi:** «Cemaatler için» (altbilgide bağlantı), cemaat çekilişinin adım adım nasıl yapılacağını anlatır: şenlikler, bazarlar, onarımlar, yılbaşı paketleri ve eğitim. 22 dilin hepsinde var ve çekilişin izin gerektirip gerektirmediğini belediyeye sormayı hatırlatır.
+
 ## 3.35.0 — 2026-11-13
 
 ### Yeni

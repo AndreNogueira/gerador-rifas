@@ -32,6 +32,7 @@ describe("rodapé e páginas de texto", () => {
       "Para clubes",
       "Para bombeiros",
       "Para festas de bairro",
+      "Para paróquias",
       "Changelog",
       "Termos",
       "Privacidade",

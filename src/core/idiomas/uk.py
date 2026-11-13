@@ -246,6 +246,7 @@ T = {
     "web_guia_clubes": "Для клубів",
     "web_guia_bombeiros": "Для пожежних",
     "web_guia_festas": "Для свят району",
+    "web_guia_igrejas": "Для парафій",
     "win_guardar_pedido": "Зберегти замовлення…",
     "win_abrir_pedido": "Відкрити замовлення…",
     "err_pedido_ficheiro": "Цей файл не є замовленням Генератора лотерей (або він пошкоджений).",

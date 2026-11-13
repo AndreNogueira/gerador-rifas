@@ -13,7 +13,7 @@ Sem revisão por falantes nativos (o aviso das páginas legais diz que, havendo 
    anúncios) e `PARTILHAS` (secção dos desenhos partilhados quando há base de dados). Juntar o código a `LINGUAS_NOVAS` em `legal/__init__.py`.
 3. **Changelog** — `src/web/changelog/<lg>.md`: um resumo de **todas** as versões, com as mesmas versões, secções e nº de itens que o `CHANGELOG.md` (o teste falha se faltar algo).
    A cada versão nova, escreve-se o resumo em todas as línguas.
-4. **SEO** — `src/web/seo_textos_novas.py` (título e descrições de cada página, `intro`, etc., e `LOCALE_OG`) e `src/web/guias/novas.py` (os cinco guias «como fazer»: `ESCOLAS`, `ASSOCIACOES`, `CLUBES`, `BOMBEIROS`, `FESTAS`). Larguras: título (já com « | nome da app») ≤ 66, descrição entre 50 e
+4. **SEO** — `src/web/seo_textos_novas.py` (título e descrições de cada página, `intro`, etc., e `LOCALE_OG`) e `src/web/guias/novas.py` (os seis guias «como fazer»: `ESCOLAS`, `ASSOCIACOES`, `CLUBES`, `BOMBEIROS`, `FESTAS`, `IGREJAS`). Larguras: título (já com « | nome da app») ≤ 66, descrição entre 50 e
    158 (carateres chineses/japoneses/coreanos contam dobro): `tests/test_web_seo_linguas.py`. Depois do deploy os textos podem ser afinados no painel (**SEO por língua**), sem tocar no código.
 5. **Frontend** — a língua em `LINGUAS_COM_PREFIXO` de `src/web/frontend/src/rota.tsx` (mesma ordem que `core.i18n.LINGUAS`; um teste confere com o servidor) e em `e2e/capturas.spec.ts`.
 6. **Capturas do tutorial** — do site: `pnpm build && pnpm capturas <lg>` (`<lg>_wa|wb|wc.png` + zonas em `app/assets/ajuda/ajuda.json`); da app Windows (precisa de ecrã, não mexer no rato):

@@ -56,6 +56,7 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_guia_clubes: "Para clubes",
     web_guia_bombeiros: "Para bombeiros",
     web_guia_festas: "Para festas de bairro",
+    web_guia_igrejas: "Para paróquias",
     web_editor: "Editor de templates",
     web_editor_desfazer: "Desfazer",
     web_editor_refazer: "Refazer",

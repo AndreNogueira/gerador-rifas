@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.36.0 — 2026-11-13
+
+### Nowości
+- **Poradnik «Jak to zrobić» dla parafii:** «Dla parafii» (link w stopce), z instrukcją krok po kroku, jak zorganizować loterię parafialną: odpusty, festyny, remonty, paczki świąteczne i katecheza. Jest w 22 językach i przypomina, by sprawdzić w urzędzie gminy, czy loteria wymaga zezwolenia.
+
 ## 3.35.0 — 2026-11-13
 
 ### Nowości
