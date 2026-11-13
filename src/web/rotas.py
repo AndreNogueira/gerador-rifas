@@ -19,10 +19,11 @@ from core.armazenamento import ArmazenamentoCheio
 from fastapi import APIRouter, Depends, Request, Response
 from fastapi.responses import FileResponse, StreamingResponse
 
-from . import config, seo, trabalhos
+from . import VERSAO, config, seo, trabalhos
 from .limites import Limitador, ler_corpo
 from .manter_acordado import EstadoAcordado
 from .metricas import Metricas, classe_do_ecra, dispositivo, familia, modelo_limpo
+from .observabilidade import Observabilidade
 from .modelos import Calculo, Campos, Ecra, ErroApi, Sessao, TrabalhoEstado
 from .sessoes import (Geracao, SessaoEstado, Sessoes, calcular, folha_dos_campos, ler_progresso, texto_de_erro,
                       trabalho_dos_campos, vista, _trabalho)
@@ -41,10 +42,12 @@ class Servico:
     partilhas: object | None = None                                         # `partilhas.Partilhas` (desenhos do editor partilhados por ligacao): so com DATABASE_URL
     chaves: object | None = None                                            # `chaves_api.Chaves`: as chaves da API publica v1 (Postgres, ou SQLite local)
     seo: object | None = None                                               # `seo_bd.SeoBd`: os textos de SEO editados no painel (Postgres, ou SQLite local)
+    obs: Observabilidade = field(default_factory=lambda: Observabilidade(versao=VERSAO))   # registo estruturado e livro de erros (observabilidade.py)
 
     def __post_init__(self) -> None:
         if self.observador is None:
             self.observador = Observador(self.sessoes.armazem.raiz)
+        self.metricas.observar = self.obs.evento
 
 
 router = APIRouter(prefix="/api/sessoes", tags=["sessoes"])

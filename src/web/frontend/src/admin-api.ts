@@ -48,6 +48,23 @@ export interface Estado {
   };
   intervalos: string[];
 }
+export interface ErroAssinatura {
+  tipo: string;
+  rota: string;
+  estado: number;
+  excecao: string;
+  onde: string;
+  n: number;
+  primeira: number;
+  ultima: number;
+}
+export interface LivroErros {
+  intervalo: string;
+  desde_arranque: number;
+  total: number;
+  erros: ErroAssinatura[];
+  recentes: { t: number; tipo: string; rota: string; estado: number; excecao: string }[];
+}
 export interface PontoSistema {
   t: number;
   cpu: number | null;
@@ -194,6 +211,8 @@ export const adminApi = {
     );
   },
   estado: () => ver<Estado>("/api/admin/estado"),
+  erros: (intervalo: string) =>
+    ver<LivroErros>(`/api/admin/erros?intervalo=${encodeURIComponent(intervalo)}`),
   dados: (intervalo: string) => ver<Dados>(`/api/admin/dados?intervalo=${encodeURIComponent(intervalo)}`),
   async entrar(token: string): Promise<void> {
     const r = await fetch("/api/admin/entrar", {

@@ -189,6 +189,11 @@ def admin_token() -> str:
     return t if len(t) >= 12 else ""
 
 
+def log_pedidos() -> bool:
+    """Registo estruturado (uma linha JSON por pedido da API e por evento, no stdout; ver observabilidade.py). Ligado por omissao: LOG_PEDIDOS=0 desliga."""
+    return os.environ.get("LOG_PEDIDOS", "1").strip().lower() not in ("0", "false", "nao", "não", "off")
+
+
 def claude_token() -> str:
     """A palavra-passe de LEITURA do painel (variavel CLAUDE_TOKEN, no Render em Environment; NUNCA no repositorio): a que se da a um assistente
     (o Claude) para ver o painel sem poder mudar nada nem ver o que so o dono muda. Precisa de 24 ou mais caracteres e de ser diferente do

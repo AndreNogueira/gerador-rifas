@@ -247,6 +247,7 @@ class Metricas:
         self._agora = relogio
         self.arranque = int(relogio())
         self._trava = threading.Lock()                     # os buffers em memoria (nunca se espera pela base com ela tomada)
+        self.observar = None                               # gancho de cada evento (observabilidade.Observabilidade.evento)
         self._trava_bd = threading.Lock()                  # a base (uma operacao de cada vez)
         self._armazem = _Postgres(url_bd) if url_bd else _Sqlite(caminho)
         self._intervalo_bd_s = max(60.0, float(intervalo_bd_min) * 60)
@@ -262,8 +263,12 @@ class Metricas:
 
     # ------------------------------------------------------------------ registo (rapido, sem disco)
     def evento(self, tipo: str, a: str = "", b: str = "", c: str = "", v1: float = 0.0, v2: float = 0.0, v3: float = 0.0) -> None:
+        linha = (int(self._agora()), tipo, str(a)[:40], str(b)[:40], str(c)[:40], float(v1), float(v2), float(v3))
         with self._trava:
-            self._eventos.append((int(self._agora()), tipo, str(a)[:40], str(b)[:40], str(c)[:40], float(v1), float(v2), float(v3)))
+            self._eventos.append(linha)
+        if self.observar is not None:                        # o registo estruturado e o livro de erros (observabilidade.py): nunca partem um evento
+            with contextlib.suppress(Exception):
+                self.observar(*linha[1:])
 
     def pedido(self, grupo: str, estado: int, ms: float) -> None:
         minuto = int(self._agora()) // 60 * 60

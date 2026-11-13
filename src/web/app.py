@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, api_v1, changelog, config, guias, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
+from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
 from .chaves_api import Chaves
 from .limites import Limitador
 from . import seo_textos
@@ -173,6 +173,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     servico = Servico(Sessoes(armazem), motor or Motor(tempo_maximo_s=config.tempo_maximo_geracao_min() * 60), Limitador(),
                       metricas or Metricas(caminho_por_defeito(armazem.raiz), url_bd=config.database_url(), intervalo_bd_min=config.metricas_bd_min()), Observador(armazem.raiz))
 
+    observabilidade.configurar(config.log_pedidos())
     servico.partilhas = partilhas if partilhas is not None else (Partilhas(config.database_url()) if config.database_url() else None)
     servico.chaves = chaves if chaves is not None else Chaves(config.database_url(), armazem.raiz / "api.sqlite3")
     servico.seo = seo_bd if seo_bd is not None else SeoBd(config.database_url(), armazem.raiz / "seo.sqlite3")
@@ -289,14 +290,24 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     async def _transversal(request: Request, call_next):
         """Em toda a resposta da API: `noindex`; e mede o tempo de cada pedido da API (o painel de administracao mostra-o)."""
         t0 = time.perf_counter()
-        resposta = await call_next(request)
         caminho = request.url.path
+        rid = observabilidade.novo_id()
+        try:
+            resposta = await call_next(request)
+        except Exception as exc:                                                  # um erro que ninguem tratou: regista (classe e sitio, nunca a mensagem) e responde 500
+            rota = getattr(request.scope.get("route"), "path", None) or "(sem rota)"
+            servico.obs.excecao(rid, request.method, rota, exc)
+            resposta = JSONResponse({"detail": i18n.traduzir("erro_inesperado", rotas.lingua(request), erro=rid), "tipo": "erro", "id": rid}, status_code=500)
+        resposta.headers["X-Request-ID"] = rid
         if caminho.startswith(("/api/", "/health")):
             resposta.headers["X-Robots-Tag"] = "noindex, nofollow"
-        if caminho.startswith("/api/") and not caminho.startswith("/api/admin"):
+        if caminho.startswith("/api/"):
             rota = getattr(request.scope.get("route"), "path", None) or "(sem rota)"
-            servico.metricas.pedido(f"{request.method} {rota}", resposta.status_code, (time.perf_counter() - t0) * 1000)
-            servico.metricas.cliente(request.client.host if request.client else "?", bool(request.headers.get("x-forwarded-for")))
+            ms = (time.perf_counter() - t0) * 1000
+            servico.obs.pedido(rid, request.method, rota, resposta.status_code, ms)
+            if not caminho.startswith("/api/admin"):
+                servico.metricas.pedido(f"{request.method} {rota}", resposta.status_code, ms)
+                servico.metricas.cliente(request.client.host if request.client else "?", bool(request.headers.get("x-forwarded-for")))
         return resposta
 
     @app.get("/robots.txt", include_in_schema=False)
