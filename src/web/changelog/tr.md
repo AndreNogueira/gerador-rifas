@@ -2,6 +2,12 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.43.0 — 2026-11-14
+
+### İyileştirildi
+- **Takvimde çekiliş tarihi:** şablon galerisinde tarihi takvimden seçer, sonra biletteki görünümünü seçersiniz (31.12.2026, 31 Ara 2026, 31 Aralık 2026 veya hafta günüyle), sitenin dilinde yazılır. Elle de yazabilirsiniz, artık 60 karaktere kadar.
+- **Daha geniş metinler:** metin sayfaları (rehberler, öğretici, şartlar…) artık sayfanın tüm genişliğini kullanır; daha az satır ve paragraf olur.
+
 ## 3.42.0 — 2026-11-14
 
 ### İyileştirildi

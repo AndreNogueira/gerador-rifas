@@ -186,6 +186,29 @@
       }
     }
   }
+  // a data do sorteio: o calendário e o formato lado a lado
+  .data-sorteio {
+    display: grid;
+    gap: 6px;
+
+    legend {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--suave);
+      margin-bottom: 4px;
+    }
+    input[type="date"] {
+      color-scheme: light dark; // o ícone do calendário e o seletor seguem o tema claro/escuro
+    }
+    select {
+      padding: 8px 12px;
+      font: inherit;
+      border: var(--borda) solid var(--linha);
+      border-radius: var(--raio-c);
+      background: var(--campo);
+      color: var(--texto);
+    }
+  }
 }
 .marca-propria {
   display: grid;

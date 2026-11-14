@@ -2,6 +2,12 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.43.0 — 2026-11-14
+
+### Ulepszono
+- **Data losowania w kalendarzu:** w galerii szablonów wybierasz datę w kalendarzu, a potem jak ma wyglądać na losie (31.12.2026, 31 gru 2026, 31 grudnia 2026 lub z dniem tygodnia), w języku strony. Nadal można ją wpisać ręcznie, teraz do 60 znaków.
+- **Szersze teksty:** strony z tekstem (poradniki, samouczek, regulaminy…) zajmują teraz całą szerokość strony, z mniejszą liczbą wierszy i akapitów.
+
 ## 3.42.0 — 2026-11-14
 
 ### Ulepszono

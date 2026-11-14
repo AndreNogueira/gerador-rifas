@@ -240,7 +240,7 @@
 .pagina {
   display: grid;
   gap: 18px;
-  max-width: 960px;
+  max-width: none; // as páginas de texto (guias, tutorial, termos…) ocupam a largura do conteúdo
 
   > h1 {
     color: var(--topo-texto);
@@ -252,8 +252,9 @@
   }
 }
 
-// em ecrã largo o cabeçalho é sempre UMA linha, seja qual for a letra do tema: é o nome da app que encolhe (com reticências)
-@media (min-width: 1440px) {
+// em ecrã muito largo (o conteúdo tem >= 2000 px: cabem o nome e tudo o resto) o cabeçalho é UMA linha, seja qual for a letra do tema:
+// é o nome da app que encolhe (com reticências). Abaixo disto, com o «Como fazer» e o «Partilhar», não cabe numa linha: quebra em duas.
+@media (min-width: 3200px) {
   .topo {
     flex-wrap: nowrap;
   }

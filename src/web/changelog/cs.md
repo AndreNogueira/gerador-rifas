@@ -2,6 +2,12 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.43.0 — 2026-11-14
+
+### Vylepšeno
+- **Datum losování v kalendáři:** v galerii šablon vyberete datum v kalendáři a pak jak se zobrazí na losu (31. 12. 2026, 31. 12. 2026 zkráceně, 31. prosince 2026 nebo s dnem v týdnu), v jazyce stránky. Pořád ho lze napsat ručně, nově až 60 znaků.
+- **Širší texty:** textové stránky (průvodci, návod, podmínky…) nově využívají celou šířku stránky, s méně řádky a odstavci.
+
 ## 3.42.0 — 2026-11-14
 
 ### Vylepšeno

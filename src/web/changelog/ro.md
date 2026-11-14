@@ -2,6 +2,12 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.43.0 — 2026-11-14
+
+### Îmbunătățit
+- **Data tragerii într-un calendar:** în galeria de șabloane alegeți data într-un calendar și apoi cum apare pe bilet (31.12.2026, 31 dec. 2026, 31 decembrie 2026 sau cu ziua săptămânii), scrisă în limba site-ului. O puteți scrie și manual, acum până la 60 de caractere.
+- **Texte mai late:** paginile de text (ghiduri, tutorial, termeni…) ocupă acum toată lățimea paginii, cu mai puține rânduri și paragrafe.
+
 ## 3.42.0 — 2026-11-14
 
 ### Îmbunătățit

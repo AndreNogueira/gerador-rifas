@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.43.0 — 2026-11-14
+
+### Melhorado
+- **Data do sorteio num calendário:** na galeria de templates escolhe-se a data num calendário e depois como aparece na rifa (31/12/2026, 31 de dez. de 2026, 31 de dezembro de 2026 ou com o dia da semana), escrita na língua do site. Também se pode escrever à mão, agora até 60 letras.
+- **Textos mais largos:** as páginas de texto (guias, tutorial, termos…) passam a ocupar a largura da página, com menos linhas e menos parágrafos.
+
 ## 3.42.0 — 2026-11-14
 
 ### Melhorado

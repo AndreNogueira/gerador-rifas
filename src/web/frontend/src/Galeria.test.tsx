@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
@@ -83,6 +83,42 @@ describe("galeria de templates (M4)", () => {
     const corpo = servidor.chamadas("POST", /\/galeria$/)[0]?.corpo as { premios: string[] } | undefined;
     const premios = corpo?.premios;
     expect(premios).toEqual(["1.º Prémio", "2.º Prémio", "3.º Prémio", "4.º Prémio"]);
+  });
+
+  it("a data escolhe-se no calendário e depois escolhe-se como aparece na rifa", async () => {
+    abrir();
+    await userEvent.click((await screen.findByTestId("galeria")).querySelector("summary") as Element);
+    expect(t("galeria-data")).toHaveAttribute("type", "date");
+    fireEvent.change(t("galeria-data"), { target: { value: "2026-12-31" } });
+    await userEvent.type(t("galeria-data-antes"), "Sorteio:");
+    const formato = t("galeria-data-formato") as HTMLSelectElement;
+    expect([...formato.options].map((o) => o.value)).toEqual([
+      "curto",
+      "medio",
+      "longo",
+      "completo",
+      "livre",
+    ]);
+    expect(formato.options[2]?.textContent).toBe("31 de dezembro de 2026"); // as opções mostram a data escolhida já escrita
+    const pediu = (d: string) =>
+      previas().some((p) => p.url.includes(`d=${encodeURIComponent(d).replaceAll("%20", "+")}`));
+    await waitFor(() => expect(pediu("Sorteio: 31 de dezembro de 2026")).toBe(true));
+    await userEvent.selectOptions(formato, "curto");
+    await waitFor(() => expect(pediu("Sorteio: 31/12/2026")).toBe(true));
+    await userEvent.click(t("galeria-usar"));
+    await waitFor(() => expect(servidor.chamadas("POST", /\/galeria$/)).toHaveLength(1));
+    expect(servidor.chamadas("POST", /\/galeria$/)[0]?.corpo).toMatchObject({ data: "Sorteio: 31/12/2026" });
+  });
+
+  it("«Escrever à mão» troca o calendário por uma caixa de texto livre", async () => {
+    abrir();
+    await userEvent.click((await screen.findByTestId("galeria")).querySelector("summary") as Element);
+    await userEvent.selectOptions(t("galeria-data-formato"), "livre");
+    expect(screen.queryByTestId("galeria-data")).toBeNull();
+    await userEvent.type(t("galeria-data-livre"), "No dia da festa");
+    await userEvent.click(t("galeria-usar"));
+    await waitFor(() => expect(servidor.chamadas("POST", /\/galeria$/)).toHaveLength(1));
+    expect(servidor.chamadas("POST", /\/galeria$/)[0]?.corpo).toMatchObject({ data: "No dia da festa" });
   });
 
   it("textos que a letra não tem dão um aviso em vez da imagem e desativam «Usar»", async () => {

@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { api, ErroApi } from "./api";
+import {
+  dataDeHoje,
+  FORMATOS_DATA,
+  type FormatoData,
+  formatarData,
+  MAX_DATA,
+  textoDaData,
+} from "./dataSorteio";
 import { useI18n } from "./i18n";
 import { useSessao } from "./sessao";
 
@@ -49,12 +57,15 @@ const VAZIOS: Textos = { titulo: "", organizacao: "", premios: Array(MAX_PREMIOS
  * A pré-visualização desenha-se no servidor (com os textos escritos); as letras que a Vera não tem dão um aviso em vez de uma imagem.
  */
 export function Galeria({ desativado }: { desativado: boolean }) {
-  const { t } = useI18n();
+  const { t, lingua } = useI18n();
   const s = useSessao();
   const [aberto, setAberto] = useState(false);
   const [desenho, setDesenho] = useState<string>(DESENHOS[0].id);
   const [f, setF] = useState<Textos>(VAZIOS);
   const [quantos, setQuantos] = useState(MIN_PREMIOS);
+  const [diaIso, setDiaIso] = useState(""); // a data escolhida no calendário (aaaa-mm-dd)
+  const [formato, setFormato] = useState<FormatoData>("longo");
+  const [antes, setAntes] = useState("");
   const [prev, setPrev] = useState<Textos>(VAZIOS);
   const [imagem, setImagem] = useState("");
   const [erro, setErro] = useState("");
@@ -64,12 +75,16 @@ export function Galeria({ desativado }: { desativado: boolean }) {
   const premios = f.premios.slice(0, quantos).filter((p) => p.trim());
   const chavePremios = JSON.stringify(premios);
 
+  // a data que vai na rifa: a do calendário no formato escolhido, ou o texto escrito à mão
+  const data = textoDaData({ iso: diaIso, formato, antes, livre: f.data, lingua: lingua });
+  const exemplo = diaIso || dataDeHoje(); // os formatos mostram-se com a data escolhida (ou a de hoje)
+
   // os textos só vão ao servidor depois de uma pequena espera (não a cada tecla)
   // biome-ignore lint/correctness/useExhaustiveDependencies: `chavePremios` já resume os prémios que contam
   useEffect(() => {
-    const espera = setTimeout(() => setPrev({ ...f, premios }), 400);
+    const espera = setTimeout(() => setPrev({ ...f, premios, data }), 400);
     return () => clearTimeout(espera);
-  }, [f.titulo, f.organizacao, f.data, chavePremios]);
+  }, [f.titulo, f.organizacao, data, chavePremios]);
 
   // a pré-visualização só se pede com a galeria aberta
   useEffect(() => {
@@ -180,10 +195,55 @@ export function Galeria({ desativado }: { desativado: boolean }) {
           />
         ))}
       </fieldset>
-      <label>
-        {t("web_galeria_data")}
-        <input value={f.data} onChange={(e) => mudar("data", e.target.value)} maxLength={30} />
-      </label>
+      <fieldset className="data-sorteio">
+        <legend>{t("web_galeria_data")}</legend>
+        <div className="linha">
+          {formato !== "livre" && (
+            <input
+              type="date"
+              value={diaIso}
+              onChange={(e) => setDiaIso(e.target.value)}
+              aria-label={t("web_galeria_data")}
+              data-testid="galeria-data"
+            />
+          )}
+          <label>
+            <span className="so-leitores">{t("web_galeria_data_formato")}</span>
+            <select
+              value={formato}
+              onChange={(e) => setFormato(e.target.value as FormatoData)}
+              aria-label={t("web_galeria_data_formato")}
+              data-testid="galeria-data-formato"
+            >
+              {FORMATOS_DATA.map((fm) => (
+                <option key={fm} value={fm}>
+                  {formatarData(exemplo, fm, lingua)}
+                </option>
+              ))}
+              <option value="livre">{t("web_galeria_data_livre")}</option>
+            </select>
+          </label>
+        </div>
+        {formato === "livre" ? (
+          <input
+            value={f.data}
+            onChange={(e) => mudar("data", e.target.value)}
+            maxLength={MAX_DATA}
+            aria-label={t("web_galeria_data")}
+            data-testid="galeria-data-livre"
+          />
+        ) : (
+          <label>
+            {t("web_galeria_data_antes")}
+            <input
+              value={antes}
+              onChange={(e) => setAntes(e.target.value)}
+              maxLength={20}
+              data-testid="galeria-data-antes"
+            />
+          </label>
+        )}
+      </fieldset>
       <button
         type="button"
         disabled={desativado || !!erro}
@@ -193,7 +253,7 @@ export function Galeria({ desativado }: { desativado: boolean }) {
             titulo: f.titulo,
             organizacao: f.organizacao,
             premios,
-            data: f.data,
+            data,
           })
         }
         data-testid="galeria-usar"

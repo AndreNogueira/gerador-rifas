@@ -2,6 +2,12 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.43.0 — 2026-11-14
+
+### Verbessert
+- **Ziehungsdatum im Kalender:** in der Vorlagen-Galerie wählen Sie das Datum im Kalender und dann, wie es auf dem Los erscheint (31.12.2026, 31. Dez. 2026, 31. Dezember 2026 oder mit Wochentag), in der Sprache der Seite. Man kann es weiterhin selbst eintippen, jetzt bis zu 60 Zeichen.
+- **Breitere Texte:** Textseiten (Ratgeber, Tutorial, Bedingungen…) nutzen jetzt die volle Seitenbreite, mit weniger Zeilen und Absätzen.
+
 ## 3.42.0 — 2026-11-14
 
 ### Verbessert

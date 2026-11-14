@@ -2,6 +2,12 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.43.0 — 2026-11-14
+
+### Cải thiện
+- **Ngày quay thưởng trên lịch:** trong thư viện mẫu, bạn chọn ngày trên lịch rồi chọn cách hiển thị trên vé (31/12/2026, 31 thg 12, 2026, 31 tháng 12, 2026 hoặc kèm thứ), theo ngôn ngữ của trang. Vẫn có thể tự gõ, nay tối đa 60 ký tự.
+- **Văn bản rộng hơn:** các trang văn bản (hướng dẫn, tutorial, điều khoản…) nay dùng toàn bộ chiều rộng trang, ít dòng và đoạn hơn.
+
 ## 3.42.0 — 2026-11-14
 
 ### Cải thiện

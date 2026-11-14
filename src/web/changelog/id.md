@@ -2,6 +2,12 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.43.0 — 2026-11-14
+
+### Ditingkatkan
+- **Tanggal undian di kalender:** di galeri templat Anda memilih tanggal di kalender lalu cara tampilnya pada kupon (31/12/2026, 31 Des 2026, 31 Desember 2026, atau dengan nama hari), dalam bahasa situs. Tetap bisa ditulis sendiri, kini hingga 60 karakter.
+- **Teks lebih lebar:** halaman teks (panduan, tutorial, ketentuan…) kini memakai seluruh lebar halaman, dengan lebih sedikit baris dan paragraf.
+
 ## 3.42.0 — 2026-11-14
 
 ### Ditingkatkan
