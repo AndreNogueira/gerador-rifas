@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.42.0 — 2026-11-14
+
+### Millores
+- **Capçalera:** el nou grup «Com fer-ho», al costat del tutorial, reuneix les guies (escoles, associacions, clubs, bombers, festes de barri i parròquies). El botó «Comparteix» ha passat del peu a la capçalera, destacat, i la seva llista mostra les icones de WhatsApp, Telegram, Facebook, correu i «Copia l'enllaç».
+
 ## 3.41.0 — 2026-11-14
 
 ### Millores

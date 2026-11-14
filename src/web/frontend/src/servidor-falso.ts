@@ -52,6 +52,7 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_galeria_data: "Data do sorteio",
     web_publicidade: "Publicidade",
     web_changelog_windows: "Descarregar a app Windows (.exe)",
+    web_como_fazer: "Como fazer",
     web_guia_escolas: "Para escolas",
     web_guia_associacoes: "Para associações",
     web_guia_clubes: "Para clubes",

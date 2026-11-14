@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.42.0 — 2026-11-14
+
+### Migliorato
+- **Intestazione:** il nuovo gruppo «Come fare», accanto al tutorial, raccoglie le guide (scuole, associazioni, club, vigili del fuoco, feste di quartiere e parrocchie). Il pulsante «Condividi» è passato dal piè di pagina all'intestazione, in evidenza, e il suo elenco mostra le icone di WhatsApp, Telegram, Facebook, e-mail e «Copia link».
+
 ## 3.41.0 — 2026-11-14
 
 ### Migliorato

@@ -190,6 +190,7 @@ T = {
     "web_galeria_organizacao": "Organització o esdeveniment",
     "web_galeria_premios": "Premis (una línia cadascun)",
     "web_galeria_n_premios": "Quants premis",
+    "web_como_fazer": "Com fer-ho",
     "web_galeria_data": "Data del sorteig",
     "err_galeria_texto": "Aquest text no es pot fer servir a la plantilla de la galeria («{car}»): només admet les lletres disponibles (llatines, gregues, ciríl·liques, xineses, japoneses i coreanes) i textos curts.",
     "err_logotipo": "El logotip ha de ser una imatge PNG o JPG d'un màxim de {mb} MB.",

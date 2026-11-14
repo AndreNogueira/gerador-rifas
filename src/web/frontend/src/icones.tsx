@@ -37,6 +37,16 @@ const DESENHOS = {
   descarregar: "M12 4v11M7.5 11 12 15.5 16.5 11M5 20h14",
   partilhar:
     "M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4",
+  // as redes sociais e afins (traço, como o resto; só a forma que as identifica, sem logótipos oficiais)
+  whatsapp:
+    "M3 21l1.7-4.9A9 9 0 1 1 8 19.3zM9 8.8c.3 2.6 2.8 5.2 5.6 5.7l1.4-1.4-2.1-1-.9.8c-1-.4-1.9-1.3-2.3-2.3l.8-.9-1-2.1z",
+  telegram: "M21.5 3.5 2.5 10.8l6.6 2.4 2.4 6.6 3-4.2 4.6 3.4zM9.2 13.2l8-6.2",
+  facebook: "M15 3h-2.3A3.7 3.7 0 0 0 9 6.7V9H6.5v3H9v9h3.2v-9h2.5l.5-3h-3V6.9c0-.5.4-.9.9-.9H15z",
+  email: "M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM3 7l9 6.5L21 7",
+  copiar:
+    "M9 9h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1zM16 9V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3",
+  lista: "M10 6h10M10 12h10M10 18h10M4 5.5l1.2 1.2L7.5 4.5M4 11.5l1.2 1.2 2.3-2.2M4 17.5l1.2 1.2 2.3-2.2",
+  baixo: "M6 9l6 6 6-6",
 } as const;
 
 export type NomeIcone = keyof typeof DESENHOS;

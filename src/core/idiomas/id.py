@@ -190,6 +190,7 @@ T = {
     "web_galeria_organizacao": "Organisasi atau acara",
     "web_galeria_premios": "Hadiah (satu baris untuk tiap hadiah)",
     "web_galeria_n_premios": "Berapa hadiah",
+    "web_como_fazer": "Cara membuat",
     "web_galeria_data": "Tanggal pengundian",
     "err_galeria_texto": "Teks ini tidak dapat dipakai pada templat galeri («{car}»): hanya huruf yang tersedia (Latin, Yunani, Sirilik, Mandarin, Jepang, Korea) dan teks pendek yang diterima.",
     "err_logotipo": "Logo harus berupa gambar PNG atau JPG maksimal {mb} MB.",

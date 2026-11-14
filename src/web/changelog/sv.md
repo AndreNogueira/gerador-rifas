@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.42.0 — 2026-11-14
+
+### Förbättrat
+- **Sidhuvud:** den nya gruppen «Så gör du», bredvid handledningen, samlar guiderna (skolor, föreningar, klubbar, brandkår, kvartersfester och församlingar). Knappen «Dela» har flyttat från sidfoten till sidhuvudet, framhävd, och listan visar ikonerna för WhatsApp, Telegram, Facebook, e-post och «Kopiera länk».
+
 ## 3.41.0 — 2026-11-14
 
 ### Förbättrat

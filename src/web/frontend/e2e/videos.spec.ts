@@ -524,7 +524,7 @@ const CENAS: Cena[] = [
     rodar: async (page, T) => {
       await page.goto("/");
       await legenda(page, T("Partilhar o gerador", "Share the generator"), 1800);
-      const abrir = page.getByTestId("partilhar-abrir-rodape");
+      const abrir = page.getByTestId("partilhar-abrir-topo");
       await abrir.scrollIntoViewIfNeeded();
       await legenda(
         page,

@@ -305,7 +305,7 @@
   }
 }
 
-// O botão «Partilhar» (rodapé e cartão dos ficheiros gerados): uma lista curta de ligações simples; só variáveis do tema, nenhuma cor própria.
+// O botão «Partilhar» (cabeçalho e cartão dos ficheiros gerados): uma lista curta de ligações simples com os ícones das redes; só variáveis do tema.
 .partilhar {
   display: flex;
   flex-wrap: wrap;
@@ -324,40 +324,43 @@
   .partilhar-botao {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
+    font: inherit;
+  }
+}
+// no cartão a lista fica por baixo do botão, na vertical, com a mesma aparência do painel do cabeçalho
+.partilhar-cartao .partilhar-lista {
+  flex-basis: 100%;
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 320px;
+
+  a,
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
     min-height: 44px;
     padding: 0 8px;
-    background: none;
     border: 0;
+    border-radius: 9px;
+    background: none;
+    box-shadow: none;
     color: inherit;
     font: inherit;
+    font-weight: 600;
+    text-align: left;
+    text-decoration: none;
     cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-  .partilhar-lista {
-    flex-basis: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 14px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
 
-    a,
-    button {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      min-height: 44px;
-      padding: 0 4px;
-      background: none;
-      border: 0;
-      color: inherit;
-      font: inherit;
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
+    &:hover,
+    &:focus-visible {
+      background: color-mix(in srgb, var(--destaque) 14%, transparent);
     }
   }
 }

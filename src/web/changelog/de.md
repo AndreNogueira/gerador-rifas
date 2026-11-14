@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.42.0 — 2026-11-14
+
+### Verbessert
+- **Kopfzeile:** die neue Gruppe „Anleitungen“ neben dem Tutorial vereint die Ratgeber (Schulen, Vereine, Clubs, Feuerwehren, Nachbarschaftsfeste und Pfarreien). Die Schaltfläche „Teilen“ ist vom Seitenende in die Kopfzeile gewandert, hervorgehoben, und ihre Liste zeigt die Symbole von WhatsApp, Telegram, Facebook, E-Mail und „Link kopieren“.
+
 ## 3.41.0 — 2026-11-14
 
 ### Verbessert
