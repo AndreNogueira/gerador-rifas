@@ -4,9 +4,9 @@ Escrito para o dono do projeto, que escolhe quais fazer já. Junta as ideias de 
 
 **Como ler:** cada linha é **um PR** (ou dois), com o fluxo de `CONTRIBUTING.md` (`scripts/verificar.ps1` verde, testes, versão em `src/web/__init__.py`). **Tam.:** XS = uma tarde, S = um dia, M = uns dias, L = semanas, XL = um mês ou mais. **BD** = precisa da [base de dados](BASE_DE_DADOS.md). **Tu** = o que só tu podes dar ou decidir.
 
-## Estado (2026-11-08)
+## Estado (2026-11-13)
 
-Feitos todos os itens dos níveis 1 e 2 **exceto F8 e M9**, cada um num PR e com entrada no [Changelog](../src/web/CHANGELOG.md) do site.
+Feitos todos os itens dos níveis 1 e 2 **exceto F8**, cada um num PR e com entrada no [Changelog](../src/web/CHANGELOG.md) do site.
 
 | ID | Funcionalidade | Estado | Versão | PR | O que falta fazer a quem gere o serviço |
 |---|---|---|---|---|---|
@@ -16,7 +16,7 @@ Feitos todos os itens dos níveis 1 e 2 **exceto F8 e M9**, cada um num PR e com
 | F4 | Lembrar os algarismos e o pedido | feito | 3.13.0 | #18 | — |
 | F5 | Partilhar a configuração por ligação | feito | 3.13.0 | #18 | — |
 | F6 | Instalar como app (PWA) | feito | 3.14.0 | #19 | — |
-| F7 | Termos, Privacidade, Contacto e donativo | feito (textos **provisórios**) | 3.12.0 | #17 | `DONATIVO_URL`, `CONTACTO_EMAIL`, `RESPONSAVEL`; rever os textos com um advogado |
+| F7 | Termos, Privacidade, Contacto e donativo | feito (textos **provisórios**); `CONTACTO_EMAIL` e `RESPONSAVEL` **definidos no Render** (2026-11-13) | 3.12.0 | #17 | `DONATIVO_URL` (opcional: sem ela não há botão); rever os textos com um advogado antes de cobrar |
 | F8 | Confirmar o proxy e o anti-sono no Render | **por fazer** | — | — | precisa do `ADMIN_TOKEN` e de 30 min sem visitas (ver `docs/ONLINE.md`) |
 | M1 | Séries, prefixos e saltar números | feito | 3.15.0 | #20 | — |
 | M2 | Exportar a lista (CSV) e folha de controlo | feito | 3.16.0 | #21 | — |
@@ -26,7 +26,7 @@ Feitos todos os itens dos níveis 1 e 2 **exceto F8 e M9**, cada um num PR e com
 | M6 | QR por bilhete | feito | 3.20.0 | #25 | `VERIFICACAO_CHAVE` (sem ela não há QR) e `PUBLIC_URL` certo |
 | M7 | Sorteio verificável | feito | 3.21.0 | #26 | — |
 | M8 | Testes e2e no CI | feito | — | #27 | — |
-| M9 | Métricas persistentes | feito no código (Postgres via `DATABASE_URL`; **Neon aprovado**) | — | — | criar o projeto Neon (UE) e pôr o `DATABASE_URL` no Render (`ADMIN.md`) |
+| M9 | Métricas persistentes | **feito e a funcionar em produção** (Postgres na Neon, Frankfurt: projeto `Gerador_Rifas`) | — | — | — (verificado em 2026-11-13: ver abaixo) |
 | M10 | Contraste dos temas | feito (medido, 9 temas × claro/escuro) | 3.22.0 | #28 | — |
 
 **Depois (3.23.0 e app Windows 2.4.0, 2026-11-08):** cada funcionalidade de utilizador passou a ter **tópico no tutorial nas 18 línguas e vídeo em pt/en** (regra em `CLAUDE.md`, verificada por `tests/test_funcionalidades.py`);
@@ -37,14 +37,16 @@ Ficam só no site: o QR de verificação (M6: a chave que o assina não pode est
 
 **Depois (3.26–3.27, 2026-11-12):** 5 temas novos (Halloween, Praia, Jornal antigo, Terminal verde, Cartaz de circo) e **X1** (editor de templates: `src/core/editor.py`, página `/editor`; a primeira versão não tem imagens, o logótipo já se junta nos Extras).
 
-**Ainda por fazer:** F8 (falta a prova dos 30 min), M9, o nível 3 sem D4 (D1–D3: contas, packs com Stripe, API para gráficas) e o nível 4. Fora do código: revisão **por falantes nativos** das traduções `web_*`, das de SEO e dos textos novos (≈ 100 chaves), mais volume por pedido.
+**M9 confirmado em produção (2026-11-13):** a base da Neon tem as tabelas `eventos`, `pedidos` e `sistema` (criadas pela app) com **420 eventos, 233 pedidos e 14 031 amostras do sistema**, de 2026-11-08 23:32 a 2026-11-13 20:24 UTC: grava de hora a hora e sobreviveu a todos os *deploys* e reinícios desde então. As tabelas das funcionalidades mais recentes (`api_chaves`, `api_uso`, `seo_textos_bd`, partilhas do editor) **ainda não existem** porque o serviço continua na 3.28.0 e essas versões só chegam depois de fundir os PRs e fazer *deploy*; criam-se sozinhas no primeiro arranque.
+
+**Ainda por fazer:** F8 (falta a prova dos 30 min), o nível 3 sem D4 (D1–D3: contas, packs com Stripe, API para gráficas) e o nível 4. Fora do código: revisão **por falantes nativos** das traduções `web_*`, das de SEO e dos textos novos (≈ 100 chaves), mais volume por pedido.
 
 ## Quadro geral
 
 | Nível | O que é | Itens | Precisa de BD? |
 |---|---|---|---|
 | **1. Fácil** | uma tarde a um dia, sem decisões externas, risco baixo | F1–F8 | não |
-| **2. Média** | uns dias; mexe no motor ou em assets; testes novos | M1–M10 | só M9 (métricas persistentes) |
+| **2. Média** | uns dias; mexe no motor ou em assets; testes novos | M1–M10 | só M9 (métricas persistentes, já feito) |
 | **3. Difícil** | semanas; precisa de BD, de decisões de produto e de segurança | D1–D4 | **sim** |
 | **4. Muito difícil / com risco** | produto novo ou risco legal | X1–X3 | sim |
 

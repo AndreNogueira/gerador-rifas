@@ -6,19 +6,19 @@
 
 | # | Incremento | Tam. | Notas |
 |---|---|---|---|
-| 1 | **Lembrar o ficheiro dos algarismos** entre sessões | S | A app Windows lembra-o; aqui a sessão perde-o. Guardar no browser (IndexedDB) e reenviar ao servidor ao retomar. Nada fica no servidor. |
+| 1 | ~~**Lembrar o ficheiro dos algarismos**~~ (feito, 3.13) entre sessões | S | A app Windows lembra-o; aqui a sessão perde-o. Guardar no browser (IndexedDB) e reenviar ao servidor ao retomar. Nada fica no servidor. |
 | 2 | ~~**Capturas do tutorial da web**~~ (feito, 3.24) | M | As atuais são da app Windows. Gerar com Playwright nas 18 línguas (`/api/tutorial/recorte`) e trocar `rotas_ajuda`. |
 | 4 | ~~**Mais temas**~~ (feito, 3.26: Halloween, Praia, Jornal antigo, Terminal verde, Cartaz de circo) | S cada | `docs/TEMAS.md` tem a receita. |
 | 5 | ~~**SEO por língua**~~ (feito, 3.25; páginas de «como fazer»: escolas e associações (3.30), clubes, bombeiros e festas de bairro (3.34); faltam outras, p.ex. igrejas e paróquias) | L | Um URL por língua (`/en/`, `/es/`…) com o texto traduzido no HTML e `hreflang`: hoje só o português se posiciona (`docs/SEO.md`). Antes disso: páginas de «como fazer» (rifas para a escola, a associação…). |
-| 6 | **Instalar como app (PWA)** | S | O `manifest.webmanifest` e os ícones já existem; falta um *service worker* que guarde só a «casca» (a geração precisa sempre do servidor). |
-| 7 | **Partilhar a configuração por link** | S | Os campos (de, até, modo…) no URL; nunca os ficheiros. |
+| 6 | ~~**Instalar como app (PWA)**~~ (feito, 3.14) | S | O `manifest.webmanifest` e os ícones já existem; falta um *service worker* que guarde só a «casca» (a geração precisa sempre do servidor). |
+| 7 | ~~**Partilhar a configuração por link**~~ (feito, 3.13) | S | Os campos (de, até, modo…) no URL; nunca os ficheiros. |
 
 ## Qualidade e segurança
 
 | # | Incremento | Tam. | Notas |
 |---|---|---|---|
 | 10 | **Confirmar o proxy e o anti-sono no Render** | XS | O painel (`/admin`) diz se os IPs reais chegam («Proxy e limite por IP») e se o serviço está a chamar-se («Anti-sono»); falta olhá-los com visitantes e 30 min sem visitas. Se der «problema», definir `FORWARDED_ALLOW_IPS=*`. |
-| 11 | **Métricas que sobrevivem** | M | O disco do Render gratuito é efémero: disco persistente (pago) ou base externa para o histórico do painel (`docs/ADMIN.md`). |
+| 11 | ~~**Métricas que sobrevivem**~~ (feito: Postgres na Neon, confirmado em produção em 2026-11-13) | M | O disco do Render gratuito é efémero: disco persistente (pago) ou base externa para o histórico do painel (`docs/ADMIN.md`). |
 | 12 | **Medir no Render a sério** | S | Os tempos e o `MAX_NUMEROS` (30 000) partiram de um contentor com 0,1 CPU assumido; repetir no Render e ajustar. |
 | 13 | **Revisão nativa das traduções `web_*`** | S por língua | Foram escritas sem falante nativo (11 chaves). |
 
