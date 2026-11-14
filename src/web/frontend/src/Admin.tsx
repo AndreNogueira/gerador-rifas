@@ -792,6 +792,26 @@ export function Admin() {
         </dl>
       </Seccao>
 
+      <Seccao
+        id="api-publica"
+        titulo="API pública (Swagger UI)"
+        explica="A documentação interativa da API pública v1 (geração em lote com chave X-API-Key; ver docs/API.md): lista os pedidos, os campos e as respostas, e deixa experimentá-los. Está aberta a quem tiver o endereço. As chaves criam-se e revogam-se no painel (secção das chaves da API)."
+      >
+        <div className="botoes">
+          <a href="/api/v1/docs" target="_blank" rel="noopener noreferrer" data-testid="admin-swagger">
+            Abrir o Swagger UI
+          </a>
+          <a
+            href="/api/v1/openapi.json"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-testid="admin-openapi"
+          >
+            Descrição OpenAPI (JSON)
+          </a>
+        </div>
+      </Seccao>
+
       <AdminSeo leitura={estado.papel === "leitura"} />
     </div>
   );
