@@ -7,14 +7,14 @@ Projeto em português (pt-PT): comentários, docs e mensagens ao utilizador em p
 
 ## Objetivo da migração
 
-Passar o «Gerador de Rifas» (app Windows em `app/`, Tkinter/CustomTkinter, Python 3.13, Nuitka `.exe`) para uma **webapp** com deploy
+Passar o «Gerador de Rifas» (app Windows em `app/`, Tkinter/CustomTkinter, Python 3.15 desde a 2.5, Nuitka `.exe`) para uma **webapp** com deploy
 automático, **sem perder** a app Windows: o motor de geração (análise do template do Canva, arrumação da folha, escrita dos números,
 verificação) passa a ser **um só código** usado pelas duas. Serviço **público e sem palavra-passe** (decisão de 2026-11-07; mais tarde será pago, sem contas por agora), repo GitHub privado `AndreNogueira/gerador-rifas`.
 
 ## Stack alvo (abordagem B)
 
 - **Regra das versões: usar sempre as últimas estáveis, fixadas exatamente** (`pnpm-lock.yaml`, `uv.lock`, `packageManager`/`devEngines` no `package.json`, tags do Docker) — nunca intervalos flutuantes.
-  Estado em 2026-11-07: **Python 3.15** (`.python-version`; o `core` corre também em 3.13 = a da app Windows), FastAPI 0.162, **Node 26** (LTS desde 2026-10-28), **pnpm 12**, **React 19.3**, **Vite 8**, **TypeScript 7** (compilador nativo),
+  Estado em 2026-11-07: **Python 3.15** (`.python-version`; a app Windows usa a mesma desde a 2.5; o `core` ainda corre em 3.13), FastAPI 0.162, **Node 26** (LTS desde 2026-10-28), **pnpm 12**, **React 19.3**, **Vite 8**, **TypeScript 7** (compilador nativo),
   **Vitest 5**, **Biome 2** (lint/formato; não lê `.scss`: os estilos validam-se compilando o **Sass 1.108**, que gera **um só CSS**). Ao pedir «últimas versões»: `npm view <pacote> version` / PyPI / `uv self update`, e voltar a correr tudo. A app Windows (`app/`: Python 3.13, Nuitka, CustomTkinter) fica **fora** desta regra (o build demora 10–20 min e tem de manter o `--selftest` igual).
 - **Backend:** FastAPI + uvicorn (`src/web/app.py`), serve a API em `/api`, `/health` e os estáticos do frontend (com *fallback* para o `index.html`).
 - **Frontend:** **React + Vite + TypeScript** (pnpm), em `src/web/frontend/`. Escolhido **em vez de Angular** (avaliado em 2026-11-07, ver `docs/MIGRATION_PLAN.md` §10): o Angular 22 impede o TypeScript 7 (`typescript >=6.0 <6.1`),
@@ -27,7 +27,7 @@ verificação) passa a ser **um só código** usado pelas duas. Serviço **públ
 - **O que se entrega ao browser** (`docs/BUNDLE.md`): **um só JS e um só CSS**, sem mapas, **ofuscado** (só o código da app, `ofuscar.ts`, nível `medio`) e **pré-comprimido** (`.br`/`.gz` por `scripts/comprimir-dist.mjs`; o FastAPI escolhe pelo `Accept-Encoding`). `pnpm build` termina em `scripts/verificar-dist.mjs`, que falha se algo disto deixar de ser verdade. Ofuscar engorda o ficheiro bruto (+9 %), mas o que viaja cai 70 % face ao antigo (sem compressão).
 - **Pré-visualização:** PDF.js (`pdfjs-dist`) no browser; o servidor devolve um PDF de 1 página com os primeiros números (não PNG).
 - **Testes:** pytest (backend/core), Vitest + Testing Library (frontend), Playwright (e2e, mais tarde).
-- **Docker** multi-stage (`node:26.13.0-slim` faz `pnpm teste` e `pnpm build`; `python:3.15.2-slim` + uv 0.13.7 servem API + estáticos, sem Node; contentor sem root; tags exatas). **GitHub Actions** (`.github/workflows/`): `ci.yml` (ruff, pytest em Linux/Windows × Python 3.13/3.15, frontend, imagem Docker) e `deploy.yml` (só em push para `main` **depois** de o CI passar, via `workflow_run`: publica em `ghcr.io/<dono>/<repo>` e chama o *deploy hook* do Render com `imgURL`). Credenciais só como *secrets* do GitHub (`RENDER_DEPLOY_HOOK_URL`; o `GITHUB_TOKEN` é automático); a lista e onde os obter está no `README.md`. Actions em tag *major* (`checkout@v7`, `setup-node@v7`, `pnpm/action-setup@v6`, `docker/*`) exceto `astral-sh/setup-uv`, que **já não tem tag flutuante** e usa a versão exata (`@v10.3.3`; o `v10` não resolve — foi o que fez falhar o 1.º CI).
+- **Docker** multi-stage (`node:26.13.0-slim` faz `pnpm teste` e `pnpm build`; `python:3.15.2-slim` + uv 0.13.7 servem API + estáticos, sem Node; contentor sem root; tags exatas). **GitHub Actions** (`.github/workflows/`): `ci.yml` (**num PR** ruff, pytest em Linux e frontend; **em `main` ou com a etiqueta `completo`** também Windows, Postgres, e2e e a imagem Docker; um PR só de docs não corre; o plano gratuito do GitHub tem 2000 min/mês e acabou-se: `scripts/verificar.ps1 -Docker -E2e` faz localmente o que o CI poupa) e `deploy.yml` (só em push para `main` **depois** de o CI passar, via `workflow_run`: publica em `ghcr.io/<dono>/<repo>` e chama o *deploy hook* do Render com `imgURL`). Credenciais só como *secrets* do GitHub (`RENDER_DEPLOY_HOOK_URL`; o `GITHUB_TOKEN` é automático); a lista e onde os obter está no `README.md`. Actions em tag *major* (`checkout@v7`, `setup-node@v7`, `pnpm/action-setup@v6`, `docker/*`) exceto `astral-sh/setup-uv`, que **já não tem tag flutuante** e usa a versão exata (`@v10.3.3`; o `v10` não resolve — foi o que fez falhar o 1.º CI).
 - **Alojamento: Render** (web service gratuito, Docker): 512 MB RAM, adormece aos 15 min, disco efémero. Deploy a cada push para `main`,
   **só depois do CI passar**. Teto de 30 000 números por pedido (medido: com 0.1 CPU, 20 000 números ≈ 85 s e 100 000 vários minutos), ZIP em *streaming*, 1 trabalho de cada vez, PDFium em processo isolado.
 - **Dependências do core:** `pypdf`, `pypdfium2`, `pillow` (todas com rodas Linux). `customtkinter`, `nuitka` e afins ficam só em `app/`.
@@ -136,8 +136,8 @@ Se um teste falhar depois de uma alteração: é regressão, ou o comportamento 
 No PowerShell o `pnpm` escreve os comandos no *stderr* e parece «erro» (NativeCommandError) mesmo quando passa: ver o código de saída.
 **`pnpm.CMD`/`pnpm` 11 não consegue passar para o 12 por si (o `packageManager` falha no Windows): instalar o 12 com `npm install -g pnpm@12.18.0`.** `biome migrate` converte `recommended: true` em `preset: none` (desliga o linter): o `biome.json` usa `"preset": "recommended"`.
 
-### Testes do core com o venv da app Windows (Python 3.13, ainda funciona)
-`app/.venv` não tem FastAPI: os testes da API ficam *skipped* e correm os do core. Garante que o core continua a funcionar em 3.13.
+### Testes do core com o venv da app Windows (Python 3.15 desde a 2.5)
+`app/.venv` não tem FastAPI: os testes da API ficam *skipped* e correm os do core. Garante que o core funciona no ambiente da app (e continua a correr em 3.13).
 ```
 app/.venv/Scripts/python.exe -m pytest
 ```

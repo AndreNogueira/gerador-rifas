@@ -4,11 +4,21 @@ rem Resultado: dist\GeradorRifas.exe
 cd /d "%~dp0"
 where uv >nul 2>nul
 if errorlevel 1 (
-  echo Precisa do "uv" ^(https://docs.astral.sh/uv/^) ou de um Python 3.13 com venv. Veja o README.
+  echo Precisa do "uv" ^(https://docs.astral.sh/uv/^) ou de um Python 3.15 com venv. Veja o README.
   exit /b 1
 )
-if not exist .venv\Scripts\python.exe uv venv .venv --python 3.13 || exit /b 1
+rem Python 3.15 (desde a 2.5). Uma .venv antiga de outra versao (a 3.13 da 2.4) e recriada em vez de reutilizada em silencio.
+if exist .venv\Scripts\python.exe (
+  .venv\Scripts\python.exe -c "import sys; sys.exit(0 if sys.version_info[:2] == (3, 15) else 1)" || (
+    echo A .venv e de outra versao do Python: a recriar com a 3.15.
+    rmdir /s /q .venv
+  )
+)
+if not exist .venv\Scripts\python.exe uv venv .venv --python 3.15 || exit /b 1
 uv pip install --python .venv\Scripts\python.exe -r requirements.txt || exit /b 1
+rem O zstandard (compressao do .exe) nao tem roda para a 3.15 no Windows: compila-se se houver o Visual C++ (como nos servidores do GitHub); senao o
+rem Nuitka faz o .exe sem compressao, que fica maior mas funciona igual.
+uv pip install --python .venv\Scripts\python.exe zstandard || echo AVISO: sem zstandard, o .exe fica sem compressao ^(maior^).
 .venv\Scripts\python.exe make_icon.py
 
 rem Nuitka traduz o Python para C e compila (a 1.a vez descarrega sozinho o compilador "zig", cerca de 10-20 min).
