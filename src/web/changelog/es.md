@@ -2,6 +2,12 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.43.0 — 2026-11-14
+
+### Mejorado
+- **Fecha del sorteo en un calendario:** en la galería de plantillas eliges la fecha en un calendario y luego cómo aparece en la rifa (31/12/2026, 31 dic 2026, 31 de diciembre de 2026 o con el día de la semana), escrita en el idioma del sitio. También se puede escribir a mano, ahora hasta 60 caracteres.
+- **Textos más anchos:** las páginas de texto (guías, tutorial, términos…) ocupan ahora todo el ancho de la página, con menos líneas y párrafos.
+
 ## 3.42.0 — 2026-11-14
 
 ### Mejorado

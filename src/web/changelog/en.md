@@ -2,6 +2,12 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.43.0 — 2026-11-14
+
+### Improved
+- **Draw date in a calendar:** in the template gallery you pick the date in a calendar and then how it appears on the ticket (31/12/2026, 31 Dec 2026, December 31, 2026 or with the weekday), written in the site's language. You can still type it by hand, now up to 60 characters.
+- **Wider text:** text pages (guides, tutorial, terms…) now use the full width of the page, with fewer lines and paragraphs.
+
 ## 3.42.0 — 2026-11-14
 
 ### Improved

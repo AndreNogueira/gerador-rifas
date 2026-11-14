@@ -159,7 +159,7 @@
   }
   ul {
     padding-left: 20px;
-    max-width: 68ch;
+    max-width: none; // o texto usa a largura toda da página: menos linhas e menos parágrafos
   }
 }
 .rodape a {
@@ -206,7 +206,7 @@
     margin-top: 8px;
   }
   p {
-    max-width: 68ch;
+    max-width: none; // o texto usa a largura toda da página: menos linhas e menos parágrafos
   }
   .aviso-pagina {
     padding: 8px 12px;
@@ -219,7 +219,7 @@
 .texto-longo {
   white-space: pre-line;
   margin: 0;
-  max-width: 68ch;
+  max-width: none; // o texto usa a largura toda da página: menos linhas e menos parágrafos
 }
 .imagem-tutorial {
   max-width: 100%;

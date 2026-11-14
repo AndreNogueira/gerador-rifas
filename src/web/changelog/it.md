@@ -2,6 +2,12 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.43.0 — 2026-11-14
+
+### Migliorato
+- **Data dell'estrazione in un calendario:** nella galleria dei modelli si sceglie la data in un calendario e poi come appare sul biglietto (31/12/2026, 31 dic 2026, 31 dicembre 2026 o con il giorno della settimana), scritta nella lingua del sito. Si può ancora scrivere a mano, ora fino a 60 caratteri.
+- **Testi più larghi:** le pagine di testo (guide, tutorial, termini…) ora occupano tutta la larghezza della pagina, con meno righe e paragrafi.
+
 ## 3.42.0 — 2026-11-14
 
 ### Migliorato

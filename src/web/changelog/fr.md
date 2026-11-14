@@ -2,6 +2,12 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.43.0 — 2026-11-14
+
+### Amélioré
+- **Date du tirage dans un calendrier :** dans la galerie de modèles, vous choisissez la date dans un calendrier puis la façon dont elle apparaît sur le billet (31/12/2026, 31 déc. 2026, 31 décembre 2026 ou avec le jour de la semaine), écrite dans la langue du site. On peut toujours la saisir à la main, désormais jusqu'à 60 caractères.
+- **Textes plus larges :** les pages de texte (guides, tutoriel, conditions…) occupent maintenant toute la largeur de la page, avec moins de lignes et de paragraphes.
+
 ## 3.42.0 — 2026-11-14
 
 ### Amélioré

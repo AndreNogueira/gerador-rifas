@@ -18,7 +18,7 @@ from .motor import ErroRifas
 LARGURA, ALTURA = 535.0, 152.0           # a rifa (pt)
 MARGEM = 2.0
 TALAO = 62.0                             # largura do talao (esquerda)
-MAX_TITULO, MAX_ORGANIZACAO, MAX_PREMIO, MAX_DATA = 40, 60, 50, 30
+MAX_TITULO, MAX_ORGANIZACAO, MAX_PREMIO, MAX_DATA = 40, 60, 50, 60
 MIN_PREMIOS, MAX_PREMIOS = 3, 10         # quantos premios a pessoa pode escolher (as caixas na interface); a rifa tambem sai bem com menos
 POR_COLUNA = 5                           # ate 5 premios numa coluna; de 6 a 10 passam a duas colunas
 EXEMPLO = ("RIFA DE EXEMPLO", "Associação Imaginária · Festa de Exemplo",

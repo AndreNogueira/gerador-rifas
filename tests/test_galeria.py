@@ -106,3 +106,11 @@ def test_de_3_a_10_premios_em_todos_os_desenhos_o_motor_continua_a_ver_so_o_nume
 def test_o_maximo_de_premios_e_10_e_o_minimo_pedido_3():
     assert (galeria.MIN_PREMIOS, galeria.MAX_PREMIOS) == (3, 10)
     assert galeria.criar_template("bosque", galeria.Textos(premios=PREMIOS_10)).startswith(b"%PDF")
+
+
+def test_a_data_pode_ter_ate_60_letras_e_uma_data_comprida_cabe_na_rifa():
+    assert galeria.MAX_DATA == 60
+    comprida = "Sorteio: quinta-feira, 31 de dezembro de 2026 às 21h"
+    assert len(comprida) <= galeria.MAX_DATA
+    assert galeria.criar_template("gala", galeria.Textos(data=comprida)).startswith(b"%PDF")
+    assert erro_de(galeria.criar_template, "gala", galeria.Textos(data="x" * (galeria.MAX_DATA + 1)))[1] == "err_galeria_texto"

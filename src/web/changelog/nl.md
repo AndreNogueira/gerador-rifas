@@ -2,6 +2,12 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.43.0 — 2026-11-14
+
+### Verbeterd
+- **Trekkingsdatum in een kalender:** in de sjabloongalerij kies je de datum in een kalender en daarna hoe die op het lot staat (31-12-2026, 31 dec 2026, 31 december 2026 of met weekdag), in de taal van de site. Zelf typen kan nog steeds, nu tot 60 tekens.
+- **Bredere teksten:** tekstpagina's (gidsen, tutorial, voorwaarden…) gebruiken nu de volle paginabreedte, met minder regels en alinea's.
+
 ## 3.42.0 — 2026-11-14
 
 ### Verbeterd

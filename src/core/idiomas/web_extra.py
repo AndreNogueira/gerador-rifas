@@ -247,6 +247,25 @@ CHAVES: dict[str, dict[str, str]] = {
          "pl": "Jak to zrobić", "sv": "Så gör du", "cs": "Jak na to", "ro": "Cum se face", "el": "Πώς γίνεται", "ru": "Как сделать",
          "tr": "Nasıl yapılır", "zh": "操作指南", "ja": "やり方ガイド", "ko": "방법 안내", "hi": "कैसे करें",
     },
+    "web_galeria_data_formato": {
+         "pt": "Como mostrar a data", "en": "How to show the date", "es": "Cómo mostrar la fecha", "fr": "Comment afficher la date",
+         "de": "Wie das Datum angezeigt wird", "it": "Come mostrare la data", "nl": "Hoe de datum getoond wordt", "pl": "Jak pokazać datę",
+         "sv": "Hur datumet visas", "cs": "Jak zobrazit datum", "ro": "Cum se arată data", "el": "Πώς εμφανίζεται η ημερομηνία",
+         "ru": "Как показать дату", "tr": "Tarih nasıl gösterilsin", "zh": "日期显示方式", "ja": "日付の表示形式", "ko": "날짜 표시 방식", "hi": "तारीख कैसे दिखाएँ",
+    },
+    "web_galeria_data_livre": {
+         "pt": "Escrever à mão", "en": "Write it by hand", "es": "Escribirla a mano", "fr": "L'écrire à la main", "de": "Selbst schreiben",
+         "it": "Scriverla a mano", "nl": "Zelf typen", "pl": "Wpisać ręcznie", "sv": "Skriv själv", "cs": "Napsat ručně", "ro": "Scrie manual",
+         "el": "Να τη γράψω εγώ", "ru": "Ввести вручную", "tr": "Elle yaz", "zh": "手动输入", "ja": "手入力", "ko": "직접 입력", "hi": "खुद लिखें",
+    },
+    "web_galeria_data_antes": {
+         "pt": "Texto antes da data (opcional)", "en": "Text before the date (optional)", "es": "Texto antes de la fecha (opcional)",
+         "fr": "Texte avant la date (facultatif)", "de": "Text vor dem Datum (optional)", "it": "Testo prima della data (facoltativo)",
+         "nl": "Tekst voor de datum (optioneel)", "pl": "Tekst przed datą (opcjonalnie)", "sv": "Text före datumet (valfritt)",
+         "cs": "Text před datem (volitelné)", "ro": "Text înainte de dată (opțional)", "el": "Κείμενο πριν από την ημερομηνία (προαιρετικό)",
+         "ru": "Текст перед датой (необязательно)", "tr": "Tarihten önce metin (isteğe bağlı)", "zh": "日期前的文字（可选）", "ja": "日付の前の文字（任意）",
+         "ko": "날짜 앞의 글(선택)", "hi": "तारीख से पहले का पाठ (वैकल्पिक)",
+    },
     "web_galeria_data": {
         "pt": "Data do sorteio", "en": "Draw date", "es": "Fecha del sorteo", "fr": "Date du tirage", "de": "Datum der Ziehung",
         "it": "Data dell'estrazione", "nl": "Datum van de trekking", "pl": "Data losowania", "sv": "Dragningsdatum",

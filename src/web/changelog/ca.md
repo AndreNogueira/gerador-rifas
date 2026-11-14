@@ -2,6 +2,12 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.43.0 — 2026-11-14
+
+### Millores
+- **Data del sorteig en un calendari:** a la galeria de plantilles trieu la data en un calendari i després com apareix a la rifa (31/12/2026, 31 des. 2026, 31 de desembre de 2026 o amb el dia de la setmana), escrita en la llengua del lloc. També es pot escriure a mà, ara fins a 60 caràcters.
+- **Textos més amples:** les pàgines de text (guies, tutorial, termes…) ocupen ara tota l'amplada de la pàgina, amb menys línies i paràgrafs.
+
 ## 3.42.0 — 2026-11-14
 
 ### Millores

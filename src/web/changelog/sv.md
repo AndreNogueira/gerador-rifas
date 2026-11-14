@@ -2,6 +2,12 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.43.0 — 2026-11-14
+
+### Förbättrat
+- **Dragningsdatum i en kalender:** i mallgalleriet väljer du datumet i en kalender och sedan hur det visas på lotten (2026-12-31, 31 dec. 2026, 31 december 2026 eller med veckodag), på sidans språk. Du kan fortfarande skriva det själv, nu upp till 60 tecken.
+- **Bredare texter:** textsidor (guider, handledning, villkor…) använder nu hela sidbredden, med färre rader och stycken.
+
 ## 3.42.0 — 2026-11-14
 
 ### Förbättrat
