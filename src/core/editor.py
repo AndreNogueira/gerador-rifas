@@ -112,28 +112,6 @@ def _imagem(dados) -> bytes:
     return saida.getvalue()
 
 
-def _imagem(dados) -> bytes:
-    """O PNG recodificado de uma imagem `data:image/png|jpeg;base64,…`: só PNG ou JPG a sério (o tipo real, não o que o nome diz), com tetos de tamanho;
-    recodificar tira metadados (EXIF) e qualquer coisa que não seja pixeis. `err_editor_imagem` se não presta."""
-    from PIL import Image, UnidentifiedImageError
-    m = re.fullmatch(r"data:image/(png|jpeg|jpg);base64,([A-Za-z0-9+/=\s]+)", dados) if isinstance(dados, str) else None
-    if not m or len(m.group(2)) > MAX_IMAGEM_BYTES * 4 // 3 + 8:
-        raise ErroRifas("err_editor_imagem")
-    try:
-        bruto = base64.b64decode(m.group(2), validate=False)
-        if len(bruto) > MAX_IMAGEM_BYTES:
-            raise ErroRifas("err_editor_imagem")
-        with Image.open(io.BytesIO(bruto)) as im:
-            if im.format not in ("PNG", "JPEG") or max(im.size) > MAX_IMAGEM_LADO or min(im.size) < 1:
-                raise ErroRifas("err_editor_imagem")
-            im.load()
-            saida = io.BytesIO()
-            im.convert("RGBA").save(saida, "PNG")
-    except (binascii.Error, UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
-        raise ErroRifas("err_editor_imagem") from None
-    return saida.getvalue()
-
-
 def _elemento(d: dict) -> Elemento:
     if not isinstance(d, dict):
         raise ErroRifas("err_editor_limite", campo="elemento")
