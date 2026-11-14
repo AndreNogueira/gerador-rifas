@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.41.0 — 2026-11-14
+
+### Ulepszono
+- **Automatyczny podgląd:** gdy zmienisz szablon, cyfry, logo lub dowolne pole wpływające na gotową stronę (numery, cyfry, arkusz, serie, kolory, QR…), podgląd z prawdziwymi numerami odświeża się sam, bez klikania „Podgląd”. Jeśli coś jest nie tak, powód pojawia się obok podglądu, bez okienek.
+
 ## 3.40.0 — 2026-11-14
 
 ### Nowości

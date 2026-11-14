@@ -18,6 +18,9 @@ const CHAVE = "rifas.sessao";
 const A_CORRER = ["a_gerar", "a_cancelar"];
 const INTERVALO_MS = 500;
 
+/** Os campos que mudam a página final: o nome do ficheiro e o tamanho máximo de cada um não contam. */
+export const chaveDaPrevia = (c: Campos): string => JSON.stringify({ ...c, nome: "", max_ficheiro: "" });
+
 export const aCorrer = (s: Sessao | null): boolean => !!s && A_CORRER.includes(s.trabalho.estado);
 
 interface Contexto {
@@ -35,7 +38,15 @@ interface Contexto {
   usarGaleria: (dados: DadosGaleria) => Promise<void>;
   /** «Usar este template» do editor: `depois` corre quando o template ficou na sessão (sem erro). */
   usarEditor: (desenho: unknown, depois?: () => void) => Promise<void>;
-  pedirPrevia: (c: Campos) => Promise<void>;
+  /**
+   * Pede a pré-visualização com números reais. `automatico` = foi o próprio ecrã a pedir (a pessoa mexeu em algo): não abre janelas de erro,
+   * o motivo fica em `erroPrevia` e aparece junto ao visor.
+   */
+  pedirPrevia: (c: Campos, automatico?: boolean) => Promise<void>;
+  /** Porque falhou a última pré-visualização automática ("" = nada a mostrar). */
+  erroPrevia: string;
+  /** `chaveDaPrevia` dos campos com que se fez a pré-visualização que se vê ("" = nenhuma). */
+  previaDe: string;
   /** `confirmacao`: texto a confirmar antes de gerar (muitas rifas por folha); vazio = não pergunta. */
   pedirGerar: (c: Campos, confirmacao: string) => Promise<void>;
   cancelar: () => Promise<void>;
@@ -69,6 +80,8 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
   const [sessao, setSessao] = useState<Sessao | null>(null);
   const [registo, setRegisto] = useState<string[]>([]);
   const [ocupado, setOcupado] = useState<Ocupado>(null);
+  const [erroPrevia, setErroPrevia] = useState("");
+  const [previaDe, setPreviaDe] = useState("");
   const id = useRef<string | null>(null);
   const desde = useRef(0);
   const iniciou = useRef(false);
@@ -82,6 +95,7 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
     desde.current = s.trabalho.proximo;
     setSessao(s);
     setRegisto(s.trabalho.registo);
+    setErroPrevia("");
   }, []);
 
   const novaSessao = useCallback(async () => aplicar(await api.criarSessao()), [aplicar]);
@@ -264,8 +278,30 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
               },
             )
           : Promise.resolve(),
-      pedirPrevia: (c) =>
-        id.current ? executar("previa", () => api.previa(id.current as string, c)) : Promise.resolve(),
+      erroPrevia,
+      previaDe,
+      pedirPrevia: async (c, automatico = false) => {
+        if (!id.current) return;
+        const chave = chaveDaPrevia(c);
+        if (!automatico) {
+          await executar(
+            "previa",
+            () => api.previa(id.current as string, c),
+            () => setPreviaDe(chave),
+          );
+          return;
+        }
+        setOcupado("previa");
+        try {
+          aplicar(await api.previa(id.current, c));
+          setPreviaDe(chave);
+        } catch (e) {
+          if (e instanceof ErroApi && e.estado === 404) await falhar(e);
+          else setErroPrevia(e instanceof ErroApi ? e.message : t("web_erro_rede"));
+        } finally {
+          setOcupado(null);
+        }
+      },
       pedirGerar: async (c, confirmacao) => {
         if (!id.current) return;
         if (confirmacao && !(await confirmar(confirmacao, t("gerar")))) return;
@@ -293,7 +329,21 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
         }
       },
     }),
-    [sessao, registo, ocupado, lembrado, executar, mostrarErrosDeFicheiros, confirmar, t, falhar, novaSessao],
+    [
+      sessao,
+      registo,
+      ocupado,
+      erroPrevia,
+      previaDe,
+      lembrado,
+      executar,
+      aplicar,
+      mostrarErrosDeFicheiros,
+      confirmar,
+      t,
+      falhar,
+      novaSessao,
+    ],
   );
 
   return <Ctx.Provider value={valor}>{children}</Ctx.Provider>;

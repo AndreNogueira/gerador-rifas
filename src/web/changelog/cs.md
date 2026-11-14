@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.41.0 — 2026-11-14
+
+### Vylepšeno
+- **Automatický náhled:** když změníte šablonu, číslice, logo nebo jakékoli pole, které mění výslednou stránku (čísla, číslice, arch, série, barvy, QR…), náhled se skutečnými čísly se obnoví sám, bez klepnutí na „Náhled“. Když je něco špatně, důvod se zobrazí vedle prohlížeče, bez oken.
+
 ## 3.40.0 — 2026-11-14
 
 ### Novinky

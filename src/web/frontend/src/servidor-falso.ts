@@ -215,6 +215,8 @@ export class ServidorFalso {
   donativoUrl = "";
   exportarErro = "";
   galeriaErro = "";
+  /** Se preenchido, a pré-visualização responde 422 com este texto. */
+  previaErro = "";
   anunciosCliente = "";
   anunciosSlot = "";
   partilhaEditor = false;
@@ -452,6 +454,7 @@ export class ServidorFalso {
       });
     }
     if (acao === "previa") {
+      if (this.previaErro) return this.responder({ detail: this.previaErro, tipo: "aviso" }, 422);
       const novo: Sessao = {
         ...s,
         previa: {

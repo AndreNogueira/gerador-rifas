@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.41.0 — 2026-11-14
+
+### Förbättrat
+- **Automatisk förhandsvisning:** när du ändrar mallen, siffrorna, logotypen eller något fält som påverkar den färdiga sidan (nummer, siffror, ark, serier, färger, QR…) uppdateras förhandsvisningen med riktiga nummer av sig själv, utan att du trycker på ”Förhandsvisa”. Om något är fel visas orsaken vid visaren, utan popup-fönster.
+
 ## 3.40.0 — 2026-11-14
 
 ### Nytt

@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.41.0 — 2026-11-14
+
+### Melhorado
+- **Pré-visualização automática:** quando muda o template, os algarismos, o logótipo ou qualquer campo que altera a página final (números, algarismos, folha, séries, cores, QR…), a pré-visualização com números reais refaz-se sozinha, sem carregar em «Pré-visualizar». Se algo estiver errado, o motivo aparece junto ao visor, sem janelas.
+
 ## 3.40.0 — 2026-11-14
 
 ### Novo

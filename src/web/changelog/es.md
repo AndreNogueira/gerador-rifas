@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.41.0 — 2026-11-14
+
+### Mejorado
+- **Vista previa automática:** al cambiar la plantilla, los dígitos, el logotipo o cualquier campo que altere la página final (números, dígitos, hoja, series, colores, QR…), la vista previa con números reales se rehace sola, sin pulsar «Vista previa». Si algo falla, el motivo aparece junto al visor, sin ventanas.
+
 ## 3.40.0 — 2026-11-14
 
 ### Novedades

@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.41.0 — 2026-11-14
+
+### Verbessert
+- **Automatische Vorschau:** wenn Sie die Vorlage, die Ziffern, das Logo oder ein Feld ändern, das die fertige Seite beeinflusst (Nummern, Ziffern, Bogen, Serien, Farben, QR…), aktualisiert sich die Vorschau mit echten Nummern von selbst, ohne auf „Vorschau“ zu klicken. Bei einem Fehler steht der Grund neben dem Viewer, ohne Pop-ups.
+
 ## 3.40.0 — 2026-11-14
 
 ### Neu

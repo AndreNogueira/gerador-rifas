@@ -8,7 +8,7 @@ import { useI18n } from "./i18n";
 import { Icone } from "./icones";
 import { Partilhar } from "./Partilhar";
 import { Ligacao } from "./rota";
-import { aCorrer, useSessao } from "./sessao";
+import { aCorrer, chaveDaPrevia, useSessao } from "./sessao";
 
 /** Um nome para o ficheiro descarregado: sem o que o Windows não aceita e sem nada de caminhos. */
 export function nomeSeguro(nome: string): string {
@@ -32,6 +32,8 @@ export function guardarBlob(blob: Blob, nome: string): void {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+/** Quanto se espera, depois da última alteração, para refazer a pré-visualização sozinha (o servidor aceita 30 pedidos pesados por minuto). */
+export const ESPERA_PREVIA_MS = 700;
 const TOPICO_ALGARISMOS = 3; // posição de «2 Algarismos» na lista do tutorial (core.tutorial.TOPICO_ALGARISMOS)
 
 interface Props {
@@ -47,6 +49,32 @@ export function Gerador({ campos, calculo, mudar, reiniciar }: Props) {
   const s = useSessao();
   const [expandido, setExpandido] = useState(false);
   const a_gerar = aCorrer(s.sessao);
+
+  // A pré-visualização refaz-se sozinha quando muda algo que altera a página final (o template, os algarismos, o logótipo ou qualquer campo
+  // da folha e dos números): ninguém tem de carregar em «Pré-visualizar» para ver como fica. Não corre a gerar nem com outro pedido em curso.
+  const { sessao, ocupado, pedirPrevia, previaDe } = s;
+  const livre = !!sessao?.pronto && !a_gerar && ocupado === null;
+  const chaveCampos = chaveDaPrevia(campos);
+  const precisa = !!sessao && (sessao.previa === null || chaveCampos !== previaDe); // o que se vê já não é o que se pede
+  const tentativa = JSON.stringify([
+    chaveCampos,
+    sessao?.sessao,
+    sessao?.template,
+    sessao?.algarismos,
+    sessao?.info,
+    sessao?.logotipo,
+    sessao?.previa === null,
+  ]);
+  const ultimaTentativa = useRef("");
+  // biome-ignore lint/correctness/useExhaustiveDependencies: `tentativa` resume os campos e a sessão; `campos` muda de identidade a cada render
+  useEffect(() => {
+    if (!livre || !precisa || ultimaTentativa.current === tentativa) return;
+    const espera = setTimeout(() => {
+      ultimaTentativa.current = tentativa; // se falhar, não se repete até algo mudar
+      void pedirPrevia(campos, true);
+    }, ESPERA_PREVIA_MS);
+    return () => clearTimeout(espera);
+  }, [livre, precisa, tentativa, pedirPrevia]);
 
   return (
     <div className={`gerador${expandido ? " expandido" : ""}`}>
@@ -85,7 +113,12 @@ export function Gerador({ campos, calculo, mudar, reiniciar }: Props) {
           />
         </div>
       )}
-      <Visor sessao={s.sessao} expandido={expandido} aoAlternar={() => setExpandido((e) => !e)} />
+      <Visor
+        sessao={s.sessao}
+        erro={s.erroPrevia}
+        expandido={expandido}
+        aoAlternar={() => setExpandido((e) => !e)}
+      />
     </div>
   );
 }
@@ -235,10 +268,12 @@ function sem_visor_de_pdf(): boolean {
 
 function Visor({
   sessao,
+  erro,
   expandido,
   aoAlternar,
 }: {
   sessao: Sessao | null;
+  erro: string;
   expandido: boolean;
   aoAlternar: () => void;
 }) {
@@ -270,6 +305,11 @@ function Visor({
           )}
         </div>
       </div>
+      {erro && (
+        <p role="status" className="cor-aviso" data-testid="previa-erro">
+          {erro}
+        </p>
+      )}
       {url ? (
         sem_visor_de_pdf() ? (
           // browsers sem visor de PDF (Chrome do Android): uma imagem da 1.ª página; «Abrir noutra janela» continua a abrir o PDF

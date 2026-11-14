@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.41.0 — 2026-11-14
+
+### Verbeterd
+- **Automatisch voorbeeld:** wanneer je het sjabloon, de cijfers, het logo of een veld wijzigt dat de eindpagina beïnvloedt (nummers, cijfers, vel, series, kleuren, QR…), ververst het voorbeeld met echte nummers zichzelf, zonder op ‘Voorbeeld’ te klikken. Gaat er iets mis, dan staat de reden naast de viewer, zonder pop-ups.
+
 ## 3.40.0 — 2026-11-14
 
 ### Nieuw

@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.41.0 — 2026-11-14
+
+### Amélioré
+- **Aperçu automatique :** quand vous changez le modèle, les chiffres, le logo ou tout champ qui modifie la page finale (numéros, chiffres, feuille, séries, couleurs, QR…), l'aperçu avec de vrais numéros se refait tout seul, sans cliquer sur « Aperçu ». En cas de problème, la raison s'affiche près de la visionneuse, sans fenêtre.
+
 ## 3.40.0 — 2026-11-14
 
 ### Nouveautés

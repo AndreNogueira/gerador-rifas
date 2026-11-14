@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.41.0 — 2026-11-14
+
+### Migliorato
+- **Anteprima automatica:** quando cambia il modello, le cifre, il logo o qualsiasi campo che modifica la pagina finale (numeri, cifre, foglio, serie, colori, QR…), l'anteprima con numeri reali si rifà da sola, senza premere «Anteprima». Se qualcosa non va, il motivo compare accanto al visore, senza finestre.
+
 ## 3.40.0 — 2026-11-14
 
 ### Novità
