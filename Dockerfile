@@ -45,7 +45,12 @@ ENV HOST=0.0.0.0 PORT=8080 RIFAS_ARMAZENAMENTO=/data
 RUN uv sync --frozen --no-dev && useradd --create-home rifas && mkdir /data && chown rifas /data
 COPY src ./src
 COPY --from=frontend /frontend/dist ./src/web/frontend/dist
-COPY app/assets ./app/assets
+# Sem `app/assets` (~20 MB de videos e capturas): o servidor descarrega-os no arranque do .zip em ASSETS_URL (armazenamento de objetos; docs/ASSETS.md).
+# Sem essa variavel o tutorial funciona na mesma, so que sem videos nem capturas.
+# Os valores por omissao sao os do .zip publicado (um teste confere o SHA-256 com o dos ficheiros do repositorio); o Render pode sobrepo-los.
+ARG ASSETS_URL=https://br-bitter-base-b9pz4epj.storage.c-7.eu-central-1.aws.neon.tech/site-assets/assets-web-b6a044c0ceab.zip
+ARG ASSETS_SHA256=b6a044c0ceab895668f0404f48ebab70d1fd7eab9cff75ac9a7836caf583695d
+ENV ASSETS_URL=$ASSETS_URL ASSETS_SHA256=$ASSETS_SHA256
 USER rifas
 EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s CMD ["/opt/venv/bin/python", "-c", "import os, urllib.request; urllib.request.urlopen('http://127.0.0.1:%s/health' % os.environ['PORT'], timeout=4)"]

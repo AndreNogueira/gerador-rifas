@@ -5,7 +5,7 @@ import functools
 import re
 
 from core import i18n, tutorial
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends, Request, Response
 from pydantic import BaseModel
 
 from . import config
@@ -39,8 +39,21 @@ def _recorte(pasta: str, lg: str, estado: str, zona: str):
     return tutorial.recorte(Path(pasta), lg, estado, zona)
 
 
+def esquecer_recortes() -> None:
+    """Os recortes que deram `None` por faltarem as capturas (os assets remotos ainda nao tinham chegado) nao ficam em cache."""
+    _recorte.cache_clear()
+
+
+def _assets_prontos(request: Request) -> None:
+    """Com os assets no armazenamento de objetos, garante (ou pede, sem esperar) que ja foram descarregados."""
+    assets = getattr(request.app.state, "assets", None)
+    if assets is not None:
+        assets.garantir()
+
+
 @router.get("/tutorial", response_model=Tutorial)
-def ver_tutorial(lg: str = Depends(lingua)) -> Tutorial:
+def ver_tutorial(request: Request, lg: str = Depends(lingua)) -> Tutorial:
+    _assets_prontos(request)
     ajuda = config.pasta_assets() / "ajuda"
     with i18n.com_lingua(lg):
         topicos = tutorial.lista_de_topicos("web")
@@ -63,7 +76,8 @@ def ver_tutorial(lg: str = Depends(lingua)) -> Tutorial:
 
 
 @router.get("/tutorial/recorte/{lg}/{estado}/{zona}.png")
-def recorte(lg: str, estado: str, zona: str) -> Response:
+def recorte(request: Request, lg: str, estado: str, zona: str) -> Response:
+    _assets_prontos(request)
     if lg not in i18n.LINGUAS or estado not in (*tutorial.ESTADOS_DE_CAPTURA, *tutorial.ESTADOS_WEB) or not re.fullmatch(r"[a-z0-9]{1,20}", zona):
         raise ErroApi(404, "Imagem inexistente", "erro")
     r = _recorte(str(config.pasta_assets() / "ajuda"), lg, estado, zona)

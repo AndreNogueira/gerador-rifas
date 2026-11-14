@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import os
 import re
+import tempfile
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]            # raiz do repositorio (ou /repo no contentor)
@@ -35,10 +36,28 @@ def pasta_frontend() -> Path:
     return Path(env) if env else Path(__file__).resolve().parent / "frontend" / "dist"
 
 
+def assets_zip_url() -> str:
+    """O `.zip` com as imagens e os videos do site, no armazenamento de objetos (`scripts/publicar_assets.py`): ASSETS_URL. So https e a acabar em `.zip`.
+    Com ele a imagem Docker nao leva os ficheiros: o servidor descarrega-os no arranque (`assets_remotos.py`). Sem ele usa os de `app/assets`."""
+    v = os.environ.get("ASSETS_URL", "").strip()
+    return v if re.fullmatch(r"https://[^\s<>\"']{8,400}\.zip", v) else ""
+
+
+def assets_sha256() -> str:
+    """O SHA-256 do `.zip` (ASSETS_SHA256), para o servidor so aceitar exatamente esse ficheiro. Vazio = nao verifica (so se confia no URL)."""
+    v = os.environ.get("ASSETS_SHA256", "").strip().lower()
+    return v if re.fullmatch(r"[0-9a-f]{64}", v) else ""
+
+
 def pasta_assets() -> Path:
-    """Imagens do tutorial e videos (por omissao app/assets, que a app Windows tambem usa). RIFAS_ASSETS troca-a."""
+    """Imagens do tutorial e videos: `RIFAS_ASSETS` se estiver definida; senao, com `ASSETS_URL`, a pasta temporaria onde o servidor as extrai
+    (`assets_remotos.py`); senao `app/assets`, que a app Windows tambem usa."""
     env = os.environ.get("RIFAS_ASSETS", "").strip()
-    return Path(env) if env else RAIZ / "app" / "assets"
+    if env:
+        return Path(env)
+    if assets_zip_url():
+        return Path(tempfile.gettempdir()) / "rifas-assets"
+    return RAIZ / "app" / "assets"
 
 
 def limite_upload_mb() -> int:
