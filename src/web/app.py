@@ -19,7 +19,8 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
+from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
+from .chaves_api import Chaves
 from .assets_remotos import AssetsRemotos
 from .limites import Limitador
 from . import seo_textos
@@ -174,6 +175,11 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     servico = Servico(Sessoes(armazem), motor or Motor(tempo_maximo_s=config.tempo_maximo_geracao_min() * 60), Limitador(),
                       metricas or Metricas(caminho_por_defeito(armazem.raiz), url_bd=config.database_url(), intervalo_bd_min=config.metricas_bd_min()), Observador(armazem.raiz))
 
+    observabilidade.configurar(config.log_pedidos())
+    servico.partilhas = partilhas if partilhas is not None else (Partilhas(config.database_url()) if config.database_url() else None)
+    servico.chaves = chaves if chaves is not None else Chaves(config.database_url(), armazem.raiz / "api.sqlite3")
+    servico.seo = seo_bd if seo_bd is not None else SeoBd(config.database_url(), armazem.raiz / "seo.sqlite3")
+    seo_textos.definir_sobreposicoes({})                 # cada app comeca com os textos do codigo; os editados chegam da base (`_atualizar_seo`)
     assets_rem = None
     if config.assets_zip_url() and not os.environ.get("RIFAS_ASSETS", "").strip():       # videos e capturas fora da imagem Docker (ver assets_remotos.py)
         assets_rem = AssetsRemotos(config.assets_zip_url(), config.assets_sha256(), config.pasta_assets(), ao_ficar_pronto=rotas_ajuda.esquecer_recortes)
