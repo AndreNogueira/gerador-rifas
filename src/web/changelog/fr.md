@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.45.0 — 2026-11-14
+
+### Amélioré
+- **Galerie de modèles sur une seule ligne :** les 24 dessins se choisissent maintenant dans une zone d'une ligne où chaque option montre une miniature du modèle, au lieu d'une longue liste de boutons. Elle fonctionne à la souris, au toucher et au clavier (flèches, Début/Fin, une lettre, Entrée et Échap).
+
 ## 3.44.0 — 2026-11-14
 
 ### Amélioré

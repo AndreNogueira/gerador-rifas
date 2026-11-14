@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.45.0 — 2026-11-14
+
+### Verbeterd
+- **Sjabloongalerij op één regel:** de 24 ontwerpen kies je nu in een vak van één regel waarin elke optie een miniatuur van het sjabloon toont, in plaats van een lange lijst knoppen. Het werkt met muis, aanraking en toetsenbord (pijlen, Home/End, een letter, Enter en Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Verbeterd

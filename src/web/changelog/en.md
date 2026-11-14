@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.45.0 — 2026-11-14
+
+### Improved
+- **Template gallery on a single line:** the 24 designs are now picked from a one-line box where each option shows a mini drawing of the template, instead of a long list of buttons. It works with the mouse, touch and keyboard (arrows, Home/End, a letter, Enter and Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Improved

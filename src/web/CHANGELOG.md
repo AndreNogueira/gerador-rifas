@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.45.0 — 2026-11-14
+
+### Melhorado
+- **Galeria de templates numa só linha:** os 24 desenhos escolhem-se agora numa caixa de uma linha em que cada opção mostra um mini desenho do template, em vez de uma lista comprida de botões. Funciona com o rato, o toque e o teclado (setas, Home/End, uma letra, Enter e Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Melhorado

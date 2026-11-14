@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.45.0 — 2026-11-14
+
+### Ulepszono
+- **Galeria szablonów w jednej linii:** 24 wzory wybiera się teraz w jednowierszowym polu, w którym każda opcja pokazuje miniaturę szablonu, zamiast długiej listy przycisków. Działa z myszą, dotykiem i klawiaturą (strzałki, Home/End, litera, Enter i Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Ulepszono

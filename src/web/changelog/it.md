@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.45.0 — 2026-11-14
+
+### Migliorato
+- **Galleria di modelli su una sola riga:** i 24 disegni si scelgono ora in una casella di una riga in cui ogni opzione mostra una miniatura del modello, invece di una lunga lista di pulsanti. Funziona con mouse, tocco e tastiera (frecce, Home/Fine, una lettera, Invio ed Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Migliorato

@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.45.0 — 2026-11-14
+
+### Millores
+- **Galeria de plantilles en una sola línia:** els 24 dissenys es trien ara en una caixa d'una línia en què cada opció mostra un mini dibuix de la plantilla, en lloc d'una llarga llista de botons. Funciona amb ratolí, tacte i teclat (fletxes, Inici/Fi, una lletra, Retorn i Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Millores

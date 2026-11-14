@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.45.0 — 2026-11-14
+
+### Vylepšeno
+- **Galerie šablon na jednom řádku:** 24 návrhů se nyní vybírá v jednořádkovém poli, kde každá volba ukazuje miniaturu šablony, místo dlouhého seznamu tlačítek. Funguje s myší, dotykem i klávesnicí (šipky, Home/End, písmeno, Enter a Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Vylepšeno

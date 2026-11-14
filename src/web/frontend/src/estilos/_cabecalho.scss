@@ -158,6 +158,41 @@
     }
   }
 }
+// o painel do seletor de desenhos da galeria: uma lista de opções (`role="option"`) com o mini desenho do template e o nome
+.seletor-lista {
+  gap: 4px;
+
+  [role="option"] {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 4px 8px;
+    border-radius: 9px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+
+    &[data-ativo="true"] {
+      background: color-mix(in srgb, var(--destaque) 14%, transparent);
+    }
+    &[aria-selected="true"] {
+      background: color-mix(in srgb, var(--destaque) 24%, transparent);
+    }
+  }
+  img {
+    flex: none;
+    width: 144px;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid var(--linha);
+    background: #fff;
+  }
+  .seletor-nome {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
 // os ícones redondos das redes sociais (glifo branco sobre a cor de cada rede; email, copiar e partilhar do sistema usam a cor do tema)
 .rede-icone {
   flex: none;

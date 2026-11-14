@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.45.0 — 2026-11-14
+
+### Ditingkatkan
+- **Galeri templat dalam satu baris:** 24 desain kini dipilih dari kotak satu baris yang setiap opsinya menampilkan gambar mini templat, bukan daftar tombol yang panjang. Bisa dipakai dengan mouse, sentuhan, dan keyboard (panah, Home/End, satu huruf, Enter, dan Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Ditingkatkan

@@ -9,6 +9,7 @@ import {
   textoDaData,
 } from "./dataSorteio";
 import { useI18n } from "./i18n";
+import { SeletorDesenho } from "./SeletorDesenho";
 import { useSessao } from "./sessao";
 
 /** Os desenhos da galeria (`core/galeria.py`); os nomes são próprios e não se traduzem, como os dos temas. */
@@ -125,20 +126,12 @@ export function Galeria({ desativado }: { desativado: boolean }) {
   return (
     <details className="galeria" data-testid="galeria" onToggle={(e) => setAberto(e.currentTarget.open)}>
       <summary>{t("web_galeria")}</summary>
-      <fieldset className="desenhos" data-testid="desenhos">
-        {DESENHOS.map((d) => (
-          <label key={d.id} className="opcao">
-            <input
-              type="radio"
-              name="desenho"
-              value={d.id}
-              checked={desenho === d.id}
-              onChange={() => setDesenho(d.id)}
-            />
-            {d.nome}
-          </label>
-        ))}
-      </fieldset>
+      <SeletorDesenho
+        opcoes={DESENHOS}
+        valor={desenho}
+        aoEscolher={setDesenho}
+        nomeDaLista={t("web_galeria")}
+      />
       {erro ? (
         <p role="alert" className="cor-aviso" data-testid="galeria-erro">
           {erro}

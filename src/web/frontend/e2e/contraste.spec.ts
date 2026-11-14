@@ -54,6 +54,19 @@ for (const tema of TEMAS) {
         medidos += m.medidos;
         for (const f of m.falhas)
           falhas.push(`${caminho}  ${f.alvo}  ${f.rácio} < ${f.esperado}  (${f.texto}, ${f.tamanho})`);
+        if (caminho === "/") {
+          // o seletor de desenhos aberto: o painel é uma superfície nova do tema (com uma opção ativa e outra escolhida)
+          await page.getByTestId("galeria-desenho").click();
+          await expect(page.getByRole("listbox")).toBeVisible();
+          await page.keyboard.press("ArrowDown"); // uma opção ativa e outra escolhida (o hover rolaria a página e fecharia o painel)
+          const aberto = await medirContraste(page, "[role=listbox]");
+          medidos += aberto.medidos;
+          for (const f of aberto.falhas)
+            falhas.push(
+              `${caminho} (seletor aberto)  ${f.alvo}  ${f.rácio} < ${f.esperado}  (${f.texto}, ${f.tamanho})`,
+            );
+          await page.keyboard.press("Escape");
+        }
       }
       info.annotations.push({ type: "medidos", description: `${medidos} elementos de texto medidos` });
       expect(medidos, "tem de medir muitos elementos (senão o teste não prova nada)").toBeGreaterThan(80);

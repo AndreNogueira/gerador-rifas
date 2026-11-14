@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.45.0 — 2026-11-14
+
+### İyileştirildi
+- **Şablon galerisi tek satırda:** 24 tasarım artık uzun bir düğme listesi yerine, her seçeneğin şablonun küçük bir resmini gösterdiği tek satırlık bir kutudan seçilir. Fare, dokunma ve klavyeyle (oklar, Home/End, bir harf, Enter ve Esc) çalışır.
+
 ## 3.44.0 — 2026-11-14
 
 ### İyileştirildi

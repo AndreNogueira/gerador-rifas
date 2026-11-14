@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.45.0 — 2026-11-14
+
+### Mejorado
+- **Galería de plantillas en una sola línea:** los 24 diseños se eligen ahora en una caja de una línea en la que cada opción muestra un mini dibujo de la plantilla, en vez de una larga lista de botones. Funciona con ratón, toque y teclado (flechas, Inicio/Fin, una letra, Intro y Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Mejorado

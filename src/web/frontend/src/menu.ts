@@ -2,12 +2,14 @@ import { type CSSProperties, useCallback, useEffect, useRef, useState } from "re
 
 const LARGURA_PAINEL = 280; // px: a mesma do CSS (`.painel-flutuante`)
 const FOLGA = 8;
+const ALTURA_MINIMA = 240; // px: com menos espaço por baixo do botão, o painel abre para cima (se por cima houver mais)
 
 /**
  * Um painel que abre por baixo de um botão do cabeçalho («Como fazer», «Partilhar»). Fica em `position: fixed` com a posição calculada ao abrir:
  * assim não o cortam as faixas que deslizam na horizontal nem o cabeçalho em ecrãs estreitos. Fecha com Esc, ao tocar fora, ao rolar ou ao redimensionar.
+ * A altura nunca passa do espaço que há no ecrã (a lista rola por dentro) e, perto do fundo, o painel abre para cima.
  */
-export function useMenuFlutuante(alinhar: "esq" | "dir") {
+export function useMenuFlutuante(alinhar: "esq" | "dir", larguraPainel: number = LARGURA_PAINEL) {
   const [aberto, setAberto] = useState(false);
   const [estilo, setEstilo] = useState<CSSProperties>({});
   const refBotao = useRef<HTMLButtonElement>(null);
@@ -18,17 +20,22 @@ export function useMenuFlutuante(alinhar: "esq" | "dir") {
     setAberto((a) => {
       if (!a && refBotao.current) {
         const r = refBotao.current.getBoundingClientRect();
-        const largura = Math.min(LARGURA_PAINEL, window.innerWidth - 2 * FOLGA);
+        const largura = Math.min(larguraPainel, window.innerWidth - 2 * FOLGA);
         const esquerda = alinhar === "dir" ? r.right - largura : r.left;
+        const porBaixo = window.innerHeight - r.bottom - 2 * FOLGA;
+        const porCima = r.top - 2 * FOLGA;
+        const paraCima = porBaixo < ALTURA_MINIMA && porCima > porBaixo;
         setEstilo({
-          top: r.bottom + FOLGA,
+          ...(paraCima
+            ? { bottom: window.innerHeight - r.top + FOLGA, maxHeight: porCima }
+            : { top: r.bottom + FOLGA, maxHeight: Math.max(120, porBaixo) }),
           left: Math.max(FOLGA, Math.min(esquerda, window.innerWidth - largura - FOLGA)),
           width: largura,
         });
       }
       return !a;
     });
-  }, [alinhar]);
+  }, [alinhar, larguraPainel]);
 
   useEffect(() => {
     if (!aberto) return;

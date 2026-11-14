@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.45.0 — 2026-11-14
+
+### Verbessert
+- **Vorlagen-Galerie in einer Zeile:** die 24 Designs wählt man jetzt in einem einzeiligen Feld, in dem jede Option eine Miniatur der Vorlage zeigt, statt in einer langen Liste von Schaltflächen. Es funktioniert mit Maus, Touch und Tastatur (Pfeile, Pos1/Ende, ein Buchstabe, Eingabe und Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Verbessert
