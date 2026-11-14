@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.45.0 — 2026-11-14
+
+### Förbättrat
+- **Mallgalleriet på en rad:** de 24 designerna väljs nu i en enradsruta där varje alternativ visar en miniatyr av mallen, i stället för en lång lista med knappar. Det fungerar med mus, touch och tangentbord (piltangenter, Home/End, en bokstav, Enter och Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Förbättrat

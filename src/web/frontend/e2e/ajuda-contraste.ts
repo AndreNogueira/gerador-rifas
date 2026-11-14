@@ -36,9 +36,13 @@ export interface Medicao {
   medidos: number;
 }
 
-export async function medirContraste(page: Page): Promise<Medicao> {
+/**
+ * Mede o contraste do texto visível contra os pixéis reais do fundo. Com `raiz` (um seletor) mede só o que está dentro dela e na captura da janela,
+ * não da página inteira: é o que se faz com painéis `position: fixed` (menus abertos), que numa captura da página inteira ficam fora do sítio.
+ */
+export async function medirContraste(page: Page, raiz?: string): Promise<Medicao> {
   // 1) as caixas do texto visível
-  const alvos = await page.evaluate((): Alvo[] => {
+  const alvos = await page.evaluate((seletor): Alvo[] => {
     const saida: Alvo[] = [];
     const analisar = (c: string): [number, number, number, number] => {
       const srgb = /color\(srgb ([\d.]+) ([\d.]+) ([\d.]+)(?: \/ ([\d.]+))?\)/.exec(c); // o que o color-mix() devolve
@@ -60,12 +64,14 @@ export async function medirContraste(page: Page): Promise<Medicao> {
       return `${el.tagName.toLowerCase()}${id ? `[${id}]` : ""}${cls ? `.${cls}` : ""}`;
     };
     const caixa = (r: DOMRect, encolher = 0): Caixa => ({
-      x: Math.round(r.left + window.scrollX + encolher),
-      y: Math.round(r.top + window.scrollY + encolher),
+      x: Math.round(r.left + (seletor ? 0 : window.scrollX) + encolher),
+      y: Math.round(r.top + (seletor ? 0 : window.scrollY) + encolher),
       l: Math.round(r.width - 2 * encolher),
       a: Math.round(r.height - 2 * encolher),
     });
-    for (const el of Array.from(document.body.querySelectorAll("*"))) {
+    for (const el of Array.from(
+      (seletor ? document.querySelector(seletor) : document.body)?.querySelectorAll("*") ?? [],
+    )) {
       const cs = getComputedStyle(el);
       if (cs.visibility === "hidden" || cs.display === "none" || Number(cs.opacity) === 0) continue;
       if (
@@ -109,7 +115,7 @@ export async function medirContraste(page: Page): Promise<Medicao> {
       });
     }
     return saida;
-  });
+  }, raiz);
 
   // 2) o texto transparente e uma captura da página inteira
   const estilo = await page.addStyleTag({
@@ -117,7 +123,7 @@ export async function medirContraste(page: Page): Promise<Medicao> {
       "*, *::before, *::after { color: transparent !important; text-shadow: none !important; -webkit-text-fill-color: transparent !important; caret-color: transparent !important; } ::placeholder { color: transparent !important; -webkit-text-fill-color: transparent !important; }",
   });
   await page.evaluate(() => document.fonts.ready);
-  const png = (await page.screenshot({ fullPage: true, animations: "disabled" })).toString("base64");
+  const png = (await page.screenshot({ fullPage: !raiz, animations: "disabled" })).toString("base64");
   await estilo.evaluate((e) => (e as HTMLElement).remove());
 
   // 3) os pixéis do fundo de cada caixa

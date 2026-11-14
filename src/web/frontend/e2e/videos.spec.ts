@@ -240,8 +240,9 @@ const CENAS: Cena[] = [
         2200,
       );
       await clicar(page, page.getByTestId("galeria").locator("summary"));
-      await clicar(page, page.getByLabel("Natal", { exact: true }));
-      await legenda(page, T("Escolha um dos 24 desenhos", "Pick one of the 24 designs"), 2000);
+      await clicar(page, page.getByTestId("galeria-desenho"));
+      await legenda(page, T("Escolha um dos 24 desenhos", "Pick one of the 24 designs"), 2200);
+      await clicar(page, page.getByRole("listbox").getByRole("option", { name: "Natal", exact: true }));
       await escrever(page, page.getByTestId("galeria-titulo"), T("Rifa de Natal", "Christmas raffle"));
       await expect(page.getByTestId("galeria-previa")).toBeVisible();
       await legenda(

@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.45.0 — 2026-11-14
+
+### Îmbunătățit
+- **Galeria de șabloane pe un singur rând:** cele 24 de modele se aleg acum într-o casetă pe un rând în care fiecare opțiune arată o miniatură a șablonului, în loc de o listă lungă de butoane. Funcționează cu mouse-ul, atingerea și tastatura (săgeți, Home/End, o literă, Enter și Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Îmbunătățit

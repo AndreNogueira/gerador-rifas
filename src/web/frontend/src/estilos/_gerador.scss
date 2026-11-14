@@ -144,10 +144,44 @@
   &[open] > summary {
     margin-bottom: 4px;
   }
-  .desenhos {
+  // o seletor do desenho: uma só linha com o mini desenho do template escolhido; as 24 opções (cada uma com o seu mini desenho) abrem num painel
+  .seletor-desenho {
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px 16px;
+  }
+  .seletor-botao {
+    flex: 1 1 auto;
+    max-width: 30rem;
+    min-height: 48px;
+    padding: 6px 12px;
+    justify-content: flex-start;
+    gap: 12px;
+    text-align: left;
+    font-weight: 600;
+    background: var(--campo); // parece um campo, não um botão de ação (sem isto vinha o degradé do botão)
+    color: var(--texto);
+    text-shadow: none;
+    box-shadow: var(--campo-anel);
+
+    &:hover:not(:disabled) {
+      transform: none;
+      filter: none;
+      background: var(--campo);
+      box-shadow: var(--campo-anel);
+      border-color: color-mix(in srgb, var(--destaque) 45%, var(--linha));
+    }
+    &:focus-visible {
+      outline: none;
+      border-color: var(--destaque);
+      box-shadow: var(--campo-anel), var(--campo-anel-foco);
+    }
+    img {
+      flex: none;
+      width: 96px;
+      height: auto;
+    }
+    .seletor-nome {
+      flex: 1 1 auto;
+    }
   }
   .galeria-previa {
     width: 100%;

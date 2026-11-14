@@ -1,7 +1,8 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
+import { DESENHOS } from "./Galeria";
 import { ProvedorI18n } from "./i18n";
 import { ServidorFalso } from "./servidor-falso";
 
@@ -36,7 +37,8 @@ describe("galeria de templates (M4)", () => {
     await waitFor(() => expect(previas()).toHaveLength(1));
     expect(previas()[0]?.url).toContain("desenho=bosque");
     await userEvent.type(t("galeria-titulo"), "Rifa de Natal");
-    await userEvent.click(screen.getByLabelText("Natal"));
+    await userEvent.click(t("galeria-desenho"));
+    await userEvent.click(within(screen.getByRole("listbox")).getByRole("option", { name: "Natal" }));
     await waitFor(() =>
       expect(
         previas().some((p) => p.url.includes("desenho=natal") && p.url.includes("t=Rifa+de+Natal")),
@@ -48,7 +50,8 @@ describe("galeria de templates (M4)", () => {
   it("«Usar este template» envia os textos e o template da galeria fica na sessão", async () => {
     abrir();
     await userEvent.click((await screen.findByTestId("galeria")).querySelector("summary") as Element);
-    await userEvent.click(screen.getByLabelText("Gala"));
+    await userEvent.click(t("galeria-desenho"));
+    await userEvent.click(within(screen.getByRole("listbox")).getByRole("option", { name: "Gala" }));
     await userEvent.type(t("galeria-titulo"), "Rifa");
     await userEvent.type(t("galeria-premio-1"), "1.º Cabaz");
     await userEvent.type(t("galeria-premio-3"), "3.º Livro");
@@ -64,6 +67,56 @@ describe("galeria de templates (M4)", () => {
     });
     expect(t("estado-algarismos")).toHaveTextContent("Vera");
     expect(await screen.findByTestId("papel")).toBeInTheDocument(); // uma rifa: aparece o painel da folha
+  });
+
+  it("o desenho escolhe-se numa caixa de uma linha, com um mini desenho em cada uma das 24 opções", async () => {
+    abrir();
+    await userEvent.click((await screen.findByTestId("galeria")).querySelector("summary") as Element);
+    const botao = t("galeria-desenho");
+    expect(botao).toHaveAttribute("role", "combobox");
+    expect(botao).toHaveAttribute("aria-expanded", "false");
+    expect(botao).toHaveTextContent("Bosque");
+    expect(botao.querySelector("img")?.getAttribute("src")).toBe("/galeria/bosque.webp");
+    expect(screen.queryByRole("listbox")).toBeNull();
+    await userEvent.click(botao);
+    expect(botao).toHaveAttribute("aria-expanded", "true");
+    const opcoes = within(screen.getByRole("listbox")).getAllByRole("option");
+    expect(opcoes).toHaveLength(DESENHOS.length);
+    expect(opcoes.map((o) => o.textContent)).toEqual(DESENHOS.map((d) => d.nome));
+    for (const [i, d] of DESENHOS.entries()) {
+      expect(opcoes[i]?.querySelector("img")?.getAttribute("src")).toBe(`/galeria/${d.id}.webp`);
+      expect(opcoes[i]).toHaveAttribute("aria-selected", String(d.id === "bosque"));
+    }
+    await userEvent.click(within(screen.getByRole("listbox")).getByRole("option", { name: "Praia" }));
+    expect(screen.queryByRole("listbox")).toBeNull(); // fecha ao escolher
+    expect(botao).toHaveTextContent("Praia");
+    expect(botao.querySelector("img")?.getAttribute("src")).toBe("/galeria/praia.webp");
+    await waitFor(() => expect(previas().some((p) => p.url.includes("desenho=praia"))).toBe(true));
+  });
+
+  it("o seletor do desenho funciona só com o teclado: setas, Home/End, letra, Enter e Esc", async () => {
+    abrir();
+    await userEvent.click((await screen.findByTestId("galeria")).querySelector("summary") as Element);
+    const botao = t("galeria-desenho");
+    botao.focus();
+    await userEvent.keyboard("{ArrowDown}"); // abre
+    expect(botao).toHaveAttribute("aria-expanded", "true");
+    expect(botao).toHaveAttribute("aria-activedescendant", "galeria-desenho-bosque");
+    await userEvent.keyboard("{ArrowDown}{ArrowDown}");
+    expect(botao).toHaveAttribute("aria-activedescendant", "galeria-desenho-natal");
+    await userEvent.keyboard("{End}");
+    expect(botao).toHaveAttribute("aria-activedescendant", `galeria-desenho-${DESENHOS.at(-1)?.id}`);
+    await userEvent.keyboard("{Home}{ArrowUp}"); // não passa do princípio
+    expect(botao).toHaveAttribute("aria-activedescendant", "galeria-desenho-bosque");
+    await userEvent.keyboard("m"); // o primeiro nome que começa por «m»
+    expect(botao).toHaveAttribute("aria-activedescendant", "galeria-desenho-magusto");
+    await userEvent.keyboard("{Enter}");
+    expect(screen.queryByRole("listbox")).toBeNull();
+    expect(botao).toHaveTextContent("Magusto");
+    expect(botao).toHaveFocus();
+    await userEvent.keyboard("{ArrowDown}{ArrowDown}{Escape}"); // Esc fecha sem escolher
+    expect(screen.queryByRole("listbox")).toBeNull();
+    expect(botao).toHaveTextContent("Magusto");
   });
 
   it("a pessoa escolhe quantos prémios quer: de 3 (o mínimo) a 10 (o máximo)", async () => {

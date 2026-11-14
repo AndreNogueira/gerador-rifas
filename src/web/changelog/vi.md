@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.45.0 — 2026-11-14
+
+### Cải thiện
+- **Thư viện mẫu trên một dòng:** 24 thiết kế nay được chọn trong một ô một dòng, mỗi lựa chọn hiển thị hình thu nhỏ của mẫu, thay cho một danh sách nút dài. Dùng được bằng chuột, cảm ứng và bàn phím (phím mũi tên, Home/End, một chữ cái, Enter và Esc).
+
 ## 3.44.0 — 2026-11-14
 
 ### Cải thiện
