@@ -23,7 +23,7 @@ Responder (sem *spam*: ajudar primeiro, ligação no fim, e só onde é permitid
 Um pacote de bilhetes passa pelas mãos de centenas de compradores. Hoje o bilhete **não diz** de onde veio. Três formas de o dizer, da menos para a mais intrusiva (cada uma custa só desenvolvimento, e nunca é obrigatória):
 1. **Ligação na página de verificação do QR** (`/v/…`): quem lê o QR vê «Feito com o Gerador de Rifas: faça as suas, grátis». É a mais discreta; precisa do QR (`VERIFICACAO_CHAVE`).
 2. **Assinatura opcional no bilhete** (uma caixa «mostrar o endereço do gerador no rodapé do bilhete», desligada por omissão): uma linha pequena com o endereço, numa margem. As associações que gostam do serviço costumam deixá-la ligada.
-3. **Botão «Partilhar»** no fim da geração e no rodapé (partilha nativa do telemóvel, WhatsApp, e-mail e copiar ligação): é onde as comissões de festas e as associações de pais falam entre si.
+3. **Botão «Partilhar»** no fim da geração e no rodapé (partilha nativa do telemóvel, WhatsApp, Telegram, Facebook, e-mail e copiar ligação): é onde as comissões de festas e as associações de pais falam entre si. **Feito** (3.38.0, `Partilhar.tsx`).
 
 Regra a manter: **nada de rastreio** (a política de privacidade diz «quase nenhum dado»); os botões são ligações simples, sem *scripts* de terceiros.
 
@@ -46,5 +46,5 @@ Regra a manter: **nada de rastreio** (a política de privacidade diz «quase nen
 ## Ordem de execução sugerida
 1. **Esta semana:** Search Console + sitemap, 3 vídeos no YouTube, quadro no Pinterest. (≈ 2 h)
 2. **Semanas 2–4:** 5 respostas úteis por semana em grupos; 10 e-mails a câmaras e federações. (≈ 1 h/semana)
-3. **Em paralelo, no código:** botão «Partilhar» e ligação na página do QR (1 PR cada), depois a assinatura opcional. Cada um precisa das 22 traduções e do tópico no tutorial (`CLAUDE.md`).
+3. **Em paralelo, no código:** o botão «Partilhar» está feito (3.38.0); faltam a ligação na página do QR e a assinatura opcional (1 PR cada). Cada um precisa das 22 traduções e do tópico no tutorial (`CLAUDE.md`).
 4. **Todos os meses:** um guia novo (misericórdias, IPSS, juntas de freguesia, escuteiros, associações de pais) e olhar o painel para ver o que funcionou.

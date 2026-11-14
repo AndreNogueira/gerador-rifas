@@ -30,4 +30,4 @@
 | 16 | ~~**Subir a app Windows para Python 3.15**~~ (feito na 2.5: `--selftest` igual, GUI testada em Tk 9; o `.exe` compilado: ver `app/README.md`) | M | |
 | 17 | **Contas e pagamento** | L | O serviço será pago mais tarde. Desenhar antes os planos (limites por conta), a faturação e a proteção da privacidade dos ficheiros. |
 | 18 | ~~**Observabilidade**~~ (feito: `docs/OBSERVABILIDADE.md`) | S | Registo estruturado dos pedidos e um painel de erros/tempos, sem guardar conteúdo dos ficheiros. |
-| 19 | **Crescimento sem custo** | S | Plano em [`CRESCIMENTO.md`](CRESCIMENTO.md): Search Console/Bing, vídeos no YouTube, Pinterest, grupos e entidades; no código, o botão «Partilhar», a ligação na página do QR e a assinatura opcional no bilhete (cada um com as 22 traduções). |
+| 19 | **Crescimento sem custo** | S | Plano em [`CRESCIMENTO.md`](CRESCIMENTO.md): Search Console/Bing, vídeos no YouTube, Pinterest, grupos e entidades; no código, o botão «Partilhar» (feito, 3.38), a ligação na página do QR e a assinatura opcional no bilhete (cada um com as 22 traduções). |

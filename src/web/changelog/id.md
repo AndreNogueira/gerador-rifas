@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.38.0 — 2026-11-13
+
+### Baru
+- **Tombol «Bagikan»:** di bagian bawah halaman dan, setelah berkas dibuat, di kartu penyerahan. Membuka daftar singkat (menu bagikan ponsel atau komputer, WhatsApp, Telegram, Facebook, email, dan «Salin tautan») agar organisasi, sekolah, dan panitia perayaan lain mengenal pembuat undian ini. Tautannya hanya berisi alamat situs dalam bahasa yang dipakai: tanpa pelacakan dan tidak ada yang disimpan. Ada topik di tutorial dan videonya.
+
 ## 3.37.0 — 2026-11-13
 
 ### Baru

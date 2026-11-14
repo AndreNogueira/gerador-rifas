@@ -35,6 +35,8 @@ const DESENHOS = {
   seguinte: "M9 6l6 6-6 6",
   verificado: "M5 12.5l4.5 4.5L19 7.5",
   descarregar: "M12 4v11M7.5 11 12 15.5 16.5 11M5 20h14",
+  partilhar:
+    "M18 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 22a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM8.6 13.5l6.8 4M15.4 6.5l-6.8 4",
 } as const;
 
 export type NomeIcone = keyof typeof DESENHOS;

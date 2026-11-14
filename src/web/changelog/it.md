@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.38.0 — 2026-11-13
+
+### Novità
+- **Pulsante «Condividi»:** a piè di pagina e, dopo aver generato i file, nella scheda della consegna. Apre un breve elenco (condivisione del telefono o del computer, WhatsApp, Telegram, Facebook, e-mail e «Copia link») per far conoscere il generatore ad altre associazioni, scuole e comitati di feste. I link contengono solo l'indirizzo del sito nella lingua in uso: nessun tracciamento, nulla viene conservato. Ha un argomento nel tutorial e un video.
+
 ## 3.37.0 — 2026-11-13
 
 ### Novità

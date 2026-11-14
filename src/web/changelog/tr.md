@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.38.0 — 2026-11-13
+
+### Yeni
+- **«Paylaş» düğmesi:** altbilgide ve dosyalar oluşturulduktan sonra teslim kartında. Kısa bir liste açar (telefonun veya bilgisayarın paylaşım menüsü, WhatsApp, Telegram, Facebook, e-posta ve «Bağlantıyı kopyala»); böylece diğer dernekler, okullar ve şenlik komiteleri oluşturucuyu öğrenir. Bağlantılar yalnızca sitenin kullandığınız dildeki adresini taşır: izleme yok, hiçbir şey saklanmaz. Eğitimde bir konusu ve videosu var.
+
 ## 3.37.0 — 2026-11-13
 
 ### Yeni

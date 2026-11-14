@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.38.0 — 2026-11-13
+
+### Nouveautés
+- **Bouton « Partager » :** en bas de page et, après la génération des fichiers, sur la carte de livraison. Il ouvre une courte liste (partage du téléphone ou de l'ordinateur, WhatsApp, Telegram, Facebook, e-mail et « Copier le lien ») pour faire connaître le générateur à d'autres associations, écoles et comités des fêtes. Les liens ne portent que l'adresse du site dans la langue utilisée : aucun suivi, rien n'est conservé. Il a un sujet dans le tutoriel et une vidéo.
+
 ## 3.37.0 — 2026-11-13
 
 ### Nouveautés

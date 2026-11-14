@@ -12,6 +12,7 @@ import { Gerador } from "./Gerador";
 import { GUIAS, Guia } from "./Guia";
 import { useI18n } from "./i18n";
 import { PaginaTexto } from "./PaginaTexto";
+import { Partilhar } from "./Partilhar";
 import { Sobre, Tutorial, Video } from "./paginas";
 import { registarServiceWorker } from "./pwa";
 import { Ligacao, useLocalizacao } from "./rota";
@@ -124,6 +125,7 @@ function Aplicacao() {
               </a>
             )}
           </nav>
+          <Partilhar variante="rodape" />
         </footer>
       )}
     </>

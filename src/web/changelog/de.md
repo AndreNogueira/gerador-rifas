@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.38.0 — 2026-11-13
+
+### Neu
+- **Schaltfläche „Teilen“:** in der Fußzeile und, nach dem Erzeugen der Dateien, auf der Ausgabekarte. Sie öffnet eine kurze Liste (Teilen-Menü des Telefons oder Computers, WhatsApp, Telegram, Facebook, E-Mail und „Link kopieren“), damit andere Vereine, Schulen und Festkomitees den Generator kennenlernen. Die Links enthalten nur die Adresse der Seite in der verwendeten Sprache: kein Tracking, nichts wird gespeichert. Mit Anleitungsthema und Video.
+
 ## 3.37.0 — 2026-11-13
 
 ### Neu

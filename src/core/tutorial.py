@@ -48,6 +48,7 @@ FUNCIONALIDADES = (
     Funcionalidade("guardar", ("web",), onde=False),
     Funcionalidade("instalar", ("web",), onde=False),
     Funcionalidade("visual", PLATAFORMAS, "web_visual", ("m_ver", "web_visual")),
+    Funcionalidade("partilhar", ("web",), "web_partilhar"),
     Funcionalidade("pedido", ("windows",), "", ("win_m_extras", "win_guardar_pedido")),         # o site tem «guardar» (copiar ligação)
 )
 

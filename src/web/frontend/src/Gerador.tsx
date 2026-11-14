@@ -6,6 +6,7 @@ import { useDialogos } from "./dialogos";
 import { ligacaoDosCampos } from "./formulario";
 import { useI18n } from "./i18n";
 import { Icone } from "./icones";
+import { Partilhar } from "./Partilhar";
 import { Ligacao } from "./rota";
 import { aCorrer, useSessao } from "./sessao";
 
@@ -203,6 +204,7 @@ function Acoes({
         </pre>
       )}
       {tr?.entrega && !a_gerar && <Entrega entrega={tr.entrega} />}
+      {tr?.entrega && !a_gerar && <Partilhar variante="cartao" />}
     </section>
   );
 }

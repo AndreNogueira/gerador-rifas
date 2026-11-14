@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.38.0 — 2026-11-13
+
+### Novetats
+- **Botó «Comparteix»:** al peu i, després de generar els fitxers, a la targeta de lliurament. Obre una llista curta (compartir del mòbil o de l'ordinador, WhatsApp, Telegram, Facebook, correu i «Copia l'enllaç») per donar a conèixer el generador a altres associacions, escoles i comissions de festes. Els enllaços porten només l'adreça del lloc en l'idioma en què esteu: sense rastreig i sense desar res. Té tema al tutorial i vídeo.
+
 ## 3.37.0 — 2026-11-13
 
 ### Novetats

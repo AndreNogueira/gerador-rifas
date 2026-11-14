@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.38.0 — 2026-11-13
+
+### Novo
+- **Botão «Partilhar»:** no rodapé e, depois de gerar os ficheiros, no cartão da entrega. Abre uma lista curta (a partilha do telemóvel ou do computador, WhatsApp, Telegram, Facebook, e-mail e «Copiar ligação») para dar a conhecer o gerador a outras associações, escolas e comissões de festas. As ligações levam só o endereço do site na língua em que está: sem rastreio e sem guardar nada. Tem tópico no tutorial e vídeo.
+
 ## 3.37.0 — 2026-11-13
 
 ### Novo

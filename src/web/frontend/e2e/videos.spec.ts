@@ -520,6 +520,59 @@ const CENAS: Cena[] = [
     },
   },
   {
+    id: "partilhar",
+    rodar: async (page, T) => {
+      await page.goto("/");
+      await legenda(page, T("Partilhar o gerador", "Share the generator"), 1800);
+      const abrir = page.getByTestId("partilhar-abrir-rodape");
+      await abrir.scrollIntoViewIfNeeded();
+      await legenda(
+        page,
+        T(
+          "No fim da página (e depois de gerar) está o botão «Partilhar»",
+          "At the bottom of the page (and after generating) there is a “Share” button",
+        ),
+        2600,
+      );
+      await clicar(page, abrir);
+      await expect(page.getByTestId("partilhar-whatsapp")).toBeVisible();
+      await legenda(
+        page,
+        T(
+          "WhatsApp, Telegram, Facebook, e-mail, ou a partilha do telemóvel",
+          "WhatsApp, Telegram, Facebook, e-mail, or your phone's share sheet",
+        ),
+        1200,
+      );
+      for (const id of [
+        "partilhar-whatsapp",
+        "partilhar-telegram",
+        "partilhar-facebook",
+        "partilhar-email",
+      ]) {
+        await ir(page, page.getByTestId(id));
+        await pausa(page, 700);
+      }
+      await legenda(
+        page,
+        T(
+          "As ligações só levam o endereço do site: não há rastreio",
+          "The links carry only the site address: there is no tracking",
+        ),
+        2800,
+      );
+      await clicar(page, page.getByTestId("partilhar-copiar"));
+      await legenda(
+        page,
+        T(
+          "«Copiar ligação» põe o endereço na área de transferência",
+          "“Copy link” puts the address on the clipboard",
+        ),
+        2600,
+      );
+    },
+  },
+  {
     id: "instalar",
     rodar: async (page, T) => {
       await page.goto("/");

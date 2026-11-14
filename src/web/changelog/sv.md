@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.38.0 — 2026-11-13
+
+### Nytt
+- **Knappen «Dela»:** i sidfoten och, när filerna har skapats, på leveranskortet. Den öppnar en kort lista (telefonens eller datorns delningsmeny, WhatsApp, Telegram, Facebook, e-post och «Kopiera länk») så att andra föreningar, skolor och festkommittéer får veta att generatorn finns. Länkarna innehåller bara webbplatsens adress på det språk du använder: ingen spårning och inget sparas. Med ämne i handledningen och video.
+
 ## 3.37.0 — 2026-11-13
 
 ### Nytt
