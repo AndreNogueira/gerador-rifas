@@ -65,6 +65,14 @@ async function clicar(page: Page, alvo: Locator) {
   await alvo.click();
 }
 
+/** Clicar numa opção de um painel flutuante: sem `scrollIntoView` (rolar a página fecha o painel), só o cursor a ir até lá. */
+async function clicarNoPainel(page: Page, alvo: Locator) {
+  const b = await alvo.boundingBox();
+  if (b) await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 28 });
+  await pausa(page, 350);
+  await alvo.click();
+}
+
 async function escrever(page: Page, alvo: Locator, texto: string) {
   await ir(page, alvo);
   await alvo.click();
@@ -242,7 +250,10 @@ const CENAS: Cena[] = [
       await clicar(page, page.getByTestId("galeria").locator("summary"));
       await clicar(page, page.getByTestId("galeria-desenho"));
       await legenda(page, T("Escolha um dos 24 desenhos", "Pick one of the 24 designs"), 2200);
-      await clicar(page, page.getByRole("listbox").getByRole("option", { name: "Natal", exact: true }));
+      await clicarNoPainel(
+        page,
+        page.getByRole("listbox").getByRole("option", { name: "Natal", exact: true }),
+      );
       await escrever(page, page.getByTestId("galeria-titulo"), T("Rifa de Natal", "Christmas raffle"));
       await expect(page.getByTestId("galeria-previa")).toBeVisible();
       await legenda(
