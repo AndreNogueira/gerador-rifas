@@ -192,6 +192,14 @@ def dados(intervalo: str = "6h", serv: Servico = Depends(servico)) -> dict:
     }
 
 
+@router.get("/erros", dependencies=[Depends(exigir)])
+def erros(intervalo: str = "24h", serv: Servico = Depends(servico)) -> dict:
+    """O livro de erros (observabilidade.py): o que falhou desde o ultimo arranque, agrupado por assinatura (tipo, rota, estado, classe da excecao, sitio)."""
+    if intervalo not in INTERVALOS:
+        raise HTTPException(422, f"intervalo deve ser um de {', '.join(INTERVALOS)}", headers=_SEM_CACHE)
+    return {"intervalo": intervalo, **serv.obs.livro(int(time.time()) - INTERVALOS[intervalo][0])}
+
+
 # ------------------------------------------------------------------ chaves da API publica v1 (/api/v1): criam-se e revogam-se aqui, nunca no repositorio
 class NovaChave(BaseModel):
     nome: str = Field(min_length=1, max_length=60)

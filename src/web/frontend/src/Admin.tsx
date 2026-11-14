@@ -1,4 +1,5 @@
 import { type FormEvent, type ReactNode, useCallback, useEffect, useState } from "react";
+import { AdminErros } from "./AdminErros";
 import { AdminSeo } from "./AdminSeo";
 import {
   adminApi,
@@ -570,6 +571,8 @@ export function Admin() {
           p50 e «Pior» o mais lento medido.
         </p>
       </Seccao>
+
+      <AdminErros intervalo={intervalo} />
 
       <Seccao
         id="uso"
