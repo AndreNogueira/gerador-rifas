@@ -50,9 +50,20 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_galeria_premios: "Prémios (uma linha cada, até 3)",
     web_galeria_data: "Data do sorteio",
     web_publicidade: "Publicidade",
+    web_changelog_windows: "Descarregar a app Windows (.exe)",
     web_guia_escolas: "Para escolas",
     web_guia_associacoes: "Para associações",
     web_editor: "Editor de templates",
+    web_editor_desfazer: "Desfazer",
+    web_editor_refazer: "Refazer",
+    web_editor_duplicar: "Duplicar",
+    web_editor_frente: "Para a frente",
+    web_editor_tras: "Para trás",
+    web_editor_imagem: "Imagem (logótipo)",
+    web_editor_partilhar: "Partilhar por ligação",
+    web_editor_partilha_ok: "Ligação copiada. O desenho fica guardado 90 dias (sem imagens).",
+    web_editor_ligacao_invalida: "Esta ligação já não existe ou o desenho expirou.",
+    web_editor_imagem_invalida: "Imagem inválida: use um PNG ou JPG até 1 MB.",
     web_editor_intro: "Desenhe a sua rifa sem o Canva.",
     web_editor_texto: "Texto",
     web_editor_retangulo: "Retângulo",
@@ -198,6 +209,8 @@ export class ServidorFalso {
   galeriaErro = "";
   anunciosCliente = "";
   anunciosSlot = "";
+  partilhaEditor = false;
+  partilhados = new Map<string, unknown>();
   logotipoErro = "";
   temContacto = false;
   temQr = false;
@@ -255,6 +268,7 @@ export class ServidorFalso {
         qr: this.temQr,
         anuncios_cliente: this.anunciosCliente,
         anuncios_slot: this.anunciosSlot,
+        partilha_editor: this.partilhaEditor,
       });
     const pg = /^\/api\/pagina\/(\w+)$/.exec(url);
     if (pg?.[1])
@@ -279,6 +293,17 @@ export class ServidorFalso {
         ],
         video: "",
       });
+    if (url === "/api/editor/partilhar" && init?.method === "POST") {
+      const id = `abc${this.partilhados.size}xyzxyz`;
+      this.partilhados.set(id, corpo);
+      return this.responder({ id });
+    }
+    if (url.startsWith("/api/editor/partilha/")) {
+      const d = this.partilhados.get(decodeURIComponent(url.slice("/api/editor/partilha/".length)));
+      return d
+        ? this.responder({ desenho: d, sem_imagens: true })
+        : this.responder({ detail: "Esta ligação já não existe ou o desenho expirou.", tipo: "aviso" }, 404);
+    }
     if (url.startsWith("/api/guia/")) {
       const nome = url.slice("/api/guia/".length);
       return this.responder({

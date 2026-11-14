@@ -36,6 +36,7 @@ function Aplicacao() {
     qr: false,
     anuncios_cliente: "",
     anuncios_slot: "",
+    partilha_editor: false,
   });
   const caminho = useLocalizacao().split("?")[0] ?? "/";
   const { sessao } = useSessao();
@@ -89,7 +90,7 @@ function Aplicacao() {
         ) : caminho === "/sorteio" ? (
           <Sorteio />
         ) : caminho === "/editor" ? (
-          <Editor />
+          <Editor partilha={publico.partilha_editor} />
         ) : GUIAS[caminho] ? (
           <Guia nome={GUIAS[caminho]} />
         ) : caminho === "/changelog" ? (

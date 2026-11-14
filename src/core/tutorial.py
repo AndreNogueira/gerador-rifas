@@ -43,7 +43,7 @@ FUNCIONALIDADES = (
     Funcionalidade("galeria", PLATAFORMAS, "web_galeria", ("win_m_extras", "win_galeria")),
     Funcionalidade("marca", PLATAFORMAS, "web_logotipo", ("win_m_extras", "win_opcoes")),
     Funcionalidade("qr", ("web",), "web_qr"),
-    Funcionalidade("editor", ("web",), "web_editor"),
+    Funcionalidade("editor", PLATAFORMAS, "web_editor", ("win_m_extras", "web_editor")),
     Funcionalidade("sorteio", PLATAFORMAS, "web_sorteio", ("win_m_extras", "web_sorteio")),
     Funcionalidade("guardar", ("web",), onde=False),
     Funcionalidade("instalar", ("web",), onde=False),

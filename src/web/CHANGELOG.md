@@ -4,6 +4,15 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.31.0 — 2026-11-13
+
+### Novo
+- **Editor de templates v2:** desfazer e refazer (Ctrl+Z, Ctrl+Y), duplicar (Ctrl+D), mudar a ordem de desenho, juntar o logótipo (PNG ou JPG) e **partilhar o desenho por uma ligação**: fica guardado 90 dias depois do último acesso, sem imagens e sem dados de quem partilha (só aparece quando o serviço tem base de dados). A Política de privacidade passa a dizê-lo.
+- **App Windows 2.5:** ganha o editor de templates (menu Extras) e passa a Python 3.15.
+
+### Melhorado
+- O Changelog tem uma ligação para descarregar a app Windows.
+
 ## 3.30.0 — 2026-11-12
 
 ### Novo

@@ -2,6 +2,15 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.31.0 — 2026-11-13
+
+### Noutăți
+- **Editor de șabloane v2:** anulează și refă (Ctrl+Z, Ctrl+Y), duplică (Ctrl+D), schimbă ordinea desenării, adaugă sigla (PNG sau JPG) și **distribuie desenul printr-un link**: se păstrează 90 de zile după ultimul acces, fără imagini și fără date despre cine distribuie (apare doar când serviciul are bază de date). Politica de confidențialitate o spune.
+- **Aplicația Windows 2.5:** primește editorul de șabloane (meniul Extra) și trece la Python 3.15.
+
+### Îmbunătățit
+- Changelog-ul are un link pentru descărcarea aplicației Windows.
+
 ## 3.30.0 — 2026-11-12
 
 ### Noutăți

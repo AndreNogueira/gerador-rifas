@@ -38,6 +38,7 @@ class Servico:
     metricas: Metricas = field(default_factory=Metricas)           # contagens para o painel de administracao (sem dados pessoais)
     observador: Observador | None = None
     acordado: EstadoAcordado = field(default_factory=EstadoAcordado)       # o anti-sono (ver manter_acordado.py)
+    partilhas: object | None = None                                         # `partilhas.Partilhas` (desenhos do editor partilhados por ligacao): so com DATABASE_URL
 
     def __post_init__(self) -> None:
         if self.observador is None:

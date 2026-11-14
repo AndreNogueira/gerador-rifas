@@ -2,6 +2,15 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.31.0 — 2026-11-13
+
+### Nytt
+- **Mallredigerare v2:** ångra och gör om (Ctrl+Z, Ctrl+Y), duplicera (Ctrl+D), ändra ritordningen, lägg till logotypen (PNG eller JPG) och **dela designen med en länk**: den sparas i 90 dagar efter senaste åtkomst, utan bilder och utan uppgifter om vem som delar (visas bara när tjänsten har en databas). Integritetspolicyn säger det.
+- **Windows-appen 2.5:** får mallredigeraren (menyn Extra) och går över till Python 3.15.
+
+### Förbättrat
+- Changeloggen har en länk för att ladda ner Windows-appen.
+
 ## 3.30.0 — 2026-11-12
 
 ### Nytt

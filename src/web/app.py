@@ -23,6 +23,7 @@ from .limites import Limitador
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
+from .partilhas import Partilhas
 from .rotas import Servico
 from .sessoes import Sessoes
 from .sistema import Observador
@@ -128,6 +129,7 @@ class Publico(BaseModel):
     qr: bool = False           # o servidor tem a chave que assina os QR dos bilhetes (VERIFICACAO_CHAVE)
     anuncios_cliente: str = ""  # identificador da AdSense (ca-pub-…): vazio = sem anuncios (ADSENSE_CLIENTE)
     anuncios_slot: str = ""     # bloco de anuncios: vazio = o script carrega-se mas nao se mostra nenhum bloco (ADSENSE_SLOT)
+    partilha_editor: bool = False   # o editor pode partilhar desenhos por ligacao (so com DATABASE_URL)
 
 
 async def _limpeza_periodica(servico: Servico, cada_s: float) -> None:
@@ -154,12 +156,14 @@ async def _amostrar(servico: Servico, cada_s: float) -> None:
 
 
 def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, motor: Motor | None = None,
-              metricas: Metricas | None = None) -> FastAPI:
+              metricas: Metricas | None = None, partilhas: Partilhas | None = None) -> FastAPI:
     """`frontend`: pasta do frontend compilado; `armazenamento`: onde ficam as sessoes (RIFAS_ARMAZENAMENTO); `motor`, `metricas`: para os testes."""
     pasta = (frontend or config.pasta_frontend()).resolve()
     armazem = ArmazenamentoLocal(armazenamento, limite_bytes=config.limite_sessao_mb() * 1024 * 1024)
     servico = Servico(Sessoes(armazem), motor or Motor(tempo_maximo_s=config.tempo_maximo_geracao_min() * 60), Limitador(),
                       metricas or Metricas(caminho_por_defeito(armazem.raiz), url_bd=config.database_url(), intervalo_bd_min=config.metricas_bd_min()), Observador(armazem.raiz))
+
+    servico.partilhas = partilhas if partilhas is not None else (Partilhas(config.database_url()) if config.database_url() else None)
 
     @contextlib.asynccontextmanager
     async def ciclo_de_vida(app: FastAPI):
@@ -215,7 +219,8 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         """O que o dono configurou para o publico (variaveis de ambiente): ligacao de donativo e se ha contacto."""
         resposta.headers["Cache-Control"] = "public, max-age=300"
         return Publico(donativo_url=config.donativo_url(), contacto=bool(config.contacto_email()), qr=bool(config.verificacao_chave()),
-                       anuncios_cliente=config.adsense_cliente(), anuncios_slot=config.adsense_slot())
+                       anuncios_cliente=config.adsense_cliente(), anuncios_slot=config.adsense_slot(),
+                       partilha_editor=servico.partilhas is not None)
 
     @app.get("/api/pagina/{nome}", response_model=PaginaTexto, tags=["sistema"])
     def pagina_de_texto(nome: str, resposta: Response, lg: str = Depends(rotas.lingua)) -> PaginaTexto:

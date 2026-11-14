@@ -2,6 +2,15 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.31.0 — 2026-11-13
+
+### Yeni
+- **Şablon düzenleyici v2:** geri al ve yinele (Ctrl+Z, Ctrl+Y), çoğalt (Ctrl+D), çizim sırasını değiştir, logo ekle (PNG veya JPG) ve **tasarımı bağlantıyla paylaş**: son erişimden sonra 90 gün saklanır, görseller olmadan ve paylaşan kişiyle ilgili veri olmadan (yalnızca hizmetin veritabanı varsa görünür). Gizlilik Politikası bunu belirtir.
+- **Windows uygulaması 2.5:** şablon düzenleyiciyi kazanır (Ekstralar menüsü) ve Python 3.15'e geçer.
+
+### İyileştirildi
+- Changelog'da Windows uygulamasını indirmek için bir bağlantı var.
+
 ## 3.30.0 — 2026-11-12
 
 ### Yeni

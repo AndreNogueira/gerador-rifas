@@ -150,6 +150,8 @@ export interface Publico {
   anuncios_cliente: string;
   /** Bloco de anúncios: vazio = o script carrega-se mas não se mostra nenhum bloco. */
   anuncios_slot: string;
+  /** O editor pode partilhar desenhos por ligação (o servidor tem base de dados). */
+  partilha_editor: boolean;
 }
 
 export interface Imagem {
@@ -256,6 +258,14 @@ export const api = {
   usarGaleria: (id: string, dados: DadosGaleria) =>
     pedir<Sessao>("POST", `${s(id)}/galeria`, { json: dados }),
   /** «Usar este template» do editor: o servidor desenha o PDF do desenho e cria o template e os algarismos na sessão. */
+  /** Partilha o desenho (sem imagens) por ligação: devolve o id de `/editor?d=<id>`. Só existe com base de dados (`Publico.partilha_editor`). */
+  partilharEditor: (desenho: unknown) =>
+    pedir<{ id: string }>("POST", "/api/editor/partilhar", { json: desenho }),
+  desenhoPartilhado: (id: string) =>
+    pedir<{ desenho: unknown; sem_imagens: boolean }>(
+      "GET",
+      `/api/editor/partilha/${encodeURIComponent(id)}`,
+    ),
   usarEditor: (id: string, desenho: unknown) => pedir<Sessao>("POST", `${s(id)}/editor`, { json: desenho }),
   /** A lista de bilhetes em CSV e a folha de controlo em PDF do pedido que está no formulário. */
   listaCsv: (campos: Campos) => pedir<Blob>("POST", "/api/exportar/lista.csv", { json: campos, bruto: true }),

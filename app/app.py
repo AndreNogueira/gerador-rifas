@@ -38,7 +38,7 @@ from tema import C, FONTE, cor_tk
 from visor import Visor
 from widgets import Banda, BarraMenus, Dica, Rolavel, novo_menu, repintar_so_o_necessario
 
-VERSAO = "2.4.0"
+VERSAO = "2.5.0"
 BASE = Path(__file__).resolve().parent            # tambem certo no .exe compilado (recursos ao lado)
 DADOS = core.config.pasta_de_dados(ambiente.dados_por_defeito())     # RIFAS_DADOS, ou %APPDATA%\GeradorRifas
 CONFIG = DADOS / core.config.NOME_CONFIG
@@ -93,7 +93,7 @@ def selftest(destino: Path) -> int:
                 tut.update()
             tut.destroy()
         app._mudar_lingua(i18n.LINGUAS["pt"])
-        for classe in (extras.Opcoes, extras.Galeria, extras.Sorteio):       # as janelas «Extras» abrem
+        for classe in (extras.Opcoes, extras.Galeria, extras.EditorTemplates, extras.Sorteio):       # as janelas «Extras» abrem
             j = classe(app)
             j.update()
             j.destroy()
@@ -640,6 +640,7 @@ class App(ctk.CTk):
         livre = "disabled" if self.a_gerar else "normal"
         m.add_command(label=t("win_opcoes"), command=lambda: self._abrir_extra("opcoes", extras.Opcoes), state=livre)
         m.add_command(label=t("win_galeria"), command=lambda: self._abrir_extra("galeria", extras.Galeria), state=livre)
+        m.add_command(label=t("web_editor") + "…", command=lambda: self._abrir_extra("editor", extras.EditorTemplates), state=livre)
         m.add_command(label=t("web_sorteio") + "…", command=lambda: self._abrir_extra("sorteio", extras.Sorteio))
         m.add_separator()
         m.add_command(label=t("web_exportar_csv") + "…", command=self._exportar_csv)
@@ -1098,6 +1099,11 @@ class App(ctk.CTk):
         if self._pasta_galeria is not None:
             shutil.rmtree(self._pasta_galeria, ignore_errors=True)
             self._pasta_galeria = None
+
+    def _ev_editor(self, token: int, png: bytes | None, erro: Exception | None) -> None:
+        j = self.w_extras.get("editor")
+        if j is not None and j.winfo_exists():
+            j.resultado(token, png, erro)
 
     def _ev_galeria(self, token: int, png: bytes | None, erro: Exception | None) -> None:
         j = self.w_extras.get("galeria")

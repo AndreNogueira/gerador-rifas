@@ -2,6 +2,15 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.31.0 — 2026-11-13
+
+### Novedades
+- **Editor de plantillas v2:** deshacer y rehacer (Ctrl+Z, Ctrl+Y), duplicar (Ctrl+D), cambiar el orden de dibujo, añadir el logotipo (PNG o JPG) y **compartir el diseño por enlace**: se guarda 90 días desde el último acceso, sin imágenes y sin datos de quien comparte (solo aparece cuando el servicio tiene base de datos). La Política de privacidad lo dice.
+- **App de Windows 2.5:** incorpora el editor de plantillas (menú Extras) y pasa a Python 3.15.
+
+### Mejorado
+- El Changelog tiene un enlace para descargar la app de Windows.
+
 ## 3.30.0 — 2026-11-12
 
 ### Novedades

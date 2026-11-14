@@ -2,6 +2,15 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.31.0 — 2026-11-13
+
+### New
+- **Template editor v2:** undo and redo (Ctrl+Z, Ctrl+Y), duplicate (Ctrl+D), change the drawing order, add your logo (PNG or JPG) and **share the design by link**: it is kept 90 days after its last access, without images and without data about who shares (it only appears when the service has a database). The Privacy Policy says so.
+- **Windows app 2.5:** gets the template editor (Extras menu) and moves to Python 3.15.
+
+### Improved
+- The Changelog has a link to download the Windows app.
+
 ## 3.30.0 — 2026-11-12
 
 ### New

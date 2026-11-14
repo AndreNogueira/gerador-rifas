@@ -311,6 +311,21 @@ const CENAS: Cena[] = [
         ),
         2800,
       );
+      await clicar(page, page.getByTestId("editor-duplicar"));
+      await legenda(
+        page,
+        T(
+          "Duplicar, desfazer e refazer (Ctrl+D, Ctrl+Z, Ctrl+Y)",
+          "Duplicate, undo and redo (Ctrl+D, Ctrl+Z, Ctrl+Y)",
+        ),
+        2200,
+      );
+      await clicar(page, page.getByTestId("editor-desfazer"));
+      await pausa(page, 900);
+      await page.getByTestId("editor-ficheiro").setInputFiles(LOGOTIPO);
+      await legenda(page, T("Junte o logótipo da associação", "Add your association's logo"), 2600);
+      await clicar(page, page.getByTestId("editor-tras"));
+      await pausa(page, 900);
       await clicar(page, page.getByTestId("add-retangulo"));
       await legenda(
         page,
