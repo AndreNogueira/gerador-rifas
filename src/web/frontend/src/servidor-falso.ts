@@ -50,6 +50,8 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_galeria_premios: "Prémios (uma linha cada, até 3)",
     web_galeria_data: "Data do sorteio",
     web_publicidade: "Publicidade",
+    web_guia_escolas: "Para escolas",
+    web_guia_associacoes: "Para associações",
     web_editor: "Editor de templates",
     web_editor_intro: "Desenhe a sua rifa sem o Canva.",
     web_editor_texto: "Texto",
@@ -277,6 +279,17 @@ export class ServidorFalso {
         ],
         video: "",
       });
+    if (url.startsWith("/api/guia/")) {
+      const nome = url.slice("/api/guia/".length);
+      return this.responder({
+        titulo:
+          nome === "escolas" ? "Como fazer uma rifa para a escola" : "Como fazer uma rifa para a associação",
+        intro: "Uma introdução de teste.",
+        passos: [1, 2, 3, 4, 5].map((n) => ({ titulo: `Passo ${n}`, texto: `O texto do passo ${n}.` })),
+        dicas: ["Dica 1", "Dica 2", "Dica 3"],
+        fim: "O serviço é gratuito.",
+      });
+    }
     if (url === "/api/changelog")
       return this.responder({
         entradas: [

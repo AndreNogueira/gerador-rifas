@@ -9,6 +9,7 @@ import { Editor } from "./Editor";
 import { registarEcra } from "./ecra";
 import { useFormulario } from "./formulario";
 import { Gerador } from "./Gerador";
+import { GUIAS, Guia } from "./Guia";
 import { useI18n } from "./i18n";
 import { PaginaTexto } from "./PaginaTexto";
 import { Sobre, Tutorial, Video } from "./paginas";
@@ -89,6 +90,8 @@ function Aplicacao() {
           <Sorteio />
         ) : caminho === "/editor" ? (
           <Editor />
+        ) : GUIAS[caminho] ? (
+          <Guia nome={GUIAS[caminho]} />
         ) : caminho === "/changelog" ? (
           <Changelog />
         ) : caminho === "/termos" || caminho === "/privacidade" || caminho === "/contacto" ? (
@@ -104,6 +107,8 @@ function Aplicacao() {
         <footer className="rodape">
           <span>v{versao}</span>
           <nav aria-label="Informação">
+            <Ligacao para="/rifas-para-escolas">{t("web_guia_escolas")}</Ligacao>
+            <Ligacao para="/rifas-para-associacoes">{t("web_guia_associacoes")}</Ligacao>
             <Ligacao para="/changelog">Changelog</Ligacao>
             <Ligacao para="/termos">{t("web_termos")}</Ligacao>
             <Ligacao para="/privacidade">{t("web_privacidade")}</Ligacao>

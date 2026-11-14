@@ -21,7 +21,7 @@ from dataclasses import dataclass
 from core import i18n, tutorial
 from fastapi import Request
 
-from . import VERSAO, changelog, config, textos_legais
+from . import VERSAO, changelog, config, guias, textos_legais
 from .seo_textos import LOCALE_OG, texto
 
 NOME = "Gerador de Rifas"           # o nome em portugues; em cada lingua vem de `app_nome` (ver `_app`)
@@ -112,6 +112,16 @@ def _corpo_editor(lg: str) -> str:
     return f"<h1>{html.escape(_nome_pagina('web_editor')(lg))}</h1><p>{html.escape(texto('d_editor', lg))}</p>{_voltar(lg)}"
 
 
+def _corpo_guia(nome: str) -> Callable[[str], str]:
+    def corpo(lg: str) -> str:
+        g = guias.guia(nome, lg)
+        passos = "".join(f"<li><strong>{html.escape(p['titulo'])}.</strong> {html.escape(p['texto'])}</li>" for p in g["passos"])
+        dicas = "".join(f"<li>{html.escape(d)}</li>" for d in g["dicas"])
+        return (f"<h1>{html.escape(g['titulo'])}</h1><p>{html.escape(g['intro'])}</p><ol>{passos}</ol><ul>{dicas}</ul>"
+                f"<p>{html.escape(g['fim'])}</p>{_voltar(lg)}")
+    return corpo
+
+
 def _corpo_changelog(lg: str) -> str:
     blocos = []
     for e in list(changelog.entradas(lg))[:6]:
@@ -159,6 +169,8 @@ ROTAS: dict[str, Pagina] = {p.caminho: p for p in (
     Pagina("/sobre", "d_sobre", _corpo_sobre, _nome_pagina("mi_sobre")),
     Pagina("/sorteio", "d_sorteio", _corpo_sorteio, _nome_pagina("web_sorteio")),
     Pagina("/editor", "d_editor", _corpo_editor, _nome_pagina("web_editor")),
+    Pagina(guias.CAMINHOS["escolas"], "d_guia_escolas", _corpo_guia("escolas"), lambda lg: guias.guia("escolas", lg)["titulo"]),
+    Pagina(guias.CAMINHOS["associacoes"], "d_guia_associacoes", _corpo_guia("associacoes"), lambda lg: guias.guia("associacoes", lg)["titulo"]),
     Pagina("/termos", "d_termos", _corpo_texto("termos"), lambda lg: textos_legais.pagina("termos", lg)["titulo"]),
     Pagina("/privacidade", "d_privacidade", _corpo_texto("privacidade"), lambda lg: textos_legais.pagina("privacidade", lg)["titulo"]),
     Pagina("/contacto", "d_contacto", _corpo_texto("contacto"), lambda lg: textos_legais.pagina("contacto", lg)["titulo"]),

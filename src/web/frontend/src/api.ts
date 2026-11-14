@@ -134,6 +134,13 @@ export interface PaginaDeTexto {
   aviso: string;
   seccoes: { titulo: string; paragrafos: string[] }[];
 }
+export interface GuiaDeTexto {
+  titulo: string;
+  intro: string;
+  passos: { titulo: string; texto: string }[];
+  dicas: string[];
+  fim: string;
+}
 export interface Publico {
   donativo_url: string;
   contacto: boolean;
@@ -255,6 +262,7 @@ export const api = {
   folhaDeControlo: (campos: Campos) =>
     pedir<Blob>("POST", "/api/exportar/controlo.pdf", { json: campos, bruto: true }),
   publico: () => pedir<Publico>("GET", "/api/publico"),
+  guia: (nome: string) => pedir<GuiaDeTexto>("GET", `/api/guia/${encodeURIComponent(nome)}`),
   pagina: (nome: string) => pedir<PaginaDeTexto>("GET", `/api/pagina/${encodeURIComponent(nome)}`),
   changelog: () => pedir<{ entradas: EntradaChangelog[] }>("GET", "/api/changelog"),
   criarSessao: () => pedir<Sessao>("POST", "/api/sessoes"),

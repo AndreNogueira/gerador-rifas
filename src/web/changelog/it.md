@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.30.0 — 2026-11-12
+
+### Novità
+- **Pagine «Come fare»:** due guide scritte, «Per le scuole» e «Per le associazioni» (link nel piè di pagina), con il passo passo per fare una lotteria: disegnare il biglietto, una serie per classe o venditore, stampare con segni di taglio, controllare le vendite e fare un'estrazione verificabile. Sono nelle 18 lingue e ricordano di verificare in comune se la lotteria richiede un'autorizzazione.
+
 ## 3.29.0 — 2026-11-12
 
 ### Migliorato
