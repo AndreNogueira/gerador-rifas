@@ -529,8 +529,8 @@ const CENAS: Cena[] = [
       await legenda(
         page,
         T(
-          "No fim da página (e depois de gerar) está o botão «Partilhar»",
-          "At the bottom of the page (and after generating) there is a “Share” button",
+          "No cabeçalho (e depois de gerar) está o botão «Partilhar»",
+          "In the header (and after generating) there is a “Share” button",
         ),
         2600,
       );
