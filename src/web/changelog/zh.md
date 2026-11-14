@@ -2,6 +2,18 @@
 
 `../CHANGELOG.md` 的翻译摘要：版本、分节和条目相同，但更简短。完整内容为葡萄牙语。
 
+## 3.33.0 — 2026-11-13
+
+### 新增
+- **公开的批量 API**（`/api/v1`，Swagger 位于 `/api/v1/docs`）：让其他程序用一个模板生成多个抽奖券任务，需要密钥，并有每日配额和限制。网站用户永远优先。
+- **四种新语言：**加泰罗尼亚语、乌克兰语、印度尼西亚语和越南语。网站和 Windows 应用现支持 22 种语言，包括教程、条款、隐私、操作指南和截图。
+- **搜索引擎文本可按语言编辑：**站长可在管理面板中编辑每种语言的标题、描述和指南，保存在数据库中，无需重新部署。
+
+## 3.32.0 — 2026-11-13
+
+### 新增
+- **图库新增 20 个模板（共 24 个）：**Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema。全部为本项目原创绘制，带存根，网站和 Windows 应用都有（应用中的图库改为下拉列表）。
+
 ## 3.31.0 — 2026-11-13
 
 ### 新增

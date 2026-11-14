@@ -2,6 +2,18 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.33.0 — 2026-11-13
+
+### Nouveautés
+- **API publique par lots** (`/api/v1`, avec Swagger sur `/api/v1/docs`) : elle permet à d'autres programmes de générer plusieurs demandes de tickets à partir d'un seul modèle, avec une clé, des quotas quotidiens et des limites. Les utilisateurs du site passent toujours en premier.
+- **Quatre nouvelles langues :** catalan, ukrainien, indonésien et vietnamien. Le site et l'appli Windows passent à 22 langues, avec tutoriel, conditions, confidentialité, guides pratiques et captures.
+- **Textes pour les moteurs de recherche modifiables par langue :** le propriétaire modifie dans le panneau d'administration les titres, descriptions et guides de chaque langue, stockés en base de données et sans nouveau déploiement.
+
+## 3.32.0 — 2026-11-13
+
+### Nouveautés
+- **20 nouveaux modèles dans la galerie (24 au total) :** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Tous dessinés de zéro pour ce projet, avec talon, sur le site et dans l'appli Windows (où la galerie devient une liste déroulante).
+
 ## 3.31.0 — 2026-11-13
 
 ### Nouveautés

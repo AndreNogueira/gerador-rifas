@@ -1,4 +1,4 @@
-"""Percorre a interface real: template + algarismos, pre-visualizacao com zoom/expansao, 18 linguas,
+"""Percorre a interface real: template + algarismos, pre-visualizacao com zoom/expansao, 22 linguas,
 nome obrigatorio e geracao.
 Uso: python teste_gui.py <pasta_saida> <template.pdf> <algarismos.pdf|png> [fim=5000] [unico|<max por ficheiro>]
 (capturas de ecra em <pasta_saida>)"""
@@ -73,7 +73,7 @@ a.visor._expandir(); pump(0.6); shot("gui_expandido")
 print("expandido: definicoes visiveis =", a.rolavel.winfo_ismapped(), "| largura do visor =", a.visor.winfo_width())
 a.visor._expandir(); pump(0.8)
 print("reduzido: definicoes visiveis =", a.rolavel.winfo_ismapped(), "| largura das definicoes =", a.rolavel.winfo_width())
-# 18 linguas
+# 22 linguas
 for lg in i18n.LINGUAS:
     a._mudar_lingua(i18n.LINGUAS[lg])
     pump(0.6)

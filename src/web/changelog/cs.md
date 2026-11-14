@@ -2,6 +2,18 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.33.0 — 2026-11-13
+
+### Novinky
+- **Veřejné API pro dávky** (`/api/v1`, se Swaggerem na `/api/v1/docs`): umožňuje jiným programům vytvářet více zakázek na losy z jedné šablony, s klíčem, denními kvótami a limity. Uživatelé webu mají vždy přednost.
+- **Čtyři nové jazyky:** katalánština, ukrajinština, indonéština a vietnamština. Web i aplikace pro Windows nyní mluví 22 jazyky, s návodem, podmínkami, soukromím, průvodci a snímky obrazovky.
+- **Texty pro vyhledávače upravitelné pro každý jazyk:** majitel upravuje v administračním panelu názvy, popisy a průvodce každého jazyka, uložené v databázi a bez nového nasazení.
+
+## 3.32.0 — 2026-11-13
+
+### Novinky
+- **20 nových šablon v galerii (celkem 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Všechny nakreslené od nuly pro tento projekt, s útržkem, na webu i v aplikaci pro Windows (kde se galerie mění na rozbalovací seznam).
+
 ## 3.31.0 — 2026-11-13
 
 ### Novinky

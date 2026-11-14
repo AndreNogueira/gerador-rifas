@@ -2,6 +2,18 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.33.0 — 2026-11-13
+
+### Yeni
+- **Toplu işler için herkese açık API** (`/api/v1`, Swagger `/api/v1/docs` adresinde): diğer programların tek bir şablondan birden fazla bilet işi oluşturmasını sağlar; anahtar, günlük kotalar ve sınırlar vardır. Siteyi kullananlar her zaman önce gelir.
+- **Dört yeni dil:** Katalanca, Ukraynaca, Endonezce ve Vietnamca. Site ve Windows uygulaması artık 22 dilde, eğitim, koşullar, gizlilik, nasıl yapılır kılavuzları ve ekran görüntüleriyle.
+- **Arama motorları için diller başına düzenlenebilir metinler:** sahibi, yönetim panelinde her dilin başlıklarını, açıklamalarını ve kılavuzlarını düzenler; veritabanında saklanır ve yeni dağıtım gerekmez.
+
+## 3.32.0 — 2026-11-13
+
+### Yeni
+- **Galeride 20 yeni şablon (toplam 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Hepsi bu proje için sıfırdan çizildi, koçanlı, sitede ve Windows uygulamasında (burada galeri açılır listeye dönüşür).
+
 ## 3.31.0 — 2026-11-13
 
 ### Yeni

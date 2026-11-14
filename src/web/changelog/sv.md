@@ -2,6 +2,18 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.33.0 — 2026-11-13
+
+### Nytt
+- **Öppet API för partier** (`/api/v1`, med Swagger på `/api/v1/docs`): låter andra program skapa flera lottbeställningar från en enda mall, med nyckel, dagliga kvoter och gränser. De som använder webbplatsen går alltid först.
+- **Fyra nya språk:** katalanska, ukrainska, indonesiska och vietnamesiska. Webbplatsen och Windows-appen talar nu 22 språk, med handledning, villkor, integritet, guider och skärmbilder.
+- **Texter för sökmotorer som kan redigeras per språk:** ägaren redigerar titlar, beskrivningar och guider för varje språk i administrationspanelen, sparade i databasen och utan ny driftsättning.
+
+## 3.32.0 — 2026-11-13
+
+### Nytt
+- **20 nya mallar i galleriet (24 totalt):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Alla ritade från grunden för det här projektet, med talong, på webbplatsen och i Windows-appen (där galleriet blir en rullgardinslista).
+
 ## 3.31.0 — 2026-11-13
 
 ### Nytt

@@ -2,6 +2,18 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.33.0 — 2026-11-13
+
+### Nowości
+- **Publiczne API do partii** (`/api/v1`, z Swaggerem pod `/api/v1/docs`): pozwala innym programom generować wiele zleceń losów z jednego szablonu, z kluczem, dziennymi limitami i ograniczeniami. Osoby korzystające ze strony zawsze mają pierwszeństwo.
+- **Cztery nowe języki:** kataloński, ukraiński, indonezyjski i wietnamski. Strona i aplikacja Windows mówią teraz w 22 językach, z poradnikiem, regulaminem, prywatnością, przewodnikami i zrzutami ekranu.
+- **Teksty dla wyszukiwarek edytowalne dla każdego języka:** właściciel edytuje w panelu administracyjnym tytuły, opisy i przewodniki każdego języka, zapisane w bazie danych, bez nowego wdrożenia.
+
+## 3.32.0 — 2026-11-13
+
+### Nowości
+- **20 nowych szablonów w galerii (razem 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Wszystkie narysowane od zera na potrzeby tego projektu, z odcinkiem, na stronie i w aplikacji Windows (gdzie galeria staje się listą rozwijaną).
+
 ## 3.31.0 — 2026-11-13
 
 ### Nowości

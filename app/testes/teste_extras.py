@@ -237,7 +237,7 @@ ok(not ed.winfo_exists(), "a janela do editor fecha")
 a._limpar_tudo()
 pump(0.3)
 
-# --- as 18 linguas: os menus e as janelas abrem sem faltar texto
+# --- as 22 linguas: os menus e as janelas abrem sem faltar texto
 for lg in i18n.LINGUAS:
     a._mudar_lingua(i18n.LINGUAS[lg])
     pump(0.15)
@@ -245,7 +245,7 @@ for lg in i18n.LINGUAS:
         a._abrir_extra(nome, cls)
         a.w_extras[nome].update()
         a.w_extras[nome].destroy()
-ok(True, "as janelas abrem nas 18 linguas")
+ok(True, "as janelas abrem nas 22 linguas")
 print("mensagens:", mensagens)
 a.destroy()
 print("FALHOU: " + "; ".join(falhas) if falhas else "TUDO OK")

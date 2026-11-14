@@ -2,6 +2,18 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.33.0 — 2026-11-13
+
+### Nieuw
+- **Openbare API voor batches** (`/api/v1`, met Swagger op `/api/v1/docs`): andere programma's kunnen er meerdere loten-opdrachten mee maken uit één sjabloon, met sleutel, dagquota en limieten. Wie de site gebruikt, gaat altijd voor.
+- **Vier nieuwe talen:** Catalaans, Oekraïens, Indonesisch en Vietnamees. De site en de Windows-app spreken nu 22 talen, met handleiding, voorwaarden, privacy, stappengidsen en schermafbeeldingen.
+- **Teksten voor zoekmachines per taal te bewerken:** de eigenaar bewerkt in het beheerpaneel de titels, beschrijvingen en gidsen van elke taal, opgeslagen in de database en zonder nieuwe deploy.
+
+## 3.32.0 — 2026-11-13
+
+### Nieuw
+- **20 nieuwe sjablonen in de galerij (24 in totaal):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Allemaal voor dit project helemaal zelf getekend, met controlestrook, op de site en in de Windows-app (waar de galerij een keuzelijst wordt).
+
 ## 3.31.0 — 2026-11-13
 
 ### Nieuw

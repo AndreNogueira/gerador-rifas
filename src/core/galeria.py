@@ -12,6 +12,7 @@ import math
 from dataclasses import dataclass
 from pathlib import Path
 
+from . import galeria_enfeites
 from .motor import ErroRifas
 
 LARGURA, ALTURA = 535.0, 152.0           # a rifa (pt)
@@ -45,7 +46,7 @@ class Desenho:
     destaque: tuple            # cor dos numeros e do enfeite
     talao: tuple               # fundo do talao
     papel: tuple               # fundo da rifa
-    enfeite: str               # estrela | riscas | flocos | losangos
+    enfeite: str               # estrela | riscas | flocos | losangos (os 4 de base) ou o nome de um motivo de `galeria_enfeites.MOTIVOS`
 
 
 DESENHOS = (
@@ -54,7 +55,30 @@ DESENHOS = (
     Desenho("natal", "Natal", (0.05, 0.38, 0.20), (0.78, 0.10, 0.12), (0.88, 0.96, 0.90), (1.0, 1.0, 1.0), "flocos"),
     Desenho("gala", "Gala", (0.09, 0.14, 0.34), (0.75, 0.58, 0.18), (0.93, 0.91, 0.84), (0.99, 0.98, 0.95), "losangos"),
 )
+DESENHOS += (
+    Desenho("pascoa", "Páscoa", (0.45, 0.35, 0.7), (0.96, 0.55, 0.6), (1.0, 0.96, 0.8), (1.0, 1.0, 0.96), "pascoa"),
+    Desenho("carnaval", "Carnaval", (0.55, 0.1, 0.55), (0.95, 0.35, 0.15), (0.99, 0.92, 0.7), (1.0, 0.99, 0.95), "carnaval"),
+    Desenho("santos", "Santos Populares", (0.78, 0.15, 0.18), (0.15, 0.5, 0.25), (1.0, 0.93, 0.75), (1.0, 0.99, 0.93), "santos"),
+    Desenho("coracao", "Coração", (0.7, 0.1, 0.3), (0.9, 0.25, 0.4), (1.0, 0.9, 0.92), (1.0, 0.98, 0.98), "coracao"),
+    Desenho("praia", "Praia", (0.0, 0.45, 0.6), (0.98, 0.6, 0.15), (0.99, 0.93, 0.75), (0.97, 1.0, 1.0), "praia"),
+    Desenho("halloween", "Halloween", (0.25, 0.12, 0.35), (0.95, 0.5, 0.1), (0.99, 0.88, 0.7), (1.0, 0.98, 0.94), "halloween"),
+    Desenho("magusto", "Magusto", (0.5, 0.25, 0.1), (0.8, 0.4, 0.1), (0.97, 0.9, 0.75), (1.0, 0.98, 0.93), "magusto"),
+    Desenho("futebol", "Futebol", (0.05, 0.4, 0.15), (0.15, 0.6, 0.25), (0.88, 0.96, 0.88), (1.0, 1.0, 1.0), "futebol"),
+    Desenho("escola", "Escola", (0.1, 0.3, 0.65), (0.9, 0.3, 0.2), (1.0, 0.95, 0.78), (1.0, 1.0, 0.98), "escola"),
+    Desenho("festival", "Festival", (0.35, 0.1, 0.55), (0.95, 0.2, 0.55), (0.95, 0.88, 1.0), (0.99, 0.97, 1.0), "festival"),
+    Desenho("solidaria", "Solidária", (0.05, 0.35, 0.35), (0.85, 0.2, 0.25), (0.88, 0.96, 0.95), (1.0, 1.0, 1.0), "solidaria"),
+    Desenho("bombeiros", "Bombeiros", (0.15, 0.15, 0.15), (0.8, 0.1, 0.1), (1.0, 0.9, 0.88), (1.0, 1.0, 1.0), "bombeiros"),
+    Desenho("retro", "Retro", (0.2, 0.1, 0.45), (0.95, 0.35, 0.6), (1.0, 0.93, 0.7), (0.99, 0.96, 0.9), "retro"),
+    Desenho("minimal", "Minimalista", (0.15, 0.15, 0.15), (0.45, 0.45, 0.45), (0.95, 0.95, 0.95), (1.0, 1.0, 1.0), "minimal"),
+    Desenho("vindima", "Vindima", (0.35, 0.1, 0.3), (0.45, 0.15, 0.5), (0.96, 0.9, 0.8), (0.99, 0.98, 0.94), "vindima"),
+    Desenho("arraial", "Arraial", (0.75, 0.2, 0.1), (0.15, 0.45, 0.8), (1.0, 0.93, 0.75), (1.0, 0.99, 0.94), "arraial"),
+    Desenho("tesouro", "Tesouro", (0.4, 0.25, 0.1), (0.75, 0.15, 0.15), (0.96, 0.88, 0.68), (0.99, 0.96, 0.88), "tesouro"),
+    Desenho("primavera", "Primavera", (0.2, 0.5, 0.25), (0.92, 0.35, 0.55), (0.92, 0.98, 0.88), (1.0, 1.0, 0.98), "primavera"),
+    Desenho("inverno", "Inverno", (0.1, 0.3, 0.55), (0.35, 0.6, 0.85), (0.9, 0.95, 1.0), (0.98, 0.99, 1.0), "inverno"),
+    Desenho("cinema", "Cinema", (0.1, 0.1, 0.15), (0.85, 0.65, 0.1), (0.95, 0.92, 0.82), (0.99, 0.98, 0.95), "cinema"),
+)
 POR_ID = {d.id: d for d in DESENHOS}
+assert len(POR_ID) == len(DESENHOS) == 24
 _REGISTADA = False
 
 
@@ -117,6 +141,11 @@ def _estrela(c, cx: float, cy: float, r: float) -> None:
 
 def _enfeite(c, d: Desenho, x: float, yb: float, w: float, h: float, bx: float) -> None:
     """O enfeite do desenho: a estrela, as riscas do toldo, a neve ou os losangos (dentro da parte principal)."""
+    if d.enfeite in galeria_enfeites.MOTIVOS:                         # os 20 desenhos novos: ver galeria_enfeites.py
+        c.saveState()
+        galeria_enfeites.MOTIVOS[d.enfeite](c, d, x, yb, w, h, bx)
+        c.restoreState()
+        return
     c.saveState()
     c.setFillColorRGB(*d.destaque)
     c.setStrokeColorRGB(*d.destaque)

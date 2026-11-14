@@ -263,3 +263,12 @@ def aplicar(pagina: dict, lingua: str) -> dict:
     seccoes[2]["paragrafos"][-1] = trocar_ultima_frase(seccoes[2]["paragrafos"][-1], d["cookies"])
     seccoes.insert(3, {"titulo": d["seccao"]["titulo"], "paragrafos": list(d["seccao"]["paragrafos"])})
     return pagina
+
+
+# as linguas novas trazem estes textos no seu proprio `legal/<lingua>.py` (ver docs/LINGUAS.md)
+from importlib import import_module  # noqa: E402
+
+from .legal import LINGUAS_NOVAS  # noqa: E402
+
+for _lg in LINGUAS_NOVAS:
+    TEXTOS[_lg] = import_module(f"{__package__}.legal.{_lg}").ANUNCIOS

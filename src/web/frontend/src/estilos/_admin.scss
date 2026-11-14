@@ -368,3 +368,46 @@
     overflow-wrap: anywhere;
   }
 }
+.seo-admin {
+  summary {
+    cursor: pointer;
+    h2 {
+      display: inline;
+    }
+  }
+}
+.seo-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  margin: 12px 0;
+}
+.seo-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+.seo-linha {
+  textarea {
+    width: 100%;
+    font: inherit;
+  }
+  .seo-rotulo {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .seo-editado {
+    font-size: 0.75rem;
+    margin-left: 6px;
+    color: var(--ok, currentcolor);
+  }
+}
+.seo-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+}

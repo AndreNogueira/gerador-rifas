@@ -5,7 +5,8 @@
 - <lingua>_a.png / <lingua>_b.png : janela com tudo preenchido e pre-visualizacao / depois de gerar
 - ajuda.json  : zonas a recortar de cada captura (passos 1-4, visor, acoes) e a escala do ecra
 
-Uso (a janela aparece no ecra durante uns minutos; nao mexer): python testes/fazer_ajuda.py
+Uso (a janela aparece no ecra durante uns minutos; nao mexer): python testes/fazer_ajuda.py [c | <lingua> ...]
+(`c`: so o estado C; uma ou mais linguas: so essas, sem refazer as outras nem o modelo e os algarismos)
 """
 import json
 import shutil
@@ -82,7 +83,9 @@ def digitos() -> None:
 
 def main() -> None:
     so_c = "c" in sys.argv[1:]          # `python testes/fazer_ajuda.py c`: so refaz as capturas do estado C
-    if not so_c:
+    pedidas = [x for x in sys.argv[1:] if x in i18n.LINGUAS]       # `python testes/fazer_ajuda.py ca uk`: so estas linguas (junta ao ajuda.json existente)
+    linguas = pedidas or list(i18n.LINGUAS)
+    if not so_c and not pedidas:
         modelo()
         digitos()
     saida = Path(tempfile.mkdtemp(prefix="ajuda_"))
@@ -122,7 +125,7 @@ def main() -> None:
     except Exception:
         pass
     pump(1.5)
-    caixas: dict = json.loads((PASTA / "ajuda.json").read_text(encoding="utf-8")) if so_c else {}
+    caixas: dict = json.loads((PASTA / "ajuda.json").read_text(encoding="utf-8")) if (so_c or pedidas) else {}
     if not so_c:
         a.v_template.set(str(EX / "template_exemplo.pdf"))
         a.v_alg.set(str(EX / "digitos_exemplo.pdf"))
@@ -137,7 +140,7 @@ def main() -> None:
         a._previa()
         pump(8, lambda: a.st_titulo[0] == "previa_titulo_n")
     escala = a._get_window_scaling()
-    for lg in ([] if so_c else i18n.LINGUAS):
+    for lg in ([] if so_c else linguas):
         lg_atual[0] = lg
         a._mudar_lingua(i18n.LINGUAS[lg])
         a.e_nome.focus_set()
@@ -176,7 +179,7 @@ def main() -> None:
         captura(f"{lg}_b.png")
         a.v_fim.set("300")
         a._set_modo("varios")
-        caixas[lg] = {"a": estado_a, "b": estado_b}
+        caixas.setdefault(lg, {}).update({"a": estado_a, "b": estado_b})       # junta (as zonas do site, `wa`/`wb`/`wc`, vivem no mesmo ficheiro)
         print(f"  {lg}: ok  A={PASTA / (lg + '_a.png')}", (PASTA / f"{lg}_a.png").stat().st_size // 1024, "KB",
               (PASTA / f"{lg}_b.png").stat().st_size // 1024, "KB", flush=True)
     # estado C: template com UMA so rifa (aparecem o papel, a margem e as rifas por folha); so se guarda o cartao 1
@@ -190,7 +193,7 @@ def main() -> None:
     a.v_template.set(TPL_MOSTRAR)
     a.v_alg.set(ALG_MOSTRAR)
     a.v_porfolha.set("")
-    for lg in i18n.LINGUAS:
+    for lg in linguas:
         lg_atual[0] = lg
         a._mudar_lingua(i18n.LINGUAS[lg])
         a.focus_set()

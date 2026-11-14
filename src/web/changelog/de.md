@@ -2,6 +2,18 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.33.0 — 2026-11-13
+
+### Neu
+- **Öffentliche API für Stapel** (`/api/v1`, mit Swagger unter `/api/v1/docs`): Andere Programme können damit mehrere Los-Aufträge aus einer einzigen Vorlage erzeugen, mit Schlüssel, Tageskontingenten und Limits. Wer die Website nutzt, kommt immer zuerst dran.
+- **Vier neue Sprachen:** Katalanisch, Ukrainisch, Indonesisch und Vietnamesisch. Die Website und die Windows-App sprechen jetzt 22 Sprachen, mit Anleitung, Bedingungen, Datenschutz, Ratgebern und Screenshots.
+- **Texte für Suchmaschinen pro Sprache bearbeitbar:** Der Betreiber bearbeitet im Admin-Bereich Titel, Beschreibungen und Ratgeber jeder Sprache, in der Datenbank gespeichert und ohne neues Deployment.
+
+## 3.32.0 — 2026-11-13
+
+### Neu
+- **20 neue Vorlagen in der Galerie (24 insgesamt):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Alle für dieses Projekt neu gezeichnet, mit Abschnitt, auf der Website und in der Windows-App (wo die Galerie zur Auswahlliste wird).
+
 ## 3.31.0 — 2026-11-13
 
 ### Neu

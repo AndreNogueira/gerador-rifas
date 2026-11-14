@@ -15,9 +15,11 @@ import hmac
 import time
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from . import VERSAO, config
+from . import seo_bd
+from .chaves_api import QUOTA_PADRAO
 from .metricas import INTERVALOS
 from .rotas import Servico, servico
 
@@ -132,3 +134,71 @@ def dados(intervalo: str = "6h", serv: Servico = Depends(servico)) -> dict:
         "tabela_pedidos": m.tabela_pedidos(desde),
         "resumo": m.resumo(desde),
     }
+
+
+# ------------------------------------------------------------------ chaves da API publica v1 (/api/v1): criam-se e revogam-se aqui, nunca no repositorio
+class NovaChave(BaseModel):
+    nome: str = Field(min_length=1, max_length=60)
+    quota_dia: int = Field(QUOTA_PADRAO, ge=1, le=100_000_000)             # numeros por dia
+
+
+@router.get("/chaves", dependencies=[Depends(exigir)])
+def chaves(serv: Servico = Depends(servico)) -> list[dict]:
+    """As chaves (sem o segredo: so o prefixo) e o que gastaram hoje."""
+    saida = []
+    for c in serv.chaves.listar():
+        usados, lotes = serv.chaves.uso_hoje(c)
+        saida.append({"id": c.id, "nome": c.nome, "prefixo": c.prefixo, "criada": c.criada, "ativa": c.ativa, "quota_dia": c.quota,
+                      "usados_hoje": usados, "lotes_hoje": lotes})
+    return saida
+
+
+@router.post("/chaves", status_code=201, dependencies=[Depends(exigir)])
+def criar_chave(n: NovaChave, serv: Servico = Depends(servico)) -> dict:
+    """Cria uma chave. A chave em claro **so aparece nesta resposta** (guarda-se o SHA-256); nao fica em nenhum log."""
+    info, chave = serv.chaves.criar(n.nome.strip(), n.quota_dia)
+    serv.metricas.evento("admin", "chave_criada")
+    return {"id": info.id, "nome": info.nome, "prefixo": info.prefixo, "quota_dia": info.quota, "chave": chave}
+
+
+@router.delete("/chaves/{id_}", status_code=204, dependencies=[Depends(exigir)])
+def revogar_chave(id_: str, serv: Servico = Depends(servico)) -> Response:
+    if not serv.chaves.revogar(id_):
+        raise HTTPException(404, "Chave inexistente", headers=_SEM_CACHE)
+    serv.metricas.evento("admin", "chave_revogada")
+    return Response(status_code=204, headers=_SEM_CACHE)
+
+
+# ------------------------------------------------------------------ SEO por lingua (titulos, descricoes e guias) editado na base de dados
+class TextoSeo(BaseModel):
+    chave: str = Field(max_length=120)
+    lingua: str = Field(max_length=5)
+    valor: str = Field(max_length=2000)
+
+
+@router.get("/seo", dependencies=[Depends(exigir)])
+def seo_ver(lingua: str = "pt", serv: Servico = Depends(servico)) -> dict:
+    """Os textos de SEO editaveis numa lingua: o do codigo e o editado. `persistente`: false = a base e local e some quando o Render adormece."""
+    from core import i18n
+    if lingua not in i18n.LINGUAS:
+        raise HTTPException(422, "Língua desconhecida", headers=_SEM_CACHE)
+    return {"lingua": lingua, "linguas": list(i18n.LINGUAS), "persistente": serv.seo.persistente, "erro": serv.seo.erro,
+            "limites": {"titulo": seo_bd.LARGURA_TITULO, "descricao": list(seo_bd.LARGURA_DESCRICAO), "max": seo_bd.VALOR_MAX},
+            "itens": serv.seo.vista(lingua)}
+
+
+@router.put("/seo", dependencies=[Depends(exigir)])
+def seo_guardar(t: TextoSeo, serv: Servico = Depends(servico)) -> dict:
+    try:
+        valor = serv.seo.definir(t.chave, t.lingua, t.valor)
+    except ValueError as e:
+        raise HTTPException(422, str(e), headers=_SEM_CACHE) from None
+    serv.metricas.evento("admin", "seo_editado")
+    return {"chave": t.chave, "lingua": t.lingua, "valor": valor}
+
+
+@router.delete("/seo", status_code=204, dependencies=[Depends(exigir)])
+def seo_repor(chave: str, lingua: str, serv: Servico = Depends(servico)) -> Response:
+    serv.seo.repor(chave, lingua)
+    serv.metricas.evento("admin", "seo_reposto")
+    return Response(status_code=204, headers=_SEM_CACHE)

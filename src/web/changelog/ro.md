@@ -2,6 +2,18 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.33.0 — 2026-11-13
+
+### Noutăți
+- **API public pentru loturi** (`/api/v1`, cu Swagger la `/api/v1/docs`): permite altor programe să genereze mai multe comenzi de bilete dintr-un singur șablon, cu cheie, cote zilnice și limite. Cei care folosesc site-ul au mereu prioritate.
+- **Patru limbi noi:** catalană, ucraineană, indoneziană și vietnameză. Site-ul și aplicația Windows vorbesc acum 22 de limbi, cu tutorial, termeni, confidențialitate, ghiduri practice și capturi.
+- **Texte pentru motoarele de căutare editabile pe limbă:** proprietarul editează în panoul de administrare titlurile, descrierile și ghidurile fiecărei limbi, salvate în baza de date și fără o nouă implementare.
+
+## 3.32.0 — 2026-11-13
+
+### Noutăți
+- **20 de șabloane noi în galerie (24 în total):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Toate desenate de la zero pentru acest proiect, cu cotor, pe site și în aplicația Windows (unde galeria devine o listă derulantă).
+
 ## 3.31.0 — 2026-11-13
 
 ### Noutăți
