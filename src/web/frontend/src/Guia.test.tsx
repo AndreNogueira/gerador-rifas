@@ -39,7 +39,7 @@ describe("guias «como fazer»", () => {
     ).toBeInTheDocument();
   });
 
-  it("o rodapé liga aos dois guias", async () => {
+  it("o rodapé liga a todos os guias", async () => {
     abrir("/");
     const rodape = await screen.findByRole("navigation", { name: "Informação" });
     expect(within(rodape).getByRole("link", { name: "Para escolas" })).toHaveAttribute(
@@ -50,5 +50,12 @@ describe("guias «como fazer»", () => {
       "href",
       "/rifas-para-associacoes",
     );
+    for (const [nome, caminho] of [
+      ["Para clubes", "/rifas-para-clubes"],
+      ["Para bombeiros", "/rifas-para-bombeiros"],
+      ["Para festas de bairro", "/rifas-para-festas"],
+    ]) {
+      expect(within(rodape).getByRole("link", { name: nome })).toHaveAttribute("href", caminho);
+    }
   });
 });

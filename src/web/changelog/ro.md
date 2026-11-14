@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.34.0 — 2026-11-13
+
+### Noutăți
+- **Trei ghiduri noi «Cum faci»:** «Pentru cluburi», «Pentru pompieri» și «Pentru sărbători de cartier» (linkuri în subsol), cu pașii pentru a face o tombolă în fiecare caz. Sunt în toate cele 22 de limbi și amintesc să verifici la primărie dacă tombola cere autorizație.
+
 ## 3.33.0 — 2026-11-13
 
 ### Noutăți

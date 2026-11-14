@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.34.0 — 2026-11-13
+
+### Nieuw
+- **Drie nieuwe «Zo doet u het»-gidsen:** «Voor clubs», «Voor de brandweer» en «Voor buurtfeesten» (links onderaan), met telkens de stappen voor een loterij. Ze staan in alle 22 talen en herinneren u eraan bij de gemeente na te gaan of de loterij een vergunning nodig heeft.
+
 ## 3.33.0 — 2026-11-13
 
 ### Nieuw

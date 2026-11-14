@@ -1,0 +1,313 @@
+"""Guia «Como fazer uma rifa para os bombeiros» nas 18 línguas (SEO e página `/rifas-para-bombeiros`): corporações de bombeiros voluntários, que costumam pedir
+ajuda à comunidade para equipamento e viaturas. Cada língua: título, introdução, 5 passos (título, texto), 3 dicas e uma frase final. As traduções não tiveram
+revisão nativa; as regras de licença variam por país, por isso o 1.º passo manda confirmar na câmara municipal. Os nomes da interface são os das chaves `web_*`
+de cada língua; os nomes dos desenhos da galeria (Bombeiros, Solidária…) não se traduzem."""
+
+DADOS = {
+    "pt": {
+        "titulo": "Como fazer uma rifa para os bombeiros",
+        "intro": "As rifas são uma ajuda tradicional às corporações de bombeiros voluntários para equipamento, viaturas e a festa anual. Com o Gerador de Rifas fazem-se os bilhetes numerados, com o emblema da corporação, em minutos: sem Canva nem programas para instalar.",
+        "passos": [
+            ("Combine o essencial", "Decidam os prémios (muitas vezes oferecidos pelo comércio e pelas empresas da zona), o preço do bilhete, quantos bilhetes vão imprimir e a data do sorteio, por exemplo no aniversário da corporação. Antes de vender, confirme na câmara municipal se a rifa precisa de licença ou de comunicação: as regras dependem do tipo de rifa."),
+            ("Desenhe o bilhete", "Na galeria escolha um desenho (Bombeiros, Solidária…) e escreva o nome da corporação, os prémios e a data. Junte o emblema como logótipo (PNG ou JPG) e escolha a cor dos números. Se preferir algo à medida, use o Editor de templates."),
+            ("Uma série por vendedor ou freguesia", "Em «Prefixo ou séries» escreva, por exemplo, A-, B-, C-: cada vendedor, quartel ou freguesia recebe os seus bilhetes (A-0001, B-0001…) e os seus ficheiros, e assim sabe-se quem vendeu mais. Em «Saltar números» tire os que ficam reservados."),
+            ("Imprima e corte", "Escolha o papel (o A4 costuma servir) e as marcas de corte: o programa enche a folha de bilhetes. Imprima e corte pelas marcas; se quiser, use papel de cor para distinguir as séries. Os bilhetes têm talão, por isso o número aparece duas vezes."),
+            ("Controle as vendas e sorteie", "Exporte a lista de bilhetes (CSV) e a folha de controlo de vendas para entregar a cada vendedor. No dia do sorteio use a página «Sorteio»: com uma semente pública (por exemplo, a lotaria) qualquer pessoa pode confirmar o resultado."),
+        ],
+        "dicas": [
+            "Entregue os blocos de bilhetes contra uma lista e registe quem leva cada bloco.",
+            "Escreva no bilhete o contacto da corporação e a data limite para levantar os prémios.",
+            "Agradeça em público a quem ofereceu prémios e publique o resultado com a ligação do sorteio.",
+        ],
+        "fim": "O serviço é gratuito, sem registo, e não guarda os seus ficheiros. Pode começar já.",
+    },
+    "en": {
+        "titulo": "How to run a raffle for your fire brigade",
+        "intro": "Raffles are a traditional way to help volunteer fire brigades pay for equipment, vehicles and the annual fair. With the Raffle Generator you make numbered tickets with the brigade's crest in minutes, with no Canva and nothing to install.",
+        "passos": [
+            ("Agree on the basics", "Decide the prizes (often offered by local shops and businesses), the ticket price, how many tickets to print and the draw date, for example on the brigade's anniversary. Before selling, check with your local authority whether the raffle needs a licence or a notification: the rules depend on the type of raffle."),
+            ("Design the ticket", "Pick a design from the gallery (Bombeiros, Solidária…) and write the brigade's name, the prizes and the date. Add the crest as a logo (PNG or JPG) and choose the number colour. If you want something custom, use the Template editor."),
+            ("One series per seller or district", "In “Prefix or series” type, for example, A-, B-, C-: each seller, station or district gets their own tickets (A-0001, B-0001…) and their own files, so you know who sold the most. Use “Skip numbers” to take out the ones you keep in reserve."),
+            ("Print and cut", "Choose the paper (A4 usually works) and the crop marks: the program fills the sheet with tickets. Print and cut along the marks; use coloured paper if you want to tell the series apart. The tickets have a stub, so the number appears twice."),
+            ("Track sales and draw", "Export the ticket list (CSV) and the sales control sheet to hand to each seller. On draw day use the “Draw” page: with a public seed (for example, the lottery result) anyone can confirm the result."),
+        ],
+        "dicas": [
+            "Hand out the ticket blocks against a list and record who takes each block.",
+            "Write the brigade's contact and the deadline for collecting prizes on the ticket.",
+            "Thank the prize donors in public and publish the result with the draw link.",
+        ],
+        "fim": "The service is free, needs no sign-up and does not keep your files. You can start now.",
+    },
+    "es": {
+        "titulo": "Cómo hacer una rifa para los bomberos",
+        "intro": "Las rifas son una ayuda tradicional para los cuerpos de bomberos voluntarios, que las usan para equipos, vehículos y la fiesta anual. Con el Generador de Rifas se hacen los boletos numerados, con el escudo del cuerpo, en minutos: sin Canva ni programas que instalar.",
+        "passos": [
+            ("Acuerden lo esencial", "Decidan los premios (a menudo ofrecidos por el comercio y las empresas de la zona), el precio del boleto, cuántos boletos imprimir y la fecha del sorteo, por ejemplo en el aniversario del cuerpo. Antes de vender, consulte en el ayuntamiento si la rifa necesita licencia o comunicación: las normas dependen del tipo de rifa."),
+            ("Diseñe el boleto", "En la galería elija un diseño (Bombeiros, Solidária…) y escriba el nombre del cuerpo, los premios y la fecha. Añada el escudo como logotipo (PNG o JPG) y elija el color de los números. Si prefiere algo a medida, use el Editor de plantillas."),
+            ("Una serie por vendedor o barrio", "En «Prefijo o series» escriba, por ejemplo, A-, B-, C-: cada vendedor, parque o barrio recibe sus boletos (A-0001, B-0001…) y sus archivos, y así se sabe quién vendió más. En «Saltar números» quite los que quedan reservados."),
+            ("Imprima y corte", "Elija el papel (el A4 suele servir) y las marcas de corte: el programa llena la hoja de boletos. Imprima y corte por las marcas; si quiere, use papel de color para distinguir las series. Los boletos tienen talón, por eso el número aparece dos veces."),
+            ("Controle las ventas y sortee", "Exporte la lista de boletos (CSV) y la hoja de control de ventas para entregarla a cada vendedor. El día del sorteo use la página «Sorteo»: con una semilla pública (por ejemplo, la lotería) cualquier persona puede comprobar el resultado."),
+        ],
+        "dicas": [
+            "Entregue los bloques de boletos contra una lista y anote quién lleva cada bloque.",
+            "Escriba en el boleto el contacto del cuerpo y la fecha límite para recoger los premios.",
+            "Agradezca en público a quienes ofrecieron premios y publique el resultado con el enlace del sorteo.",
+        ],
+        "fim": "El servicio es gratuito, sin registro, y no guarda sus archivos. Puede empezar ya.",
+    },
+    "fr": {
+        "titulo": "Organiser une tombola pour les pompiers",
+        "intro": "Les tombolas sont une aide traditionnelle pour les corps de sapeurs-pompiers volontaires : matériel, véhicules, fête annuelle. Avec le Générateur de tombola, on fait les billets numérotés, avec l'écusson de la caserne, en quelques minutes : sans Canva ni logiciel à installer.",
+        "passos": [
+            ("Fixez l'essentiel", "Décidez des lots (souvent offerts par les commerçants et les entreprises du coin), du prix du billet, du nombre de billets à imprimer et de la date du tirage, par exemple à l'anniversaire de la caserne. Avant de vendre, vérifiez auprès de la mairie si la tombola exige une autorisation ou une déclaration : les règles dépendent du type de tombola."),
+            ("Dessinez le billet", "Dans la galerie, choisissez un modèle (Bombeiros, Solidária…) et écrivez le nom de la caserne, les lots et la date. Ajoutez l'écusson comme logo (PNG ou JPG) et choisissez la couleur des numéros. Pour du sur-mesure, utilisez l'Éditeur de modèles."),
+            ("Une série par vendeur ou par quartier", "Dans « Préfixe ou séries », écrivez par exemple A-, B-, C- : chaque vendeur, centre ou quartier reçoit ses billets (A-0001, B-0001…) et ses fichiers, et l'on sait qui a le plus vendu. Dans « Ignorer des numéros », retirez ceux que vous gardez en réserve."),
+            ("Imprimez et découpez", "Choisissez le papier (l'A4 convient en général) et les traits de coupe : le programme remplit la feuille de billets. Imprimez et découpez le long des traits ; prenez du papier de couleur pour distinguer les séries. Les billets ont un talon, le numéro apparaît donc deux fois."),
+            ("Suivez les ventes et tirez au sort", "Exportez la liste des billets (CSV) et la feuille de suivi des ventes pour la remettre à chaque vendeur. Le jour du tirage, utilisez la page « Tirage » : avec une graine publique (par exemple le résultat de la loterie), n'importe qui peut vérifier le résultat."),
+        ],
+        "dicas": [
+            "Remettez les carnets de billets contre une liste et notez qui emporte chaque carnet.",
+            "Écrivez sur le billet le contact de la caserne et la date limite pour retirer les lots.",
+            "Remerciez publiquement les donateurs de lots et publiez le résultat avec le lien du tirage.",
+        ],
+        "fim": "Le service est gratuit, sans inscription, et ne conserve pas vos fichiers. Vous pouvez commencer maintenant.",
+    },
+    "de": {
+        "titulo": "Eine Tombola für die Feuerwehr",
+        "intro": "Tombolas sind eine traditionelle Hilfe für freiwillige Feuerwehren: für Ausrüstung, Fahrzeuge und das jährliche Fest. Mit dem Tombola-Generator erstellen Sie nummerierte Lose mit dem Wappen der Feuerwehr in wenigen Minuten: ohne Canva und ohne Installation.",
+        "passos": [
+            ("Das Wichtigste klären", "Legen Sie die Preise fest (oft von Geschäften und Betrieben vor Ort gestiftet), den Preis pro Los, die Anzahl der Lose und das Datum der Ziehung, etwa beim Jubiläum der Feuerwehr. Klären Sie vor dem Verkauf beim Ordnungsamt, ob die Tombola genehmigungs- oder meldepflichtig ist: die Regeln hängen von der Art der Tombola ab."),
+            ("Das Los gestalten", "Wählen Sie in der Galerie ein Design (Bombeiros, Solidária…) und schreiben Sie den Namen der Feuerwehr, die Preise und das Datum. Fügen Sie das Wappen als Logo (PNG oder JPG) hinzu und wählen Sie die Farbe der Nummern. Für etwas Eigenes nutzen Sie den Vorlageneditor."),
+            ("Eine Serie pro Verkäufer oder Ortsteil", "Tragen Sie unter „Präfix oder Serien“ zum Beispiel A-, B-, C- ein: jeder Verkäufer, jede Wache oder jeder Ortsteil bekommt eigene Lose (A-0001, B-0001…) und eigene Dateien, so sieht man, wer am meisten verkauft hat. Unter „Nummern überspringen“ nehmen Sie reservierte Nummern heraus."),
+            ("Drucken und schneiden", "Wählen Sie das Papier (A4 reicht meist) und die Schnittmarken: das Programm füllt den Bogen mit Losen. Drucken und an den Marken schneiden; mit farbigem Papier lassen sich die Serien unterscheiden. Die Lose haben einen Abschnitt, daher steht die Nummer zweimal darauf."),
+            ("Verkäufe kontrollieren und ziehen", "Exportieren Sie die Losliste (CSV) und das Kontrollblatt für den Verkauf, um sie jedem Verkäufer zu geben. Am Ziehungstag nutzen Sie die Seite „Ziehung“: mit einem öffentlichen Startwert (z. B. die Lottozahlen) kann jeder das Ergebnis nachprüfen."),
+        ],
+        "dicas": [
+            "Geben Sie die Losblöcke gegen eine Liste aus und notieren Sie, wer welchen Block mitnimmt.",
+            "Schreiben Sie auf das Los den Kontakt der Feuerwehr und die Frist zum Abholen der Preise.",
+            "Danken Sie den Preisstiftern öffentlich und veröffentlichen Sie das Ergebnis mit dem Link zur Ziehung.",
+        ],
+        "fim": "Der Dienst ist kostenlos, ohne Anmeldung und speichert Ihre Dateien nicht. Sie können sofort loslegen.",
+    },
+    "it": {
+        "titulo": "Una lotteria per i vigili del fuoco",
+        "intro": "Le lotterie sono un aiuto tradizionale per i corpi di vigili del fuoco volontari: attrezzature, mezzi e festa annuale. Con il Generatore di lotterie si fanno i biglietti numerati, con lo stemma del corpo, in pochi minuti: senza Canva e senza programmi da installare.",
+        "passos": [
+            ("Mettetevi d'accordo sull'essenziale", "Decidete i premi (spesso offerti dai negozi e dalle aziende della zona), il prezzo del biglietto, quanti biglietti stampare e la data dell'estrazione, per esempio nell'anniversario del corpo. Prima di vendere, verifichi in Comune se la lotteria richiede un'autorizzazione o una comunicazione: le regole dipendono dal tipo di lotteria."),
+            ("Disegna il biglietto", "Nella galleria scegli un disegno (Bombeiros, Solidária…) e scrivi il nome del corpo, i premi e la data. Aggiungi lo stemma come logo (PNG o JPG) e scegli il colore dei numeri. Per qualcosa su misura usa l'Editor di modelli."),
+            ("Una serie per venditore o quartiere", "In «Prefisso o serie» scrivi, per esempio, A-, B-, C-: ogni venditore, distaccamento o quartiere riceve i suoi biglietti (A-0001, B-0001…) e i suoi file, così si sa chi ha venduto di più. In «Salta numeri» togli quelli che tieni in riserva."),
+            ("Stampa e taglia", "Scegli la carta (di solito va bene l'A4) e i segni di taglio: il programma riempie il foglio di biglietti. Stampa e taglia lungo i segni; con carta colorata distingui le serie. I biglietti hanno la matrice, quindi il numero compare due volte."),
+            ("Controlla le vendite ed estrai", "Esporta l'elenco dei biglietti (CSV) e il foglio di controllo vendite da consegnare a ogni venditore. Il giorno dell'estrazione usa la pagina «Estrazione»: con un seme pubblico (per esempio il lotto) chiunque può verificare il risultato."),
+        ],
+        "dicas": [
+            "Consegna i blocchi di biglietti contro un elenco e annota chi prende ogni blocco.",
+            "Scrivi sul biglietto il contatto del corpo e la data limite per ritirare i premi.",
+            "Ringrazia in pubblico chi ha offerto premi e pubblica il risultato con il link dell'estrazione.",
+        ],
+        "fim": "Il servizio è gratuito, senza registrazione, e non conserva i tuoi file. Puoi iniziare subito.",
+    },
+    "nl": {
+        "titulo": "Zo organiseert u een loterij voor de brandweer",
+        "intro": "Loterijen zijn een traditionele steun voor vrijwillige brandweerkorpsen: voor materiaal, voertuigen en het jaarlijkse feest. Met de Loterijgenerator maakt u genummerde loten met het embleem van het korps in een paar minuten: zonder Canva en zonder iets te installeren.",
+        "passos": [
+            ("Spreek het belangrijkste af", "Bepaal de prijzen (vaak geschonken door winkels en bedrijven uit de buurt), de prijs per lot, hoeveel loten u drukt en de datum van de trekking, bijvoorbeeld op de verjaardag van het korps. Vraag vóór de verkoop bij de gemeente na of de loterij een vergunning of melding nodig heeft: de regels hangen af van het soort loterij."),
+            ("Ontwerp het lot", "Kies in de galerij een ontwerp (Bombeiros, Solidária…) en schrijf de naam van het korps, de prijzen en de datum. Voeg het embleem toe als logo (PNG of JPG) en kies de kleur van de nummers. Wilt u iets op maat, gebruik dan de Sjablooneditor."),
+            ("Eén reeks per verkoper of wijk", "Typ bij «Voorvoegsel of series» bijvoorbeeld A-, B-, C-: elke verkoper, kazerne of wijk krijgt eigen loten (A-0001, B-0001…) en eigen bestanden, zodat u weet wie het meest verkocht heeft. Haal bij «Nummers overslaan» de gereserveerde nummers eruit."),
+            ("Afdrukken en knippen", "Kies het papier (A4 volstaat meestal) en de snijmarkeringen: het programma vult het vel met loten. Druk af en knip langs de markeringen; met gekleurd papier houdt u de reeksen uit elkaar. De loten hebben een controlestrook, dus het nummer staat er twee keer op."),
+            ("Houd de verkoop bij en trek", "Exporteer de lotenlijst (CSV) en het verkoopcontroleblad om aan elke verkoper te geven. Gebruik op de dag van de trekking de pagina «Trekking»: met een openbare seed (bijvoorbeeld de lotto-uitslag) kan iedereen het resultaat controleren."),
+        ],
+        "dicas": [
+            "Geef de lotenblokken uit tegen een lijst en noteer wie welk blok meeneemt.",
+            "Schrijf op het lot het contact van het korps en de uiterste datum om de prijzen op te halen.",
+            "Bedank de schenkers van prijzen publiekelijk en publiceer de uitslag met de link naar de trekking.",
+        ],
+        "fim": "De dienst is gratis, zonder registratie en bewaart uw bestanden niet. U kunt meteen beginnen.",
+    },
+    "pl": {
+        "titulo": "Jak zorganizować loterię dla straży pożarnej",
+        "intro": "Loterie to tradycyjna pomoc dla ochotniczych straży pożarnych: na sprzęt, wozy i coroczny festyn. Za pomocą Generatora loterii w kilka minut zrobisz ponumerowane losy z herbem jednostki: bez Canvy i bez instalowania programów.",
+        "passos": [
+            ("Ustalcie najważniejsze", "Zdecydujcie o nagrodach (często ofiarowują je lokalne sklepy i firmy), cenie losu, liczbie losów do wydrukowania i dacie losowania, na przykład w rocznicę powstania jednostki. Przed sprzedażą sprawdź w urzędzie gminy, czy loteria wymaga zezwolenia lub zgłoszenia: przepisy zależą od rodzaju loterii."),
+            ("Zaprojektuj los", "W galerii wybierz wzór (Bombeiros, Solidária…) i wpisz nazwę jednostki, nagrody i datę. Dodaj herb jako logo (PNG lub JPG) i wybierz kolor numerów. Jeśli chcesz coś na miarę, użyj Edytora szablonów."),
+            ("Jedna seria na sprzedawcę lub wieś", "W polu «Prefiks lub serie» wpisz na przykład A-, B-, C-: każdy sprzedawca, remiza lub wieś dostaje własne losy (A-0001, B-0001…) i własne pliki, więc widać, kto sprzedał najwięcej. W «Pomiń numery» wyłącz numery zarezerwowane."),
+            ("Wydrukuj i przytnij", "Wybierz papier (zwykle wystarczy A4) i znaczniki cięcia: program wypełnia arkusz losami. Wydrukuj i tnij wzdłuż znaczników; kolorowy papier pomoże odróżnić serie. Losy mają odcinek, więc numer pojawia się dwa razy."),
+            ("Kontroluj sprzedaż i losuj", "Wyeksportuj listę losów (CSV) i arkusz kontroli sprzedaży, by przekazać je każdemu sprzedawcy. W dniu losowania użyj strony «Losowanie»: dzięki publicznemu ziarnu (np. wynikowi lotto) każdy może sprawdzić wynik."),
+        ],
+        "dicas": [
+            "Wydawaj bloki losów za pokwitowaniem na liście i zapisz, kto zabiera który blok.",
+            "Wpisz na losie kontakt do jednostki i termin odbioru nagród.",
+            "Podziękuj publicznie darczyńcom nagród i opublikuj wynik z linkiem do losowania.",
+        ],
+        "fim": "Usługa jest bezpłatna, bez rejestracji i nie zachowuje twoich plików. Możesz zacząć od razu.",
+    },
+    "sv": {
+        "titulo": "Så ordnar du ett lotteri för brandkåren",
+        "intro": "Lotterier är ett traditionellt stöd till frivilliga brandkårer: för utrustning, fordon och den årliga festen. Med Lotterigeneratorn gör du numrerade lotter med brandkårens märke på några minuter: utan Canva och utan att installera något.",
+        "passos": [
+            ("Bestäm det viktigaste", "Bestäm vinsterna (ofta skänkta av butiker och företag på orten), lottpriset, hur många lotter ni skriver ut och dragningsdatum, till exempel på brandkårens årsdag. Kontrollera före försäljningen med kommunen om lotteriet kräver tillstånd eller anmälan: reglerna beror på typen av lotteri."),
+            ("Designa lotten", "Välj en design i galleriet (Bombeiros, Solidária…) och skriv brandkårens namn, vinsterna och datumet. Lägg till märket som logotyp (PNG eller JPG) och välj färg på numren. Vill du ha något eget, använd Mallredigeraren."),
+            ("En serie per säljare eller område", "Skriv under «Prefix eller serier» till exempel A-, B-, C-: varje säljare, station eller område får egna lotter (A-0001, B-0001…) och egna filer, så att man ser vem som sålt mest. Under «Hoppa över nummer» tar du bort de reserverade numren."),
+            ("Skriv ut och klipp", "Välj papper (A4 räcker oftast) och skärmärken: programmet fyller arket med lotter. Skriv ut och klipp längs märkena; med färgat papper kan du skilja serierna åt. Lotterna har en talong, så numret syns två gånger."),
+            ("Följ försäljningen och dra", "Exportera lottlistan (CSV) och försäljningskontrollbladet för att ge till varje säljare. På dragningsdagen använder du sidan «Dragning»: med ett offentligt startvärde (till exempel lottoresultatet) kan vem som helst kontrollera resultatet."),
+        ],
+        "dicas": [
+            "Lämna ut lottblocken mot en lista och anteckna vem som tar vilket block.",
+            "Skriv brandkårens kontaktuppgift och sista dag för att hämta vinsterna på lotten.",
+            "Tacka vinstgivarna offentligt och publicera resultatet med länk till dragningen.",
+        ],
+        "fim": "Tjänsten är gratis, kräver ingen registrering och sparar inte dina filer. Du kan börja direkt.",
+    },
+    "cs": {
+        "titulo": "Jak uspořádat tombolu pro hasiče",
+        "intro": "Tomboly jsou tradiční pomocí dobrovolným hasičům: na vybavení, techniku a každoroční slavnost. S Generátorem tomboly vytvoříte číslované losy se znakem sboru za pár minut: bez Canvy a bez instalace.",
+        "passos": [
+            ("Dohodněte se na hlavním", "Rozhodněte o cenách (často je darují místní obchody a firmy), ceně losu, počtu vytištěných losů a datu losování, například při výročí sboru. Před prodejem se na obecním úřadě ujistěte, zda tombola vyžaduje povolení nebo oznámení: pravidla závisejí na druhu tomboly."),
+            ("Navrhněte los", "V galerii vyberte vzor (Bombeiros, Solidária…) a napište název sboru, ceny a datum. Přidejte znak jako logo (PNG nebo JPG) a vyberte barvu čísel. Chcete-li něco na míru, použijte Editor šablon."),
+            ("Jedna série na prodejce nebo obec", "Do pole «Předpona nebo série» napište například A-, B-, C-: každý prodejce, stanice nebo obec dostane vlastní losy (A-0001, B-0001…) a vlastní soubory, takže je vidět, kdo prodal nejvíc. V «Přeskočit čísla» vyřaďte vyhrazená čísla."),
+            ("Vytiskněte a rozstřihněte", "Vyberte papír (obvykle stačí A4) a ořezové značky: program zaplní list losy. Vytiskněte a stříhejte podle značek; barevný papír pomůže odlišit série. Losy mají útržek, takže se číslo objeví dvakrát."),
+            ("Hlídejte prodej a losujte", "Exportujte seznam losů (CSV) a kontrolní list prodeje a předejte je každému prodejci. V den losování použijte stránku «Losování»: s veřejným základem (například výsledkem loterie) může výsledek ověřit kdokoli."),
+        ],
+        "dicas": [
+            "Bloky losů vydávejte proti seznamu a zapisujte, kdo si bere který blok.",
+            "Napište na los kontakt na sbor a datum, dokdy si lze vyzvednout ceny.",
+            "Veřejně poděkujte dárcům cen a zveřejněte výsledek s odkazem na losování.",
+        ],
+        "fim": "Služba je zdarma, bez registrace a vaše soubory neukládá. Můžete začít hned.",
+    },
+    "ro": {
+        "titulo": "Cum faci o tombolă pentru pompieri",
+        "intro": "Tombolele sunt un sprijin tradițional pentru corpurile de pompieri voluntari: echipament, mașini și sărbătoarea anuală. Cu Generatorul de tombole faci în câteva minute bilete numerotate cu emblema pompierilor: fără Canva și fără programe de instalat.",
+        "passos": [
+            ("Stabiliți esențialul", "Hotărâți premiile (adesea oferite de magazinele și firmele din zonă), prețul biletului, câte bilete tipăriți și data tragerii, de exemplu la aniversarea unității. Înainte de vânzare, verifică la primărie dacă tombola cere autorizație sau notificare: regulile depind de tipul de tombolă."),
+            ("Desenează biletul", "În galerie alege un model (Bombeiros, Solidária…) și scrie numele unității, premiile și data. Adaugă emblema ca siglă (PNG sau JPG) și alege culoarea numerelor. Pentru ceva pe măsură, folosește Editorul de șabloane."),
+            ("O serie pe vânzător sau localitate", "La «Prefix sau serii» scrie, de exemplu, A-, B-, C-: fiecare vânzător, stație sau localitate primește biletele sale (A-0001, B-0001…) și fișierele sale, așa că se vede cine a vândut cel mai mult. La «Sari peste numere» scoate numerele rezervate."),
+            ("Tipărește și taie", "Alege hârtia (A4 de obicei ajunge) și marcajele de tăiere: programul umple foaia cu bilete. Tipărește și taie pe marcaje; cu hârtie colorată deosebești seriile. Biletele au cotor, deci numărul apare de două ori."),
+            ("Controlează vânzările și trage la sorți", "Exportă lista biletelor (CSV) și foaia de control al vânzărilor, pe care le dai fiecărui vânzător. În ziua tragerii folosește pagina «Tragere»: cu o sămânță publică (de exemplu rezultatul loteriei) oricine poate verifica rezultatul."),
+        ],
+        "dicas": [
+            "Predă blocurile de bilete pe bază de listă și notează cine ia fiecare bloc.",
+            "Scrie pe bilet contactul unității și data limită pentru ridicarea premiilor.",
+            "Mulțumește public celor care au donat premii și publică rezultatul cu linkul tragerii.",
+        ],
+        "fim": "Serviciul este gratuit, fără înregistrare, și nu îți păstrează fișierele. Poți începe acum.",
+    },
+    "el": {
+        "titulo": "Κλήρωση για την πυροσβεστική",
+        "intro": "Οι κληρώσεις είναι παραδοσιακή βοήθεια για τα εθελοντικά πυροσβεστικά σώματα: για εξοπλισμό, οχήματα και την ετήσια γιορτή. Με τη Γεννήτρια κληρώσεων φτιάχνετε αριθμημένους λαχνούς με το έμβλημα του σώματος σε λίγα λεπτά: χωρίς Canva και χωρίς εγκατάσταση.",
+        "passos": [
+            ("Συμφωνήστε στα βασικά", "Αποφασίστε τα δώρα (συχνά τα προσφέρουν τα καταστήματα και οι επιχειρήσεις της περιοχής), την τιμή του λαχνού, πόσους λαχνούς θα τυπώσετε και την ημερομηνία της κλήρωσης, π.χ. στην επέτειο του σώματος. Πριν πουλήσετε, ελέγξτε στον δήμο αν η κλήρωση χρειάζεται άδεια ή γνωστοποίηση: οι κανόνες εξαρτώνται από το είδος της κλήρωσης."),
+            ("Σχεδιάστε τον λαχνό", "Στη συλλογή διαλέξτε ένα σχέδιο (Bombeiros, Solidária…) και γράψτε το όνομα του σώματος, τα δώρα και την ημερομηνία. Προσθέστε το έμβλημα ως λογότυπο (PNG ή JPG) και διαλέξτε το χρώμα των αριθμών. Για κάτι δικό σας, χρησιμοποιήστε τον Επεξεργαστή προτύπων."),
+            ("Μία σειρά ανά πωλητή ή περιοχή", "Στο «Πρόθεμα ή σειρές» γράψτε π.χ. A-, B-, C-: κάθε πωλητής, σταθμός ή περιοχή παίρνει τους δικούς του λαχνούς (A-0001, B-0001…) και τα δικά του αρχεία, ώστε να φαίνεται ποιος πούλησε περισσότερο. Στο «Παράλειψη αριθμών» βγάλτε όσους κρατάτε δεσμευμένους."),
+            ("Εκτυπώστε και κόψτε", "Διαλέξτε το χαρτί (το A4 συνήθως αρκεί) και τα σημάδια κοπής: το πρόγραμμα γεμίζει το φύλλο με λαχνούς. Εκτυπώστε και κόψτε στα σημάδια· με έγχρωμο χαρτί ξεχωρίζουν οι σειρές. Οι λαχνοί έχουν στέλεχος, γι' αυτό ο αριθμός εμφανίζεται δύο φορές."),
+            ("Ελέγξτε τις πωλήσεις και κληρώστε", "Εξαγάγετε τη λίστα λαχνών (CSV) και το φύλλο ελέγχου πωλήσεων για να τα δώσετε σε κάθε πωλητή. Την ημέρα της κλήρωσης χρησιμοποιήστε τη σελίδα «Κλήρωση»: με δημόσιο σπόρο (π.χ. το αποτέλεσμα του λόττο) ο καθένας μπορεί να επαληθεύσει το αποτέλεσμα."),
+        ],
+        "dicas": [
+            "Δίνετε τα μπλοκ λαχνών με υπογραφή σε λίστα και σημειώνετε ποιος παίρνει ποιο μπλοκ.",
+            "Γράψτε στον λαχνό την επαφή του σώματος και την προθεσμία παραλαβής των δώρων.",
+            "Ευχαριστήστε δημόσια όσους πρόσφεραν δώρα και δημοσιεύστε το αποτέλεσμα με τον σύνδεσμο της κλήρωσης.",
+        ],
+        "fim": "Η υπηρεσία είναι δωρεάν, χωρίς εγγραφή, και δεν κρατά τα αρχεία σας. Μπορείτε να ξεκινήσετε τώρα.",
+    },
+    "ru": {
+        "titulo": "Как провести лотерею для пожарной команды",
+        "intro": "Лотереи — традиционная помощь добровольным пожарным командам: на снаряжение, машины и ежегодный праздник. С Генератором лотерей вы за несколько минут сделаете пронумерованные билеты с эмблемой команды: без Canva и без установки программ.",
+        "passos": [
+            ("Договоритесь об основном", "Решите, какие будут призы (их часто дарят местные магазины и предприятия), цену билета, сколько билетов печатать и дату розыгрыша, например в годовщину команды. Перед продажей узнайте в местной администрации, нужны ли для лотереи разрешение или уведомление: правила зависят от вида лотереи."),
+            ("Создайте билет", "В галерее выберите дизайн (Bombeiros, Solidária…) и напишите название команды, призы и дату. Добавьте эмблему как логотип (PNG или JPG) и выберите цвет номеров. Если хотите что-то своё, используйте Редактор шаблонов."),
+            ("Одна серия на продавца или район", "В поле «Префикс или серии» напишите, например, A-, B-, C-: каждый продавец, часть или район получит свои билеты (A-0001, B-0001…) и свои файлы, так видно, кто продал больше. В «Пропустить номера» уберите зарезервированные номера."),
+            ("Печать и резка", "Выберите бумагу (обычно подходит A4) и метки обрезки: программа заполняет лист билетами. Напечатайте и режьте по меткам; цветная бумага поможет различать серии. У билетов есть корешок, поэтому номер указан дважды."),
+            ("Учёт продаж и розыгрыш", "Экспортируйте список билетов (CSV) и контрольный лист продаж, чтобы передать каждому продавцу. В день розыгрыша откройте страницу «Розыгрыш»: с публичным зерном (например, результатом лотереи) любой сможет проверить итог."),
+        ],
+        "dicas": [
+            "Выдавайте блоки билетов под запись в списке и отмечайте, кто какой блок взял.",
+            "Напишите на билете контакт команды и срок получения призов.",
+            "Публично поблагодарите тех, кто дал призы, и опубликуйте результат со ссылкой на розыгрыш.",
+        ],
+        "fim": "Сервис бесплатный, без регистрации и не хранит ваши файлы. Можно начинать прямо сейчас.",
+    },
+    "tr": {
+        "titulo": "İtfaiye için çekiliş nasıl yapılır",
+        "intro": "Çekilişler, gönüllü itfaiye birimlerine ekipman, araç ve yıllık şenlik için geleneksel bir destektir. Çekiliş Oluşturucu ile birimin armalı numaralı biletlerini dakikalar içinde hazırlarsınız: Canva'ya ve program kurmaya gerek yok.",
+        "passos": [
+            ("Temel konularda anlaşın", "Ödüllere (çoğu zaman bölgedeki esnaf ve işletmeler verir), bilet fiyatına, kaç bilet basılacağına ve çekiliş tarihine karar verin; örneğin birimin yıldönümünde. Satıştan önce belediyeye danışarak çekilişin izin veya bildirim gerektirip gerektirmediğini öğrenin: kurallar çekilişin türüne göre değişir."),
+            ("Bileti tasarlayın", "Galeriden bir tasarım seçin (Bombeiros, Solidária…) ve birimin adını, ödülleri ve tarihi yazın. Armayı logo olarak ekleyin (PNG veya JPG) ve numaraların rengini seçin. Size özel bir şey isterseniz Şablon düzenleyiciyi kullanın."),
+            ("Satıcı veya mahalle başına bir seri", "«Önek veya seriler» alanına örneğin A-, B-, C- yazın: her satıcı, istasyon veya mahalle kendi biletlerini (A-0001, B-0001…) ve dosyalarını alır; böylece kimin en çok sattığı görülür. «Numaraları atla» ile ayırdığınız numaraları çıkarın."),
+            ("Yazdırın ve kesin", "Kâğıdı (genellikle A4 yeter) ve kesim işaretlerini seçin: program sayfayı biletlerle doldurur. Yazdırıp işaretlerden kesin; serileri ayırmak için renkli kâğıt kullanabilirsiniz. Biletlerin koçanı vardır, bu yüzden numara iki kez görünür."),
+            ("Satışları izleyin ve çekiliş yapın", "Bilet listesini (CSV) ve satış kontrol sayfasını dışa aktarıp her satıcıya verin. Çekiliş günü «Çekiliş» sayfasını kullanın: herkese açık bir tohumla (örneğin loto sonucu) herkes sonucu doğrulayabilir."),
+        ],
+        "dicas": [
+            "Bilet bloklarını bir listeye imza karşılığı verin ve hangi bloğu kimin aldığını not edin.",
+            "Bilete birimin iletişim bilgisini ve ödüllerin alınacağı son tarihi yazın.",
+            "Ödül verenlere herkesin önünde teşekkür edin ve sonucu çekiliş bağlantısıyla yayımlayın.",
+        ],
+        "fim": "Hizmet ücretsizdir, kayıt gerektirmez ve dosyalarınızı saklamaz. Hemen başlayabilirsiniz.",
+    },
+    "zh": {
+        "titulo": "如何为消防队举办抽奖",
+        "intro": "抽奖是支持志愿消防队的传统方式，筹款用于装备、车辆和一年一度的联欢。用抽奖券生成器，几分钟就能做出带消防队徽章的编号奖券：不用 Canva，也不用安装任何软件。",
+        "passos": [
+            ("先商定要点", "确定奖品（常由当地商店和企业提供）、奖券价格、印多少张以及开奖日期，例如消防队成立纪念日。销售前，请向当地主管部门确认抽奖是否需要许可或备案：规则因抽奖类型而异。"),
+            ("设计奖券", "在图库中选一个设计（Bombeiros、Solidária……），写上消防队名称、奖品和日期。把徽章作为徽标（PNG 或 JPG）加进去，并选择号码颜色。想要独一无二的设计，就用模板编辑器。"),
+            ("每位销售员或每个片区一个系列", "在“前缀或系列”中填写，例如 A-、B-、C-：每位销售员、消防站或片区都有自己的奖券（A-0001、B-0001……）和文件，谁卖得最多一目了然。在“跳过号码”里去掉预留的号码。"),
+            ("打印并裁切", "选择纸张（通常 A4 就够）和裁切标记：程序会把整张纸排满奖券。打印后沿标记裁开；用彩纸可以区分不同系列。奖券带存根，所以号码会出现两次。"),
+            ("管理销售并开奖", "导出奖券名单 (CSV) 和销售管理表，发给每位销售员。开奖当天使用“抽奖”页面：用公开的种子（例如彩票开奖结果），任何人都能核实结果。"),
+        ],
+        "dicas": [
+            "按名单登记后再发放奖券本，并记下谁领走了哪一本。",
+            "在奖券上写明消防队的联系方式和领奖截止日期。",
+            "公开感谢提供奖品的人，并附上开奖链接公布结果。",
+        ],
+        "fim": "该服务免费，无需注册，也不会保存您的文件。现在就可以开始。",
+    },
+    "ja": {
+        "titulo": "消防団の抽選会のやり方",
+        "intro": "抽選会は、ボランティアの消防団が装備や車両、毎年の祭りの費用を集める昔ながらの方法です。抽選券ジェネレーターなら、消防団のエンブレム入りの番号付き券が数分でできます。Canva もインストールも不要です。",
+        "passos": [
+            ("基本を決める", "景品（地元の店や企業が提供することが多い）、券の価格、印刷枚数、抽選日を決めます。たとえば消防団の記念日です。販売の前に、抽選会に許可や届出が必要か、自治体に確認してください。ルールは抽選会の種類によって異なります。"),
+            ("券をデザインする", "ギャラリーからデザイン（Bombeiros、Solidária…）を選び、消防団の名前、景品、日付を入力します。エンブレムをロゴ（PNG または JPG）として加え、番号の色を選びます。オリジナルにしたいときはテンプレートエディターを使います。"),
+            ("販売担当や地区ごとにシリーズを作る", "「接頭辞またはシリーズ」に、たとえば A-、B-、C- と入力します。販売担当、分団、地区ごとに自分の券（A-0001、B-0001…）とファイルができるので、誰がいちばん売ったかが分かります。「番号をスキップ」で取り置きの番号を除きます。"),
+            ("印刷して切る", "用紙（たいてい A4 で十分）とトンボ（裁ち落とし線）を選ぶと、シートが券でいっぱいになります。印刷してトンボに沿って切ります。色付きの紙を使えばシリーズを区別できます。券には控えが付くので、番号は2回出ます。"),
+            ("売上を管理して抽選する", "券の一覧 (CSV) と売上管理シートを書き出して、各販売担当に渡します。抽選の日は「抽選」ページを使います。公開された種（たとえば宝くじの結果）を使えば、誰でも結果を確かめられます。"),
+        ],
+        "dicas": [
+            "券の綴りは名簿と引き換えに渡し、誰がどの綴りを持っていくか記録しましょう。",
+            "券に消防団の連絡先と景品の受け取り期限を書いておきましょう。",
+            "景品を提供してくれた方に公の場でお礼を伝え、結果は抽選ページのリンクと一緒に公表しましょう。",
+        ],
+        "fim": "このサービスは無料で、登録不要、ファイルも保存しません。今すぐ始められます。",
+    },
+    "ko": {
+        "titulo": "소방대 추첨 행사 하는 방법",
+        "intro": "추첨 행사는 의용소방대가 장비, 차량, 해마다 여는 축제 비용을 마련하는 전통적인 방법입니다. 추첨권 생성기로 소방대 엠블럼이 들어간 번호 응모권을 몇 분 만에 만들 수 있습니다. Canva도, 설치할 프로그램도 필요 없습니다.",
+        "passos": [
+            ("기본부터 정하세요", "상품(지역 상점과 기업이 내놓는 경우가 많습니다), 응모권 가격, 인쇄할 수량, 추첨 날짜를 정하세요. 예를 들면 소방대 창립 기념일입니다. 판매 전에 추첨 행사에 허가나 신고가 필요한지 지자체에 확인하세요. 규정은 추첨 종류에 따라 다릅니다."),
+            ("응모권 디자인", "갤러리에서 디자인(Bombeiros, Solidária…)을 고르고 소방대 이름, 상품, 날짜를 쓰세요. 엠블럼을 로고(PNG 또는 JPG)로 넣고 번호 색상을 고르세요. 직접 만들고 싶다면 템플릿 편집기를 쓰세요."),
+            ("판매자나 지역마다 시리즈 하나", "«접두사 또는 시리즈»에 예를 들어 A-, B-, C-를 입력하세요. 판매자, 소방서, 지역마다 자기 응모권(A-0001, B-0001…)과 파일을 받아 누가 가장 많이 팔았는지 알 수 있습니다. «번호 건너뛰기»로 따로 빼 둔 번호를 제외하세요."),
+            ("인쇄하고 자르기", "용지(보통 A4면 충분)와 재단선을 고르면 프로그램이 한 장을 응모권으로 채웁니다. 인쇄한 뒤 재단선을 따라 자르세요. 색지를 쓰면 시리즈를 구분하기 쉽습니다. 응모권에는 부본이 있어 번호가 두 번 나옵니다."),
+            ("판매 관리와 추첨", "응모권 목록(CSV)과 판매 관리 시트를 내보내 각 판매자에게 나눠 주세요. 추첨 날에는 «추첨» 페이지를 쓰세요. 공개된 시드(예: 복권 결과)를 쓰면 누구나 결과를 확인할 수 있습니다."),
+        ],
+        "dicas": [
+            "응모권 묶음은 명단과 맞바꿔 내주고 누가 어느 묶음을 가져갔는지 적어 두세요.",
+            "응모권에 소방대 연락처와 상품 수령 기한을 적어 두세요.",
+            "상품을 기부한 분들께 공개적으로 감사하고, 결과는 추첨 링크와 함께 알리세요.",
+        ],
+        "fim": "이 서비스는 무료이고 가입이 필요 없으며 파일을 저장하지 않습니다. 지금 바로 시작할 수 있습니다.",
+    },
+    "hi": {
+        "titulo": "दमकल दल के लिए रैफ़ल कैसे करें",
+        "intro": "रैफ़ल स्वयंसेवी दमकल दलों की मदद का पारंपरिक तरीक़ा है: उपकरण, गाड़ियों और सालाना उत्सव के लिए। रैफ़ल जनरेटर से दल के प्रतीक वाले क्रमांकित टिकट कुछ ही मिनटों में बन जाते हैं: न Canva चाहिए, न कुछ इंस्टॉल करना।",
+        "passos": [
+            ("मुख्य बातें तय करें", "इनाम तय करें (अक्सर इलाक़े की दुकानें और कंपनियाँ देती हैं), टिकट की कीमत, कितने टिकट छापने हैं और ड्रॉ की तारीख, जैसे दल की वर्षगाँठ पर। बेचने से पहले स्थानीय प्रशासन से पूछ लें कि रैफ़ल के लिए अनुमति या सूचना चाहिए या नहीं: नियम रैफ़ल के प्रकार पर निर्भर करते हैं।"),
+            ("टिकट डिज़ाइन करें", "गैलरी से एक डिज़ाइन चुनें (Bombeiros, Solidária…) और दल का नाम, इनाम और तारीख लिखें। प्रतीक को लोगो (PNG या JPG) की तरह जोड़ें और संख्याओं का रंग चुनें। कुछ अलग चाहिए तो टेम्पलेट संपादक इस्तेमाल करें।"),
+            ("हर विक्रेता या इलाक़े की एक सीरीज़", "«उपसर्ग या श्रृंखला» में जैसे A-, B-, C- लिखें: हर विक्रेता, स्टेशन या इलाक़े को अपने टिकट (A-0001, B-0001…) और अपनी फ़ाइलें मिलती हैं, इसलिए पता चलता है कि सबसे ज़्यादा किसने बेचा। «संख्याएँ छोड़ें» में रिज़र्व रखी संख्याएँ हटा दें।"),
+            ("प्रिंट करें और काटें", "काग़ज़ (आमतौर पर A4 काफ़ी है) और कटाई के निशान चुनें: प्रोग्राम शीट को टिकटों से भर देता है। प्रिंट करके निशानों पर काटें; रंगीन काग़ज़ से सीरीज़ अलग पहचानी जा सकती हैं। टिकटों में स्टब होता है, इसलिए संख्या दो बार आती है।"),
+            ("बिक्री पर नज़र रखें और ड्रॉ करें", "टिकट सूची (CSV) और बिक्री नियंत्रण शीट निर्यात करके हर विक्रेता को दें। ड्रॉ के दिन «ड्रॉ» पेज इस्तेमाल करें: सार्वजनिक सीड (जैसे लॉटरी का नतीजा) से कोई भी नतीजा जाँच सकता है।"),
+        ],
+        "dicas": [
+            "टिकट-बंडल सूची में दर्ज करके ही दें और लिखते जाएँ कि कौन-सा बंडल किसके पास गया।",
+            "टिकट पर दल का संपर्क और इनाम लेने की आख़िरी तारीख़ लिखें।",
+            "इनाम देने वालों का सबके सामने धन्यवाद करें और नतीजा ड्रॉ के लिंक के साथ प्रकाशित करें।",
+        ],
+        "fim": "सेवा मुफ़्त है, रजिस्ट्रेशन नहीं चाहिए और यह आपकी फ़ाइलें सहेजती नहीं। आप अभी शुरू कर सकते हैं।",
+    },
+}

@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.34.0 — 2026-11-13
+
+### Novedades
+- **Tres guías «Cómo hacer» nuevas:** «Para clubes», «Para bomberos» y «Para fiestas de barrio» (enlaces en el pie), con el paso a paso para hacer una rifa en cada caso. Están en las 22 lenguas y recuerdan consultar en el ayuntamiento si la rifa necesita licencia.
+
 ## 3.33.0 — 2026-11-13
 
 ### Novedades

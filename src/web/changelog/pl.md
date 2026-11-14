@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.34.0 — 2026-11-13
+
+### Nowości
+- **Trzy nowe poradniki „Jak to zrobić”:** „Dla klubów”, „Dla straży pożarnej” i „Dla festynów” (linki w stopce), z instrukcją krok po kroku, jak zorganizować loterię w każdym z tych przypadków. Są w 22 językach i przypominają, by sprawdzić w urzędzie gminy, czy loteria wymaga zezwolenia.
+
 ## 3.33.0 — 2026-11-13
 
 ### Nowości

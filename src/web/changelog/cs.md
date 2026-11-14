@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.34.0 — 2026-11-13
+
+### Novinky
+- **Tři nové návody „Jak na to“:** „Pro kluby“, „Pro hasiče“ a „Pro slavnosti“ (odkazy v patičce), vždy s postupem krok za krokem, jak uspořádat tombolu. Jsou ve všech 22 jazycích a připomínají, že se na obecním úřadě má ověřit, zda tombola vyžaduje povolení.
+
 ## 3.33.0 — 2026-11-13
 
 ### Novinky

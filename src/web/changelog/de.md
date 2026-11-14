@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.34.0 — 2026-11-13
+
+### Neu
+- **Drei neue „So geht’s“-Anleitungen:** „Für Clubs“, „Für die Feuerwehr“ und „Für Straßenfeste“ (Links in der Fußzeile), jeweils mit der Schritt-für-Schritt-Anleitung für eine Tombola. Sie gibt es in allen 22 Sprachen; sie erinnern daran, beim Ordnungsamt zu klären, ob die Tombola genehmigungspflichtig ist.
+
 ## 3.33.0 — 2026-11-13
 
 ### Neu

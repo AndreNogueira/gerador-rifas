@@ -29,6 +29,9 @@ describe("rodapé e páginas de texto", () => {
     expect(Array.from(rodape.querySelectorAll("a")).map((a) => a.textContent)).toEqual([
       "Para escolas",
       "Para associações",
+      "Para clubes",
+      "Para bombeiros",
+      "Para festas de bairro",
       "Changelog",
       "Termos",
       "Privacidade",

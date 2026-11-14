@@ -8,6 +8,9 @@ import { Ligacao } from "./rota";
 export const GUIAS: Record<string, string> = {
   "/rifas-para-escolas": "escolas",
   "/rifas-para-associacoes": "associacoes",
+  "/rifas-para-clubes": "clubes",
+  "/rifas-para-bombeiros": "bombeiros",
+  "/rifas-para-festas": "festas",
 };
 
 /**

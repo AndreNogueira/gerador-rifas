@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.34.0 — 2026-11-13
+
+### Nouveautés
+- **Trois nouveaux guides « Comment faire » :** « Pour les clubs », « Pour les pompiers » et « Pour les fêtes de quartier » (liens en bas de page), avec la marche à suivre pour organiser une tombola dans chaque cas. Ils existent en 22 langues et rappellent de vérifier auprès de la mairie si la tombola exige une autorisation.
+
 ## 3.33.0 — 2026-11-13
 
 ### Nouveautés

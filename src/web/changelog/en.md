@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.34.0 — 2026-11-13
+
+### New
+- **Three new “How to” guides:** “For clubs”, “For fire brigades” and “For neighbourhood parties” (links in the footer), with the step-by-step to run a raffle in each case. They are in all 22 languages and remind you to check with your local authority whether the raffle needs a licence.
+
 ## 3.33.0 — 2026-11-13
 
 ### New
