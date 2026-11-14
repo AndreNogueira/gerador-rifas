@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.29.0 — 2026-11-12
+
+### Förbättrat
+- **Annonser i sidorna:** när annonser är på (just nu är de det inte) visas de på breda skärmar på båda sidor om innehållet, en på varje sida, fasta och utan att flytta sidan; på andra skärmar finns ett enda block längst ned på sidan. De visas fortfarande aldrig i redigeraren, i de skapade filerna eller i Windows-appen.
+
 ## 3.28.0 — 2026-11-12
 
 ### Nytt

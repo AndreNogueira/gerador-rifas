@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { CONSULTA_LATERAIS } from "./Anuncio";
 import { App } from "./App";
 import { ProvedorI18n } from "./i18n";
 import { ServidorFalso } from "./servidor-falso";
@@ -14,7 +15,18 @@ beforeEach(() => {
 });
 afterEach(() => {
   window.adsbygoogle = undefined;
+  vi.unstubAllGlobals();
 });
+
+/** Simula um ecrã largo (com espaço para as laterais) ou estreito. */
+function ecra(largo: boolean) {
+  vi.stubGlobal("matchMedia", (q: string) => ({
+    matches: largo && q === CONSULTA_LATERAIS,
+    media: q,
+    addEventListener: () => undefined,
+    removeEventListener: () => undefined,
+  }));
+}
 
 function abrir(caminho = "/") {
   window.history.pushState({}, "", caminho);
@@ -39,6 +51,31 @@ describe("anúncios (AdSense)", () => {
     await screen.findByTestId("upload-template");
     await new Promise((r) => setTimeout(r, 50));
     expect(screen.queryByTestId("anuncio")).toBeNull();
+  });
+
+  it("em ecrã largo ficam nas duas laterais (anúncio vertical), sem bloco no fim da página", async () => {
+    servidor.anunciosCliente = "ca-pub-1234567890123456";
+    servidor.anunciosSlot = "1234567890";
+    ecra(true);
+    abrir("/");
+    await waitFor(() => expect(screen.getAllByTestId("anuncio")).toHaveLength(2));
+    const [esq, dir] = screen.getAllByTestId("anuncio");
+    expect(esq).toHaveClass("anuncio-lateral", "esquerda");
+    expect(dir).toHaveClass("anuncio-lateral", "direita");
+    for (const lado of [esq, dir])
+      expect(lado?.querySelector("ins")).toHaveAttribute("data-ad-format", "vertical");
+    await waitFor(() => expect(window.adsbygoogle).toHaveLength(2));
+  });
+
+  it("em ecrã estreito fica um só bloco, no fim da página", async () => {
+    servidor.anunciosCliente = "ca-pub-1234567890123456";
+    servidor.anunciosSlot = "1234567890";
+    ecra(false);
+    abrir("/tutorial");
+    const bloco = await screen.findByTestId("anuncio");
+    expect(screen.getAllByTestId("anuncio")).toHaveLength(1);
+    expect(bloco).not.toHaveClass("anuncio-lateral");
+    expect(bloco.querySelector("ins")).toHaveAttribute("data-ad-format", "auto");
   });
 
   it("com identificador e bloco mostra o bloco no fim da página inicial e das de leitura, uma só vez", async () => {

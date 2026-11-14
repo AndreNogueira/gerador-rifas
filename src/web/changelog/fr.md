@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.29.0 — 2026-11-12
+
+### Amélioré
+- **Publicités sur les côtés :** quand les publicités sont activées (ce n'est pas le cas pour l'instant), sur les grands écrans elles apparaissent de part et d'autre du contenu, une de chaque côté, fixes et sans déplacer la page ; sur les autres écrans, il y a un seul bloc à la fin de la page. Elles n'apparaissent toujours pas dans l'éditeur, dans les fichiers générés ni dans l'appli Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Nouveautés

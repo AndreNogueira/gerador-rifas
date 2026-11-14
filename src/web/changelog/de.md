@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.29.0 — 2026-11-12
+
+### Verbessert
+- **Anzeigen an den Seiten:** Wenn Anzeigen aktiv sind (derzeit nicht), erscheinen sie auf breiten Bildschirmen links und rechts neben dem Inhalt, je eine pro Seite, fest und ohne die Seite zu verschieben; auf anderen Bildschirmen gibt es einen einzigen Block am Seitenende. Sie erscheinen weiterhin nie im Editor, in den erzeugten Dateien oder in der Windows-App.
+
 ## 3.28.0 — 2026-11-12
 
 ### Neu
