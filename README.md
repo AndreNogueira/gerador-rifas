@@ -47,6 +47,7 @@ Criam-se em **GitHub → o repositório → Settings → Secrets and variables �
 3. **Criar o serviço com o Blueprint:** no Render, *New → Blueprint* e escolhe este repositório (o Render pede autorização para a app GitHub dele ler o repositório privado). O [`render.yaml`](render.yaml) já define o serviço `gerador-rifas`
    (imagem `ghcr.io/andrenogueira/gerador-rifas:latest`, credencial `ghcr`, plano *Free*, região Frankfurt, *Health Check Path* `/health`). O Render define `PORT` sozinho e a app ouve nessa porta. O plano gratuito adormece após 15 min sem uso (o 1.º pedido demora cerca de 1 min).
 4. Não há variáveis de ambiente **obrigatórias**. Opcionais, no **Environment** do serviço (são variáveis do Render, **não** *secrets* do GitHub):
+   - **`CLAUDE_TOKEN`** (opcional): um segundo acesso ao painel, **só de leitura**, para um assistente (≥ 24 caracteres e diferente do `ADMIN_TOKEN`; ver [`docs/ADMIN.md`](docs/ADMIN.md)).
    - **`ADMIN_TOKEN`**: liga o painel de administração em `/admin` (gráficos do servidor e da utilização). Uma palavra-passe longa e aleatória (≥ 12 caracteres: `python -c "import secrets; print(secrets.token_urlsafe(32))"`). Sem ela o painel não existe (404). Ver [`docs/ADMIN.md`](docs/ADMIN.md).
    - **`PUBLIC_URL`**: o URL do site (p.ex. um domínio próprio) para o canónico, o Open Graph e o sitemap; sem ela usa-se o `RENDER_EXTERNAL_URL` do Render. Ver [`docs/SEO.md`](docs/SEO.md).
 5. Copia o *Deploy Hook* do serviço para o secret `RENDER_DEPLOY_HOOK_URL` (tabela acima).

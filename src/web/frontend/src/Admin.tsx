@@ -279,6 +279,11 @@ export function Admin() {
           <span>
             Versão <b>{estado.versao}</b>
           </span>
+          {estado.papel === "leitura" && (
+            <span role="status" data-testid="admin-so-leitura">
+              <b>Só de leitura</b> (não pode mudar nada)
+            </span>
+          )}
           <span>
             a correr há <b>{duracao(estado.agora - estado.arranque)}</b> (desde {dataHora(estado.arranque)})
           </span>
@@ -784,7 +789,7 @@ export function Admin() {
         </dl>
       </Seccao>
 
-      <AdminSeo />
+      <AdminSeo leitura={estado.papel === "leitura"} />
     </div>
   );
 }

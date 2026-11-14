@@ -20,6 +20,8 @@ export interface Sistema {
 }
 export type VeredictoProxy = "sem_dados" | "poucos_pedidos" | "sem_proxy" | "ok" | "problema";
 export interface Estado {
+  /** «leitura»: entrou com o CLAUDE_TOKEN (só vê); «admin»: o dono. */
+  papel?: "admin" | "leitura";
   versao: string;
   agora: number;
   arranque: number;

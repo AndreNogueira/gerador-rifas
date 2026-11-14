@@ -189,6 +189,14 @@ def admin_token() -> str:
     return t if len(t) >= 12 else ""
 
 
+def claude_token() -> str:
+    """A palavra-passe de LEITURA do painel (variavel CLAUDE_TOKEN, no Render em Environment; NUNCA no repositorio): a que se da a um assistente
+    (o Claude) para ver o painel sem poder mudar nada nem ver o que so o dono muda. Precisa de 24 ou mais caracteres e de ser diferente do
+    ADMIN_TOKEN; senao fica desligada."""
+    t = os.environ.get("CLAUDE_TOKEN", "").strip()
+    return t if len(t) >= 24 and t != admin_token() else ""
+
+
 def database_url() -> str:
     """O endereco da base Postgres (Neon, Supabase...): DATABASE_URL, so no Render (leva a palavra-passe: NUNCA no repositorio, num log ou no
     painel). So `postgres://` ou `postgresql://`; outra coisa ignora-se. Vazio = SQLite local, como sempre."""
