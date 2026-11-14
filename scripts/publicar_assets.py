@@ -47,6 +47,7 @@ def zip_bytes() -> bytes:
             info = zipfile.ZipInfo(nome, DATA)
             info.compress_type = zipfile.ZIP_STORED
             info.external_attr = 0o644 << 16
+            info.create_system = 3                                  # o `zipfile` poe 0 no Windows e 3 em Linux no cabecalho: fixo-o para o SHA-256 ser igual em qualquer sistema
             z.writestr(info, dados)
     return saida.getvalue()
 
