@@ -282,6 +282,18 @@ describe("painel de administração", () => {
     }
   });
 
+  it("tem ligações para o Swagger UI e para a descrição OpenAPI da API pública, abertas noutro separador", async () => {
+    render(<Admin />);
+    await userEvent.type(await screen.findByTestId("admin-token"), palavraCerta);
+    await userEvent.click(screen.getByTestId("admin-entrar"));
+    await screen.findByRole("heading", { name: "API pública (Swagger UI)" });
+    const swagger = screen.getByTestId("admin-swagger");
+    expect(swagger).toHaveAttribute("href", "/api/v1/docs");
+    expect(swagger).toHaveAttribute("target", "_blank");
+    expect(swagger).toHaveAttribute("rel", "noopener noreferrer");
+    expect(screen.getByTestId("admin-openapi")).toHaveAttribute("href", "/api/v1/openapi.json");
+  });
+
   it("com a base Postgres a funcionar diz que as métricas sobrevivem; se ela falhar, avisa", async () => {
     ESTADO = {
       ...ESTADO_INICIAL,

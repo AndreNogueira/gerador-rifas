@@ -81,3 +81,7 @@ A secção «Proxy e limite por IP» olha para a última hora e diz: **«ok»** 
 - `src/web/metricas.py`: o registo (buffer, SQLite, histogramas, proxy); `src/web/sistema.py`: CPU/memória/disco (`psutil`, cgroup); `src/web/admin.py`: autenticação e API; o frontend em `Admin.tsx`, `graficos.tsx` (gráficos em SVG feitos à mão, sem biblioteca), `admin-api.ts` e `estilos/_admin.scss`.
 - **Exceção às 18 línguas:** o painel está só em português (é do dono, não da interface pública).
 - Um evento novo: `serv.metricas.evento(tipo, a, b, c, v1, v2, v3)` (só códigos e números!) e a consulta em `Metricas.resumo`; atualiza o teste de privacidade.
+
+## API pública (Swagger UI)
+
+O painel tem uma secção **«API pública (Swagger UI)»** com ligações para `/api/v1/docs` (a documentação interativa da API pública em lote: pedidos, campos, respostas, e permite experimentá-los com uma chave `X-API-Key`) e para `/api/v1/openapi.json` (a descrição OpenAPI). Abrem noutro separador e estão acessíveis a quem tiver o endereço; as chaves criam-se e revogam-se aqui, no painel (`docs/API.md`).
