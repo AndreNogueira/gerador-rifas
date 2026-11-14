@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.41.0 — 2026-11-14
+
+### Ditingkatkan
+- **Pratinjau otomatis:** saat Anda mengubah templat, angka, logo, atau kolom apa pun yang memengaruhi halaman akhir (nomor, angka, lembar, seri, warna, QR…), pratinjau dengan nomor asli diperbarui sendiri tanpa menekan “Pratinjau”. Jika ada yang salah, alasannya muncul di samping penampil, tanpa jendela pop-up.
+
 ## 3.40.0 — 2026-11-14
 
 ### Baru

@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.41.0 — 2026-11-14
+
+### Îmbunătățit
+- **Previzualizare automată:** când schimbați șablonul, cifrele, logoul sau orice câmp care modifică pagina finală (numere, cifre, coală, serii, culori, QR…), previzualizarea cu numere reale se reface singură, fără să apăsați „Previzualizare”. Dacă ceva nu e în regulă, motivul apare lângă vizualizator, fără ferestre.
+
 ## 3.40.0 — 2026-11-14
 
 ### Noutăți

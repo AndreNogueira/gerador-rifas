@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.41.0 — 2026-11-14
+
+### Improved
+- **Automatic preview:** when you change the template, the digits, the logo or any field that alters the final page (numbers, digits, sheet, series, colours, QR…), the preview with real numbers refreshes by itself, without pressing “Preview”. If something is wrong, the reason shows next to the viewer, with no pop-ups.
+
 ## 3.40.0 — 2026-11-14
 
 ### New

@@ -25,6 +25,15 @@ async function gerarEDescarregar(page: Page, nome: string, ate = "12") {
 }
 
 test.describe("o gerador, de ponta a ponta", () => {
+  test("a pré-visualização aparece e refaz-se sozinha, sem carregar no botão", async ({ page }) => {
+    await prepararFicheiros(page);
+    await expect(page.getByTestId("titulo-visor")).toContainText("1 a 5", { timeout: 10_000 }); // veio sozinha
+    const primeira = await page.getByTestId("visor").getAttribute("src");
+    await page.getByTestId("algarismos").fill("6");
+    await expect(page.getByTestId("visor")).not.toHaveAttribute("src", primeira ?? "", { timeout: 10_000 }); // outro `n`: refez-se
+    await expect(page.getByTestId("previa-erro")).toHaveCount(0);
+  });
+
   test("do template ao PDF descarregado, com pré-visualização", async ({ page }) => {
     await prepararFicheiros(page);
     await page.getByTestId("ate").fill("12");

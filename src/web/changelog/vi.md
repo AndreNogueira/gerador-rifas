@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.41.0 — 2026-11-14
+
+### Cải thiện
+- **Xem trước tự động:** khi bạn đổi mẫu, chữ số, logo hoặc bất kỳ ô nào làm thay đổi trang cuối (số, chữ số, tờ giấy, sê-ri, màu, QR…), bản xem trước với số thật tự làm mới mà không cần bấm “Xem trước”. Nếu có lỗi, lý do hiện cạnh khung xem, không có cửa sổ bật lên.
+
 ## 3.40.0 — 2026-11-14
 
 ### Mới

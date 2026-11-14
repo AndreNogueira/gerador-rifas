@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.41.0 — 2026-11-14
+
+### İyileştirildi
+- **Otomatik önizleme:** şablonu, rakamları, logoyu veya son sayfayı etkileyen herhangi bir alanı (numaralar, rakamlar, sayfa, seriler, renkler, QR…) değiştirdiğinizde gerçek numaralı önizleme «Önizle»ye basmadan kendiliğinden yenilenir. Bir sorun olursa nedeni, açılır pencere olmadan görüntüleyicinin yanında görünür.
+
 ## 3.40.0 — 2026-11-14
 
 ### Yeni

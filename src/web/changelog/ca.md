@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.41.0 — 2026-11-14
+
+### Millores
+- **Previsualització automàtica:** quan canvieu la plantilla, les xifres, el logotip o qualsevol camp que alteri la pàgina final (números, xifres, full, sèries, colors, QR…), la previsualització amb números reals es refà sola, sense prémer «Previsualitza». Si alguna cosa falla, el motiu apareix al costat del visor, sense finestres.
+
 ## 3.40.0 — 2026-11-14
 
 ### Novetats
