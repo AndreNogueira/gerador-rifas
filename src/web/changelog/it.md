@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.39.0 — 2026-11-13
+
+### Novità
+- **App Windows 2.7:** la galleria e l'editor di modelli accettano ora latino esteso, vietnamita, greco, cirillico, cinese, giapponese e coreano, come il sito dalla 3.37 (l'hindi, l'arabo e l'ebraico mancano ancora). Si scarica dalla pagina del Changelog.
+
 ## 3.38.0 — 2026-11-13
 
 ### Novità

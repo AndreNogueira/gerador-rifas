@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.39.0 — 2026-11-13
+
+### Nieuw
+- **Windows-app 2.7:** de galerij en de sjablooneditor accepteren nu uitgebreid Latijn, Vietnamees, Grieks, Cyrillisch, Chinees, Japans en Koreaans, zoals de site sinds 3.37 (Hindi, Arabisch en Hebreeuws ontbreken nog). Te downloaden via de Changelog-pagina.
+
 ## 3.38.0 — 2026-11-13
 
 ### Nieuw

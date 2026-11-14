@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.39.0 — 2026-11-13
+
+### Yeni
+- **Windows uygulaması 2.7:** galeri ve şablon düzenleyici artık genişletilmiş Latin, Vietnamca, Yunanca, Kiril, Çince, Japonca ve Korece kabul ediyor; site 3.37'den beri böyle (Hintçe, Arapça ve İbranice henüz yok). Changelog sayfasından indirilir.
+
 ## 3.38.0 — 2026-11-13
 
 ### Yeni

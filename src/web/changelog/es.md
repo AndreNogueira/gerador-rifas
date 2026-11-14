@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.39.0 — 2026-11-13
+
+### Novedades
+- **App de Windows 2.7:** la galería y el editor de plantillas aceptan ahora latín extendido, vietnamita, griego, cirílico, chino, japonés y coreano, como el sitio desde la 3.37 (el hindi, el árabe y el hebreo siguen sin estar). Se descarga desde la página del Changelog.
+
 ## 3.38.0 — 2026-11-13
 
 ### Novedades

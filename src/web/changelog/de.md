@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.39.0 — 2026-11-13
+
+### Neu
+- **Windows-App 2.7:** Galerie und Vorlageneditor akzeptieren jetzt erweitertes Latein, Vietnamesisch, Griechisch, Kyrillisch, Chinesisch, Japanisch und Koreanisch, wie die Website seit 3.37 (Hindi, Arabisch und Hebräisch fehlen noch). Der Download steht auf der Changelog-Seite.
+
 ## 3.38.0 — 2026-11-13
 
 ### Neu

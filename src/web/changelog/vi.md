@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.39.0 — 2026-11-13
+
+### Mới
+- **Ứng dụng Windows 2.7:** thư viện và trình chỉnh sửa mẫu giờ nhận Latin mở rộng, tiếng Việt, Hy Lạp, Kirin, Trung, Nhật và Hàn, giống trang web từ bản 3.37 (tiếng Hindi, Ả Rập và Do Thái vẫn chưa có). Tải về từ trang Changelog.
+
 ## 3.38.0 — 2026-11-13
 
 ### Mới

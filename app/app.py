@@ -38,7 +38,7 @@ from tema import C, FONTE, cor_tk
 from visor import Visor
 from widgets import Banda, BarraMenus, Dica, Rolavel, novo_menu, repintar_so_o_necessario
 
-VERSAO = "2.6.0"
+VERSAO = "2.7.0"
 BASE = Path(__file__).resolve().parent            # tambem certo no .exe compilado (recursos ao lado)
 DADOS = core.config.pasta_de_dados(ambiente.dados_por_defeito())     # RIFAS_DADOS, ou %APPDATA%\GeradorRifas
 CONFIG = DADOS / core.config.NOME_CONFIG

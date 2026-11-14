@@ -8,7 +8,7 @@ couber. Gera vários PDFs ou **um único PDF com tudo**.
 **Executável:** `dist\GeradorRifas.exe` (compilado para código nativo; não precisa de instalar nada).
 **Antes de cada release:** `uv run python scripts/verificar_repo_publico.py` confirma que o repositório público só tem o `README.md` e releases com o `.exe` (sem código-fonte).
 **Descarregar:** na página de *Releases* do repositório público <https://github.com/AndreNogueira/gerador-rifas-windows>
-(só tem o programa, **sem código-fonte**; etiquetas `windows-vX.Y.Z`), junto com o `.sha256` para conferir o ficheiro. A versão atual é a 2.6.0: **guardar e abrir o pedido** (ficheiro `.rifas`), **imagens no editor de templates** e os **14 visuais** do site (só as cores); a 2.5.0 trouxe o **editor de templates** (menu Extras), a galeria de 24 desenhos, 22 línguas e Python 3.15; a 2.4.0 trouxe o que o site ganhou desde a 3.10 (menu **Extras**, abaixo); a 2.3.0 trouxe o visual novo (faixa com o gradiente violeta → magenta e o ícone da
+(só tem o programa, **sem código-fonte**; etiquetas `windows-vX.Y.Z`), junto com o `.sha256` para conferir o ficheiro. A versão atual é a 2.7.0: **mais letras** na galeria e no editor de templates (latim estendido, vietnamita, grego, cirílico, chinês, japonês e coreano; `docs/LETRAS.md`); a 2.6.0 trouxe **guardar e abrir o pedido** (ficheiro `.rifas`), **imagens no editor de templates** e os **14 visuais** do site (só as cores); a 2.5.0 trouxe o **editor de templates** (menu Extras), a galeria de 24 desenhos, 22 línguas e Python 3.15; a 2.4.0 trouxe o que o site ganhou desde a 3.10 (menu **Extras**, abaixo); a 2.3.0 trouxe o visual novo (faixa com o gradiente violeta → magenta e o ícone da
 marca, passos numerados com cores próprias, botão «Gerar» em magenta), as mesmas cores da webapp.
 
 ## Extras (v2.4)
@@ -17,7 +17,7 @@ O menu **Extras** abre janelas à parte (a janela principal e as capturas do tut
 
 - **Séries, cor e logótipo…**: prefixos (`A-, B-, C-`: cada série tem os seus PDFs), números a saltar (`13, 100-110`), uma cor para cada série, a **cor dos números**, o **logótipo** da associação
   (PNG ou JPG até 2 MB, num canto de cada rifa, só em templates de uma rifa) e as **marcas de corte** nas margens da folha (margem de pelo menos 3 mm).
-- **Galeria de templates…**: quatro desenhos prontos (Bosque, Quermesse, Natal, Gala) com título, organização, prémios e data; «Usar este template» cria o template e os algarismos.
+- **Galeria de templates…**: 24 desenhos prontos (Bosque, Quermesse, Natal, Páscoa, Futebol, Cinema…) com título, organização, prémios e data; «Usar este template» cria o template e os algarismos. Os textos podem ter latim estendido, vietnamita, grego, cirílico, chinês, japonês e coreano (não hindi, árabe nem hebraico).
 - **Sorteio…**: sorteio verificável (a mesma resposta que a página do site) com semente pública; há um botão para a aleatoriedade do drand (precisa de internet).
 - **Exportar lista (CSV)** e **Folha de controlo (PDF)**: a lista dos bilhetes do pedido (com prefixos e saltos) para o Excel, e uma tabela A4 para marcar quem pagou. Não precisam de template.
 - **Editor de templates…**: desenha-se a rifa (textos, retângulos, linhas, o número 0001 e **imagens** PNG ou JPG) com o rato e o teclado; desfazer/refazer (Ctrl+Z, Ctrl+Y), duplicar (Ctrl+D), ordem de desenho; «Usar este template» cria o template e os algarismos.

@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.39.0 — 2026-11-13
+
+### Baru
+- **Aplikasi Windows 2.7:** galeri dan editor templat kini menerima Latin diperluas, Vietnam, Yunani, Sirilik, Mandarin, Jepang, dan Korea, seperti situs sejak 3.37 (Hindi, Arab, dan Ibrani belum ada). Unduh dari halaman Changelog.
+
 ## 3.38.0 — 2026-11-13
 
 ### Baru

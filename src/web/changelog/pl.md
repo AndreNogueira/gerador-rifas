@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.39.0 — 2026-11-13
+
+### Nowości
+- **Aplikacja Windows 2.7:** galeria i edytor szablonów akceptują teraz rozszerzoną łacinkę, wietnamski, grecki, cyrylicę, chiński, japoński i koreański, tak jak strona od wersji 3.37 (hindi, arabski i hebrajski nadal nie działają). Do pobrania ze strony Changelog.
+
 ## 3.38.0 — 2026-11-13
 
 ### Nowości

@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.39.0 — 2026-11-13
+
+### Novinky
+- **Aplikace pro Windows 2.7:** galerie a editor šablon nově přijímají rozšířenou latinku, vietnamštinu, řečtinu, cyrilici, čínštinu, japonštinu a korejštinu, stejně jako web od verze 3.37 (hindština, arabština a hebrejština zatím chybí). Ke stažení na stránce Changelog.
+
 ## 3.38.0 — 2026-11-13
 
 ### Novinky
