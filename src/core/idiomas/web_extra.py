@@ -242,6 +242,11 @@ CHAVES: dict[str, dict[str, str]] = {
          "it": "Quanti premi", "nl": "Hoeveel prijzen", "pl": "Ile nagród", "sv": "Hur många vinster", "cs": "Kolik cen", "ro": "Câte premii",
          "el": "Πόσα βραβεία", "ru": "Сколько призов", "tr": "Kaç ödül", "zh": "奖品数量", "ja": "賞品の数", "ko": "상품 개수", "hi": "कितने पुरस्कार",
     },
+    "web_como_fazer": {
+         "pt": "Como fazer", "en": "How to", "es": "Cómo hacer", "fr": "Comment faire", "de": "Anleitungen", "it": "Come fare", "nl": "Handleidingen",
+         "pl": "Jak to zrobić", "sv": "Så gör du", "cs": "Jak na to", "ro": "Cum se face", "el": "Πώς γίνεται", "ru": "Как сделать",
+         "tr": "Nasıl yapılır", "zh": "操作指南", "ja": "やり方ガイド", "ko": "방법 안내", "hi": "कैसे करें",
+    },
     "web_galeria_data": {
         "pt": "Data do sorteio", "en": "Draw date", "es": "Fecha del sorteo", "fr": "Date du tirage", "de": "Datum der Ziehung",
         "it": "Data dell'estrazione", "nl": "Datum van de trekking", "pl": "Data losowania", "sv": "Dragningsdatum",

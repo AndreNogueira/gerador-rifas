@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.42.0 — 2026-11-14
+
+### Îmbunătățit
+- **Antet:** noul grup «Cum se face», lângă tutorial, reunește ghidurile (școli, asociații, cluburi, pompieri, sărbători de cartier și parohii). Butonul «Distribuie» s-a mutat din subsol în antet, evidențiat, iar lista lui arată pictogramele WhatsApp, Telegram, Facebook, e-mail și «Copiază linkul».
+
 ## 3.41.0 — 2026-11-14
 
 ### Îmbunătățit

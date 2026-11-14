@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.42.0 — 2026-11-14
+
+### Vylepšeno
+- **Záhlaví:** nová skupina «Jak na to», vedle návodu, sdružuje průvodce (školy, spolky, kluby, hasiči, sousedské slavnosti a farnosti). Tlačítko «Sdílet» se přesunulo ze zápatí do záhlaví, zvýrazněné, a jeho seznam ukazuje ikony WhatsAppu, Telegramu, Facebooku, e-mailu a «Kopírovat odkaz».
+
 ## 3.41.0 — 2026-11-14
 
 ### Vylepšeno

@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.42.0 — 2026-11-14
+
+### Improved
+- **Header:** the new “How to” group, next to the tutorial, gathers the guides (schools, associations, clubs, firefighters, neighbourhood parties and parishes). The “Share” button moved from the footer to the header, highlighted, and its list shows the WhatsApp, Telegram, Facebook, e-mail and “Copy link” icons.
+
 ## 3.41.0 — 2026-11-14
 
 ### Improved

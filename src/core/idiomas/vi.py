@@ -190,6 +190,7 @@ T = {
     "web_galeria_organizacao": "Tổ chức hoặc sự kiện",
     "web_galeria_premios": "Giải thưởng (mỗi dòng một giải)",
     "web_galeria_n_premios": "Số giải thưởng",
+    "web_como_fazer": "Hướng dẫn",
     "web_galeria_data": "Ngày bốc thăm",
     "err_galeria_texto": "Không thể dùng văn bản này trong mẫu thư viện («{car}»): chỉ chấp nhận các chữ có sẵn (Latin, Hy Lạp, Kirin, Trung, Nhật, Hàn) và văn bản ngắn.",
     "err_logotipo": "Logo phải là ảnh PNG hoặc JPG tối đa {mb} MB.",

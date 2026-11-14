@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.42.0 — 2026-11-14
+
+### Ulepszono
+- **Nagłówek:** nowa grupa «Jak to zrobić», obok samouczka, zbiera poradniki (szkoły, stowarzyszenia, kluby, strażacy, festyny osiedlowe i parafie). Przycisk «Udostępnij» przeniesiono ze stopki do nagłówka, wyróżniony, a jego lista pokazuje ikony WhatsApp, Telegram, Facebook, e-mail i «Kopiuj link».
+
 ## 3.41.0 — 2026-11-14
 
 ### Ulepszono

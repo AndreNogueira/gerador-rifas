@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.42.0 — 2026-11-14
+
+### Ditingkatkan
+- **Header:** grup baru «Cara membuat», di samping tutorial, menghimpun panduan (sekolah, asosiasi, klub, pemadam kebakaran, pesta lingkungan, dan paroki). Tombol «Bagikan» pindah dari footer ke header, disorot, dan daftarnya menampilkan ikon WhatsApp, Telegram, Facebook, e-mail, dan «Salin tautan».
+
 ## 3.41.0 — 2026-11-14
 
 ### Ditingkatkan

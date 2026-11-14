@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.42.0 — 2026-11-14
+
+### Cải thiện
+- **Đầu trang:** nhóm mới «Hướng dẫn», cạnh phần hướng dẫn sử dụng, gom các bài hướng dẫn (trường học, hiệp hội, câu lạc bộ, lính cứu hỏa, lễ hội khu phố và giáo xứ). Nút «Chia sẻ» chuyển từ chân trang lên đầu trang, nổi bật, và danh sách có biểu tượng WhatsApp, Telegram, Facebook, e-mail và «Sao chép liên kết».
+
 ## 3.41.0 — 2026-11-14
 
 ### Cải thiện

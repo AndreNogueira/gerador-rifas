@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.42.0 — 2026-11-14
+
+### Melhorado
+- **Cabeçalho:** o novo grupo «Como fazer», ao lado do tutorial, reúne os guias (escolas, associações, clubes, bombeiros, festas de bairro e paróquias). O botão «Partilhar» passou do rodapé para o cabeçalho, em destaque, e a lista mostra os ícones do WhatsApp, Telegram, Facebook, e-mail e «Copiar ligação».
+
 ## 3.41.0 — 2026-11-14
 
 ### Melhorado

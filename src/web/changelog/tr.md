@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.42.0 — 2026-11-14
+
+### İyileştirildi
+- **Üst bilgi:** öğreticinin yanındaki yeni «Nasıl yapılır» grubu rehberleri (okullar, dernekler, kulüpler, itfaiyeciler, mahalle şenlikleri ve cemaatler) bir araya getirir. «Paylaş» düğmesi alt bilgiden üst bilgiye taşındı, öne çıkarıldı; listesinde WhatsApp, Telegram, Facebook, e-posta ve «Bağlantıyı kopyala» simgeleri görünür.
+
 ## 3.41.0 — 2026-11-14
 
 ### İyileştirildi

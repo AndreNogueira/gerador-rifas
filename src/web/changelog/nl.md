@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.42.0 — 2026-11-14
+
+### Verbeterd
+- **Kop:** de nieuwe groep «Handleidingen», naast de tutorial, bundelt de gidsen (scholen, verenigingen, clubs, brandweer, buurtfeesten en parochies). De knop «Delen» is van de voettekst naar de kop verhuisd, opvallend, en de lijst toont de pictogrammen van WhatsApp, Telegram, Facebook, e-mail en «Link kopiëren».
+
 ## 3.41.0 — 2026-11-14
 
 ### Verbeterd

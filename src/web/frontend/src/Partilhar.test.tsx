@@ -11,7 +11,7 @@ beforeEach(() => {
   new ServidorFalso().instalar();
 });
 
-async function abrir(variante: "rodape" | "cartao" = "rodape") {
+async function abrir(variante: "topo" | "cartao" = "topo") {
   render(
     <ProvedorI18n>
       <ProvedorDialogos>
@@ -53,7 +53,7 @@ describe("o botão Partilhar", () => {
   it("começa fechado e abre a lista com WhatsApp, Telegram, Facebook, e-mail e copiar", async () => {
     await abrir();
     expect(screen.queryByRole("list", { name: "Partilhar" })).not.toBeInTheDocument();
-    const botao = screen.getByTestId("partilhar-abrir-rodape");
+    const botao = screen.getByTestId("partilhar-abrir-topo");
     expect(botao).toHaveAttribute("aria-expanded", "false");
     await userEvent.click(botao);
     expect(botao).toHaveAttribute("aria-expanded", "true");
@@ -71,7 +71,7 @@ describe("o botão Partilhar", () => {
     const escrever = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, "clipboard", { value: { writeText: escrever }, configurable: true });
     await abrir();
-    await userEvent.click(screen.getByTestId("partilhar-abrir-rodape"));
+    await userEvent.click(screen.getByTestId("partilhar-abrir-topo"));
     await userEvent.click(screen.getByTestId("partilhar-copiar"));
     expect(escrever).toHaveBeenCalledWith(`${window.location.origin}/`);
     expect(await screen.findByText("Ligação copiada.")).toBeInTheDocument();
@@ -81,7 +81,7 @@ describe("o botão Partilhar", () => {
     const partilhar = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, "share", { value: partilhar, configurable: true });
     await abrir();
-    await userEvent.click(screen.getByTestId("partilhar-abrir-rodape"));
+    await userEvent.click(screen.getByTestId("partilhar-abrir-topo"));
     await userEvent.click(screen.getByTestId("partilhar-nativa"));
     expect(partilhar).toHaveBeenCalledWith(expect.objectContaining({ url: `${window.location.origin}/` }));
   });

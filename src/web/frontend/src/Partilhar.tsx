@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDialogos } from "./dialogos";
 import { useI18n } from "./i18n";
 import { Icone } from "./icones";
+import { useMenuFlutuante } from "./menu";
 import { comPrefixo } from "./rota";
 
 /** O endereço que se partilha: a página inicial na língua em que se está (`/en`, `/ja`…); o português fica em `/`. */
@@ -40,13 +41,17 @@ export function ligacoesDePartilha(url: string, texto: string, assunto: string):
 
 /**
  * O botão «Partilhar»: abre uma lista curta (partilha do telemóvel/computador quando o browser a tem, WhatsApp, Telegram, Facebook, e-mail
- * e copiar a ligação) para dar a conhecer o gerador a outras associações, escolas e comissões de festas. Está no rodapé e, depois de gerar,
- * no cartão dos ficheiros (`variante="cartao"`, com uma frase a convidar).
+ * e copiar a ligação) para dar a conhecer o gerador a outras associações, escolas e comissões de festas. Está no cabeçalho (`variante="topo"`,
+ * bem à vista, com a lista num painel flutuante) e, depois de gerar, no cartão dos ficheiros (`variante="cartao"`, com uma frase a convidar).
  */
-export function Partilhar({ variante }: { variante: "rodape" | "cartao" }) {
+export function Partilhar({ variante }: { variante: "topo" | "cartao" }) {
   const { t, lingua } = useI18n();
   const { aviso } = useDialogos();
-  const [aberto, setAberto] = useState(false);
+  const menu = useMenuFlutuante("dir");
+  const [abertoCartao, setAbertoCartao] = useState(false);
+  const flutuante = variante === "topo";
+  const aberto = flutuante ? menu.aberto : abertoCartao;
+  const fechar = flutuante ? menu.fechar : () => setAbertoCartao(false);
   const url = enderecoParaPartilhar(window.location.origin, lingua);
   const texto = t("web_partilhar_texto");
   const nativa = typeof navigator !== "undefined" && typeof navigator.share === "function";
@@ -54,7 +59,7 @@ export function Partilhar({ variante }: { variante: "rodape" | "cartao" }) {
   const partilharNativa = async () => {
     try {
       await navigator.share({ title: t("app_nome"), text: texto, url });
-      setAberto(false);
+      fechar();
     } catch {
       /* o utilizador fechou a janela de partilha: não é um erro */
     }
@@ -66,47 +71,70 @@ export function Partilhar({ variante }: { variante: "rodape" | "cartao" }) {
     } catch {
       aviso(url, "aviso");
     }
-    setAberto(false);
+    fechar();
   };
+
+  const lista = (
+    <ul
+      id={`partilhar-lista-${variante}`}
+      ref={flutuante ? menu.refPainel : undefined}
+      className={`partilhar-lista${flutuante ? " painel-flutuante" : ""}`}
+      style={flutuante ? menu.estilo : undefined}
+      aria-label={t("web_partilhar")}
+    >
+      {nativa && (
+        <li>
+          <button type="button" onClick={() => void partilharNativa()} data-testid="partilhar-nativa">
+            <span className="rede-icone rede-nativa" aria-hidden="true">
+              <Icone nome="partilhar" tamanho={18} />
+            </span>
+            {t("web_partilhar")}…
+          </button>
+        </li>
+      )}
+      {ligacoesDePartilha(url, texto, t("app_nome")).map((l) => (
+        <li key={l.id}>
+          <a
+            href={l.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={fechar}
+            data-testid={`partilhar-${l.id}`}
+          >
+            <span className={`rede-icone rede-${l.id}`} aria-hidden="true">
+              <Icone nome={l.id} tamanho={18} />
+            </span>
+            {l.nome}
+          </a>
+        </li>
+      ))}
+      <li>
+        <button type="button" onClick={() => void copiar()} data-testid="partilhar-copiar">
+          <span className="rede-icone rede-copiar" aria-hidden="true">
+            <Icone nome="copiar" tamanho={18} />
+          </span>
+          {t("web_copiar_ligacao")}
+        </button>
+      </li>
+    </ul>
+  );
 
   return (
     <div className={`partilhar partilhar-${variante}`} data-testid={`partilhar-${variante}`}>
       {variante === "cartao" && <p className="partilhar-chamada">{t("web_partilhar_chamada")}</p>}
       <button
         type="button"
+        ref={flutuante ? menu.refBotao : undefined}
         className={variante === "cartao" ? "botao secundario" : "partilhar-botao"}
         aria-expanded={aberto}
         aria-controls={`partilhar-lista-${variante}`}
-        onClick={() => setAberto((a) => !a)}
+        onClick={flutuante ? menu.alternar : () => setAbertoCartao((a) => !a)}
         data-testid={`partilhar-abrir-${variante}`}
       >
         <Icone nome="partilhar" />
-        {t("web_partilhar")}
+        <span className="partilhar-texto">{t("web_partilhar")}</span>
       </button>
-      {aberto && (
-        <ul id={`partilhar-lista-${variante}`} className="partilhar-lista" aria-label={t("web_partilhar")}>
-          {nativa && (
-            <li>
-              <button type="button" onClick={() => void partilharNativa()} data-testid="partilhar-nativa">
-                {t("web_partilhar")}…
-              </button>
-            </li>
-          )}
-          {ligacoesDePartilha(url, texto, t("app_nome")).map((l) => (
-            <li key={l.id}>
-              <a href={l.href} target="_blank" rel="noopener noreferrer" data-testid={`partilhar-${l.id}`}>
-                {l.nome}
-              </a>
-            </li>
-          ))}
-          <li>
-            <button type="button" onClick={() => void copiar()} data-testid="partilhar-copiar">
-              <Icone nome="ligacao" />
-              {t("web_copiar_ligacao")}
-            </button>
-          </li>
-        </ul>
-      )}
+      {aberto && lista}
     </div>
   );
 }

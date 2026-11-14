@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.42.0 — 2026-11-14
+
+### Amélioré
+- **En-tête :** le nouveau groupe « Comment faire », à côté du tutoriel, réunit les guides (écoles, associations, clubs, pompiers, fêtes de quartier et paroisses). Le bouton « Partager » est passé du pied de page à l'en-tête, mis en avant, et sa liste montre les icônes de WhatsApp, Telegram, Facebook, e-mail et « Copier le lien ».
+
 ## 3.41.0 — 2026-11-14
 
 ### Amélioré
