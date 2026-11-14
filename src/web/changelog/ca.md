@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.36.0 — 2026-11-13
+
+### Novetats
+- **Guia «Com fer» per a parròquies:** «Per a parròquies» (enllaç al peu), amb el pas a pas per fer una rifa parroquial: festes del patró, fires, obres, cistelles de Nadal i catequesi. És a les 22 llengües i recorda consultar a l'ajuntament si la rifa necessita llicència.
+
 ## 3.35.0 — 2026-11-13
 
 ### Novetats

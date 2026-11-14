@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.36.0 — 2026-11-13
+
+### Baru
+- **Panduan «Cara membuat» untuk gereja:** «Untuk gereja» (tautan di bagian bawah), berisi langkah demi langkah membuat undian gereja: perayaan, bazar, perbaikan, bingkisan Natal, dan sekolah minggu. Tersedia dalam 22 bahasa dan mengingatkan untuk bertanya ke pemerintah setempat apakah undian memerlukan izin.
+
 ## 3.35.0 — 2026-11-13
 
 ### Baru

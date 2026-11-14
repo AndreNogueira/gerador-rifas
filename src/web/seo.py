@@ -178,6 +178,7 @@ ROTAS: dict[str, Pagina] = {p.caminho: p for p in (
     Pagina(guias.CAMINHOS["clubes"], "d_guia_clubes", _corpo_guia("clubes"), lambda lg: guias.guia("clubes", lg)["titulo"]),
     Pagina(guias.CAMINHOS["bombeiros"], "d_guia_bombeiros", _corpo_guia("bombeiros"), lambda lg: guias.guia("bombeiros", lg)["titulo"]),
     Pagina(guias.CAMINHOS["festas"], "d_guia_festas", _corpo_guia("festas"), lambda lg: guias.guia("festas", lg)["titulo"]),
+    Pagina(guias.CAMINHOS["igrejas"], "d_guia_igrejas", _corpo_guia("igrejas"), lambda lg: guias.guia("igrejas", lg)["titulo"]),
     Pagina("/termos", "d_termos", _corpo_texto("termos"), lambda lg: textos_legais.pagina("termos", lg)["titulo"]),
     Pagina("/privacidade", "d_privacidade", _corpo_texto("privacidade"), lambda lg: textos_legais.pagina("privacidade", lg)["titulo"]),
     Pagina("/contacto", "d_contacto", _corpo_texto("contacto"), lambda lg: textos_legais.pagina("contacto", lg)["titulo"]),

@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.36.0 — 2026-11-13
+
+### Novo
+- **Guia «Como fazer» para paróquias:** «Para paróquias» (ligação no rodapé), com o passo a passo para fazer uma rifa para a paróquia: festas do padroeiro, quermesses, obras, cabazes de Natal e catequese. Está nas 22 línguas e lembra de confirmar na câmara municipal se a rifa precisa de licença.
+
 ## 3.35.0 — 2026-11-13
 
 ### Novo

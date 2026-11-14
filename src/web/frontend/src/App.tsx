@@ -113,6 +113,7 @@ function Aplicacao() {
             <Ligacao para="/rifas-para-clubes">{t("web_guia_clubes")}</Ligacao>
             <Ligacao para="/rifas-para-bombeiros">{t("web_guia_bombeiros")}</Ligacao>
             <Ligacao para="/rifas-para-festas">{t("web_guia_festas")}</Ligacao>
+            <Ligacao para="/rifas-para-igrejas">{t("web_guia_igrejas")}</Ligacao>
             <Ligacao para="/changelog">Changelog</Ligacao>
             <Ligacao para="/termos">{t("web_termos")}</Ligacao>
             <Ligacao para="/privacidade">{t("web_privacidade")}</Ligacao>

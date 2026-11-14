@@ -360,3 +360,76 @@ FESTAS = {
         "fim": "Dịch vụ miễn phí, không cần đăng ký và không lưu tệp của bạn. Bạn có thể bắt đầu ngay.",
     },
 }
+
+
+# ---------------------------------------------------------------- guia das paroquias (3.36.0)
+IGREJAS = {
+    "ca": {
+        "titulo": "Com fer una rifa per a la parròquia",
+        "intro": "Les rifes són una tradició de les festes parroquials: ajuden a pagar les obres de l'església, les cistelles de Nadal o la catequesi. Amb el Generador de Rifes feu butlletes numerades, amb el nom o l'escut de la parròquia, en pocs minuts: sense Canva ni programes per instal·lar.",
+        "passos": [
+            ("Acordeu l'essencial", "Decidiu els premis (sovint oferts per feligresos i pel comerç local), el preu de la butlleta, quantes butlletes s'imprimiran i la data del sorteig, per exemple al final de la festa del patró o de la fira. Abans de vendre, consulteu a l'ajuntament si la rifa necessita llicència o comunicació: les normes depenen del tipus de rifa."),
+            ("Dissenyeu la butlleta", "A la galeria trieu un disseny (Quermesse, Natal, Solidária…) i escriviu el nom de la parròquia, per a què serveixen els diners, els premis i la data. Afegiu l'escut o el logotip de la parròquia (PNG o JPG). Si voleu alguna cosa a mida, feu servir l'Editor de plantilles."),
+            ("Una sèrie per grup", "A «Prefix o sèries» escriviu, per exemple, A-, B-, C-: cada grup (catequesi, escoltes, cor, joves) rep les seves butlletes (A-0001, B-0001…) i els seus fitxers, i així se sap qui ha venut més. A «Omet números» traieu els que queden reservats."),
+            ("Imprimiu i retalleu", "Trieu el paper (l'A4 sol anar bé) i les marques de tall: el programa omple el full de butlletes. Imprimiu i retalleu per les marques; amb paper de color distingiu les sèries. Les butlletes tenen taló, per això el número apareix dues vegades."),
+            ("Controleu les vendes i sortegeu", "Exporteu la llista de butlletes (CSV) i el full de control de vendes per lliurar a cada grup. El dia del sorteig feu servir la pàgina «Sorteig»: amb una llavor pública (per exemple, la loteria) qualsevol persona pot comprovar el resultat."),
+        ],
+        "dicas": [
+            "Escriviu a la butlleta per a què serveixen els diners (obres, cistelles, catequesi): qui coneix la finalitat sol comprar més.",
+            "Demaneu a cada grup que retorni els talons i els diners de cada bloc abans del dia del sorteig.",
+            "Anuncieu el resultat al full parroquial, al tauler de l'església i a les xarxes socials, amb l'enllaç del sorteig.",
+        ],
+        "fim": "El servei és gratuït, no cal registre i no guarda els vostres fitxers. Podeu començar ara mateix.",
+    },
+    "uk": {
+        "titulo": "Як провести лотерею для парафії",
+        "intro": "Лотереї — традиція парафіяльних свят: вони допомагають оплатити ремонт храму, різдвяні подарунки чи роботу з молоддю. З Генератором лотерей ви за кілька хвилин зробите пронумеровані квитки з назвою чи емблемою парафії: без Canva і без встановлення програм.",
+        "passos": [
+            ("Домовтеся про головне", "Вирішіть, які будуть призи (їх часто дарують парафіяни та місцеві крамниці), ціну квитка, скільки квитків друкувати і дату розіграшу, наприклад наприкінці храмового свята чи ярмарку. Перед продажем дізнайтеся в місцевій владі, чи потрібні для лотереї дозвіл або повідомлення: правила залежать від виду лотереї."),
+            ("Створіть квиток", "У галереї виберіть дизайн (Quermesse, Natal, Solidária…) і напишіть назву парафії, на що підуть гроші, призи та дату. Додайте емблему чи логотип парафії (PNG або JPG). Якщо хочете щось своє, скористайтеся Редактором шаблонів."),
+            ("Одна серія на групу", "У полі «Префікс або серії» напишіть, наприклад, A-, B-, C-: кожна група (недільна школа, скаути, хор, молодь) отримає свої квитки (A-0001, B-0001…) і свої файли, тож видно, хто продав найбільше. У «Пропустити номери» приберіть зарезервовані номери."),
+            ("Друк і вирізання", "Виберіть папір (зазвичай підходить A4) і мітки для обрізання: програма заповнює аркуш квитками. Надрукуйте й різіть по мітках; кольоровий папір допоможе розрізнити серії. У квитків є корінець, тому номер зазначено двічі."),
+            ("Облік продажів і розіграш", "Експортуйте список квитків (CSV) і контрольний аркуш продажів, щоб передати кожній групі. У день розіграшу відкрийте сторінку «Розіграш»: з публічним зерном (наприклад, результатом лотереї) будь-хто зможе перевірити підсумок."),
+        ],
+        "dicas": [
+            "Напишіть на квитку, на що підуть гроші (ремонт, подарунки, молодь): хто знає мету, зазвичай купує більше.",
+            "Попросіть кожну групу здати корінці й гроші за кожен блок до дня розіграшу.",
+            "Оголосіть результат у парафіяльному листку, на дошці оголошень храму й у соцмережах із посиланням на розіграш.",
+        ],
+        "fim": "Сервіс безкоштовний, без реєстрації й не зберігає ваших файлів. Можна починати вже зараз.",
+    },
+    "id": {
+        "titulo": "Cara membuat undian untuk gereja",
+        "intro": "Undian adalah tradisi bazar dan perayaan gereja: membantu membayar perbaikan gedung gereja, bingkisan Natal, atau kegiatan sekolah minggu. Dengan Pembuat Undian Anda bisa membuat tiket bernomor dengan nama atau lambang gereja dalam beberapa menit: tanpa Canva dan tanpa memasang program.",
+        "passos": [
+            ("Sepakati hal pokok", "Tentukan hadiah (sering disumbangkan jemaat dan toko setempat), harga tiket, jumlah tiket yang dicetak, dan tanggal pengundian, misalnya di akhir bazar atau perayaan. Sebelum menjual, tanyakan ke pemerintah setempat apakah undian memerlukan izin atau pemberitahuan: aturannya bergantung pada jenis undian."),
+            ("Rancang tiket", "Di galeri pilih desain (Quermesse, Natal, Solidária…) dan tulis nama gereja, untuk apa dana itu, hadiah, dan tanggal. Tambahkan lambang atau logo gereja (PNG atau JPG). Untuk desain sendiri, gunakan Editor templat."),
+            ("Satu seri per kelompok", "Di «Awalan atau seri» tulis, misalnya, A-, B-, C-: setiap kelompok (sekolah minggu, pramuka, paduan suara, pemuda) mendapat tiket (A-0001, B-0001…) dan berkasnya sendiri, sehingga terlihat siapa yang paling banyak menjual. Di «Lewati nomor» keluarkan nomor yang dicadangkan."),
+            ("Cetak dan gunting", "Pilih kertas (biasanya A4 cukup) dan tanda potong: program memenuhi lembar dengan tiket. Cetak lalu gunting mengikuti tanda; kertas berwarna membantu membedakan seri. Tiket punya kupon, jadi nomornya muncul dua kali."),
+            ("Pantau penjualan dan lakukan pengundian", "Ekspor daftar tiket (CSV) dan lembar kontrol penjualan untuk diberikan kepada setiap kelompok. Pada hari pengundian gunakan halaman «Pengundian»: dengan seed publik (misalnya hasil lotere) siapa pun dapat memastikan hasilnya."),
+        ],
+        "dicas": [
+            "Tulis di tiket untuk apa dana itu (perbaikan, bingkisan, sekolah minggu): orang yang tahu tujuannya biasanya membeli lebih banyak.",
+            "Minta setiap kelompok mengembalikan kupon dan uang tiap blok sebelum hari pengundian.",
+            "Umumkan hasil di warta jemaat, papan pengumuman gereja, dan media sosial beserta tautan pengundian.",
+        ],
+        "fim": "Layanan ini gratis, tanpa pendaftaran dan tidak menyimpan berkas Anda. Anda bisa mulai sekarang.",
+    },
+    "vi": {
+        "titulo": "Cách tổ chức bốc thăm cho giáo xứ",
+        "intro": "Bốc thăm là truyền thống của các hội chợ và lễ hội giáo xứ: giúp trả chi phí sửa nhà thờ, quà Giáng sinh hay lớp giáo lý. Với Trình tạo vé số, bạn làm vé đánh số có tên hoặc huy hiệu giáo xứ chỉ trong vài phút: không cần Canva, không cần cài phần mềm.",
+        "passos": [
+            ("Thống nhất những điều cơ bản", "Quyết định giải thưởng (thường do giáo dân và cửa hàng trong vùng tặng), giá vé, số vé sẽ in và ngày bốc thăm, chẳng hạn vào cuối lễ bổn mạng hay hội chợ. Trước khi bán, hãy hỏi chính quyền địa phương xem cuộc bốc thăm có cần giấy phép hay thông báo không: quy định phụ thuộc vào loại hình."),
+            ("Thiết kế vé", "Trong thư viện, chọn một mẫu (Quermesse, Natal, Solidária…) rồi viết tên giáo xứ, số tiền dùng vào việc gì, giải thưởng và ngày. Thêm huy hiệu hoặc logo của giáo xứ (PNG hoặc JPG). Muốn mẫu riêng, hãy dùng Trình chỉnh sửa mẫu."),
+            ("Mỗi nhóm một sê-ri", "Ở «Tiền tố hoặc sê-ri», gõ chẳng hạn A-, B-, C-: mỗi nhóm (giáo lý, hướng đạo, ca đoàn, giới trẻ) nhận vé (A-0001, B-0001…) và tệp riêng, nhờ đó biết ai bán nhiều nhất. Ở «Bỏ qua các số», loại những số để dành."),
+            ("In và cắt", "Chọn giấy (thường A4 là đủ) và dấu cắt: chương trình xếp đầy tờ giấy bằng vé. In rồi cắt theo dấu; dùng giấy màu để phân biệt các sê-ri. Vé có cuống nên số xuất hiện hai lần."),
+            ("Theo dõi doanh số và bốc thăm", "Xuất danh sách vé (CSV) và bảng kiểm soát doanh số để đưa cho từng nhóm. Đến ngày bốc thăm, dùng trang «Bốc thăm»: với hạt giống công khai (ví dụ kết quả xổ số), ai cũng có thể kiểm chứng kết quả."),
+        ],
+        "dicas": [
+            "Viết lên vé số tiền dùng vào việc gì (sửa chữa, quà tặng, giáo lý): người biết mục đích thường mua nhiều hơn.",
+            "Nhờ mỗi nhóm nộp lại các cuống vé và tiền của từng xấp trước ngày bốc thăm.",
+            "Công bố kết quả trên bản tin giáo xứ, bảng thông báo nhà thờ và mạng xã hội, kèm liên kết bốc thăm.",
+        ],
+        "fim": "Dịch vụ miễn phí, không cần đăng ký và không lưu tệp của bạn. Bạn có thể bắt đầu ngay.",
+    },
+}

@@ -54,6 +54,7 @@ describe("guias «como fazer»", () => {
       ["Para clubes", "/rifas-para-clubes"],
       ["Para bombeiros", "/rifas-para-bombeiros"],
       ["Para festas de bairro", "/rifas-para-festas"],
+      ["Para paróquias", "/rifas-para-igrejas"],
     ]) {
       expect(within(rodape).getByRole("link", { name: nome })).toHaveAttribute("href", caminho);
     }

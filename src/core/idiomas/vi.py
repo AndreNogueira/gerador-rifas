@@ -246,6 +246,7 @@ T = {
     "web_guia_clubes": "Cho câu lạc bộ",
     "web_guia_bombeiros": "Cho đội cứu hỏa",
     "web_guia_festas": "Cho lễ hội khu phố",
+    "web_guia_igrejas": "Cho giáo xứ",
     "win_guardar_pedido": "Lưu yêu cầu…",
     "win_abrir_pedido": "Mở yêu cầu…",
     "err_pedido_ficheiro": "Tệp này không phải yêu cầu của Trình tạo vé số (hoặc đã bị hỏng).",

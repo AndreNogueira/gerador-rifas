@@ -246,6 +246,7 @@ T = {
     "web_guia_clubes": "Untuk klub",
     "web_guia_bombeiros": "Untuk pemadam kebakaran",
     "web_guia_festas": "Untuk pesta warga",
+    "web_guia_igrejas": "Untuk gereja",
     "win_guardar_pedido": "Simpan permintaan…",
     "win_abrir_pedido": "Buka permintaan…",
     "err_pedido_ficheiro": "Berkas ini bukan permintaan Pembuat Undian (atau rusak).",
