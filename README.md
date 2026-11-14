@@ -3,7 +3,7 @@
 Gera PDFs de rifas numerados a partir de um template feito no Canva. Há duas interfaces sobre o **mesmo motor** (`src/core`):
 
 - **app Windows** (`app/`, Tkinter/CustomTkinter, `.exe` com Nuitka) — ver `app/README.md`;
-- **webapp** (`src/web`: API FastAPI + frontend React/Vite/TypeScript): carregas o template e os algarismos, vês a pré-visualização e descarregas os PDFs (ZIP ou PDF único). Pública e sem palavra-passe; 18 línguas; tutorial e vídeo.
+- **webapp** (`src/web`: API FastAPI + frontend React/Vite/TypeScript): carregas o template e os algarismos, vês a pré-visualização e descarregas os PDFs (ZIP ou PDF único). Pública e sem palavra-passe; 22 línguas; tutorial e vídeo.
 
 Planos: [`docs/PLANO_PRODUTO.md`](docs/PLANO_PRODUTO.md) (funcionalidades e monetização), [`docs/ONLINE.md`](docs/ONLINE.md) (manter o serviço acordado), [`docs/ADMIN.md`](docs/ADMIN.md) (painel), [`docs/SEO.md`](docs/SEO.md).
 
@@ -24,7 +24,7 @@ docker build --target web -t gerador-rifas . && docker run --rm -p 8080:8080 ger
 
 | Workflow | Quando | O que faz |
 |---|---|---|
-| [`ci.yml`](.github/workflows/ci.yml) | cada push e pull request | `ruff`; `pytest` (Linux e Windows, Python 3.13 e 3.15); frontend (Biome, `tsc`, Vitest, build); constrói a imagem Docker (`testes` e `web`) |
+| [`ci.yml`](.github/workflows/ci.yml) | cada push e pull request (um PR só de documentação não corre) | **num PR:** `ruff`, `pytest` em Linux (Python 3.15) e o frontend (Biome, `tsc`, Vitest, build). **Em `main`, ou num PR com a etiqueta `completo`:** também `pytest` em Windows, as métricas em Postgres, o e2e (Playwright) e a imagem Docker (`testes` e `web`). Poupa minutos do plano gratuito do GitHub; o resto corre-se com `scripts/verificar.ps1 -Docker -E2e` |
 | [`deploy.yml`](.github/workflows/deploy.yml) | push para `main`, **só depois de o CI passar** | publica a imagem em `ghcr.io/<dono>/<repo>:latest` e `:sha-<commit>`; manda o Render puxar essa imagem |
 
 Alojamento: **Render** (web service gratuito, a partir de uma imagem Docker). Nenhum segredo está nos ficheiros: o repositório só usa os *secrets* abaixo.
@@ -47,6 +47,7 @@ Criam-se em **GitHub → o repositório → Settings → Secrets and variables �
 3. **Criar o serviço com o Blueprint:** no Render, *New → Blueprint* e escolhe este repositório (o Render pede autorização para a app GitHub dele ler o repositório privado). O [`render.yaml`](render.yaml) já define o serviço `gerador-rifas`
    (imagem `ghcr.io/andrenogueira/gerador-rifas:latest`, credencial `ghcr`, plano *Free*, região Frankfurt, *Health Check Path* `/health`). O Render define `PORT` sozinho e a app ouve nessa porta. O plano gratuito adormece após 15 min sem uso (o 1.º pedido demora cerca de 1 min).
 4. Não há variáveis de ambiente **obrigatórias**. Opcionais, no **Environment** do serviço (são variáveis do Render, **não** *secrets* do GitHub):
+   - **`CLAUDE_TOKEN`** (opcional): um segundo acesso ao painel, **só de leitura**, para um assistente (≥ 24 caracteres e diferente do `ADMIN_TOKEN`; ver [`docs/ADMIN.md`](docs/ADMIN.md)).
    - **`ADMIN_TOKEN`**: liga o painel de administração em `/admin` (gráficos do servidor e da utilização). Uma palavra-passe longa e aleatória (≥ 12 caracteres: `python -c "import secrets; print(secrets.token_urlsafe(32))"`). Sem ela o painel não existe (404). Ver [`docs/ADMIN.md`](docs/ADMIN.md).
    - **`PUBLIC_URL`**: o URL do site (p.ex. um domínio próprio) para o canónico, o Open Graph e o sitemap; sem ela usa-se o `RENDER_EXTERNAL_URL` do Render. Ver [`docs/SEO.md`](docs/SEO.md).
 5. Copia o *Deploy Hook* do serviço para o secret `RENDER_DEPLOY_HOOK_URL` (tabela acima).

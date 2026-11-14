@@ -1,5 +1,9 @@
-# Integracao continua, em cada push e pull request: ruff, pytest (Linux e Windows; Python 3.13 = a da app Windows, 3.15 = a da webapp),
-# frontend React (Biome, tsc, Vitest, build) e a imagem Docker. O deploy (deploy.yml) so corre depois de este CI passar em main.
+# Integracao continua. Em PULL REQUEST corre o essencial e barato: ruff, pytest em Linux (Python 3.15, a da webapp E a da app Windows desde a 2.5)
+# e o frontend React (Biome, tsc, Vitest, build). Em PUSH para main (e num PR com a etiqueta «completo») corre tudo: tambem pytest em Windows,
+# as metricas em Postgres, o e2e (Playwright) e a imagem Docker (cujo alvo `testes` repete o pytest e o Vitest dentro do contentor).
+# Porque: o plano gratuito do GitHub (2000 min/mes em repositorios privados; os minutos de Windows contam o dobro) acabou-se com 9 trabalhos por
+# push. Um PR so de documentacao nao corre CI (paths-ignore). O que o CI economiza num PR corre-se localmente: `scripts/verificar.ps1 -Docker -E2e`.
+# O deploy (deploy.yml) so corre depois de este CI passar em main.
 # Nota: `astral-sh/setup-uv` ja nao publica a tag flutuante `v10` (so versoes exatas); as outras Actions usam a tag major.
 name: CI
 
@@ -7,6 +11,11 @@ on:
   push:
     branches: [main]
   pull_request:
+    types: [opened, synchronize, reopened, labeled]       # `labeled`: a etiqueta «completo» corre tudo
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+      - "app/assets/**"          # videos e capturas: o que os usa e testado por tests/test_assets_publicados.py (corre em qualquer PR que mexa em codigo)
 
 permissions:
   contents: read
@@ -34,8 +43,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        python: ["3.13", "3.15"]
+        os: ${{ (github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'completo')) && fromJSON('["ubuntu-latest", "windows-latest"]') || fromJSON('["ubuntu-latest"]') }}
+        python: ["3.15"]
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.3.3
@@ -54,6 +63,7 @@ jobs:
   # Num trabalho a parte porque os contentores de servico so existem em runners Linux.
   postgres:
     name: metricas em Postgres 17
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'completo')
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -73,7 +83,7 @@ jobs:
           version: "0.13.7"
           python-version: "3.15"
       - run: uv sync --frozen
-      - run: uv run --no-sync python -m pytest -q tests/test_web_metricas.py tests/test_web_metricas_bd.py -rs
+      - run: uv run --no-sync python -m pytest -q tests/test_web_metricas.py tests/test_web_metricas_bd.py tests/test_web_partilhas.py -rs
 
   frontend:
     name: frontend (Node 26, pnpm)
@@ -99,6 +109,7 @@ jobs:
 
   e2e:
     name: e2e (Playwright, Chromium)
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'completo')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -135,6 +146,7 @@ jobs:
 
   docker:
     name: imagem Docker (testes dentro do build)
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'completo')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

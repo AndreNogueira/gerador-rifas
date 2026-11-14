@@ -1,4 +1,4 @@
-"""Janelas das funcionalidades acrescentadas depois da v2.3: séries/cor/logótipo/marcas de corte, galeria de templates e sorteio.
+"""Janelas das funcionalidades acrescentadas depois da v2.3: séries/cor/logótipo/marcas de corte, galeria de templates, editor de templates e sorteio.
 
 São janelas à parte (abertas pelo menu «Extras») para a janela principal ficar igual: as capturas do tutorial, e os recortes que
 delas se fazem, continuam a valer. Os valores ficam em variáveis da `App` (`v_prefixos`, `v_saltar`, ...), por isso `App._trabalho()`
@@ -19,7 +19,7 @@ from PIL import Image
 
 import ambiente          # noqa: F401  (poe ..\src no sys.path)
 import core
-from core import galeria, i18n, marca, sorteio
+from core import editor, editor_modelo, galeria, i18n, marca, sorteio
 from core.i18n import t
 from tema import C, FONTE
 
@@ -170,10 +170,10 @@ class Galeria(Janela):
         esq = ctk.CTkFrame(self, fg_color="transparent", width=360)
         esq.grid(row=0, column=0, sticky="ns", padx=(14, 0), pady=12)
         self.etiqueta(esq, t("web_galeria"), wraplength=330).pack(fill="x", pady=(0, 6))
-        self.seg = ctk.CTkSegmentedButton(
-            esq, values=[d.nome for d in galeria.DESENHOS], corner_radius=8, height=34, selected_color=C["acento_suave"],
-            selected_hover_color=C["acento_suave"], unselected_color=C["campo"], unselected_hover_color=C["borda"],
-            text_color=C["texto"], fg_color=C["campo"], command=self._desenho)
+        self.seg = ctk.CTkOptionMenu(                       # 24 desenhos: uma lista suspensa (um botão segmentado não os comporta)
+            esq, values=[d.nome for d in galeria.DESENHOS], corner_radius=8, height=34, fg_color=C["campo"], button_color=C["borda"],
+            button_hover_color=C["acento_suave"], text_color=C["texto"], dropdown_fg_color=C["cartao"], dropdown_text_color=C["texto"],
+            dropdown_hover_color=C["acento_suave"], font=ctk.CTkFont(FONTE, 13), command=self._desenho)
         self.seg.set(galeria.DESENHOS[0].nome)
         self.seg.pack(fill="x", pady=(0, 8))
         for chave, rotulo, maximo in (("titulo", t("web_galeria_titulo"), galeria.MAX_TITULO),
@@ -318,3 +318,389 @@ class Sorteio(Janela):
             except Exception:
                 self.after(0, lambda: self.winfo_exists() and self.l_estado.configure(text=t("web_sorteio_drand_erro"), text_color=C["aviso"]))
         threading.Thread(target=trabalho, daemon=True).start()
+
+
+# ------------------------------------------------------------------ editor de templates
+class EditorTemplates(Janela):
+    """Desenha-se UMA rifa (retângulos, linhas, textos e o número 0001, uma ou duas vezes) em vez de usar um template do Canva; «Usar este template»
+    cria o template e os algarismos como a galeria. Os elementos, o histórico e o que está debaixo do rato vivem em `core.editor_modelo` (testável sem
+    janelas); o que se vê é o PDF a sério (letra Vera) desenhado no worker da app e mostrado como imagem, e por cima desenham-se só a seleção e a pega.
+    Arrastar mostra uma caixa tracejada e a imagem refaz-se ao largar."""
+
+    MARGEM = 10
+
+    def __init__(self, app):
+        super().__init__(app, t("web_editor").rstrip("…"), 1180, 740)
+        self.minsize(940, 580)
+        self.m = editor_modelo.Modelo()
+        self.sel: int | None = None
+        self.token = 0
+        self._espera = None
+        self._foto = None
+        self._arrasto = None
+        self.escala = 1.0
+        self.botoes: dict[str, ctk.CTkButton] = {}
+        self.etiqueta(self, t("web_editor_intro"), wraplength=1180).pack(fill="x", padx=16, pady=(12, 0))
+        self._barra((("texto", "web_editor_texto"), ("retangulo", "web_editor_retangulo"), ("linha", "web_editor_linha"),
+                     ("numero", "web_editor_numero"), ("imagem", "web_editor_imagem")), lambda tipo: (lambda: self.acrescentar(tipo)), "+ ")
+        self._barra((("desfazer", "web_editor_desfazer"), ("refazer", "web_editor_refazer"), ("duplicar", "web_editor_duplicar"),
+                     ("frente", "web_editor_frente"), ("tras", "web_editor_tras"), ("apagar", "web_editor_apagar"),
+                     ("modelo", "web_editor_modelo")), lambda nome: getattr(self, "_a_" + nome), "")
+        corpo = ctk.CTkFrame(self, fg_color="transparent")
+        corpo.pack(fill="both", expand=True, padx=14, pady=(8, 0))
+        corpo.grid_columnconfigure(0, weight=1)
+        corpo.grid_rowconfigure(0, weight=1)
+        self.tela = tk.Canvas(corpo, bg=self._cor("visor"), highlightthickness=0, takefocus=True)
+        self.tela.grid(row=0, column=0, sticky="nsew")
+        self.insp = ctk.CTkScrollableFrame(corpo, width=330, fg_color=C["cartao"], corner_radius=12, border_width=1, border_color=C["borda"])
+        self.insp.grid(row=0, column=1, sticky="ns", padx=(12, 0))
+        baixo = ctk.CTkFrame(self, fg_color="transparent")
+        baixo.pack(fill="x", padx=14, pady=(8, 12))
+        self.l_erro = self.etiqueta(baixo, "", wraplength=900)
+        self.l_erro.configure(text_color=C["erro"])
+        self.l_erro.pack(side="left", fill="x", expand=True)
+        self.b_usar = app._botao(baixo, t("web_galeria_usar"), self._usar, True, icone="gerar", height=42, width=260)
+        self.b_usar.pack(side="right")
+        self.tela.bind("<ButtonPress-1>", self._clicar)
+        self.tela.bind("<B1-Motion>", self._arrastar)
+        self.tela.bind("<ButtonRelease-1>", self._largar)
+        self.tela.bind("<Configure>", lambda e: self._ajustar())
+        for seq, f in (("<Delete>", self._a_apagar), ("<Left>", lambda: self._seta(-1, 0)), ("<Right>", lambda: self._seta(1, 0)),
+                       ("<Up>", lambda: self._seta(0, -1)), ("<Down>", lambda: self._seta(0, 1)),
+                       ("<Shift-Left>", lambda: self._seta(-10, 0)), ("<Shift-Right>", lambda: self._seta(10, 0)),
+                       ("<Shift-Up>", lambda: self._seta(0, -10)), ("<Shift-Down>", lambda: self._seta(0, 10))):
+            self.tela.bind(seq, lambda e, f=f: f())
+        for seq, f in (("<Control-z>", self._a_desfazer), ("<Control-y>", self._a_refazer), ("<Control-d>", self._a_duplicar)):
+            self.bind(seq, lambda e, f=f: None if isinstance(self.focus_get(), tk.Entry) else f())
+        self._inspetor()
+        self._estado_botoes()
+        self.after(60, self._ajustar)
+
+    def _cor(self, chave: str) -> str:
+        """Uma cor da paleta para o `tk.Canvas`, que (ao contrário dos widgets do CustomTkinter) não aceita o par «claro escuro»."""
+        return self._apply_appearance_mode(C[chave])
+
+    # ------------------------------------------------------------------ construção
+    def _barra(self, itens, comando, prefixo: str) -> None:
+        linha = ctk.CTkFrame(self, fg_color="transparent")
+        linha.pack(fill="x", padx=14, pady=(8, 0))
+        for chave, texto in itens:
+            b = self.app._botao(linha, prefixo + t(texto), comando(chave), height=32)
+            b.pack(side="left", padx=(0, 6))
+            self.botoes[chave] = b
+
+    def _campo_num(self, pai, rotulo: str, valor: float, aplicar, largura: int = 76) -> None:
+        caixa = ctk.CTkFrame(pai, fg_color="transparent")
+        caixa.pack(side="left", padx=(0, 8))
+        self.etiqueta(caixa, rotulo).pack(anchor="w")
+        var = tk.StringVar(value=f"{valor:g}")
+        e = self.app._entrada(caixa, var, width=largura)
+        e.pack()
+
+        def aplicar_campo(_=None) -> None:
+            try:
+                v = float(var.get().replace(",", "."))
+            except ValueError:
+                var.set(f"{valor:g}")
+                return
+            if v != valor:
+                aplicar(v)
+        e.bind("<Return>", aplicar_campo)
+        e.bind("<FocusOut>", aplicar_campo)
+
+    def _botao_cor(self, pai, rotulo: str, cor: str, aplicar) -> None:
+        caixa = ctk.CTkFrame(pai, fg_color="transparent")
+        caixa.pack(side="left", padx=(0, 8))
+        self.etiqueta(caixa, rotulo).pack(anchor="w")
+
+        def escolher() -> None:
+            nova = colorchooser.askcolor(color=cor or "#000000", parent=self)[1]
+            if nova:
+                aplicar(nova)
+        ctk.CTkButton(caixa, text="", width=52, height=32, fg_color=cor or "#000000", hover_color=cor or "#000000", border_width=1,
+                      border_color=C["borda"], command=escolher).pack()
+
+    def _inspetor(self) -> None:
+        for filho in self.insp.winfo_children():
+            filho.destroy()
+        m = self.m
+        self.etiqueta(self.insp, t("web_editor_pagina"), wraplength=290, suave=False).pack(fill="x", pady=(4, 2))
+        linha = ctk.CTkFrame(self.insp, fg_color="transparent")
+        linha.pack(fill="x")
+        self._campo_num(linha, "W", m.largura, lambda v: self._pagina(largura=v))
+        self._campo_num(linha, "H", m.altura, lambda v: self._pagina(altura=v))
+        self._botao_cor(linha, t("web_editor_fundo"), m.fundo, lambda c: self._pagina(fundo=c))
+        e = m.por_id(self.sel) if self.sel is not None else None
+        if e is None:
+            return
+        nomes = {"texto": "web_editor_texto", "retangulo": "web_editor_retangulo", "linha": "web_editor_linha", "numero": "web_editor_numero",
+                 "imagem": "web_editor_imagem"}
+        self.etiqueta(self.insp, t(nomes[e.tipo]), wraplength=290, suave=False).pack(fill="x", pady=(14, 2))
+        linha = ctk.CTkFrame(self.insp, fg_color="transparent")
+        linha.pack(fill="x")
+        self._campo_num(linha, "X", e.x, lambda v: self._definir(x=v))
+        self._campo_num(linha, "Y", e.y, lambda v: self._definir(y=v))
+        if e.tipo in ("retangulo", "linha", "imagem"):
+            linha = ctk.CTkFrame(self.insp, fg_color="transparent")
+            linha.pack(fill="x", pady=(6, 0))
+            self._campo_num(linha, "W", e.w, lambda v: self._definir(w=v))
+            self._campo_num(linha, "H", e.h, lambda v: self._definir(h=v))
+        if e.tipo == "texto":
+            self.etiqueta(self.insp, t("web_editor_texto")).pack(fill="x", pady=(8, 0))
+            var = tk.StringVar(value=e.texto)
+            self.var_texto = var
+            self.entrada_texto = self.app._entrada(self.insp, var)
+            self.entrada_texto.pack(fill="x")
+            var.trace_add("write", lambda *_: self._definir(texto=var.get()[:editor.MAX_TEXTO]))
+        linha = ctk.CTkFrame(self.insp, fg_color="transparent")
+        linha.pack(fill="x", pady=(8, 0))
+        if e.tipo in ("texto", "numero"):
+            self._campo_num(linha, t("web_editor_tamanho"), e.tamanho,
+                            lambda v: self._definir(tamanho=min(max(v, editor.TAMANHO_MIN), editor.TAMANHO_MAX)))
+            self._botao_cor(linha, t("web_editor_cor"), e.cor, lambda c: self._definir(cor=c))
+        if e.tipo == "retangulo":
+            self._botao_cor(linha, t("web_editor_cor"), e.cor, lambda c: self._definir(cor=c))
+        if e.tipo in ("retangulo", "linha"):
+            self._botao_cor(linha, t("web_editor_contorno"), e.contorno or "#000000",
+                            lambda c: self._definir(contorno=c, espessura=e.espessura or 1.0))
+            self._campo_num(linha, "pt", e.espessura, lambda v: self._definir(espessura=min(max(v, 0.0), 20.0)))
+        if e.tipo == "texto":
+            v_neg = tk.BooleanVar(value=e.negrito)
+            self.caixa(self.insp, t("web_editor_negrito"), v_neg, command=lambda: self._definir(negrito=v_neg.get())).pack(anchor="w", pady=(8, 0))
+        if e.tipo in ("texto", "numero"):
+            v_rot = tk.BooleanVar(value=e.rot == 90)
+            self.caixa(self.insp, t("web_editor_rodar"), v_rot, command=lambda: self._definir(rot=90 if v_rot.get() else 0)).pack(anchor="w", pady=(6, 0))
+
+    # ------------------------------------------------------------------ ações (também usadas pelos testes)
+    def _estado_botoes(self) -> None:
+        m = self.m
+        tem = self.sel is not None and m.por_id(self.sel) is not None
+        for chave, ativo in (("desfazer", m.pode_desfazer()), ("refazer", m.pode_refazer()), ("duplicar", tem), ("frente", tem), ("tras", tem),
+                             ("apagar", tem)):
+            self.botoes[chave].configure(state="normal" if ativo else "disabled")
+        p = m.problemas()
+        texto = t("err_editor_numero") if p["numero"] else t("err_editor_digitos", texto=p["digitos"]) if p["digitos"] else ""
+        self.l_erro.configure(text=texto)
+        self.b_usar.configure(state="normal" if m.sem_problemas() and not self.app.a_gerar else "disabled")
+
+    def _mudou(self, inspetor: bool = False, render: bool = True) -> None:
+        if self.sel is not None and self.m.por_id(self.sel) is None:
+            self.sel = None
+            inspetor = True
+        if inspetor:
+            self._inspetor()
+        self._estado_botoes()
+        self._pintar_selecao()
+        if render:
+            self._agendar(120)
+
+    def acrescentar(self, tipo: str, ficheiro: str | None = None) -> None:
+        """Junta um elemento; a imagem pede o ficheiro (PNG ou JPG) numa janela, ou recebe-o já em `ficheiro` (os testes)."""
+        if tipo == "imagem":
+            self._juntar_imagem(ficheiro)
+            return
+        novo = self.m.adicionar(tipo)
+        if novo is not None:
+            self.sel = novo
+            self._mudou(inspetor=True)
+
+    def _juntar_imagem(self, ficheiro: str | None = None) -> None:
+        ficheiro = ficheiro or filedialog.askopenfilename(parent=self, title=t("web_editor_imagem"), filetypes=[("PNG / JPG", "*.png *.jpg *.jpeg")])
+        if not ficheiro:
+            return
+        try:
+            novo = self.m.adicionar_imagem(Path(ficheiro).read_bytes())
+        except (core.ErroRifas, OSError) as e:
+            self.l_erro.configure(text=t("web_editor_imagem_invalida") if isinstance(e, OSError) else str(e))
+            return
+        if novo is not None:
+            self.sel = novo
+            self._mudou(inspetor=True)
+
+    def _a_desfazer(self) -> None:
+        if self.m.desfazer():
+            self._ajustar(forcar=True)
+            self._mudou(inspetor=True)
+
+    def _a_refazer(self) -> None:
+        if self.m.refazer():
+            self._ajustar(forcar=True)
+            self._mudou(inspetor=True)
+
+    def _a_duplicar(self) -> None:
+        if self.sel is not None:
+            novo = self.m.duplicar(self.sel)
+            if novo is not None:
+                self.sel = novo
+                self._mudou(inspetor=True)
+
+    def _a_frente(self) -> None:
+        if self.sel is not None and self.m.ordem(self.sel, 1):
+            self._mudou()
+
+    def _a_tras(self) -> None:
+        if self.sel is not None and self.m.ordem(self.sel, -1):
+            self._mudou()
+
+    def _a_apagar(self) -> None:
+        if self.sel is not None and self.m.apagar(self.sel):
+            self.sel = None
+            self._mudou(inspetor=True)
+
+    def _a_modelo(self) -> None:
+        """«Começar com um modelo»: também se desfaz."""
+        passado = [*self.m.passado, self.m._snapshot()]
+        self.m.carregar(editor_modelo.modelo_com_talao())
+        self.m.passado = passado[-editor_modelo.MAX_HISTORICO:]
+        self.sel = None
+        self._ajustar(forcar=True)
+        self._mudou(inspetor=True)
+
+    def _seta(self, dx: float, dy: float) -> None:
+        if self.sel is not None:
+            self.m.mover(self.sel, dx, dy, "seta")
+            self._mudou()
+
+    def _definir(self, **campos) -> None:
+        if self.sel is not None and self.m.definir(self.sel, **campos):
+            self._mudou(inspetor=set(campos) != {"texto"})
+
+    def _pagina(self, **kw) -> None:
+        self.m.pagina(**kw)
+        self._ajustar(forcar=True)
+        self._mudou(inspetor=True)
+
+    # ------------------------------------------------------------------ o ecrã
+    def _ajustar(self, forcar: bool = False) -> None:
+        """A escala (px por pt): a rifa inteira cabe na tela. Se mudou, refaz-se a imagem."""
+        if not self.winfo_exists():
+            return
+        larg = max(self.tela.winfo_width() - 2 * self.MARGEM, 240)
+        alt = max(self.tela.winfo_height() - 2 * self.MARGEM, 120)
+        nova = round(min(larg / self.m.largura, alt / self.m.altura, 2.5), 3)
+        if forcar or abs(nova - self.escala) > 0.005:
+            self.escala = nova
+            self._agendar(0)
+        self._pintar_selecao()
+
+    def _px(self, x: float, y: float) -> tuple[float, float]:
+        return self.MARGEM + x * self.escala, self.MARGEM + y * self.escala
+
+    def _pt(self, px: float, py: float) -> tuple[float, float]:
+        return (px - self.MARGEM) / self.escala, (py - self.MARGEM) / self.escala
+
+    def _pintar_selecao(self) -> None:
+        self.tela.delete("sel")
+        if self.sel is None:
+            return
+        c = self.m.caixa(self.sel)
+        if c is None:
+            return
+        x0, y0 = self._px(c[0] - 2, c[1] - 2)
+        x1, y1 = self._px(c[2] + 2, c[3] + 2)
+        self.tela.create_rectangle(x0, y0, x1, y1, outline=self._cor("acento"), dash=(4, 3), width=2, tags="sel")
+        e = self.m.por_id(self.sel)
+        if e is not None and e.tipo in ("retangulo", "linha"):
+            hx, hy = self._px(e.x + e.w, e.y + e.h)
+            self.tela.create_rectangle(hx - 5, hy - 5, hx + 5, hy + 5, fill=self._cor("acento"), outline=self._cor("sobre_acento"), tags="sel")
+
+    def _agendar(self, atraso: int = 120) -> None:
+        if self._espera:
+            self.after_cancel(self._espera)
+        self._espera = self.after(atraso, self._desenhar)
+
+    def _desenhar(self) -> None:
+        self._espera = None
+        if not self.winfo_exists():
+            return
+        self.token += 1
+        token, escala, lingua = self.token, self.escala, i18n.atual()
+        try:
+            desenho = self.m.desenho()
+        except core.ErroRifas:
+            return                                                # um desenho que ainda não serve (p.ex. sem número): a imagem velha fica
+        gc.collect()                                              # ver App._analisar: o lixo do Tk apanha-se no fio principal
+
+        def trabalho() -> None:
+            if token != self.token:
+                return
+            try:
+                with i18n.com_lingua(lingua):
+                    png = core.png_de_pagina(editor.criar_template(desenho), max(round(72 * escala), 24))
+                self.app.fila.put(("editor", token, png, None))
+            except Exception as e:                                # noqa: BLE001
+                self.app.fila.put(("editor", token, None, e))
+        self.app.pool.submit(trabalho)
+
+    def resultado(self, token: int, png: bytes | None, erro: Exception | None) -> None:
+        if token != self.token or not self.winfo_exists():
+            return
+        if erro is not None:
+            self.l_erro.configure(text=str(erro) if isinstance(erro, core.ErroRifas) else t("erro_inesperado", erro=erro))
+            return
+        if png is None:
+            return
+        import io
+
+        from PIL import ImageTk
+        self._foto = ImageTk.PhotoImage(Image.open(io.BytesIO(png)))
+        self.tela.delete("pagina")
+        self.tela.create_image(self.MARGEM, self.MARGEM, image=self._foto, anchor="nw", tags="pagina")
+        self.tela.tag_lower("pagina")
+        self._estado_botoes()
+
+    # ------------------------------------------------------------------ o rato
+    def _clicar(self, ev) -> None:
+        self.tela.focus_set()
+        x, y = self._pt(ev.x, ev.y)
+        e = self.m.por_id(self.sel) if self.sel is not None else None
+        if e is not None and e.tipo in ("retangulo", "linha"):
+            hx, hy = self._px(e.x + e.w, e.y + e.h)
+            if abs(ev.x - hx) <= 8 and abs(ev.y - hy) <= 8:       # a pega do canto: redimensionar
+                self._arrasto = ("tamanho", e.id, x, y, e.w, e.h)
+                return
+        novo = self.m.elemento_em(x, y)
+        if novo != self.sel:
+            self.sel = novo
+            self._inspetor()
+            self._estado_botoes()
+        self._pintar_selecao()
+        e = self.m.por_id(novo) if novo is not None else None
+        self._arrasto = ("mover", e.id, x, y, e.x, e.y) if e is not None else None
+
+    def _arrastar(self, ev) -> None:
+        if self._arrasto is None:
+            return
+        modo, id_, x0, y0, a, b = self._arrasto
+        x, y = self._pt(ev.x, ev.y)
+        dx, dy = x - x0, y - y0
+        if modo == "mover":
+            self.m.definir(id_, x=round(a + dx), y=round(b + dy))
+        else:
+            self.m.definir(id_, w=round(a + dx), h=round(b + dy))
+        self._pintar_selecao()                                    # só a caixa tracejada: a imagem refaz-se ao largar
+
+    def _largar(self, ev) -> None:
+        if self._arrasto is not None:
+            self._arrasto = None
+            self._mudou(inspetor=True)
+
+    # ------------------------------------------------------------------ usar
+    def _usar(self) -> None:
+        try:
+            with i18n.com_lingua(i18n.atual()):
+                modelo = editor.criar_template(self.m.desenho())
+                digitos = galeria.criar_algarismos()
+        except core.ErroRifas as e:
+            self.l_erro.configure(text=str(e))
+            return
+        self.app.usar_galeria("editor", modelo, digitos)
+        self.destroy()
+
+    def destroy(self) -> None:
+        if self._espera:
+            try:
+                self.after_cancel(self._espera)
+            except Exception:
+                pass
+        super().destroy()

@@ -14,11 +14,12 @@ import os
 from pathlib import Path
 
 from .motor import PAPEIS
+from . import tema
 
 ENV_DADOS = "RIFAS_DADOS"            # variavel de ambiente: pasta onde se guarda o config.json
 NOME_CONFIG = "config.json"
 MODOS = ("varios", "unico")
-VISUAIS_CONFIG = ("auto", "premiado", "natal")           # o visual da app Windows (ver core.tema)
+VISUAIS_CONFIG = ("auto", *tema.VISUAIS)           # o visual da app Windows (ver core.tema)
 # campos de texto guardados tal e qual (chave do config.json == chave devolvida por preferencias())
 CAMPOS_DE_TEXTO = ("algarismos", "saida", "inicio", "fim", "digitos", "max", "margem")
 

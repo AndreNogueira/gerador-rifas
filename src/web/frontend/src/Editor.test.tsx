@@ -1,10 +1,17 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 import { lerGuardado, modeloComTalao, PADRAO_NUMERO, paraEnviar, problemas } from "./editor-modelo";
 import { ProvedorI18n } from "./i18n";
 import { ServidorFalso } from "./servidor-falso";
+
+vi.mock("./imagem", () => ({
+  prepararImagem: vi.fn(async (f: File) => {
+    if (f.type !== "image/png") throw new Error("tipo");
+    return { dados: "data:image/png;base64,iVBORw0KGgo=", largura: 200, altura: 100 };
+  }),
+}));
 
 let servidor: ServidorFalso;
 
@@ -117,5 +124,148 @@ describe("página do editor", () => {
     expect(corpo.elementos.some((e) => "id" in e)).toBe(false);
     expect(corpo.elementos.filter((e) => e.tipo === "numero")).toHaveLength(2);
     expect(await screen.findByTestId("estado-template")).toHaveTextContent("editor");
+  });
+});
+
+const contar = (tipo: string) =>
+  within(screen.getByTestId("editor-tela")).queryAllByTestId(`el-${tipo}`).length;
+
+describe("editor v2: histórico, duplicar, ordem, imagem e partilha", () => {
+  it("desfazer e refazer repõem os elementos, e os botões só funcionam quando há o que desfazer", async () => {
+    abrir();
+    await screen.findByTestId("editor-tela");
+    expect(screen.getByTestId("editor-desfazer")).toBeDisabled();
+    expect(screen.getByTestId("editor-refazer")).toBeDisabled();
+    await userEvent.click(screen.getByTestId("add-retangulo"));
+    expect(contar("retangulo")).toBe(3);
+    await userEvent.click(screen.getByTestId("editor-desfazer"));
+    expect(contar("retangulo")).toBe(2);
+    expect(screen.getByTestId("editor-refazer")).toBeEnabled();
+    await userEvent.click(screen.getByTestId("editor-refazer"));
+    expect(contar("retangulo")).toBe(3);
+  });
+
+  it("escrever num texto é um só passo do histórico; Ctrl+Z desfaz tudo o que se escreveu", async () => {
+    abrir();
+    await userEvent.click(await screen.findByTestId("add-texto"));
+    const campo = screen.getByTestId("editor-texto");
+    await userEvent.clear(campo);
+    await userEvent.type(campo, "Novo texto");
+    await userEvent.click(screen.getByTestId("editor-desfazer"));
+    expect((screen.getByTestId("editor-texto") as HTMLInputElement).value).toBe("Texto"); // voltou ao valor de antes de começar a escrever
+    await userEvent.click(screen.getByTestId("editor-desfazer"));
+    expect(contar("texto")).toBe(6); // desfez o «+ Texto»
+  });
+
+  it("Ctrl+Z, Ctrl+Y e Ctrl+D funcionam fora dos campos de escrita", async () => {
+    abrir();
+    await userEvent.click(await screen.findByTestId("add-linha"));
+    expect(contar("linha")).toBe(2);
+    fireEvent.keyDown(document.body, { key: "d", ctrlKey: true });
+    expect(contar("linha")).toBe(3);
+    fireEvent.keyDown(document.body, { key: "z", ctrlKey: true });
+    expect(contar("linha")).toBe(2);
+    fireEvent.keyDown(document.body, { key: "y", ctrlKey: true });
+    expect(contar("linha")).toBe(3);
+  });
+
+  it("duplicar copia o elemento um pouco ao lado; para a frente e para trás mudam a ordem de desenho", async () => {
+    abrir();
+    const tela = await screen.findByTestId("editor-tela");
+    const primeiro = within(tela).getAllByTestId("el-texto")[0] as HTMLElement;
+    fireEvent.focus(primeiro);
+    const x = Number(primeiro.querySelector("text")?.getAttribute("x"));
+    await userEvent.click(screen.getByTestId("editor-duplicar"));
+    expect(contar("texto")).toBe(7);
+    // a ordem de desenho é a dos filhos do SVG: a cópia (com x + 10) entra por último (por cima de tudo)
+    const posicao = () =>
+      Array.from(tela.querySelectorAll("g.editor-el")).findIndex(
+        (g) =>
+          Number(g.querySelector("text")?.getAttribute("x")) === x + 10 &&
+          g.getAttribute("data-testid") === "el-texto",
+      );
+    const total = tela.querySelectorAll("g.editor-el").length;
+    expect(posicao()).toBe(total - 1);
+    await userEvent.click(screen.getByTestId("editor-tras"));
+    expect(posicao()).toBe(total - 2);
+    await userEvent.click(screen.getByTestId("editor-frente"));
+    expect(posicao()).toBe(total - 1);
+    await userEvent.click(screen.getByTestId("editor-frente")); // já está por cima de tudo: não muda
+    expect(posicao()).toBe(total - 1);
+  });
+
+  it("junta uma imagem (o logótipo) e envia-a ao servidor; um ficheiro que não presta dá o aviso", async () => {
+    abrir();
+    await screen.findByTestId("editor-tela");
+    const envio = new File(["x"], "logo.png", { type: "image/png" });
+    await userEvent.upload(screen.getByTestId("editor-ficheiro"), envio);
+    await waitFor(() => expect(contar("imagem")).toBe(1));
+    const im = within(screen.getByTestId("editor-tela")).getByTestId("el-imagem").querySelector("image");
+    expect(im).toHaveAttribute("href", "data:image/png;base64,iVBORw0KGgo=");
+    expect(Number(im?.getAttribute("width"))).toBe(160); // 200 × 100 px cabe em 160 × 80 pt
+    await userEvent.click(screen.getByTestId("editor-usar"));
+    await waitFor(() => expect(servidor.chamadas("POST", /\/editor$/)).toHaveLength(1));
+    const corpo = servidor.chamadas("POST", /\/editor$/)[0]?.corpo as {
+      elementos: { tipo: string; dados?: string; id?: string }[];
+    };
+    expect(corpo.elementos.find((e) => e.tipo === "imagem")?.dados).toBe(
+      "data:image/png;base64,iVBORw0KGgo=",
+    );
+    expect(corpo.elementos.filter((e) => e.tipo !== "imagem").every((e) => !("dados" in e))).toBe(true);
+  });
+
+  it("uma imagem inválida mostra o aviso e não entra no desenho", async () => {
+    abrir();
+    await screen.findByTestId("editor-tela");
+    fireEvent.change(screen.getByTestId("editor-ficheiro"), {
+      target: { files: [new File(["x"], "x.gif", { type: "image/gif" })] },
+    });
+    expect(await screen.findByTestId("editor-aviso")).toHaveTextContent("PNG ou JPG");
+    expect(contar("imagem")).toBe(0);
+  });
+
+  it("só mostra «Partilhar por ligação» com base de dados; partilha sem imagens e mostra a ligação", async () => {
+    abrir();
+    await screen.findByTestId("editor-tela");
+    expect(screen.queryByTestId("editor-partilhar")).toBeNull();
+    cleanup();
+    servidor.partilhaEditor = true;
+    abrir();
+    await userEvent.upload(
+      await screen.findByTestId("editor-ficheiro"),
+      new File(["x"], "logo.png", { type: "image/png" }),
+    );
+    await waitFor(() => expect(contar("imagem")).toBe(1));
+    await userEvent.click(await screen.findByTestId("editor-partilhar"));
+    expect(await screen.findByTestId("editor-ligacao")).toHaveTextContent("/editor?d=abc0xyzxyz");
+    const enviado = servidor.partilhados.get("abc0xyzxyz") as { elementos: { tipo: string }[] };
+    expect(enviado.elementos.some((e) => e.tipo === "imagem")).toBe(false);
+  });
+
+  it("abre um desenho partilhado a partir do endereço; um endereço que já não existe avisa", async () => {
+    servidor.partilhaEditor = true;
+    const base = modeloComTalao();
+    servidor.partilhados.set("umidvalido1", {
+      ...paraEnviar(base),
+      elementos: paraEnviar(base)
+        .elementos.slice(0, 5)
+        .concat(paraEnviar(base).elementos.filter((e) => e.tipo === "numero")),
+    });
+    window.history.pushState({}, "", "/editor?d=umidvalido1");
+    render(
+      <ProvedorI18n>
+        <App />
+      </ProvedorI18n>,
+    );
+    await waitFor(() => expect(contar("texto")).toBe(2)); // o que veio da ligação (o modelo tem 6 textos)
+    expect(contar("numero")).toBe(2);
+    cleanup();
+    window.history.pushState({}, "", "/editor?d=nao-existe-123");
+    render(
+      <ProvedorI18n>
+        <App />
+      </ProvedorI18n>,
+    );
+    expect(await screen.findByTestId("editor-aviso")).toHaveTextContent("expirou");
   });
 });

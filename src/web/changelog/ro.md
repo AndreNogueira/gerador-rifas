@@ -2,6 +2,67 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.39.0 — 2026-11-13
+
+### Noutăți
+- **Aplicația Windows 2.7:** galeria și editorul de șabloane acceptă acum latina extinsă, vietnameza, greaca, chirilica, chineza, japoneza și coreeana, ca site-ul din versiunea 3.37 (hindi, araba și ebraica încă lipsesc). Se descarcă din pagina Changelog.
+
+## 3.38.0 — 2026-11-13
+
+### Noutăți
+- **Butonul «Distribuie»:** în subsol și, după generarea fișierelor, pe cardul de livrare. Deschide o listă scurtă (partajarea telefonului sau a computerului, WhatsApp, Telegram, Facebook, e-mail și «Copiază linkul») ca alte asociații, școli și comitete de sărbători să afle de generator. Linkurile conțin doar adresa site-ului în limba folosită: fără urmărire și fără să se salveze nimic. Are un subiect în tutorial și un videoclip.
+
+## 3.37.0 — 2026-11-13
+
+### Noutăți
+- **Mai multe litere în galerie și în editorul de șabloane:** textele pot folosi acum latina extinsă (poloneză, cehă, română, turcă…), **vietnameza, greaca, chirilica (rusă, ucraineană)**, **chineza, japoneza și coreeana**. Hindi, araba și ebraica încă lipsesc (cer o tehnologie de scriere pe care generatorul de PDF nu o are) și dau un avertisment în loc de o imagine stricată. În PDF se schimbă doar textul scris de utilizator; ce ieșea deja la fel rămâne la fel.
+
+## 3.36.0 — 2026-11-13
+
+### Noutăți
+- **Ghid «Cum faci» pentru parohii:** «Pentru parohii» (link în subsol), cu pașii pentru a face o tombolă parohială: hramuri, târguri, reparații, pachete de Crăciun și catehism. Este în toate cele 22 de limbi și amintește să verifici la primărie dacă tombola cere autorizație.
+
+## 3.35.0 — 2026-11-13
+
+### Noutăți
+- **Aplicația Windows 2.6:** meniul «Extras» primește «Salvează cererea…» și «Deschide cererea…» (un fișier .rifas cu numerele, numele, seriile, culorile și marcajele de tăiere, fără șablon sau căi), editorul de șabloane poate adăuga imagini (PNG sau JPG), iar «Vizualizare → Vizual» trece de la 2 la cele 14 teme ale site-ului (doar culorile). Aduce și ce a apărut de la 2.4: editorul, cele 24 de modele din galerie și cele 22 de limbi.
+
+## 3.34.0 — 2026-11-13
+
+### Noutăți
+- **Trei ghiduri noi «Cum faci»:** «Pentru cluburi», «Pentru pompieri» și «Pentru sărbători de cartier» (linkuri în subsol), cu pașii pentru a face o tombolă în fiecare caz. Sunt în toate cele 22 de limbi și amintesc să verifici la primărie dacă tombola cere autorizație.
+
+## 3.33.0 — 2026-11-13
+
+### Noutăți
+- **API public pentru loturi** (`/api/v1`, cu Swagger la `/api/v1/docs`): permite altor programe să genereze mai multe comenzi de bilete dintr-un singur șablon, cu cheie, cote zilnice și limite. Cei care folosesc site-ul au mereu prioritate.
+- **Patru limbi noi:** catalană, ucraineană, indoneziană și vietnameză. Site-ul și aplicația Windows vorbesc acum 22 de limbi, cu tutorial, termeni, confidențialitate, ghiduri practice și capturi.
+- **Texte pentru motoarele de căutare editabile pe limbă:** proprietarul editează în panoul de administrare titlurile, descrierile și ghidurile fiecărei limbi, salvate în baza de date și fără o nouă implementare.
+
+## 3.32.0 — 2026-11-13
+
+### Noutăți
+- **20 de șabloane noi în galerie (24 în total):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Toate desenate de la zero pentru acest proiect, cu cotor, pe site și în aplicația Windows (unde galeria devine o listă derulantă).
+
+## 3.31.0 — 2026-11-13
+
+### Noutăți
+- **Editor de șabloane v2:** anulează și refă (Ctrl+Z, Ctrl+Y), duplică (Ctrl+D), schimbă ordinea desenării, adaugă sigla (PNG sau JPG) și **distribuie desenul printr-un link**: se păstrează 90 de zile după ultimul acces, fără imagini și fără date despre cine distribuie (apare doar când serviciul are bază de date). Politica de confidențialitate o spune.
+- **Aplicația Windows 2.5:** primește editorul de șabloane (meniul Extra) și trece la Python 3.15.
+
+### Îmbunătățit
+- Changelog-ul are un link pentru descărcarea aplicației Windows.
+
+## 3.30.0 — 2026-11-12
+
+### Noutăți
+- **Pagini „Cum se face”:** două ghiduri scrise, „Pentru școli” și „Pentru asociații” (linkuri în subsol), cu pașii pentru o tombolă: desenarea biletului, o serie pe clasă sau vânzător, tipărire cu semne de tăiere, controlul vânzărilor și o tragere verificabilă. Sunt în toate cele 18 limbi și amintesc să verifici la primărie dacă tombola cere autorizație.
+
+## 3.29.0 — 2026-11-12
+
+### Îmbunătățit
+- **Reclame în lateral:** când reclamele sunt active (deocamdată nu sunt), pe ecranele late apar în ambele părți ale conținutului, câte una pe fiecare parte, fixe și fără a muta pagina; pe celelalte ecrane există un singur bloc la sfârșitul paginii. Tot nu apar în editor, în fișierele generate sau în aplicația Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Noutăți

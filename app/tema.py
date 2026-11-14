@@ -24,8 +24,8 @@ C: dict = {}
 
 MARCA = (0x6A, 0x35, 0xF5)          # o violeta da marca (o mesmo de src/web/frontend: --destaque)
 
-# As cores dos visuais «Premiado» e «Natal» (as mesmas de src/web/frontend; a paleta vive em core/tema.py, sem Tk, para ter testes)
-VISUAL = "auto"          # «auto» (o Natal em dezembro, o Premiado nos outros meses), «premiado» ou «natal»
+# As cores dos 14 visuais (as mesmas de src/web/frontend; a paleta vive em core/tema.py, sem Tk, para ter testes)
+VISUAL = "auto"          # «auto» (o Natal em dezembro, o Premiado nos outros meses) ou o id de um visual
 
 
 def definir_visual(valor: str) -> None:

@@ -22,6 +22,17 @@ function abrir() {
 }
 
 describe("changelog", () => {
+  it("tem uma ligação para descarregar a app Windows (o programa, sem código-fonte, do repositório público)", async () => {
+    window.history.pushState({}, "", "/changelog");
+    abrir();
+    const ligacao = await screen.findByTestId("descarga-windows");
+    expect(ligacao).toHaveAttribute(
+      "href",
+      "https://github.com/AndreNogueira/gerador-rifas-windows/releases/latest/download/GeradorRifas.exe",
+    );
+    expect(ligacao).toHaveTextContent("Descarregar a app Windows");
+  });
+
   it("o rodapé leva-o à página com as versões, da mais recente para a mais antiga", async () => {
     abrir();
     await userEvent.click(await screen.findByRole("link", { name: "Changelog" }));

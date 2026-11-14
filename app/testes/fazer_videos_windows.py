@@ -1,7 +1,7 @@
 """Grava os videos das funcionalidades da app Windows (assets/video/windows_<id>_<lingua>.mp4) com a propria aplicacao.
 
 Como `fazer_video.py`: a janela REAL e comandada passo a passo, fotografada e cada fotograma leva uma legenda grande (sem som). Aqui os passos sao
-os de cada funcionalidade (series, lista, marcas de corte, galeria, marca propria, sorteio, visual); as outras (QR, guardar, instalar) so existem no site.
+os de cada funcionalidade (series, lista, marcas de corte, galeria, marca propria, editor, sorteio, visual, pedido); as outras (QR, guardar, instalar) so existem no site.
 A preparacao (carregar o template) nao se grava. Precisa de um ffmpeg (so para gravar; nao vai na app): `uv pip install --python .venv\\Scripts\\python.exe
 imageio-ffmpeg`, ou a variavel FFMPEG.
 
@@ -189,6 +189,30 @@ def cena_lista(a, g, T):
     g.segundos(3.4, T("A folha de controlo é um PDF para imprimir e ir marcando quem pagou", "The control sheet is a PDF to print and tick off who paid"))
 
 
+def cena_pedido(a, g, T):
+    g.segundos(1.8, T("Guardar e abrir o pedido", "Save and open your request"))
+    a.v_inicio.set("1")
+    a.v_fim.set("300")
+    a.e_nome.delete(0, "end")
+    a.e_nome.insert(0, T("Rifa de Natal", "Christmas raffle"))
+    a.v_nome.set(a.e_nome.get())
+    a.v_prefixos.set("A-, B-")
+    g.segundos(2.6, T("Os números, o nome e as séries estão preenchidos", "The numbers, the name and the series are filled in"))
+    pasta = Path(tempfile.mkdtemp(prefix="rifas-video-"))
+    destino = pasta / "pedido.rifas"
+    filedialog.asksaveasfilename = lambda **k: str(destino)
+    filedialog.askopenfilename = lambda **k: str(destino)
+    g.segundos(1.8, T("Menu «Extras» → «Guardar pedido…»", "Menu “Extras” → “Save request…”"))
+    a._guardar_pedido()
+    g.segundos(3.0, T("Fica um ficheiro .rifas: sem template, sem algarismos e sem caminhos", "A .rifas file: no template, no digits and no paths"))
+    a._limpar_tudo()
+    a.update()
+    g.segundos(2.4, T("No ano seguinte (aqui, com tudo limpo)…", "Next year (here, with everything cleared)…"))
+    g.segundos(1.8, T("Menu «Extras» → «Abrir pedido…»", "Menu “Extras” → “Open request…”"))
+    a._abrir_pedido()
+    g.segundos(3.6, T("Os valores voltam: só muda o que for preciso", "The values are back: change only what you need"))
+
+
 def cena_marcas(a, g, T):
     g.segundos(1.8, T("Marcas de corte", "Crop marks"))
     g.segundos(3.0, T("Com uma só rifa repetida na folha, a margem deve ter 3 mm ou mais", "With a single ticket repeated on the sheet, the margin must be 3 mm or more"))
@@ -210,7 +234,7 @@ def cena_galeria(a, g, T):
     esperar(a, lambda: j._foto is not None, 8)
     j.seg.set("Natal")
     j._desenho("Natal")
-    g.segundos(2.0, T("Escolha um dos quatro desenhos", "Pick one of the four designs"))
+    g.segundos(2.0, T("Escolha um dos 24 desenhos", "Pick one of the 24 designs"))
     g.legenda = T("Escreva o título, a organização, os prémios e a data", "Write the title, the organization, the prizes and the date")
     g.escrever(j.v["titulo"], T("Rifa de Natal", "Christmas raffle"), 2)
     j.v["organizacao"].set(T("Associação Exemplo", "Example Association"))
@@ -221,6 +245,52 @@ def cena_galeria(a, g, T):
     j._usar()
     esperar(a, lambda: a.prep is not None)
     g.segundos(3.4)
+    g.segundos(2.4, T("Só falta escolher os números e gerar", "All that is left is choosing the numbers and generating"))
+
+
+def cena_editor(a, g, T):
+    g.segundos(2.0, T("Sem Canva? Desenhe a sua rifa no editor", "No Canva? Design your ticket in the editor"))
+    g.segundos(1.2, T("Menu «Extras» → «Editor de templates…»", "Menu “Extras” → “Template editor…”"))
+    j = abrir(a, "editor", extras.EditorTemplates, "960x600+150+70")
+    esperar(a, lambda: j._foto is not None, 8)
+    g.segundos(2.4, T("Começa com um modelo de rifa com talão", "It starts with a sample ticket with a stub"))
+    titulo = next(e for e in j.m.elementos if e.texto == "TÍTULO DA RIFA")
+    x0, y0, x1, y1 = j.m.caixa(titulo.id)
+    px, py = j._px((x0 + x1) / 2, (y0 + y1) / 2)
+    j.tela.event_generate("<ButtonPress-1>", x=int(px), y=int(py))
+    a.update()
+    esperar(a, lambda: False, 0.5)
+    g.legenda = T("Escolha um elemento e mude o texto", "Pick an element and change its text")
+    g.escrever(j.var_texto, T("RIFA DE NATAL", "CHRISTMAS RAFFLE"), 2)
+    esperar(a, lambda: not j._espera, 4)
+    g.segundos(1.6)
+    g.legenda = T("Arraste os elementos para o sítio (ou use as setas)", "Drag the elements into place (or use the arrow keys)")
+    for i in range(1, 13):
+        j.tela.event_generate("<B1-Motion>", x=int(px) + i * 8, y=int(py) + i)
+        a.update()
+        g.quadro()
+        time.sleep(0.04)
+    j.tela.event_generate("<ButtonRelease-1>", x=int(px) + 96, y=int(py) + 12)
+    esperar(a, lambda: not j._espera, 4)
+    g.segundos(2.0)
+    g.legenda = T("Desfazer, refazer e duplicar", "Undo, redo and duplicate")
+    j._a_desfazer()
+    esperar(a, lambda: not j._espera, 4)
+    g.segundos(1.4)
+    j._a_refazer()
+    j._a_duplicar()
+    esperar(a, lambda: not j._espera, 4)
+    g.segundos(2.0)
+    j._a_apagar()
+    j.acrescentar("retangulo")
+    esperar(a, lambda: not j._espera, 4)
+    g.segundos(2.0, T("Junte textos, retângulos, linhas e o número 0001 (uma ou duas vezes)",
+                      "Add texts, rectangles, lines and the number 0001 (once or twice)"))
+    j._a_apagar()
+    g.segundos(1.0, T("«Usar este template»: o template e os algarismos ficam prontos", "“Use this template”: the template and the digits are ready"))
+    j._usar()
+    esperar(a, lambda: a.prep is not None)
+    g.segundos(3.0)
     g.segundos(2.4, T("Só falta escolher os números e gerar", "All that is left is choosing the numbers and generating"))
 
 
@@ -282,8 +352,8 @@ def cena_visual(a, g, T):
     a._definir_visual("auto")
 
 
-CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria),
-         "marca": (UMA_RIFA, cena_marca), "sorteio": (VARIAS, cena_sorteio), "visual": (VARIAS, cena_visual)}
+CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria), "editor": (None, cena_editor),
+         "marca": (UMA_RIFA, cena_marca), "sorteio": (VARIAS, cena_sorteio), "visual": (VARIAS, cena_visual), "pedido": (None, cena_pedido)}
 
 
 def main() -> int:

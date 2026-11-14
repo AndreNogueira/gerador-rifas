@@ -2,6 +2,67 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.39.0 — 2026-11-13
+
+### Novedades
+- **App de Windows 2.7:** la galería y el editor de plantillas aceptan ahora latín extendido, vietnamita, griego, cirílico, chino, japonés y coreano, como el sitio desde la 3.37 (el hindi, el árabe y el hebreo siguen sin estar). Se descarga desde la página del Changelog.
+
+## 3.38.0 — 2026-11-13
+
+### Novedades
+- **Botón «Compartir»:** en el pie y, tras generar los archivos, en la tarjeta de entrega. Abre una lista corta (compartir del móvil o del ordenador, WhatsApp, Telegram, Facebook, correo y «Copiar enlace») para dar a conocer el generador a otras asociaciones, colegios y comisiones de fiestas. Los enlaces llevan solo la dirección del sitio en el idioma en que está: sin rastreo y sin guardar nada. Tiene tema en el tutorial y vídeo.
+
+## 3.37.0 — 2026-11-13
+
+### Novedades
+- **Más letras en la galería y en el editor de plantillas:** los textos pueden usar ahora latín extendido (polaco, checo, rumano, turco…), **vietnamita, griego, cirílico (ruso, ucraniano)**, **chino, japonés y coreano**. El hindi, el árabe y el hebreo siguen sin estar (necesitan una tecnología de escritura que el generador de PDF no tiene) y dan un aviso en vez de una imagen estropeada. En los PDF solo cambia el texto escrito por quien usa; lo que ya salía igual sigue igual.
+
+## 3.36.0 — 2026-11-13
+
+### Novedades
+- **Guía «Cómo hacer» para parroquias:** «Para parroquias» (enlace en el pie), con el paso a paso para hacer una rifa para la parroquia: fiestas del patrón, verbenas, obras, cestas de Navidad y catequesis. Está en las 22 lenguas y recuerda consultar en el ayuntamiento si la rifa necesita licencia.
+
+## 3.35.0 — 2026-11-13
+
+### Novedades
+- **App de Windows 2.6:** el menú «Extras» gana «Guardar pedido…» y «Abrir pedido…» (un archivo .rifas con los números, el nombre, las series, los colores y las marcas de corte, sin plantilla ni rutas), el editor de plantillas puede añadir imágenes (PNG o JPG) y «Ver → Visual» pasa de 2 a los 14 temas del sitio (solo los colores). Incluye también lo que llegó desde la 2.4: el editor, los 24 diseños de la galería y las 22 lenguas.
+
+## 3.34.0 — 2026-11-13
+
+### Novedades
+- **Tres guías «Cómo hacer» nuevas:** «Para clubes», «Para bomberos» y «Para fiestas de barrio» (enlaces en el pie), con el paso a paso para hacer una rifa en cada caso. Están en las 22 lenguas y recuerdan consultar en el ayuntamiento si la rifa necesita licencia.
+
+## 3.33.0 — 2026-11-13
+
+### Novedades
+- **API pública por lotes** (`/api/v1`, con Swagger en `/api/v1/docs`): permite que otros programas generen varios pedidos de rifas a partir de una sola plantilla, con clave, cuotas diarias y límites. Quien usa el sitio pasa siempre primero.
+- **Cuatro idiomas nuevos:** catalán, ucraniano, indonesio y vietnamita. El sitio y la app de Windows pasan a tener 22 idiomas, con tutorial, términos, privacidad, guías «cómo hacerlo» y capturas.
+- **Textos para los buscadores editables por idioma:** el dueño edita en el panel de administración los títulos, las descripciones y las guías de cada idioma, guardados en la base de datos y sin nuevo despliegue.
+
+## 3.32.0 — 2026-11-13
+
+### Novedades
+- **20 plantillas nuevas en la galería (24 en total):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Todas dibujadas desde cero para este proyecto, con talón, en el sitio y en la app de Windows (donde la galería pasa a ser una lista desplegable).
+
+## 3.31.0 — 2026-11-13
+
+### Novedades
+- **Editor de plantillas v2:** deshacer y rehacer (Ctrl+Z, Ctrl+Y), duplicar (Ctrl+D), cambiar el orden de dibujo, añadir el logotipo (PNG o JPG) y **compartir el diseño por enlace**: se guarda 90 días desde el último acceso, sin imágenes y sin datos de quien comparte (solo aparece cuando el servicio tiene base de datos). La Política de privacidad lo dice.
+- **App de Windows 2.5:** incorpora el editor de plantillas (menú Extras) y pasa a Python 3.15.
+
+### Mejorado
+- El Changelog tiene un enlace para descargar la app de Windows.
+
+## 3.30.0 — 2026-11-12
+
+### Novedades
+- **Páginas «Cómo hacer»:** dos guías escritas, «Para colegios» y «Para asociaciones» (enlaces en el pie), con el paso a paso para hacer una rifa: diseñar el boleto, una serie por clase o vendedor, imprimir con marcas de corte, controlar las ventas y hacer un sorteo verificable. Están en las 18 lenguas y recuerdan consultar en el ayuntamiento si la rifa necesita licencia.
+
+## 3.29.0 — 2026-11-12
+
+### Mejorado
+- **Anuncios en los laterales:** cuando los anuncios están activos (por ahora no lo están), en pantallas anchas aparecen a ambos lados del contenido, uno a cada lado, fijos y sin mover la página; en las demás pantallas queda un solo bloque al final de la página. Siguen sin aparecer en el editor, en los archivos generados ni en la app de Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Novedades

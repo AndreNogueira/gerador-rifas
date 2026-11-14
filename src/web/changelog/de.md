@@ -2,6 +2,67 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.39.0 — 2026-11-13
+
+### Neu
+- **Windows-App 2.7:** Galerie und Vorlageneditor akzeptieren jetzt erweitertes Latein, Vietnamesisch, Griechisch, Kyrillisch, Chinesisch, Japanisch und Koreanisch, wie die Website seit 3.37 (Hindi, Arabisch und Hebräisch fehlen noch). Der Download steht auf der Changelog-Seite.
+
+## 3.38.0 — 2026-11-13
+
+### Neu
+- **Schaltfläche „Teilen“:** in der Fußzeile und, nach dem Erzeugen der Dateien, auf der Ausgabekarte. Sie öffnet eine kurze Liste (Teilen-Menü des Telefons oder Computers, WhatsApp, Telegram, Facebook, E-Mail und „Link kopieren“), damit andere Vereine, Schulen und Festkomitees den Generator kennenlernen. Die Links enthalten nur die Adresse der Seite in der verwendeten Sprache: kein Tracking, nichts wird gespeichert. Mit Anleitungsthema und Video.
+
+## 3.37.0 — 2026-11-13
+
+### Neu
+- **Mehr Schriften in der Galerie und im Vorlageneditor:** Texte dürfen jetzt erweitertes Latein (Polnisch, Tschechisch, Rumänisch, Türkisch …), **Vietnamesisch, Griechisch, Kyrillisch (Russisch, Ukrainisch)**, **Chinesisch, Japanisch und Koreanisch** enthalten. Hindi, Arabisch und Hebräisch fehlen noch (sie brauchen eine Schreibtechnik, die der PDF-Erzeuger nicht hat) und zeigen eine Warnung statt eines kaputten Bildes. In den PDFs ändert sich nur der eingegebene Text; was schon gleich aussah, bleibt gleich.
+
+## 3.36.0 — 2026-11-13
+
+### Neu
+- **„So geht’s“-Anleitung für Pfarreien:** „Für Pfarreien“ (Link in der Fußzeile), mit der Schritt-für-Schritt-Anleitung für eine Pfarrtombola: Patronatsfeste, Pfarrfeste, Reparaturen, Weihnachtskörbe und Katechese. Sie gibt es in allen 22 Sprachen; sie erinnert daran, beim Ordnungsamt zu klären, ob die Tombola genehmigungspflichtig ist.
+
+## 3.35.0 — 2026-11-13
+
+### Neu
+- **Windows-App 2.6:** Das Menü „Extras“ bekommt „Auftrag speichern…“ und „Auftrag öffnen…“ (eine .rifas-Datei mit Nummern, Name, Serien, Farben und Schnittmarken, ohne Vorlage und Pfade), der Vorlageneditor kann Bilder (PNG oder JPG) einfügen und „Ansicht → Visuell“ wächst von 2 auf die 14 Themen der Website (nur die Farben). Dazu kommt, was seit 2.4 hinzukam: der Editor, die 24 Designs der Galerie und die 22 Sprachen.
+
+## 3.34.0 — 2026-11-13
+
+### Neu
+- **Drei neue „So geht’s“-Anleitungen:** „Für Clubs“, „Für die Feuerwehr“ und „Für Straßenfeste“ (Links in der Fußzeile), jeweils mit der Schritt-für-Schritt-Anleitung für eine Tombola. Sie gibt es in allen 22 Sprachen; sie erinnern daran, beim Ordnungsamt zu klären, ob die Tombola genehmigungspflichtig ist.
+
+## 3.33.0 — 2026-11-13
+
+### Neu
+- **Öffentliche API für Stapel** (`/api/v1`, mit Swagger unter `/api/v1/docs`): Andere Programme können damit mehrere Los-Aufträge aus einer einzigen Vorlage erzeugen, mit Schlüssel, Tageskontingenten und Limits. Wer die Website nutzt, kommt immer zuerst dran.
+- **Vier neue Sprachen:** Katalanisch, Ukrainisch, Indonesisch und Vietnamesisch. Die Website und die Windows-App sprechen jetzt 22 Sprachen, mit Anleitung, Bedingungen, Datenschutz, Ratgebern und Screenshots.
+- **Texte für Suchmaschinen pro Sprache bearbeitbar:** Der Betreiber bearbeitet im Admin-Bereich Titel, Beschreibungen und Ratgeber jeder Sprache, in der Datenbank gespeichert und ohne neues Deployment.
+
+## 3.32.0 — 2026-11-13
+
+### Neu
+- **20 neue Vorlagen in der Galerie (24 insgesamt):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Alle für dieses Projekt neu gezeichnet, mit Abschnitt, auf der Website und in der Windows-App (wo die Galerie zur Auswahlliste wird).
+
+## 3.31.0 — 2026-11-13
+
+### Neu
+- **Vorlageneditor v2:** rückgängig und wiederholen (Strg+Z, Strg+Y), duplizieren (Strg+D), Reihenfolge ändern, Logo (PNG oder JPG) einfügen und den **Entwurf per Link teilen**: Er wird 90 Tage nach dem letzten Zugriff gespeichert, ohne Bilder und ohne Daten über den Teilenden (erscheint nur, wenn der Dienst eine Datenbank hat). Die Datenschutzerklärung nennt das.
+- **Windows-App 2.5:** bekommt den Vorlageneditor (Menü Extras) und läuft mit Python 3.15.
+
+### Verbessert
+- Der Changelog hat einen Link zum Herunterladen der Windows-App.
+
+## 3.30.0 — 2026-11-12
+
+### Neu
+- **„So geht’s“-Seiten:** zwei geschriebene Anleitungen, „Für Schulen“ und „Für Vereine“ (Links in der Fußzeile), mit der Schritt-für-Schritt-Anleitung für eine Tombola: Los gestalten, eine Serie pro Klasse oder Verkäufer, mit Schnittmarken drucken, Verkäufe kontrollieren und eine nachprüfbare Ziehung durchführen. Sie gibt es in allen 18 Sprachen, mit dem Hinweis, bei der Gemeinde zu klären, ob eine Genehmigung nötig ist.
+
+## 3.29.0 — 2026-11-12
+
+### Verbessert
+- **Anzeigen an den Seiten:** Wenn Anzeigen aktiv sind (derzeit nicht), erscheinen sie auf breiten Bildschirmen links und rechts neben dem Inhalt, je eine pro Seite, fest und ohne die Seite zu verschieben; auf anderen Bildschirmen gibt es einen einzigen Block am Seitenende. Sie erscheinen weiterhin nie im Editor, in den erzeugten Dateien oder in der Windows-App.
+
 ## 3.28.0 — 2026-11-12
 
 ### Neu

@@ -2,6 +2,67 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.39.0 — 2026-11-13
+
+### Yeni
+- **Windows uygulaması 2.7:** galeri ve şablon düzenleyici artık genişletilmiş Latin, Vietnamca, Yunanca, Kiril, Çince, Japonca ve Korece kabul ediyor; site 3.37'den beri böyle (Hintçe, Arapça ve İbranice henüz yok). Changelog sayfasından indirilir.
+
+## 3.38.0 — 2026-11-13
+
+### Yeni
+- **«Paylaş» düğmesi:** altbilgide ve dosyalar oluşturulduktan sonra teslim kartında. Kısa bir liste açar (telefonun veya bilgisayarın paylaşım menüsü, WhatsApp, Telegram, Facebook, e-posta ve «Bağlantıyı kopyala»); böylece diğer dernekler, okullar ve şenlik komiteleri oluşturucuyu öğrenir. Bağlantılar yalnızca sitenin kullandığınız dildeki adresini taşır: izleme yok, hiçbir şey saklanmaz. Eğitimde bir konusu ve videosu var.
+
+## 3.37.0 — 2026-11-13
+
+### Yeni
+- **Galeride ve şablon düzenleyicide daha fazla harf:** metinlerde artık genişletilmiş Latin (Lehçe, Çekçe, Rumence, Türkçe…), **Vietnamca, Yunanca, Kiril (Rusça, Ukraynaca)**, **Çince, Japonca ve Korece** kullanılabilir. Hintçe, Arapça ve İbranice henüz yok (PDF üreticisinde olmayan bir yazı teknolojisi gerektiriyorlar) ve bozuk bir görüntü yerine uyarı gösterirler. PDF'lerde yalnızca yazılan metin değişir; zaten aynı çıkan aynı kalır.
+
+## 3.36.0 — 2026-11-13
+
+### Yeni
+- **Cemaatler için «Nasıl yapılır» rehberi:** «Cemaatler için» (altbilgide bağlantı), cemaat çekilişinin adım adım nasıl yapılacağını anlatır: şenlikler, bazarlar, onarımlar, yılbaşı paketleri ve eğitim. 22 dilin hepsinde var ve çekilişin izin gerektirip gerektirmediğini belediyeye sormayı hatırlatır.
+
+## 3.35.0 — 2026-11-13
+
+### Yeni
+- **Windows uygulaması 2.6:** «Extras» menüsüne «Talebi kaydet…» ve «Talebi aç…» geldi (numaraları, adı, serileri, renkleri ve kesim işaretlerini içeren, şablon ve yol içermeyen bir .rifas dosyası), şablon düzenleyici resim (PNG veya JPG) ekleyebiliyor ve «Görünüm → Görsel» 2 temadan sitenin 14 temasına çıkıyor (yalnızca renkler). 2.4'ten beri gelenleri de getiriyor: düzenleyici, galerinin 24 tasarımı ve 22 dil.
+
+## 3.34.0 — 2026-11-13
+
+### Yeni
+- **Üç yeni «Nasıl yapılır» rehberi:** «Kulüpler için», «İtfaiye için» ve «Mahalle şenlikleri için» (altbilgide bağlantılar), her durumda çekilişin adım adım nasıl yapılacağını anlatır. 22 dilin hepsinde var ve çekilişin izin gerektirip gerektirmediğini belediyeye sormayı hatırlatır.
+
+## 3.33.0 — 2026-11-13
+
+### Yeni
+- **Toplu işler için herkese açık API** (`/api/v1`, Swagger `/api/v1/docs` adresinde): diğer programların tek bir şablondan birden fazla bilet işi oluşturmasını sağlar; anahtar, günlük kotalar ve sınırlar vardır. Siteyi kullananlar her zaman önce gelir.
+- **Dört yeni dil:** Katalanca, Ukraynaca, Endonezce ve Vietnamca. Site ve Windows uygulaması artık 22 dilde, eğitim, koşullar, gizlilik, nasıl yapılır kılavuzları ve ekran görüntüleriyle.
+- **Arama motorları için diller başına düzenlenebilir metinler:** sahibi, yönetim panelinde her dilin başlıklarını, açıklamalarını ve kılavuzlarını düzenler; veritabanında saklanır ve yeni dağıtım gerekmez.
+
+## 3.32.0 — 2026-11-13
+
+### Yeni
+- **Galeride 20 yeni şablon (toplam 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Hepsi bu proje için sıfırdan çizildi, koçanlı, sitede ve Windows uygulamasında (burada galeri açılır listeye dönüşür).
+
+## 3.31.0 — 2026-11-13
+
+### Yeni
+- **Şablon düzenleyici v2:** geri al ve yinele (Ctrl+Z, Ctrl+Y), çoğalt (Ctrl+D), çizim sırasını değiştir, logo ekle (PNG veya JPG) ve **tasarımı bağlantıyla paylaş**: son erişimden sonra 90 gün saklanır, görseller olmadan ve paylaşan kişiyle ilgili veri olmadan (yalnızca hizmetin veritabanı varsa görünür). Gizlilik Politikası bunu belirtir.
+- **Windows uygulaması 2.5:** şablon düzenleyiciyi kazanır (Ekstralar menüsü) ve Python 3.15'e geçer.
+
+### İyileştirildi
+- Changelog'da Windows uygulamasını indirmek için bir bağlantı var.
+
+## 3.30.0 — 2026-11-12
+
+### Yeni
+- **„Nasıl yapılır” sayfaları:** iki yazılı rehber, „Okullar için” ve „Dernekler için” (alt bilgideki bağlantılar), bir çekilişin adım adım anlatımıyla: bileti tasarlama, sınıf veya satıcı başına bir seri, kesim işaretleriyle yazdırma, satışları izleme ve doğrulanabilir çekiliş. 18 dilin hepsinde var ve çekilişin izin gerektirip gerektirmediğini belediyeden öğrenmenizi hatırlatır.
+
+## 3.29.0 — 2026-11-12
+
+### İyileştirildi
+- **Yanlarda reklamlar:** reklamlar açıkken (şimdilik kapalı), geniş ekranlarda içeriğin iki yanında, her yanda bir tane, sabit olarak ve sayfayı kaydırmadan görünür; diğer ekranlarda sayfanın sonunda tek bir blok bulunur. Düzenleyicide, oluşturulan dosyalarda ve Windows uygulamasında yine hiç görünmez.
+
 ## 3.28.0 — 2026-11-12
 
 ### Yeni

@@ -2,6 +2,67 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.39.0 — 2026-11-13
+
+### Novità
+- **App Windows 2.7:** la galleria e l'editor di modelli accettano ora latino esteso, vietnamita, greco, cirillico, cinese, giapponese e coreano, come il sito dalla 3.37 (l'hindi, l'arabo e l'ebraico mancano ancora). Si scarica dalla pagina del Changelog.
+
+## 3.38.0 — 2026-11-13
+
+### Novità
+- **Pulsante «Condividi»:** a piè di pagina e, dopo aver generato i file, nella scheda della consegna. Apre un breve elenco (condivisione del telefono o del computer, WhatsApp, Telegram, Facebook, e-mail e «Copia link») per far conoscere il generatore ad altre associazioni, scuole e comitati di feste. I link contengono solo l'indirizzo del sito nella lingua in uso: nessun tracciamento, nulla viene conservato. Ha un argomento nel tutorial e un video.
+
+## 3.37.0 — 2026-11-13
+
+### Novità
+- **Più lettere nella galleria e nell'editor di modelli:** i testi possono ora usare il latino esteso (polacco, ceco, rumeno, turco…), il **vietnamita, il greco, il cirillico (russo, ucraino)**, il **cinese, il giapponese e il coreano**. L'hindi, l'arabo e l'ebraico mancano ancora (richiedono una tecnologia di scrittura che il generatore di PDF non ha) e mostrano un avviso invece di un'immagine rovinata. Nei PDF cambia solo il testo scritto da chi usa; ciò che usciva già uguale resta uguale.
+
+## 3.36.0 — 2026-11-13
+
+### Novità
+- **Guida «Come fare» per le parrocchie:** «Per le parrocchie» (link a piè di pagina), con il passo passo per fare una lotteria parrocchiale: feste del patrono, sagre, lavori, cesti di Natale e catechismo. È in tutte le 22 lingue e ricorda di verificare in Comune se la lotteria richiede un'autorizzazione.
+
+## 3.35.0 — 2026-11-13
+
+### Novità
+- **App Windows 2.6:** il menu «Extras» guadagna «Salva richiesta…» e «Apri richiesta…» (un file .rifas con i numeri, il nome, le serie, i colori e i segni di taglio, senza modello né percorsi), l'editor di modelli può aggiungere immagini (PNG o JPG) e «Vista → Visuale» passa da 2 ai 14 temi del sito (solo i colori). Porta anche ciò che è arrivato dalla 2.4: l'editor, i 24 disegni della galleria e le 22 lingue.
+
+## 3.34.0 — 2026-11-13
+
+### Novità
+- **Tre nuove guide «Come fare»:** «Per i club», «Per i vigili del fuoco» e «Per le feste di quartiere» (link a piè di pagina), con il passo passo per fare una lotteria in ogni caso. Sono in tutte le 22 lingue e ricordano di verificare in Comune se la lotteria richiede un'autorizzazione.
+
+## 3.33.0 — 2026-11-13
+
+### Novità
+- **API pubblica per lotti** (`/api/v1`, con Swagger su `/api/v1/docs`): permette ad altri programmi di generare più richieste di biglietti da un solo modello, con chiave, quote giornaliere e limiti. Chi usa il sito passa sempre per primo.
+- **Quattro nuove lingue:** catalano, ucraino, indonesiano e vietnamita. Il sito e l'app Windows passano a 22 lingue, con tutorial, termini, privacy, guide pratiche e schermate.
+- **Testi per i motori di ricerca modificabili per lingua:** il proprietario modifica nel pannello di amministrazione titoli, descrizioni e guide di ogni lingua, salvati nel database e senza nuovo deploy.
+
+## 3.32.0 — 2026-11-13
+
+### Novità
+- **20 nuovi modelli nella galleria (24 in totale):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Tutti disegnati da zero per questo progetto, con matrice, sul sito e nell'app Windows (dove la galleria diventa un elenco a discesa).
+
+## 3.31.0 — 2026-11-13
+
+### Novità
+- **Editor di modelli v2:** annulla e ripeti (Ctrl+Z, Ctrl+Y), duplica (Ctrl+D), cambia l'ordine di disegno, aggiungi il logo (PNG o JPG) e **condividi il disegno con un link**: resta salvato 90 giorni dall'ultimo accesso, senza immagini e senza dati su chi condivide (compare solo se il servizio ha un database). L'informativa sulla privacy lo dice.
+- **App Windows 2.5:** riceve l'editor di modelli (menu Extra) e passa a Python 3.15.
+
+### Migliorato
+- Il Changelog ha un link per scaricare l'app Windows.
+
+## 3.30.0 — 2026-11-12
+
+### Novità
+- **Pagine «Come fare»:** due guide scritte, «Per le scuole» e «Per le associazioni» (link nel piè di pagina), con il passo passo per fare una lotteria: disegnare il biglietto, una serie per classe o venditore, stampare con segni di taglio, controllare le vendite e fare un'estrazione verificabile. Sono nelle 18 lingue e ricordano di verificare in comune se la lotteria richiede un'autorizzazione.
+
+## 3.29.0 — 2026-11-12
+
+### Migliorato
+- **Annunci ai lati:** quando gli annunci sono attivi (per ora non lo sono), sugli schermi larghi compaiono ai due lati del contenuto, uno per lato, fissi e senza spostare la pagina; sugli altri schermi c'è un solo blocco in fondo alla pagina. Continuano a non comparire nell'editor, nei file generati né nell'app Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Novità

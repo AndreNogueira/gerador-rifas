@@ -9,7 +9,7 @@ import pytest
 pytest.importorskip("fastapi", reason="a webapp precisa do grupo `web` (uv sync)")
 from fastapi.testclient import TestClient
 from web import app as modulo_app
-from core import tutorial
+from core import i18n, tutorial
 from web import seo
 from web.app import criar_app
 
@@ -95,7 +95,7 @@ def test_a_pagina_inicial_tem_dados_estruturados_validos(publico):
     assert len(blocos) == 1
     d = json.loads(blocos[0])
     assert d["@type"] == "WebApplication" and d["url"] == f"{URL}/" and d["offers"]["price"] == "0"
-    assert len(d["inLanguage"]) == 18 and d["image"] == f"{URL}/og-imagem.png"
+    assert len(d["inLanguage"]) == len(i18n.LINGUAS) and d["image"] == f"{URL}/og-imagem.png"
     for caminho in ("/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/termos", "/privacidade", "/contacto", "/changelog"):
         assert "ld+json" not in publico.get(caminho).text
 
@@ -119,9 +119,9 @@ def test_sitemap_so_tem_as_paginas_publicas(publico):
     assert r.status_code == 200 and r.headers["content-type"].startswith("application/xml")
     ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     urls = [e.text for e in ElementTree.fromstring(r.text).findall("s:url/s:loc", ns)]
-    paginas = ["/", "/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/termos", "/privacidade", "/contacto", "/changelog"]
-    assert urls[::18] == [f"{URL}{c}" for c in paginas]                    # por pagina: primeiro o portugues (sem prefixo), depois as 17 com prefixo (ver test_web_seo_linguas.py)
-    assert len(urls) == 10 * 18 and len(set(urls)) == len(urls)
+    paginas = ["/", "/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/rifas-para-escolas", "/rifas-para-associacoes", "/rifas-para-clubes", "/rifas-para-bombeiros", "/rifas-para-festas", "/rifas-para-igrejas", "/termos", "/privacidade", "/contacto", "/changelog"]
+    assert urls[::len(i18n.LINGUAS)] == [f"{URL}{c}" for c in paginas]                    # por pagina: primeiro o portugues (sem prefixo), depois as outras com prefixo (ver test_web_seo_linguas.py)
+    assert len(urls) == 16 * len(i18n.LINGUAS) and len(set(urls)) == len(urls)
 
 
 def test_rotas_desconhecidas_sao_404_a_serio_e_nao_se_indexam(publico):

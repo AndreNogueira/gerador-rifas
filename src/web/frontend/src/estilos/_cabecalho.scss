@@ -248,14 +248,12 @@
   }
 }
 
-// O bloco de anúncios (AdSense), só quando o dono o configura: altura reservada (sem saltos), longe dos botões, e some se a Google não tiver anúncio.
+// Os anúncios (AdSense), só quando o dono os configura: altura reservada (sem saltos), longe dos botões, e some se a Google não tiver anúncio.
 .anuncio {
   display: grid;
   gap: 4px;
   justify-items: center;
-  max-width: 960px;
-  min-height: 140px;
-  margin: 48px auto 8px;
+  align-content: start;
 
   &:has(ins[data-ad-status="unfilled"]) {
     display: none;
@@ -269,6 +267,33 @@
   ins {
     display: block;
     width: 100%;
+  }
+}
+// no fim da página, por cima do rodapé (ecrãs sem margem para as laterais)
+.anuncio:not(.anuncio-lateral) {
+  max-width: 960px;
+  min-height: 140px;
+  margin: 48px auto 8px;
+
+  ins {
     min-height: 110px;
+  }
+}
+// nas laterais (ecrãs largos): um de cada lado do conteúdo, fixos, fora da coluna (`--largura-max` é a do conteúdo: 160 px + 16 px de folga de cada lado)
+.anuncio-lateral {
+  position: fixed;
+  top: 290px;                       // por baixo da faixa do cabeçalho (o rótulo «Publicidade» fica sobre o fundo da página)
+  width: 160px;
+  max-height: calc(100vh - 310px);
+  overflow: hidden;
+
+  &.esquerda {
+    left: calc(50% - var(--largura-max) / 2 - 176px);
+  }
+  &.direita {
+    right: calc(50% - var(--largura-max) / 2 - 176px);
+  }
+  ins {
+    min-height: 600px;
   }
 }

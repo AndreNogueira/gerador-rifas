@@ -11,12 +11,14 @@ confundido com o número: recusa-se (`err_editor_digitos`).
 """
 from __future__ import annotations
 
+import base64
+import binascii
 import io
 import math
 import re
 from dataclasses import dataclass
 
-from . import galeria
+from . import galeria, letras
 from .motor import PADRAO_EXEMPLO, ErroRifas
 
 LARGURA_MIN, LARGURA_MAX = 120.0, 800.0
@@ -25,7 +27,10 @@ MAX_ELEMENTOS = 40
 MAX_TEXTO = 80
 TAMANHO_MIN, TAMANHO_MAX = 4.0, 120.0
 ASCENTE = 0.8                      # o que o editor do browser usa para pôr o topo de um texto: linha de base = topo + 0,8 × tamanho
-TIPOS = ("retangulo", "linha", "texto", "numero")
+TIPOS = ("retangulo", "linha", "texto", "numero", "imagem")
+MAX_IMAGENS = 5
+MAX_IMAGEM_BYTES = 1_000_000        # a imagem (PNG ou JPG) que o browser envia, ja reduzida
+MAX_IMAGEM_LADO = 2000              # pixeis
 _COR = re.compile(r"^#[0-9a-fA-F]{6}$")
 _TIPO_NUMERO = "numero"
 NUMERO = "0001"
@@ -48,6 +53,7 @@ class Elemento:
     negrito: bool = False
     alinhamento: str = "e"        # e | c | d
     rot: int = 0                  # 0 | 90
+    imagem: bytes = b""           # so a imagem: o PNG (validado e recodificado) que se desenha em (x, y, w, h)
 
 
 @dataclass(frozen=True)
@@ -78,13 +84,32 @@ def _cor(v, nome: str, pode_vazia: bool) -> str:
 
 
 def _letras(texto: str) -> None:
-    """A Vera tem todas as letras do texto? (se não, `err_editor_letra`)."""
-    galeria._registar()
-    from reportlab.pdfbase import pdfmetrics
-    face = pdfmetrics.getFont("Vera").face
-    for c in texto:
-        if c != " " and (not c.isprintable() or ord(c) not in face.charToGlyph):
-            raise ErroRifas("err_editor_letra", car=c)
+    """Há letra (`core.letras`: Vera, DejaVu, Noto de chinês/japonês/coreano) para todo o texto? (se não, `err_editor_letra`)."""
+    falta = letras.em_falta(texto)
+    if falta:
+        raise ErroRifas("err_editor_letra", car=falta)
+
+
+def _imagem(dados) -> bytes:
+    """O PNG recodificado de uma imagem `data:image/png|jpeg;base64,…`: só PNG ou JPG a sério (o tipo real, não o que o nome diz), com tetos de tamanho;
+    recodificar tira metadados (EXIF) e qualquer coisa que não seja pixeis. `err_editor_imagem` se não presta."""
+    from PIL import Image, UnidentifiedImageError
+    m = re.fullmatch(r"data:image/(png|jpeg|jpg);base64,([A-Za-z0-9+/=\s]+)", dados) if isinstance(dados, str) else None
+    if not m or len(m.group(2)) > MAX_IMAGEM_BYTES * 4 // 3 + 8:
+        raise ErroRifas("err_editor_imagem")
+    try:
+        bruto = base64.b64decode(m.group(2), validate=False)
+        if len(bruto) > MAX_IMAGEM_BYTES:
+            raise ErroRifas("err_editor_imagem")
+        with Image.open(io.BytesIO(bruto)) as im:
+            if im.format not in ("PNG", "JPEG") or max(im.size) > MAX_IMAGEM_LADO or min(im.size) < 1:
+                raise ErroRifas("err_editor_imagem")
+            im.load()
+            saida = io.BytesIO()
+            im.convert("RGBA").save(saida, "PNG")
+    except (binascii.Error, UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
+        raise ErroRifas("err_editor_imagem") from None
+    return saida.getvalue()
 
 
 def _elemento(d: dict) -> Elemento:
@@ -96,6 +121,10 @@ def _elemento(d: dict) -> Elemento:
     e = dict(
         tipo=tipo, x=_num(d.get("x", 0), "x", -200, 1200), y=_num(d.get("y", 0), "y", -200, 800),
         espessura=_num(d.get("espessura", 1), "espessura", 0, 20), tracejado=bool(d.get("tracejado", False)))
+    if tipo == "imagem":
+        e["w"], e["h"] = _num(d.get("w", 0), "w", 1, 1200), _num(d.get("h", 0), "h", 1, 800)
+        e["imagem"] = _imagem(d.get("dados", ""))
+        return Elemento(**e)
     if tipo in ("retangulo", "linha"):
         e["w"], e["h"] = _num(d.get("w", 0), "w", -1200, 1200), _num(d.get("h", 0), "h", -800, 800)
         e["contorno"] = _cor(d.get("contorno", ""), "contorno", True)
@@ -138,6 +167,8 @@ def de_dict(d: dict) -> Desenho:
         altura=_num(d.get("altura", 152), "altura", ALTURA_MIN, ALTURA_MAX),
         fundo=_cor(d.get("fundo", "#ffffff"), "fundo", False),
         elementos=tuple(_elemento(x) for x in elementos))
+    if sum(1 for x in desenho.elementos if x.tipo == "imagem") > MAX_IMAGENS:
+        raise ErroRifas("err_editor_limite", campo="imagens")
     n = sum(1 for x in desenho.elementos if x.tipo == _TIPO_NUMERO)
     if n not in (1, 2):
         raise ErroRifas("err_editor_numero")
@@ -173,6 +204,9 @@ def criar_template(d: Desenho) -> bytes:
                 c.roundRect(x, H - y - h, w, h, min(e.raio, w / 2, h / 2), stroke=stroke, fill=1 if e.cor else 0)
             else:
                 c.rect(x, H - y - h, w, h, stroke=stroke, fill=1 if e.cor else 0)
+        elif e.tipo == "imagem":
+            from reportlab.lib.utils import ImageReader
+            c.drawImage(ImageReader(io.BytesIO(e.imagem)), e.x, H - e.y - e.h, e.w, e.h, mask="auto")
         elif e.tipo == "linha":
             c.setStrokeColorRGB(*_rgb(e.contorno))
             c.setLineWidth(max(e.espessura, 0.1))
@@ -180,7 +214,7 @@ def criar_template(d: Desenho) -> bytes:
                 c.setDash(3, 3)
             c.line(e.x, H - e.y, e.x + e.w, H - (e.y + e.h))
         else:
-            fonte = "VeraBd" if e.negrito else "Vera"
+            fonte = letras.fonte(e.texto, e.negrito)
             c.setFillColorRGB(*_rgb(e.cor))
             c.setFont(fonte, e.tamanho)
             c.translate(e.x, H - e.y)
@@ -198,7 +232,5 @@ def criar_template(d: Desenho) -> bytes:
 
 
 def largura_do_texto(texto: str, negrito: bool, tamanho: float) -> float:
-    """A largura (pt) que o texto ocupa na Vera (para os testes e para o browser comparar)."""
-    galeria._registar()
-    from reportlab.pdfbase import pdfmetrics
-    return pdfmetrics.stringWidth(texto, "VeraBd" if negrito else "Vera", tamanho)
+    """A largura (pt) que o texto ocupa na letra que o desenha (Vera, ou DejaVu/Noto se tem letras que a Vera não tem)."""
+    return letras.largura(texto, negrito, tamanho)

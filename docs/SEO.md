@@ -48,3 +48,15 @@ Ferramentas: o *Rich Results Test* do Google (JSON-LD), o *URL Inspection* da Se
 - **Conteúdo**: um motor de pesquisa premeia páginas com texto útil. Páginas de «como fazer» (rifas para a escola, para a associação, como imprimir) trariam tráfego; não estão feitas.
 - **O arranque a frio** do plano gratuito (≈ 1 min) prejudica a pesquisa (o Google mede o tempo de resposta). Um pedido periódico externo ao `/health` mantém-no acordado, ou o plano pago.
 - Os **Core Web Vitals** não foram medidos com o Lighthouse; o que ajuda já está feito (um só JS e CSS comprimidos, letras `font-display: swap`, ficheiros com cache de um ano).
+
+## Textos de SEO editáveis na base de dados (por página e por língua)
+
+Painel → **SEO por língua** (`/admin`, `src/web/frontend/src/AdminSeo.tsx`; API `GET|PUT|DELETE /api/admin/seo`). Edita-se, em cada língua: o título de cada página (`t_inicio`,
+`titulo:<caminho>`), a descrição (`d_*`), os textos de apoio (`intro`, `como`...) e os **guias «como fazer»** (título, introdução, passos, dicas, fim). Sem novo deploy.
+
+- Guarda-se em `seo_textos_bd(chave, lingua, valor)` (`src/web/seo_bd.py`): Postgres com `DATABASE_URL` (Neon), senão SQLite local e efémero (o painel avisa).
+- **Lê-se uma vez por minuto** em segundo plano para `seo_textos.SOBREPOSTOS`; nenhum pedido de página consulta a base. O código (`seo_textos.py`, `guias/`) continua a ser o valor por omissão
+  e o recurso: base em baixo, texto editado inválido ou com `{parâmetros}` a mais → usa-se o do código, nunca se parte uma página.
+- Valida-se ao gravar **e** ao ler, com as regras de `tests/test_web_seo_linguas.py`: título até 66 de largura (CJK conta dobro), descrição entre 50 e 158 (≤ 160 carateres), os mesmos
+  `{parâmetros}` do original, sem quebras de linha (exceto nos textos longos), até 1000 carateres. O HTML escapa tudo.
+- Uma língua nova (`docs/LINGUAS.md`) herda os textos do código; edita-se depois no painel. Testes: `tests/test_web_seo_bd.py`, `AdminSeo.test.tsx`.

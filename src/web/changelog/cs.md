@@ -2,6 +2,67 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.39.0 — 2026-11-13
+
+### Novinky
+- **Aplikace pro Windows 2.7:** galerie a editor šablon nově přijímají rozšířenou latinku, vietnamštinu, řečtinu, cyrilici, čínštinu, japonštinu a korejštinu, stejně jako web od verze 3.37 (hindština, arabština a hebrejština zatím chybí). Ke stažení na stránce Changelog.
+
+## 3.38.0 — 2026-11-13
+
+### Novinky
+- **Tlačítko «Sdílet»:** v patičce a po vygenerování souborů na kartě s výsledkem. Otevře krátký seznam (sdílení telefonu nebo počítače, WhatsApp, Telegram, Facebook, e-mail a «Kopírovat odkaz»), aby o generátoru věděly další spolky, školy a výbory slavností. Odkazy obsahují jen adresu webu v použitém jazyce: žádné sledování a nic se neukládá. Má téma v návodu a video.
+
+## 3.37.0 — 2026-11-13
+
+### Novinky
+- **Více písmen v galerii a v editoru šablon:** texty mohou nově obsahovat rozšířenou latinku (polštinu, češtinu, rumunštinu, turečtinu…), **vietnamštinu, řečtinu, cyrilici (ruštinu, ukrajinštinu)**, **čínštinu, japonštinu a korejštinu**. Hindština, arabština a hebrejština zatím chybí (potřebují techniku psaní, kterou generátor PDF nemá) a místo rozbitého obrázku ukážou varování. V PDF se mění jen napsaný text; co vycházelo stejně, vychází stejně.
+
+## 3.36.0 — 2026-11-13
+
+### Novinky
+- **Návod «Jak na to» pro farnosti:** «Pro farnosti» (odkaz v patičce), s postupem krok za krokem, jak uspořádat farní tombolu: poutě, farní dny, opravy, vánoční balíčky a náboženství. Je ve všech 22 jazycích a připomíná, že se na obecním úřadě má ověřit, zda tombola vyžaduje povolení.
+
+## 3.35.0 — 2026-11-13
+
+### Novinky
+- **Aplikace pro Windows 2.6:** nabídka «Extras» získává «Uložit zakázku…» a «Otevřít zakázku…» (soubor .rifas s čísly, názvem, sériemi, barvami a ořezovými značkami, bez šablony a cest), editor šablon umí přidávat obrázky (PNG nebo JPG) a «Zobrazení → Vzhled» se rozšiřuje ze 2 na 14 motivů webu (jen barvy). Přináší i to, co přišlo od verze 2.4: editor, 24 vzorů v galerii a 22 jazyků.
+
+## 3.34.0 — 2026-11-13
+
+### Novinky
+- **Tři nové návody „Jak na to“:** „Pro kluby“, „Pro hasiče“ a „Pro slavnosti“ (odkazy v patičce), vždy s postupem krok za krokem, jak uspořádat tombolu. Jsou ve všech 22 jazycích a připomínají, že se na obecním úřadě má ověřit, zda tombola vyžaduje povolení.
+
+## 3.33.0 — 2026-11-13
+
+### Novinky
+- **Veřejné API pro dávky** (`/api/v1`, se Swaggerem na `/api/v1/docs`): umožňuje jiným programům vytvářet více zakázek na losy z jedné šablony, s klíčem, denními kvótami a limity. Uživatelé webu mají vždy přednost.
+- **Čtyři nové jazyky:** katalánština, ukrajinština, indonéština a vietnamština. Web i aplikace pro Windows nyní mluví 22 jazyky, s návodem, podmínkami, soukromím, průvodci a snímky obrazovky.
+- **Texty pro vyhledávače upravitelné pro každý jazyk:** majitel upravuje v administračním panelu názvy, popisy a průvodce každého jazyka, uložené v databázi a bez nového nasazení.
+
+## 3.32.0 — 2026-11-13
+
+### Novinky
+- **20 nových šablon v galerii (celkem 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Všechny nakreslené od nuly pro tento projekt, s útržkem, na webu i v aplikaci pro Windows (kde se galerie mění na rozbalovací seznam).
+
+## 3.31.0 — 2026-11-13
+
+### Novinky
+- **Editor šablon v2:** zpět a znovu (Ctrl+Z, Ctrl+Y), duplikovat (Ctrl+D), změna pořadí kreslení, přidání loga (PNG nebo JPG) a **sdílení návrhu odkazem**: uchovává se 90 dní od posledního přístupu, bez obrázků a bez údajů o tom, kdo sdílí (zobrazí se jen tehdy, když služba má databázi). Zásady ochrany soukromí to uvádějí.
+- **Aplikace pro Windows 2.5:** dostává editor šablon (nabídka Extra) a přechází na Python 3.15.
+
+### Vylepšeno
+- Changelog má odkaz ke stažení aplikace pro Windows.
+
+## 3.30.0 — 2026-11-12
+
+### Novinky
+- **Stránky „Jak na to“:** dva psané návody, „Pro školy“ a „Pro spolky“ (odkazy v patičce), s postupem krok za krokem, jak uspořádat tombolu: navrhnout los, série pro třídu nebo prodejce, tisk s ořezovými značkami, hlídání prodeje a ověřitelné losování. Jsou ve všech 18 jazycích a připomínají ověřit na obecním úřadě, zda tombola vyžaduje povolení.
+
+## 3.29.0 — 2026-11-12
+
+### Vylepšeno
+- **Reklamy po stranách:** když jsou reklamy zapnuté (zatím nejsou), na širokých obrazovkách se zobrazují po obou stranách obsahu, po jedné z každé strany, pevné a bez posouvání stránky; na ostatních obrazovkách je jeden blok na konci stránky. Stále se nezobrazují v editoru, ve vytvořených souborech ani v aplikaci pro Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Novinky

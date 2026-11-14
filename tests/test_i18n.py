@@ -15,15 +15,15 @@ PARAMS = re.compile(r"\{(\w+)\}")
 
 
 def test_linguas_e_ordem():
-    assert ORDEM == ["pt", "en", "es", "fr", "de", "it", "nl", "pl", "sv", "cs", "ro", "el", "ru", "tr", "zh", "ja", "ko", "hi"]
+    assert ORDEM == ["pt", "en", "es", "fr", "de", "it", "nl", "pl", "sv", "cs", "ro", "el", "ru", "tr", "zh", "ja", "ko", "hi", "ca", "uk", "id", "vi"]
     assert list(NOMES) == ORDEM and list(TEXTOS) == ORDEM
     assert list(i18n.LINGUAS.items())[:3] == [("pt", "Português"), ("en", "English"), ("es", "Español")]
-    assert NOMES["zh"] == "简体中文" and NOMES["hi"] == "हिन्दी"
+    assert NOMES["zh"] == "简体中文" and NOMES["hi"] == "हिन्दी" and NOMES["ca"] == "Català" and NOMES["uk"] == "Українська"
 
 
-def test_todas_as_linguas_tem_271_chaves_iguais_ao_portugues():
+def test_todas_as_linguas_tem_285_chaves_iguais_ao_portugues():
     ref = TEXTOS["pt"]
-    assert len(ref) == 271                  # 150 da app + 11 web (web_*) + 75 em web_extra.py + 35 em textos_novos.py e tutoriais.py
+    assert len(ref) == 299                  # 150 da app + 11 web (web_*) + 99 em web_extra.py + 39 em textos_novos.py e tutoriais.py
     for lg, textos in TEXTOS.items():
         assert textos.keys() == ref.keys(), lg
 

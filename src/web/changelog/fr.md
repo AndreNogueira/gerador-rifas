@@ -2,6 +2,67 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.39.0 — 2026-11-13
+
+### Nouveautés
+- **Appli Windows 2.7 :** la galerie et l'éditeur de modèles acceptent désormais le latin étendu, le vietnamien, le grec, le cyrillique, le chinois, le japonais et le coréen, comme le site depuis la 3.37 (l'hindi, l'arabe et l'hébreu manquent encore). À télécharger depuis la page du Changelog.
+
+## 3.38.0 — 2026-11-13
+
+### Nouveautés
+- **Bouton « Partager » :** en bas de page et, après la génération des fichiers, sur la carte de livraison. Il ouvre une courte liste (partage du téléphone ou de l'ordinateur, WhatsApp, Telegram, Facebook, e-mail et « Copier le lien ») pour faire connaître le générateur à d'autres associations, écoles et comités des fêtes. Les liens ne portent que l'adresse du site dans la langue utilisée : aucun suivi, rien n'est conservé. Il a un sujet dans le tutoriel et une vidéo.
+
+## 3.37.0 — 2026-11-13
+
+### Nouveautés
+- **Plus de lettres dans la galerie et l'éditeur de modèles :** les textes peuvent désormais utiliser le latin étendu (polonais, tchèque, roumain, turc…), le **vietnamien, le grec, le cyrillique (russe, ukrainien)**, le **chinois, le japonais et le coréen**. L'hindi, l'arabe et l'hébreu manquent encore (ils demandent une technologie d'écriture que le générateur de PDF n'a pas) et affichent un avertissement au lieu d'une image abîmée. Dans les PDF, seul le texte saisi change ; ce qui sortait déjà pareil reste pareil.
+
+## 3.36.0 — 2026-11-13
+
+### Nouveautés
+- **Guide « Comment faire » pour les paroisses :** « Pour les paroisses » (lien en bas de page), avec la marche à suivre pour organiser une tombola paroissiale : fêtes patronales, kermesses, travaux, paniers de Noël et catéchisme. Il existe en 22 langues et rappelle de vérifier auprès de la mairie si la tombola exige une autorisation.
+
+## 3.35.0 — 2026-11-13
+
+### Nouveautés
+- **Appli Windows 2.6 :** le menu « Extras » gagne « Enregistrer la demande… » et « Ouvrir une demande… » (un fichier .rifas avec les numéros, le nom, les séries, les couleurs et les traits de coupe, sans modèle ni chemins), l'éditeur de modèles peut ajouter des images (PNG ou JPG) et « Affichage → Visuel » passe de 2 aux 14 thèmes du site (les couleurs seulement). Elle apporte aussi ce qui est venu depuis la 2.4 : l'éditeur, les 24 modèles de la galerie et les 22 langues.
+
+## 3.34.0 — 2026-11-13
+
+### Nouveautés
+- **Trois nouveaux guides « Comment faire » :** « Pour les clubs », « Pour les pompiers » et « Pour les fêtes de quartier » (liens en bas de page), avec la marche à suivre pour organiser une tombola dans chaque cas. Ils existent en 22 langues et rappellent de vérifier auprès de la mairie si la tombola exige une autorisation.
+
+## 3.33.0 — 2026-11-13
+
+### Nouveautés
+- **API publique par lots** (`/api/v1`, avec Swagger sur `/api/v1/docs`) : elle permet à d'autres programmes de générer plusieurs demandes de tickets à partir d'un seul modèle, avec une clé, des quotas quotidiens et des limites. Les utilisateurs du site passent toujours en premier.
+- **Quatre nouvelles langues :** catalan, ukrainien, indonésien et vietnamien. Le site et l'appli Windows passent à 22 langues, avec tutoriel, conditions, confidentialité, guides pratiques et captures.
+- **Textes pour les moteurs de recherche modifiables par langue :** le propriétaire modifie dans le panneau d'administration les titres, descriptions et guides de chaque langue, stockés en base de données et sans nouveau déploiement.
+
+## 3.32.0 — 2026-11-13
+
+### Nouveautés
+- **20 nouveaux modèles dans la galerie (24 au total) :** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Tous dessinés de zéro pour ce projet, avec talon, sur le site et dans l'appli Windows (où la galerie devient une liste déroulante).
+
+## 3.31.0 — 2026-11-13
+
+### Nouveautés
+- **Éditeur de modèles v2 :** annuler et rétablir (Ctrl+Z, Ctrl+Y), dupliquer (Ctrl+D), changer l'ordre de superposition, ajouter le logo (PNG ou JPG) et **partager le dessin par lien** : il est conservé 90 jours après le dernier accès, sans images et sans données sur qui partage (il n'apparaît que si le service a une base de données). La politique de confidentialité le dit.
+- **Appli Windows 2.5 :** reçoit l'éditeur de modèles (menu Extras) et passe à Python 3.15.
+
+### Amélioré
+- Le Changelog a un lien pour télécharger l'appli Windows.
+
+## 3.30.0 — 2026-11-12
+
+### Nouveautés
+- **Pages « Comment faire » :** deux guides écrits, « Pour les écoles » et « Pour les associations » (liens en bas de page), avec la marche à suivre pour organiser une tombola : dessiner le billet, une série par classe ou vendeur, imprimer avec des repères de coupe, suivre les ventes et faire un tirage vérifiable. Ils sont dans les 18 langues et rappellent de vérifier auprès de la mairie si la tombola exige une autorisation.
+
+## 3.29.0 — 2026-11-12
+
+### Amélioré
+- **Publicités sur les côtés :** quand les publicités sont activées (ce n'est pas le cas pour l'instant), sur les grands écrans elles apparaissent de part et d'autre du contenu, une de chaque côté, fixes et sans déplacer la page ; sur les autres écrans, il y a un seul bloc à la fin de la page. Elles n'apparaissent toujours pas dans l'éditeur, dans les fichiers générés ni dans l'appli Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Nouveautés

@@ -273,3 +273,91 @@
   gap: 8px;
   justify-content: flex-end;
 }
+
+// os guias «como fazer» (`Guia.tsx`): passos numerados e dicas, no mesmo cartão das páginas de texto
+.guia {
+  .guia-passos {
+    display: grid;
+    gap: 14px;
+    margin: 4px 0;
+    padding-left: 1.6rem;
+  }
+  .guia-passos li::marker {
+    font-weight: 800;
+    color: var(--destaque);
+  }
+  .guia-passos h2 {
+    margin-top: 0;
+  }
+  .guia-dicas {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 12px 16px 12px 2rem;
+    border: var(--borda) solid var(--linha);
+    border-radius: var(--raio-c);
+    background: var(--campo);
+  }
+  .guia-ligacoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+// O botão «Partilhar» (rodapé e cartão dos ficheiros gerados): uma lista curta de ligações simples; só variáveis do tema, nenhuma cor própria.
+.partilhar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+
+  .partilhar-chamada {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--suave);
+  }
+  .botao {
+    width: auto;
+  }
+  .partilhar-botao {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0 8px;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .partilhar-lista {
+    flex-basis: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    a,
+    button {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      padding: 0 4px;
+      background: none;
+      border: 0;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+}

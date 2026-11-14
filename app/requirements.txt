@@ -7,7 +7,7 @@ reportlab           # BSD (a galeria de templates: desenha os PDFs e traz a letr
 # --- so para construir o .exe (ferramentas; nao fazem parte do programa)
 nuitka              # compilador Python->C (AGPL-3.0 a ferramenta; o programa gerado NAO herda a licenca)
 ordered-set
-zstandard
+# (o zstandard, que comprime o .exe, instala-se a parte no construir.bat: nao tem roda para a 3.15)
 # --- so para os testes (testes\)
 fonttools           # MIT
 psutil              # BSD-3-Clause

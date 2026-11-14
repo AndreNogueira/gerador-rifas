@@ -38,7 +38,7 @@ from tema import C, FONTE, cor_tk
 from visor import Visor
 from widgets import Banda, BarraMenus, Dica, Rolavel, novo_menu, repintar_so_o_necessario
 
-VERSAO = "2.4.0"
+VERSAO = "2.7.0"
 BASE = Path(__file__).resolve().parent            # tambem certo no .exe compilado (recursos ao lado)
 DADOS = core.config.pasta_de_dados(ambiente.dados_por_defeito())     # RIFAS_DADOS, ou %APPDATA%\GeradorRifas
 CONFIG = DADOS / core.config.NOME_CONFIG
@@ -93,7 +93,7 @@ def selftest(destino: Path) -> int:
                 tut.update()
             tut.destroy()
         app._mudar_lingua(i18n.LINGUAS["pt"])
-        for classe in (extras.Opcoes, extras.Galeria, extras.Sorteio):       # as janelas «Extras» abrem
+        for classe in (extras.Opcoes, extras.Galeria, extras.EditorTemplates, extras.Sorteio):       # as janelas «Extras» abrem
             j = classe(app)
             j.update()
             j.destroy()
@@ -623,7 +623,7 @@ class App(ctk.CTk):
         if self._sub_visual is None or not self._sub_visual.winfo_exists():
             self._sub_visual = novo_menu(m)
         self._sub_visual.delete(0, "end")
-        for valor, rotulo in (("auto", t("win_visual_auto")), ("premiado", "Premiado"), ("natal", "Natal")):
+        for valor, rotulo in (("auto", t("win_visual_auto")), *core.tema.NOMES_VISUAIS.items()):
             self._sub_visual.add_radiobutton(label=rotulo, variable=self.v_visual, value=valor,
                                              command=lambda v=valor: self._definir_visual(v))
         m.add_cascade(label=t("web_visual"), menu=self._sub_visual)
@@ -640,10 +640,14 @@ class App(ctk.CTk):
         livre = "disabled" if self.a_gerar else "normal"
         m.add_command(label=t("win_opcoes"), command=lambda: self._abrir_extra("opcoes", extras.Opcoes), state=livre)
         m.add_command(label=t("win_galeria"), command=lambda: self._abrir_extra("galeria", extras.Galeria), state=livre)
+        m.add_command(label=t("web_editor") + "…", command=lambda: self._abrir_extra("editor", extras.EditorTemplates), state=livre)
         m.add_command(label=t("web_sorteio") + "…", command=lambda: self._abrir_extra("sorteio", extras.Sorteio))
         m.add_separator()
         m.add_command(label=t("web_exportar_csv") + "…", command=self._exportar_csv)
         m.add_command(label=t("web_folha_controlo"), command=self._exportar_folha)
+        m.add_separator()
+        m.add_command(label=t("win_guardar_pedido"), command=self._guardar_pedido)
+        m.add_command(label=t("win_abrir_pedido"), command=self._abrir_pedido, state=livre)
 
     def _preencher_idioma(self, m: tk.Menu) -> None:
         self.v_lingua.set(i18n.atual())
@@ -781,7 +785,7 @@ class App(ctk.CTk):
         self._guardar_config()
 
     def _definir_visual(self, valor: str) -> None:
-        """«auto» (por época), «premiado» ou «natal»: refaz as cores e a janela."""
+        """«auto» (por época) ou um dos 14 visuais de `core.tema.VISUAIS`: refaz as cores e a janela."""
         if self.a_gerar:
             self.v_visual.set(self.visual)
             return
@@ -1083,6 +1087,71 @@ class App(ctk.CTk):
     def _exportar_folha(self) -> Path | None:
         return self._exportar(core.controlo.exportar_folha, (t("dlg_tipo_pdf"), "*.pdf"))
 
+    # -- guardar e abrir o pedido (ficheiro .rifas; o site tem «Copiar ligação»): so os campos, nunca o template, os algarismos, a pasta nem o logotipo
+    def _campos_do_pedido(self) -> dict:
+        return {"inicio": self.v_inicio.get(), "fim": self.v_fim.get(), "digitos": self.v_digitos.get(), "max_ficheiro": self.v_max.get(), "modo": self.modo,
+                "papel": self.v_papel.get(), "margem": self.v_margem.get(), "porfolha": self.v_porfolha.get(), "nome": self.v_nome.get(),
+                "prefixos": self.v_prefixos.get(), "saltar": self.v_saltar.get(), "cor_serie": bool(self.v_cor_serie.get()), "marcas": bool(self.v_marcas.get()),
+                "cor_numeros": self.v_cor_numeros.get(), "logo_pos": self.v_logo_pos.get(), "logo_tam": self.v_logo_tam.get()}
+
+    def _guardar_pedido(self) -> Path | None:
+        """Pergunta onde guardar e escreve o pedido. O caminho, ou None se desistiu/falhou."""
+        base = core.nome_seguro(self.v_nome.get()) or "pedido"
+        p = filedialog.asksaveasfilename(title=t("win_guardar_pedido").rstrip("…"), initialdir=self._dir_de(self.v_saida), initialfile=base + core.pedido_ficheiro.EXTENSAO,
+                                         defaultextension=core.pedido_ficheiro.EXTENSAO,
+                                         filetypes=[("Rifas", "*" + core.pedido_ficheiro.EXTENSAO), (t("dlg_tipo_todos"), "*.*")])
+        if not p:
+            return None
+        try:
+            Path(p).write_bytes(core.pedido_ficheiro.para_bytes(self._campos_do_pedido()))
+        except OSError as e:
+            messagebox.showerror(t("app_nome"), t("erro_inesperado", erro=e))
+            return None
+        self._set_estado("win_guardado", C["ok"], nome=Path(p).name)
+        return Path(p)
+
+    def _abrir_pedido(self, ficheiro: str | None = None) -> bool:
+        """Pergunta que pedido abrir (ou recebe o `ficheiro`, nos testes) e repõe os campos. False se desistiu ou o ficheiro não serve."""
+        p = ficheiro or filedialog.askopenfilename(title=t("win_abrir_pedido").rstrip("…"), initialdir=self._dir_de(self.v_saida),
+                                                   filetypes=[("Rifas", "*" + core.pedido_ficheiro.EXTENSAO), (t("dlg_tipo_todos"), "*.*")])
+        if not p:
+            return False
+        try:
+            with open(p, "rb") as f:
+                campos = core.pedido_ficheiro.de_bytes(f.read(core.pedido_ficheiro.MAX_BYTES + 1))
+        except OSError as e:
+            messagebox.showerror(t("app_nome"), t("erro_inesperado", erro=e))
+            return False
+        except core.ErroRifas as e:
+            messagebox.showwarning(t("app_nome"), str(e))
+            return False
+        self._aplicar_pedido(campos)
+        self._set_estado("win_guardado", C["ok"], nome=Path(p).name)
+        return True
+
+    def _aplicar_pedido(self, c: dict) -> None:
+        for chave, var in (("inicio", self.v_inicio), ("fim", self.v_fim), ("digitos", self.v_digitos), ("max_ficheiro", self.v_max), ("margem", self.v_margem),
+                           ("porfolha", self.v_porfolha), ("prefixos", self.v_prefixos), ("saltar", self.v_saltar), ("cor_numeros", self.v_cor_numeros),
+                           ("logo_pos", self.v_logo_pos), ("logo_tam", self.v_logo_tam), ("cor_serie", self.v_cor_serie), ("marcas", self.v_marcas)):
+            if chave in c:
+                var.set(c[chave])
+        if "papel" in c:
+            self.v_papel.set(c["papel"])
+            if hasattr(self, "m_papel") and self.m_papel.winfo_exists():
+                self.m_papel.set(c["papel"])
+        if "nome" in c:
+            self.v_nome.set(c["nome"])
+            self.e_nome.delete(0, "end")
+            self.e_nome.insert(0, c["nome"])
+            self.e_nome.configure(border_color=C["borda"])
+        if "modo" in c:
+            self._set_modo(c["modo"])
+            self.seg_modo.set(t("modo_varios") if c["modo"] == "varios" else t("modo_unico"))
+        if self.info is not None:
+            self._recalcular_folha()
+        self._resumo()
+        self._guardar_config()
+
     def usar_galeria(self, desenho: str, modelo: bytes, algarismos: bytes) -> None:
         """«Usar este template» da galeria: guarda o template e os algarismos numa pasta temporaria e continua como se os tivesse escolhido."""
         if self._pasta_galeria is None or not self._pasta_galeria.exists():
@@ -1098,6 +1167,11 @@ class App(ctk.CTk):
         if self._pasta_galeria is not None:
             shutil.rmtree(self._pasta_galeria, ignore_errors=True)
             self._pasta_galeria = None
+
+    def _ev_editor(self, token: int, png: bytes | None, erro: Exception | None) -> None:
+        j = self.w_extras.get("editor")
+        if j is not None and j.winfo_exists():
+            j.resultado(token, png, erro)
 
     def _ev_galeria(self, token: int, png: bytes | None, erro: Exception | None) -> None:
         j = self.w_extras.get("galeria")

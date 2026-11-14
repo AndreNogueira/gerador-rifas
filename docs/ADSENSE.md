@@ -15,30 +15,40 @@ Valores inválidos são ignorados (`config.adsense_cliente()` / `adsense_slot()`
 
 ## Onde aparecem
 
-**Um só bloco por página, no fim do conteúdo, por cima do rodapé** (largura total, até 960 px, com a palavra «Publicidade» por cima e 140 px de altura reservada: não há saltos, e some se a Google não tiver anúncio).
+**Em ecrãs largos (≥ 1640 × 930 px): nas duas laterais do conteúdo**, um de cada lado, anúncios verticais de 160 × 600 px, **fixos** (não mexem na página nem nos temas) e por baixo da faixa do cabeçalho. **Nos outros ecrãs** (portáteis pequenos, tablets, telemóveis, onde não há margem): um só bloco no fim do conteúdo, por cima do rodapé (até 960 px, com a palavra «Publicidade» por cima e 140 px de altura reservada: sem saltos). Em qualquer caso some se a Google não tiver anúncio.
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│ ▓▓▓ cabeçalho / faixa do tema ▓▓▓                            │
-├────────────────────────────┬─────────────────────────────────┤
-│ 1 Template (PDF)           │ Pré-visualização                │
-│ 2 Algarismos               │ (PDF.js)                        │
-│ 3 Números                  │                                 │
-│ 4 Gerar e descarregar      │                                 │
-├────────────────────────────┴─────────────────────────────────┤
-│                         PUBLICIDADE                          │   ← o único bloco
-│  ┌────────────────────────────────────────────────────────┐  │     (página inicial)
-│  │               anúncio responsivo da Google             │  │
-│  └────────────────────────────────────────────────────────┘  │
-├──────────────────────────────────────────────────────────────┤
-│ v3.28.0   Changelog · Termos · Privacidade · Contacto        │
-└──────────────────────────────────────────────────────────────┘
+ ecrã largo (≥ 1640 px)
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                 ▓▓▓ cabeçalho / faixa do tema (conteúdo ≥ 1280 px) ▓▓▓       │
+│                                                                              │
+│  PUBLICIDADE   ┌──────────────────────────┬──────────────────┐  PUBLICIDADE  │
+│  ┌────────┐    │ 1 Template (PDF)         │ Pré-visualização │  ┌────────┐   │
+│  │        │    │ 2 Algarismos             │ (PDF.js)         │  │        │   │
+│  │ 160 ×  │    │ 3 Números                │                  │  │ 160 ×  │   │
+│  │  600   │    │ 4 Gerar e descarregar    │                  │  │  600   │   │
+│  │        │    └──────────────────────────┴──────────────────┘  │        │   │
+│  └────────┘     v3.29.0  Changelog · Termos · Privacidade        └────────┘   │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+ ecrã estreito (< 1640 px)                      
+┌────────────────────────────────────────────┐
+│ cabeçalho                                  │
+│ conteúdo (os 4 passos, a pré-visualização) │
+│               PUBLICIDADE                  │   ← um só bloco, no fim
+│ ┌────────────────────────────────────────┐ │
+│ │         anúncio responsivo             │ │
+│ └────────────────────────────────────────┘ │
+│ v3.29.0  Changelog · Termos · Privacidade  │
+└────────────────────────────────────────────┘
 ```
+
+As laterais ficam sempre a 16 px do conteúdo (`--largura-max`), por isso nunca o tapam; a regra do ecrã é `CONSULTA_LATERAIS` em `Anuncio.tsx`. Ambas usam o mesmo bloco (`ADSENSE_SLOT`); no AdSense cria um bloco **responsivo** (ele escolhe o 160 × 600 nas laterais).
 
 | Página | Anúncio? | Porquê |
 |---|---|---|
-| `/` (o gerador) | **sim**, no fim da página (abaixo dos 4 passos e da pré-visualização) | é a página com mais visitas; fica longe de «Gerar» e «Descarregar» (a Google proíbe anúncios junto de botões, para não haver cliques por engano) |
-| `/tutorial`, `/sobre`, `/sorteio`, `/changelog` | **sim**, no fim | páginas de leitura, com texto à volta |
+| `/` (o gerador) | **sim**, nas laterais (ou no fim da página, em ecrãs estreitos) | é a página com mais visitas; fica longe de «Gerar» e «Descarregar» (a Google proíbe anúncios junto de botões, para não haver cliques por engano) |
+| `/tutorial`, `/sobre`, `/sorteio`, `/changelog` | **sim**, nas laterais (ou no fim) | páginas de leitura, com texto à volta |
 | `/editor` | não | é uma ferramenta de arrastar: um anúncio ao lado da tela provocava cliques por engano |
 | `/video`, `/termos`, `/privacidade`, `/contacto` | não | pouco conteúdo ou páginas legais |
 | `/admin`, a página do QR (`/v/…`), o 404 | **nunca** | o painel é privado; a verificação e o 404 não têm conteúdo (a Google recusa anúncios assim); o script nem é carregado |

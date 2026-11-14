@@ -2,6 +2,67 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.39.0 — 2026-11-13
+
+### New
+- **Windows app 2.7:** the gallery and the template editor now accept extended Latin, Vietnamese, Greek, Cyrillic, Chinese, Japanese and Korean, like the site since 3.37 (Hindi, Arabic and Hebrew are still missing). Download it from the Changelog page.
+
+## 3.38.0 — 2026-11-13
+
+### New
+- **“Share” button:** in the footer and, after generating the files, on the delivery card. It opens a short list (your phone's or computer's share sheet, WhatsApp, Telegram, Facebook, e-mail and “Copy link”) to let other associations, schools and festival committees know about the generator. The links carry only the site address in the language you are using: no tracking and nothing stored. It has a tutorial topic and a video.
+
+## 3.37.0 — 2026-11-13
+
+### New
+- **More letters in the gallery and the template editor:** texts can now use extended Latin (Polish, Czech, Romanian, Turkish…), **Vietnamese, Greek, Cyrillic (Russian, Ukrainian)**, **Chinese, Japanese and Korean**. Hindi, Arabic and Hebrew are still missing (they need a writing technology the PDF generator lacks) and show a warning instead of a broken image. In the PDFs only the text typed by the user changes; what already came out the same stays the same.
+
+## 3.36.0 — 2026-11-13
+
+### New
+- **“How to” guide for parishes:** “For parishes” (link in the footer), with the step-by-step to run a raffle for your parish: patron saint feasts, fairs, repairs, Christmas hampers and catechism. It is in all 22 languages and reminds you to check with your local authority whether the raffle needs a licence.
+
+## 3.35.0 — 2026-11-13
+
+### New
+- **Windows app 2.6:** the “Extras” menu gains “Save request…” and “Open request…” (a .rifas file with the numbers, the name, the series, the colours and the crop marks, with no template or paths), the template editor can add images (PNG or JPG) and “View → Visual” goes from 2 to the site's 14 themes (colours only). It also brings what came since 2.4: the editor, the gallery's 24 designs and the 22 languages.
+
+## 3.34.0 — 2026-11-13
+
+### New
+- **Three new “How to” guides:** “For clubs”, “For fire brigades” and “For neighbourhood parties” (links in the footer), with the step-by-step to run a raffle in each case. They are in all 22 languages and remind you to check with your local authority whether the raffle needs a licence.
+
+## 3.33.0 — 2026-11-13
+
+### New
+- **Public API for batches** (`/api/v1`, with Swagger at `/api/v1/docs`): lets other programs generate several raffle jobs from a single template, with a key, daily quotas and limits. People using the site always go first.
+- **Four new languages:** Catalan, Ukrainian, Indonesian and Vietnamese. The site and the Windows app now speak 22 languages, with tutorial, terms, privacy, how-to guides and screenshots.
+- **Search-engine texts editable per language:** the owner edits the titles, descriptions and guides of each language in the admin panel, stored in the database, with no new deploy.
+
+## 3.32.0 — 2026-11-13
+
+### New
+- **20 new templates in the gallery (24 in total):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. All drawn from scratch for this project, with a stub, on the site and in the Windows app (where the gallery becomes a drop-down list).
+
+## 3.31.0 — 2026-11-13
+
+### New
+- **Template editor v2:** undo and redo (Ctrl+Z, Ctrl+Y), duplicate (Ctrl+D), change the drawing order, add your logo (PNG or JPG) and **share the design by link**: it is kept 90 days after its last access, without images and without data about who shares (it only appears when the service has a database). The Privacy Policy says so.
+- **Windows app 2.5:** gets the template editor (Extras menu) and moves to Python 3.15.
+
+### Improved
+- The Changelog has a link to download the Windows app.
+
+## 3.30.0 — 2026-11-12
+
+### New
+- **“How to” pages:** two written guides, “For schools” and “For associations” (links in the footer), with the step-by-step to run a raffle: design the ticket, one series per class or seller, print with cut marks, track sales and hold a verifiable draw. They are in all 18 languages and remind you to check with your local authority whether the raffle needs a licence.
+
+## 3.29.0 — 2026-11-12
+
+### Improved
+- **Ads on the sides:** when ads are on (they are not for now), on wide screens they appear on both sides of the content, one on each side, fixed and without moving the page; on other screens there is a single block at the end of the page. They still never appear in the editor, in the generated files or in the Windows app.
+
 ## 3.28.0 — 2026-11-12
 
 ### New

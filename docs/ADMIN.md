@@ -14,6 +14,16 @@ Um painel só para o dono do serviço, com **gráficos e explicações** do esta
 
 Sem `ADMIN_TOKEN` (ou com menos de 12 caracteres) o painel e a sua API respondem **404**, como se não existissem.
 
+### Um segundo acesso, só de leitura: `CLAUDE_TOKEN`
+
+Para um assistente (o Claude) poder **ver** o painel sem partilhar a palavra-passe do dono e sem poder mudar nada:
+
+1. Gera outra palavra-passe (mínimo **24** caracteres, **diferente** do `ADMIN_TOKEN`; se for igual, ou curta, fica desligada): `python -c "import secrets; print(secrets.token_urlsafe(32))"`.
+2. No Render → **Environment**: **`CLAUDE_TOKEN`** = essa palavra-passe (como o `ADMIN_TOKEN`: variável do serviço, nunca no repositório). O Render reinicia o serviço.
+3. Quem a tem pode: **entrar** em `/admin` com ela (o painel mostra «Só de leitura»), ou, sem cookie, pôr `Authorization: Bearer <CLAUDE_TOKEN>` num pedido **GET** (`/api/admin/estado`, `/dados`, `/erros`, `/chaves`, `/seo`).
+4. Não pode: criar ou revogar chaves da API, nem editar ou repor textos de SEO (responde **403**); nem usar o `ADMIN_TOKEN` como *bearer* (o do dono só entra por cookie). As credenciais certas por cabeçalho não gastam tentativas; **10 erradas por minuto e por IP** travam o acesso por cabeçalho até passar o minuto.
+5. Com só o `CLAUDE_TOKEN` (sem `ADMIN_TOKEN`) o painel existe **só em leitura**. Mudar qualquer um dos dois tokens fecha todas as sessões abertas. O painel regista só o código `entrou_leitura` (nunca o token).
+
 ## Como é protegido
 
 - **Só entra quem sabe a palavra-passe.** Compara-se em tempo constante. **5 tentativas por minuto por IP** (40 no total, para travar quem tenta de muitos sítios) e uma espera extra a cada erro.
@@ -30,6 +40,7 @@ Tudo com uma explicação em linguagem simples ao lado («Como ler»).
 | **Agora** | CPU, o **anti-sono** (ver `docs/ONLINE.md`), memória do servidor, do motor e total face ao limite (512 MB no Render gratuito), disco, sessões ativas, se há uma geração a correr, estado do motor e quantos reinícios teve |
 | **Sistema ao longo do tempo** | gráficos de CPU, memória (com a linha do limite) e sessões ativas |
 | **Pedidos à API** | pedidos e erros por intervalo, tempo de resposta (típico e dos mais lentos) e uma tabela por tipo de pedido |
+| **Erros** | o livro de erros: o que falhou desde o último arranque, por tipo, rota, classe da exceção e sítio no código, com contagem; ver `docs/OBSERVABILIDADE.md` |
 | **Utilização** | sessões, pré-visualizações, gerações (ok, com erros, canceladas, falhadas), números e páginas gerados, duração das gerações, descargas, e distribuições por língua, tema, dispositivo, páginas vistas, erros devolvidos e motivos de falha |
 | **Ecrãs e dispositivos** | tipo de ecrã (telemóvel, tablet, computador Full HD/QHD/4K/ultra-wide), tamanhos de ecrã mais comuns (p.ex. `393×852 @3x`), família ou modelo do aparelho, largura da janela e se há toque |
 | **Proxy e limite por IP** | verifica se os IPs reais dos visitantes chegam ao servidor (ver abaixo) |

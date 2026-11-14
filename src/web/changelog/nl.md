@@ -2,6 +2,67 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.39.0 — 2026-11-13
+
+### Nieuw
+- **Windows-app 2.7:** de galerij en de sjablooneditor accepteren nu uitgebreid Latijn, Vietnamees, Grieks, Cyrillisch, Chinees, Japans en Koreaans, zoals de site sinds 3.37 (Hindi, Arabisch en Hebreeuws ontbreken nog). Te downloaden via de Changelog-pagina.
+
+## 3.38.0 — 2026-11-13
+
+### Nieuw
+- **Knop «Delen»:** onderaan de pagina en, na het genereren van de bestanden, op de leveringskaart. Hij opent een korte lijst (het deelmenu van telefoon of computer, WhatsApp, Telegram, Facebook, e-mail en «Link kopiëren») om andere verenigingen, scholen en feestcomités kennis te laten maken met de generator. De links bevatten alleen het adres van de site in de gebruikte taal: geen tracking, er wordt niets bewaard. Met een onderwerp in de tutorial en een video.
+
+## 3.37.0 — 2026-11-13
+
+### Nieuw
+- **Meer letters in de galerij en de sjablooneditor:** teksten mogen nu uitgebreid Latijn (Pools, Tsjechisch, Roemeens, Turks…), **Vietnamees, Grieks, Cyrillisch (Russisch, Oekraïens)**, **Chinees, Japans en Koreaans** bevatten. Hindi, Arabisch en Hebreeuws ontbreken nog (ze hebben een schrijftechniek nodig die de PDF-generator niet heeft) en geven een waarschuwing in plaats van een kapot beeld. In de pdf's verandert alleen de ingevoerde tekst; wat al hetzelfde was, blijft hetzelfde.
+
+## 3.36.0 — 2026-11-13
+
+### Nieuw
+- **«Zo doet u het»-gids voor parochies:** «Voor parochies» (link onderaan), met de stappen voor een parochieloterij: patroonsfeesten, kermissen, herstellingen, kerstpakketten en catechese. Hij staat in alle 22 talen en herinnert u eraan bij de gemeente na te gaan of de loterij een vergunning nodig heeft.
+
+## 3.35.0 — 2026-11-13
+
+### Nieuw
+- **Windows-app 2.6:** het menu «Extras» krijgt «Opdracht bewaren…» en «Opdracht openen…» (een .rifas-bestand met de nummers, de naam, de series, de kleuren en de snijmarkeringen, zonder sjabloon of paden), de sjablooneditor kan afbeeldingen toevoegen (PNG of JPG) en «Beeld → Visueel» gaat van 2 naar de 14 thema's van de site (alleen de kleuren). Ook erbij: wat sinds 2.4 kwam: de editor, de 24 ontwerpen van de galerij en de 22 talen.
+
+## 3.34.0 — 2026-11-13
+
+### Nieuw
+- **Drie nieuwe «Zo doet u het»-gidsen:** «Voor clubs», «Voor de brandweer» en «Voor buurtfeesten» (links onderaan), met telkens de stappen voor een loterij. Ze staan in alle 22 talen en herinneren u eraan bij de gemeente na te gaan of de loterij een vergunning nodig heeft.
+
+## 3.33.0 — 2026-11-13
+
+### Nieuw
+- **Openbare API voor batches** (`/api/v1`, met Swagger op `/api/v1/docs`): andere programma's kunnen er meerdere loten-opdrachten mee maken uit één sjabloon, met sleutel, dagquota en limieten. Wie de site gebruikt, gaat altijd voor.
+- **Vier nieuwe talen:** Catalaans, Oekraïens, Indonesisch en Vietnamees. De site en de Windows-app spreken nu 22 talen, met handleiding, voorwaarden, privacy, stappengidsen en schermafbeeldingen.
+- **Teksten voor zoekmachines per taal te bewerken:** de eigenaar bewerkt in het beheerpaneel de titels, beschrijvingen en gidsen van elke taal, opgeslagen in de database en zonder nieuwe deploy.
+
+## 3.32.0 — 2026-11-13
+
+### Nieuw
+- **20 nieuwe sjablonen in de galerij (24 in totaal):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Allemaal voor dit project helemaal zelf getekend, met controlestrook, op de site en in de Windows-app (waar de galerij een keuzelijst wordt).
+
+## 3.31.0 — 2026-11-13
+
+### Nieuw
+- **Sjablooneditor v2:** ongedaan maken en opnieuw (Ctrl+Z, Ctrl+Y), dupliceren (Ctrl+D), de tekenvolgorde wijzigen, het logo (PNG of JPG) toevoegen en **het ontwerp via een link delen**: het wordt 90 dagen na de laatste toegang bewaard, zonder afbeeldingen en zonder gegevens over wie deelt (verschijnt alleen als de dienst een database heeft). Het privacybeleid zegt dat.
+- **Windows-app 2.5:** krijgt de sjablooneditor (menu Extra's) en gaat naar Python 3.15.
+
+### Verbeterd
+- De Changelog heeft een link om de Windows-app te downloaden.
+
+## 3.30.0 — 2026-11-12
+
+### Nieuw
+- **‘Zo doe je dat’-pagina’s:** twee geschreven gidsen, ‘Voor scholen’ en ‘Voor verenigingen’ (links in de voettekst), met het stappenplan voor een loterij: het lot ontwerpen, een reeks per klas of verkoper, printen met knipmarkeringen, de verkoop bijhouden en een controleerbare trekking houden. Ze staan in alle 18 talen en herinneren u eraan bij de gemeente na te gaan of een vergunning nodig is.
+
+## 3.29.0 — 2026-11-12
+
+### Verbeterd
+- **Advertenties aan de zijkanten:** als advertenties aan staan (voorlopig niet), verschijnen ze op brede schermen aan beide kanten van de inhoud, één per kant, vast en zonder de pagina te verschuiven; op andere schermen is er één blok onderaan de pagina. Ze verschijnen nog steeds niet in de editor, in de gegenereerde bestanden of in de Windows-app.
+
 ## 3.28.0 — 2026-11-12
 
 ### Nieuw

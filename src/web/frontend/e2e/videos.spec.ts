@@ -241,7 +241,7 @@ const CENAS: Cena[] = [
       );
       await clicar(page, page.getByTestId("galeria").locator("summary"));
       await clicar(page, page.getByLabel("Natal", { exact: true }));
-      await legenda(page, T("Escolha um dos quatro desenhos", "Pick one of the four designs"), 2000);
+      await legenda(page, T("Escolha um dos 24 desenhos", "Pick one of the 24 designs"), 2000);
       await escrever(page, page.getByTestId("galeria-titulo"), T("Rifa de Natal", "Christmas raffle"));
       await expect(page.getByTestId("galeria-previa")).toBeVisible();
       await legenda(
@@ -311,6 +311,21 @@ const CENAS: Cena[] = [
         ),
         2800,
       );
+      await clicar(page, page.getByTestId("editor-duplicar"));
+      await legenda(
+        page,
+        T(
+          "Duplicar, desfazer e refazer (Ctrl+D, Ctrl+Z, Ctrl+Y)",
+          "Duplicate, undo and redo (Ctrl+D, Ctrl+Z, Ctrl+Y)",
+        ),
+        2200,
+      );
+      await clicar(page, page.getByTestId("editor-desfazer"));
+      await pausa(page, 900);
+      await page.getByTestId("editor-ficheiro").setInputFiles(LOGOTIPO);
+      await legenda(page, T("Junte o logótipo da associação", "Add your association's logo"), 2600);
+      await clicar(page, page.getByTestId("editor-tras"));
+      await pausa(page, 900);
       await clicar(page, page.getByTestId("add-retangulo"));
       await legenda(
         page,
@@ -499,6 +514,59 @@ const CENAS: Cena[] = [
         T(
           "Envie-o à equipa e todos veem o mesmo pedido",
           "Send it to your team and everyone sees the same request",
+        ),
+        2600,
+      );
+    },
+  },
+  {
+    id: "partilhar",
+    rodar: async (page, T) => {
+      await page.goto("/");
+      await legenda(page, T("Partilhar o gerador", "Share the generator"), 1800);
+      const abrir = page.getByTestId("partilhar-abrir-rodape");
+      await abrir.scrollIntoViewIfNeeded();
+      await legenda(
+        page,
+        T(
+          "No fim da página (e depois de gerar) está o botão «Partilhar»",
+          "At the bottom of the page (and after generating) there is a “Share” button",
+        ),
+        2600,
+      );
+      await clicar(page, abrir);
+      await expect(page.getByTestId("partilhar-whatsapp")).toBeVisible();
+      await legenda(
+        page,
+        T(
+          "WhatsApp, Telegram, Facebook, e-mail, ou a partilha do telemóvel",
+          "WhatsApp, Telegram, Facebook, e-mail, or your phone's share sheet",
+        ),
+        1200,
+      );
+      for (const id of [
+        "partilhar-whatsapp",
+        "partilhar-telegram",
+        "partilhar-facebook",
+        "partilhar-email",
+      ]) {
+        await ir(page, page.getByTestId(id));
+        await pausa(page, 700);
+      }
+      await legenda(
+        page,
+        T(
+          "As ligações só levam o endereço do site: não há rastreio",
+          "The links carry only the site address: there is no tracking",
+        ),
+        2800,
+      );
+      await clicar(page, page.getByTestId("partilhar-copiar"));
+      await legenda(
+        page,
+        T(
+          "«Copiar ligação» põe o endereço na área de transferência",
+          "“Copy link” puts the address on the clipboard",
         ),
         2600,
       );

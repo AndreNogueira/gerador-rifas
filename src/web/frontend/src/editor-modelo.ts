@@ -1,7 +1,7 @@
 // O desenho do editor de templates (`src/core/editor.py`): tipos, o modelo inicial, as verificações que o servidor também faz e o que se envia.
 // Coordenadas em pt, origem em cima à esquerda; um texto (e o número) ancora-se na linha de base.
 
-export type Tipo = "texto" | "retangulo" | "linha" | "numero";
+export type Tipo = "texto" | "retangulo" | "linha" | "numero" | "imagem";
 export type Alinhamento = "e" | "c" | "d";
 
 export interface Elemento {
@@ -21,6 +21,8 @@ export interface Elemento {
   negrito: boolean;
   alinhamento: Alinhamento;
   rot: 0 | 90;
+  /** Só a imagem: `data:image/png|jpeg;base64,…` (já reduzida pelo browser; o servidor valida e recodifica). */
+  dados: string;
 }
 
 export interface Desenho {
@@ -37,6 +39,9 @@ export const LIMITES = {
   alturaMax: 500,
   texto: 80,
   elementos: 40,
+  imagens: 5,
+  imagemBytes: 900_000,
+  imagemLado: 600,
   tamanhoMin: 4,
   tamanhoMax: 120,
 } as const;
@@ -65,6 +70,7 @@ const BASE: Omit<Elemento, "id" | "tipo"> = {
   negrito: false,
   alinhamento: "e",
   rot: 0,
+  dados: "",
 };
 
 export function elemento(tipo: Tipo, extra: Partial<Elemento> = {}): Elemento {
@@ -92,6 +98,8 @@ export function novo(tipo: Tipo, d: Pick<Desenho, "largura" | "altura">): Elemen
       return elemento("linha", { x: cx - 50, y: cy, w: 100, h: 0, contorno: "#555555", espessura: 1.5 });
     case "numero":
       return elemento("numero", { x: cx - 30, y: cy, tamanho: 20, cor: "#c2410c" });
+    case "imagem":
+      return elemento("imagem", { x: cx - 30, y: cy - 30, w: 60, h: 60 });
   }
 }
 
@@ -154,7 +162,9 @@ export function problemas(d: Desenho): Problemas {
   return {
     numero: n < 1 || n > 2,
     digitos: mau?.texto ?? "",
-    elementos: d.elementos.length > LIMITES.elementos,
+    elementos:
+      d.elementos.length > LIMITES.elementos ||
+      d.elementos.filter((e) => e.tipo === "imagem").length > LIMITES.imagens,
   };
 }
 
@@ -166,8 +176,9 @@ export function paraEnviar(d: Desenho) {
     largura: d.largura,
     altura: d.altura,
     fundo: d.fundo,
-    elementos: d.elementos.map(({ id: _id, ...e }) => ({
+    elementos: d.elementos.map(({ id: _id, dados, ...e }) => ({
       ...e,
+      ...(e.tipo === "imagem" ? { dados } : {}),
       contorno: e.tipo === "retangulo" && e.espessura <= 0 ? "" : e.contorno,
     })),
   };
@@ -188,11 +199,14 @@ export function lerGuardado(bruto: string | null): Desenho | null {
     if (typeof o.fundo !== "string" || !COR.test(o.fundo)) return null;
     const elementos: Elemento[] = [];
     for (const e of o.elementos as Partial<Elemento>[]) {
-      if (!e || !["texto", "retangulo", "linha", "numero"].includes(e.tipo as string)) return null;
+      if (!e || !["texto", "retangulo", "linha", "numero", "imagem"].includes(e.tipo as string)) return null;
       const el = { ...BASE, ...e, id: novoId() } as Elemento;
       if (![el.x, el.y, el.w, el.h, el.espessura, el.raio, el.tamanho].every(Number.isFinite)) return null;
       if (!COR.test(el.cor) || (el.contorno && !COR.test(el.contorno))) return null;
       if (typeof el.texto !== "string" || el.texto.length > LIMITES.texto) return null;
+      if (el.tipo === "imagem" && !/^data:image\/(png|jpeg|jpg);base64,[A-Za-z0-9+/=]+$/.test(el.dados))
+        return null;
+      if (el.tipo !== "imagem") el.dados = "";
       elementos.push(el);
     }
     return {
@@ -204,4 +218,21 @@ export function lerGuardado(bruto: string | null): Desenho | null {
   } catch {
     return null;
   }
+}
+
+/** Os elementos do desenho sem as imagens (o que se guarda ao partilhar por ligação: o servidor também as tira). */
+export function semImagens(d: Desenho): Desenho {
+  return { ...d, elementos: d.elementos.filter((e) => e.tipo !== "imagem") };
+}
+
+/** O desenho que vem do servidor (partilhado): ids novos do ecrã e valores por omissão para o que faltar. Tudo o que não for conhecido deita-se fora. */
+export function dePartilha(o: unknown): Desenho | null {
+  if (!o || typeof o !== "object") return null;
+  return lerGuardado(JSON.stringify(o));
+}
+
+/** O tamanho (pt) com que entra uma imagem de `largura` × `altura` píxeis: cabe em 160 × 80 pt, na proporção original, sem ampliar. */
+export function tamanhoDaImagem(largura: number, altura: number): { w: number; h: number } {
+  const k = Math.min(160 / Math.max(largura, 1), 80 / Math.max(altura, 1), 1);
+  return { w: Math.max(4, Math.round(largura * k)), h: Math.max(4, Math.round(altura * k)) };
 }

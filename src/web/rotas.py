@@ -19,10 +19,11 @@ from core.armazenamento import ArmazenamentoCheio
 from fastapi import APIRouter, Depends, Request, Response
 from fastapi.responses import FileResponse, StreamingResponse
 
-from . import config, seo, trabalhos
+from . import VERSAO, config, seo, trabalhos
 from .limites import Limitador, ler_corpo
 from .manter_acordado import EstadoAcordado
 from .metricas import Metricas, classe_do_ecra, dispositivo, familia, modelo_limpo
+from .observabilidade import Observabilidade
 from .modelos import Calculo, Campos, Ecra, ErroApi, Sessao, TrabalhoEstado
 from .sessoes import (Geracao, SessaoEstado, Sessoes, calcular, folha_dos_campos, ler_progresso, texto_de_erro,
                       trabalho_dos_campos, vista, _trabalho)
@@ -38,10 +39,15 @@ class Servico:
     metricas: Metricas = field(default_factory=Metricas)           # contagens para o painel de administracao (sem dados pessoais)
     observador: Observador | None = None
     acordado: EstadoAcordado = field(default_factory=EstadoAcordado)       # o anti-sono (ver manter_acordado.py)
+    partilhas: object | None = None                                         # `partilhas.Partilhas` (desenhos do editor partilhados por ligacao): so com DATABASE_URL
+    chaves: object | None = None                                            # `chaves_api.Chaves`: as chaves da API publica v1 (Postgres, ou SQLite local)
+    seo: object | None = None                                               # `seo_bd.SeoBd`: os textos de SEO editados no painel (Postgres, ou SQLite local)
+    obs: Observabilidade = field(default_factory=lambda: Observabilidade(versao=VERSAO))   # registo estruturado e livro de erros (observabilidade.py)
 
     def __post_init__(self) -> None:
         if self.observador is None:
             self.observador = Observador(self.sessoes.armazem.raiz)
+        self.metricas.observar = self.obs.evento
 
 
 router = APIRouter(prefix="/api/sessoes", tags=["sessoes"])
@@ -424,6 +430,13 @@ async def _geracao_interna(serv: Servico, s: SessaoEstado, pasta: Path, args: tu
         g.estado, g.erro = "falhou", ("exc", f"{type(e).__name__}: {e}")
 
 
+def argumentos_de_geracao(pasta: Path, s: SessaoEstado, campos: Campos, tr: core.Trabalho, qr: tuple | None) -> tuple:
+    """Os argumentos de `trabalhos.gerar` (partilhado com a API publica em lote)."""
+    return (str(pasta), s.tpl_nome, s.alg_nome, tr.nome, tr.inicio, tr.fim, tr.por_ficheiro, tr.digitos, campos.papel, campos.margem,
+            campos.porfolha, tr.prefixos, tr.saltar, tr.cor_por_serie, campos.marcas == "1", campos.logo_posicao, campos.logo_tamanho,
+            tr.cor_numeros, qr)
+
+
 @router.post("/{id_}/gerar", response_model=Sessao, status_code=202, dependencies=[Depends(pesado)])
 async def gerar(id_: str, campos: Campos, request: Request, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Sessao:
     s, pasta = _sessao(serv, id_)
@@ -440,10 +453,7 @@ async def gerar(id_: str, campos: Campos, request: Request, serv: Servico = Depe
         for f in (PROGRESSO, CANCELAR):
             (pasta / f).unlink(missing_ok=True)
         s.gerar = Geracao(estado="a_gerar", nome=tr.nome)
-        args = (str(pasta), s.tpl_nome, s.alg_nome, tr.nome, tr.inicio, tr.fim, tr.por_ficheiro, tr.digitos, campos.papel, campos.margem,
-                campos.porfolha, tr.prefixos, tr.saltar, tr.cor_por_serie, campos.marcas == "1", campos.logo_posicao, campos.logo_tamanho,
-                tr.cor_numeros, qr)
-        s.tarefa = asyncio.create_task(_geracao(serv, s, pasta, args))
+        s.tarefa = asyncio.create_task(_geracao(serv, s, pasta, argumentos_de_geracao(pasta, s, campos, tr, qr)))
     except BaseException:
         serv.motor.geracao = None
         raise
@@ -466,15 +476,20 @@ async def _cancelar_a_forca(serv: Servico, s: SessaoEstado) -> None:
         serv.motor.reiniciar()                               # `_geracao` ve o processo morrer e passa a «cancelado»
 
 
-@router.post("/{id_}/cancelar", response_model=TrabalhoEstado, dependencies=[Depends(leve)])
-async def cancelar(id_: str, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> TrabalhoEstado:
-    s, pasta = _sessao(serv, id_)
+def pedir_cancelamento(serv: Servico, s: SessaoEstado, pasta: Path) -> None:
+    """Pede ao motor que pare a geracao da sessao (e mata-o passado `CANCELAR_ESPERA_S` se nao parar). Nao faz nada se nao ha geracao a correr."""
     if s.gerar.estado == "a_gerar":
         (pasta / CANCELAR).touch()                           # o motor consulta-a a cada pagina (trabalhos.Bandeira)
         s.gerar.estado = "a_cancelar"
         tarefa = asyncio.create_task(_cancelar_a_forca(serv, s))
         _TAREFAS.add(tarefa)                                 # sem uma referencia o asyncio pode descartar a tarefa a meio
         tarefa.add_done_callback(_TAREFAS.discard)
+
+
+@router.post("/{id_}/cancelar", response_model=TrabalhoEstado, dependencies=[Depends(leve)])
+async def cancelar(id_: str, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> TrabalhoEstado:
+    s, pasta = _sessao(serv, id_)
+    pedir_cancelamento(serv, s, pasta)
     return _trabalho(s, lg, 0, pasta)
 
 

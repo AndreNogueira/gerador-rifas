@@ -36,8 +36,8 @@ def test_previa_png_de_cada_desenho(c, desenho):
 
 
 def test_previa_com_textos_invalidos_ou_desenho_desconhecido_e_um_aviso_traduzido(c):
-    r = c.get("/api/galeria/previa.png", params={"desenho": "bosque", "t": "系列"}, headers={"X-Lingua": "en"})
-    assert r.status_code == 422 and r.json()["tipo"] == "aviso" and "Latin letters" in r.json()["detail"] and "系" in r.json()["detail"]
+    r = c.get("/api/galeria/previa.png", params={"desenho": "bosque", "t": "हिन्दी"}, headers={"X-Lingua": "en"})
+    assert r.status_code == 422 and r.json()["tipo"] == "aviso" and "supported letters" in r.json()["detail"] and "ह" in r.json()["detail"]
     assert c.get("/api/galeria/previa.png", params={"desenho": "nao-existe"}).status_code == 422
     assert c.get("/api/galeria/previa.png", params={"desenho": "bosque", "t": "x" * 41}).status_code == 422       # acima do limite do campo
 
@@ -62,8 +62,8 @@ def test_usar_o_template_da_galeria_deixa_a_sessao_pronta_e_gera(c):
 def test_usar_com_textos_que_a_letra_nao_tem_nao_mexe_na_sessao(c):
     h = {"X-Lingua": "en"}
     s = c.post("/api/sessoes", headers=h).json()["sessao"]
-    r = c.post(f"/api/sessoes/{s}/galeria", json={"desenho": "natal", "titulo": "日本語"}, headers=h)
-    assert r.status_code == 422 and "Latin" in r.json()["detail"]
+    r = c.post(f"/api/sessoes/{s}/galeria", json={"desenho": "natal", "titulo": "हिन्दी"}, headers=h)
+    assert r.status_code == 422 and "supported letters" in r.json()["detail"]
     assert c.get(f"/api/sessoes/{s}").json()["template"]["estado"] == "vazio"
     assert c.post(f"/api/sessoes/{s}/galeria", json={"desenho": "natal", "premios": ["a", "b", "c", "d"]}, headers=h).status_code == 422
 

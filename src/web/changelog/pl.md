@@ -2,6 +2,67 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.39.0 — 2026-11-13
+
+### Nowości
+- **Aplikacja Windows 2.7:** galeria i edytor szablonów akceptują teraz rozszerzoną łacinkę, wietnamski, grecki, cyrylicę, chiński, japoński i koreański, tak jak strona od wersji 3.37 (hindi, arabski i hebrajski nadal nie działają). Do pobrania ze strony Changelog.
+
+## 3.38.0 — 2026-11-13
+
+### Nowości
+- **Przycisk «Udostępnij»:** w stopce i, po wygenerowaniu plików, na karcie pobierania. Otwiera krótką listę (udostępnianie telefonu lub komputera, WhatsApp, Telegram, Facebook, e-mail i «Kopiuj link»), by poznały generator inne stowarzyszenia, szkoły i komitety festynów. Linki zawierają tylko adres strony w używanym języku: bez śledzenia i bez zapisywania czegokolwiek. Ma temat w samouczku i wideo.
+
+## 3.37.0 — 2026-11-13
+
+### Nowości
+- **Więcej liter w galerii i edytorze szablonów:** teksty mogą teraz zawierać rozszerzoną łacinkę (polski, czeski, rumuński, turecki…), **wietnamski, grecki, cyrylicę (rosyjski, ukraiński)**, **chiński, japoński i koreański**. Hindi, arabski i hebrajski nadal nie działają (wymagają techniki pisma, której generator PDF nie ma) i pokazują ostrzeżenie zamiast zepsutego obrazu. W plikach PDF zmienia się tylko wpisany tekst; to, co wyglądało tak samo, wygląda tak samo.
+
+## 3.36.0 — 2026-11-13
+
+### Nowości
+- **Poradnik «Jak to zrobić» dla parafii:** «Dla parafii» (link w stopce), z instrukcją krok po kroku, jak zorganizować loterię parafialną: odpusty, festyny, remonty, paczki świąteczne i katecheza. Jest w 22 językach i przypomina, by sprawdzić w urzędzie gminy, czy loteria wymaga zezwolenia.
+
+## 3.35.0 — 2026-11-13
+
+### Nowości
+- **Aplikacja Windows 2.6:** menu «Extras» zyskuje «Zapisz zamówienie…» i «Otwórz zamówienie…» (plik .rifas z numerami, nazwą, seriami, kolorami i znacznikami cięcia, bez szablonu i ścieżek), edytor szablonów potrafi dodawać obrazy (PNG lub JPG), a «Widok → Wygląd» zmienia się z 2 na 14 motywów strony (tylko kolory). Dochodzi też to, co przyszło od wersji 2.4: edytor, 24 wzory z galerii i 22 języki.
+
+## 3.34.0 — 2026-11-13
+
+### Nowości
+- **Trzy nowe poradniki „Jak to zrobić”:** „Dla klubów”, „Dla straży pożarnej” i „Dla festynów” (linki w stopce), z instrukcją krok po kroku, jak zorganizować loterię w każdym z tych przypadków. Są w 22 językach i przypominają, by sprawdzić w urzędzie gminy, czy loteria wymaga zezwolenia.
+
+## 3.33.0 — 2026-11-13
+
+### Nowości
+- **Publiczne API do partii** (`/api/v1`, z Swaggerem pod `/api/v1/docs`): pozwala innym programom generować wiele zleceń losów z jednego szablonu, z kluczem, dziennymi limitami i ograniczeniami. Osoby korzystające ze strony zawsze mają pierwszeństwo.
+- **Cztery nowe języki:** kataloński, ukraiński, indonezyjski i wietnamski. Strona i aplikacja Windows mówią teraz w 22 językach, z poradnikiem, regulaminem, prywatnością, przewodnikami i zrzutami ekranu.
+- **Teksty dla wyszukiwarek edytowalne dla każdego języka:** właściciel edytuje w panelu administracyjnym tytuły, opisy i przewodniki każdego języka, zapisane w bazie danych, bez nowego wdrożenia.
+
+## 3.32.0 — 2026-11-13
+
+### Nowości
+- **20 nowych szablonów w galerii (razem 24):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Wszystkie narysowane od zera na potrzeby tego projektu, z odcinkiem, na stronie i w aplikacji Windows (gdzie galeria staje się listą rozwijaną).
+
+## 3.31.0 — 2026-11-13
+
+### Nowości
+- **Edytor szablonów v2:** cofnij i ponów (Ctrl+Z, Ctrl+Y), duplikuj (Ctrl+D), zmiana kolejności rysowania, dodawanie logo (PNG lub JPG) i **udostępnianie projektu linkiem**: jest przechowywany 90 dni od ostatniego dostępu, bez obrazów i bez danych o osobie udostępniającej (pojawia się tylko, gdy usługa ma bazę danych). Polityka prywatności o tym mówi.
+- **Aplikacja Windows 2.5:** dostaje edytor szablonów (menu Dodatki) i przechodzi na Pythona 3.15.
+
+### Ulepszono
+- Changelog ma link do pobrania aplikacji Windows.
+
+## 3.30.0 — 2026-11-12
+
+### Nowości
+- **Strony „Jak to zrobić”:** dwa pisane poradniki, „Dla szkół” i „Dla stowarzyszeń” (linki w stopce), z instrukcją krok po kroku, jak zorganizować loterię: zaprojektować los, seria na klasę lub sprzedawcę, wydrukować ze znacznikami cięcia, kontrolować sprzedaż i przeprowadzić weryfikowalne losowanie. Są we wszystkich 18 językach i przypominają, by sprawdzić w urzędzie gminy, czy loteria wymaga zezwolenia.
+
+## 3.29.0 — 2026-11-12
+
+### Ulepszono
+- **Reklamy po bokach:** gdy reklamy są włączone (na razie nie są), na szerokich ekranach pojawiają się po obu stronach treści, po jednej z każdej strony, stałe i bez przesuwania strony; na innych ekranach jest jeden blok na końcu strony. Nadal nie pojawiają się w edytorze, w wygenerowanych plikach ani w aplikacji Windows.
+
 ## 3.28.0 — 2026-11-12
 
 ### Nowości

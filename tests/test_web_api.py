@@ -55,7 +55,7 @@ def test_health_funciona_sem_frontend_compilado(tmp_path):
 def test_linguas_sao_as_18_e_por_defeito_vem_do_browser(cliente):
     r = cliente.get("/api/linguas", headers={"Accept-Language": "ja-JP,ja;q=0.9,en;q=0.8"})
     d = r.json()
-    assert [x["codigo"] for x in d["linguas"]] == list(i18n.LINGUAS) and len(d["linguas"]) == 18
+    assert [x["codigo"] for x in d["linguas"]] == list(i18n.LINGUAS) and len(d["linguas"]) == 22
     assert d["linguas"][0] == {"codigo": "pt", "nome": "Português"}
     assert d["por_defeito"] == "ja"
 
@@ -68,7 +68,7 @@ def test_lingua_por_defeito(cliente, cabecalho, esperado):
 
 def test_textos_de_cada_lingua_tem_as_mesmas_chaves_que_o_portugues(cliente):
     pt = cliente.get("/api/textos/pt").json()
-    assert pt["lingua"] == "pt" and len(pt["textos"]) == 271 and pt["textos"]["app_nome"] == "Gerador de Rifas"
+    assert pt["lingua"] == "pt" and len(pt["textos"]) == 299 and pt["textos"]["app_nome"] == "Gerador de Rifas"
     for lg in i18n.LINGUAS:
         d = cliente.get(f"/api/textos/{lg}").json()
         assert d["lingua"] == lg and d["textos"].keys() == pt["textos"].keys(), lg

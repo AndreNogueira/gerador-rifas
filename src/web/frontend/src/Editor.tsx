@@ -7,21 +7,28 @@ import {
   useRef,
   useState,
 } from "react";
+import { api, ErroApi } from "./api";
+import { useHistorico } from "./editor-historico";
 import {
   ASCENTE,
   type Desenho,
+  dePartilha,
   type Elemento,
   LIMITES,
   lerGuardado,
   limitar,
   modeloComTalao,
   novo,
+  novoId,
   paraEnviar,
   problemas,
+  semImagens,
   semProblemas,
   type Tipo,
+  tamanhoDaImagem,
 } from "./editor-modelo";
 import { useI18n } from "./i18n";
+import { prepararImagem } from "./imagem";
 import { navegar } from "./rota";
 import { useSessao } from "./sessao";
 
@@ -37,7 +44,7 @@ function lerDoBrowser(): Desenho {
 
 /** A caixa (em pt) de um elemento, para o contorno de seleção: a do browser (`getBBox`) para texto, a geométrica para o resto. */
 function caixa(e: Elemento, no: SVGGraphicsElement | null) {
-  if (e.tipo === "retangulo" || e.tipo === "linha") {
+  if (e.tipo === "retangulo" || e.tipo === "linha" || e.tipo === "imagem") {
     return {
       x: Math.min(e.x, e.x + e.w),
       y: Math.min(e.y, e.y + e.h),
@@ -99,13 +106,25 @@ function Cor({ valor, aoMudar, rotulo }: { valor: string; aoMudar: (v: string) =
 
 /**
  * O editor de templates (X1): em vez de um template do Canva, desenha-se UMA rifa (retângulos, linhas, textos e o número 0001, uma ou duas vezes).
- * O ecrã é um SVG com a letra Vera (a mesma do PDF), por isso o que se vê é o que sai; «Usar este template» envia o desenho ao servidor, que
+ * O ecrã é um SVG com a letra Vera (a do PDF; o DejaVu para as letras que a Vera não tem), por isso o que se vê é o que sai; «Usar este template» envia o desenho ao servidor, que
  * cria o PDF e os algarismos na sessão, e volta-se ao ecrã principal. O rascunho fica só neste browser.
  */
-export function Editor() {
+export function Editor({ partilha = false }: { partilha?: boolean }) {
   const { t } = useI18n();
   const s = useSessao();
-  const [d, setD] = useState<Desenho>(lerDoBrowser);
+  const {
+    atual: d,
+    definir,
+    substituir,
+    desfazer,
+    refazer,
+    podeDesfazer,
+    podeRefazer,
+  } = useHistorico<Desenho>(lerDoBrowser);
+  const setD = (alterar: (x: Desenho) => Desenho, chave?: string) => definir(alterar, chave);
+  const [aviso, setAviso] = useState("");
+  const [ligacao, setLigacao] = useState("");
+  const ficheiro = useRef<HTMLInputElement>(null);
   const [sel, setSel] = useState<string | null>(null);
   const svg = useRef<SVGSVGElement>(null);
   const nos = useRef(new Map<string, SVGGraphicsElement>());
@@ -130,6 +149,14 @@ export function Editor() {
   }, [d]);
 
   const p = useMemo(() => problemas(d), [d]);
+
+  // Ctrl+Z / Ctrl+Y / Ctrl+D em qualquer sítio da página (fora dos campos de escrita); `atalhosAtuais` tem sempre os estados mais recentes
+  const atalhosAtuais = useRef<(ev: globalThis.KeyboardEvent) => void>(() => undefined);
+  useEffect(() => {
+    const ouvir = (ev: globalThis.KeyboardEvent) => atalhosAtuais.current(ev);
+    document.addEventListener("keydown", ouvir);
+    return () => document.removeEventListener("keydown", ouvir);
+  }, []);
   const atual = d.elementos.find((e) => e.id === sel) ?? null;
 
   // a caixa de um texto só se conhece depois de desenhado
@@ -137,8 +164,92 @@ export function Editor() {
     setSelecionado(atual ? caixa(atual, nos.current.get(atual.id) ?? null) : null);
   }, [atual]);
 
+  // as mudanças seguidas ao mesmo campo do mesmo elemento (arrastar, escrever) entram no histórico como uma só
   const mudar = (id: string, mudancas: Partial<Elemento>) =>
-    setD((x) => ({ ...x, elementos: x.elementos.map((e) => (e.id === id ? { ...e, ...mudancas } : e)) }));
+    setD(
+      (x) => ({ ...x, elementos: x.elementos.map((e) => (e.id === id ? { ...e, ...mudancas } : e)) }),
+      `${id}:${Object.keys(mudancas).sort().join(",")}`,
+    );
+
+  // abrir uma ligação partilhada (`/editor?d=<id>`)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: só ao abrir a página
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("d");
+    if (!id) return;
+    let ativo = true;
+    api
+      .desenhoPartilhado(id)
+      .then((r) => {
+        const aberto = dePartilha(r.desenho);
+        if (!ativo) return;
+        if (aberto) substituir(aberto);
+        else setAviso(t("web_editor_ligacao_invalida"));
+      })
+      .catch(
+        (e: unknown) =>
+          ativo && setAviso(e instanceof ErroApi ? e.message : t("web_editor_ligacao_invalida")),
+      );
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  const duplicar = () => {
+    if (!atual || d.elementos.length >= LIMITES.elementos) return;
+    const copia: Elemento = { ...atual, id: novoId(), x: atual.x + 10, y: atual.y + 10 };
+    setD((x) => ({ ...x, elementos: [...x.elementos, copia] }));
+    setSel(copia.id);
+  };
+  const mover = (para: -1 | 1) => {
+    if (!atual) return;
+    setD((x) => {
+      const i = x.elementos.findIndex((e) => e.id === atual.id);
+      const j = i + para;
+      if (i < 0 || j < 0 || j >= x.elementos.length) return x;
+      const lista = [...x.elementos];
+      const [e] = lista.splice(i, 1);
+      lista.splice(j, 0, e as Elemento);
+      return { ...x, elementos: lista };
+    });
+  };
+  const juntarImagem = async (f: File | undefined) => {
+    if (!f) return;
+    if (d.elementos.filter((e) => e.tipo === "imagem").length >= LIMITES.imagens) return;
+    try {
+      const im = await prepararImagem(f);
+      const e: Elemento = {
+        ...novo("imagem", d),
+        dados: im.dados,
+        ...tamanhoDaImagem(im.largura, im.altura),
+      };
+      setD((x) => ({ ...x, elementos: [...x.elementos, e] }));
+      setSel(e.id);
+      setAviso("");
+    } catch {
+      setAviso(t("web_editor_imagem_invalida"));
+    }
+  };
+  const partilhar = async () => {
+    try {
+      const r = await api.partilharEditor(paraEnviar(semImagens(d)));
+      const url = `${window.location.origin}/editor?d=${r.id}`;
+      setLigacao(url);
+      setAviso("");
+      await navigator.clipboard?.writeText(url).catch(() => undefined);
+    } catch (e) {
+      setAviso(e instanceof ErroApi ? e.message : t("web_editor_ligacao_invalida"));
+    }
+  };
+  const atalhos = (ev: globalThis.KeyboardEvent) => {
+    if (ev.target instanceof HTMLInputElement || ev.target instanceof HTMLTextAreaElement) return;
+    if (!(ev.ctrlKey || ev.metaKey)) return;
+    const k = ev.key.toLowerCase();
+    if (k === "z" && !ev.shiftKey) desfazer();
+    else if (k === "y" || (k === "z" && ev.shiftKey)) refazer();
+    else if (k === "d") duplicar();
+    else return;
+    ev.preventDefault();
+  };
 
   const acrescentar = (tipo: Tipo) => {
     if (d.elementos.length >= LIMITES.elementos) return;
@@ -189,6 +300,8 @@ export function Editor() {
     }
   };
 
+  atalhosAtuais.current = atalhos;
+
   const rotulo = (e: Elemento) =>
     e.tipo === "texto"
       ? `${t("web_editor_texto")}: ${e.texto}`
@@ -196,7 +309,9 @@ export function Editor() {
         ? t("web_editor_retangulo")
         : e.tipo === "linha"
           ? t("web_editor_linha")
-          : t("web_editor_numero");
+          : e.tipo === "imagem"
+            ? t("web_editor_imagem")
+            : t("web_editor_numero");
 
   const desenhar = (e: Elemento) => {
     const ref = (no: SVGGraphicsElement | null) => {
@@ -231,6 +346,13 @@ export function Editor() {
         </g>
       );
     }
+    if (e.tipo === "imagem") {
+      return (
+        <g key={e.id} {...comum}>
+          <image href={e.dados} x={e.x} y={e.y} width={e.w} height={e.h} preserveAspectRatio="none" />
+        </g>
+      );
+    }
     if (e.tipo === "linha") {
       return (
         <g key={e.id} {...comum}>
@@ -261,7 +383,9 @@ export function Editor() {
           y={e.y}
           fill={e.cor}
           fontSize={e.tamanho}
-          fontFamily={e.negrito ? "VeraEditorBd, sans-serif" : "VeraEditor, sans-serif"}
+          fontFamily={
+            e.negrito ? "VeraEditorBd, DejaVuEditorBd, sans-serif" : "VeraEditor, DejaVuEditor, sans-serif"
+          }
           textAnchor={e.alinhamento === "c" ? "middle" : e.alinhamento === "d" ? "end" : "start"}
           transform={e.rot ? `rotate(-${e.rot} ${e.x} ${e.y})` : undefined}
         >
@@ -299,14 +423,91 @@ export function Editor() {
           <button
             type="button"
             className="secundario"
+            onClick={() => ficheiro.current?.click()}
+            disabled={d.elementos.filter((e) => e.tipo === "imagem").length >= LIMITES.imagens}
+            data-testid="add-imagem"
+          >
+            + {t("web_editor_imagem")}
+          </button>
+          <input
+            ref={ficheiro}
+            type="file"
+            accept="image/png,image/jpeg"
+            hidden
+            data-testid="editor-ficheiro"
+            onChange={(ev) => {
+              void juntarImagem(ev.target.files?.[0]);
+              ev.target.value = "";
+            }}
+          />
+          <button
+            type="button"
+            className="secundario"
             onClick={() => {
-              setD(modeloComTalao());
+              setD(() => modeloComTalao());
               setSel(null);
             }}
             data-testid="editor-modelo"
           >
             {t("web_editor_modelo")}
           </button>
+        </div>
+        <div className="editor-barra" role="toolbar" aria-label={t("web_editor")}>
+          <button
+            type="button"
+            className="secundario"
+            disabled={!podeDesfazer}
+            onClick={desfazer}
+            data-testid="editor-desfazer"
+          >
+            {t("web_editor_desfazer")}
+          </button>
+          <button
+            type="button"
+            className="secundario"
+            disabled={!podeRefazer}
+            onClick={refazer}
+            data-testid="editor-refazer"
+          >
+            {t("web_editor_refazer")}
+          </button>
+          <button
+            type="button"
+            className="secundario"
+            disabled={!atual}
+            onClick={duplicar}
+            data-testid="editor-duplicar"
+          >
+            {t("web_editor_duplicar")}
+          </button>
+          <button
+            type="button"
+            className="secundario"
+            disabled={!atual}
+            onClick={() => mover(1)}
+            data-testid="editor-frente"
+          >
+            {t("web_editor_frente")}
+          </button>
+          <button
+            type="button"
+            className="secundario"
+            disabled={!atual}
+            onClick={() => mover(-1)}
+            data-testid="editor-tras"
+          >
+            {t("web_editor_tras")}
+          </button>
+          {partilha && (
+            <button
+              type="button"
+              className="secundario"
+              onClick={() => void partilhar()}
+              data-testid="editor-partilhar"
+            >
+              {t("web_editor_partilhar")}
+            </button>
+          )}
         </div>
 
         <div className="editor-corpo">
@@ -335,11 +536,15 @@ export function Editor() {
                     y={selecionado.y - 2}
                     width={selecionado.w + 4}
                     height={selecionado.h + 4}
-                    transform={atual.tipo === "retangulo" || atual.tipo === "linha" ? undefined : rotacaoSel}
+                    transform={
+                      atual.tipo === "retangulo" || atual.tipo === "linha" || atual.tipo === "imagem"
+                        ? undefined
+                        : rotacaoSel
+                    }
                   />
                 </g>
               )}
-              {atual && (atual.tipo === "retangulo" || atual.tipo === "linha") && (
+              {atual && (atual.tipo === "retangulo" || atual.tipo === "linha" || atual.tipo === "imagem") && (
                 <circle
                   className="editor-pega"
                   cx={atual.x + atual.w}
@@ -388,7 +593,7 @@ export function Editor() {
                 <div className="linha">
                   <Numero rotulo="X" valor={atual.x} aoMudar={(v) => mudar(atual.id, { x: v })} passo={0.5} />
                   <Numero rotulo="Y" valor={atual.y} aoMudar={(v) => mudar(atual.id, { y: v })} passo={0.5} />
-                  {(atual.tipo === "retangulo" || atual.tipo === "linha") && (
+                  {(atual.tipo === "retangulo" || atual.tipo === "linha" || atual.tipo === "imagem") && (
                     <>
                       <Numero rotulo="W" valor={atual.w} aoMudar={(v) => mudar(atual.id, { w: v })} />
                       <Numero rotulo="H" valor={atual.h} aoMudar={(v) => mudar(atual.id, { h: v })} />
@@ -481,6 +686,16 @@ export function Editor() {
           </div>
         </div>
 
+        {aviso && (
+          <p role="alert" className="cor-aviso" data-testid="editor-aviso">
+            {aviso}
+          </p>
+        )}
+        {ligacao && (
+          <p role="status" data-testid="editor-ligacao">
+            {t("web_editor_partilha_ok")} <code>{ligacao}</code>
+          </p>
+        )}
         {p.numero && (
           <p role="alert" className="cor-aviso" data-testid="editor-erro-numero">
             {t("err_editor_numero")}

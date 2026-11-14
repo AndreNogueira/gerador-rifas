@@ -1,4 +1,6 @@
 import { type FormEvent, type ReactNode, useCallback, useEffect, useState } from "react";
+import { AdminErros } from "./AdminErros";
+import { AdminSeo } from "./AdminSeo";
 import {
   adminApi,
   type Dados,
@@ -278,6 +280,11 @@ export function Admin() {
           <span>
             Versão <b>{estado.versao}</b>
           </span>
+          {estado.papel === "leitura" && (
+            <span role="status" data-testid="admin-so-leitura">
+              <b>Só de leitura</b> (não pode mudar nada)
+            </span>
+          )}
           <span>
             a correr há <b>{duracao(estado.agora - estado.arranque)}</b> (desde {dataHora(estado.arranque)})
           </span>
@@ -565,6 +572,8 @@ export function Admin() {
         </p>
       </Seccao>
 
+      <AdminErros intervalo={intervalo} />
+
       <Seccao
         id="uso"
         titulo="Utilização"
@@ -782,6 +791,8 @@ export function Admin() {
           </div>
         </dl>
       </Seccao>
+
+      <AdminSeo leitura={estado.papel === "leitura"} />
     </div>
   );
 }

@@ -2,6 +2,67 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.39.0 — 2026-11-13
+
+### Nytt
+- **Windows-appen 2.7:** galleriet och mallredigeraren godtar nu utökad latin, vietnamesiska, grekiska, kyrilliska, kinesiska, japanska och koreanska, som webbplatsen sedan 3.37 (hindi, arabiska och hebreiska saknas fortfarande). Laddas ner från Changelog-sidan.
+
+## 3.38.0 — 2026-11-13
+
+### Nytt
+- **Knappen «Dela»:** i sidfoten och, när filerna har skapats, på leveranskortet. Den öppnar en kort lista (telefonens eller datorns delningsmeny, WhatsApp, Telegram, Facebook, e-post och «Kopiera länk») så att andra föreningar, skolor och festkommittéer får veta att generatorn finns. Länkarna innehåller bara webbplatsens adress på det språk du använder: ingen spårning och inget sparas. Med ämne i handledningen och video.
+
+## 3.37.0 — 2026-11-13
+
+### Nytt
+- **Fler tecken i galleriet och mallredigeraren:** texter kan nu innehålla utökad latin (polska, tjeckiska, rumänska, turkiska …), **vietnamesiska, grekiska, kyrilliska (ryska, ukrainska)**, **kinesiska, japanska och koreanska**. Hindi, arabiska och hebreiska saknas fortfarande (de kräver en skrivteknik som PDF-generatorn inte har) och ger en varning i stället för en trasig bild. I PDF-filerna ändras bara den text man skriver; det som redan blev likadant förblir likadant.
+
+## 3.36.0 — 2026-11-13
+
+### Nytt
+- **«Så gör du»-guide för församlingar:** «För församlingar» (länk i sidfoten), med steg för steg hur du ordnar ett församlingslotteri: basarer, fester, underhåll, julkorgar och konfirmation. Den finns på alla 22 språk och påminner om att kontrollera med kommunen om lotteriet kräver tillstånd.
+
+## 3.35.0 — 2026-11-13
+
+### Nytt
+- **Windows-appen 2.6:** menyn «Extras» får «Spara beställning…» och «Öppna beställning…» (en .rifas-fil med nummer, namn, serier, färger och skärmärken, utan mall och sökvägar), mallredigeraren kan lägga till bilder (PNG eller JPG) och «Visa → Visuellt» går från 2 till webbplatsens 14 teman (bara färgerna). Dessutom det som kommit sedan 2.4: redigeraren, galleriets 24 designer och de 22 språken.
+
+## 3.34.0 — 2026-11-13
+
+### Nytt
+- **Tre nya «Så gör du»-guider:** «För klubbar», «För brandkåren» och «För grannskapsfester» (länkar i sidfoten), med steg för steg hur du ordnar ett lotteri i varje fall. De finns på alla 22 språk och påminner om att kontrollera med kommunen om lotteriet kräver tillstånd.
+
+## 3.33.0 — 2026-11-13
+
+### Nytt
+- **Öppet API för partier** (`/api/v1`, med Swagger på `/api/v1/docs`): låter andra program skapa flera lottbeställningar från en enda mall, med nyckel, dagliga kvoter och gränser. De som använder webbplatsen går alltid först.
+- **Fyra nya språk:** katalanska, ukrainska, indonesiska och vietnamesiska. Webbplatsen och Windows-appen talar nu 22 språk, med handledning, villkor, integritet, guider och skärmbilder.
+- **Texter för sökmotorer som kan redigeras per språk:** ägaren redigerar titlar, beskrivningar och guider för varje språk i administrationspanelen, sparade i databasen och utan ny driftsättning.
+
+## 3.32.0 — 2026-11-13
+
+### Nytt
+- **20 nya mallar i galleriet (24 totalt):** Páscoa, Carnaval, Santos Populares, Coração, Praia, Halloween, Magusto, Futebol, Escola, Festival, Solidária, Bombeiros, Retro, Minimalista, Vindima, Arraial, Tesouro, Primavera, Inverno, Cinema. Alla ritade från grunden för det här projektet, med talong, på webbplatsen och i Windows-appen (där galleriet blir en rullgardinslista).
+
+## 3.31.0 — 2026-11-13
+
+### Nytt
+- **Mallredigerare v2:** ångra och gör om (Ctrl+Z, Ctrl+Y), duplicera (Ctrl+D), ändra ritordningen, lägg till logotypen (PNG eller JPG) och **dela designen med en länk**: den sparas i 90 dagar efter senaste åtkomst, utan bilder och utan uppgifter om vem som delar (visas bara när tjänsten har en databas). Integritetspolicyn säger det.
+- **Windows-appen 2.5:** får mallredigeraren (menyn Extra) och går över till Python 3.15.
+
+### Förbättrat
+- Changeloggen har en länk för att ladda ner Windows-appen.
+
+## 3.30.0 — 2026-11-12
+
+### Nytt
+- **Sidor ”Så gör du”:** två skrivna guider, ”För skolor” och ”För föreningar” (länkar i sidfoten), med steg för steg för ett lotteri: designa lotten, en serie per klass eller säljare, skriva ut med klippmärken, följa försäljningen och göra en kontrollerbar dragning. De finns på alla 18 språk och påminner om att kontrollera med kommunen om lotteriet kräver tillstånd.
+
+## 3.29.0 — 2026-11-12
+
+### Förbättrat
+- **Annonser i sidorna:** när annonser är på (just nu är de det inte) visas de på breda skärmar på båda sidor om innehållet, en på varje sida, fasta och utan att flytta sidan; på andra skärmar finns ett enda block längst ned på sidan. De visas fortfarande aldrig i redigeraren, i de skapade filerna eller i Windows-appen.
+
 ## 3.28.0 — 2026-11-12
 
 ### Nytt

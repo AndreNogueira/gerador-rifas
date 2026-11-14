@@ -1,7 +1,7 @@
 import { type AnchorHTMLAttributes, type MouseEvent, useSyncExternalStore } from "react";
 
 // Um router mínimo: usa o History API. O FastAPI devolve o index.html para qualquer caminho que não seja da API.
-// A língua vive no URL (SEO por língua, `docs/SEO.md`): o português sem prefixo (`/tutorial`) e as outras 17 com ele (`/en/tutorial`). Para o resto da
+// A língua vive no URL (SEO por língua, `docs/SEO.md`): o português sem prefixo (`/tutorial`) e as outras 21 com ele (`/en/tutorial`). Para o resto da
 // app o caminho é sempre o «de dentro» (`/tutorial`): `useLocalizacao()` tira o prefixo e `navegar`/`Ligacao` põem o da língua atual.
 const EVENTO = "rifas:navegar";
 
@@ -24,6 +24,10 @@ export const LINGUAS_COM_PREFIXO = [
   "ja",
   "ko",
   "hi",
+  "ca",
+  "uk",
+  "id",
+  "vi",
 ];
 const PREFIXO = new RegExp(`^/(${LINGUAS_COM_PREFIXO.join("|")})(?=/|$)`);
 let linguaAtual: string | null = null;

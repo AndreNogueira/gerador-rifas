@@ -82,6 +82,31 @@ def validade_min() -> int:
     return _inteiro("JOB_TTL_MIN", 30)
 
 
+def max_itens_lote() -> int:
+    """Quantos pedidos (itens) num lote da API publica. API_MAX_ITENS."""
+    return _inteiro("API_MAX_ITENS", 20)
+
+
+def max_numeros_lote() -> int:
+    """Quantos numeros, no maximo, somando todos os itens de um lote da API publica. API_MAX_NUMEROS_LOTE; por defeito o triplo de `max_numeros`."""
+    return _inteiro("API_MAX_NUMEROS_LOTE", 3 * max_numeros())
+
+
+def api_lotes_ativos() -> int:
+    """Quantos lotes pode ter uma chave ao mesmo tempo (a gerar ou por descarregar). API_LOTES_ATIVOS."""
+    return _inteiro("API_LOTES_ATIVOS", 3)
+
+
+def api_pedidos_por_min() -> int:
+    """Pedidos por minuto e por chave da API publica. API_PEDIDOS_POR_MIN."""
+    return _inteiro("API_PEDIDOS_POR_MIN", 120)
+
+
+def api_espera_motor_min() -> int:
+    """Quanto tempo um item de um lote espera pela vez do motor (que serve primeiro quem usa o site) antes de falhar. API_ESPERA_MIN."""
+    return _inteiro("API_ESPERA_MIN", 20)
+
+
 def tempo_maximo_geracao_min() -> int:
     """Passado este tempo a geracao e interrompida (o processo do motor e morto e recriado). JOB_MAX_MIN."""
     return _inteiro("JOB_MAX_MIN", 10)
@@ -181,6 +206,19 @@ def admin_token() -> str:
     menos de 12 caracteres, o painel nao existe (404)."""
     t = os.environ.get("ADMIN_TOKEN", "").strip()
     return t if len(t) >= 12 else ""
+
+
+def log_pedidos() -> bool:
+    """Registo estruturado (uma linha JSON por pedido da API e por evento, no stdout; ver observabilidade.py). Ligado por omissao: LOG_PEDIDOS=0 desliga."""
+    return os.environ.get("LOG_PEDIDOS", "1").strip().lower() not in ("0", "false", "nao", "não", "off")
+
+
+def claude_token() -> str:
+    """A palavra-passe de LEITURA do painel (variavel CLAUDE_TOKEN, no Render em Environment; NUNCA no repositorio): a que se da a um assistente
+    (o Claude) para ver o painel sem poder mudar nada nem ver o que so o dono muda. Precisa de 24 ou mais caracteres e de ser diferente do
+    ADMIN_TOKEN; senao fica desligada."""
+    t = os.environ.get("CLAUDE_TOKEN", "").strip()
+    return t if len(t) >= 24 and t != admin_token() else ""
 
 
 def database_url() -> str:

@@ -20,6 +20,8 @@ export interface Sistema {
 }
 export type VeredictoProxy = "sem_dados" | "poucos_pedidos" | "sem_proxy" | "ok" | "problema";
 export interface Estado {
+  /** «leitura»: entrou com o CLAUDE_TOKEN (só vê); «admin»: o dono. */
+  papel?: "admin" | "leitura";
   versao: string;
   agora: number;
   arranque: number;
@@ -45,6 +47,23 @@ export interface Estado {
     ultimo_ms: number;
   };
   intervalos: string[];
+}
+export interface ErroAssinatura {
+  tipo: string;
+  rota: string;
+  estado: number;
+  excecao: string;
+  onde: string;
+  n: number;
+  primeira: number;
+  ultima: number;
+}
+export interface LivroErros {
+  intervalo: string;
+  desde_arranque: number;
+  total: number;
+  erros: ErroAssinatura[];
+  recentes: { t: number; tipo: string; rota: string; estado: number; excecao: string }[];
 }
 export interface PontoSistema {
   t: number;
@@ -142,8 +161,58 @@ async function ver<T>(url: string): Promise<T> {
   return (await r.json()) as T;
 }
 
+export interface ItemSeo {
+  chave: string;
+  tipo: "titulo" | "descricao" | "texto";
+  rotulo: string;
+  padrao: string;
+  valor: string | null;
+}
+export interface VistaSeo {
+  lingua: string;
+  linguas: string[];
+  persistente: boolean;
+  erro: boolean;
+  limites: { titulo: number; descricao: [number, number]; max: number };
+  itens: ItemSeo[];
+}
+
+async function pedirJson(url: string, metodo: string, corpo?: unknown): Promise<Response> {
+  const r = await fetch(url, {
+    method: metodo,
+    headers: corpo === undefined ? undefined : { "Content-Type": "application/json" },
+    body: corpo === undefined ? undefined : JSON.stringify(corpo),
+    credentials: "same-origin",
+  });
+  if (r.status === 404) throw new NaoAutenticado();
+  if (!r.ok) {
+    let detalhe = `${r.status} ${r.statusText}`;
+    try {
+      const d = (await r.json()) as { detail?: string };
+      if (typeof d.detail === "string") detalhe = d.detail;
+    } catch {
+      /* sem JSON */
+    }
+    throw new ErroEntrada(r.status, detalhe);
+  }
+  return r;
+}
+
 export const adminApi = {
+  seoVer: (lingua: string) => ver<VistaSeo>(`/api/admin/seo?lingua=${encodeURIComponent(lingua)}`),
+  async seoGuardar(chave: string, lingua: string, valor: string): Promise<string> {
+    const r = await pedirJson("/api/admin/seo", "PUT", { chave, lingua, valor });
+    return ((await r.json()) as { valor: string }).valor;
+  },
+  async seoRepor(chave: string, lingua: string): Promise<void> {
+    await pedirJson(
+      `/api/admin/seo?chave=${encodeURIComponent(chave)}&lingua=${encodeURIComponent(lingua)}`,
+      "DELETE",
+    );
+  },
   estado: () => ver<Estado>("/api/admin/estado"),
+  erros: (intervalo: string) =>
+    ver<LivroErros>(`/api/admin/erros?intervalo=${encodeURIComponent(intervalo)}`),
   dados: (intervalo: string) => ver<Dados>(`/api/admin/dados?intervalo=${encodeURIComponent(intervalo)}`),
   async entrar(token: string): Promise<void> {
     const r = await fetch("/api/admin/entrar", {

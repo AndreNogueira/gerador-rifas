@@ -9,8 +9,10 @@ import { Editor } from "./Editor";
 import { registarEcra } from "./ecra";
 import { useFormulario } from "./formulario";
 import { Gerador } from "./Gerador";
+import { GUIAS, Guia } from "./Guia";
 import { useI18n } from "./i18n";
 import { PaginaTexto } from "./PaginaTexto";
+import { Partilhar } from "./Partilhar";
 import { Sobre, Tutorial, Video } from "./paginas";
 import { registarServiceWorker } from "./pwa";
 import { Ligacao, useLocalizacao } from "./rota";
@@ -35,6 +37,7 @@ function Aplicacao() {
     qr: false,
     anuncios_cliente: "",
     anuncios_slot: "",
+    partilha_editor: false,
   });
   const caminho = useLocalizacao().split("?")[0] ?? "/";
   const { sessao } = useSessao();
@@ -88,7 +91,9 @@ function Aplicacao() {
         ) : caminho === "/sorteio" ? (
           <Sorteio />
         ) : caminho === "/editor" ? (
-          <Editor />
+          <Editor partilha={publico.partilha_editor} />
+        ) : GUIAS[caminho] ? (
+          <Guia nome={GUIAS[caminho]} />
         ) : caminho === "/changelog" ? (
           <Changelog />
         ) : caminho === "/termos" || caminho === "/privacidade" || caminho === "/contacto" ? (
@@ -104,6 +109,12 @@ function Aplicacao() {
         <footer className="rodape">
           <span>v{versao}</span>
           <nav aria-label="Informação">
+            <Ligacao para="/rifas-para-escolas">{t("web_guia_escolas")}</Ligacao>
+            <Ligacao para="/rifas-para-associacoes">{t("web_guia_associacoes")}</Ligacao>
+            <Ligacao para="/rifas-para-clubes">{t("web_guia_clubes")}</Ligacao>
+            <Ligacao para="/rifas-para-bombeiros">{t("web_guia_bombeiros")}</Ligacao>
+            <Ligacao para="/rifas-para-festas">{t("web_guia_festas")}</Ligacao>
+            <Ligacao para="/rifas-para-igrejas">{t("web_guia_igrejas")}</Ligacao>
             <Ligacao para="/changelog">Changelog</Ligacao>
             <Ligacao para="/termos">{t("web_termos")}</Ligacao>
             <Ligacao para="/privacidade">{t("web_privacidade")}</Ligacao>
@@ -114,6 +125,7 @@ function Aplicacao() {
               </a>
             )}
           </nav>
+          <Partilhar variante="rodape" />
         </footer>
       )}
     </>

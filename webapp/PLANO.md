@@ -2,7 +2,7 @@
 
 Decidido: **backend Python (FastAPI) + frontend React/Vite/TypeScript** (opção B do `docs/MIGRATION_PLAN.md`). Ferramentas (últimas versões, fixadas exatamente): Node 26, pnpm 12, uv, git, `gh` e Rancher Desktop (docker).
 
-Python: **3.15** no backend/imagem Docker; o `src/core` tem de correr também em 3.13 (app Windows) — o CI testa as duas.
+Python: **3.15** no backend/imagem Docker; o `src/core` ainda corre em 3.13, mas a app Windows usa a 3.15 desde a 2.5 (o CI só testa a 3.15).
 Regra: **sempre as últimas versões estáveis, fixadas** (`pnpm-lock.yaml`, `uv.lock`, tags do Docker). Quadro das versões e a avaliação React × Angular: §7.
 Regras e comandos: `CLAUDE.md` (raiz).
 

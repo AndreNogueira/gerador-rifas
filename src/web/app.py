@@ -22,10 +22,13 @@ from pydantic import BaseModel
 from . import VERSAO, admin, changelog, config, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
 from .assets_remotos import AssetsRemotos
 from .limites import Limitador
+from . import seo_textos
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
+from .partilhas import Partilhas
 from .rotas import Servico
+from .seo_bd import SeoBd
 from .sessoes import Sessoes
 from .sistema import Observador
 from .trabalhos import Motor
@@ -111,12 +114,26 @@ class PaginaTexto(BaseModel):
     seccoes: list[SeccaoTexto]
 
 
+class PassoGuia(BaseModel):
+    titulo: str
+    texto: str
+
+
+class GuiaTexto(BaseModel):
+    titulo: str
+    intro: str
+    passos: list[PassoGuia]
+    dicas: list[str]
+    fim: str
+
+
 class Publico(BaseModel):
     donativo_url: str          # vazio = sem botao de donativo
     contacto: bool             # ha um e-mail publico configurado (o endereco so aparece na pagina «Contacto»)
     qr: bool = False           # o servidor tem a chave que assina os QR dos bilhetes (VERIFICACAO_CHAVE)
     anuncios_cliente: str = ""  # identificador da AdSense (ca-pub-…): vazio = sem anuncios (ADSENSE_CLIENTE)
     anuncios_slot: str = ""     # bloco de anuncios: vazio = o script carrega-se mas nao se mostra nenhum bloco (ADSENSE_SLOT)
+    partilha_editor: bool = False   # o editor pode partilhar desenhos por ligacao (so com DATABASE_URL)
 
 
 async def _limpeza_periodica(servico: Servico, cada_s: float) -> None:
@@ -142,8 +159,15 @@ async def _amostrar(servico: Servico, cada_s: float) -> None:
         await asyncio.sleep(cada_s)
 
 
+async def _atualizar_seo(servico: Servico, cada_s: float) -> None:
+    """Le de minuto a minuto os textos de SEO editados no painel (a 1.a vez ja no arranque). Nenhum pedido de pagina consulta a base."""
+    while True:
+        await asyncio.to_thread(servico.seo.atualizar)
+        await asyncio.sleep(cada_s)
+
+
 def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, motor: Motor | None = None,
-              metricas: Metricas | None = None) -> FastAPI:
+              metricas: Metricas | None = None, partilhas: Partilhas | None = None, chaves: Chaves | None = None, seo_bd: SeoBd | None = None) -> FastAPI:
     """`frontend`: pasta do frontend compilado; `armazenamento`: onde ficam as sessoes (RIFAS_ARMAZENAMENTO); `motor`, `metricas`: para os testes."""
     pasta = (frontend or config.pasta_frontend()).resolve()
     armazem = ArmazenamentoLocal(armazenamento, limite_bytes=config.limite_sessao_mb() * 1024 * 1024)
@@ -160,6 +184,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             assets_rem.garantir()                            # em segundo plano: o servidor arranca (e o /health responde) sem esperar
         armazem.limpar_antigas(0)                            # pastas de um arranque anterior (nao ha sessoes em memoria para elas)
         limpeza = asyncio.create_task(_limpeza_periodica(servico, 60))
+        seo_tarefa = asyncio.create_task(_atualizar_seo(servico, 60))
         amostrador = asyncio.create_task(_amostrar(servico, 30))
         url_acordado, cada_s = config.manter_acordado()
         acordado = None
@@ -174,6 +199,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             yield
         finally:
             limpeza.cancel()
+            seo_tarefa.cancel()
             amostrador.cancel()
             if acordado is not None:
                 acordado.cancel()
@@ -211,7 +237,8 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         """O que o dono configurou para o publico (variaveis de ambiente): ligacao de donativo e se ha contacto."""
         resposta.headers["Cache-Control"] = "public, max-age=300"
         return Publico(donativo_url=config.donativo_url(), contacto=bool(config.contacto_email()), qr=bool(config.verificacao_chave()),
-                       anuncios_cliente=config.adsense_cliente(), anuncios_slot=config.adsense_slot())
+                       anuncios_cliente=config.adsense_cliente(), anuncios_slot=config.adsense_slot(),
+                       partilha_editor=servico.partilhas is not None)
 
     @app.get("/api/pagina/{nome}", response_model=PaginaTexto, tags=["sistema"])
     def pagina_de_texto(nome: str, resposta: Response, lg: str = Depends(rotas.lingua)) -> PaginaTexto:
@@ -221,6 +248,15 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         resposta.headers["Cache-Control"] = "public, max-age=300"
         resposta.headers["Vary"] = "X-Lingua, Accept-Language"        # a resposta depende da lingua: as caches nao a podem misturar
         return PaginaTexto(**textos_legais.pagina(nome, lg))
+
+    @app.get("/api/guia/{nome}", response_model=GuiaTexto, tags=["sistema"])
+    def guia_de_como_fazer(nome: str, resposta: Response, lg: str = Depends(rotas.lingua)) -> GuiaTexto:
+        """Os guias «como fazer» (`guias/`: escolas, associacoes, clubes, bombeiros e festas) na lingua do pedido (X-Lingua)."""
+        if nome not in guias.NOMES:
+            raise HTTPException(404, "Guia desconhecido")
+        resposta.headers["Cache-Control"] = "public, max-age=300"
+        resposta.headers["Vary"] = "X-Lingua, Accept-Language"
+        return GuiaTexto(**guias.guia(nome, lg))
 
     @app.get("/api/linguas", response_model=Linguas, tags=["textos"])
     def linguas(accept_language: str | None = Header(default=None)) -> Linguas:
@@ -244,6 +280,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     app.include_router(rotas_editor.router)
     app.include_router(rotas_verificar.router)
     app.include_router(admin.router)
+    app.mount("/api/v1", api_v1.criar_api_v1(servico), name="api_v1")      # a API publica em lote, com o seu Swagger em /api/v1/docs
 
     # imagens do tutorial e videos (os mesmos ficheiros da app Windows); tem de vir antes do «fallback» do frontend
     assets = config.pasta_assets()
@@ -255,14 +292,24 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     async def _transversal(request: Request, call_next):
         """Em toda a resposta da API: `noindex`; e mede o tempo de cada pedido da API (o painel de administracao mostra-o)."""
         t0 = time.perf_counter()
-        resposta = await call_next(request)
         caminho = request.url.path
+        rid = observabilidade.novo_id()
+        try:
+            resposta = await call_next(request)
+        except Exception as exc:                                                  # um erro que ninguem tratou: regista (classe e sitio, nunca a mensagem) e responde 500
+            rota = getattr(request.scope.get("route"), "path", None) or "(sem rota)"
+            servico.obs.excecao(rid, request.method, rota, exc)
+            resposta = JSONResponse({"detail": i18n.traduzir("erro_inesperado", rotas.lingua(request), erro=rid), "tipo": "erro", "id": rid}, status_code=500)
+        resposta.headers["X-Request-ID"] = rid
         if caminho.startswith(("/api/", "/health")):
             resposta.headers["X-Robots-Tag"] = "noindex, nofollow"
-        if caminho.startswith("/api/") and not caminho.startswith("/api/admin"):
+        if caminho.startswith("/api/"):
             rota = getattr(request.scope.get("route"), "path", None) or "(sem rota)"
-            servico.metricas.pedido(f"{request.method} {rota}", resposta.status_code, (time.perf_counter() - t0) * 1000)
-            servico.metricas.cliente(request.client.host if request.client else "?", bool(request.headers.get("x-forwarded-for")))
+            ms = (time.perf_counter() - t0) * 1000
+            servico.obs.pedido(rid, request.method, rota, resposta.status_code, ms)
+            if not caminho.startswith("/api/admin"):
+                servico.metricas.pedido(f"{request.method} {rota}", resposta.status_code, ms)
+                servico.metricas.cliente(request.client.host if request.client else "?", bool(request.headers.get("x-forwarded-for")))
         return resposta
 
     @app.get("/robots.txt", include_in_schema=False)

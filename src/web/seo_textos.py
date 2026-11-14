@@ -1,4 +1,4 @@
-"""Os textos de SEO (título da página inicial, descrições, introdução) nas 18 línguas, lado a lado.
+"""Os textos de SEO (título da página inicial, descrições, introdução) nas línguas, lado a lado (as 18 primeiras aqui; as de um ficheiro só em `seo_textos_novas.py`).
 
 Ficam aqui, e não em `core/idiomas`, porque só o servidor os usa (vão para o HTML que os robôs leem, nunca para o browser) e assim não
 engordam `/api/textos` nem mexem na contagem de chaves de `tests/test_i18n.py`. `tests/test_web_seo_linguas.py` verifica que cada chave tem as 18
@@ -147,6 +147,126 @@ CHAVES: dict[str, dict[str, str]] = {
         "ko": "Canva 없이 응모권 디자인: 텍스트, 사각형, 선, 번호 0001을 넣고 번호가 매겨진 응모권을 만드는 템플릿으로 사용하세요.",
         "hi": "Canva के बिना टिकट डिज़ाइन करें: टेक्स्ट, आयत, रेखाएँ और नंबर 0001, और उसे क्रमांकित टिकट बनाने के टेम्पलेट के रूप में उपयोग करें।",
     },
+    "d_guia_escolas": {
+        "pt": "Como fazer uma rifa para a escola: desenhe os bilhetes, uma série por turma, imprima, controle as vendas e faça um sorteio que as famílias verifiquem.",
+        "en": "How to run a school raffle: design the tickets, one series per class, print and cut, track sales and hold a draw that families can verify.",
+        "es": "Cómo hacer una rifa para el colegio: diseñe los boletos, una serie por clase, imprima, controle las ventas y haga un sorteo que las familias comprueben.",
+        "fr": "Comment organiser une tombola pour l'école : billets, une série par classe, impression, suivi des ventes et un tirage que les familles peuvent vérifier.",
+        "de": "So organisieren Sie eine Schultombola: Lose gestalten, eine Serie pro Klasse, drucken, Verkäufe kontrollieren und eine nachprüfbare Ziehung durchführen.",
+        "it": "Come fare una lotteria per la scuola: biglietti, una serie per classe, stampa, controllo delle vendite ed estrazione verificabile dalle famiglie.",
+        "nl": "Zo organiseert u een schoolloterij: loten ontwerpen, een reeks per klas, printen, verkoop bijhouden en een trekking die gezinnen kunnen controleren.",
+        "pl": "Jak zorganizować loterię szkolną: zaprojektuj losy, seria na klasę, wydrukuj, kontroluj sprzedaż i przeprowadź losowanie, które rodziny sprawdzą.",
+        "sv": "Så ordnar du ett skollotteri: designa lotterna, en serie per klass, skriv ut och klipp, följ försäljningen och gör en dragning som familjerna kan kontrollera.",
+        "cs": "Jak uspořádat školní tombolu: navrhněte losy, jedna série pro třídu, vytiskněte a rozstřihněte, hlídejte prodej a uspořádejte losování, které rodiny ověří.",
+        "ro": "Cum faci o tombolă pentru școală: desenează biletele, o serie pe clasă, tipărește, controlează vânzările și fă o tragere verificabilă de familii.",
+        "el": "Πώς να οργανώσετε σχολική κλήρωση: λαχνοί, μία σειρά ανά τάξη, εκτύπωση, έλεγχος πωλήσεων και κλήρωση που επαληθεύουν οι οικογένειες.",
+        "ru": "Как провести школьную лотерею: билеты, одна серия на класс, печать, контроль продаж и розыгрыш, который семьи смогут проверить.",
+        "tr": "Okul çekilişi nasıl yapılır: biletleri tasarlayın, her sınıfa bir seri, yazdırıp kesin, satışları izleyin ve ailelerin doğrulayabileceği bir çekiliş yapın.",
+        "zh": "如何举办学校抽奖：设计奖券，每个班一个系列，打印裁剪，跟踪销售，并进行家长也能核实的公正开奖。",
+        "ja": "学校の抽選会のやり方：券をデザインし、クラスごとにシリーズを作り、印刷して切り、売上を管理し、家庭が確かめられる抽選を行います。",
+        "ko": "학교 추첨 행사 하는 방법: 응모권을 디자인하고 반마다 한 시리즈, 인쇄해 자르고, 판매를 관리하고, 가정에서 확인할 수 있는 추첨을 하세요.",
+        "hi": "स्कूल रैफ़ल कैसे करें: टिकट डिज़ाइन करें, हर कक्षा की एक सीरीज़, प्रिंट करके काटें, बिक्री पर नज़र रखें और ऐसा ड्रॉ करें जिसे परिवार जाँच सकें।",
+    },
+    "d_guia_associacoes": {
+        "pt": "Como fazer uma rifa para a associação: bilhetes com a sua imagem e talão, série por vendedor, marcas de corte, controlo de vendas e sorteio verificável.",
+        "en": "How to run a raffle for your association: tickets with your look and a stub, one series per seller, cut marks, sales control and a verifiable draw.",
+        "es": "Cómo hacer una rifa para la asociación: boletos con su imagen y talón, una serie por vendedor, marcas de corte, control de ventas y un sorteo verificable.",
+        "fr": "Comment organiser une tombola pour l'association : billets à votre image avec talon, série par vendeur, repères de coupe, suivi des ventes, tirage vérifiable.",
+        "de": "So organisieren Sie eine Vereinstombola: Lose im Vereinsdesign mit Abschnitt, Serie pro Verkäufer, Schnittmarken, Verkaufskontrolle, nachprüfbare Ziehung.",
+        "it": "Come fare una lotteria per l'associazione: biglietti con la sua immagine e matrice, serie per venditore, segni di taglio, controllo vendite, estrazione.",
+        "nl": "Zo organiseert u een verenigingsloterij: loten in uw stijl met controlestrook, reeks per verkoper, knipmarkeringen, verkoopcontrole, controleerbare trekking.",
+        "pl": "Jak zorganizować loterię dla stowarzyszenia: losy w twoim wyglądzie z odcinkiem, seria na sprzedawcę, znaczniki cięcia, kontrola sprzedaży, losowanie.",
+        "sv": "Så ordnar du ett föreningslotteri: lotter i ditt utseende med talong, en serie per säljare, klippmärken, försäljningskontroll och en kontrollerbar dragning.",
+        "cs": "Jak uspořádat tombolu pro spolek: losy ve vašem stylu s útržkem, série pro prodejce, ořezové značky, kontrola prodeje a ověřitelné losování.",
+        "ro": "Cum faci o tombolă pentru asociație: bilete cu imaginea ta și cotor, o serie pe vânzător, semne de tăiere, control al vânzărilor și o tragere verificabilă.",
+        "el": "Πώς να οργανώσετε κλήρωση για τον σύλλογο: λαχνοί με την εικόνα σας και στέλεχος, σειρά ανά πωλητή, σημάδια κοπής, έλεγχος πωλήσεων, επαληθεύσιμη κλήρωση.",
+        "ru": "Как провести лотерею для ассоциации: билеты в вашем стиле с корешком, серия на продавца, метки реза, контроль продаж и проверяемый розыгрыш.",
+        "tr": "Dernek için çekiliş nasıl yapılır: derneğinizin görünümünde koçanlı biletler, satıcı başına seri, kesim işaretleri, satış kontrolü, doğrulanabilir çekiliş.",
+        "zh": "如何为协会举办抽奖：带协会形象和存根的奖券，每位销售员一个系列，裁切标记，销售管理，以及可以验证的公正开奖，让会员放心。",
+        "ja": "協会・団体の抽選会のやり方：団体のイメージと半券付きの券、販売担当ごとのシリーズ、切り取りマーク、売上管理、検証できる抽選。",
+        "ko": "협회·단체 추첨 행사 하는 방법: 단체 이미지와 부본이 있는 응모권, 판매자별 시리즈, 재단선, 판매 관리, 검증 가능한 추첨.",
+        "hi": "संस्था के लिए रैफ़ल कैसे करें: संस्था की पहचान और पर्ची वाले टिकट, हर विक्रेता की सीरीज़, कटाई के निशान, बिक्री नियंत्रण और जाँचने योग्य ड्रॉ।",
+    },
+    "d_guia_clubes": {
+        "pt": "Como fazer uma rifa para o clube: bilhetes com o emblema e talão, série por equipa ou vendedor, marcas de corte, controlo de vendas e sorteio verificável.",
+        "en": "How to run a raffle for your club: tickets with your crest and a stub, a series per team or seller, cut marks, sales control and a verifiable draw.",
+        "es": "Cómo hacer una rifa para el club: boletos con el escudo y talón, una serie por equipo o vendedor, marcas de corte, control de ventas y sorteo verificable.",
+        "fr": "Comment organiser une tombola pour le club : billets à l'écusson, série par équipe ou vendeur, traits de coupe, suivi des ventes, tirage vérifiable.",
+        "de": "So organisieren Sie eine Vereinstombola: Lose mit Wappen, Serie pro Mannschaft oder Verkäufer, Schnittmarken, Verkaufskontrolle, nachprüfbare Ziehung.",
+        "it": "Come fare una lotteria per il club: biglietti con stemma, serie per squadra o venditore, segni di taglio, controllo vendite, estrazione verificabile.",
+        "nl": "Zo organiseert u een clubloterij: loten met embleem en controlestrook, reeks per team of verkoper, knipmarkeringen, verkoopcontrole, controleerbare trekking.",
+        "pl": "Jak zorganizować loterię dla klubu: losy z herbem i odcinkiem, seria na drużynę lub sprzedawcę, znaczniki cięcia, kontrola sprzedaży, weryfikowalne losowanie.",
+        "sv": "Så ordnar du ett klubblotteri: lotter med klubbmärke och talong, en serie per lag eller säljare, klippmärken, försäljningskontroll och kontrollerbar dragning.",
+        "cs": "Jak uspořádat tombolu pro klub: losy se znakem a útržkem, série pro tým nebo prodejce, ořezové značky, kontrola prodeje a ověřitelné losování.",
+        "ro": "Cum faci o tombolă pentru club: bilete cu emblema și cotor, o serie pe echipă sau vânzător, semne de tăiere, control al vânzărilor și o tragere verificabilă.",
+        "el": "Πώς να οργανώσετε κλήρωση για τον σύλλογο: λαχνοί με έμβλημα και στέλεχος, σειρά ανά ομάδα ή πωλητή, σημάδια κοπής, έλεγχος πωλήσεων, επαληθεύσιμη κλήρωση.",
+        "ru": "Как провести лотерею для клуба: билеты с эмблемой и корешком, серия на команду или продавца, метки реза, контроль продаж и проверяемый розыгрыш.",
+        "tr": "Kulüp için çekiliş nasıl yapılır: armalı koçanlı biletler, takım veya satıcı başına seri, kesim işaretleri, satış kontrolü ve doğrulanabilir çekiliş.",
+        "zh": "如何为俱乐部举办抽奖：带会徽和存根的奖券，每支球队或销售员一个系列，裁切标记，销售管理，以及可以验证的公正开奖。",
+        "ja": "クラブの抽選会のやり方：エンブレムと控え付きの券、チームや販売担当ごとのシリーズ、トンボ、売上管理、確かめられる抽選を紹介します。",
+        "ko": "클럽 추첨 행사 하는 방법: 엠블럼과 부본이 있는 응모권, 팀·판매자별 시리즈, 재단선, 판매 관리, 검증 가능한 추첨을 안내합니다.",
+        "hi": "क्लब के लिए रैफ़ल कैसे करें: प्रतीक और स्टब वाले टिकट, हर टीम या विक्रेता की सीरीज़, कटाई के निशान, बिक्री नियंत्रण और जाँचने योग्य ड्रॉ।",
+    },
+    "d_guia_bombeiros": {
+        "pt": "Como fazer uma rifa para os bombeiros: bilhetes com o emblema e talão, série por vendedor, marcas de corte, controlo de vendas e sorteio verificável.",
+        "en": "How to run a raffle for your fire brigade: tickets with the crest and a stub, a series per seller, cut marks, sales control and a verifiable draw.",
+        "es": "Cómo hacer una rifa para los bomberos: boletos con el escudo y talón, una serie por vendedor, marcas de corte, control de ventas y sorteo verificable.",
+        "fr": "Comment organiser une tombola pour les pompiers : billets à l'écusson avec talon, série par vendeur, traits de coupe, suivi des ventes, tirage vérifiable.",
+        "de": "So organisieren Sie eine Feuerwehrtombola: Lose mit Wappen und Abschnitt, Serie pro Verkäufer, Schnittmarken, Verkaufskontrolle, nachprüfbare Ziehung.",
+        "it": "Come fare una lotteria per i vigili del fuoco: biglietti con stemma, serie per venditore, segni di taglio, controllo vendite, estrazione verificabile.",
+        "nl": "Zo organiseert u een brandweerloterij: loten met embleem en controlestrook, reeks per verkoper, knipmarkeringen, verkoopcontrole, controleerbare trekking.",
+        "pl": "Jak zorganizować loterię dla straży pożarnej: losy z herbem i odcinkiem, seria na sprzedawcę, znaczniki cięcia, kontrola sprzedaży, weryfikowalne losowanie.",
+        "sv": "Så ordnar du ett brandkårslotteri: lotter med märke och talong, en serie per säljare, klippmärken, försäljningskontroll och en kontrollerbar dragning.",
+        "cs": "Jak uspořádat tombolu pro hasiče: losy se znakem a útržkem, série pro prodejce, ořezové značky, kontrola prodeje a ověřitelné losování.",
+        "ro": "Cum faci o tombolă pentru pompieri: bilete cu emblema și cotor, o serie pe vânzător, semne de tăiere, control al vânzărilor și o tragere verificabilă.",
+        "el": "Πώς να οργανώσετε κλήρωση για την πυροσβεστική: λαχνοί με έμβλημα και στέλεχος, σειρά ανά πωλητή, σημάδια κοπής, έλεγχος πωλήσεων, επαληθεύσιμη κλήρωση.",
+        "ru": "Как провести лотерею для пожарной команды: билеты с эмблемой и корешком, серия на продавца, метки реза, контроль продаж и проверяемый розыгрыш.",
+        "tr": "İtfaiye için çekiliş nasıl yapılır: armalı koçanlı biletler, satıcı başına seri, kesim işaretleri, satış kontrolü ve doğrulanabilir çekiliş.",
+        "zh": "如何为消防队举办抽奖：带徽章和存根的奖券，每位销售员一个系列，裁切标记，销售管理，以及可以验证的公正开奖。",
+        "ja": "消防団の抽選会のやり方：エンブレムと控え付きの券、販売担当ごとのシリーズ、トンボ、売上管理、確かめられる抽選を紹介します。",
+        "ko": "소방대 추첨 행사 하는 방법: 엠블럼과 부본이 있는 응모권, 판매자별 시리즈, 재단선, 판매 관리, 검증 가능한 추첨을 안내합니다.",
+        "hi": "दमकल दल के लिए रैफ़ल कैसे करें: प्रतीक और स्टब वाले टिकट, हर विक्रेता की सीरीज़, कटाई के निशान, बिक्री नियंत्रण और जाँचने योग्य ड्रॉ।",
+    },
+    "d_guia_festas": {
+        "pt": "Como fazer uma rifa para a festa de bairro: bilhetes com talão, série por dia ou vendedor, marcas de corte, controlo de vendas e sorteio verificável.",
+        "en": "How to run a raffle for a neighbourhood party: tickets with a stub, a series per day or seller, cut marks, sales control and a verifiable draw.",
+        "es": "Cómo hacer una rifa para la fiesta del barrio: boletos con talón, una serie por día o vendedor, marcas de corte, control de ventas y sorteo verificable.",
+        "fr": "Comment organiser une tombola pour la fête de quartier : billets avec talon, série par jour ou vendeur, traits de coupe, suivi des ventes, tirage vérifiable.",
+        "de": "So organisieren Sie eine Tombola fürs Straßenfest: Lose mit Abschnitt, Serie pro Tag oder Verkäufer, Schnittmarken, Verkaufskontrolle, nachprüfbare Ziehung.",
+        "it": "Come fare una lotteria per la festa di quartiere: biglietti numerati, serie per giorno o venditore, segni di taglio, controllo vendite, estrazione.",
+        "nl": "Zo organiseert u een buurtfeestloterij: loten met controlestrook, reeks per dag of verkoper, knipmarkeringen, verkoopcontrole, controleerbare trekking.",
+        "pl": "Jak zorganizować loterię na festyn osiedlowy: losy z odcinkiem, seria na dzień lub sprzedawcę, znaczniki cięcia, kontrola sprzedaży, weryfikowalne losowanie.",
+        "sv": "Så ordnar du ett lotteri för grannskapsfesten: lotter med talong, en serie per dag eller säljare, klippmärken, försäljningskontroll, kontrollerbar dragning.",
+        "cs": "Jak uspořádat tombolu na sousedské slavnosti: losy s útržkem, série na den nebo prodejce, ořezové značky, kontrola prodeje a ověřitelné losování.",
+        "ro": "Cum faci o tombolă pentru sărbătoarea de cartier: bilete cu cotor, o serie pe zi sau vânzător, semne de tăiere, control al vânzărilor, tragere verificabilă.",
+        "el": "Πώς να οργανώσετε κλήρωση για τη γιορτή της γειτονιάς: λαχνοί με στέλεχος, σειρά ανά ημέρα ή πωλητή, σημάδια κοπής, έλεγχος πωλήσεων, επαληθεύσιμη κλήρωση.",
+        "ru": "Как провести лотерею на дворовом празднике: билеты с корешком, серия на день или продавца, метки реза, контроль продаж и проверяемый розыгрыш.",
+        "tr": "Mahalle şenliği için çekiliş nasıl yapılır: koçanlı biletler, gün veya satıcı başına seri, kesim işaretleri, satış kontrolü ve doğrulanabilir çekiliş.",
+        "zh": "如何为街坊联欢会举办抽奖：带存根的奖券，每天或每位销售员一个系列，裁切标记，销售管理，以及可以验证的公正开奖。",
+        "ja": "地域のお祭りの抽選会のやり方：控え付きの券、日ごとや販売担当ごとのシリーズ、トンボ、売上管理、確かめられる抽選を紹介します。",
+        "ko": "동네 축제 추첨 행사 하는 방법: 부본이 있는 응모권, 하루·판매자별 시리즈, 재단선, 판매 관리, 검증 가능한 추첨을 안내합니다.",
+        "hi": "मोहल्ले के उत्सव के लिए रैफ़ल कैसे करें: स्टब वाले टिकट, हर दिन या विक्रेता की सीरीज़, कटाई के निशान, बिक्री नियंत्रण और जाँचने योग्य ड्रॉ।",
+    },
+    "d_guia_igrejas": {
+        "pt": "Como fazer uma rifa para a paróquia: bilhetes com o emblema e talão, série por grupo, marcas de corte, controlo de vendas e sorteio verificável.",
+        "en": "How to run a raffle for your parish: tickets with your crest and a stub, a series per group, cut marks, sales control and a verifiable draw.",
+        "es": "Cómo hacer una rifa para la parroquia: boletos con el escudo y talón, una serie por grupo, marcas de corte, control de ventas y sorteo verificable.",
+        "fr": "Comment organiser une tombola pour la paroisse : billets à l'écusson, série par groupe, traits de coupe, suivi des ventes, tirage vérifiable.",
+        "de": "So organisieren Sie eine Pfarrtombola: Lose mit Wappen, Serie pro Gruppe, Schnittmarken, Verkaufskontrolle und eine nachprüfbare Ziehung.",
+        "it": "Come fare una lotteria per la parrocchia: biglietti con stemma, serie per gruppo, segni di taglio, controllo vendite, estrazione verificabile.",
+        "nl": "Zo organiseert u een parochieloterij: loten met wapen en controlestrook, reeks per groep, knipmarkeringen, verkoopcontrole, controleerbare trekking.",
+        "pl": "Jak zorganizować loterię dla parafii: losy z herbem i odcinkiem, seria na grupę, znaczniki cięcia, kontrola sprzedaży, weryfikowalne losowanie.",
+        "sv": "Så ordnar du ett församlingslotteri: lotter med märke och talong, en serie per grupp, klippmärken, försäljningskontroll och kontrollerbar dragning.",
+        "cs": "Jak uspořádat tombolu pro farnost: losy se znakem a útržkem, série pro skupinu, ořezové značky, kontrola prodeje a ověřitelné losování.",
+        "ro": "Cum faci o tombolă pentru parohie: bilete cu emblema și cotor, o serie pe grup, semne de tăiere, control al vânzărilor, tragere verificabilă.",
+        "el": "Πώς να οργανώσετε κλήρωση για την ενορία: λαχνοί με έμβλημα και στέλεχος, σειρά ανά ομάδα, σημάδια κοπής, έλεγχος πωλήσεων, επαληθεύσιμη κλήρωση.",
+        "ru": "Как провести лотерею для прихода: билеты с эмблемой и корешком, серия на группу, метки реза, контроль продаж и проверяемый розыгрыш.",
+        "tr": "Cemaat için çekiliş nasıl yapılır: armalı koçanlı biletler, grup başına seri, kesim işaretleri, satış kontrolü ve doğrulanabilir çekiliş.",
+        "zh": "如何为教会举办抽奖：带徽章和存根的奖券，每个小组一个系列，裁切标记，销售管理，以及可以验证的公正开奖。",
+        "ja": "教会の抽選会のやり方：エンブレムと控え付きの券、グループごとのシリーズ、トンボ、売上管理、確かめられる抽選を紹介します。",
+        "ko": "교회 추첨 행사 하는 방법: 엠블럼과 부본이 있는 응모권, 모임별 시리즈, 재단선, 판매 관리, 검증 가능한 추첨을 안내합니다.",
+        "hi": "चर्च के लिए रैफ़ल कैसे करें: प्रतीक और स्टब वाले टिकट, हर समूह की सीरीज़, कटाई के निशान, बिक्री नियंत्रण और जाँचने योग्य ड्रॉ।",
+    },
     "d_termos": {
         "pt": "As regras de utilização do Gerador de Rifas: o que o serviço faz, o que não faz e quem é responsável pela rifa.",
         "en": "The rules for using the Raffle Generator: what the service does, what it does not do and who is responsible for the raffle.",
@@ -228,24 +348,24 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "रैफ़ल जनरेटर में हुए सभी बदलाव, संस्करण-दर-संस्करण: नई सुविधाएँ, सुधार और बग-फ़िक्स।",
     },
     "intro": {
-        "pt": "Crie rifas numeradas em PDF a partir de um template do Canva: escolha os números, veja a pré-visualização e descarregue os PDFs prontos a imprimir. É grátis, não precisa de registo e funciona em 18 línguas.",
-        "en": "Create numbered raffle tickets as PDF from a Canva template: pick the numbers, preview them and download print-ready PDFs. It is free, needs no sign-up and works in 18 languages.",
-        "es": "Cree rifas numeradas en PDF a partir de una plantilla de Canva: elija los números, vea la vista previa y descargue los PDF listos para imprimir. Es gratis, no necesita registro y funciona en 18 idiomas.",
-        "fr": "Créez des tickets numérotés en PDF à partir d'un modèle Canva : choisissez les numéros, prévisualisez et téléchargez des PDF prêts à imprimer. C'est gratuit, sans inscription et en 18 langues.",
-        "de": "Erstellen Sie nummerierte Lose als PDF aus einer Canva-Vorlage: Nummern wählen, Vorschau ansehen und druckfertige PDFs herunterladen. Kostenlos, ohne Anmeldung und in 18 Sprachen.",
-        "it": "Crea biglietti numerati in PDF da un modello Canva: scegli i numeri, guarda l'anteprima e scarica PDF pronti per la stampa. È gratis, senza registrazione e in 18 lingue.",
-        "nl": "Maak genummerde loten als pdf vanuit een Canva-sjabloon: kies de nummers, bekijk het voorbeeld en download afdrukklare pdf's. Gratis, zonder account en in 18 talen.",
-        "pl": "Twórz numerowane losy w PDF z szablonu Canva: wybierz numery, zobacz podgląd i pobierz pliki gotowe do druku. Za darmo, bez rejestracji i w 18 językach.",
-        "sv": "Skapa numrerade lotter som PDF från en Canva-mall: välj nummer, förhandsgranska och ladda ner utskriftsklara PDF-filer. Gratis, utan registrering och på 18 språk.",
-        "cs": "Vytvářejte číslované losy v PDF ze šablony Canva: vyberte čísla, prohlédněte náhled a stáhněte PDF připravená k tisku. Zdarma, bez registrace a v 18 jazycích.",
-        "ro": "Creați bilete numerotate în PDF dintr-un șablon Canva: alegeți numerele, vedeți previzualizarea și descărcați PDF-uri gata de tipărit. Gratuit, fără cont și în 18 limbi.",
-        "el": "Φτιάξτε αριθμημένα λαχεία σε PDF από πρότυπο του Canva: διαλέξτε αριθμούς, δείτε την προεπισκόπηση και κατεβάστε PDF έτοιμα για εκτύπωση. Δωρεάν, χωρίς εγγραφή και σε 18 γλώσσες.",
-        "ru": "Создавайте пронумерованные билеты в PDF из шаблона Canva: выберите номера, посмотрите предпросмотр и скачайте PDF, готовые к печати. Бесплатно, без регистрации, на 18 языках.",
-        "tr": "Canva şablonundan numaralı çekiliş biletlerini PDF olarak oluşturun: numaraları seçin, önizleyin ve baskıya hazır PDF'leri indirin. Ücretsiz, kayıt gerektirmez ve 18 dilde çalışır.",
-        "zh": "用 Canva 模板生成带编号的抽奖券 PDF：选择号码、预览并下载可直接打印的 PDF。免费，无需注册，支持 18 种语言。",
-        "ja": "Canvaのテンプレートから番号付きのくじ券をPDFで作成。番号を選んでプレビューし、印刷用PDFをダウンロードできます。無料・登録不要・18言語対応。",
-        "ko": "Canva 템플릿으로 번호가 매겨진 추첨권 PDF를 만드세요. 번호를 고르고 미리 본 뒤 인쇄용 PDF를 내려받습니다. 무료이며 가입이 필요 없고 18개 언어를 지원합니다.",
-        "hi": "Canva टेम्पलेट से क्रमांकित रैफ़ल टिकट PDF में बनाएँ: नंबर चुनें, प्रीव्यू देखें और प्रिंट के लिए तैयार PDF डाउनलोड करें। मुफ़्त, पंजीकरण नहीं, 18 भाषाओं में।",
+        "pt": "Crie rifas numeradas em PDF a partir de um template do Canva: escolha os números, veja a pré-visualização e descarregue os PDFs prontos a imprimir. É grátis, não precisa de registo e funciona em 22 línguas.",
+        "en": "Create numbered raffle tickets as PDF from a Canva template: pick the numbers, preview them and download print-ready PDFs. It is free, needs no sign-up and works in 22 languages.",
+        "es": "Cree rifas numeradas en PDF a partir de una plantilla de Canva: elija los números, vea la vista previa y descargue los PDF listos para imprimir. Es gratis, no necesita registro y funciona en 22 idiomas.",
+        "fr": "Créez des tickets numérotés en PDF à partir d'un modèle Canva : choisissez les numéros, prévisualisez et téléchargez des PDF prêts à imprimer. C'est gratuit, sans inscription et en 22 langues.",
+        "de": "Erstellen Sie nummerierte Lose als PDF aus einer Canva-Vorlage: Nummern wählen, Vorschau ansehen und druckfertige PDFs herunterladen. Kostenlos, ohne Anmeldung und in 22 Sprachen.",
+        "it": "Crea biglietti numerati in PDF da un modello Canva: scegli i numeri, guarda l'anteprima e scarica PDF pronti per la stampa. È gratis, senza registrazione e in 22 lingue.",
+        "nl": "Maak genummerde loten als pdf vanuit een Canva-sjabloon: kies de nummers, bekijk het voorbeeld en download afdrukklare pdf's. Gratis, zonder account en in 22 talen.",
+        "pl": "Twórz numerowane losy w PDF z szablonu Canva: wybierz numery, zobacz podgląd i pobierz pliki gotowe do druku. Za darmo, bez rejestracji i w 22 językach.",
+        "sv": "Skapa numrerade lotter som PDF från en Canva-mall: välj nummer, förhandsgranska och ladda ner utskriftsklara PDF-filer. Gratis, utan registrering och på 22 språk.",
+        "cs": "Vytvářejte číslované losy v PDF ze šablony Canva: vyberte čísla, prohlédněte náhled a stáhněte PDF připravená k tisku. Zdarma, bez registrace a v 22 jazycích.",
+        "ro": "Creați bilete numerotate în PDF dintr-un șablon Canva: alegeți numerele, vedeți previzualizarea și descărcați PDF-uri gata de tipărit. Gratuit, fără cont și în 22 limbi.",
+        "el": "Φτιάξτε αριθμημένα λαχεία σε PDF από πρότυπο του Canva: διαλέξτε αριθμούς, δείτε την προεπισκόπηση και κατεβάστε PDF έτοιμα για εκτύπωση. Δωρεάν, χωρίς εγγραφή και σε 22 γλώσσες.",
+        "ru": "Создавайте пронумерованные билеты в PDF из шаблона Canva: выберите номера, посмотрите предпросмотр и скачайте PDF, готовые к печати. Бесплатно, без регистрации, на 22 языках.",
+        "tr": "Canva şablonundan numaralı çekiliş biletlerini PDF olarak oluşturun: numaraları seçin, önizleyin ve baskıya hazır PDF'leri indirin. Ücretsiz, kayıt gerektirmez ve 22 dilde çalışır.",
+        "zh": "用 Canva 模板生成带编号的抽奖券 PDF：选择号码、预览并下载可直接打印的 PDF。免费，无需注册，支持 22 种语言。",
+        "ja": "Canvaのテンプレートから番号付きのくじ券をPDFで作成。番号を選んでプレビューし、印刷用PDFをダウンロードできます。無料・登録不要・22言語対応。",
+        "ko": "Canva 템플릿으로 번호가 매겨진 추첨권 PDF를 만드세요. 번호를 고르고 미리 본 뒤 인쇄용 PDF를 내려받습니다. 무료이며 가입이 필요 없고 22개 언어를 지원합니다.",
+        "hi": "Canva टेम्पलेट से क्रमांकित रैफ़ल टिकट PDF में बनाएँ: नंबर चुनें, प्रीव्यू देखें और प्रिंट के लिए तैयार PDF डाउनलोड करें। मुफ़्त, पंजीकरण नहीं, 22 भाषाओं में।",
     },
     "como": {
         "pt": "Como funciona", "en": "How it works", "es": "Cómo funciona", "fr": "Comment ça marche", "de": "So funktioniert es",
@@ -307,8 +427,40 @@ LOCALE_OG = {"pt": "pt_PT", "en": "en_US", "es": "es_ES", "fr": "fr_FR", "de": "
              "ko": "ko_KR", "hi": "hi_IN"}
 
 
-def texto(chave: str, lingua: str, **params) -> str:
-    """O texto de SEO `chave` na `lingua` (cai no inglês e depois no português), com os {parâmetros} preenchidos."""
+# as linguas de um ficheiro so (catalao, ucraniano, indonesio, vietnamita): ver `seo_textos_novas.py` e docs/LINGUAS.md
+from . import seo_textos_novas as _novas  # noqa: E402
+
+for _chave, _valores in _novas.CHAVES.items():
+    CHAVES[_chave].update(_valores)
+LOCALE_OG.update(_novas.LOCALE_OG)
+
+# Os textos editados no painel (guardados na base de dados, `seo_bd.py`): (chave, lingua) -> texto. Mandam sobre os de cima, que continuam a ser o
+# valor por omissao e o recurso se a base estiver em baixo ou o texto editado nao servir. Substitui-se o dicionario inteiro (nunca se muda no sitio).
+SOBREPOSTOS: dict[tuple[str, str], str] = {}
+
+
+def definir_sobreposicoes(novos: dict[tuple[str, str], str]) -> None:
+    global SOBREPOSTOS
+    SOBREPOSTOS = dict(novos)
+
+
+def sobreposto(chave: str, lingua: str) -> str | None:
+    return SOBREPOSTOS.get((chave, lingua))
+
+
+def padrao(chave: str, lingua: str) -> str:
+    """O texto de SEO `chave` na `lingua` como esta no codigo (sem o editado no painel): cai no ingles."""
     por_lingua = CHAVES[chave]
-    t = por_lingua.get(lingua) or por_lingua["en"]
+    return por_lingua.get(lingua) or por_lingua["en"]
+
+
+def texto(chave: str, lingua: str, **params) -> str:
+    """O texto de SEO `chave` na `lingua` (o editado no painel, senao o do codigo: cai no ingles), com os {parametros} preenchidos."""
+    editado = SOBREPOSTOS.get((chave, lingua))
+    if editado is not None:
+        try:
+            return editado.format(**params) if params else editado
+        except (KeyError, IndexError, ValueError):
+            pass                                              # um texto editado com parametros que nao existem nunca parte uma pagina
+    t = padrao(chave, lingua)
     return t.format(**params) if params else t

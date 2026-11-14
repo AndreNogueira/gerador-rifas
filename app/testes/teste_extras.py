@@ -1,4 +1,4 @@
-"""Testa a interface real das funcionalidades «Extras» da app Windows (v2.4): séries/cor/logótipo/marcas de corte, galeria, sorteio e
+"""Testa a interface real das funcionalidades «Extras» da app Windows (v2.4; o editor de templates é da 2.5): séries/cor/logótipo/marcas de corte, galeria, editor, sorteio e
 exportar a lista. Abre a janela de verdade (precisa de ecrã) e comanda-a como um utilizador; sai com código 1 se algo falhar.
 
 Uso: python testes/teste_extras.py <pasta_saida>     (capturas de ecrã em <pasta_saida>; usa os exemplos de app/exemplos)
@@ -76,6 +76,26 @@ mensagens.clear()
 ok(a._exportar_csv() is None and mensagens, "intervalo invalido avisa e nao escreve")
 a.v_inicio.set("1"); a.v_fim.set("20")
 
+# --- guardar e abrir o pedido (2.6): um ficheiro .rifas com os campos; abrir repoe-os, e um ficheiro alheio avisa
+a.v_inicio.set("10"); a.v_fim.set("99"); a.v_digitos.set("3"); a.v_max.set("150"); a.v_nome.set("Rifa de Natal")
+a.v_prefixos.set("A-, B-"); a.v_saltar.set("13"); a.v_cor_serie.set(True); a.v_marcas.set(True); a.v_cor_numeros.set("#c2410c"); a._set_modo("unico")
+pedido = SAIDA / "pedido.rifas"
+filedialog.asksaveasfilename = lambda **k: str(pedido)
+ok(a._guardar_pedido() == pedido and pedido.read_bytes().startswith(b"{"), "«Guardar pedido» escreve o ficheiro .rifas")
+ok(b"Users" not in pedido.read_bytes() and b"template" not in pedido.read_bytes(), "o ficheiro não leva caminhos nem template")
+a.v_inicio.set("1"); a.v_fim.set("5"); a.v_nome.set(""); a.e_nome.delete(0, "end"); a.v_prefixos.set(""); a.v_saltar.set(""); a.v_cor_serie.set(False)
+a.v_marcas.set(False); a.v_cor_numeros.set(""); a._set_modo("varios")
+ok(a._abrir_pedido(str(pedido)), "«Abrir pedido» lê o ficheiro")
+ok((a.v_inicio.get(), a.v_fim.get(), a.v_digitos.get(), a.v_max.get(), a.v_nome.get(), a.e_nome.get()) == ("10", "99", "3", "150", "Rifa de Natal", "Rifa de Natal")
+   and a.v_prefixos.get() == "A-, B-" and a.v_saltar.get() == "13" and a.v_cor_serie.get() and a.v_marcas.get() and a.v_cor_numeros.get() == "#c2410c" and a.modo == "unico",
+   "abrir repõe os números, o nome, as séries, as cores, as marcas e o modo")
+lixo = SAIDA / "lixo.rifas"
+lixo.write_bytes(b"isto nao e um pedido")
+mensagens.clear()
+ok(not a._abrir_pedido(str(lixo)) and mensagens and a.v_fim.get() == "99", "um ficheiro alheio avisa e não mexe nos campos")
+a.v_inicio.set("1"); a.v_fim.set("20"); a.v_digitos.set("4"); a.v_max.set("300"); a.v_nome.set(""); a.e_nome.delete(0, "end")
+a.v_prefixos.set(""); a.v_saltar.set(""); a.v_cor_serie.set(False); a.v_marcas.set(False); a.v_cor_numeros.set(""); a._set_modo("varios")
+
 # --- janela das opcoes
 a._abrir_extra("opcoes", extras.Opcoes)
 pump(0.6)
@@ -95,9 +115,13 @@ g.v["p1"].set("1.º Prémio: Cabaz")
 pump(6, lambda: g._foto is not None and g.token >= 1 and not g._espera and g.previa.cget("text") == "")
 foto(g, "galeria.png")
 ok(g._foto is not None, "a galeria mostra a pre-visualizacao")
-g.v["titulo"].set("Título com ŧ letra que a Vera não tem Ω")
+g.v["titulo"].set("हिन्दी")
 pump(3, lambda: g.l_erro.cget("text") != "")
-ok(g.l_erro.cget("text") != "", "texto que a letra nao tem mostra um aviso em vez de uma imagem")
+ok(g.l_erro.cget("text") != "", "texto que nenhuma letra tem (hindi) mostra um aviso em vez de uma imagem")
+for titulo in ("Κλήρωση Ω", "Лотерея", "Bốc thăm", "抽奖 São", "抽選会", "추첨"):                       # 2.7: grego, cirilico, vietnamita, chines, japones e coreano
+    g.v["titulo"].set(titulo)
+    pump(3, lambda: g.l_erro.cget("text") == "" and g._foto is not None and not g._espera)
+    ok(g.l_erro.cget("text") == "", f"a galeria aceita «{titulo}» (2.7)")
 g.v["titulo"].set("Rifa de Natal")
 pump(1.5)
 print('pendentes no worker:', a.pool._work_queue.qsize(), 'token', g.token)
@@ -164,6 +188,13 @@ a._definir_visual("premiado")
 ok(TM.C["acento"][0] == "#6A35F5", "o visual Premiado repoe as cores")
 a._definir_visual("auto")
 ok(TM.visual_efetivo() == core.tema.visual_por_epoca(), "o automatico segue a epoca")
+for v in core.tema.VISUAIS:                          # os 14 visuais (2.6): cada um refaz a janela com as suas cores, sem erros
+    a._definir_visual(v)
+    pump(0.15)
+    ok(a.visual == v and TM.C["acento"][0].upper() == core.tema.PALETAS_VISUAIS[v][0]["acento"][0].upper(), f"o visual {v} aplica as suas cores")
+    if v in ("gala", "terminal"):
+        foto(a, f"visual_{v}.png")
+a._definir_visual("auto")
 
 # --- limpar tudo repoe as opcoes e apaga a pasta da galeria
 a._limpar_tudo()
@@ -171,15 +202,95 @@ pump(0.3)
 ok(a.v_prefixos.get() == "" and a.v_logo.get() == "" and not a.v_marcas.get() and a._pasta_galeria is None, "«Limpar tudo» repoe as opcoes")
 ok(pasta_galeria is not None and not pasta_galeria.exists(), "a pasta temporaria da galeria foi apagada")
 
-# --- as 18 linguas: os menus e as janelas abrem sem faltar texto
+# --- editor de templates: desenha-se a rifa, edita-se com o rato e o teclado, e «Usar este template» cria o template e os algarismos
+a._abrir_extra("editor", extras.EditorTemplates)
+ed = a.w_extras["editor"]
+ed.update()
+pump(8, lambda: ed._foto is not None and not ed._espera)
+foto(ed, "editor.png")
+ok(ed._foto is not None and len(ed.m.elementos) == 11, "o editor abre com o modelo e mostra o PDF a sério")
+ok(str(ed.botoes["desfazer"].cget("state")) == "disabled" and str(ed.b_usar.cget("state")) == "normal", "sem alterações não há o que desfazer; o modelo serve")
+# o rato: clicar no título seleciona-o, arrastar move-o, largar refaz a imagem
+titulo = next(e for e in ed.m.elementos if e.texto == "TÍTULO DA RIFA")
+x0, y0, x1, y1 = ed.m.caixa(titulo.id)
+px, py = ed._px((x0 + x1) / 2, (y0 + y1) / 2)
+ed.tela.event_generate("<ButtonPress-1>", x=int(px), y=int(py))
+ed.update()
+ok(ed.sel == titulo.id, "clicar num texto seleciona-o")
+x_antes = titulo.x
+ed.tela.event_generate("<B1-Motion>", x=int(px) + 60, y=int(py) + 12)
+ed.tela.event_generate("<ButtonRelease-1>", x=int(px) + 60, y=int(py) + 12)
+ed.update()
+ok(ed.m.por_id(titulo.id).x > x_antes + 20 and ed.m.por_id(titulo.id).y > 40, "arrastar move o elemento")
+pump(6, lambda: not ed._espera)
+x_depois = ed.m.por_id(titulo.id).x
+ed._a_desfazer()
+ok(ed.m.por_id(titulo.id).x == x_antes and ed.m.pode_refazer(), "desfazer repõe o sítio de antes do arrasto (o arrasto todo é um só passo)")
+ed._a_refazer()
+ok(ed.m.por_id(titulo.id).x == x_depois, "refazer volta a pô-lo onde estava")
+# as setas e o teclado
+ed.tela.focus_force()
+ed.update()
+ed.tela.event_generate("<Shift-Right>")
+ed.update()
+ok(ed.m.por_id(titulo.id).x == x_depois + 10, "as setas movem o elemento selecionado")
+n = len(ed.m.elementos)
+ed._a_duplicar()
+ok(len(ed.m.elementos) == n + 1 and ed.sel != titulo.id, "duplicar cria uma cópia e seleciona-a")
+ed._a_tras()
+ok(ed.m.elementos[-2].id == ed.sel, "«Para trás» desce um nível de desenho")
+ed._a_apagar()
+ok(len(ed.m.elementos) == n and ed.sel is None, "apagar tira o elemento")
+# a imagem (2.6): junta-se um PNG ou JPG, entra reduzida e a caber, e um ficheiro que não é imagem avisa
+logo_png = SAIDA / "logo_editor.png"
+Image.new("RGB", (400, 200), (200, 30, 30)).save(logo_png)
+n = len(ed.m.elementos)
+ed.acrescentar("imagem", str(logo_png))
+ok(len(ed.m.elementos) == n + 1 and ed.m.por_id(ed.sel).tipo == "imagem" and ed.m.por_id(ed.sel).w == 160, "«+ Imagem» junta o PNG, a caber em 160 pt, e seleciona-o")
+pump(6, lambda: not ed._espera)
+ok(ed.m.sem_problemas() and str(ed.b_usar.cget("state")) == "normal", "com a imagem o desenho continua a servir")
+mau = SAIDA / "nao_e_imagem.png"
+mau.write_bytes(b"isto nao e uma imagem")
+ed.acrescentar("imagem", str(mau))
+ok(len(ed.m.elementos) == n + 1 and ed.l_erro.cget("text") != "", "um ficheiro que não é imagem avisa e não entra")
+ed._a_apagar()
+ed._mudou()
+# o texto: escrever atualiza o desenho; algarismos que o motor confundiria avisam e bloqueiam
+ed.acrescentar("texto")
+ed.entrada_texto.delete(0, "end")
+ed.entrada_texto.insert(0, "Ref 0123")
+ed.update()
+ok(ed.l_erro.cget("text") != "" and str(ed.b_usar.cget("state")) == "disabled", "texto com 0123 avisa e desativa «Usar este template»")
+ed.entrada_texto.delete(0, "end")
+ed.entrada_texto.insert(0, "Ano 2026")
+ed.update()
+ok(ed.l_erro.cget("text") == "" and str(ed.b_usar.cget("state")) == "normal", "2026 não é o número do bilhete: serve")
+for e in [e for e in ed.m.elementos if e.tipo == "numero"]:
+    ed.sel = e.id
+    ed._a_apagar()
+ok(ed.l_erro.cget("text") != "" and str(ed.b_usar.cget("state")) == "disabled", "sem o número 0001 não se pode usar")
+ed._a_modelo()
+ok(len(ed.m.elementos) == 11 and ed.m.pode_desfazer(), "«Começar com um modelo» repõe a rifa de partida (e desfaz-se)")
+pump(6, lambda: not ed._espera)
+foto(ed, "editor2.png")
+ed._usar()
+t0 = time.time()
+pump(40, lambda: a.prep is not None)
+print(f"(template do editor analisado em {time.time() - t0:.1f} s)")
+ok(a.prep is not None and a.prep.info.n_campos == 1 and a.prep.info.n_numeros == {1: 2}, "«Usar este template» deixa o template do editor analisado (1 rifa com talão)")
+ok(not ed.winfo_exists(), "a janela do editor fecha")
+a._limpar_tudo()
+pump(0.3)
+
+# --- as 22 linguas: os menus e as janelas abrem sem faltar texto
 for lg in i18n.LINGUAS:
     a._mudar_lingua(i18n.LINGUAS[lg])
     pump(0.15)
-    for nome, cls in (("opcoes", extras.Opcoes), ("sorteio", extras.Sorteio)):
+    for nome, cls in (("opcoes", extras.Opcoes), ("editor", extras.EditorTemplates), ("sorteio", extras.Sorteio)):
         a._abrir_extra(nome, cls)
         a.w_extras[nome].update()
         a.w_extras[nome].destroy()
-ok(True, "as janelas abrem nas 18 linguas")
+ok(True, "as janelas abrem nas 22 linguas")
 print("mensagens:", mensagens)
 a.destroy()
 print("FALHOU: " + "; ".join(falhas) if falhas else "TUDO OK")
