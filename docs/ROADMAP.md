@@ -19,7 +19,7 @@
 |---|---|---|---|
 | 10 | **Confirmar o proxy e o anti-sono no Render** | XS | O painel (`/admin`) diz se os IPs reais chegam («Proxy e limite por IP») e se o serviço está a chamar-se («Anti-sono»); falta olhá-los com visitantes e 30 min sem visitas. Se der «problema», definir `FORWARDED_ALLOW_IPS=*`. |
 | 11 | ~~**Métricas que sobrevivem**~~ (feito: Postgres na Neon, confirmado em produção em 2026-11-13) | M | O disco do Render gratuito é efémero: disco persistente (pago) ou base externa para o histórico do painel (`docs/ADMIN.md`). |
-| 12 | **Medir no Render a sério** | S | Os tempos e o `MAX_NUMEROS` (30 000) partiram de um contentor com 0,1 CPU assumido; repetir no Render e ajustar. |
+| 12 | ~~**Medir no Render a sério**~~ (feito em 2026-11-13: `docs/MEDICOES.md`, `scripts/medir_render.py`) | S | Os tempos e o `MAX_NUMEROS` (30 000) partiram de um contentor com 0,1 CPU assumido; repetir no Render e ajustar. |
 | 13 | **Revisão nativa das traduções `web_*`** | S por língua | Foram escritas sem falante nativo (11 chaves). |
 
 ## Plataforma
