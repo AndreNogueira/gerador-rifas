@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.43.1 — 2026-11-14
+
+### Förbättrat
+- **Renare sidfot:** guiderna «Så gör du» visas nu bara i gruppen i sidhuvudet; de upprepas inte längre längst ner på sidan.
+
 ## 3.43.0 — 2026-11-14
 
 ### Förbättrat

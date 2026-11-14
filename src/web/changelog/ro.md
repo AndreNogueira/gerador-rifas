@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.43.1 — 2026-11-14
+
+### Îmbunătățit
+- **Subsol mai curat:** ghidurile «Cum se face» apar acum doar în grupul din antet; nu se mai repetă în josul paginii.
+
 ## 3.43.0 — 2026-11-14
 
 ### Îmbunătățit

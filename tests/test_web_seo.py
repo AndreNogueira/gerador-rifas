@@ -178,3 +178,13 @@ def test_o_index_real_tem_os_marcadores():
     fonte = Path(modulo_app.__file__).parent / "frontend" / "index.html"
     html = fonte.read_text(encoding="utf-8")
     assert seo.MARCADOR_CABECALHO in html and seo.MARCADOR_CORPO in html and "<title>" not in html
+
+
+def test_a_pagina_inicial_liga_aos_guias_em_todas_as_linguas(cliente):
+    """Os guias saíram do rodapé (vivem num menu do cabeçalho): o HTML estático da página inicial é o que os liga para os robôs."""
+    for lg in i18n.LINGUAS:
+        caminho = "/" if lg == "pt" else f"/{lg}/"
+        html = cliente.get(caminho).text
+        for destino in ("escolas", "associacoes", "clubes", "bombeiros", "festas", "igrejas"):
+            esperado = f"/rifas-para-{destino}" if lg == "pt" else f"/{lg}/rifas-para-{destino}"
+            assert f'href="{esperado}"' in html, (lg, destino)

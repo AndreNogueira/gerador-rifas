@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.43.1 — 2026-11-14
+
+### Migliorato
+- **Piè di pagina più pulito:** le guide «Come fare» compaiono ormai solo nel gruppo dell'intestazione; non si ripetono più in fondo alla pagina.
+
 ## 3.43.0 — 2026-11-14
 
 ### Migliorato

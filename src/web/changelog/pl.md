@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.43.1 — 2026-11-14
+
+### Ulepszono
+- **Czystsza stopka:** poradniki «Jak to zrobić» pojawiają się teraz tylko w grupie w nagłówku; nie powtarzają się już na dole strony.
+
 ## 3.43.0 — 2026-11-14
 
 ### Ulepszono

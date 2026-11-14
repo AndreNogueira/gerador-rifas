@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.43.1 — 2026-11-14
+
+### Vylepšeno
+- **Čistší zápatí:** průvodci «Jak na to» se nyní zobrazují jen ve skupině v záhlaví; už se neopakují dole na stránce.
+
 ## 3.43.0 — 2026-11-14
 
 ### Vylepšeno

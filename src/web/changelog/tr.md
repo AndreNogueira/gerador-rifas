@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.43.1 — 2026-11-14
+
+### İyileştirildi
+- **Daha sade alt bilgi:** «Nasıl yapılır» rehberleri artık yalnızca üst bilgideki grupta görünür; sayfanın altında tekrarlanmaz.
+
 ## 3.43.0 — 2026-11-14
 
 ### İyileştirildi

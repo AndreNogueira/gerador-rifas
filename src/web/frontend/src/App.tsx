@@ -108,12 +108,6 @@ function Aplicacao() {
         <footer className="rodape">
           <span>v{versao}</span>
           <nav aria-label="Informação">
-            <Ligacao para="/rifas-para-escolas">{t("web_guia_escolas")}</Ligacao>
-            <Ligacao para="/rifas-para-associacoes">{t("web_guia_associacoes")}</Ligacao>
-            <Ligacao para="/rifas-para-clubes">{t("web_guia_clubes")}</Ligacao>
-            <Ligacao para="/rifas-para-bombeiros">{t("web_guia_bombeiros")}</Ligacao>
-            <Ligacao para="/rifas-para-festas">{t("web_guia_festas")}</Ligacao>
-            <Ligacao para="/rifas-para-igrejas">{t("web_guia_igrejas")}</Ligacao>
             <Ligacao para="/changelog">Changelog</Ligacao>
             <Ligacao para="/termos">{t("web_termos")}</Ligacao>
             <Ligacao para="/privacidade">{t("web_privacidade")}</Ligacao>

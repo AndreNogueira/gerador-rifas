@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.43.1 — 2026-11-14
+
+### Improved
+- **Cleaner footer:** the “How to” guides now appear only in the header group; they no longer repeat at the bottom of the page.
+
 ## 3.43.0 — 2026-11-14
 
 ### Improved

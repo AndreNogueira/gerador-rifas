@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.43.1 — 2026-11-14
+
+### Melhorado
+- **Rodapé mais limpo:** os guias «Como fazer» já só aparecem no grupo do cabeçalho; deixaram de se repetir no fundo da página.
+
 ## 3.43.0 — 2026-11-14
 
 ### Melhorado
