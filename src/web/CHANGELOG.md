@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.44.0 — 2026-11-14
+
+### Melhorado
+- **Privacidade:** as contagens de utilização passam a incluir o país da visita (só o código, deduzido pela rede do alojamento; o endereço IP continua a não ser guardado). A Política de privacidade explica-o nas 22 línguas.
+
 ## 3.43.1 — 2026-11-14
 
 ### Melhorado

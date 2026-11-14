@@ -51,7 +51,7 @@ TEXTOS = {
              "paragrafos": ["Els fitxers que pugeu (plantilla i xifres) només es tracten per generar les butlletes, es queden en una carpeta temporal del servidor i s'esborren "
                             "passats {validade} minuts sense activitat o quan premeu «Neteja-ho tot».",
                             "Per saber com es fa servir el servei, enregistrem recomptes: quantes visites, generacions i baixades, la llengua i el tema triats i el tipus de pantalla. "
-                            "Mai no enregistrem adreces IP, noms de fitxers, continguts dels fitxers ni la identificació completa del navegador.",
+                            "També enregistrem el país de la visita (només el codi, per exemple «PT»), que la xarxa de l'allotjament dedueix de l'adreça IP; la IP en si no la guardem. Mai no enregistrem adreces IP, noms de fitxers, continguts dels fitxers ni la identificació completa del navegador.",
                             "L'adreça IP només es fa servir a la memòria, durant uns instants, per limitar el nombre de sol·licituds per minut, i no la desem. L'empresa d'allotjament "
                             "(Render, a Frankfurt, a la Unió Europea) pot registrar adreces IP als seus registres tècnics."]},
             {"titulo": "Al vostre navegador",

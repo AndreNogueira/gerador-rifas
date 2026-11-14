@@ -49,7 +49,7 @@ TEXTOS = {
              "paragrafos": ["Die Dateien, die Sie hochladen (Vorlage und Ziffern), werden nur zum Erzeugen der Lose verarbeitet, liegen in einem temporären Ordner auf dem Server und werden nach "
                             "{validade} Minuten ohne Aktivität oder bei „Alles löschen“ gelöscht.",
                             "Um zu wissen, wie der Dienst genutzt wird, zählen wir: wie viele Besuche, Erzeugungen und Downloads, die gewählte Sprache und das Design sowie den Bildschirmtyp. "
-                            "Wir erfassen nie IP-Adressen, Dateinamen, Dateiinhalte oder die vollständige Browserkennung.",
+                            "Wir erfassen außerdem das Land des Besuchs (nur den Code, z. B. „PT“), das das Hosting-Netzwerk aus der IP-Adresse ableitet; die IP selbst speichern wir nicht. Wir erfassen nie IP-Adressen, Dateinamen, Dateiinhalte oder die vollständige Browserkennung.",
                             "Die IP-Adresse wird nur kurz im Arbeitsspeicher verwendet, um die Zahl der Aufträge pro Minute zu begrenzen, und von uns nicht gespeichert. Der Hosting-Anbieter "
                             "(Render, in Frankfurt, Europäische Union) kann IP-Adressen in seinen technischen Protokollen erfassen."]},
             {"titulo": "In Ihrem Browser",

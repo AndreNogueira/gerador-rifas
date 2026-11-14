@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.44.0 — 2026-11-14
+
+### Verbessert
+- **Datenschutz:** die Nutzungszahlen enthalten jetzt das Land des Besuchs (nur den Code, vom Hosting-Netzwerk abgeleitet; die IP-Adresse wird weiterhin nicht gespeichert). Die Datenschutzerklärung erklärt das in allen 22 Sprachen.
+
 ## 3.43.1 — 2026-11-14
 
 ### Verbessert

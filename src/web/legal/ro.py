@@ -49,7 +49,7 @@ TEXTOS = {
              "paragrafos": ["Fișierele pe care le încărcați (șablon și cifre) sunt prelucrate doar pentru a genera biletele, stau într-un dosar temporar pe server și sunt șterse după {validade} minute "
                             "fără activitate sau când apăsați „Șterge tot”.",
                             "Pentru a ști cum este folosit serviciul, înregistrăm contorizări: câte vizite, generări și descărcări, limba și tema alese și tipul de ecran. "
-                            "Nu înregistrăm niciodată adrese IP, nume de fișiere, conținutul fișierelor și nici identificarea completă a browserului.",
+                            "Înregistrăm și țara vizitei (doar codul, de exemplu «PT»), pe care rețeaua găzduirii o deduce din adresa IP; adresa IP în sine nu o păstrăm. Nu înregistrăm niciodată adrese IP, nume de fișiere, conținutul fișierelor și nici identificarea completă a browserului.",
                             "Adresa IP este folosită doar în memorie, pentru câteva clipe, ca să limiteze numărul de cereri pe minut, și nu este păstrată de noi. Furnizorul de găzduire "
                             "(Render, la Frankfurt, în Uniunea Europeană) poate înregistra adrese IP în jurnalele sale tehnice."]},
             {"titulo": "În browserul dvs.",

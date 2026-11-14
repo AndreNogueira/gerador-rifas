@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.44.0 — 2026-11-14
+
+### Förbättrat
+- **Integritet:** användningsräkningarna omfattar nu besökets land (bara koden, härledd av värdnätverket; IP-adressen sparas fortfarande inte). Integritetspolicyn förklarar det på alla 22 språk.
+
 ## 3.43.1 — 2026-11-14
 
 ### Förbättrat

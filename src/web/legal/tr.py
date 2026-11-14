@@ -49,7 +49,7 @@ TEXTOS = {
              "paragrafos": ["Yüklediğiniz dosyalar (şablon ve rakamlar) yalnızca biletleri üretmek için işlenir, sunucuda geçici bir klasörde durur ve {validade} dakika etkinlik olmazsa "
                             "ya da «Hepsini temizle»ye bastığınızda silinir.",
                             "Hizmetin nasıl kullanıldığını bilmek için sayımlar kaydederiz: kaç ziyaret, üretim ve indirme, seçilen dil ve tema ile ekran türü. "
-                            "IP adreslerini, dosya adlarını, dosya içeriğini ve tarayıcının tam kimliğini asla kaydetmeyiz.",
+                            "Ziyaretin ülkesini de kaydederiz (yalnızca kodu, örneğin «PT»); bunu barındırma ağı IP adresinden çıkarır, IP'nin kendisini saklamayız. IP adreslerini, dosya adlarını, dosya içeriğini ve tarayıcının tam kimliğini asla kaydetmeyiz.",
                             "IP adresi yalnızca bellekte, bir an için, dakikadaki istek sayısını sınırlamak amacıyla kullanılır ve bizce saklanmaz. Barındırma sağlayıcısı "
                             "(Frankfurt'taki Render, Avrupa Birliği) teknik kayıtlarında IP adreslerini tutabilir."]},
             {"titulo": "Tarayıcınızda",

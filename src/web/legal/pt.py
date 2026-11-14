@@ -59,7 +59,7 @@ TEXTOS = {
              "paragrafos": ["Os ficheiros que carrega (template e algarismos) são tratados só para gerar as rifas, ficam numa pasta temporária do servidor e "
                             "são apagados passados {validade} minutos sem atividade ou quando carrega em «Limpar tudo».",
                             "Para saber como o serviço é usado, registamos contagens: quantas visitas, gerações e descargas, a língua e o tema escolhidos e o "
-                            "tipo de ecrã. Nunca registamos endereços IP, nomes de ficheiros, o conteúdo dos ficheiros nem o programa de navegação completo.",
+                            "tipo de ecrã. Registamos também o país da visita (só o código, por exemplo «PT»), que a rede do alojamento deduz do endereço IP; o IP em si não o guardamos. Nunca registamos endereços IP, nomes de ficheiros, o conteúdo dos ficheiros nem o programa de navegação completo.",
                             "O endereço IP é usado apenas em memória, durante instantes, para limitar o número de pedidos por minuto, e não é guardado por nós. "
                             "O fornecedor de alojamento (Render, em Frankfurt, na União Europeia) pode registar endereços IP nos seus registos técnicos."]},
             {"titulo": "No seu browser",

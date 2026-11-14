@@ -49,7 +49,7 @@ TEXTOS = {
              "paragrafos": ["Pliki, które wgrywasz (szablon i cyfry), są przetwarzane tylko do wygenerowania losów, leżą w tymczasowym folderze na serwerze i są usuwane po {validade} minutach "
                             "bez aktywności lub po kliknięciu „Wyczyść wszystko”.",
                             "Aby wiedzieć, jak serwis jest używany, zapisujemy liczniki: ile wizyt, generowań i pobrań, wybrany język i motyw oraz typ ekranu. "
-                            "Nigdy nie zapisujemy adresów IP, nazw plików, zawartości plików ani pełnego identyfikatora przeglądarki.",
+                            "Zapisujemy też kraj wizyty (tylko kod, np. «PT»), który sieć hostingu ustala na podstawie adresu IP; samego IP nie przechowujemy. Nigdy nie zapisujemy adresów IP, nazw plików, zawartości plików ani pełnego identyfikatora przeglądarki.",
                             "Adres IP jest używany tylko w pamięci, przez chwilę, do ograniczenia liczby zamówień na minutę i nie jest przez nas przechowywany. Dostawca hostingu "
                             "(Render, we Frankfurcie, w Unii Europejskiej) może zapisywać adresy IP w swoich dziennikach technicznych."]},
             {"titulo": "W Twojej przeglądarce",

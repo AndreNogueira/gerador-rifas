@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.44.0 — 2026-11-14
+
+### Cải thiện
+- **Quyền riêng tư:** các số liệu sử dụng nay có thêm quốc gia của lượt truy cập (chỉ mã, do mạng của nhà cung cấp lưu trữ suy ra; địa chỉ IP vẫn không được lưu). Chính sách quyền riêng tư giải thích điều này bằng 22 ngôn ngữ.
+
 ## 3.43.1 — 2026-11-14
 
 ### Cải thiện

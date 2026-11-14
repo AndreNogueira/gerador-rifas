@@ -49,7 +49,7 @@ TEXTOS = {
              "paragrafos": ["De bestanden die u uploadt (sjabloon en cijfers) worden alleen verwerkt om de loten te maken, staan in een tijdelijke map op de server en worden na {validade} minuten "
                             "zonder activiteit verwijderd, of als u op ‘Alles wissen’ drukt.",
                             "Om te weten hoe de dienst wordt gebruikt, registreren we tellingen: hoeveel bezoeken, generaties en downloads, de gekozen taal en het gekozen thema en het schermtype. "
-                            "We registreren nooit IP-adressen, bestandsnamen, de inhoud van bestanden of de volledige browseraanduiding.",
+                            "We registreren ook het land van het bezoek (alleen de code, bijvoorbeeld «PT»), dat het hostingnetwerk afleidt uit het IP-adres; het IP zelf bewaren we niet. We registreren nooit IP-adressen, bestandsnamen, de inhoud van bestanden of de volledige browseraanduiding.",
                             "Het IP-adres wordt alleen kortstondig in het geheugen gebruikt om het aantal opdrachten per minuut te beperken en wordt door ons niet bewaard. De hostingaanbieder "
                             "(Render, in Frankfurt, Europese Unie) kan IP-adressen in zijn technische logboeken vastleggen."]},
             {"titulo": "In uw browser",

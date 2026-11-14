@@ -1,7 +1,7 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { Admin } from "./Admin";
+import { Admin, nomesDosPaises } from "./Admin";
 import type { Dados, Estado } from "./admin-api";
 import { escalaY, Funil, formatarNumero, GraficoBarras, GraficoLinhas, Medidor } from "./graficos";
 
@@ -40,7 +40,14 @@ let ESTADO: Estado = {
     pedidos_leves_por_min: 300,
     forwarded_allow_ips: "127.0.0.1",
   },
-  proxy: { pedidos: 80, ips_distintos: 1, privados_pct: 100, xff_pct: 100, veredicto: "problema" },
+  proxy: {
+    pedidos: 80,
+    ips_distintos: 1,
+    privados_pct: 100,
+    xff_pct: 100,
+    pais_pct: 100,
+    veredicto: "problema",
+  },
   acordado: {
     ativo: true,
     cada_min: 10,
@@ -130,6 +137,11 @@ const DADOS: Dados = {
         { chave: "até 15 s", n: 3 },
       ],
     },
+    paises: [
+      { chave: "PT", n: 8 },
+      { chave: "BR", n: 3 },
+      { chave: "??", n: 1 },
+    ],
     linguas: [
       { chave: "pt", n: 9 },
       { chave: "en", n: 3 },
@@ -263,6 +275,10 @@ describe("painel de administração", () => {
     expect(within(funil).getAllByRole("listitem")).toHaveLength(6);
     expect(within(funil).getByText(/92 % da etapa anterior/)).toBeInTheDocument(); // 11 de 12 sessões
     expect(within(funil).getAllByText(/80 % da etapa anterior/)).toHaveLength(2); // 8 de 10 e 4 descargas de 5 gerações
+    // os países: o servidor só dá códigos, o nome escreve-se em português
+    expect(screen.getByText("Portugal (PT)")).toBeInTheDocument();
+    expect(screen.getByText("Brasil (BR)")).toBeInTheDocument();
+    expect(screen.getByText("Desconhecido")).toBeInTheDocument();
     // o anti-sono e os ecrãs
     expect(screen.getByText("ativo (10 min)")).toBeInTheDocument();
     expect(screen.getByText(/último pedido ok há 5 min/)).toBeInTheDocument();
@@ -353,6 +369,22 @@ describe("painel de administração", () => {
 });
 
 describe("gráficos", () => {
+  it("os países saem em português com o código, e o que não é um código vira «Desconhecido»", () => {
+    expect(
+      nomesDosPaises([
+        { chave: "FR", n: 2 },
+        { chave: "??", n: 1 },
+        { chave: "(sem dados)", n: 4 },
+        { chave: "<b>", n: 1 },
+      ]),
+    ).toEqual([
+      { chave: "França (FR)", n: 2 },
+      { chave: "Desconhecido", n: 1 },
+      { chave: "Desconhecido", n: 4 },
+      { chave: "Desconhecido", n: 1 },
+    ]);
+  });
+
   it("escalaY dá máximos redondos", () => {
     expect(escalaY(0.7).topo).toBe(1);
     expect(escalaY(37).topo).toBe(50);

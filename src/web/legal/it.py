@@ -49,7 +49,7 @@ TEXTOS = {
              "paragrafos": ["I file che carica (modello e cifre) sono trattati solo per generare i biglietti, restano in una cartella temporanea del server e vengono cancellati dopo {validade} minuti "
                             "di inattività o quando preme «Cancella tutto».",
                             "Per sapere come viene usato il servizio registriamo conteggi: quante visite, generazioni e download, la lingua e il tema scelti e il tipo di schermo. "
-                            "Non registriamo mai indirizzi IP, nomi di file, contenuto dei file né l'identificazione completa del browser.",
+                            "Registriamo anche il paese della visita (solo il codice, per esempio «PT»), che la rete dell'hosting ricava dall'indirizzo IP; l'IP in sé non lo conserviamo. Non registriamo mai indirizzi IP, nomi di file, contenuto dei file né l'identificazione completa del browser.",
                             "L'indirizzo IP è usato solo in memoria, per istanti, per limitare il numero di richieste al minuto, e non viene conservato da noi. Il fornitore di hosting "
                             "(Render, a Francoforte, nell'Unione europea) può registrare indirizzi IP nei suoi registri tecnici."]},
             {"titulo": "Nel suo browser",

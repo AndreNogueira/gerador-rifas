@@ -3,6 +3,7 @@ import { AdminErros } from "./AdminErros";
 import { AdminSeo } from "./AdminSeo";
 import {
   adminApi,
+  type Contagem,
   type Dados,
   ErroEntrada,
   type Estado,
@@ -48,6 +49,26 @@ const dataHora = (t: number) =>
     hour: "2-digit",
     minute: "2-digit",
   });
+
+/** O servidor só guarda o código do país (ISO, duas letras; `??` = desconhecido): o nome em português escreve-se aqui, com o código à frente (as bandeiras em emoji não aparecem no Windows). */
+export function nomesDosPaises(itens: Contagem[]): Contagem[] {
+  let nomes: Intl.DisplayNames | null = null;
+  try {
+    nomes = new Intl.DisplayNames(["pt-PT"], { type: "region" });
+  } catch {
+    /* sem suporte: fica o código */
+  }
+  return itens.map((i) => {
+    if (!/^[A-Z]{2}$/.test(i.chave)) return { ...i, chave: "Desconhecido" };
+    let nome = "";
+    try {
+      nome = nomes?.of(i.chave) ?? "";
+    } catch {
+      /* código sem nome */
+    }
+    return { ...i, chave: nome && nome !== i.chave ? `${nome} (${i.chave})` : i.chave };
+  });
+}
 
 function duracao(s: number | null): string {
   if (s === null) return "—";
@@ -669,6 +690,16 @@ export function Admin() {
             <BarrasH titulo="Línguas" itens={r?.linguas ?? []} />
           </Grafico>
           <Grafico
+            titulo="Países"
+            como={`De que país vêm as sessões, pelo cabeçalho CF-IPCountry que a rede do alojamento acrescenta (guarda-se só o código do país, nunca o IP). «Desconhecido» são sessões sem esse cabeçalho (rede privada, Tor) ou, se tudo está nesse grupo, o alojamento não o envia: ${
+              estado.proxy.pais_pct === null
+                ? "sem pedidos para medir"
+                : `${estado.proxy.pais_pct} % dos pedidos da última hora o traziam`
+            }.`}
+          >
+            <BarrasH titulo="Países" itens={nomesDosPaises(r?.paises ?? [])} cor={CORES[2] ?? ""} />
+          </Grafico>
+          <Grafico
             titulo="Temas"
             como="O tema visual escolhido ao abrir a sessão. «outro» são valores que o servidor não reconhece."
           >
@@ -760,6 +791,10 @@ export function Admin() {
           <div>
             <dt>Com X-Forwarded-For</dt>
             <dd>{estado.proxy.xff_pct === null ? "—" : `${estado.proxy.xff_pct} %`}</dd>
+          </div>
+          <div>
+            <dt>Com o país (CF-IPCountry)</dt>
+            <dd>{estado.proxy.pais_pct === null ? "—" : `${estado.proxy.pais_pct} %`}</dd>
           </div>
           <div>
             <dt>Com IP interno (10.x, 172.16.x, 192.168.x)</dt>

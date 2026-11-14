@@ -51,7 +51,7 @@ TEXTOS = {
              "paragrafos": ["Các tệp bạn tải lên (mẫu và chữ số) chỉ được xử lý để tạo vé, nằm trong một thư mục tạm trên máy chủ và bị xóa "
                             "sau {validade} phút không hoạt động hoặc khi bạn bấm “Xóa tất cả”.",
                             "Để biết dịch vụ được sử dụng như thế nào, chúng tôi ghi lại các số đếm: bao nhiêu lượt truy cập, lượt tạo và lượt tải về, ngôn ngữ và giao diện được chọn, và loại màn hình. "
-                            "Chúng tôi không bao giờ ghi lại địa chỉ IP, tên tệp, nội dung tệp hay nhận dạng đầy đủ của trình duyệt.",
+                            "Chúng tôi cũng ghi lại quốc gia của lượt truy cập (chỉ mã, ví dụ «PT»), do mạng của nhà cung cấp lưu trữ suy ra từ địa chỉ IP; chúng tôi không lưu chính địa chỉ IP. Chúng tôi không bao giờ ghi lại địa chỉ IP, tên tệp, nội dung tệp hay nhận dạng đầy đủ của trình duyệt.",
                             "Địa chỉ IP chỉ được dùng trong bộ nhớ, trong chốc lát, để giới hạn số yêu cầu mỗi phút, và chúng tôi không lưu nó. Nhà cung cấp dịch vụ lưu trữ "
                             "(Render, tại Frankfurt, Liên minh châu Âu) có thể ghi lại địa chỉ IP trong nhật ký kỹ thuật của họ."]},
             {"titulo": "Trong trình duyệt của bạn",

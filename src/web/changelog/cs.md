@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.44.0 — 2026-11-14
+
+### Vylepšeno
+- **Soukromí:** počty využití nově zahrnují zemi návštěvy (jen kód, který odvodí síť hostingu; IP adresa se stále neukládá). Zásady ochrany soukromí to vysvětlují ve všech 22 jazycích.
+
 ## 3.43.1 — 2026-11-14
 
 ### Vylepšeno

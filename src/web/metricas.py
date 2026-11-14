@@ -233,6 +233,13 @@ def _somar(a: list[int], b: list[int]) -> list[int]:
     return [x + y for x, y in zip(a, b, strict=True)]
 
 
+def pais_do_cabecalho(valor: str | None) -> str:
+    """O país (ISO 3166, duas letras maiúsculas) que a rede do alojamento põe em `CF-IPCountry`; qualquer outra coisa (em falta, `XX` = desconhecido,
+    `T1` = Tor, texto livre) é «??». Só esta forma fechada chega às métricas: o valor bruto de um cabeçalho nunca é guardado."""
+    v = (valor or "").strip().upper()
+    return v if re.fullmatch(r"[A-Z]{2}", v) and v not in ("XX", "T1") else "??"
+
+
 def _privado(ip: str) -> bool:
     try:
         e = ipaddress.ip_address(ip)
@@ -257,7 +264,7 @@ class Metricas:
         self._eventos: list[tuple] = []
         self._amostras: list[tuple] = []
         self._pedidos: dict[tuple[int, str], list] = {}
-        self._cliente: deque = deque(maxlen=5000)          # (ts, privado, xff, hash do ip)
+        self._cliente: deque = deque(maxlen=5000)          # (ts, privado, xff, hash do ip, o cabecalho do pais veio)
         self._sal = secrets.token_bytes(16)                # muda a cada arranque: nao da para ligar hashes entre arranques
         self.evento("arranque")
 
@@ -281,11 +288,12 @@ class Metricas:
             linha[4] = max(linha[4], ms)
             linha[5][_balde(ms)] += 1
 
-    def cliente(self, ip: str, tem_xff: bool) -> None:
-        """Para verificar o proxy: o IP vira um hash com sal (em memoria, ultima hora) e guarda-se se era privado e se vinha X-Forwarded-For."""
+    def cliente(self, ip: str, tem_xff: bool, tem_pais: bool = False) -> None:
+        """Para verificar o proxy: o IP vira um hash com sal (em memoria, ultima hora) e guarda-se se era privado, se vinha X-Forwarded-For e se
+        a rede do alojamento disse o pais (`CF-IPCountry`: so se o cabecalho existe, nunca o seu valor)."""
         h = hashlib.sha256(self._sal + ip.encode()).hexdigest()[:10]
         with self._trava:
-            self._cliente.append((self._agora(), _privado(ip), bool(tem_xff), h))
+            self._cliente.append((self._agora(), _privado(ip), bool(tem_xff), h, bool(tem_pais)))
 
     def amostrar(self, cpu: float, mem_srv: float, mem_motor: float, mem_cont: float | None, disco: float, sessoes: int, geracoes: int) -> None:
         with self._trava:
@@ -496,6 +504,7 @@ class Metricas:
             "linguas": self._contar("sessao", "a", desde),
             "temas": self._contar("sessao", "b", desde),
             "dispositivos": self._contar("sessao", "c", desde),
+            "paises": self._contar("pais", "a", desde),
             "paginas_vistas": self._contar("pagina", "a", desde, "AND c<>'robo'"),
             "robos": n("pagina", "AND c='robo'"),
             "erros_http": self._contar("erro_http", "a", desde),
@@ -525,9 +534,10 @@ class Metricas:
             amostra = [c for c in self._cliente if c[0] >= limite]
         n = len(amostra)
         if n == 0:
-            return {"pedidos": 0, "ips_distintos": 0, "privados_pct": None, "xff_pct": None, "veredicto": "sem_dados"}
+            return {"pedidos": 0, "ips_distintos": 0, "privados_pct": None, "xff_pct": None, "pais_pct": None, "veredicto": "sem_dados"}
         privados = sum(1 for c in amostra if c[1]) / n * 100
         xff = sum(1 for c in amostra if c[2]) / n * 100
+        pais = sum(1 for c in amostra if c[4]) / n * 100
         distintos = len({c[3] for c in amostra})
         if n < 20:
             veredicto = "poucos_pedidos"
@@ -537,7 +547,8 @@ class Metricas:
             veredicto = "problema"                           # os clientes aparecem todos com o IP do proxy: o limite por IP e global
         else:
             veredicto = "ok"
-        return {"pedidos": n, "ips_distintos": distintos, "privados_pct": round(privados), "xff_pct": round(xff), "veredicto": veredicto}
+        return {"pedidos": n, "ips_distintos": distintos, "privados_pct": round(privados), "xff_pct": round(xff),
+                "pais_pct": round(pais), "veredicto": veredicto}
 
 
 def caminho_por_defeito(raiz: Path) -> Path:
