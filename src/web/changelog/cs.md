@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.40.0 — 2026-11-14
+
+### Novinky
+- **3 až 10 cen v galerii:** u všech 24 návrhů v galerii si vyberete, kolik cen los má (3 až 10; dříve nejvýše 3). Od 6 se řadí do dvou sloupců. Také v aplikaci pro Windows.
+
 ## 3.39.0 — 2026-11-13
 
 ### Novinky

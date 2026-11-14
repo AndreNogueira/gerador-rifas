@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.40.0 — 2026-11-14
+
+### Baru
+- **3 hingga 10 hadiah di galeri:** di semua 24 desain galeri Anda memilih berapa hadiah pada kupon (3 hingga 10; sebelumnya paling banyak 3). Mulai 6 hadiah disusun dalam dua kolom. Juga di aplikasi Windows.
+
 ## 3.39.0 — 2026-11-13
 
 ### Baru

@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.40.0 — 2026-11-14
+
+### Novo
+- **De 3 a 10 prémios na galeria:** nos 24 desenhos da galeria de templates escolhe-se quantos prémios a rifa tem (3 a 10; antes eram no máximo 3). A partir de 6 passam a duas colunas, sem apertar o número nem a data. Também na app Windows.
+
 ## 3.39.0 — 2026-11-13
 
 ### Novo

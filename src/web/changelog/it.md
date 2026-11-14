@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.40.0 — 2026-11-14
+
+### Novità
+- **Da 3 a 10 premi nella galleria:** nei 24 disegni della galleria si sceglie quanti premi ha il biglietto (da 3 a 10; prima al massimo 3). Da 6 in su vanno su due colonne. Anche nell'app Windows.
+
 ## 3.39.0 — 2026-11-13
 
 ### Novità

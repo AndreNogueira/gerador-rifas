@@ -50,9 +50,8 @@ describe("galeria de templates (M4)", () => {
     await userEvent.click((await screen.findByTestId("galeria")).querySelector("summary") as Element);
     await userEvent.click(screen.getByLabelText("Gala"));
     await userEvent.type(t("galeria-titulo"), "Rifa");
-    const premios = screen.getAllByLabelText("Prémios (uma linha cada, até 3)");
-    await userEvent.type(premios[0] as Element, "1.º Cabaz");
-    await userEvent.type(premios[2] as Element, "3.º Livro");
+    await userEvent.type(t("galeria-premio-1"), "1.º Cabaz");
+    await userEvent.type(t("galeria-premio-3"), "3.º Livro");
     await userEvent.click(t("galeria-usar"));
     await waitFor(() => expect(t("estado-template")).toHaveTextContent("galeria"));
     const pedido = servidor.chamadas("POST", /\/galeria$/)[0]?.corpo;
@@ -65,6 +64,25 @@ describe("galeria de templates (M4)", () => {
     });
     expect(t("estado-algarismos")).toHaveTextContent("Vera");
     expect(await screen.findByTestId("papel")).toBeInTheDocument(); // uma rifa: aparece o painel da folha
+  });
+
+  it("a pessoa escolhe quantos prémios quer: de 3 (o mínimo) a 10 (o máximo)", async () => {
+    abrir();
+    await userEvent.click((await screen.findByTestId("galeria")).querySelector("summary") as Element);
+    const escolha = t("galeria-n-premios") as HTMLSelectElement;
+    expect([...escolha.options].map((o) => o.value)).toEqual(["3", "4", "5", "6", "7", "8", "9", "10"]);
+    expect(escolha.value).toBe("3");
+    expect(screen.queryByTestId("galeria-premio-4")).toBeNull();
+    await userEvent.selectOptions(escolha, "10");
+    for (let i = 1; i <= 10; i++) await userEvent.type(t(`galeria-premio-${i}`), `${i}.º Prémio`);
+    expect(screen.queryByTestId("galeria-premio-11")).toBeNull();
+    await waitFor(() => expect(previas().some((p) => p.url.includes("p=10.%C2%BA+Pr%C3%A9mio"))).toBe(true));
+    await userEvent.selectOptions(escolha, "4"); // menos caixas: os prémios escondidos não vão na rifa
+    await userEvent.click(t("galeria-usar"));
+    await waitFor(() => expect(servidor.chamadas("POST", /\/galeria$/)).toHaveLength(1));
+    const corpo = servidor.chamadas("POST", /\/galeria$/)[0]?.corpo as { premios: string[] } | undefined;
+    const premios = corpo?.premios;
+    expect(premios).toEqual(["1.º Prémio", "2.º Prémio", "3.º Prémio", "4.º Prémio"]);
   });
 
   it("textos que a letra não tem dão um aviso em vez da imagem e desativam «Usar»", async () => {

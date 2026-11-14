@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.40.0 — 2026-11-14
+
+### Mới
+- **Từ 3 đến 10 giải thưởng trong thư viện:** ở cả 24 thiết kế của thư viện, bạn chọn vé có bao nhiêu giải thưởng (từ 3 đến 10; trước đây tối đa 3). Từ 6 giải trở lên sẽ chia thành hai cột. Cũng có trong ứng dụng Windows.
+
 ## 3.39.0 — 2026-11-13
 
 ### Mới

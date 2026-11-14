@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.40.0 — 2026-11-14
+
+### Yeni
+- **Galeride 3 ile 10 arası ödül:** galerideki 24 tasarımın hepsinde biletin kaç ödülü olacağını seçersiniz (3 ile 10; önceden en çok 3). 6'dan sonrası iki sütuna geçer. Windows uygulamasında da.
+
 ## 3.39.0 — 2026-11-13
 
 ### Yeni

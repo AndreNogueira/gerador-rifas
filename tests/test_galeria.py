@@ -78,7 +78,7 @@ def test_os_mesmos_textos_dao_os_mesmos_bytes():
     (galeria.Textos(titulo="日本語 हि"), "ह"),                                                       # tudo no mesmo texto tem de existir numa so familia
     (galeria.Textos(premios=("ok", "x\x00y")), "\x00"),
     (galeria.Textos(titulo="A" * (galeria.MAX_TITULO + 1)), "A" * 14 + "…"),                  # demasiado comprido
-    (galeria.Textos(premios=("a", "b", "c", "d")), "…"),
+    (galeria.Textos(premios=tuple(str(i) for i in range(galeria.MAX_PREMIOS + 1))), "…"),                  # 11 premios: mais do que o maximo
 ])
 def test_textos_que_a_letra_nao_tem_ou_que_nao_cabem_sao_um_erro(textos, car):
     e = erro_de(galeria.criar_template, "bosque", textos)
@@ -88,3 +88,21 @@ def test_textos_que_a_letra_nao_tem_ou_que_nao_cabem_sao_um_erro(textos, car):
 def test_desenho_desconhecido_e_acentos_e_simbolos_latinos():
     assert erro_de(galeria.criar_template, "nao-existe", TEXTOS)[1] == "err_galeria_texto"
     assert galeria.criar_template("bosque", galeria.Textos(titulo="Ação Ñandú Çéíóú Ø € ½ & % # (1)")).startswith(b"%PDF")
+
+
+PREMIOS_10 = tuple(f"{i}.º Prémio: " + "Cabaz de mantimentos e vinhos"[: galeria.MAX_PREMIO - 14] for i in range(1, 11))     # o 10.º tem algarismos: o motor nao pode confundi-lo com o numero
+
+
+@pytest.mark.parametrize("n", [3, 5, 6, 10])
+@pytest.mark.parametrize("desenho", [d.id for d in galeria.DESENHOS])
+def test_de_3_a_10_premios_em_todos_os_desenhos_o_motor_continua_a_ver_so_o_numero(tmp_path, algarismos, desenho, n):
+    textos = galeria.Textos("RIFA GRANDE", "Associação de Exemplo · Festa Grande", PREMIOS_10[:n], "Sorteio: 31/12/2099")
+    prep = core.preparar(_template(tmp_path, desenho, textos), algarismos)
+    assert prep.info.n_campos == 1 and prep.info.n_numeros == {1: 2} and prep.info.primeiro == "0001"
+    texto = _texto(galeria.criar_template(desenho, textos))
+    assert all(f"{i}.º Prémio" in texto for i in range(1, n + 1))                           # todos os premios estao desenhados
+
+
+def test_o_maximo_de_premios_e_10_e_o_minimo_pedido_3():
+    assert (galeria.MIN_PREMIOS, galeria.MAX_PREMIOS) == (3, 10)
+    assert galeria.criar_template("bosque", galeria.Textos(premios=PREMIOS_10)).startswith(b"%PDF")

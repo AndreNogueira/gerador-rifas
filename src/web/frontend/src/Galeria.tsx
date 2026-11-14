@@ -31,15 +31,18 @@ export const DESENHOS = [
   { id: "cinema", nome: "Cinema" },
 ] as const;
 
+/** Quantos prémios a pessoa pode escolher (`core/galeria.py`: `MIN_PREMIOS`, `MAX_PREMIOS`); a rifa passa a duas colunas a partir de 6. */
+export const MIN_PREMIOS = 3;
+export const MAX_PREMIOS = 10;
+const QUANTOS = Array.from({ length: MAX_PREMIOS - MIN_PREMIOS + 1 }, (_, i) => MIN_PREMIOS + i);
+
 interface Textos {
   titulo: string;
   organizacao: string;
-  p1: string;
-  p2: string;
-  p3: string;
+  premios: string[];
   data: string;
 }
-const VAZIOS: Textos = { titulo: "", organizacao: "", p1: "", p2: "", p3: "", data: "" };
+const VAZIOS: Textos = { titulo: "", organizacao: "", premios: Array(MAX_PREMIOS).fill(""), data: "" };
 
 /**
  * «Sem template? Escolha um da galeria»: um desenho, os textos da rifa, e «Usar este template» cria o template e os algarismos na sessão.
@@ -51,16 +54,22 @@ export function Galeria({ desativado }: { desativado: boolean }) {
   const [aberto, setAberto] = useState(false);
   const [desenho, setDesenho] = useState<string>(DESENHOS[0].id);
   const [f, setF] = useState<Textos>(VAZIOS);
+  const [quantos, setQuantos] = useState(MIN_PREMIOS);
   const [prev, setPrev] = useState<Textos>(VAZIOS);
   const [imagem, setImagem] = useState("");
   const [erro, setErro] = useState("");
   const anterior = useRef("");
 
+  // só contam os prémios das caixas que se vêem (os das caixas escondidas ficam guardados, mas não vão na rifa)
+  const premios = f.premios.slice(0, quantos).filter((p) => p.trim());
+  const chavePremios = JSON.stringify(premios);
+
   // os textos só vão ao servidor depois de uma pequena espera (não a cada tecla)
+  // biome-ignore lint/correctness/useExhaustiveDependencies: `chavePremios` já resume os prémios que contam
   useEffect(() => {
-    const espera = setTimeout(() => setPrev(f), 400);
+    const espera = setTimeout(() => setPrev({ ...f, premios }), 400);
     return () => clearTimeout(espera);
-  }, [f]);
+  }, [f.titulo, f.organizacao, f.data, chavePremios]);
 
   // a pré-visualização só se pede com a galeria aberta
   useEffect(() => {
@@ -68,7 +77,7 @@ export function Galeria({ desativado }: { desativado: boolean }) {
     const controlo = new AbortController();
     api
       .galeriaPrevia(
-        { desenho, t: prev.titulo, o: prev.organizacao, p1: prev.p1, p2: prev.p2, p3: prev.p3, d: prev.data },
+        { desenho, t: prev.titulo, o: prev.organizacao, p: prev.premios, d: prev.data },
         controlo.signal,
       )
       .then((blob) => {
@@ -92,7 +101,10 @@ export function Galeria({ desativado }: { desativado: boolean }) {
     [],
   );
 
-  const mudar = (campo: keyof Textos, valor: string) => setF((x) => ({ ...x, [campo]: valor }));
+  const mudar = (campo: "titulo" | "organizacao" | "data", valor: string) =>
+    setF((x) => ({ ...x, [campo]: valor }));
+  const mudarPremio = (i: number, valor: string) =>
+    setF((x) => ({ ...x, premios: x.premios.map((p, j) => (j === i ? valor : p)) }));
   const nomeDoDesenho = DESENHOS.find((d) => d.id === desenho)?.nome ?? "";
 
   return (
@@ -142,13 +154,29 @@ export function Galeria({ desativado }: { desativado: boolean }) {
       </div>
       <fieldset className="premios">
         <legend>{t("web_galeria_premios")}</legend>
-        {(["p1", "p2", "p3"] as const).map((k) => (
+        <label className="quantos-premios">
+          {t("web_galeria_n_premios")}
+          <select
+            value={quantos}
+            onChange={(e) => setQuantos(Number(e.target.value))}
+            data-testid="galeria-n-premios"
+          >
+            {QUANTOS.map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
+          </select>
+        </label>
+        {f.premios.slice(0, quantos).map((valor, i) => (
           <input
-            key={k}
-            value={f[k]}
-            onChange={(e) => mudar(k, e.target.value)}
+            // biome-ignore lint/suspicious/noArrayIndexKey: a posição é o que identifica cada prémio
+            key={i}
+            value={valor}
+            onChange={(e) => mudarPremio(i, e.target.value)}
             maxLength={50}
-            aria-label={t("web_galeria_premios")}
+            aria-label={`${t("web_galeria_premios")} ${i + 1}`}
+            data-testid={`galeria-premio-${i + 1}`}
           />
         ))}
       </fieldset>
@@ -164,7 +192,7 @@ export function Galeria({ desativado }: { desativado: boolean }) {
             desenho,
             titulo: f.titulo,
             organizacao: f.organizacao,
-            premios: [f.p1, f.p2, f.p3].filter((p) => p.trim()),
+            premios,
             data: f.data,
           })
         }

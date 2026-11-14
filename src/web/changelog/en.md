@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.40.0 — 2026-11-14
+
+### New
+- **3 to 10 prizes in the gallery:** in all 24 gallery designs you choose how many prizes the ticket has (3 to 10; it used to be 3 at most). From 6 on they go into two columns. Also in the Windows app.
+
 ## 3.39.0 — 2026-11-13
 
 ### New

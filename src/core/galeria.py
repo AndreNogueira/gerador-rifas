@@ -19,6 +19,8 @@ LARGURA, ALTURA = 535.0, 152.0           # a rifa (pt)
 MARGEM = 2.0
 TALAO = 62.0                             # largura do talao (esquerda)
 MAX_TITULO, MAX_ORGANIZACAO, MAX_PREMIO, MAX_DATA = 40, 60, 50, 30
+MIN_PREMIOS, MAX_PREMIOS = 3, 10         # quantos premios a pessoa pode escolher (as caixas na interface); a rifa tambem sai bem com menos
+POR_COLUNA = 5                           # ate 5 premios numa coluna; de 6 a 10 passam a duas colunas
 EXEMPLO = ("RIFA DE EXEMPLO", "Associação Imaginária · Festa de Exemplo",
            ("1.º Prémio: Cabaz de exemplo", "2.º Prémio: Vale de exemplo", "3.º Prémio: Livro de exemplo"), "Sorteio: 31/12/2099")
 
@@ -109,7 +111,7 @@ def validar(textos: Textos) -> None:
     _registar()
     todos = [textos.titulo, textos.organizacao, *textos.premios, textos.data]
     limites = [MAX_TITULO, MAX_ORGANIZACAO, *([MAX_PREMIO] * len(textos.premios)), MAX_DATA]
-    if len(textos.premios) > 3:
+    if len(textos.premios) > MAX_PREMIOS:
         raise ErroRifas("err_galeria_texto", car="…")
     for t, m in zip(todos, limites, strict=True):
         if len(t) > m:
@@ -236,11 +238,16 @@ def _rifa(c, d: Desenho, x: float, yb: float, w: float, h: float, textos: Textos
         c.setFont(f, tam)
         c.drawString(bx + 44, yb + h - 47, textos.organizacao)
     c.setFillColorRGB(0.15, 0.15, 0.15)
-    for i, linha in enumerate(p for p in textos.premios if p.strip()):
+    premios = [p for p in textos.premios if p.strip()]
+    colunas = 2 if len(premios) > POR_COLUNA else 1
+    espaco = w - 148 - 12 - bx + x                                    # a largura que ha para os premios
+    larg_coluna = (espaco - 12) / 2 if colunas == 2 else espaco
+    for i, linha in enumerate(premios):
+        coluna, fila = divmod(i, POR_COLUNA) if colunas == 2 else (0, i)
         f = letras.fonte(linha)
-        tam = _ajustar(linha, f, 9.5, w - 148 - 12 - bx + x, 6)
+        tam = _ajustar(linha, f, 9.5 if colunas == 1 else 8, larg_coluna, 6 if colunas == 1 else 4.5)
         c.setFont(f, tam)
-        c.drawString(bx, yb + h - 70 - i * 13, linha)
+        c.drawString(bx + coluna * (larg_coluna + 12), yb + h - 70 - fila * 13, linha)
     if textos.data.strip():
         f = letras.fonte(textos.data, True)
         tam = _ajustar(textos.data, f, 10.5, w - 148 - 12 - bx + x, 7)
