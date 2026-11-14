@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.43.1 — 2026-11-14
+
+### Cải thiện
+- **Chân trang gọn hơn:** các bài «Hướng dẫn» nay chỉ nằm trong nhóm ở đầu trang; không còn lặp lại ở cuối trang.
+
 ## 3.43.0 — 2026-11-14
 
 ### Cải thiện

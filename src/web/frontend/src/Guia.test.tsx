@@ -38,25 +38,4 @@ describe("guias «como fazer»", () => {
       await screen.findByRole("heading", { level: 1, name: "Como fazer uma rifa para a associação" }),
     ).toBeInTheDocument();
   });
-
-  it("o rodapé liga a todos os guias", async () => {
-    abrir("/");
-    const rodape = await screen.findByRole("navigation", { name: "Informação" });
-    expect(within(rodape).getByRole("link", { name: "Para escolas" })).toHaveAttribute(
-      "href",
-      "/rifas-para-escolas",
-    );
-    expect(within(rodape).getByRole("link", { name: "Para associações" })).toHaveAttribute(
-      "href",
-      "/rifas-para-associacoes",
-    );
-    for (const [nome, caminho] of [
-      ["Para clubes", "/rifas-para-clubes"],
-      ["Para bombeiros", "/rifas-para-bombeiros"],
-      ["Para festas de bairro", "/rifas-para-festas"],
-      ["Para paróquias", "/rifas-para-igrejas"],
-    ]) {
-      expect(within(rodape).getByRole("link", { name: nome })).toHaveAttribute("href", caminho);
-    }
-  });
 });

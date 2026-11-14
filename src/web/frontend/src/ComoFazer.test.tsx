@@ -68,10 +68,10 @@ describe("o grupo «Como fazer» no cabeçalho", () => {
     expect(document.getElementById("menu-como-fazer")).toBeNull();
   });
 
-  it("o rodapé continua a ter os guias (ligações para os motores de pesquisa)", async () => {
+  it("o rodapé já não repete os guias (vivem só neste grupo)", async () => {
     abrir();
     const rodape = await screen.findByRole("navigation", { name: "Informação" });
-    for (const g of MENU_COMO_FAZER) expect(rodape.querySelector(`a[href="${g.para}"]`)).not.toBeNull();
+    for (const g of MENU_COMO_FAZER) expect(rodape.querySelector(`a[href="${g.para}"]`)).toBeNull();
   });
 });
 

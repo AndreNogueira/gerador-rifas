@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.43.1 — 2026-11-14
+
+### Verbeterd
+- **Opgeruimdere voettekst:** de gidsen «Handleidingen» staan nu alleen in de groep in de kop; ze herhalen zich niet meer onderaan de pagina.
+
 ## 3.43.0 — 2026-11-14
 
 ### Verbeterd

@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.43.1 — 2026-11-14
+
+### Ditingkatkan
+- **Footer lebih rapi:** panduan «Cara membuat» kini hanya muncul di grup header; tidak lagi diulang di bagian bawah halaman.
+
 ## 3.43.0 — 2026-11-14
 
 ### Ditingkatkan

@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.43.1 — 2026-11-14
+
+### Millores
+- **Peu de pàgina més net:** les guies «Com fer-ho» ara només apareixen al grup de la capçalera; ja no es repeteixen al final de la pàgina.
+
 ## 3.43.0 — 2026-11-14
 
 ### Millores

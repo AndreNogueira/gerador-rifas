@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.43.1 — 2026-11-14
+
+### Verbessert
+- **Aufgeräumtere Fußzeile:** die Anleitungen erscheinen nur noch in der Gruppe der Kopfzeile; unten auf der Seite wiederholen sie sich nicht mehr.
+
 ## 3.43.0 — 2026-11-14
 
 ### Verbessert

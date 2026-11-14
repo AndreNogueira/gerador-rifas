@@ -74,6 +74,9 @@ def _corpo_inicio(lg: str) -> str:
     with i18n.com_lingua(lg):
         topicos = tutorial.lista_de_topicos("web")
     passos = "".join(f"<li><strong>{html.escape(topicos[i][1])}.</strong> {html.escape(topicos[i][2].split(chr(10) * 2)[0])}</li>" for i in (1, 3, 4, 5))
+    # os guias «como fazer» já não estão no rodapé (vivem num menu do cabeçalho, que só põe as ligações no DOM aberto): são páginas de
+    # entrada para os motores de pesquisa, por isso a página inicial liga-as sempre aqui
+    guias_html = "".join(f'<li><a href="{_l(lg, caminho)}">{html.escape(guias.guia(nome, lg)["titulo"])}</a></li>' for nome, caminho in guias.CAMINHOS.items())
     return (
         f"<h1>{html.escape(_app(lg))}</h1><p>{html.escape(texto('intro', lg))}</p>"
         f"<h2>{html.escape(texto('como', lg))}</h2><ol>{passos}</ol>"
@@ -81,6 +84,7 @@ def _corpo_inicio(lg: str) -> str:
         f'<nav><a href="{_l(lg, "/tutorial")}">{html.escape(_nome_pagina("tut_titulo")(lg))}</a> '
         f'<a href="{_l(lg, "/video")}">{html.escape(_nome_pagina("mi_video")(lg))}</a> '
         f'<a href="{_l(lg, "/sobre")}">{html.escape(_nome_pagina("mi_sobre")(lg))}</a></nav>'
+        f"<nav><ul>{guias_html}</ul></nav>"
     )
 
 
