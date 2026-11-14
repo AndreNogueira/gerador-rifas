@@ -231,13 +231,16 @@ CHAVES: dict[str, dict[str, str]] = {
         "tr": "Kuruluş veya etkinlik", "zh": "组织或活动", "ja": "団体またはイベント", "ko": "단체 또는 행사", "hi": "संस्था या कार्यक्रम",
     },
     "web_galeria_premios": {
-        "pt": "Prémios (uma linha cada, até 3)", "en": "Prizes (one line each, up to 3)", "es": "Premios (una línea cada uno, hasta 3)",
-        "fr": "Lots (une ligne chacun, jusqu'à 3)", "de": "Preise (je eine Zeile, bis zu 3)", "it": "Premi (una riga ciascuno, fino a 3)",
-        "nl": "Prijzen (elk één regel, maximaal 3)", "pl": "Nagrody (po jednej linii, do 3)", "sv": "Vinster (en rad vardera, upp till 3)",
-        "cs": "Ceny (každá na jednom řádku, nejvýše 3)", "ro": "Premii (câte o linie, până la 3)",
-        "el": "Βραβεία (μία γραμμή το καθένα, έως 3)", "ru": "Призы (по строке, до 3)", "tr": "Ödüller (her biri bir satır, en çok 3)",
-        "zh": "奖品（每行一个，最多 3 个）", "ja": "賞品（1行ずつ、最大3つ）", "ko": "상품(한 줄씩, 최대 3개)",
-        "hi": "पुरस्कार (हर एक एक पंक्ति में, अधिकतम 3)",
+         "pt": "Prémios (uma linha cada)", "en": "Prizes (one line each)", "es": "Premios (una línea cada uno)", "fr": "Lots (une ligne chacun)",
+         "de": "Preise (je eine Zeile)", "it": "Premi (una riga ciascuno)", "nl": "Prijzen (elk één regel)", "pl": "Nagrody (po jednej linii)",
+         "sv": "Vinster (en rad vardera)", "cs": "Ceny (každá na jednom řádku)", "ro": "Premii (câte o linie)", "el": "Βραβεία (μία γραμμή το καθένα)",
+         "ru": "Призы (по строке)", "tr": "Ödüller (her biri bir satır)", "zh": "奖品（每行一个）", "ja": "賞品（1行ずつ）", "ko": "상품(한 줄씩)",
+         "hi": "पुरस्कार (हर एक एक पंक्ति में)",
+    },
+    "web_galeria_n_premios": {
+         "pt": "Quantos prémios", "en": "How many prizes", "es": "Cuántos premios", "fr": "Combien de lots", "de": "Wie viele Preise",
+         "it": "Quanti premi", "nl": "Hoeveel prijzen", "pl": "Ile nagród", "sv": "Hur många vinster", "cs": "Kolik cen", "ro": "Câte premii",
+         "el": "Πόσα βραβεία", "ru": "Сколько призов", "tr": "Kaç ödül", "zh": "奖品数量", "ja": "賞品の数", "ko": "상품 개수", "hi": "कितने पुरस्कार",
     },
     "web_galeria_data": {
         "pt": "Data do sorteio", "en": "Draw date", "es": "Fecha del sorteo", "fr": "Date du tirage", "de": "Datum der Ziehung",

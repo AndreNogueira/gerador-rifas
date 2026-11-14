@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.40.0 — 2026-11-14
+
+### Nytt
+- **3 till 10 vinster i galleriet:** i alla 24 gallerimallar väljer du hur många vinster lotten har (3 till 10; tidigare högst 3). Från 6 går de i två kolumner. Även i Windows-appen.
+
 ## 3.39.0 — 2026-11-13
 
 ### Nytt

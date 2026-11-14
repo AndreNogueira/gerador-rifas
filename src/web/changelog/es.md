@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.40.0 — 2026-11-14
+
+### Novedades
+- **De 3 a 10 premios en la galería:** en los 24 diseños de la galería eliges cuántos premios lleva la rifa (de 3 a 10; antes eran 3 como máximo). A partir de 6 pasan a dos columnas. También en la app de Windows.
+
 ## 3.39.0 — 2026-11-13
 
 ### Novedades

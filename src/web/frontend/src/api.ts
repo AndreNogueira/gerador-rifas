@@ -247,12 +247,15 @@ export const api = {
   linguas: () => pedir<Linguas>("GET", "/api/linguas"),
   textos: (lingua: string) => pedir<Textos>("GET", `/api/textos/${encodeURIComponent(lingua)}`),
   tutorial: () => pedir<Tutorial>("GET", "/api/tutorial"),
-  /** O PNG de um desenho da galeria com estes textos (`t`, `o`, `p1`..`p3`, `d`). */
-  galeriaPrevia: (p: Record<string, string>, sinal?: AbortSignal) =>
-    pedir<Blob>("GET", `/api/galeria/previa.png?${new URLSearchParams(p).toString()}`, {
-      bruto: true,
-      sinal,
-    }),
+  /** O PNG de um desenho da galeria com estes textos (`t`, `o`, os prémios, de 3 a 10, em `p` repetido, e `d`). */
+  galeriaPrevia: (
+    p: { desenho: string; t: string; o: string; p: string[]; d: string },
+    sinal?: AbortSignal,
+  ) => {
+    const q = new URLSearchParams({ desenho: p.desenho, t: p.t, o: p.o, d: p.d });
+    for (const premio of p.p) q.append("p", premio);
+    return pedir<Blob>("GET", `/api/galeria/previa.png?${q.toString()}`, { bruto: true, sinal });
+  },
   logotipo: (id: string, ficheiro: File) => pedir<Sessao>("PUT", `${s(id)}/logotipo`, { ficheiro }),
   removerLogotipo: (id: string) => pedir<Sessao>("DELETE", `${s(id)}/logotipo`),
   usarGaleria: (id: string, dados: DadosGaleria) =>

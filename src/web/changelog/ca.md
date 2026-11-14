@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.40.0 — 2026-11-14
+
+### Novetats
+- **De 3 a 10 premis a la galeria:** als 24 dissenys de la galeria triau quants premis té la rifa (de 3 a 10; abans, 3 com a màxim). A partir de 6 passen a dues columnes. També a l'app de Windows.
+
 ## 3.39.0 — 2026-11-13
 
 ### Novetats

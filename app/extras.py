@@ -163,11 +163,12 @@ class Galeria(Janela):
         self.token = 0
         self._espera = None
         self._foto = None
-        self.v = {k: tk.StringVar() for k in ("titulo", "organizacao", "p1", "p2", "p3", "data")}
+        self.v = {k: tk.StringVar() for k in ("titulo", "organizacao", *(f"p{i}" for i in range(1, galeria.MAX_PREMIOS + 1)), "data")}
+        self.v_n = tk.StringVar(value=str(galeria.MIN_PREMIOS))          # quantos premios (3 a 10): so os das caixas visiveis entram na rifa
         self.v_desenho = tk.StringVar(value=galeria.DESENHOS[0].id)
         self.grid_columnconfigure(1, weight=1)
         self.grid_rowconfigure(0, weight=1)
-        esq = ctk.CTkFrame(self, fg_color="transparent", width=360)
+        esq = ctk.CTkScrollableFrame(self, fg_color="transparent", width=340)          # com 10 premios a coluna nao cabe no ecra: rola
         esq.grid(row=0, column=0, sticky="ns", padx=(14, 0), pady=12)
         self.etiqueta(esq, t("web_galeria"), wraplength=330).pack(fill="x", pady=(0, 6))
         self.seg = ctk.CTkOptionMenu(                       # 24 desenhos: uma lista suspensa (um botão segmentado não os comporta)
@@ -181,8 +182,19 @@ class Galeria(Janela):
             self.etiqueta(esq, rotulo).pack(fill="x")
             app._entrada(esq, self.v[chave]).pack(fill="x", pady=(0, 6))
         self.etiqueta(esq, t("web_galeria_premios")).pack(fill="x")
-        for chave in ("p1", "p2", "p3"):
-            app._entrada(esq, self.v[chave]).pack(fill="x", pady=(0, 4))
+        linha_n = ctk.CTkFrame(esq, fg_color="transparent")
+        linha_n.pack(fill="x", pady=(0, 4))
+        self.etiqueta(linha_n, t("web_galeria_n_premios")).pack(side="left")
+        self.menu_n = ctk.CTkOptionMenu(
+            linha_n, values=[str(n) for n in range(galeria.MIN_PREMIOS, galeria.MAX_PREMIOS + 1)], variable=self.v_n, width=70, height=30,
+            corner_radius=8, fg_color=C["campo"], button_color=C["borda"], button_hover_color=C["acento_suave"], text_color=C["texto"],
+            dropdown_fg_color=C["cartao"], dropdown_text_color=C["texto"], dropdown_hover_color=C["acento_suave"], font=ctk.CTkFont(FONTE, 13),
+            command=lambda _: self._mostrar_premios())
+        self.menu_n.pack(side="right")
+        self.f_premios = ctk.CTkFrame(esq, fg_color="transparent")
+        self.f_premios.pack(fill="x")
+        self.e_premios = [app._entrada(self.f_premios, self.v[f"p{i}"]) for i in range(1, galeria.MAX_PREMIOS + 1)]
+        self._mostrar_premios()
         self.etiqueta(esq, t("web_galeria_data")).pack(fill="x", pady=(4, 0))
         app._entrada(esq, self.v["data"]).pack(fill="x", pady=(0, 10))
         self.b_usar = app._botao(esq, t("web_galeria_usar"), self._usar, True, icone="gerar", height=42)
@@ -196,6 +208,19 @@ class Galeria(Janela):
             v.trace_add("write", lambda *_: self._agendar())
         self._agendar(0)
 
+    def _n_premios(self) -> int:
+        try:
+            return min(max(int(self.v_n.get()), galeria.MIN_PREMIOS), galeria.MAX_PREMIOS)
+        except ValueError:
+            return galeria.MIN_PREMIOS
+
+    def _mostrar_premios(self) -> None:
+        for e in self.e_premios:
+            e.pack_forget()
+        for e in self.e_premios[:self._n_premios()]:
+            e.pack(fill="x", pady=(0, 4))
+        self._agendar(0)
+
     def _desenho(self, nome: str) -> None:
         self.v_desenho.set(next(d.id for d in galeria.DESENHOS if d.nome == nome))
         self._agendar(0)
@@ -203,7 +228,7 @@ class Galeria(Janela):
     def _textos(self) -> core.galeria.Textos:
         v = {k: x.get().strip() for k, x in self.v.items()}
         return galeria.Textos(v["titulo"][:galeria.MAX_TITULO], v["organizacao"][:galeria.MAX_ORGANIZACAO],
-                              tuple(v[k][:galeria.MAX_PREMIO] for k in ("p1", "p2", "p3") if v[k]), v["data"][:galeria.MAX_DATA])
+                              tuple(v[f"p{i}"][:galeria.MAX_PREMIO] for i in range(1, self._n_premios() + 1) if v[f"p{i}"]), v["data"][:galeria.MAX_DATA])
 
     def _agendar(self, atraso: int = 350) -> None:
         if self._espera:

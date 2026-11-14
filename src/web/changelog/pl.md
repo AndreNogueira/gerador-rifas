@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.40.0 — 2026-11-14
+
+### Nowości
+- **Od 3 do 10 nagród w galerii:** we wszystkich 24 wzorach z galerii wybierasz, ile nagród ma los (od 3 do 10; wcześniej najwyżej 3). Od 6 w górę są w dwóch kolumnach. Także w aplikacji Windows.
+
 ## 3.39.0 — 2026-11-13
 
 ### Nowości

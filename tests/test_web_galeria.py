@@ -30,9 +30,25 @@ def c(tmp_path, motor):
 
 @pytest.mark.parametrize("desenho", ["bosque", "quermesse", "natal", "gala"])
 def test_previa_png_de_cada_desenho(c, desenho):
-    r = c.get("/api/galeria/previa.png", params={"desenho": desenho, "t": "Rifa de Natal", "o": "Associação", "p1": "1.º Prémio", "d": "24/12/26"})
+    r = c.get("/api/galeria/previa.png", params={"desenho": desenho, "t": "Rifa de Natal", "o": "Associação", "p": ["1.º Prémio", "2.º Prémio"], "d": "24/12/26"})
     assert r.status_code == 200 and r.content[:8] == PNG and r.headers["content-type"] == "image/png"
     assert r.headers["x-content-type-options"] == "nosniff"
+
+
+def test_previa_aceita_de_3_a_10_premios_e_recusa_mais(c):
+    dez = [f"{i}.º Prémio: Cabaz" for i in range(1, 11)]
+    r = c.get("/api/galeria/previa.png", params={"desenho": "natal", "p": dez})
+    assert r.status_code == 200 and r.content[:8] == PNG
+    assert c.get("/api/galeria/previa.png", params={"desenho": "natal", "p": dez + ["11.º"]}).status_code == 422
+    assert c.get("/api/galeria/previa.png", params={"desenho": "natal", "p": ["x" * 51]}).status_code == 422
+
+
+def test_usar_com_10_premios_funciona_e_com_11_e_recusado(c):
+    s = c.post("/api/sessoes").json()["sessao"]
+    dez = [f"{i}.º Prémio: Cabaz" for i in range(1, 11)]
+    r = c.post(f"/api/sessoes/{s}/galeria", json={"desenho": "bosque", "premios": dez})
+    assert r.status_code == 200 and r.json()["pronto"] and r.json()["info"]["n_campos"] == 1
+    assert c.post(f"/api/sessoes/{s}/galeria", json={"desenho": "bosque", "premios": dez + ["11.º"]}).status_code == 422
 
 
 def test_previa_com_textos_invalidos_ou_desenho_desconhecido_e_um_aviso_traduzido(c):
@@ -65,7 +81,7 @@ def test_usar_com_textos_que_a_letra_nao_tem_nao_mexe_na_sessao(c):
     r = c.post(f"/api/sessoes/{s}/galeria", json={"desenho": "natal", "titulo": "हिन्दी"}, headers=h)
     assert r.status_code == 422 and "supported letters" in r.json()["detail"]
     assert c.get(f"/api/sessoes/{s}").json()["template"]["estado"] == "vazio"
-    assert c.post(f"/api/sessoes/{s}/galeria", json={"desenho": "natal", "premios": ["a", "b", "c", "d"]}, headers=h).status_code == 422
+    assert c.post(f"/api/sessoes/{s}/galeria", json={"desenho": "natal", "premios": [str(i) for i in range(11)]}, headers=h).status_code == 422
 
 
 def test_o_metrico_da_galeria_so_leva_o_id_do_desenho(c, tmp_path):

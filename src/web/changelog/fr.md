@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.40.0 — 2026-11-14
+
+### Nouveautés
+- **De 3 à 10 lots dans la galerie :** dans les 24 dessins de la galerie, vous choisissez combien de lots porte le billet (3 à 10 ; avant, 3 au maximum). À partir de 6, ils passent sur deux colonnes. Aussi dans l'appli Windows.
+
 ## 3.39.0 — 2026-11-13
 
 ### Nouveautés

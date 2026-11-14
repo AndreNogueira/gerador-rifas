@@ -7,10 +7,11 @@ from __future__ import annotations
 
 import asyncio
 from concurrent.futures.process import BrokenProcessPool
+from typing import Annotated
 
 from core import ErroRifas, galeria, i18n
 from fastapi import APIRouter, Depends, Query, Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StringConstraints
 
 from . import trabalhos
 from .modelos import ErroApi, Sessao
@@ -25,7 +26,7 @@ class PedidoGaleria(BaseModel):
     desenho: str = Field(max_length=20)
     titulo: str = Field("", max_length=galeria.MAX_TITULO)
     organizacao: str = Field("", max_length=galeria.MAX_ORGANIZACAO)
-    premios: list[str] = Field(default_factory=list, max_length=3)
+    premios: list[str] = Field(default_factory=list, max_length=galeria.MAX_PREMIOS)
     data: str = Field("", max_length=galeria.MAX_DATA)
 
     def textos(self) -> galeria.Textos:
@@ -34,12 +35,12 @@ class PedidoGaleria(BaseModel):
 
 @router.get("/galeria/previa.png", dependencies=[Depends(leve)])
 async def previa(desenho: str = Query(max_length=20), t: str = Query("", max_length=galeria.MAX_TITULO),
-                 o: str = Query("", max_length=galeria.MAX_ORGANIZACAO), p1: str = Query("", max_length=galeria.MAX_PREMIO),
-                 p2: str = Query("", max_length=galeria.MAX_PREMIO), p3: str = Query("", max_length=galeria.MAX_PREMIO),
+                 o: str = Query("", max_length=galeria.MAX_ORGANIZACAO),
+                 p: Annotated[list[Annotated[str, StringConstraints(max_length=galeria.MAX_PREMIO)]], Query(max_length=galeria.MAX_PREMIOS)] = [],  # noqa: B006
                  d: str = Query("", max_length=galeria.MAX_DATA), serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Response:
     """O PNG do desenho com estes textos (so se desenha, nada se guarda)."""
     try:
-        r = await serv.motor.curto(trabalhos.galeria_png, desenho, t, o, (p1, p2, p3), d, 110)
+        r = await serv.motor.curto(trabalhos.galeria_png, desenho, t, o, tuple(p), d, 110)
     except Ocupado:
         raise _ocupado(lg) from None
     except (asyncio.TimeoutError, BrokenProcessPool) as e:

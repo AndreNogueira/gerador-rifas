@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.40.0 — 2026-11-14
+
+### Neu
+- **3 bis 10 Preise in der Galerie:** in allen 24 Galerie-Designs wählen Sie, wie viele Preise das Los hat (3 bis 10; bisher höchstens 3). Ab 6 stehen sie in zwei Spalten. Auch in der Windows-App.
+
 ## 3.39.0 — 2026-11-13
 
 ### Neu

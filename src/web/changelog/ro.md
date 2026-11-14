@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.40.0 — 2026-11-14
+
+### Noutăți
+- **De la 3 la 10 premii în galerie:** în toate cele 24 de modele din galerie alegeți câte premii are biletul (de la 3 la 10; înainte cel mult 3). De la 6 în sus merg pe două coloane. Și în aplicația Windows.
+
 ## 3.39.0 — 2026-11-13
 
 ### Noutăți

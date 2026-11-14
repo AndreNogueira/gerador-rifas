@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.40.0 — 2026-11-14
+
+### Nieuw
+- **3 tot 10 prijzen in de galerij:** in alle 24 ontwerpen van de galerij kies je hoeveel prijzen het lot heeft (3 tot 10; eerder maximaal 3). Vanaf 6 staan ze in twee kolommen. Ook in de Windows-app.
+
 ## 3.39.0 — 2026-11-13
 
 ### Nieuw
