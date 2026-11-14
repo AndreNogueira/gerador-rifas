@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.35.0 — 2026-11-13
+
+### Nieuw
+- **Windows-app 2.6:** het menu «Extras» krijgt «Opdracht bewaren…» en «Opdracht openen…» (een .rifas-bestand met de nummers, de naam, de series, de kleuren en de snijmarkeringen, zonder sjabloon of paden), de sjablooneditor kan afbeeldingen toevoegen (PNG of JPG) en «Beeld → Visueel» gaat van 2 naar de 14 thema's van de site (alleen de kleuren). Ook erbij: wat sinds 2.4 kwam: de editor, de 24 ontwerpen van de galerij en de 22 talen.
+
 ## 3.34.0 — 2026-11-13
 
 ### Nieuw

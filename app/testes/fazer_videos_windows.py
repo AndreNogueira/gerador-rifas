@@ -1,7 +1,7 @@
 """Grava os videos das funcionalidades da app Windows (assets/video/windows_<id>_<lingua>.mp4) com a propria aplicacao.
 
 Como `fazer_video.py`: a janela REAL e comandada passo a passo, fotografada e cada fotograma leva uma legenda grande (sem som). Aqui os passos sao
-os de cada funcionalidade (series, lista, marcas de corte, galeria, marca propria, sorteio, visual); as outras (QR, guardar, instalar) so existem no site.
+os de cada funcionalidade (series, lista, marcas de corte, galeria, marca propria, editor, sorteio, visual, pedido); as outras (QR, guardar, instalar) so existem no site.
 A preparacao (carregar o template) nao se grava. Precisa de um ffmpeg (so para gravar; nao vai na app): `uv pip install --python .venv\\Scripts\\python.exe
 imageio-ffmpeg`, ou a variavel FFMPEG.
 
@@ -189,6 +189,30 @@ def cena_lista(a, g, T):
     g.segundos(3.4, T("A folha de controlo é um PDF para imprimir e ir marcando quem pagou", "The control sheet is a PDF to print and tick off who paid"))
 
 
+def cena_pedido(a, g, T):
+    g.segundos(1.8, T("Guardar e abrir o pedido", "Save and open your request"))
+    a.v_inicio.set("1")
+    a.v_fim.set("300")
+    a.e_nome.delete(0, "end")
+    a.e_nome.insert(0, T("Rifa de Natal", "Christmas raffle"))
+    a.v_nome.set(a.e_nome.get())
+    a.v_prefixos.set("A-, B-")
+    g.segundos(2.6, T("Os números, o nome e as séries estão preenchidos", "The numbers, the name and the series are filled in"))
+    pasta = Path(tempfile.mkdtemp(prefix="rifas-video-"))
+    destino = pasta / "pedido.rifas"
+    filedialog.asksaveasfilename = lambda **k: str(destino)
+    filedialog.askopenfilename = lambda **k: str(destino)
+    g.segundos(1.8, T("Menu «Extras» → «Guardar pedido…»", "Menu “Extras” → “Save request…”"))
+    a._guardar_pedido()
+    g.segundos(3.0, T("Fica um ficheiro .rifas: sem template, sem algarismos e sem caminhos", "A .rifas file: no template, no digits and no paths"))
+    a._limpar_tudo()
+    a.update()
+    g.segundos(2.4, T("No ano seguinte (aqui, com tudo limpo)…", "Next year (here, with everything cleared)…"))
+    g.segundos(1.8, T("Menu «Extras» → «Abrir pedido…»", "Menu “Extras” → “Open request…”"))
+    a._abrir_pedido()
+    g.segundos(3.6, T("Os valores voltam: só muda o que for preciso", "The values are back: change only what you need"))
+
+
 def cena_marcas(a, g, T):
     g.segundos(1.8, T("Marcas de corte", "Crop marks"))
     g.segundos(3.0, T("Com uma só rifa repetida na folha, a margem deve ter 3 mm ou mais", "With a single ticket repeated on the sheet, the margin must be 3 mm or more"))
@@ -329,7 +353,7 @@ def cena_visual(a, g, T):
 
 
 CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria), "editor": (None, cena_editor),
-         "marca": (UMA_RIFA, cena_marca), "sorteio": (VARIAS, cena_sorteio), "visual": (VARIAS, cena_visual)}
+         "marca": (UMA_RIFA, cena_marca), "sorteio": (VARIAS, cena_sorteio), "visual": (VARIAS, cena_visual), "pedido": (None, cena_pedido)}
 
 
 def main() -> int:

@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.35.0 — 2026-11-13
+
+### Mới
+- **Ứng dụng Windows 2.6:** menu «Extras» có thêm «Lưu yêu cầu…» và «Mở yêu cầu…» (tệp .rifas chứa các số, tên, sê-ri, màu sắc và dấu cắt, không có mẫu và đường dẫn), trình chỉnh sửa mẫu có thể thêm hình ảnh (PNG hoặc JPG), và «Xem → Giao diện» tăng từ 2 lên 14 chủ đề của trang web (chỉ màu sắc). Cũng gồm những gì có từ bản 2.4: trình chỉnh sửa, 24 mẫu trong thư viện và 22 ngôn ngữ.
+
 ## 3.34.0 — 2026-11-13
 
 ### Mới

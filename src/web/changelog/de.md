@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.35.0 — 2026-11-13
+
+### Neu
+- **Windows-App 2.6:** Das Menü „Extras“ bekommt „Auftrag speichern…“ und „Auftrag öffnen…“ (eine .rifas-Datei mit Nummern, Name, Serien, Farben und Schnittmarken, ohne Vorlage und Pfade), der Vorlageneditor kann Bilder (PNG oder JPG) einfügen und „Ansicht → Visuell“ wächst von 2 auf die 14 Themen der Website (nur die Farben). Dazu kommt, was seit 2.4 hinzukam: der Editor, die 24 Designs der Galerie und die 22 Sprachen.
+
 ## 3.34.0 — 2026-11-13
 
 ### Neu

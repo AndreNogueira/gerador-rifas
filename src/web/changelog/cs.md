@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.35.0 — 2026-11-13
+
+### Novinky
+- **Aplikace pro Windows 2.6:** nabídka «Extras» získává «Uložit zakázku…» a «Otevřít zakázku…» (soubor .rifas s čísly, názvem, sériemi, barvami a ořezovými značkami, bez šablony a cest), editor šablon umí přidávat obrázky (PNG nebo JPG) a «Zobrazení → Vzhled» se rozšiřuje ze 2 na 14 motivů webu (jen barvy). Přináší i to, co přišlo od verze 2.4: editor, 24 vzorů v galerii a 22 jazyků.
+
 ## 3.34.0 — 2026-11-13
 
 ### Novinky

@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.35.0 — 2026-11-13
+
+### New
+- **Windows app 2.6:** the “Extras” menu gains “Save request…” and “Open request…” (a .rifas file with the numbers, the name, the series, the colours and the crop marks, with no template or paths), the template editor can add images (PNG or JPG) and “View → Visual” goes from 2 to the site's 14 themes (colours only). It also brings what came since 2.4: the editor, the gallery's 24 designs and the 22 languages.
+
 ## 3.34.0 — 2026-11-13
 
 ### New

@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.35.0 — 2026-11-13
+
+### Novedades
+- **App de Windows 2.6:** el menú «Extras» gana «Guardar pedido…» y «Abrir pedido…» (un archivo .rifas con los números, el nombre, las series, los colores y las marcas de corte, sin plantilla ni rutas), el editor de plantillas puede añadir imágenes (PNG o JPG) y «Ver → Visual» pasa de 2 a los 14 temas del sitio (solo los colores). Incluye también lo que llegó desde la 2.4: el editor, los 24 diseños de la galería y las 22 lenguas.
+
 ## 3.34.0 — 2026-11-13
 
 ### Novedades

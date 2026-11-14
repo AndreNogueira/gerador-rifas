@@ -6,16 +6,23 @@ Coordenadas em pt, origem em cima à esquerda, como em `core.editor`; um texto a
 """
 from __future__ import annotations
 
+import base64
 import copy
+import io
 import itertools
 import time
 from dataclasses import asdict, dataclass, field
 
 from . import editor
+from .motor import ErroRifas
 
 MAX_HISTORICO = 50
 JUNTAR_S = 1.2                                   # alterações seguidas ao mesmo valor, a menos de 1,2 s, são um só passo
 TOLERANCIA = 4.0                                 # pt à volta de uma linha ou de um contorno para a apanhar com o rato
+IMAGEM_LADO_PX = 600                             # a imagem junta-se reduzida a 600 px (o mesmo que o site) e com o limite de bytes do `core.editor`
+ASSINATURA_PNG = bytes.fromhex("89504e470d0a1a0a")
+ASSINATURA_JPG = bytes.fromhex("ffd8ff")
+IMAGEM_CABE_PT = (160.0, 80.0)                   # entra a caber numa caixa de 160 × 80 pt, na proporção original, sem ampliar
 _ids = itertools.count(1)
 
 
@@ -36,11 +43,14 @@ class El:
     negrito: bool = False
     alinhamento: str = "e"
     rot: int = 0
+    dados: str = ""                      # só a imagem: `data:image/png|jpeg;base64,…` (como no site)
     id: int = field(default_factory=lambda: next(_ids))
 
     def para_dict(self) -> dict:
         d = asdict(self)
         d.pop("id")
+        if self.tipo != "imagem":
+            d.pop("dados")
         if self.tipo == "retangulo" and self.espessura <= 0:
             d["contorno"] = ""
         return d
@@ -82,7 +92,8 @@ class Modelo:
         self.altura = float(desenho.get("altura", 152))
         self.fundo = str(desenho.get("fundo", "#ffffff"))
         campos = set(El.__dataclass_fields__) - {"id"}
-        self.elementos = [El(**{k: v for k, v in e.items() if k in campos}) for e in desenho.get("elementos", []) if e.get("tipo") in editor.TIPOS and e.get("tipo") != "imagem"]
+        self.elementos = [El(**{k: v for k, v in e.items() if k in campos}) for e in desenho.get("elementos", [])
+                          if e.get("tipo") in editor.TIPOS and (e.get("tipo") != "imagem" or str(e.get("dados", "")).startswith("data:image/"))]
         self.passado, self.futuro, self._grupo = [], [], None
 
     def para_dict(self) -> dict:
@@ -159,6 +170,19 @@ class Modelo:
         self.elementos.append(novo)
         return novo.id
 
+    def adicionar_imagem(self, bruto: bytes) -> int | None:
+        """Junta uma imagem (PNG ou JPG, os bytes do ficheiro) no meio do desenho; None se já há elementos ou imagens a mais.
+        `ErroRifas("err_editor_imagem")` se não é uma imagem a sério. Devolve o id."""
+        if len(self.elementos) >= editor.MAX_ELEMENTOS or sum(1 for e in self.elementos if e.tipo == "imagem") >= editor.MAX_IMAGENS:
+            return None
+        dados, largura, altura = imagem_para_dados(bruto)
+        escala = min(IMAGEM_CABE_PT[0] / largura, IMAGEM_CABE_PT[1] / altura, 1.0)
+        w, h = max(round(largura * escala), 4), max(round(altura * escala), 4)
+        novo = _el("imagem", x=round(self.largura / 2 - w / 2), y=round(self.altura / 2 - h / 2), w=w, h=h, dados=dados)
+        self._antes(None)
+        self.elementos.append(novo)
+        return novo.id
+
     def apagar(self, id_: int) -> bool:
         if self.por_id(id_) is None:
             return False
@@ -219,7 +243,7 @@ class Modelo:
         e = self.por_id(id_)
         if e is None:
             return None
-        if e.tipo in ("retangulo", "linha"):
+        if e.tipo in ("retangulo", "linha", "imagem"):
             return (min(e.x, e.x + e.w), min(e.y, e.y + e.h), max(e.x, e.x + e.w), max(e.y, e.y + e.h))
         texto = editor.NUMERO if e.tipo == "numero" else e.texto
         largura = editor.largura_do_texto(texto, e.negrito or e.tipo == "numero", e.tamanho) if texto else e.tamanho * 0.5
@@ -254,3 +278,37 @@ def _distancia_ao_segmento(px: float, py: float, ax: float, ay: float, bx: float
     comprimento2 = dx * dx + dy * dy
     t = 0.0 if comprimento2 == 0 else max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / comprimento2))
     return ((px - (ax + t * dx)) ** 2 + (py - (ay + t * dy)) ** 2) ** 0.5
+
+
+def imagem_para_dados(bruto: bytes) -> tuple[str, int, int]:
+    """(`data:image/…;base64,…`, largura, altura) de uma imagem PNG ou JPG (o tipo real, não o nome), reduzida a `IMAGEM_LADO_PX` e sempre abaixo do limite
+    de bytes do `core.editor`: PNG se tem transparência, JPEG nos outros casos. `ErroRifas("err_editor_imagem")` se não presta."""
+    from PIL import Image, UnidentifiedImageError
+    if not (bruto.startswith(ASSINATURA_PNG) or bruto.startswith(ASSINATURA_JPG)) or len(bruto) > 25 * 1024 * 1024:
+        raise ErroRifas("err_editor_imagem")
+    try:
+        im = Image.open(io.BytesIO(bruto))
+        if max(im.size) > 12000 or min(im.size) < 1:
+            raise ErroRifas("err_editor_imagem")
+        im.load()
+    except ErroRifas:
+        raise
+    except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
+        raise ErroRifas("err_editor_imagem") from None
+    im = im.convert("RGBA")
+    if max(im.size) > IMAGEM_LADO_PX:
+        im.thumbnail((IMAGEM_LADO_PX, IMAGEM_LADO_PX), Image.LANCZOS)
+    transparente = im.getchannel("A").getextrema()[0] < 255
+    for lado in (IMAGEM_LADO_PX, 420, 300, 200):
+        if max(im.size) > lado:
+            im.thumbnail((lado, lado), Image.LANCZOS)
+        saida = io.BytesIO()
+        if transparente:
+            im.save(saida, "PNG", optimize=True)
+            tipo = "png"
+        else:
+            im.convert("RGB").save(saida, "JPEG", quality=88)
+            tipo = "jpeg"
+        if saida.tell() <= editor.MAX_IMAGEM_BYTES * 9 // 10:
+            return f"data:image/{tipo};base64,{base64.b64encode(saida.getvalue()).decode('ascii')}", im.width, im.height
+    raise ErroRifas("err_editor_imagem")

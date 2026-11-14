@@ -76,6 +76,26 @@ mensagens.clear()
 ok(a._exportar_csv() is None and mensagens, "intervalo invalido avisa e nao escreve")
 a.v_inicio.set("1"); a.v_fim.set("20")
 
+# --- guardar e abrir o pedido (2.6): um ficheiro .rifas com os campos; abrir repoe-os, e um ficheiro alheio avisa
+a.v_inicio.set("10"); a.v_fim.set("99"); a.v_digitos.set("3"); a.v_max.set("150"); a.v_nome.set("Rifa de Natal")
+a.v_prefixos.set("A-, B-"); a.v_saltar.set("13"); a.v_cor_serie.set(True); a.v_marcas.set(True); a.v_cor_numeros.set("#c2410c"); a._set_modo("unico")
+pedido = SAIDA / "pedido.rifas"
+filedialog.asksaveasfilename = lambda **k: str(pedido)
+ok(a._guardar_pedido() == pedido and pedido.read_bytes().startswith(b"{"), "«Guardar pedido» escreve o ficheiro .rifas")
+ok(b"Users" not in pedido.read_bytes() and b"template" not in pedido.read_bytes(), "o ficheiro não leva caminhos nem template")
+a.v_inicio.set("1"); a.v_fim.set("5"); a.v_nome.set(""); a.e_nome.delete(0, "end"); a.v_prefixos.set(""); a.v_saltar.set(""); a.v_cor_serie.set(False)
+a.v_marcas.set(False); a.v_cor_numeros.set(""); a._set_modo("varios")
+ok(a._abrir_pedido(str(pedido)), "«Abrir pedido» lê o ficheiro")
+ok((a.v_inicio.get(), a.v_fim.get(), a.v_digitos.get(), a.v_max.get(), a.v_nome.get(), a.e_nome.get()) == ("10", "99", "3", "150", "Rifa de Natal", "Rifa de Natal")
+   and a.v_prefixos.get() == "A-, B-" and a.v_saltar.get() == "13" and a.v_cor_serie.get() and a.v_marcas.get() and a.v_cor_numeros.get() == "#c2410c" and a.modo == "unico",
+   "abrir repõe os números, o nome, as séries, as cores, as marcas e o modo")
+lixo = SAIDA / "lixo.rifas"
+lixo.write_bytes(b"isto nao e um pedido")
+mensagens.clear()
+ok(not a._abrir_pedido(str(lixo)) and mensagens and a.v_fim.get() == "99", "um ficheiro alheio avisa e não mexe nos campos")
+a.v_inicio.set("1"); a.v_fim.set("20"); a.v_digitos.set("4"); a.v_max.set("300"); a.v_nome.set(""); a.e_nome.delete(0, "end")
+a.v_prefixos.set(""); a.v_saltar.set(""); a.v_cor_serie.set(False); a.v_marcas.set(False); a.v_cor_numeros.set(""); a._set_modo("varios")
+
 # --- janela das opcoes
 a._abrir_extra("opcoes", extras.Opcoes)
 pump(0.6)
@@ -164,6 +184,13 @@ a._definir_visual("premiado")
 ok(TM.C["acento"][0] == "#6A35F5", "o visual Premiado repoe as cores")
 a._definir_visual("auto")
 ok(TM.visual_efetivo() == core.tema.visual_por_epoca(), "o automatico segue a epoca")
+for v in core.tema.VISUAIS:                          # os 14 visuais (2.6): cada um refaz a janela com as suas cores, sem erros
+    a._definir_visual(v)
+    pump(0.15)
+    ok(a.visual == v and TM.C["acento"][0].upper() == core.tema.PALETAS_VISUAIS[v][0]["acento"][0].upper(), f"o visual {v} aplica as suas cores")
+    if v in ("gala", "terminal"):
+        foto(a, f"visual_{v}.png")
+a._definir_visual("auto")
 
 # --- limpar tudo repoe as opcoes e apaga a pasta da galeria
 a._limpar_tudo()
@@ -210,6 +237,20 @@ ed._a_tras()
 ok(ed.m.elementos[-2].id == ed.sel, "«Para trás» desce um nível de desenho")
 ed._a_apagar()
 ok(len(ed.m.elementos) == n and ed.sel is None, "apagar tira o elemento")
+# a imagem (2.6): junta-se um PNG ou JPG, entra reduzida e a caber, e um ficheiro que não é imagem avisa
+logo_png = SAIDA / "logo_editor.png"
+Image.new("RGB", (400, 200), (200, 30, 30)).save(logo_png)
+n = len(ed.m.elementos)
+ed.acrescentar("imagem", str(logo_png))
+ok(len(ed.m.elementos) == n + 1 and ed.m.por_id(ed.sel).tipo == "imagem" and ed.m.por_id(ed.sel).w == 160, "«+ Imagem» junta o PNG, a caber em 160 pt, e seleciona-o")
+pump(6, lambda: not ed._espera)
+ok(ed.m.sem_problemas() and str(ed.b_usar.cget("state")) == "normal", "com a imagem o desenho continua a servir")
+mau = SAIDA / "nao_e_imagem.png"
+mau.write_bytes(b"isto nao e uma imagem")
+ed.acrescentar("imagem", str(mau))
+ok(len(ed.m.elementos) == n + 1 and ed.l_erro.cget("text") != "", "um ficheiro que não é imagem avisa e não entra")
+ed._a_apagar()
+ed._mudou()
 # o texto: escrever atualiza o desenho; algarismos que o motor confundiria avisam e bloqueiam
 ed.acrescentar("texto")
 ed.entrada_texto.delete(0, "end")

@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.35.0 — 2026-11-13
+
+### Novetats
+- **App de Windows 2.6:** el menú «Extras» guanya «Desa la sol·licitud…» i «Obre una sol·licitud…» (un fitxer .rifas amb els números, el nom, les sèries, els colors i les marques de tall, sense plantilla ni camins), l'editor de plantilles pot afegir imatges (PNG o JPG) i «Visualitza → Visual» passa de 2 als 14 temes del lloc (només els colors). Inclou també el que ha arribat des de la 2.4: l'editor, els 24 dissenys de la galeria i les 22 llengües.
+
 ## 3.34.0 — 2026-11-13
 
 ### Novetats

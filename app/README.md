@@ -8,7 +8,7 @@ couber. Gera vários PDFs ou **um único PDF com tudo**.
 **Executável:** `dist\GeradorRifas.exe` (compilado para código nativo; não precisa de instalar nada).
 **Antes de cada release:** `uv run python scripts/verificar_repo_publico.py` confirma que o repositório público só tem o `README.md` e releases com o `.exe` (sem código-fonte).
 **Descarregar:** na página de *Releases* do repositório público <https://github.com/AndreNogueira/gerador-rifas-windows>
-(só tem o programa, **sem código-fonte**; etiquetas `windows-vX.Y.Z`), junto com o `.sha256` para conferir o ficheiro. A versão atual é a 2.5.0: **editor de templates** (menu Extras) e Python 3.15; a 2.4.0 trouxe o que o site ganhou desde a 3.10 (menu **Extras**, abaixo); a 2.3.0 trouxe o visual novo (faixa com o gradiente violeta → magenta e o ícone da
+(só tem o programa, **sem código-fonte**; etiquetas `windows-vX.Y.Z`), junto com o `.sha256` para conferir o ficheiro. A versão atual é a 2.6.0: **guardar e abrir o pedido** (ficheiro `.rifas`), **imagens no editor de templates** e os **14 visuais** do site (só as cores); a 2.5.0 trouxe o **editor de templates** (menu Extras), a galeria de 24 desenhos, 22 línguas e Python 3.15; a 2.4.0 trouxe o que o site ganhou desde a 3.10 (menu **Extras**, abaixo); a 2.3.0 trouxe o visual novo (faixa com o gradiente violeta → magenta e o ícone da
 marca, passos numerados com cores próprias, botão «Gerar» em magenta), as mesmas cores da webapp.
 
 ## Extras (v2.4)
@@ -20,9 +20,11 @@ O menu **Extras** abre janelas à parte (a janela principal e as capturas do tut
 - **Galeria de templates…**: quatro desenhos prontos (Bosque, Quermesse, Natal, Gala) com título, organização, prémios e data; «Usar este template» cria o template e os algarismos.
 - **Sorteio…**: sorteio verificável (a mesma resposta que a página do site) com semente pública; há um botão para a aleatoriedade do drand (precisa de internet).
 - **Exportar lista (CSV)** e **Folha de controlo (PDF)**: a lista dos bilhetes do pedido (com prefixos e saltos) para o Excel, e uma tabela A4 para marcar quem pagou. Não precisam de template.
-- **Ver → Visual**: Automático (o **Natal** em dezembro), Premiado ou Natal; claro e escuro são independentes.
+- **Editor de templates…**: desenha-se a rifa (textos, retângulos, linhas, o número 0001 e **imagens** PNG ou JPG) com o rato e o teclado; desfazer/refazer (Ctrl+Z, Ctrl+Y), duplicar (Ctrl+D), ordem de desenho; «Usar este template» cria o template e os algarismos.
+- **Guardar pedido…** e **Abrir pedido…**: um ficheiro `.rifas` com os números, o modo, o papel, a margem, o nome dos ficheiros, as séries, os números a saltar, as cores, as marcas de corte e o canto/tamanho do logótipo. Nunca leva o template, os algarismos, a pasta de destino nem o logótipo (são caminhos do seu computador). É o equivalente do «Copiar ligação» do site.
+- **Ver → Visual**: Automático (o **Natal** em dezembro) ou um dos **14 visuais** do site (Premiado, Quermesse, Arcade, Brutalista, Risografia, Janela 98, Gala, Matrix Gamer, Natal, Halloween, Praia, Jornal antigo, Terminal verde, Cartaz de circo): só mudam as cores (a faixa, as letras e os fundos do site não passam para o Tk); claro e escuro são independentes.
 
-O **QR de verificação**, o guardar/partilhar o pedido e o instalar como app só existem no site (o QR é assinado com uma chave do servidor, que não pode estar num `.exe` público).
+O **QR de verificação**, a partilha do desenho do editor por ligação e o instalar como app só existem no site (o QR é assinado com uma chave do servidor, que não pode estar num `.exe` público; a partilha do desenho precisa da base de dados do servidor).
 Cada funcionalidade tem o seu tópico no tutorial (F1) com um vídeo gravado da própria app.
 
 ## Como usar
