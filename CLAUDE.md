@@ -169,6 +169,7 @@ correr `dist\GeradorRifas.exe --selftest <pasta>`.
 
 `docker` só funciona depois de abrir o Rancher Desktop e escolher o motor dockerd (moby).
 **Memória (regra):** o Rancher Desktop deixa a `vmmem` do WSL a segurar ~15 GB mesmo sem contentores, e já fez matar uma compilação do `.exe`. **Antes** de compilar a app (`construir.bat`, Nuitka), do `pytest` completo ou dos e2e, corre `powershell -File scripts\liberar_memoria.ps1` (fecha o Rancher e o WSL; `-ManterRancher` só mostra os números) e só o reabras para o Docker; fecha-o outra vez no fim. Não matar Chrome, VS Code nem processos python alheios.
+**Disco do Rancher (`scripts/manter_rancher.ps1`, tarefa agendada «Rancher-Manutencao», domingo às 4h e ao iniciar sessão):** limita a cache de build a 10 GB, apaga só imagens órfãs (nunca com etiqueta), **nunca** toca nos volumes, repõe as imagens do projeto (os `FROM` do Dockerfile e o `postgres:17.11`) e, se o `.vhdx` do WSL passar de 60 GB (o WSL 2.6 desativa o modo *sparse*), fecha o Rancher, compacta-o com o `diskpart` e **reabre-o sem administrador** (reaberto com administrador o Docker fica «permission denied»). Registar a tarefa: `powershell -File scripts\manter_rancher.ps1 -Instalar` (pede UAC).
 
 ## Armadilhas do motor
 
