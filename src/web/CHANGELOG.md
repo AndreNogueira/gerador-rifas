@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.37.0 — 2026-11-13
+
+### Novo
+- **Mais letras na galeria e no editor de templates:** os textos podem agora ter latim estendido (polaco, checo, romeno, turco…), **vietnamita, grego, cirílico (russo, ucraniano)**, **chinês, japonês e coreano**. O hindi, o árabe e o hebraico continuam por fazer (precisam de uma tecnologia de escrita que o gerador de PDF não tem) e dão um aviso em vez de uma imagem estragada. Nos PDF só muda o texto escrito por quem usa; o que já saía igual continua igual.
+
 ## 3.36.0 — 2026-11-13
 
 ### Novo

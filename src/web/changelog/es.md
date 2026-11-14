@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.37.0 — 2026-11-13
+
+### Novedades
+- **Más letras en la galería y en el editor de plantillas:** los textos pueden usar ahora latín extendido (polaco, checo, rumano, turco…), **vietnamita, griego, cirílico (ruso, ucraniano)**, **chino, japonés y coreano**. El hindi, el árabe y el hebreo siguen sin estar (necesitan una tecnología de escritura que el generador de PDF no tiene) y dan un aviso en vez de una imagen estropeada. En los PDF solo cambia el texto escrito por quien usa; lo que ya salía igual sigue igual.
+
 ## 3.36.0 — 2026-11-13
 
 ### Novedades

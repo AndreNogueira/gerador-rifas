@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.37.0 — 2026-11-13
+
+### New
+- **More letters in the gallery and the template editor:** texts can now use extended Latin (Polish, Czech, Romanian, Turkish…), **Vietnamese, Greek, Cyrillic (Russian, Ukrainian)**, **Chinese, Japanese and Korean**. Hindi, Arabic and Hebrew are still missing (they need a writing technology the PDF generator lacks) and show a warning instead of a broken image. In the PDFs only the text typed by the user changes; what already came out the same stays the same.
+
 ## 3.36.0 — 2026-11-13
 
 ### New

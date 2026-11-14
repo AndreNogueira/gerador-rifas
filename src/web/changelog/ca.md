@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.37.0 — 2026-11-13
+
+### Novetats
+- **Més lletres a la galeria i a l'editor de plantilles:** els textos poden usar ara llatí estès (polonès, txec, romanès, turc…), **vietnamita, grec, ciríl·lic (rus, ucraïnès)**, **xinès, japonès i coreà**. El hindi, l'àrab i l'hebreu encara no hi són (necessiten una tecnologia d'escriptura que el generador de PDF no té) i donen un avís en lloc d'una imatge malmesa. Als PDF només canvia el text escrit per qui fa servir l'eina; el que ja sortia igual continua igual.
+
 ## 3.36.0 — 2026-11-13
 
 ### Novetats

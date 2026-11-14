@@ -18,7 +18,7 @@ import math
 import re
 from dataclasses import dataclass
 
-from . import galeria
+from . import galeria, letras
 from .motor import PADRAO_EXEMPLO, ErroRifas
 
 LARGURA_MIN, LARGURA_MAX = 120.0, 800.0
@@ -84,13 +84,32 @@ def _cor(v, nome: str, pode_vazia: bool) -> str:
 
 
 def _letras(texto: str) -> None:
-    """A Vera tem todas as letras do texto? (se não, `err_editor_letra`)."""
-    galeria._registar()
-    from reportlab.pdfbase import pdfmetrics
-    face = pdfmetrics.getFont("Vera").face
-    for c in texto:
-        if c != " " and (not c.isprintable() or ord(c) not in face.charToGlyph):
-            raise ErroRifas("err_editor_letra", car=c)
+    """Há letra (`core.letras`: Vera, DejaVu, Noto de chinês/japonês/coreano) para todo o texto? (se não, `err_editor_letra`)."""
+    falta = letras.em_falta(texto)
+    if falta:
+        raise ErroRifas("err_editor_letra", car=falta)
+
+
+def _imagem(dados) -> bytes:
+    """O PNG recodificado de uma imagem `data:image/png|jpeg;base64,…`: só PNG ou JPG a sério (o tipo real, não o que o nome diz), com tetos de tamanho;
+    recodificar tira metadados (EXIF) e qualquer coisa que não seja pixeis. `err_editor_imagem` se não presta."""
+    from PIL import Image, UnidentifiedImageError
+    m = re.fullmatch(r"data:image/(png|jpeg|jpg);base64,([A-Za-z0-9+/=\s]+)", dados) if isinstance(dados, str) else None
+    if not m or len(m.group(2)) > MAX_IMAGEM_BYTES * 4 // 3 + 8:
+        raise ErroRifas("err_editor_imagem")
+    try:
+        bruto = base64.b64decode(m.group(2), validate=False)
+        if len(bruto) > MAX_IMAGEM_BYTES:
+            raise ErroRifas("err_editor_imagem")
+        with Image.open(io.BytesIO(bruto)) as im:
+            if im.format not in ("PNG", "JPEG") or max(im.size) > MAX_IMAGEM_LADO or min(im.size) < 1:
+                raise ErroRifas("err_editor_imagem")
+            im.load()
+            saida = io.BytesIO()
+            im.convert("RGBA").save(saida, "PNG")
+    except (binascii.Error, UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
+        raise ErroRifas("err_editor_imagem") from None
+    return saida.getvalue()
 
 
 def _imagem(dados) -> bytes:
@@ -217,7 +236,7 @@ def criar_template(d: Desenho) -> bytes:
                 c.setDash(3, 3)
             c.line(e.x, H - e.y, e.x + e.w, H - (e.y + e.h))
         else:
-            fonte = "VeraBd" if e.negrito else "Vera"
+            fonte = letras.fonte(e.texto, e.negrito)
             c.setFillColorRGB(*_rgb(e.cor))
             c.setFont(fonte, e.tamanho)
             c.translate(e.x, H - e.y)
@@ -235,7 +254,5 @@ def criar_template(d: Desenho) -> bytes:
 
 
 def largura_do_texto(texto: str, negrito: bool, tamanho: float) -> float:
-    """A largura (pt) que o texto ocupa na Vera (para os testes e para o browser comparar)."""
-    galeria._registar()
-    from reportlab.pdfbase import pdfmetrics
-    return pdfmetrics.stringWidth(texto, "VeraBd" if negrito else "Vera", tamanho)
+    """A largura (pt) que o texto ocupa na letra que o desenha (Vera, ou DejaVu/Noto se tem letras que a Vera não tem)."""
+    return letras.largura(texto, negrito, tamanho)

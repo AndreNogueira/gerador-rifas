@@ -106,7 +106,7 @@ function Cor({ valor, aoMudar, rotulo }: { valor: string; aoMudar: (v: string) =
 
 /**
  * O editor de templates (X1): em vez de um template do Canva, desenha-se UMA rifa (retângulos, linhas, textos e o número 0001, uma ou duas vezes).
- * O ecrã é um SVG com a letra Vera (a mesma do PDF), por isso o que se vê é o que sai; «Usar este template» envia o desenho ao servidor, que
+ * O ecrã é um SVG com a letra Vera (a do PDF; o DejaVu para as letras que a Vera não tem), por isso o que se vê é o que sai; «Usar este template» envia o desenho ao servidor, que
  * cria o PDF e os algarismos na sessão, e volta-se ao ecrã principal. O rascunho fica só neste browser.
  */
 export function Editor({ partilha = false }: { partilha?: boolean }) {
@@ -383,7 +383,9 @@ export function Editor({ partilha = false }: { partilha?: boolean }) {
           y={e.y}
           fill={e.cor}
           fontSize={e.tamanho}
-          fontFamily={e.negrito ? "VeraEditorBd, sans-serif" : "VeraEditor, sans-serif"}
+          fontFamily={
+            e.negrito ? "VeraEditorBd, DejaVuEditorBd, sans-serif" : "VeraEditor, DejaVuEditor, sans-serif"
+          }
           textAnchor={e.alinhamento === "c" ? "middle" : e.alinhamento === "d" ? "end" : "start"}
           transform={e.rot ? `rotate(-${e.rot} ${e.x} ${e.y})` : undefined}
         >

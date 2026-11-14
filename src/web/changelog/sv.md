@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.37.0 — 2026-11-13
+
+### Nytt
+- **Fler tecken i galleriet och mallredigeraren:** texter kan nu innehålla utökad latin (polska, tjeckiska, rumänska, turkiska …), **vietnamesiska, grekiska, kyrilliska (ryska, ukrainska)**, **kinesiska, japanska och koreanska**. Hindi, arabiska och hebreiska saknas fortfarande (de kräver en skrivteknik som PDF-generatorn inte har) och ger en varning i stället för en trasig bild. I PDF-filerna ändras bara den text man skriver; det som redan blev likadant förblir likadant.
+
 ## 3.36.0 — 2026-11-13
 
 ### Nytt

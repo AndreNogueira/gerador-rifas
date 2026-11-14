@@ -29,7 +29,7 @@ uv run pytest tests/test_i18n.py tests/test_traducoes_paginas.py tests/test_web_
 
 ## Limites conhecidos
 
-- **Galeria e editor de templates** desenham com a letra Vera (a que vem com o reportlab): só tem o alfabeto latino básico, por isso textos em ucraniano (cirílico) e várias letras do vietnamita
+- **Galeria e editor de templates** desenham com as letras de `core.letras` (`docs/LETRAS.md`): Vera, DejaVu (latim estendido, vietnamita, grego, cirílico) e Noto Sans de chinês, japonês e coreano. Falta o **hindi** (devanágari precisa de «shaping») e o árabe/hebraico: um texto com essas letras dá aviso em vez de uma imagem estragada. A interface, as páginas e os PDFs gerados a partir de templates do Canva não dependem disto.
   (ạ, ế, ữ…) não se podem escrever nos desenhos: o site e a app avisam (`err_galeria_texto`, `err_editor_letra`). A interface, o tutorial e os PDFs gerados não dependem disso.
 - A folha de controlo de vendas (PDF) usa Helvetica (WinAnsi): em línguas com letras fora dela (ucraniano, vietnamita…) os títulos saem em inglês (`controlo.texto_cabe`).
 - Nenhum falante nativo reviu estes textos: pedir revisão antes de divulgar numa comunidade.

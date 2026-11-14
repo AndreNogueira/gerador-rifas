@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.37.0 — 2026-11-13
+
+### Noutăți
+- **Mai multe litere în galerie și în editorul de șabloane:** textele pot folosi acum latina extinsă (poloneză, cehă, română, turcă…), **vietnameza, greaca, chirilica (rusă, ucraineană)**, **chineza, japoneza și coreeana**. Hindi, araba și ebraica încă lipsesc (cer o tehnologie de scriere pe care generatorul de PDF nu o are) și dau un avertisment în loc de o imagine stricată. În PDF se schimbă doar textul scris de utilizator; ce ieșea deja la fel rămâne la fel.
+
 ## 3.36.0 — 2026-11-13
 
 ### Noutăți

@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.37.0 — 2026-11-13
+
+### Baru
+- **Lebih banyak huruf di galeri dan editor templat:** teks kini dapat memakai Latin diperluas (Polandia, Ceko, Rumania, Turki…), **Vietnam, Yunani, Sirilik (Rusia, Ukraina)**, serta **Mandarin, Jepang, dan Korea**. Hindi, Arab, dan Ibrani belum ada (membutuhkan teknologi penulisan yang tidak dimiliki pembuat PDF) dan menampilkan peringatan, bukan gambar yang rusak. Di PDF hanya teks yang diketik pengguna yang berubah; yang sebelumnya sudah sama tetap sama.
+
 ## 3.36.0 — 2026-11-13
 
 ### Baru
