@@ -49,7 +49,7 @@ TEXTOS = {
              "paragrafos": ["Filerna du laddar upp (mall och siffror) behandlas bara för att skapa lotterna, ligger i en tillfällig mapp på servern och raderas efter {validade} minuter "
                             "utan aktivitet eller när du trycker på ”Rensa allt”.",
                             "För att veta hur tjänsten används registrerar vi räkningar: hur många besök, skapanden och nedladdningar, valt språk och tema samt skärmtyp. "
-                            "Vi registrerar aldrig IP-adresser, filnamn, filernas innehåll eller webbläsarens fullständiga identifiering.",
+                            "Vi registrerar också besökets land (bara koden, till exempel «PT»), som värdnätverket härleder från IP-adressen; själva IP-adressen sparar vi inte. Vi registrerar aldrig IP-adresser, filnamn, filernas innehåll eller webbläsarens fullständiga identifiering.",
                             "IP-adressen används bara i minnet, ett ögonblick, för att begränsa antalet beställningar per minut, och sparas inte av oss. Värdleverantören "
                             "(Render, i Frankfurt, Europeiska unionen) kan registrera IP-adresser i sina tekniska loggar."]},
             {"titulo": "I din webbläsare",

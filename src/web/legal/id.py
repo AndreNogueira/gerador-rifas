@@ -51,7 +51,7 @@ TEXTOS = {
              "paragrafos": ["Berkas yang Anda unggah (templat dan angka) hanya diproses untuk membuat tiket, berada di folder sementara di server dan dihapus "
                             "setelah {validade} menit tanpa aktivitas atau saat Anda menekan “Bersihkan semua”.",
                             "Untuk mengetahui bagaimana layanan dipakai, kami mencatat hitungan: berapa kunjungan, pembuatan dan unduhan, bahasa dan tema yang dipilih serta jenis layar. "
-                            "Kami tidak pernah mencatat alamat IP, nama berkas, isi berkas atau identitas lengkap browser.",
+                            "Kami juga mencatat negara kunjungan (hanya kodenya, misalnya «PT»), yang disimpulkan jaringan hosting dari alamat IP; IP itu sendiri tidak kami simpan. Kami tidak pernah mencatat alamat IP, nama berkas, isi berkas atau identitas lengkap browser.",
                             "Alamat IP hanya dipakai di memori, sesaat, untuk membatasi jumlah permintaan per menit, dan tidak kami simpan. Penyedia hosting "
                             "(Render, di Frankfurt, Uni Eropa) dapat mencatat alamat IP dalam log teknisnya."]},
             {"titulo": "Di browser Anda",

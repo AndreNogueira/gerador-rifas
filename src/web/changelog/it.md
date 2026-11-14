@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.44.0 — 2026-11-14
+
+### Migliorato
+- **Privacy:** i conteggi d'uso includono ora il paese della visita (solo il codice, ricavato dalla rete dell'hosting; l'indirizzo IP continua a non essere conservato). L'informativa sulla privacy lo spiega in tutte le 22 lingue.
+
 ## 3.43.1 — 2026-11-14
 
 ### Migliorato

@@ -22,7 +22,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 from . import VERSAO, config, seo, trabalhos
 from .limites import Limitador, ler_corpo
 from .manter_acordado import EstadoAcordado
-from .metricas import Metricas, classe_do_ecra, dispositivo, familia, modelo_limpo
+from .metricas import Metricas, classe_do_ecra, dispositivo, familia, modelo_limpo, pais_do_cabecalho
 from .observabilidade import Observabilidade
 from .modelos import Calculo, Campos, Ecra, ErroApi, Sessao, TrabalhoEstado
 from .sessoes import (Geracao, SessaoEstado, Sessoes, calcular, folha_dos_campos, ler_progresso, texto_de_erro,
@@ -144,6 +144,7 @@ def criar(request: Request, serv: Servico = Depends(servico), lg: str = Depends(
         raise _ocupado(lg)
     visual = request.headers.get("x-visual", "")
     serv.metricas.evento("sessao", lg, visual if visual in _VISUAIS else "outro", dispositivo(request.headers.get("user-agent", "")))
+    serv.metricas.evento("pais", pais_do_cabecalho(request.headers.get("cf-ipcountry")))       # so o codigo do pais (a rede do alojamento deduz-o do IP; o IP nao se guarda)
     return vista(s, lg, serv.sessoes.pasta(s))
 
 

@@ -49,7 +49,7 @@ TEXTOS = {
              "paragrafos": ["Soubory, které nahrajete (šablona a číslice), se zpracovávají jen k vytvoření losů, leží v dočasné složce na serveru a mažou se po {validade} minutách "
                             "bez aktivity nebo po stisknutí „Vymazat vše“.",
                             "Abychom věděli, jak se služba používá, zaznamenáváme počty: kolik návštěv, generování a stažení, zvolený jazyk a motiv a typ obrazovky. "
-                            "Nikdy nezaznamenáváme IP adresy, názvy souborů, obsah souborů ani úplnou identifikaci prohlížeče.",
+                            "Zaznamenáváme také zemi návštěvy (jen kód, například «PT»), kterou síť hostingu odvodí z IP adresy; samotnou IP adresu neukládáme. Nikdy nezaznamenáváme IP adresy, názvy souborů, obsah souborů ani úplnou identifikaci prohlížeče.",
                             "IP adresa se používá jen v paměti, na okamžik, k omezení počtu zakázek za minutu a my ji neukládáme. Poskytovatel hostingu "
                             "(Render, ve Frankfurtu, v Evropské unii) může IP adresy zaznamenávat ve svých technických protokolech."]},
             {"titulo": "Ve vašem prohlížeči",

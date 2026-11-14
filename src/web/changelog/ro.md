@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.44.0 — 2026-11-14
+
+### Îmbunătățit
+- **Confidențialitate:** contorizările de utilizare includ acum țara vizitei (doar codul, dedus de rețeaua găzduirii; adresa IP tot nu este păstrată). Politica de confidențialitate o explică în toate cele 22 de limbi.
+
 ## 3.43.1 — 2026-11-14
 
 ### Îmbunătățit

@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.44.0 — 2026-11-14
+
+### Verbeterd
+- **Privacy:** de gebruikstellingen bevatten nu het land van het bezoek (alleen de code, afgeleid door het hostingnetwerk; het IP-adres wordt nog steeds niet bewaard). Het privacybeleid legt het uit in alle 22 talen.
+
 ## 3.43.1 — 2026-11-14
 
 ### Verbeterd

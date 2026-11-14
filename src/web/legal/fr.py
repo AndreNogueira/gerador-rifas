@@ -49,7 +49,7 @@ TEXTOS = {
              "paragrafos": ["Les fichiers que vous envoyez (modèle et chiffres) ne sont traités que pour générer les billets, restent dans un dossier temporaire du serveur et sont effacés après "
                             "{validade} minutes d'inactivité ou quand vous cliquez sur « Tout effacer ».",
                             "Pour savoir comment le service est utilisé, nous enregistrons des comptages : combien de visites, générations et téléchargements, la langue et le thème choisis et le type d'écran. "
-                            "Nous n'enregistrons jamais d'adresses IP, de noms de fichiers, le contenu des fichiers ni l'identification complète du navigateur.",
+                            "Nous enregistrons aussi le pays de la visite (seulement le code, par exemple « PT »), que le réseau de l'hébergeur déduit de l'adresse IP ; nous ne conservons pas l'IP elle-même. Nous n'enregistrons jamais d'adresses IP, de noms de fichiers, le contenu des fichiers ni l'identification complète du navigateur.",
                             "L'adresse IP n'est utilisée qu'en mémoire, quelques instants, pour limiter le nombre de demandes par minute, et n'est pas conservée par nous. L'hébergeur "
                             "(Render, à Francfort, dans l'Union européenne) peut enregistrer des adresses IP dans ses journaux techniques."]},
             {"titulo": "Dans votre navigateur",

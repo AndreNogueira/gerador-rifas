@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.44.0 — 2026-11-14
+
+### Millores
+- **Privacitat:** els recomptes d'ús ara inclouen el país de la visita (només el codi, deduït per la xarxa de l'allotjament; l'adreça IP continua sense guardar-se). La Política de privacitat ho explica en les 22 llengües.
+
 ## 3.43.1 — 2026-11-14
 
 ### Millores

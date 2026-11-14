@@ -51,7 +51,7 @@ TEXTOS = {
              "paragrafos": ["The files you upload (template and digits) are processed only to generate the tickets, stay in a temporary folder on the server and are deleted "
                             "after {validade} minutes without activity or when you press “Clear everything”.",
                             "To know how the service is used, we record counts: how many visits, generations and downloads, the language and theme chosen and the screen type. "
-                            "We never record IP addresses, file names, file contents or the full browser identification.",
+                            "We also record the visit's country (only the code, for example “PT”), which the hosting network deduces from the IP address; we do not keep the IP itself. We never record IP addresses, file names, file contents or the full browser identification.",
                             "The IP address is used only in memory, for moments, to limit the number of requests per minute, and is not stored by us. The hosting provider "
                             "(Render, in Frankfurt, European Union) may record IP addresses in its technical logs."]},
             {"titulo": "In your browser",

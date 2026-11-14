@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.44.0 — 2026-11-14
+
+### Ditingkatkan
+- **Privasi:** hitungan penggunaan kini menyertakan negara kunjungan (hanya kodenya, disimpulkan oleh jaringan hosting; alamat IP tetap tidak disimpan). Kebijakan privasi menjelaskannya dalam 22 bahasa.
+
 ## 3.43.1 — 2026-11-14
 
 ### Ditingkatkan

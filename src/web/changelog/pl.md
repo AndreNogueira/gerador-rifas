@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.44.0 — 2026-11-14
+
+### Ulepszono
+- **Prywatność:** liczniki użycia obejmują teraz kraj wizyty (tylko kod, ustalany przez sieć hostingu; adres IP nadal nie jest zapisywany). Polityka prywatności wyjaśnia to we wszystkich 22 językach.
+
 ## 3.43.1 — 2026-11-14
 
 ### Ulepszono

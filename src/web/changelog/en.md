@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.44.0 — 2026-11-14
+
+### Improved
+- **Privacy:** usage counts now include the visit's country (only the code, deduced by the hosting network; the IP address is still not stored). The Privacy policy explains it in all 22 languages.
+
 ## 3.43.1 — 2026-11-14
 
 ### Improved

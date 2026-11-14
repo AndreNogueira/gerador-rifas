@@ -49,7 +49,7 @@ TEXTOS = {
              "paragrafos": ["Los archivos que sube (plantilla y dígitos) se tratan solo para generar las rifas, quedan en una carpeta temporal del servidor y se borran pasados {validade} minutos "
                             "sin actividad o al pulsar «Borrar todo».",
                             "Para saber cómo se usa el servicio registramos recuentos: cuántas visitas, generaciones y descargas, el idioma y el tema elegidos y el tipo de pantalla. "
-                            "Nunca registramos direcciones IP, nombres de archivos, el contenido de los archivos ni la identificación completa del navegador.",
+                            "También registramos el país de la visita (solo el código, por ejemplo «PT»), que la red del alojamiento deduce de la dirección IP; la propia IP no la guardamos. Nunca registramos direcciones IP, nombres de archivos, el contenido de los archivos ni la identificación completa del navegador.",
                             "La dirección IP se usa solo en memoria, unos instantes, para limitar el número de pedidos por minuto, y no la guardamos. El proveedor de alojamiento "
                             "(Render, en Fráncfort, Unión Europea) puede registrar direcciones IP en sus registros técnicos."]},
             {"titulo": "En su navegador",

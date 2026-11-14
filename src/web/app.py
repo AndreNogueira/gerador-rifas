@@ -315,7 +315,8 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             servico.obs.pedido(rid, request.method, rota, resposta.status_code, ms)
             if not caminho.startswith("/api/admin"):
                 servico.metricas.pedido(f"{request.method} {rota}", resposta.status_code, ms)
-                servico.metricas.cliente(request.client.host if request.client else "?", bool(request.headers.get("x-forwarded-for")))
+                servico.metricas.cliente(request.client.host if request.client else "?", bool(request.headers.get("x-forwarded-for")),
+                                         "cf-ipcountry" in request.headers)
         return resposta
 
     @app.get("/robots.txt", include_in_schema=False)

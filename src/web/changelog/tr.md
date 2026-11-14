@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.44.0 — 2026-11-14
+
+### İyileştirildi
+- **Gizlilik:** kullanım sayımlarına artık ziyaretin ülkesi de dahil (yalnızca kod, barındırma ağı tarafından çıkarılır; IP adresi hâlâ saklanmaz). Gizlilik politikası bunu 22 dilde açıklar.
+
 ## 3.43.1 — 2026-11-14
 
 ### İyileştirildi

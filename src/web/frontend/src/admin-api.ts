@@ -35,6 +35,7 @@ export interface Estado {
     ips_distintos: number;
     privados_pct: number | null;
     xff_pct: number | null;
+    pais_pct: number | null;
     veredicto: VeredictoProxy;
   };
   acordado: {
@@ -120,6 +121,8 @@ export interface Resumo {
   linguas: Contagem[];
   temas: Contagem[];
   dispositivos: Contagem[];
+  /** Códigos ISO de duas letras (`??` = desconhecido): o nome escreve-se no browser. */
+  paises: Contagem[];
   paginas_vistas: Contagem[];
   robos: number;
   erros_http: Contagem[];
