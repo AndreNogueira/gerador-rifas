@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.46.0 — 2026-11-15
+
+### Ditingkatkan
+- **Tombol donasi lebih terlihat:** jika layanan punya tautan donasi, tombolnya kini tampil di header (di samping «Bagikan») dan, setelah file dibuat, dengan ajakan singkat. Tombol itu juga tetap ada di footer.
+
 ## 3.45.0 — 2026-11-14
 
 ### Ditingkatkan

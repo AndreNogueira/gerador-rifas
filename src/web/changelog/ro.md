@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.46.0 — 2026-11-15
+
+### Îmbunătățit
+- **Donația, mai vizibilă:** când serviciul are un link de donații, butonul apare acum în antet (lângă «Distribuie») și, după generarea fișierelor, cu o scurtă invitație. Rămâne și în subsol.
+
 ## 3.45.0 — 2026-11-14
 
 ### Îmbunătățit

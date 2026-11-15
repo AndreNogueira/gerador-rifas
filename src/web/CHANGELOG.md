@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.46.0 — 2026-11-15
+
+### Melhorado
+- **Donativo mais à vista:** quando o serviço tem uma ligação de donativo, o botão aparece agora no cabeçalho (ao lado de «Partilhar») e, depois de gerar os ficheiros, com uma frase a convidar. Continua também no rodapé.
+
 ## 3.45.0 — 2026-11-14
 
 ### Melhorado

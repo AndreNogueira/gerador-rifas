@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.46.0 — 2026-11-15
+
+### Ulepszono
+- **Darowizna lepiej widoczna:** gdy usługa ma link do darowizn, przycisk pojawia się teraz w nagłówku (obok «Udostępnij») oraz, po wygenerowaniu plików, z krótkim zaproszeniem. Nadal jest też w stopce.
+
 ## 3.45.0 — 2026-11-14
 
 ### Ulepszono

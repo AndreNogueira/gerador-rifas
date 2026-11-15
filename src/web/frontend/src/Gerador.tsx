@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Calculo, Campos, Sessao } from "./api";
 import { api, ErroApi, ErroRede } from "./api";
 import { CartaoAlgarismos, CartaoDestino, CartaoNumeros, CartaoTemplate } from "./cartoes";
+import { Donativo } from "./Donativo";
 import { useDialogos } from "./dialogos";
 import { ligacaoDosCampos } from "./formulario";
 import { useI18n } from "./i18n";
@@ -41,10 +42,12 @@ interface Props {
   calculo: Calculo | null;
   mudar: (c: keyof Campos, v: string) => void;
   reiniciar: () => void;
+  /** O `DONATIVO_URL` do servidor: vazio = nada de donativo. */
+  donativoUrl?: string;
 }
 
 /** O ecrã principal: os 4 passos, as ações, o registo e o visor (o mesmo da janela da app Windows). */
-export function Gerador({ campos, calculo, mudar, reiniciar }: Props) {
+export function Gerador({ campos, calculo, mudar, reiniciar, donativoUrl = "" }: Props) {
   const { t } = useI18n();
   const s = useSessao();
   const [expandido, setExpandido] = useState(false);
@@ -106,6 +109,7 @@ export function Gerador({ campos, calculo, mudar, reiniciar }: Props) {
           <Acoes
             campos={campos}
             calculo={calculo}
+            donativoUrl={donativoUrl}
             aoLimpar={async () => {
               await s.limpar();
               reiniciar();
@@ -126,10 +130,12 @@ export function Gerador({ campos, calculo, mudar, reiniciar }: Props) {
 function Acoes({
   campos,
   calculo,
+  donativoUrl,
   aoLimpar,
 }: {
   campos: Campos;
   calculo: Calculo | null;
+  donativoUrl: string;
   aoLimpar: () => Promise<void>;
 }) {
   const { t } = useI18n();
@@ -237,6 +243,7 @@ function Acoes({
         </pre>
       )}
       {tr?.entrega && !a_gerar && <Entrega entrega={tr.entrega} />}
+      {tr?.entrega && !a_gerar && <Donativo url={donativoUrl} variante="cartao" />}
       {tr?.entrega && !a_gerar && <Partilhar variante="cartao" />}
     </section>
   );

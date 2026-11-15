@@ -54,6 +54,7 @@
 .navegacao a,
 .navegacao .nav-botao,
 .partilhar-topo .partilhar-botao,
+.donativo-topo .donativo-botao,
 .seletor {
   font-family: var(--fonte-controlos);
   display: inline-flex;
@@ -89,6 +90,22 @@
 .grupo-menu {
   display: inline-flex;
   flex: none; // na faixa do telemóvel (que desliza) o botão não encolhe nem sobrepõe o vizinho
+}
+// «Donativo» no cabeçalho: uma pílula como as outras (só aparece com `DONATIVO_URL`), com o coração a chamar a atenção
+.donativo-topo {
+  flex: none;
+
+  .donativo-botao {
+    min-height: 36px;
+    cursor: pointer;
+
+    &:hover {
+      background: color-mix(in srgb, var(--pilula) 70%, #000);
+    }
+    .icone {
+      color: color-mix(in srgb, var(--pilula-texto) 45%, #ff4d6d); // um coração rosa que se lê sobre a pílula, escura ou clara
+    }
+  }
 }
 // «Partilhar» no cabeçalho: uma pílula em destaque (a cor da página ativa), para se ver
 .partilhar-topo {
@@ -338,13 +355,15 @@
     }
   }
   // «Partilhar» só com o ícone (o texto fica para os leitores de ecrã): o toque tem 44 px
-  .partilhar-topo .partilhar-botao {
+  .partilhar-topo .partilhar-botao,
+  .donativo-topo .donativo-botao {
     width: 44px;
     min-height: 44px;
     justify-content: center;
     padding-inline: 0;
   }
-  .partilhar-topo .partilhar-texto {
+  .partilhar-topo .partilhar-texto,
+  .donativo-topo .donativo-texto {
     position: absolute;
     width: 1px;
     height: 1px;

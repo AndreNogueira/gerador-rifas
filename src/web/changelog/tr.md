@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.46.0 — 2026-11-15
+
+### İyileştirildi
+- **Bağış düğmesi daha görünür:** hizmetin bir bağış bağlantısı varsa düğme artık üst bilgide («Paylaş» yanında) ve dosyalar oluşturulduktan sonra kısa bir davetle görünür. Alt bilgide de duruyor.
+
 ## 3.45.0 — 2026-11-14
 
 ### İyileştirildi

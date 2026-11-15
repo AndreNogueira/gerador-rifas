@@ -15,6 +15,7 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_privacidade: "Privacidade",
     web_contacto: "Contacto",
     web_donativo: "Donativo",
+    web_donativo_chamada: "Foi útil? Ajude a manter o serviço gratuito com um donativo.",
     web_algarismos_lembrados: "Reutilizámos os algarismos da última vez ({nome}).",
     web_prefixos: "Prefixo ou séries",
     web_prefixos_dica: "Texto antes dos algarismos.",

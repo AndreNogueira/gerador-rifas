@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.46.0 — 2026-11-15
+
+### Vylepšeno
+- **Dar je lépe vidět:** má-li služba odkaz na dary, tlačítko se nyní zobrazuje v záhlaví (vedle «Sdílet») a po vytvoření souborů s krátkou výzvou. Zůstává i v patičce.
+
 ## 3.45.0 — 2026-11-14
 
 ### Vylepšeno

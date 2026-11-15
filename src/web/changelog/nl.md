@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.46.0 — 2026-11-15
+
+### Verbeterd
+- **Donatieknop beter zichtbaar:** als de dienst een donatielink heeft, staat de knop nu in de kop (naast «Delen») en, na het genereren van de bestanden, met een korte uitnodiging. Hij staat ook nog in de voettekst.
+
 ## 3.45.0 — 2026-11-14
 
 ### Verbeterd

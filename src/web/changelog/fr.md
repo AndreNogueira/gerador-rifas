@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.46.0 — 2026-11-15
+
+### Amélioré
+- **Don plus visible :** quand le service a un lien de don, le bouton apparaît maintenant dans l'en-tête (à côté de « Partager ») et, après la génération des fichiers, avec une courte invitation. Il reste aussi dans le pied de page.
+
 ## 3.45.0 — 2026-11-14
 
 ### Amélioré

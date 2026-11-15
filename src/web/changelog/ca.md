@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.46.0 — 2026-11-15
+
+### Millores
+- **Donatiu més visible:** quan el servei té un enllaç de donatiu, el botó apareix ara a la capçalera (al costat de «Comparteix») i, després de generar els fitxers, amb una frase d'invitació. També continua al peu de pàgina.
+
 ## 3.45.0 — 2026-11-14
 
 ### Millores

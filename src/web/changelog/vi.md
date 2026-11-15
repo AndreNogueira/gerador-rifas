@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.46.0 — 2026-11-15
+
+### Cải thiện
+- **Nút ủng hộ dễ thấy hơn:** khi dịch vụ có liên kết ủng hộ, nút nay hiện ở đầu trang (cạnh «Chia sẻ») và, sau khi tạo tệp, kèm một lời mời ngắn. Nút vẫn còn ở chân trang.
+
 ## 3.45.0 — 2026-11-14
 
 ### Cải thiện

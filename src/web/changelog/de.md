@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.46.0 — 2026-11-15
+
+### Verbessert
+- **Spendenknopf besser sichtbar:** hat der Dienst einen Spendenlink, erscheint der Knopf jetzt in der Kopfzeile (neben «Teilen») und nach dem Erzeugen der Dateien mit einer kurzen Einladung. Er bleibt auch in der Fußzeile.
+
 ## 3.45.0 — 2026-11-14
 
 ### Verbessert

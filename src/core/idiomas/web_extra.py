@@ -1495,6 +1495,26 @@ CHAVES: dict[str, dict[str, str]] = {
         "ko": "마음에 드셨나요? 추첨 행사를 여는 다른 분들께도 공유해 주세요.",
         "hi": "पसंद आया? रैफ़ल करने वाले दूसरे लोगों के साथ साझा करें।",
     },
+    "web_donativo_chamada": {
+        "pt": "Foi útil? Ajude a manter o serviço gratuito com um donativo.",
+        "en": "Was it useful? Help keep the service free with a donation.",
+        "es": "¿Le ha sido útil? Ayude a mantener el servicio gratuito con un donativo.",
+        "fr": "Utile ? Aidez à garder le service gratuit avec un don.",
+        "de": "Hilfreich? Unterstützen Sie mit einer Spende, dass der Dienst kostenlos bleibt.",
+        "it": "Ti è stato utile? Aiuta a mantenere gratuito il servizio con una donazione.",
+        "nl": "Handig? Help de dienst gratis te houden met een donatie.",
+        "pl": "Przydatne? Pomóż utrzymać usługę za darmo, wspierając ją darowizną.",
+        "sv": "Till nytta? Hjälp till att hålla tjänsten gratis med en donation.",
+        "cs": "Hodilo se? Pomozte darem udržet službu zdarma.",
+        "ro": "V-a fost de folos? Ajutați la menținerea serviciului gratuit printr-o donație.",
+        "el": "Σας βοήθησε; Στηρίξτε με μια δωρεά ώστε η υπηρεσία να μένει δωρεάν.",
+        "ru": "Было полезно? Помогите сохранить сервис бесплатным — сделайте пожертвование.",
+        "tr": "Faydalı oldu mu? Bağışla hizmetin ücretsiz kalmasına yardım edin.",
+        "zh": "有帮助吗？捐款可以帮助我们保持服务免费。",
+        "ja": "お役に立ちましたか？寄付で無料の提供を支えてください。",
+        "ko": "도움이 되셨나요? 기부로 서비스를 계속 무료로 유지하도록 도와주세요.",
+        "hi": "काम आया? दान देकर सेवा को मुफ़्त बनाए रखने में मदद करें।",
+    },
 }
 
 

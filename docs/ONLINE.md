@@ -53,7 +53,7 @@ O rodapé tem sempre Changelog, Termos e Privacidade. Três variáveis do **Rend
 
 | Variável | Efeito |
 |---|---|
-| `DONATIVO_URL` | ligação `https://…` (MB Way, PayPal, Ko-fi…): aparece o botão «Donativo». Outra coisa que não `https://` é ignorada. |
+| `DONATIVO_URL` | ligação `https://…` (MB Way, PayPal, Ko-fi…): aparece o botão «Donativo» (no cabeçalho, no fim da geração e no rodapé). Outra coisa que não `https://` é ignorada. |
 | `CONTACTO_EMAIL` | e-mail público: aparece a ligação «Contacto» e o endereço nas páginas Contacto, Termos e Privacidade. |
 | `RESPONSAVEL` | nome de quem gere o serviço, nas páginas Termos e Privacidade. |
 | `LOG_PEDIDOS` | `0` desliga o registo estruturado (uma linha JSON por pedido da API e por evento, nos logs do Render; ver `docs/OBSERVABILIDADE.md`). Ligado por omissão. |
