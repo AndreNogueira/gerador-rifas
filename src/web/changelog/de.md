@@ -2,6 +2,13 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.47.0 — 2026-11-15
+
+### Verbessert
+- **Vorlagen-Galerie:** die Liste der Designs wird in manchen Themes nicht mehr abgeschnitten oder falsch platziert; jeder Preis hat seine Nummer; jedes Textfeld zeigt sein Zeichenlimit (zum Beispiel 12/50); und die Schaltfläche «Diese Vorlage verwenden» klebt nicht mehr am letzten Feld.
+- **Ziehungsdatum in einem eigenen Kalender:** statt des Browser-Felds (das «TT.MM.JJJJ» und eine Auswahl in einer anderen Sprache als die der Seite zeigte) gibt es einen Kalender in allen 22 Sprachen, mit Monaten und Wochentagen in der gewählten Sprache, dem Datum so geschrieben, wie diese Sprache es schreibt, dem richtigen ersten Wochentag und den Schaltflächen «Heute» und «Löschen». Er funktioniert mit der Tastatur (Pfeile, Bild auf/ab, Pos1/Ende, Eingabe und Esc).
+- **Ein ausführlicheres «Info»:** der Text wurde in allen 22 Sprachen neu geschrieben und erklärt, für wen der Generator ist, was er tut, was nach dem Drucken zu tun ist, wie er die Privatsphäre schützt und wo man ihn nutzen kann.
+
 ## 3.46.0 — 2026-11-15
 
 ### Verbessert

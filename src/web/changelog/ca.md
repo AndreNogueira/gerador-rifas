@@ -2,6 +2,13 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.47.0 — 2026-11-15
+
+### Millores
+- **Galeria de plantilles:** la llista de dissenys ja no queda tallada ni fora de lloc en alguns temes; cada premi té el seu número; totes les caixes de text mostren el límit de caràcters (per exemple 12/50); i el botó «Usa aquesta plantilla» ja no queda enganxat a l'última caixa.
+- **Data del sorteig en un calendari propi:** en comptes del camp del navegador (que mostrava «dd/mm/aaaa» i un selector en una llengua diferent de la del web), hi ha un calendari en les 22 llengües, amb els mesos i els dies de la setmana en la llengua triada, la data escrita com la escriu aquella llengua, el primer dia de la setmana correcte i els botons «Avui» i «Esborra». Funciona amb el teclat (fletxes, Re Pàg/Av Pàg, Inici/Fi, Retorn i Esc).
+- **Un «Quant a» més complet:** el text s'ha reescrit, en les 22 llengües, i explica per a qui és el generador, què fa, què fer després d'imprimir, com protegeix la privacitat i on es pot usar.
+
 ## 3.46.0 — 2026-11-15
 
 ### Millores

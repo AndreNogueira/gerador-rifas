@@ -146,6 +146,13 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     tut_seg: "Seguinte",
     video_falta: "Falta {nome}",
     sobre_texto: "{app}\nVersão {versao}\n\nGera PDFs.\n\nUsa X.",
+    web_sobre_corpo:
+      "**Para quem é.** {app} é para escolas e associações.\n\n**O que faz.** Numera bilhetes e arruma-os na folha.\n\n**Gratuito e privado.** Sem conta nem registo.",
+    web_data_escolher: "Escolher a data",
+    web_data_anterior: "Mês anterior",
+    web_data_seguinte: "Mês seguinte",
+    web_data_hoje: "Hoje",
+    web_data_limpar: "Limpar",
   },
   en: {
     web_changelog_sub: "What changed, version by version.",

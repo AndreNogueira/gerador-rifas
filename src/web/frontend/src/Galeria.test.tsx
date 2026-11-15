@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
@@ -16,7 +16,10 @@ beforeEach(() => {
   URL.createObjectURL = vi.fn(() => "blob:previa");
   URL.revokeObjectURL = vi.fn();
 });
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.useRealTimers();
+});
 
 function abrir() {
   render(
@@ -141,8 +144,13 @@ describe("galeria de templates (M4)", () => {
   it("a data escolhe-se no calendário e depois escolhe-se como aparece na rifa", async () => {
     abrir();
     await userEvent.click((await screen.findByTestId("galeria")).querySelector("summary") as Element);
-    expect(t("galeria-data")).toHaveAttribute("type", "date");
-    fireEvent.change(t("galeria-data"), { target: { value: "2026-12-31" } });
+    vi.useFakeTimers({ toFake: ["Date"] }); // «hoje» fixo: o calendário abre em novembro de 2026
+    vi.setSystemTime(new Date("2026-11-15T12:00:00Z"));
+    expect(t("galeria-data")).toHaveTextContent("Escolher a data"); // o calendário é do site (traduzido), não o «dd/mm/aaaa» do browser
+    await userEvent.click(t("galeria-data"));
+    await userEvent.click(t("galeria-data-seguinte"));
+    await userEvent.click(screen.getByRole("dialog").querySelector('[data-iso="2026-12-31"]') as Element);
+    expect(t("galeria-data")).toHaveTextContent("31/12/2026");
     await userEvent.type(t("galeria-data-antes"), "Sorteio:");
     const formato = t("galeria-data-formato") as HTMLSelectElement;
     expect([...formato.options].map((o) => o.value)).toEqual([
@@ -161,6 +169,22 @@ describe("galeria de templates (M4)", () => {
     await userEvent.click(t("galeria-usar"));
     await waitFor(() => expect(servidor.chamadas("POST", /\/galeria$/)).toHaveLength(1));
     expect(servidor.chamadas("POST", /\/galeria$/)[0]?.corpo).toMatchObject({ data: "Sorteio: 31/12/2026" });
+  });
+
+  it("cada prémio tem o seu número e todas as caixas de texto mostram o limite de caracteres", async () => {
+    abrir();
+    await userEvent.click((await screen.findByTestId("galeria")).querySelector("summary") as Element);
+    const premios = screen.getByTestId("galeria").querySelector(".premios") as HTMLElement;
+    expect([...premios.querySelectorAll(".premio-n")].map((n) => n.textContent)).toEqual(["1", "2", "3"]);
+    const contagens = () =>
+      [...screen.getByTestId("galeria").querySelectorAll(".contagem")].map((c) => c.textContent);
+    expect(contagens()).toEqual(["0/40", "0/60", "0/50", "0/50", "0/50", "0/20"]); // título, organização, 3 prémios, texto antes da data
+    await userEvent.type(t("galeria-titulo"), "Rifa");
+    await userEvent.type(t("galeria-data-antes"), "Sorteio:");
+    expect(contagens()[0]).toBe("4/40");
+    expect(contagens()[5]).toBe("8/20");
+    await userEvent.selectOptions(t("galeria-data-formato"), "livre");
+    expect(contagens().at(-1)).toBe("0/60"); // a data escrita à mão cabe 60 letras
   });
 
   it("«Escrever à mão» troca o calendário por uma caixa de texto livre", async () => {

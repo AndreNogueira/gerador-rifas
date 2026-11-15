@@ -129,6 +129,22 @@
   padding: 22px;
   box-shadow: var(--visor-anel), var(--sombra-visor);
 }
+// «Acerca de»: a versão por baixo do título e os parágrafos com o título a negrito, com ar entre eles
+.sobre {
+  .sobre-versao {
+    margin: 0;
+    font-weight: 600;
+  }
+  .sobre-corpo {
+    display: grid;
+    gap: 14px;
+    max-width: 46rem;
+
+    p {
+      margin: 0;
+    }
+  }
+}
 .changelog {
   display: grid;
   gap: 14px;

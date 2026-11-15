@@ -104,8 +104,14 @@ def _corpo_video(lg: str) -> str:
 
 
 def _corpo_sobre(lg: str) -> str:
-    resumo = "\n\n".join(i18n.traduzir("sobre_texto", lg, app=_app(lg), versao=VERSAO).split("\n\n")[:2])
-    return f"<h1>{html.escape(_nome_pagina('mi_sobre')(lg))}</h1>{_paragrafos(resumo)}{_voltar(lg)}"
+    # a 1.ª linha do texto da app («Nome» e «Versão x.y.z») e o texto comprido do site, com o título de cada parágrafo a negrito
+    subtitulo = i18n.traduzir("sobre_texto", lg, app=_app(lg), versao=VERSAO).split("\n\n")[0].replace("\n", " · ")
+    corpo = "".join(
+        "<p>" + re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", html.escape(p, quote=False)) + "</p>"
+        for p in i18n.traduzir("web_sobre_corpo", lg, app=_app(lg)).split("\n\n")
+        if p.strip()
+    )
+    return f"<h1>{html.escape(_nome_pagina('mi_sobre')(lg))}</h1><p>{html.escape(subtitulo)}</p>{corpo}{_voltar(lg)}"
 
 
 def _corpo_sorteio(lg: str) -> str:

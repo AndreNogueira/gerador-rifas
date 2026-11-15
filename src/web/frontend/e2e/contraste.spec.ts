@@ -66,6 +66,27 @@ for (const tema of TEMAS) {
               `${caminho} (seletor aberto)  ${f.alvo}  ${f.rácio} < ${f.esperado}  (${f.texto}, ${f.tamanho})`,
             );
           await page.keyboard.press("Escape");
+          // o calendário da data: dia escolhido («Hoje»), dia com o foco, dias de outros meses, «Limpar» ativo
+          // o painel fecha-se ao rolar: leva-se o botão para o ecrã e espera-se que o scroll assente antes de clicar
+          const abrirCalendario = async () => {
+            await page.getByTestId("galeria-data").scrollIntoViewIfNeeded();
+            await page.evaluate(
+              () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))),
+            );
+            await page.getByTestId("galeria-data").click();
+          };
+          await abrirCalendario();
+          await page.getByTestId("galeria-data-hoje").click();
+          await abrirCalendario();
+          await expect(page.getByRole("dialog")).toBeVisible();
+          await page.keyboard.press("ArrowRight");
+          const calendario = await medirContraste(page, "[role=dialog]");
+          medidos += calendario.medidos;
+          for (const f of calendario.falhas)
+            falhas.push(
+              `${caminho} (calendário)  ${f.alvo}  ${f.rácio} < ${f.esperado}  (${f.texto}, ${f.tamanho})`,
+            );
+          await page.keyboard.press("Escape");
         }
       }
       info.annotations.push({ type: "medidos", description: `${medidos} elementos de texto medidos` });

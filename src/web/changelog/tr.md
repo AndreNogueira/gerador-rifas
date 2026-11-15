@@ -2,6 +2,13 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.47.0 — 2026-11-15
+
+### İyileştirildi
+- **Şablon galerisi:** tasarım listesi bazı temalarda artık kesilmiyor ya da yanlış yerde durmuyor; her ödülün kendi numarası var; her metin kutusu karakter sınırını gösteriyor (örneğin 12/50); ve «Bu şablonu kullan» düğmesi artık son kutuya yapışık durmuyor.
+- **Çekiliş tarihi kendi takviminde:** tarayıcının alanı yerine (sitenin dilinden farklı bir dilde «gg.aa.yyyy» ve bir seçici gösteriyordu) 22 dilde bir takvim var; aylar ve haftanın günleri seçilen dilde, tarih o dilin yazdığı gibi yazılıyor, haftanın ilk günü doğru ve «Bugün» ile «Temizle» düğmeleri var. Klavyeyle çalışır (oklar, Page Up/Down, Home/End, Enter ve Esc).
+- **Daha kapsamlı «Hakkında»:** metin 22 dilde yeniden yazıldı ve oluşturucunun kimler için olduğunu, ne yaptığını, baskıdan sonra ne yapılacağını, gizliliği nasıl koruduğunu ve nerede kullanılabileceğini anlatıyor.
+
 ## 3.46.0 — 2026-11-15
 
 ### İyileştirildi

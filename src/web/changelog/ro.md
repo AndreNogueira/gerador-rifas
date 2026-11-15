@@ -2,6 +2,13 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.47.0 — 2026-11-15
+
+### Îmbunătățit
+- **Galeria de șabloane:** lista modelelor nu mai este tăiată sau pusă greșit în unele teme; fiecare premiu are numărul lui; fiecare casetă de text arată limita de caractere (de exemplu 12/50); iar butonul «Folosește acest șablon» nu mai stă lipit de ultima casetă.
+- **Data tragerii într-un calendar propriu:** în locul câmpului browserului (care arăta «zz.ll.aaaa» și un selector într-o limbă diferită de cea a site-ului) există un calendar în cele 22 de limbi, cu lunile și zilele săptămânii în limba aleasă, data scrisă așa cum o scrie acea limbă, prima zi a săptămânii corectă și butoanele «Astăzi» și «Șterge». Funcționează cu tastatura (săgeți, Page Up/Down, Home/End, Enter și Esc).
+- **Un «Despre» mai complet:** textul a fost rescris, în cele 22 de limbi, și explică pentru cine este generatorul, ce face, ce faceți după tipărire, cum protejează confidențialitatea și unde poate fi folosit.
+
 ## 3.46.0 — 2026-11-15
 
 ### Îmbunătățit

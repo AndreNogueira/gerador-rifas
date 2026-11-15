@@ -2,6 +2,13 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.47.0 — 2026-11-15
+
+### Migliorato
+- **Galleria di modelli:** l'elenco dei disegni non viene più tagliato né messo fuori posto in alcuni temi; ogni premio ha il suo numero; ogni casella di testo mostra il limite di caratteri (ad esempio 12/50); e il pulsante «Usa questo modello» non resta più attaccato all'ultima casella.
+- **Data dell'estrazione in un calendario proprio:** al posto del campo del browser (che mostrava «gg/mm/aaaa» e un selettore in una lingua diversa da quella del sito) c'è un calendario nelle 22 lingue, con mesi e giorni della settimana nella lingua scelta, la data scritta come la scrive quella lingua, il giusto primo giorno della settimana e i pulsanti «Oggi» e «Cancella». Funziona con la tastiera (frecce, Pag su/giù, Home/Fine, Invio ed Esc).
+- **Un «Informazioni» più completo:** il testo è stato riscritto, nelle 22 lingue, e spiega a chi è destinato il generatore, cosa fa, cosa fare dopo la stampa, come protegge la privacy e dove si può usare.
+
 ## 3.46.0 — 2026-11-15
 
 ### Migliorato

@@ -2,6 +2,13 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.47.0 — 2026-11-15
+
+### Improved
+- **Template gallery:** the design list is no longer cut off or misplaced in some themes; each prize has its number; every text box shows its character limit (for example 12/50); and the “Use this template” button no longer sits right against the last box.
+- **Draw date in its own calendar:** instead of the browser's field (which showed “dd/mm/yyyy” and a picker in a different language from the site), there is a calendar in all 22 languages, with months and weekdays in the chosen language, the date written the way that language writes it, the right first day of the week and “Today” and “Clear” buttons. It works with the keyboard (arrows, Page Up/Down, Home/End, Enter and Esc).
+- **A fuller “About”:** the text was rewritten, in all 22 languages, and explains who the generator is for, what it does, what to do after printing, how it protects privacy and where it can be used.
+
 ## 3.46.0 — 2026-11-15
 
 ### Improved

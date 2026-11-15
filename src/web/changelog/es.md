@@ -2,6 +2,13 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.47.0 — 2026-11-15
+
+### Mejorado
+- **Galería de plantillas:** la lista de diseños ya no queda cortada ni fuera de sitio en algunos temas; cada premio tiene su número; todos los cuadros de texto muestran el límite de caracteres (por ejemplo 12/50); y el botón «Usar esta plantilla» ya no queda pegado al último cuadro.
+- **Fecha del sorteo en un calendario propio:** en vez del campo del navegador (que mostraba «dd/mm/aaaa» y un selector en un idioma distinto del del sitio), hay un calendario en los 22 idiomas, con los meses y los días de la semana en el idioma elegido, la fecha escrita como la escribe ese idioma, el primer día de la semana correcto y los botones «Hoy» y «Borrar». Funciona con el teclado (flechas, Re Pág/Av Pág, Inicio/Fin, Intro y Esc).
+- **«Acerca de» más completo:** el texto se ha reescrito, en los 22 idiomas, y explica para quién es el generador, qué hace, qué hacer tras imprimir, cómo protege la privacidad y dónde se puede usar.
+
 ## 3.46.0 — 2026-11-15
 
 ### Mejorado
