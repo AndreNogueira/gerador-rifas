@@ -191,6 +191,63 @@
     border-radius: var(--raio-c);
     background: #fff;
   }
+  // as caixas de texto com o limite à vista («12/50» no canto)
+  .campo-contado {
+    position: relative;
+    display: block;
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding-right: 3.6rem;
+    }
+    .contagem {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--suave);
+      pointer-events: none;
+    }
+  }
+  // cada prémio com o seu número, para se ver qual é o 1.º, o 2.º…
+  .premio-linha {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .campo-contado {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+  .premio-n {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--texto);
+    background: color-mix(in srgb, var(--destaque) 18%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--destaque) 40%, transparent);
+  }
+  // os grupos «Prémios» e «Data do sorteio» não ficam colados às caixas de cima
+  .premios,
+  .data-sorteio {
+    margin-top: 6px;
+  }
+  // o botão «Usar este template» não fica colado à última caixa
+  > button[data-testid="galeria-usar"] {
+    justify-self: start;
+    margin-top: 10px;
+  }
   .premios {
     display: grid;
     gap: 6px;
@@ -231,8 +288,21 @@
       color: var(--suave);
       margin-bottom: 4px;
     }
-    input[type="date"] {
-      color-scheme: light dark; // o ícone do calendário e o seletor seguem o tema claro/escuro
+    // o calendário (`SeletorData`) e o formato lado a lado; o botão do calendário é mais estreito que o do desenho
+    .linha {
+      align-items: stretch;
+    }
+    .seletor-data {
+      flex: 0 1 15rem;
+    }
+    .seletor-data .seletor-botao {
+      width: 100%;
+      min-height: 44px;
+
+      .sem-data {
+        color: var(--suave);
+        font-weight: 500;
+      }
     }
     select {
       padding: 8px 12px;

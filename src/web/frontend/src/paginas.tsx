@@ -150,17 +150,36 @@ export function Video() {
 /** «Acerca de»: o texto da app Windows, sem a linha das bibliotecas dela (aqui são outras). */
 export function Sobre({ versao }: { versao: string }) {
   const { t } = useI18n();
-  const texto = t("sobre_texto", { app: t("app_nome"), versao })
+  const app = t("app_nome");
+  // a 1.ª linha do texto da app («Nome» e «Versão x.y.z») é o subtítulo; o texto comprido de «Acerca de» é só do site (a app Windows usa o curto)
+  const subtitulo = t("sobre_texto", { app, versao }).split("\n\n")[0] ?? "";
+  const paragrafos = t("web_sobre_corpo", { app })
     .split("\n\n")
-    .slice(0, 2)
-    .join("\n\n");
+    .filter((p) => p.trim());
   return (
     <div className="pagina">
       <section className="cartao sobre">
         <h1>{t("mi_sobre").replace(/…$/, "")}</h1>
-        <p className="texto-longo" data-testid="sobre-texto">
-          {texto}
+        <p className="suave sobre-versao" data-testid="sobre-texto">
+          {subtitulo.replace("\n", " · ")}
         </p>
+        <div className="sobre-corpo" data-testid="sobre-corpo">
+          {paragrafos.map((p) => {
+            // «**Título.** texto»: o título a negrito abre o parágrafo
+            const m = /^\*\*(.+?)\*\*\s*([\s\S]*)$/.exec(p);
+            return (
+              <p key={p} className="texto-longo">
+                {m ? (
+                  <>
+                    <strong>{m[1]}</strong> {m[2]}
+                  </>
+                ) : (
+                  p
+                )}
+              </p>
+            );
+          })}
+        </div>
         <p className="suave">FastAPI · React · pypdf · pypdfium2 · Pillow</p>
         <Voltar />
       </section>

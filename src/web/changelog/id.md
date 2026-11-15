@@ -2,6 +2,13 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.47.0 — 2026-11-15
+
+### Ditingkatkan
+- **Galeri templat:** daftar desain tidak lagi terpotong atau salah tempat di beberapa tema; setiap hadiah punya nomornya; semua kotak teks menampilkan batas karakter (misalnya 12/50); dan tombol «Gunakan templat ini» tidak lagi menempel pada kotak terakhir.
+- **Tanggal undian di kalender sendiri:** sebagai ganti kolom peramban (yang menampilkan «hh/bb/tttt» dan pemilih dalam bahasa yang berbeda dari situs), kini ada kalender dalam 22 bahasa, dengan bulan dan hari dalam bahasa yang dipilih, tanggal ditulis seperti cara bahasa itu menulisnya, hari pertama pekan yang benar, serta tombol «Hari ini» dan «Hapus». Bisa dipakai dengan keyboard (panah, Page Up/Down, Home/End, Enter, dan Esc).
+- **«Tentang» yang lebih lengkap:** teksnya ditulis ulang dalam 22 bahasa dan menjelaskan untuk siapa generator ini, apa yang dilakukannya, apa yang dilakukan setelah mencetak, bagaimana ia menjaga privasi, dan di mana bisa dipakai.
+
 ## 3.46.0 — 2026-11-15
 
 ### Ditingkatkan

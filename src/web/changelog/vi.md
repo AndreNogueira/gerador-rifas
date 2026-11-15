@@ -2,6 +2,13 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.47.0 — 2026-11-15
+
+### Cải thiện
+- **Thư viện mẫu:** danh sách thiết kế không còn bị cắt hay đặt sai chỗ ở một số giao diện; mỗi giải thưởng có số riêng; mọi ô văn bản đều hiện giới hạn ký tự (ví dụ 12/50); và nút «Dùng mẫu này» không còn dính sát vào ô cuối.
+- **Ngày bốc thăm có lịch riêng:** thay cho ô của trình duyệt (hiện «dd/mm/yyyy» và bộ chọn bằng ngôn ngữ khác với trang), nay có một lịch trong 22 ngôn ngữ, với tháng và thứ bằng ngôn ngữ đã chọn, ngày viết theo cách ngôn ngữ đó viết, ngày đầu tuần đúng và các nút «Hôm nay» và «Xóa». Dùng được bằng bàn phím (phím mũi tên, Page Up/Down, Home/End, Enter và Esc).
+- **Phần «Giới thiệu» đầy đủ hơn:** nội dung được viết lại bằng 22 ngôn ngữ, giải thích trình tạo dành cho ai, làm được gì, làm gì sau khi in, bảo vệ quyền riêng tư thế nào và dùng ở đâu.
+
 ## 3.46.0 — 2026-11-15
 
 ### Cải thiện

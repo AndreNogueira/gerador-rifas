@@ -2,6 +2,13 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.47.0 — 2026-11-15
+
+### Vylepšeno
+- **Galerie šablon:** seznam návrhů už se v některých motivech neořezává ani neposouvá; každá cena má své číslo; každé textové pole ukazuje limit znaků (například 12/50); a tlačítko «Použít tuto šablonu» už není nalepené na poslední pole.
+- **Datum losování ve vlastním kalendáři:** místo pole prohlížeče (které ukazovalo «dd.mm.rrrr» a výběr v jiném jazyce, než má web) je tu kalendář ve 22 jazycích s měsíci a dny v týdnu ve zvoleném jazyce, datem zapsaným tak, jak ho tento jazyk píše, správným prvním dnem týdne a tlačítky «Dnes» a «Vymazat». Funguje s klávesnicí (šipky, Page Up/Down, Home/End, Enter a Esc).
+- **Úplnější «O programu»:** text byl přepsán ve 22 jazycích a vysvětluje, pro koho generátor je, co dělá, co dělat po tisku, jak chrání soukromí a kde se dá používat.
+
 ## 3.46.0 — 2026-11-15
 
 ### Vylepšeno

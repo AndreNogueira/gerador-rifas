@@ -292,11 +292,15 @@ describe("limpar tudo", () => {
 });
 
 describe("páginas", () => {
-  it("o «Acerca de» mostra o texto sem a linha das bibliotecas do Windows", async () => {
+  it("o «Acerca de» mostra a versão e o texto comprido do site, sem a linha das bibliotecas do Windows", async () => {
     window.history.pushState(null, "", "/sobre");
     abrir();
     await waitFor(() => expect(screen.getByTestId("sobre-texto")).toHaveTextContent("Versão 3.0.0"));
     expect(t("sobre-texto")).not.toHaveTextContent("Usa X.");
+    const corpo = t("sobre-corpo");
+    expect(corpo.querySelectorAll("p")).toHaveLength(3); // um parágrafo por assunto…
+    expect(corpo.querySelector("p strong")).toHaveTextContent("Para quem é."); // …com o título a negrito
+    expect(corpo).toHaveTextContent("Gerador de Rifas é para escolas"); // {app} preenchido
     window.history.pushState(null, "", "/");
   });
 

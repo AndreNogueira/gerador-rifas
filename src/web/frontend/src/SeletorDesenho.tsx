@@ -1,4 +1,5 @@
 import { type KeyboardEvent, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Icone } from "./icones";
 import { useMenuFlutuante } from "./menu";
 
@@ -15,7 +16,8 @@ export const miniaturaDoDesenho = (id: string) => `/galeria/${id}.webp`;
 /**
  * Uma caixa de escolha de uma só linha em que cada opção mostra um mini desenho do template («select-only combobox» do WAI-ARIA: o foco fica
  * no botão e a opção ativa vai em `aria-activedescendant`). Teclado: setas, Home/End, Enter/Espaço escolhem, Esc fecha, uma letra salta para o
- * primeiro nome que começa por ela. Um `<select>` nativo não mostra imagens.
+ * primeiro nome que começa por ela. Um `<select>` nativo não mostra imagens. A lista desenha-se no `body` (`createPortal`): os cartões têm
+ * máscara nos entalhes e, em alguns temas, a coluna tem um `filter`, e um painel fixo ali dentro ficava cortado e fora do sítio.
  */
 export function SeletorDesenho({
   opcoes,
@@ -110,37 +112,39 @@ export function SeletorDesenho({
         <span className="seletor-nome">{atual?.nome}</span>
         <Icone nome="baixo" tamanho={14} />
       </button>
-      {aberto && (
-        <ul
-          id="galeria-desenhos"
-          ref={refPainel}
-          // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: `ul` com `listbox` é permitido (ARIA em HTML)
-          role="listbox"
-          aria-label={nomeDaLista}
-          className="painel-flutuante seletor-lista"
-          style={menu.estilo}
-          data-testid="galeria-desenhos"
-        >
-          {opcoes.map((o, i) => (
-            // biome-ignore lint/a11y/useFocusableInteractive: o foco fica no botão e a opção ativa vai em `aria-activedescendant`
-            // biome-ignore lint/a11y/useKeyWithClickEvents: o teclado trata-se no botão (aria-activedescendant); as opções não recebem o foco
-            <li
-              key={o.id}
-              id={`galeria-desenho-${o.id}`}
-              // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: opção de um `listbox` (padrão «select-only combobox»)
-              role="option"
-              aria-selected={o.id === valor}
-              data-ativo={i === ativo}
-              data-testid={`galeria-opcao-${o.id}`}
-              onClick={() => escolher(i)}
-              onMouseMove={() => ativo !== i && setAtivo(i)}
-            >
-              <img src={miniaturaDoDesenho(o.id)} alt="" width={144} height={41} loading="lazy" />
-              <span className="seletor-nome">{o.nome}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+      {aberto &&
+        createPortal(
+          <ul
+            id="galeria-desenhos"
+            ref={refPainel}
+            // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: `ul` com `listbox` é permitido (ARIA em HTML)
+            role="listbox"
+            aria-label={nomeDaLista}
+            className="painel-flutuante seletor-lista"
+            style={menu.estilo}
+            data-testid="galeria-desenhos"
+          >
+            {opcoes.map((o, i) => (
+              // biome-ignore lint/a11y/useFocusableInteractive: o foco fica no botão e a opção ativa vai em `aria-activedescendant`
+              // biome-ignore lint/a11y/useKeyWithClickEvents: o teclado trata-se no botão (aria-activedescendant); as opções não recebem o foco
+              <li
+                key={o.id}
+                id={`galeria-desenho-${o.id}`}
+                // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: opção de um `listbox` (padrão «select-only combobox»)
+                role="option"
+                aria-selected={o.id === valor}
+                data-ativo={i === ativo}
+                data-testid={`galeria-opcao-${o.id}`}
+                onClick={() => escolher(i)}
+                onMouseMove={() => ativo !== i && setAtivo(i)}
+              >
+                <img src={miniaturaDoDesenho(o.id)} alt="" width={144} height={41} loading="lazy" />
+                <span className="seletor-nome">{o.nome}</span>
+              </li>
+            ))}
+          </ul>,
+          document.body,
+        )}
     </div>
   );
 }

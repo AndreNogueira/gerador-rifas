@@ -2,6 +2,13 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.47.0 — 2026-11-15
+
+### Verbeterd
+- **Sjabloongalerij:** de lijst met ontwerpen wordt in sommige thema's niet meer afgekapt of verkeerd geplaatst; elke prijs heeft zijn nummer; elk tekstvak toont zijn tekenlimiet (bijvoorbeeld 12/50); en de knop «Dit sjabloon gebruiken» zit niet meer tegen het laatste vak aan.
+- **Trekkingsdatum in een eigen kalender:** in plaats van het veld van de browser (dat «dd-mm-jjjj» en een kiezer in een andere taal dan die van de site toonde) is er een kalender in alle 22 talen, met maanden en weekdagen in de gekozen taal, de datum zoals die taal hem schrijft, de juiste eerste dag van de week en de knoppen «Vandaag» en «Wissen». Hij werkt met het toetsenbord (pijlen, Page Up/Down, Home/End, Enter en Esc).
+- **Een uitgebreidere «Info»:** de tekst is in alle 22 talen herschreven en legt uit voor wie de generator is, wat hij doet, wat u na het printen doet, hoe hij de privacy beschermt en waar u hem kunt gebruiken.
+
 ## 3.46.0 — 2026-11-15
 
 ### Verbeterd

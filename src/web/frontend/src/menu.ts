@@ -2,18 +2,24 @@ import { type CSSProperties, useCallback, useEffect, useRef, useState } from "re
 
 const LARGURA_PAINEL = 280; // px: a mesma do CSS (`.painel-flutuante`)
 const FOLGA = 8;
-const ALTURA_MINIMA = 240; // px: com menos espaço por baixo do botão, o painel abre para cima (se por cima houver mais)
+const ALTURA_MINIMA = 240; // px: com menos espaço por baixo do botão, o painel abre para cima (se por cima houver mais); cada painel pode pedir outro mínimo
 
 /**
  * Um painel que abre por baixo de um botão do cabeçalho («Como fazer», «Partilhar»). Fica em `position: fixed` com a posição calculada ao abrir:
  * assim não o cortam as faixas que deslizam na horizontal nem o cabeçalho em ecrãs estreitos. Fecha com Esc, ao tocar fora, ao rolar ou ao redimensionar.
  * A altura nunca passa do espaço que há no ecrã (a lista rola por dentro) e, perto do fundo, o painel abre para cima.
+ * Dentro dos cartões numerados (que têm máscara nos entalhes e, em alguns temas, um `filter` na coluna) um painel `fixed` fica cortado e
+ * deslocado: quem o usa ali desenha-o com `createPortal(…, document.body)`.
  */
-export function useMenuFlutuante(alinhar: "esq" | "dir", larguraPainel: number = LARGURA_PAINEL) {
+export function useMenuFlutuante<P extends HTMLElement = HTMLUListElement>(
+  alinhar: "esq" | "dir",
+  larguraPainel: number = LARGURA_PAINEL,
+  alturaMinima: number = ALTURA_MINIMA,
+) {
   const [aberto, setAberto] = useState(false);
   const [estilo, setEstilo] = useState<CSSProperties>({});
   const refBotao = useRef<HTMLButtonElement>(null);
-  const refPainel = useRef<HTMLUListElement>(null);
+  const refPainel = useRef<P>(null);
 
   const fechar = useCallback(() => setAberto(false), []);
   const alternar = useCallback(() => {
@@ -24,7 +30,7 @@ export function useMenuFlutuante(alinhar: "esq" | "dir", larguraPainel: number =
         const esquerda = alinhar === "dir" ? r.right - largura : r.left;
         const porBaixo = window.innerHeight - r.bottom - 2 * FOLGA;
         const porCima = r.top - 2 * FOLGA;
-        const paraCima = porBaixo < ALTURA_MINIMA && porCima > porBaixo;
+        const paraCima = porBaixo < alturaMinima && porCima > porBaixo;
         setEstilo({
           ...(paraCima
             ? { bottom: window.innerHeight - r.top + FOLGA, maxHeight: porCima }
@@ -35,7 +41,7 @@ export function useMenuFlutuante(alinhar: "esq" | "dir", larguraPainel: number =
       }
       return !a;
     });
-  }, [alinhar, larguraPainel]);
+  }, [alinhar, larguraPainel, alturaMinima]);
 
   useEffect(() => {
     if (!aberto) return;

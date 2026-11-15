@@ -9,6 +9,7 @@ import {
   textoDaData,
 } from "./dataSorteio";
 import { useI18n } from "./i18n";
+import { SeletorData } from "./SeletorData";
 import { SeletorDesenho } from "./SeletorDesenho";
 import { useSessao } from "./sessao";
 
@@ -52,6 +53,15 @@ interface Textos {
   data: string;
 }
 const VAZIOS: Textos = { titulo: "", organizacao: "", premios: Array(MAX_PREMIOS).fill(""), data: "" };
+
+/** O limite à vista no canto da caixa («12/50»): o `maxLength` corta em silêncio, por isso a pessoa vê quanto já escreveu e quanto cabe. */
+function Contagem({ valor, max }: { valor: string; max: number }) {
+  return (
+    <span className="contagem" aria-hidden="true">
+      {valor.length}/{max}
+    </span>
+  );
+}
 
 /**
  * «Sem template? Escolha um da galeria»: um desenho, os textos da rifa, e «Usar este template» cria o template e os algarismos na sessão.
@@ -144,20 +154,26 @@ export function Galeria({ desativado }: { desativado: boolean }) {
       <div className="linha">
         <label>
           {t("web_galeria_titulo")}
-          <input
-            value={f.titulo}
-            onChange={(e) => mudar("titulo", e.target.value)}
-            maxLength={40}
-            data-testid="galeria-titulo"
-          />
+          <span className="campo-contado">
+            <input
+              value={f.titulo}
+              maxLength={40}
+              onChange={(e) => mudar("titulo", e.target.value)}
+              data-testid="galeria-titulo"
+            />
+            <Contagem valor={f.titulo} max={40} />
+          </span>
         </label>
         <label>
           {t("web_galeria_organizacao")}
-          <input
-            value={f.organizacao}
-            onChange={(e) => mudar("organizacao", e.target.value)}
-            maxLength={60}
-          />
+          <span className="campo-contado">
+            <input
+              value={f.organizacao}
+              maxLength={60}
+              onChange={(e) => mudar("organizacao", e.target.value)}
+            />
+            <Contagem valor={f.organizacao} max={60} />
+          </span>
         </label>
       </div>
       <fieldset className="premios">
@@ -177,27 +193,33 @@ export function Galeria({ desativado }: { desativado: boolean }) {
           </select>
         </label>
         {f.premios.slice(0, quantos).map((valor, i) => (
-          <input
-            // biome-ignore lint/suspicious/noArrayIndexKey: a posição é o que identifica cada prémio
-            key={i}
-            value={valor}
-            onChange={(e) => mudarPremio(i, e.target.value)}
-            maxLength={50}
-            aria-label={`${t("web_galeria_premios")} ${i + 1}`}
-            data-testid={`galeria-premio-${i + 1}`}
-          />
+          // biome-ignore lint/suspicious/noArrayIndexKey: a posição é o que identifica cada prémio
+          <div className="premio-linha" key={i}>
+            <span className="premio-n" aria-hidden="true">
+              {i + 1}
+            </span>
+            <span className="campo-contado">
+              <input
+                value={valor}
+                maxLength={50}
+                onChange={(e) => mudarPremio(i, e.target.value)}
+                aria-label={`${t("web_galeria_premios")} ${i + 1}`}
+                data-testid={`galeria-premio-${i + 1}`}
+              />
+              <Contagem valor={valor} max={50} />
+            </span>
+          </div>
         ))}
       </fieldset>
       <fieldset className="data-sorteio">
         <legend>{t("web_galeria_data")}</legend>
         <div className="linha">
           {formato !== "livre" && (
-            <input
-              type="date"
-              value={diaIso}
-              onChange={(e) => setDiaIso(e.target.value)}
-              aria-label={t("web_galeria_data")}
-              data-testid="galeria-data"
+            <SeletorData
+              valor={diaIso}
+              aoMudar={setDiaIso}
+              rotulo={t("web_galeria_data")}
+              testid="galeria-data"
             />
           )}
           <label>
@@ -218,22 +240,28 @@ export function Galeria({ desativado }: { desativado: boolean }) {
           </label>
         </div>
         {formato === "livre" ? (
-          <input
-            value={f.data}
-            onChange={(e) => mudar("data", e.target.value)}
-            maxLength={MAX_DATA}
-            aria-label={t("web_galeria_data")}
-            data-testid="galeria-data-livre"
-          />
+          <span className="campo-contado">
+            <input
+              value={f.data}
+              maxLength={MAX_DATA}
+              onChange={(e) => mudar("data", e.target.value)}
+              aria-label={t("web_galeria_data")}
+              data-testid="galeria-data-livre"
+            />
+            <Contagem valor={f.data} max={MAX_DATA} />
+          </span>
         ) : (
           <label>
             {t("web_galeria_data_antes")}
-            <input
-              value={antes}
-              onChange={(e) => setAntes(e.target.value)}
-              maxLength={20}
-              data-testid="galeria-data-antes"
-            />
+            <span className="campo-contado">
+              <input
+                value={antes}
+                maxLength={20}
+                onChange={(e) => setAntes(e.target.value)}
+                data-testid="galeria-data-antes"
+              />
+              <Contagem valor={antes} max={20} />
+            </span>
           </label>
         )}
       </fieldset>

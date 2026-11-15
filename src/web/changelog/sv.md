@@ -2,6 +2,13 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.47.0 — 2026-11-15
+
+### Förbättrat
+- **Mallgalleriet:** listan med designer klipps inte längre av och hamnar inte fel i vissa teman; varje vinst har sitt nummer; varje textruta visar sin teckengräns (till exempel 12/50); och knappen «Använd den här mallen» sitter inte längre tätt mot sista rutan.
+- **Dragningsdatum i en egen kalender:** i stället för webbläsarens fält (som visade «åååå-mm-dd» och en väljare på ett annat språk än sidans) finns en kalender på alla 22 språk, med månader och veckodagar på det valda språket, datumet skrivet som det språket skriver det, rätt första veckodag och knapparna «Idag» och «Rensa». Den fungerar med tangentbordet (piltangenter, Page Up/Down, Home/End, Enter och Esc).
+- **Ett fylligare «Om»:** texten har skrivits om, på alla 22 språk, och förklarar vem generatorn är till för, vad den gör, vad man gör efter utskriften, hur den skyddar integriteten och var den kan användas.
+
 ## 3.46.0 — 2026-11-15
 
 ### Förbättrat

@@ -2,6 +2,13 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.47.0 — 2026-11-15
+
+### Ulepszono
+- **Galeria szablonów:** lista wzorów nie jest już ucinana ani przesunięta w niektórych motywach; każda nagroda ma swój numer; każde pole tekstowe pokazuje limit znaków (np. 12/50); a przycisk «Użyj tego szablonu» nie jest już przyklejony do ostatniego pola.
+- **Data losowania we własnym kalendarzu:** zamiast pola przeglądarki (które pokazywało «dd.mm.rrrr» i wybór w innym języku niż strona) jest kalendarz w 22 językach, z miesiącami i dniami tygodnia w wybranym języku, datą zapisaną tak, jak zapisuje ją ten język, właściwym pierwszym dniem tygodnia i przyciskami «Dzisiaj» i «Wyczyść». Działa z klawiaturą (strzałki, Page Up/Down, Home/End, Enter i Esc).
+- **Pełniejsze «O programie»:** tekst został napisany od nowa, w 22 językach, i wyjaśnia, dla kogo jest generator, co robi, co zrobić po wydruku, jak chroni prywatność i gdzie można go używać.
+
 ## 3.46.0 — 2026-11-15
 
 ### Ulepszono

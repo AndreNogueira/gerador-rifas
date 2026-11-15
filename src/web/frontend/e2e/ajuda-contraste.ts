@@ -69,6 +69,17 @@ export async function medirContraste(page: Page, raiz?: string): Promise<Medicao
       l: Math.round(r.width - 2 * encolher),
       a: Math.round(r.height - 2 * encolher),
     });
+    // texto cortado por um contentor que rola ou esconde (a linha meio visível no fundo de uma lista): o que se vê ali é a borda do contentor, não o fundo do texto
+    const inteiro = (el: Element, r: DOMRect): boolean => {
+      for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) {
+        const s = getComputedStyle(p);
+        if (!/(auto|scroll|hidden|clip)/.test(`${s.overflowX} ${s.overflowY}`)) continue;
+        const pr = p.getBoundingClientRect();
+        if (r.top < pr.top - 1 || r.bottom > pr.bottom + 1 || r.left < pr.left - 1 || r.right > pr.right + 1)
+          return false;
+      }
+      return true;
+    };
     for (const el of Array.from(
       (seletor ? document.querySelector(seletor) : document.body)?.querySelectorAll("*") ?? [],
     )) {
@@ -100,7 +111,7 @@ export async function medirContraste(page: Page, raiz?: string): Promise<Medicao
           const intervalo = document.createRange();
           intervalo.selectNodeContents(no);
           for (const r of Array.from(intervalo.getClientRects()))
-            if (r.width >= 2 && r.height >= 2) caixas.push(caixa(r));
+            if (r.width >= 2 && r.height >= 2 && inteiro(el, r)) caixas.push(caixa(r));
         }
       }
       if (caixas.length === 0) continue;

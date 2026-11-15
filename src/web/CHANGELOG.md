@@ -4,6 +4,13 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.47.0 — 2026-11-15
+
+### Melhorado
+- **Galeria de templates:** a lista dos desenhos já não fica cortada nem fora do sítio nalguns temas; cada prémio tem o seu número; todas as caixas de texto mostram o limite de caracteres (por exemplo 12/50); e o botão «Usar este template» já não fica colado à última caixa.
+- **Data do sorteio num calendário próprio:** em vez do campo do browser (que mostrava «dd/mm/aaaa» e o seletor numa língua diferente da do site), há um calendário nas 22 línguas, com os meses e os dias da semana na língua escolhida, a data escrita como essa língua a escreve, o primeiro dia da semana certo e os botões «Hoje» e «Limpar». Funciona com o teclado (setas, Page Up/Down, Home/End, Enter e Esc).
+- **«Acerca de» mais completo:** o texto foi reescrito, nas 22 línguas, e explica para quem é o gerador, o que faz, o que fazer depois de imprimir, como protege a privacidade e onde se pode usar.
+
 ## 3.46.0 — 2026-11-15
 
 ### Melhorado
