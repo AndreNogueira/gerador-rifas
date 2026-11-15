@@ -72,7 +72,7 @@ O painel só mostra **agregados** (nunca IPs, nomes de ficheiros, conteúdo ou t
 |---|---|---|
 | `CONTACTO_EMAIL` | O e-mail que as páginas **Termos**, **Privacidade** e **Contacto** mostram. | A página Contacto desaparece do rodapé e os textos não mostram nenhum e-mail. |
 | `RESPONSAVEL` | O nome de quem gere o serviço («O serviço é gerido por …»), nas páginas Termos e Privacidade. Até 100 caracteres. | Os textos dizem «gerido pelo seu autor». |
-| `DONATIVO_URL` | Uma ligação `https://` onde as pessoas podem apoiar o projeto (ver [Donativos](#donativos-donativo_url)). | Não aparece o botão «Donativo» no rodapé. |
+| `DONATIVO_URL` | Uma ligação `https://` onde as pessoas podem apoiar o projeto (ver [Donativos](#donativos-donativo_url)). | Não aparece o botão «Donativo» (cabeçalho, fim da geração e rodapé). |
 
 ### Anúncios (Google AdSense)
 
@@ -128,7 +128,7 @@ O Render define `PORT`, `RENDER` e `RENDER_EXTERNAL_URL` sozinho; não as defina
 
 ## Donativos (`DONATIVO_URL`)
 
-`DONATIVO_URL` é só **uma ligação**: o site não processa pagamentos nem guarda dados de ninguém. Quando está definida, aparece **«Donativo»** no rodapé, a abrir noutro separador. Só se aceita `https://`.
+`DONATIVO_URL` é só **uma ligação**: o site não processa pagamentos nem guarda dados de ninguém. Quando está definida, aparece **«Donativo»** em três sítios — um botão com um coração no cabeçalho (ao lado de «Partilhar»), um convite depois de gerar os ficheiros (`Donativo.tsx`) e a ligação do rodapé —, a abrir noutro separador. Só se aceita `https://`.
 
 ### Que serviço escolher
 
@@ -150,7 +150,7 @@ O **MB WAY** de um telemóvel pessoal **não tem ligação pública**, por isso 
 3. Preenche a página (foto, uma frase: «Ajuda a manter o Gerador de Rifas gratuito»).
 4. Abre a tua página num separador privado e confirma que o endereço funciona: **esse endereço é o valor**.
 5. No Render: serviço `gerador-rifas` → **Environment → Add Environment Variable** → *Key* `DONATIVO_URL`, *Value* `https://ko-fi.com/o-teu-nome` → **Save Changes** (o serviço reinicia).
-6. Confirma: `https://<o-teu-site>/api/publico` mostra o endereço em `donativo_url` e o rodapé passa a ter «Donativo» (nas 22 línguas).
+6. Confirma: `https://<o-teu-site>/api/publico` mostra o endereço em `donativo_url` e o cabeçalho e o rodapé passam a ter «Donativo» (nas 22 línguas).
 
 Para tirar o botão, apaga a variável. **Antes de aceitar dinheiro** confirma com o teu contabilista ou as Finanças se há obrigações fiscais ou de declaração (variam com o país, o valor e a regularidade) e se a associação ou o projeto precisa de estar registado; o site não decide isto por ti.
 

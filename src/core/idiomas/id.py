@@ -255,6 +255,7 @@ T = {
     "web_partilhar": "Bagikan",
     "web_partilhar_texto": "Pembuat Undian: tiket undian bernomor dalam PDF, gratis dan tanpa pendaftaran.",
     "web_partilhar_chamada": "Suka? Bagikan kepada yang juga membuat undian.",
+    "web_donativo_chamada": "Berguna? Bantu menjaga layanan tetap gratis dengan donasi.",
     "tut_f_partilhar_t": "Membagikan pembuat undian",
     "tut_f_partilhar_b": "Tombol «Bagikan» membuka daftar singkat: menu bagikan di ponsel atau komputer (jika peramban punya), WhatsApp, Telegram, Facebook, email, dan «Salin tautan». Setelah berkas dibuat, tombol ini juga muncul di kartu penyerahan, agar organisasi, sekolah, dan panitia perayaan lain mengenal pembuat undian ini. Tautannya hanya berisi alamat situs dalam bahasa yang dipakai; tidak ada pelacakan dan tidak ada yang disimpan. {onde}",
     "win_guardar_pedido": "Simpan permintaan…",

@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.46.0 — 2026-11-15
+
+### Mejorado
+- **Donativo más a la vista:** cuando el servicio tiene un enlace de donativo, el botón aparece ahora en la cabecera (junto a «Compartir») y, tras generar los archivos, con una frase de invitación. También sigue en el pie de página.
+
 ## 3.45.0 — 2026-11-14
 
 ### Mejorado

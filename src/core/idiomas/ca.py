@@ -255,6 +255,7 @@ T = {
     "web_partilhar": "Comparteix",
     "web_partilhar_texto": "Generador de Rifes: butlletes de rifa numerades en PDF, gratis i sense registre.",
     "web_partilhar_chamada": "Us ha agradat? Compartiu-lo amb qui també fa rifes.",
+    "web_donativo_chamada": "Us ha estat útil? Ajudeu a mantenir el servei gratuït amb un donatiu.",
     "tut_f_partilhar_t": "Compartir el generador",
     "tut_f_partilhar_b": "El botó «Comparteix» obre una llista curta: l'opció de compartir del mòbil o de l'ordinador (si el navegador la té), WhatsApp, Telegram, Facebook, correu i «Copia l'enllaç». Després de generar els fitxers també apareix a la targeta de lliurament, per donar a conèixer el generador a altres associacions, escoles i comissions de festes. Els enllaços porten només l'adreça del lloc en l'idioma en què esteu; no hi ha rastreig ni es desa res. {onde}",
     "win_guardar_pedido": "Desa la sol·licitud…",

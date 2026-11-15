@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.46.0 — 2026-11-15
+
+### Förbättrat
+- **Donationsknappen syns bättre:** när tjänsten har en donationslänk visas knappen nu i sidhuvudet (bredvid «Dela») och, efter att filerna skapats, med en kort inbjudan. Den finns kvar i sidfoten också.
+
 ## 3.45.0 — 2026-11-14
 
 ### Förbättrat

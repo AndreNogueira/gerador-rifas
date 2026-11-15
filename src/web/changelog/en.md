@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.46.0 — 2026-11-15
+
+### Improved
+- **Donation button easier to see:** when the service has a donation link, the button now appears in the header (next to «Share») and, after generating the files, with a short invitation. It is still in the footer too.
+
 ## 3.45.0 — 2026-11-14
 
 ### Improved

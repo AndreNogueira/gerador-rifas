@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from "react";
+import { Donativo } from "./Donativo";
 import { useI18n } from "./i18n";
 import { Icone, type NomeIcone } from "./icones";
 import { useMenuFlutuante } from "./menu";
@@ -74,9 +75,11 @@ interface Props {
   mudarTema: (t: Tema) => void;
   visual: Visual;
   mudarVisual: (v: Visual) => void;
+  /** O `DONATIVO_URL` do servidor: vazio = sem botão de donativo. */
+  donativoUrl?: string;
 }
 
-export function Cabecalho({ tema, mudarTema, visual, mudarVisual }: Props) {
+export function Cabecalho({ tema, mudarTema, visual, mudarVisual, donativoUrl = "" }: Props) {
   const { t, lingua, linguas, mudarLingua } = useI18n();
   const caminho = useLocalizacao().split("?")[0];
   return (
@@ -105,6 +108,7 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual }: Props) {
         ))}
       </nav>
       <div className="definicoes">
+        <Donativo url={donativoUrl} variante="topo" />
         <Partilhar variante="topo" />
         <label className="seletor">
           <Icone nome="globo" tamanho={18} />

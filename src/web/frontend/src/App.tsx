@@ -79,7 +79,13 @@ function Aplicacao() {
 
   return (
     <>
-      <Cabecalho tema={tema} mudarTema={mudarTema} visual={visual} mudarVisual={mudarVisual} />
+      <Cabecalho
+        tema={tema}
+        mudarTema={mudarTema}
+        visual={visual}
+        mudarVisual={mudarVisual}
+        donativoUrl={publico.donativo_url}
+      />
       <main className="conteudo">
         {caminho === "/tutorial" ? (
           <Tutorial />
@@ -100,7 +106,7 @@ function Aplicacao() {
         ) : caminho === "/admin" ? (
           <Admin />
         ) : (
-          <Gerador {...formulario} />
+          <Gerador {...formulario} donativoUrl={publico.donativo_url} />
         )}
       </main>
       <Anuncio key={caminho} publico={publico} caminho={caminho} />

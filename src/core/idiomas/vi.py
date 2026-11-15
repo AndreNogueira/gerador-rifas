@@ -255,6 +255,7 @@ T = {
     "web_partilhar": "Chia sẻ",
     "web_partilhar_texto": "Trình tạo vé số: vé đánh số dạng PDF, miễn phí và không cần đăng ký.",
     "web_partilhar_chamada": "Bạn thấy hữu ích? Hãy chia sẻ cho những người cũng tổ chức bốc thăm.",
+    "web_donativo_chamada": "Hữu ích chứ? Hãy ủng hộ để dịch vụ luôn miễn phí.",
     "tut_f_partilhar_t": "Chia sẻ trình tạo",
     "tut_f_partilhar_b": "Nút «Chia sẻ» mở một danh sách ngắn: chức năng chia sẻ của điện thoại hoặc máy tính (nếu trình duyệt có), WhatsApp, Telegram, Facebook, email và «Sao chép liên kết». Sau khi tạo tệp, nút cũng hiện trên thẻ giao tệp, để các hội nhóm, trường học và ban tổ chức lễ hội khác biết đến trình tạo này. Liên kết chỉ chứa địa chỉ trang web theo ngôn ngữ bạn đang dùng; không theo dõi và không lưu gì cả. {onde}",
     "win_guardar_pedido": "Lưu yêu cầu…",

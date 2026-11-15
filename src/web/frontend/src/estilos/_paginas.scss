@@ -305,6 +305,29 @@
   }
 }
 
+// O convite ao donativo no cartão dos ficheiros gerados: uma frase e o botão, antes do «Partilhar»
+.donativo-cartao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-top: 12px;
+
+  .donativo-chamada {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--suave);
+  }
+  .botao {
+    width: auto;
+    text-decoration: none;
+  }
+  .icone {
+    color: var(--erro);
+  }
+}
+
 // O botão «Partilhar» (cabeçalho e cartão dos ficheiros gerados): uma lista curta de ligações simples com os ícones das redes; só variáveis do tema.
 .partilhar {
   display: flex;
