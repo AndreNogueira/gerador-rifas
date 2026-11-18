@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.49.0 — 2026-11-18
+
+### New
+- **Dashboard with day-by-day evolution:** a new “Daily evolution” view shows, over up to 90 days, everything the server stores in its database (sessions, generations, numbers generated, languages, countries, looks, gallery, editor, API, requests, response times, CPU and memory…), with the trend of each indicator and a CSV download of it all. It is an owner-dashboard feature: visitors will not notice any difference.
+
 ## 3.48.0 — 2026-11-18
 
 ### Improved

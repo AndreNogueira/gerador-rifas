@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.49.0 — 2026-11-18
+
+### Nowości
+- **Panel z ewolucją dzień po dniu:** nowy widok «Ewolucja dzienna» pokazuje, do 90 dni wstecz, wszystko, co serwer zapisuje w bazie danych (sesje, generowania, wygenerowane numery, języki, kraje, style, galeria, edytor, API, żądania, czasy odpowiedzi, CPU i pamięć…), z trendem każdego wskaźnika i pobraniem wszystkiego w CSV. To funkcja panelu właściciela: odwiedzający nie zauważą różnicy.
+
 ## 3.48.0 — 2026-11-18
 
 ### Ulepszono

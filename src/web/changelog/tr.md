@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.49.0 — 2026-11-18
+
+### Yeni
+- **Gün gün gelişimi gösteren panel:** yeni «Günlük gelişim» görünümü, en fazla 90 gün boyunca sunucunun veritabanında sakladığı her şeyi (oturumlar, oluşturmalar, oluşturulan numaralar, diller, ülkeler, görünümler, galeri, düzenleyici, API, istekler, yanıt süreleri, CPU ve bellek…) her göstergenin eğilimiyle ve hepsinin CSV olarak indirilmesiyle gösterir. Bu, sahibin panelinin bir özelliğidir: ziyaretçiler bir fark görmez.
+
 ## 3.48.0 — 2026-11-18
 
 ### İyileştirildi

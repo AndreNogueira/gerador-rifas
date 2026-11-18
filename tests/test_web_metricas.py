@@ -222,3 +222,107 @@ def test_privacidade_nenhum_ip_fica_na_base_postgres(m, relogio):
     for ip in ("203.0.113.7", "198.51.100.23", "2001:db8"):
         assert ip not in tudo
     assert "matrix" in tudo
+
+
+# ---------------------------------------------------------------- evolucao dia a dia
+DIA = 86400
+
+
+def _painel(d: dict, id_: str) -> dict:
+    return next(p for p in d["paineis"] if p["id"] == id_)
+
+
+def _serie(d: dict, id_: str, nome: str | None = None) -> list:
+    p = _painel(d, id_)
+    return next(s for s in p["series"] if nome is None or s["nome"] == nome)["valores"]
+
+
+def test_a_evolucao_poe_cada_evento_no_seu_dia(m, relogio):
+    base = relogio.t                                                        # 2027-01-15 08:00 UTC
+    for dias_atras, n in ((2, 1), (1, 3), (0, 2)):
+        relogio.t = base - dias_atras * DIA
+        for _ in range(n):
+            m.evento("sessao", "pt", "premiado", "computador")
+    relogio.t = base - DIA
+    m.evento("geracao", "ok", "", "unico", v1=10.0, v2=500, v3=100)
+    m.evento("geracao", "ok", "", "unico", v1=30.0, v2=700, v3=140)
+    m.evento("geracao", "falhou", "err_digitos", v1=1.0)
+    m.evento("descarga", "pdf")
+    relogio.t = base
+    d = m.evolucao(4)
+    assert d["dias"] == 4 and d["dias_lista"][-1] == "2027-01-15" and d["dias_lista"][0] == "2027-01-12" and len(d["dias_lista"]) == 4
+    assert _serie(d, "sessoes") == [0, 1, 3, 2]
+    assert _serie(d, "numeros") == [0, 0, 1200, 0] and _serie(d, "paginas_geradas") == [0, 0, 240, 0]
+    assert _serie(d, "geracoes", "Concluída") == [0, 0, 2, 0] and _serie(d, "geracoes", "Falhou") == [0, 0, 1, 0]
+    assert _serie(d, "falhas", "err_digitos") == [0, 0, 1, 0]
+    assert _serie(d, "duracao", "Mediana")[2] == 30.0 and _serie(d, "duracao", "Mediana")[0] is None            # sem gerações = sem valor, não zero
+    assert _serie(d, "funil", "Gerações descarregadas")[2] == 50.0 and _serie(d, "funil", "Sessões que geraram")[3] == 0.0
+    assert _serie(d, "linguas", "pt") == [0, 1, 3, 2] and _serie(d, "temas", "premiado") == [0, 1, 3, 2]
+
+
+def test_a_evolucao_segue_o_fuso_do_browser(m, relogio):
+    relogio.t = 1_800_000_000.0 + 15 * 3600 + 1800                           # 2027-01-15 23:30 UTC
+    m.evento("sessao", "pt", "x", "computador")
+    utc = m.evolucao(2, 0)
+    mais_uma_hora = m.evolucao(2, 60)                                        # 00:30 de dia 16
+    assert utc["dias_lista"] == ["2027-01-14", "2027-01-15"] and _serie(utc, "sessoes") == [0, 1]
+    assert mais_uma_hora["dias_lista"] == ["2027-01-15", "2027-01-16"] and _serie(mais_uma_hora, "sessoes") == [0, 1]
+    assert m.evolucao(2, -300)["dias_lista"][-1] == "2027-01-15"            # a oeste de Greenwich o dia ainda e o 15
+    assert m.evolucao(2, 99999)["fuso_min"] == 840                           # o fuso e limitado
+
+
+def test_a_evolucao_junta_o_resto_em_outros_e_separa_os_robos(m, relogio):
+    for i in range(12):
+        m.evento("sessao", f"l{i:02d}", "x", "computador")
+    m.evento("sessao", "l00", "x", "computador")
+    m.evento("pagina", "/", c="computador")
+    m.evento("pagina", "/", c="robo")
+    m.evento("pagina", "/sobre", c="robo")
+    d = m.evolucao(1)
+    nomes = [s["nome"] for s in _painel(d, "linguas")["series"]]
+    assert len(nomes) == 9 and nomes[0] == "l00" and nomes[-1] == "Outros" and _serie(d, "linguas", "Outros") == [4]
+    assert _serie(d, "paginas_vistas", "Pessoas") == [1] and _serie(d, "paginas_vistas", "Robôs") == [2]
+    assert [s["nome"] for s in _painel(d, "rotas")["series"]] == ["/"]        # as rotas so contam pessoas
+
+
+def test_a_evolucao_inclui_pedidos_latencia_e_sistema_sem_as_sondagens(m, relogio):
+    for _ in range(3):
+        m.pedido("POST /api/sessoes/{id_}/previa", 200, 20)
+    m.pedido("POST /api/sessoes/{id_}/previa", 429, 5)
+    m.pedido("GET /x", 500, 40)
+    m.pedido("GET /api/sessoes/{id_}/trabalho", 200, 3)                      # a sondagem do progresso nao conta
+    m.amostrar(cpu=10.0, mem_srv=100.0, mem_motor=50.0, mem_cont=160.0, disco=5.0, sessoes=2, geracoes=1)
+    relogio.t += 30
+    m.amostrar(cpu=30.0, mem_srv=120.0, mem_motor=70.0, mem_cont=200.0, disco=6.0, sessoes=4, geracoes=0)
+    d = m.evolucao(2)
+    assert _serie(d, "pedidos", "Certos") == [0, 3] and _serie(d, "pedidos", "Erros do cliente (4xx)") == [0, 1]
+    assert _serie(d, "pedidos", "Erros do servidor (5xx)") == [0, 1]
+    assert _serie(d, "latencia", "Mediana")[0] is None and _serie(d, "latencia", "Mediana")[1] is not None
+    assert _serie(d, "cpu", "Média") == [None, 20.0] and _serie(d, "cpu", "Máxima") == [None, 30.0]
+    assert _serie(d, "memoria", "Motor") == [None, 70.0] and _serie(d, "simultaneos", "Sessões") == [None, 4]
+
+
+def test_a_evolucao_cobre_todos_os_tipos_de_evento_que_se_gravam(m, relogio):
+    for tipo, a in (("galeria", "natal"), ("editor", "usar"), ("logotipo", "ok"), ("verificacao", "ok"), ("api_geracao", "ok"), ("limite", "sessoes"),
+                    ("erro_http", "404"), ("admin", "entrou"), ("pais", "PT"), ("ecra", "telemovel")):
+        m.evento(tipo, a, v1=390)
+    m.evento("motor_reiniciado")
+    d = m.evolucao(1)
+    for id_, nome in (("galeria", "natal"), ("editor", "Usado"), ("logotipo", "Certo"), ("verificacao", "ok"), ("api_geracao", "ok"), ("limites", "sessoes"),
+                      ("erros_http", "404"), ("admin", "entrou"), ("paises", "PT"), ("classes_ecra", "telemovel")):
+        assert _serie(d, id_, nome) == [1], id_
+    assert _serie(d, "motor", "Reinícios do motor") == [1] and _serie(d, "motor", "Arranques do serviço") == [1]
+    assert _serie(d, "janelas", "Telemóvel (< 414 px)") == [1]
+
+
+def test_a_evolucao_sem_dados_nao_parte_e_os_dias_sao_limitados(m):
+    d = m.evolucao(500)
+    assert d["dias"] == metricas.DIAS_MAXIMOS == len(d["dias_lista"])
+    assert sum(_serie(d, "sessoes")) == 0 and sum(_serie(d, "numeros")) == 0           # o `arranque` do servico nao e uma sessao
+    assert m.evolucao(0)["dias"] == 1
+
+
+def test_a_evolucao_nao_traz_nada_pessoal(m):
+    m.cliente("203.0.113.9", True, True)
+    m.evento("sessao", "pt", "x", "computador")
+    assert "203.0.113.9" not in json.dumps(m.evolucao(7))

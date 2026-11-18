@@ -25,6 +25,7 @@ import sqlite3
 import threading
 import time
 from collections import deque
+from datetime import date, timedelta
 from pathlib import Path
 
 log = logging.getLogger(__name__)
@@ -35,6 +36,7 @@ RETENCAO_EVENTOS_S = 90 * 86400
 # intervalo -> (janela em segundos, tamanho de cada ponto dos graficos em segundos)
 INTERVALOS: dict[str, tuple[int, int]] = {"1h": (3600, 60), "6h": (21600, 60), "24h": (86400, 300), "7d": (604800, 1800), "30d": (2592000, 7200)}
 SONDAGENS = {"GET /api/sessoes/{id_}/trabalho"}         # o frontend pergunta de meio em meio segundo: nao conta para «pedidos por minuto»
+DIAS_MAXIMOS = 90                                       # a vista «evolucao» vai ate onde chega a retencao dos eventos
 DURACAO_BALDES = (5, 15, 30, 60, 120, 300)              # segundos, para o histograma da duracao das geracoes
 _ROBOS = re.compile(r"bot|crawl|spider|slurp|preview|facebookexternalhit|headless|curl|wget|python-requests|httpx", re.I)
 _MOVEL = re.compile(r"Mobi|Android|iPhone|iPad", re.I)
@@ -248,6 +250,15 @@ def _privado(ip: str) -> bool:
     return e.is_private or e.is_loopback or e.is_link_local
 
 
+def novo_painel(grupo: str, id_: str, titulo: str, series: dict[str, list], explica: str, tipo: str = "barras", unidade: str = "",
+                agregado: str = "soma", rotulos: str = "", agregados: dict[str, str] | None = None) -> dict:
+    """Um painel da vista «Evolução»: `series` = {nome: [um valor por dia; None = sem dados]}; `tipo` «barras» (empilhadas) ou «linhas»; `agregado` diz
+    como se resume o periodo (soma, media ou max) e `agregados` muda-o numa serie em particular; `rotulos` = «pais» pede ao painel que escreva os
+    codigos de pais por extenso."""
+    return {"id": id_, "grupo": grupo, "titulo": titulo, "explica": explica, "tipo": tipo, "unidade": unidade, "agregado": agregado, "rotulos": rotulos,
+            "series": [{"nome": nome, "valores": v, "agregado": (agregados or {}).get(nome, agregado)} for nome, v in series.items()]}
+
+
 class Metricas:
     def __init__(self, caminho: Path | None = None, relogio=time.time, url_bd: str = "", intervalo_bd_min: float = INTERVALO_BD_PADRAO_MIN):
         self.caminho = caminho
@@ -396,11 +407,12 @@ class Metricas:
             self._armazem.fechar()
 
     # ------------------------------------------------------------------ consultas (para o painel)
-    def _consultar(self, sql: str, args: tuple = ()) -> list[tuple]:
+    def _consultar(self, sql: str, args: tuple = (), atualizar: bool = True) -> list[tuple]:
         if self._agora() < self._bloqueado_ate:
             return []                                       # a base esta em baixo: o painel mostra o aviso sem esperar por cada consulta
-        with contextlib.suppress(Exception):
-            self.descarregar(tudo=True)                     # o painel ve sempre o que ja aconteceu (ate o minuto em curso)
+        if atualizar:
+            with contextlib.suppress(Exception):
+                self.descarregar(tudo=True)                 # o painel ve sempre o que ja aconteceu (ate o minuto em curso)
         with self._trava_bd:
             try:
                 resultado = self._com_nova_tentativa(lambda: self._armazem.executar(sql, args))
@@ -517,6 +529,172 @@ class Metricas:
             "reinicios_motor": n("motor_reiniciado"),
             "arranques": n("arranque"),
         }
+
+    # ------------------------------------------------------------------ evolucao dia a dia (para a vista «Evolução» do painel)
+    @staticmethod
+    def janela_de_dias(agora: float, dias: int, desvio_min: int = 0) -> tuple[int, int, int, int]:
+        """`(primeiro, dias, desvio_s, desde)`: o indice do primeiro dia LOCAL (dias desde 1970-01-01, no fuso do browser: `desvio_min` = local - UTC),
+        quantos dias, o desvio em segundos e o instante UTC em que esse dia comeca."""
+        dias = max(1, min(int(dias), DIAS_MAXIMOS))
+        desvio = max(-840, min(840, int(desvio_min))) * 60
+        primeiro = (int(agora) + desvio) // 86400 - dias + 1
+        return primeiro, dias, desvio, primeiro * 86400 - desvio
+
+    def evolucao(self, dias: int = 30, desvio_min: int = 0, extras=None) -> dict:
+        """TUDO o que esta na base, dia a dia: uma lista de paineis (cada um com 1 ou mais series de `dias` valores), prontos a desenhar.
+        Os dias sao os do fuso do browser (`desvio_min`); o ultimo e hoje (incompleto). `extras(primeiro, dias, desvio_s, desde)` devolve paineis
+        de outras tabelas (chaves da API, partilhas). Nada identifica ninguem: so contagens por dia, como o resto do painel."""
+        agora = int(self._agora())
+        primeiro, dias, desvio, desde = self.janela_de_dias(agora, dias, desvio_min)
+        with contextlib.suppress(Exception):
+            self.descarregar(tudo=True)                     # uma so vez: as consultas abaixo ja nao o repetem
+
+        def ler(sql: str, args: tuple = ()) -> list[tuple]:
+            return self._consultar(sql, args, atualizar=False)
+
+        def pos(d) -> int | None:
+            i = int(d) - primeiro
+            return i if 0 <= i < dias else None
+
+        def agrupado(tipos: tuple[str, ...], coluna: str, onde: str = "") -> list[tuple]:
+            marcas = ",".join("?" * len(tipos))
+            return ler(f"SELECT (ts + ?) / 86400 AS d, tipo, {coluna} AS k, COUNT(*), SUM(v1), SUM(v2), SUM(v3) FROM eventos "  # noqa: S608 - `coluna`/`onde` sao constantes do codigo
+                       f"WHERE ts >= ? AND tipo IN ({marcas}) {onde} GROUP BY d, tipo, k", (desvio, desde, *tipos))
+
+        def conta(linhas: list[tuple], tipo: str, quando=None, indice: int = 3) -> list[float]:
+            """A soma por dia de uma coluna de `agrupado` (3 = quantos eventos; 4, 5, 6 = soma de v1, v2, v3), das linhas do `tipo` em que `quando(chave)`."""
+            v = [0.0] * dias
+            for d, t, k, *x in linhas:
+                i = pos(d)
+                if t == tipo and i is not None and (quando is None or quando(k)):
+                    v[i] += float(x[indice - 3] or 0)
+            return v
+
+        def por_chave(linhas: list[tuple], tipo: str, quando=None, topo: int = 8, nome=lambda k: k or "(sem dados)") -> dict[str, list[float]]:
+            """Uma serie por valor da coluna (as `topo` com mais eventos; o resto junta-se em «Outros»)."""
+            series: dict[str, list[float]] = {}
+            for d, t, k, n, *_ in linhas:
+                i = pos(d)
+                if t == tipo and i is not None and (quando is None or quando(k)):
+                    series.setdefault(nome(k), [0.0] * dias)[i] += n
+            ordem = sorted(series, key=lambda c: -sum(series[c]))
+            saida = {c: series[c] for c in ordem[:topo]}
+            if len(ordem) > topo:
+                resto = [0.0] * dias
+                for c in ordem[topo:]:
+                    resto = [a + b for a, b in zip(resto, series[c], strict=True)]
+                saida["Outros"] = resto
+            return saida
+
+        paineis: list[dict] = []
+
+        def painel(*args, **kwargs) -> None:
+            paineis.append(novo_painel(*args, **kwargs))
+
+        eventos = agrupado(("sessao", "previa", "template", "algarismos", "geracao", "descarga", "logotipo", "galeria", "editor", "verificacao",
+                            "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra"), "a")
+        humanos = agrupado(("pagina",), "CASE WHEN c = 'robo' THEN 'Robôs' ELSE 'Pessoas' END")
+        rotas = agrupado(("pagina",), "a", "AND c <> 'robo'")
+        por_tema = agrupado(("sessao",), "b")
+        por_aparelho = agrupado(("sessao",), "c")
+        motivos = agrupado(("geracao",), "b", "AND a = 'falhou'")
+        janelas = agrupado(("ecra",), "CASE WHEN v1 < 414 THEN 'Telemóvel (< 414 px)' WHEN v1 < 768 THEN 'Telemóvel grande (414–767)' "
+                                      "WHEN v1 < 1024 THEN 'Tablet (768–1023)' WHEN v1 < 1920 THEN 'Computador (1024–1919)' ELSE 'Ecrã grande (≥ 1920)' END")
+
+        def ok_erro(tipo: str) -> dict[str, list[float]]:
+            return {"Certo": conta(eventos, tipo, lambda k: k == "ok"), "Com erro": conta(eventos, tipo, lambda k: k != "ok")}
+
+        u = "Utilização"
+        sessoes = conta(eventos, "sessao")
+        gens_fim = conta(eventos, "geracao", lambda k: k in ("ok", "erros"))
+        descargas = conta(eventos, "descarga")
+        painel(u, "sessoes", "Sessões abertas", {"Sessões": sessoes}, "Quantas vezes alguém abriu o gerador (uma por separador aberto). Não são pessoas distintas: não se guarda nada que as identifique.")
+        painel(u, "paginas_vistas", "Páginas vistas", {k: conta(humanos, "pagina", lambda c, k=k: c == k) for k in ("Pessoas", "Robôs")},
+               "Visitas às páginas públicas, separando os robôs (motores de busca, pré-visualizações de ligações…) das pessoas.")
+        painel(u, "previas", "Pré-visualizações", ok_erro("previa"), "Quantas vezes se pediu a pré-visualização com números reais, e quantas falharam.")
+        painel(u, "templates", "Templates carregados", ok_erro("template"), "PDFs de template enviados (ou escolhidos da galeria) e quantos foram recusados.")
+        painel(u, "algarismos", "Algarismos carregados", ok_erro("algarismos"), "Ficheiros com os algarismos 0–9 enviados e quantos foram recusados.")
+        nomes_estado = {"ok": "Concluída", "erros": "Com avisos", "falhou": "Falhou", "cancelado": "Cancelada"}
+        painel(u, "geracoes", "Gerações", por_chave(eventos, "geracao", topo=6, nome=lambda k: nomes_estado.get(k, k or "?")),
+               "Cada pedido de «Gerar»: concluídas, com avisos, falhadas e canceladas pelo utilizador.")
+        painel(u, "numeros", "Números gerados", {"Números": conta(eventos, "geracao", lambda k: k in ("ok", "erros"), 5)}, "A soma dos números de rifa escritos nas gerações concluídas (todas as rifas somadas).")
+        painel(u, "paginas_geradas", "Páginas geradas", {"Páginas": conta(eventos, "geracao", lambda k: k in ("ok", "erros"), 6)}, "Páginas de PDF produzidas nas gerações concluídas.")
+        painel(u, "descargas", "Descargas", por_chave(eventos, "descarga", topo=5), "Ficheiros descarregados depois de gerar, por tipo (PDF, ZIP…).")
+        duracoes: dict[int, list[float]] = {}
+        for d, v1 in ler("SELECT (ts + ?) / 86400, v1 FROM eventos WHERE tipo = 'geracao' AND a = 'ok' AND ts >= ?", (desvio, desde)):
+            i = pos(d)
+            if i is not None:
+                duracoes.setdefault(i, []).append(float(v1))
+
+        def pct(i: int, p: float) -> float | None:
+            xs = sorted(duracoes.get(i, []))
+            return round(xs[min(len(xs) - 1, int(p * len(xs)))], 1) if xs else None
+        painel(u, "duracao", "Duração das gerações", {"Mediana": [pct(i, 0.5) for i in range(dias)], "95 % até": [pct(i, 0.95) for i in range(dias)]},
+               "Quanto demora uma geração concluída (tempo total, em segundos): a mediana e o valor abaixo do qual ficam 95 % delas (no resumo, o pior dia).", "linhas", " s", "media", agregados={"95 % até": "max"})
+        painel(u, "funil", "Do pedido à descarga (%)", {
+            "Sessões que geraram": [round(g / s * 100, 1) if s else None for g, s in zip(gens_fim, sessoes, strict=True)],
+            "Gerações descarregadas": [round(c / g * 100, 1) if g else None for c, g in zip(descargas, gens_fim, strict=True)]},
+            "Que parte dos eventos de cada passo chega ao seguinte: gerações concluídas por sessão aberta e descargas por geração concluída (pode passar de 100 % se se descarregar mais de um ficheiro por geração). Contam eventos, não pessoas.", "linhas", " %", "media")
+
+        f = "Funcionalidades"
+        painel(f, "galeria", "Galeria de desenhos", por_chave(eventos, "galeria"), "Desenhos da galeria usados («Usar este template»), por desenho.")
+        nomes_editor = {"usar": "Usado", "partilhar": "Partilhado"}
+        painel(f, "editor", "Editor de templates", por_chave(eventos, "editor", topo=5, nome=lambda k: nomes_editor.get(k, k or "?")), "Desenhos do editor usados para gerar e desenhos partilhados por ligação.")
+        painel(f, "logotipo", "Logótipo", ok_erro("logotipo"), "Logótipos enviados e quantos foram recusados (tipo ou tamanho).")
+        painel(f, "verificacao", "Verificação de bilhetes (QR)", por_chave(eventos, "verificacao", topo=4), "Quantas vezes se leu o QR de um bilhete e o resultado: origem confirmada, código inválido ou indisponível.")
+        painel(f, "api_geracao", "API pública (pedidos em lote)", por_chave(eventos, "api_geracao", topo=5), "Itens gerados pela API pública v1, por resultado.")
+        painel(f, "limites", "Limites atingidos", por_chave(eventos, "limite", topo=6), "Pedidos recusados por excederem um limite (sessões, pedidos por minuto, geração em curso…).")
+
+        g = "Público"
+        painel(g, "linguas", "Línguas", por_chave(eventos, "sessao"), "A língua da interface em cada sessão aberta (as 8 mais usadas; as outras somam em «Outros»).")
+        painel(g, "temas", "Visuais (temas)", por_chave(por_tema, "sessao"), "O visual escolhido em cada sessão (o «Premiado» é o de origem).")
+        painel(g, "dispositivos", "Dispositivos", por_chave(por_aparelho, "sessao", topo=5), "O tipo de aparelho em cada sessão, pelo navegador (telemóvel, tablet, computador).")
+        painel(g, "paises", "Países", por_chave(eventos, "pais"), "O país de cada sessão (código de duas letras que a rede do alojamento acrescenta; nunca o IP).", rotulos="pais")
+        painel(g, "classes_ecra", "Tipos de ecrã", por_chave(eventos, "ecra", topo=6), "A classe de ecrã comunicada uma vez por separador (telemóvel, tablet, portátil, secretária…).")
+        painel(g, "janelas", "Largura da janela", por_chave(janelas, "ecra", topo=6), "A largura da JANELA do browser, em escalões: mostra quem usa janelas estreitas num ecrã grande.")
+        painel(g, "rotas", "Páginas mais vistas", por_chave(rotas, "pagina"), "As páginas públicas mais visitadas por pessoas (sem robôs).")
+
+        sa = "Saúde"
+        pedidos = {"Certos": [0.0] * dias, "Erros do cliente (4xx)": [0.0] * dias, "Erros do servidor (5xx)": [0.0] * dias}
+        hists: dict[int, list[int]] = {}
+        for d, grupo, n, e4, e5, hist in ler("SELECT (ts + ?) / 86400, grupo, n, e4, e5, hist FROM pedidos WHERE ts >= ?", (desvio, desde)):
+            i = pos(d)
+            if i is None or grupo in SONDAGENS:
+                continue
+            pedidos["Certos"][i] += n - e4 - e5
+            pedidos["Erros do cliente (4xx)"][i] += e4
+            pedidos["Erros do servidor (5xx)"][i] += e5
+            hists[i] = _somar(hists.get(i, [0] * (len(LIMITES_MS) + 1)), json.loads(hist))
+        painel(sa, "pedidos", "Pedidos à API", pedidos, "Todos os pedidos ao servidor (sem a sondagem do progresso), certos e com erro.")
+        painel(sa, "latencia", "Tempo de resposta", {"Mediana": [percentil(hists[i], 0.5) if i in hists else None for i in range(dias)],
+                                                     "95 % até": [percentil(hists[i], 0.95) if i in hists else None for i in range(dias)]},
+               "Quanto demora o servidor a responder (em milissegundos): a mediana e o valor abaixo do qual ficam 95 % dos pedidos (no resumo, o pior dia).", "linhas", " ms", "media", agregados={"95 % até": "max"})
+        painel(sa, "erros_http", "Erros por código", por_chave(eventos, "erro_http", topo=6), "Respostas de erro do servidor, por código HTTP (404, 429, 500…).")
+        painel(sa, "falhas", "Gerações falhadas, por motivo", por_chave(motivos, "geracao", topo=6), "Porque falharam as gerações (motivo resumido; nunca o texto do erro).")
+        painel(sa, "motor", "Arranques e reinícios", {"Arranques do serviço": conta(eventos, "arranque"), "Reinícios do motor": conta(eventos, "motor_reiniciado")},
+               "Quantas vezes o serviço arrancou (atualizações, adormecer/acordar) e o processo do motor foi reiniciado (memória, tempo ou cancelamento).")
+        painel(sa, "admin", "Acessos ao painel", por_chave(eventos, "admin", topo=6), "Entradas, tentativas falhadas e bloqueios no painel, e alterações feitas nele.")
+
+        si = "Sistema"
+        amostras: dict[int, tuple] = {}
+        for r in ler("SELECT (ts + ?) / 86400 AS d, AVG(cpu), MAX(cpu), MAX(mem_srv), MAX(mem_motor), MAX(mem_cont), MAX(disco), MAX(sessoes), MAX(geracoes) "
+                     "FROM sistema WHERE ts >= ? GROUP BY d", (desvio, desde)):
+            if pos(r[0]) is not None:
+                amostras[pos(r[0])] = r[1:]
+
+        def col(k: int, casas: int = 1) -> list:
+            return [round(amostras[i][k], casas) if i in amostras and amostras[i][k] is not None else None for i in range(dias)]
+        painel(si, "cpu", "CPU", {"Média": col(0), "Máxima": col(1)}, "Quanto do processador se usou em cada dia (a média das amostras e o pico). Só há amostras dos últimos 35 dias.", "linhas", " %", "media", agregados={"Máxima": "max"})
+        painel(si, "memoria", "Memória (pico do dia)", {"Servidor": col(2), "Motor": col(3), "Contentor": col(4)}, "O máximo de memória em cada dia, em MB: a API, o processo do motor e o contentor inteiro (o Render gratuito tem 512 MB).", "linhas", " MB", "max")
+        painel(si, "disco", "Disco usado (pico do dia)", {"Ficheiros temporários": col(5)}, "O espaço ocupado pelos ficheiros das sessões (em MB).", "linhas", " MB", "max")
+        painel(si, "simultaneos", "Em simultâneo (pico do dia)", {"Sessões": col(6, 0), "Gerações": col(7, 0)}, "O máximo de sessões abertas e de gerações em curso ao mesmo tempo, em cada dia.", "linhas", "", "max")
+
+        if extras is not None:
+            paineis.extend(extras(primeiro, dias, desvio, desde))
+
+        return {"dias": dias, "fuso_min": desvio // 60, "dias_lista": [(date(1970, 1, 1) + timedelta(days=primeiro + i)).isoformat() for i in range(dias)],
+                "retencao": {"eventos_dias": RETENCAO_EVENTOS_S // 86400, "sistema_dias": RETENCAO_SISTEMA_S // 86400},
+                "dados_desde": self.dados_desde(), "paineis": paineis}
 
     def _janelas(self, desde: int) -> list[dict]:
         """A largura da JANELA do browser (nao do ecra) por escaloes: mostra quem usa janelas pequenas num ecra grande."""

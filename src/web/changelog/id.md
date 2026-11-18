@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.49.0 — 2026-11-18
+
+### Baru
+- **Panel dengan perkembangan hari demi hari:** tampilan baru «Evolusi harian» menampilkan, hingga 90 hari, semua yang disimpan server di basis data (sesi, pembuatan, nomor yang dibuat, bahasa, negara, tampilan, galeri, editor, API, permintaan, waktu respons, CPU dan memori…), dengan tren tiap indikator dan unduhan semuanya dalam CSV. Ini fitur panel pemilik: pengunjung tidak akan merasakan perbedaan.
+
 ## 3.48.0 — 2026-11-18
 
 ### Ditingkatkan

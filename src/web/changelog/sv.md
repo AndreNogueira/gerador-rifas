@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.49.0 — 2026-11-18
+
+### Nytt
+- **Panel med utvecklingen dag för dag:** en ny vy «Daglig utveckling» visar, upp till 90 dagar tillbaka, allt som servern sparar i databasen (sessioner, genereringar, genererade nummer, språk, länder, utseenden, galleri, redigerare, API, anrop, svarstider, CPU och minne …), med trenden för varje mått och nedladdning av allt som CSV. Det är en funktion i ägarens panel: besökare märker ingen skillnad.
+
 ## 3.48.0 — 2026-11-18
 
 ### Förbättrat

@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.49.0 — 2026-11-18
+
+### Novedades
+- **Panel con la evolución día a día:** una nueva vista «Evolución diaria» muestra, a lo largo de hasta 90 días, todo lo que el servidor guarda en la base de datos (sesiones, generaciones, números generados, idiomas, países, estilos, galería, editor, API, peticiones, tiempos de respuesta, CPU y memoria…), con la tendencia de cada indicador y la descarga de todo en CSV. Es una función del panel del propietario: los visitantes no notan diferencia.
+
 ## 3.48.0 — 2026-11-18
 
 ### Mejorado

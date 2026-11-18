@@ -108,6 +108,11 @@ class Chaves(BaseSql):
         self._executar("UPDATE api_uso SET numeros = CASE WHEN numeros >= %s THEN numeros - %s ELSE 0 END, lotes = CASE WHEN lotes > 0 THEN lotes - 1 ELSE 0 END "
                        "WHERE chave_id = %s AND dia = %s", (numeros, numeros, info.id, dia))
 
+    def uso_por_dia(self, desde_dia: int) -> list[tuple[int, int, int, int]]:
+        """`(dia UTC desde 1970, numeros, lotes, chaves usadas)` de cada dia a partir de `desde_dia`, somando todas as chaves (para o painel)."""
+        return [(int(d), int(n), int(lo), int(c)) for d, n, lo, c in
+                self._executar("SELECT dia, SUM(numeros), SUM(lotes), COUNT(*) FROM api_uso WHERE dia >= %s GROUP BY dia ORDER BY dia", (desde_dia,))]
+
     def uso_hoje(self, info: InfoChave) -> tuple[int, int]:
         """(numeros, lotes) gastos hoje."""
         linhas = self._executar("SELECT numeros, lotes FROM api_uso WHERE chave_id = %s AND dia = %s", (info.id, _dia(self._relogio())))

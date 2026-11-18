@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.49.0 — 2026-11-18
+
+### Novinky
+- **Panel s vývojem den po dni:** nový pohled «Denní vývoj» ukazuje až za 90 dní vše, co server ukládá do databáze (relace, generování, vygenerovaná čísla, jazyky, země, vzhledy, galerii, editor, API, požadavky, doby odezvy, CPU a paměť…), s trendem každého ukazatele a stažením všeho do CSV. Je to funkce panelu majitele: návštěvníci žádný rozdíl nepoznají.
+
 ## 3.48.0 — 2026-11-18
 
 ### Vylepšeno

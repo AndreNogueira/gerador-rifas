@@ -63,6 +63,7 @@ def test_o_dono_continua_a_entrar_como_admin_e_o_estado_diz_o_papel(dois):
 def test_leitura_por_cookie_ve_mas_nao_muda(dois):
     assert _entrar(dois, LEITURA).json()["papel"] == "leitura"
     assert dois.get("/api/admin/estado").status_code == 200 and dois.get("/api/admin/dados?intervalo=6h").status_code == 200
+    assert dois.get("/api/admin/evolucao?dias=7").status_code == 200                                      # a leitura tambem ve a evolucao
     assert dois.get("/api/admin/chaves").status_code == 200 and dois.get("/api/admin/seo").status_code == 200
     escrita = [dois.post("/api/admin/chaves", json={"nome": "x"}), dois.delete("/api/admin/chaves/abc"),
                dois.put("/api/admin/seo", json={"chave": "t_inicio", "lingua": "pt", "texto": "x"}),
@@ -81,7 +82,7 @@ def test_leitura_por_cabecalho_bearer_so_em_get(dois):
 
 
 def test_sem_credencial_tudo_e_404(dois):
-    for rota in ("/api/admin/estado", "/api/admin/dados", "/api/admin/chaves", "/api/admin/seo"):
+    for rota in ("/api/admin/estado", "/api/admin/dados", "/api/admin/evolucao", "/api/admin/chaves", "/api/admin/seo"):
         assert dois.get(rota).status_code == 404
 
 

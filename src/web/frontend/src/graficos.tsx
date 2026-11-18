@@ -528,3 +528,191 @@ export function Medidor({
     </figure>
   );
 }
+
+// ---------------------------------------------------------------- gráfico dia a dia (vista «Evolução diária»)
+const CORES_SERIES = [
+  "var(--destaque)",
+  "var(--destaque-2)",
+  "var(--passo-3)",
+  "#2f8fc4",
+  "#8a63d2",
+  "#b8941f",
+  "#4f9d69",
+  "#c25b78",
+];
+
+/** A cor de uma série: os significados fixos (certo, aviso, erro, outros) têm a sua; as outras seguem a paleta pela ordem. */
+export function corDaSerie(nome: string, i: number): string {
+  if (nome === "Outros") return "var(--suave)";
+  if (/erro do servidor|5xx|falhou|com erro/i.test(nome)) return "var(--erro)";
+  if (/cancelada/i.test(nome)) return "var(--suave)";
+  if (/4xx|com avisos|rob[oô]s/i.test(nome)) return "var(--aviso)";
+  if (/^(certo|certos|conclu[ií]da)$/i.test(nome)) return "var(--ok)";
+  return CORES_SERIES[i % CORES_SERIES.length] as string;
+}
+
+export const rotuloDia = (iso: string) => `${iso.slice(8, 10)}/${iso.slice(5, 7)}`;
+
+export interface SerieDia {
+  nome: string;
+  cor: string;
+  valores: (number | null)[];
+}
+
+/**
+ * Um gráfico com um valor por dia: barras (empilhadas se houver várias séries) ou linhas. O último dia é hoje e está incompleto (mais
+ * claro). Tem balão ao passar o rato e uma descrição para os leitores de ecrã.
+ */
+export function GraficoDiario({
+  titulo,
+  dias,
+  series,
+  tipo,
+  unidade = "",
+}: {
+  titulo: string;
+  dias: string[];
+  series: SerieDia[];
+  tipo: "barras" | "linhas";
+  unidade?: string;
+}) {
+  const [ativo, setAtivo] = useState<number | null>(null);
+  const n = dias.length;
+  const empilhado = tipo === "barras";
+  const totalDoDia = (i: number) => series.reduce((a, s) => a + (s.valores[i] ?? 0), 0);
+  const maximo = empilhado
+    ? Math.max(0, ...dias.map((_, i) => totalDoDia(i)))
+    : Math.max(0, ...series.flatMap((s) => s.valores.map((v) => v ?? 0)));
+  const { topo, marcas } = escalaY(maximo * 1.05);
+  const bloco = AREA.l / Math.max(1, n);
+  const x = (i: number) => MARGEM.e + bloco * i;
+  const y = (v: number) => MARGEM.c + AREA.a - (v / topo) * AREA.a;
+  const passoRotulo = Math.max(1, Math.ceil(n / 8));
+  const fmt = (v: number | null) => (v === null ? "—" : `${formatarNumero(v)}${unidade}`);
+
+  const caminho = (s: SerieDia) => {
+    let d = "";
+    let anterior = false;
+    s.valores.forEach((v, i) => {
+      if (v === null) {
+        anterior = false;
+        return;
+      }
+      d += `${anterior ? "L" : "M"}${(x(i) + bloco / 2).toFixed(1)} ${y(v).toFixed(1)}`;
+      anterior = true;
+    });
+    return d;
+  };
+
+  function mover(e: PointerEvent<SVGSVGElement>) {
+    const caixa = e.currentTarget.getBoundingClientRect();
+    if (!caixa.width) return;
+    const px = ((e.clientX - caixa.left) / caixa.width) * L;
+    setAtivo(Math.min(n - 1, Math.max(0, Math.floor((px - MARGEM.e) / bloco))));
+  }
+
+  const descricao = `${titulo}: ${series
+    .map((s) => {
+      const soma = s.valores.reduce<number>((a, v) => a + (v ?? 0), 0);
+      return `${s.nome} ${empilhado ? `${formatarNumero(soma)} no total` : `último valor ${fmt([...s.valores].reverse().find((v) => v !== null) ?? null)}`}`;
+    })
+    .join("; ")}`;
+
+  return (
+    <figure className="grafico">
+      <svg
+        viewBox={`0 0 ${L} ${A}`}
+        role="img"
+        aria-label={descricao}
+        onPointerMove={mover}
+        onPointerLeave={() => setAtivo(null)}
+      >
+        <Grelha marcas={marcas} topo={topo} formato={formatarNumero} />
+        {dias.map((d, i) =>
+          (n - 1 - i) % passoRotulo === 0 ? (
+            <text
+              key={d}
+              x={x(i) + bloco / 2}
+              y={A - 6}
+              textAnchor={i === n - 1 ? "end" : i === 0 ? "start" : "middle"}
+              className="grafico-eixo"
+            >
+              {rotuloDia(d)}
+            </text>
+          ) : null,
+        )}
+        {empilhado &&
+          dias.map((d, i) => {
+            let base = 0;
+            return (
+              <g key={d} opacity={i === n - 1 ? 0.6 : 1}>
+                {series.map((s) => {
+                  const v = s.valores[i] ?? 0;
+                  const de = base;
+                  base += v;
+                  return v > 0 ? (
+                    <rect
+                      key={s.nome}
+                      x={x(i) + bloco * 0.1}
+                      y={y(de + v)}
+                      width={Math.max(1, bloco * 0.8)}
+                      height={y(de) - y(de + v)}
+                      style={{ fill: s.cor }}
+                    />
+                  ) : null;
+                })}
+              </g>
+            );
+          })}
+        {!empilhado &&
+          series.map((s) => (
+            <g key={s.nome}>
+              <path d={caminho(s)} className="grafico-linha" style={{ stroke: s.cor }} />
+              {s.valores.map((v, i) =>
+                v === null ? null : (
+                  <circle
+                    // biome-ignore lint/suspicious/noArrayIndexKey: a posição do dia identifica o ponto
+                    key={i}
+                    cx={x(i) + bloco / 2}
+                    cy={y(v)}
+                    r={n > 45 ? 1.5 : 2.6}
+                    style={{ fill: s.cor }}
+                  />
+                ),
+              )}
+            </g>
+          ))}
+        {ativo !== null && (
+          <rect x={x(ativo)} y={MARGEM.c} width={bloco} height={AREA.a} className="grafico-cursor-dia" />
+        )}
+      </svg>
+      <figcaption>
+        <ul className="legenda">
+          {series.map((s) => (
+            <li key={s.nome}>
+              <span className="amostra" style={{ background: s.cor }} />
+              {s.nome}
+            </li>
+          ))}
+        </ul>
+      </figcaption>
+      {ativo !== null && (
+        <div
+          className="balao"
+          style={{ left: `${Math.min(88, Math.max(12, ((x(ativo) + bloco / 2) / L) * 100))}%` }}
+        >
+          <b>
+            {rotuloDia(dias[ativo] as string)}
+            {ativo === n - 1 ? " (hoje, incompleto)" : ""}
+          </b>
+          {series.map((s) => (
+            <span key={s.nome}>
+              <i style={{ background: s.cor }} />
+              {s.nome}: {fmt(s.valores[ativo] ?? null)}
+            </span>
+          ))}
+        </div>
+      )}
+    </figure>
+  );
+}

@@ -95,6 +95,21 @@ def test_a_quota_recomeca_no_dia_seguinte(tmp_path):
     assert ch.consumir(info, 10)
 
 
+def test_o_uso_por_dia_soma_todas_as_chaves(tmp_path):
+    agora = [1_800_000_000.0]
+    ch = chaves_api.Chaves(caminho=tmp_path / "k.sqlite3", relogio=lambda: agora[0])
+    a, _ = ch.criar("a", 1000)
+    b, _ = ch.criar("b", 1000)
+    ch.consumir(a, 10)
+    ch.consumir(a, 5)
+    ch.consumir(b, 20)
+    agora[0] += 86400
+    ch.consumir(a, 7)
+    hoje = int(1_800_000_000 // 86400)
+    assert ch.uso_por_dia(hoje) == [(hoje, 35, 3, 2), (hoje + 1, 7, 1, 1)]          # (dia UTC, números, lotes, chaves usadas)
+    assert ch.uso_por_dia(hoje + 1) == [(hoje + 1, 7, 1, 1)]
+
+
 # ------------------------------------------------------------------ autenticacao e documentacao
 def test_sem_chave_ou_com_chave_errada_e_401(cliente):
     assert cliente.post("/api/v1/batches", json=_itens((1, 10))).status_code == 401

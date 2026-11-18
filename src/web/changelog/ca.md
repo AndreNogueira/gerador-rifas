@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.49.0 — 2026-11-18
+
+### Novetats
+- **Tauler amb l'evolució dia a dia:** una nova vista «Evolució diària» mostra, fins a 90 dies, tot el que el servidor desa a la base de dades (sessions, generacions, números generats, llengües, països, estils, galeria, editor, API, peticions, temps de resposta, CPU i memòria…), amb la tendència de cada indicador i la descàrrega de tot en CSV. És una funció del tauler del propietari: els visitants no noten cap diferència.
+
 ## 3.48.0 — 2026-11-18
 
 ### Millores

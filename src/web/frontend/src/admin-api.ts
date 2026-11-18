@@ -147,6 +147,35 @@ export interface Dados {
 }
 
 /** Sem sessão de administrador (o servidor responde 404 para não confirmar que o painel existe). */
+export interface SerieDiaria {
+  nome: string;
+  /** Um valor por dia (`null` = sem dados nesse dia). */
+  valores: (number | null)[];
+  /** Como se resume a série no período. */
+  agregado: "soma" | "media" | "max";
+}
+export interface PainelDiario {
+  id: string;
+  grupo: string;
+  titulo: string;
+  explica: string;
+  tipo: "barras" | "linhas";
+  unidade: string;
+  agregado: "soma" | "media" | "max";
+  /** «pais»: os nomes das séries são códigos de país a escrever por extenso. */
+  rotulos: string;
+  series: SerieDiaria[];
+}
+export interface Evolucao {
+  dias: number;
+  fuso_min: number;
+  /** Os dias de cada valor, `aaaa-mm-dd`, do mais antigo ao de hoje (incompleto). */
+  dias_lista: string[];
+  retencao: { eventos_dias: number; sistema_dias: number };
+  dados_desde: number;
+  paineis: PainelDiario[];
+}
+
 export class NaoAutenticado extends Error {}
 export class ErroEntrada extends Error {
   constructor(
@@ -216,6 +245,9 @@ export const adminApi = {
   estado: () => ver<Estado>("/api/admin/estado"),
   erros: (intervalo: string) =>
     ver<LivroErros>(`/api/admin/erros?intervalo=${encodeURIComponent(intervalo)}`),
+  /** Tudo o que está na base, dia a dia; os dias são os do fuso deste browser. */
+  evolucao: (dias: number) =>
+    ver<Evolucao>(`/api/admin/evolucao?dias=${dias}&fuso=${-new Date().getTimezoneOffset()}`),
   dados: (intervalo: string) => ver<Dados>(`/api/admin/dados?intervalo=${encodeURIComponent(intervalo)}`),
   async entrar(token: string): Promise<void> {
     const r = await fetch("/api/admin/entrar", {

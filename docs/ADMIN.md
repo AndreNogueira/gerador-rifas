@@ -46,6 +46,21 @@ Tudo com uma explicação em linguagem simples ao lado («Como ler»).
 | **Proxy e limite por IP** | verifica se os IPs reais dos visitantes chegam ao servidor (ver abaixo) |
 | **Limites em vigor** | os valores que o servidor está a aplicar |
 
+### Evolução diária (`/admin` → «Evolução diária»)
+
+Uma segunda vista, ao lado da «Visão geral», com **tudo o que está na base dia a dia** (7, 14, 30, 60 ou 90 dias; `GET /api/admin/evolucao?dias=&fuso=`, também de leitura para o `CLAUDE_TOKEN`). Os dias são os do fuso do browser (`fuso` = minutos local − UTC) e o último, hoje, está incompleto. Cada painel traz o total (ou a média/o pico), a **tendência** (2.ª metade do período face à 1.ª) e um gráfico de barras empilhadas ou de linhas com balão por dia. «Descarregar CSV» exporta todas as séries (`;`, vírgula decimal, BOM: abre direto no Excel em português).
+
+| Grupo | Painéis (de onde vêm) |
+|---|---|
+| **Utilização** | sessões, páginas vistas (pessoas e robôs), pré-visualizações, templates e algarismos (certos/recusados), gerações por estado, números e páginas gerados, descargas, duração das gerações (mediana e 95 %), funil sessão → geração → descarga (tabela `eventos`) |
+| **Funcionalidades** | galeria por desenho, editor, logótipo, verificação de QR, API pública, limites atingidos (`eventos`) |
+| **Público** | línguas, visuais, dispositivos, países, tipos de ecrã, largura da janela, páginas mais vistas (`eventos`) |
+| **Saúde** | pedidos certos/4xx/5xx e tempo de resposta (tabela `pedidos`), erros por código, falhas por motivo, arranques e reinícios do motor, acessos ao painel (`eventos`) |
+| **Sistema** | CPU (média e pico), memória (servidor, motor, contentor), disco, sessões e gerações em simultâneo (tabela `sistema`) |
+| **API e partilhas** | números e lotes gastos pela API pública (`api_uso`, dias UTC) e desenhos do editor partilhados (`partilhas`, só com Postgres) |
+
+Os limites são os da retenção (eventos 90 dias, pedidos e sistema 35): os dias mais antigos aparecem vazios. As categorias mostram as 8 mais usadas e juntam o resto em «Outros». Um evento novo aparece aqui acrescentando-o a `Metricas.evolucao` (e ao teste `test_a_evolucao_cobre_todos_os_tipos_de_evento_que_se_gravam`).
+
 Os intervalos são a última hora, 6 horas, 24 horas, 7 dias e 30 dias. Os números de «Agora» atualizam de 10 em 10 segundos; os gráficos de 30 em 30.
 
 ## Privacidade: só agregados
@@ -78,7 +93,7 @@ A secção «Proxy e limite por IP» olha para a última hora e diz: **«ok»** 
 
 - O SQL de `metricas.py` tem de servir **ao SQLite e ao Postgres** (`?` vira `%s`, upsert com `ON CONFLICT`, `BIGINT`/`DOUBLE PRECISION`). `tests/test_web_metricas.py` corre as mesmas consultas nos dois; para o Postgres precisa de `TEST_DATABASE_URL` (o CI tem o trabalho «metricas em Postgres 17»; localmente qualquer Postgres descartável: **os testes apagam as tabelas `sistema`, `pedidos` e `eventos`**, nunca apontes para a base real).
 
-- `src/web/metricas.py`: o registo (buffer, SQLite, histogramas, proxy); `src/web/sistema.py`: CPU/memória/disco (`psutil`, cgroup); `src/web/admin.py`: autenticação e API; o frontend em `Admin.tsx`, `graficos.tsx` (gráficos em SVG feitos à mão, sem biblioteca), `admin-api.ts` e `estilos/_admin.scss`.
+- `src/web/metricas.py`: o registo (buffer, SQLite, histogramas, proxy); `src/web/sistema.py`: CPU/memória/disco (`psutil`, cgroup); `src/web/admin.py`: autenticação e API; o frontend em `Admin.tsx`, `AdminEvolucao.tsx` (a vista dia a dia), `graficos.tsx` (gráficos em SVG feitos à mão, sem biblioteca), `admin-api.ts` e `estilos/_admin.scss`.
 - **Exceção às 18 línguas:** o painel está só em português (é do dono, não da interface pública).
 - Um evento novo: `serv.metricas.evento(tipo, a, b, c, v1, v2, v3)` (só códigos e números!) e a consulta em `Metricas.resumo`; atualiza o teste de privacidade.
 
