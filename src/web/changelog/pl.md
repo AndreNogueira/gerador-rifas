@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.48.0 — 2026-11-18
+
+### Ulepszono
+- **Menu «Pomoc» w nagłówku:** samouczek, wideo i poradniki «Jak to zrobić» są teraz w jednej zakładce, «Pomoc». Nagłówek jest krótszy, a nazwa aplikacji zawsze widnieje w całości w jednym wierszu, w każdym języku i na każdym ekranie.
+
 ## 3.47.0 — 2026-11-15
 
 ### Ulepszono

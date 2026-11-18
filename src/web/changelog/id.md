@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.48.0 — 2026-11-18
+
+### Ditingkatkan
+- **Menu «Bantuan» di header:** tutorial, video, dan panduan «Cara membuat» kini digabung dalam satu tab, «Bantuan». Header lebih pendek dan nama aplikasi selalu tampil utuh dalam satu baris, di bahasa dan ukuran layar apa pun.
+
 ## 3.47.0 — 2026-11-15
 
 ### Ditingkatkan

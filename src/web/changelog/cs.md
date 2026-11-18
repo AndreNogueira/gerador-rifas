@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.48.0 — 2026-11-18
+
+### Vylepšeno
+- **Nabídka «Nápověda» v záhlaví:** návod, video a průvodci «Jak na to» jsou nyní na jedné záložce, «Nápověda». Záhlaví je kratší a název aplikace je vždy vidět celý na jednom řádku, v každém jazyce i na každé velikosti obrazovky.
+
 ## 3.47.0 — 2026-11-15
 
 ### Vylepšeno

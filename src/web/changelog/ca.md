@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.48.0 — 2026-11-18
+
+### Millores
+- **Menú «Ajuda» a la capçalera:** el tutorial, el vídeo i les guies «Com fer-ho» passen a una sola pestanya, «Ajuda». La capçalera és més curta i el nom de l'aplicació es veu sempre sencer i en una sola línia, en qualsevol llengua i mida de pantalla.
+
 ## 3.47.0 — 2026-11-15
 
 ### Millores

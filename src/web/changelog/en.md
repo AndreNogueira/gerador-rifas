@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.48.0 — 2026-11-18
+
+### Improved
+- **“Help” menu in the header:** the tutorial, the video and the “How to” guides now share a single tab, “Help”. The header is shorter and the app name always shows in full on one line, in any language and screen size (it used to be cut off or split in two lines).
+
 ## 3.47.0 — 2026-11-15
 
 ### Improved

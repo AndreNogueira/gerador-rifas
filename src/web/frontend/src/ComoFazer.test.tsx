@@ -20,23 +20,32 @@ function abrir() {
   );
 }
 
-describe("o grupo «Como fazer» no cabeçalho", () => {
-  it("fica ao lado do tutorial e abre uma lista com todos os guias", async () => {
+describe("o menu «Ajuda» no cabeçalho (tutorial, vídeo e «como fazer» num só separador)", () => {
+  it("abre uma lista com o tutorial, o vídeo e todos os guias", async () => {
     abrir();
-    const botao = await screen.findByTestId("nav-como-fazer");
-    expect(botao).toHaveTextContent("Como fazer");
+    const botao = await screen.findByTestId("nav-ajuda");
+    expect(botao).toHaveTextContent("Ajuda");
     expect(botao).toHaveAttribute("aria-expanded", "false");
     const nav = botao.closest("nav") as HTMLElement;
-    const ordem = [...nav.querySelectorAll("a, button")].map((e) => e.getAttribute("data-testid"));
-    expect(ordem.slice(0, 2)).toEqual(["nav-tutorial", "nav-como-fazer"]); // logo a seguir ao tutorial
+    // o cabeçalho só tem o menu e as páginas soltas: o tutorial e o vídeo já não são separadores à parte
+    expect([...nav.querySelectorAll("a, button")].map((e) => e.getAttribute("data-testid"))).toEqual([
+      "nav-ajuda",
+      "nav-sorteio",
+      "nav-sobre",
+    ]);
     expect(screen.queryByTestId("guia-rifas-para-escolas")).toBeNull();
     await userEvent.click(botao);
     expect(botao).toHaveAttribute("aria-expanded", "true");
-    const lista = document.getElementById("menu-como-fazer") as HTMLElement;
+    const lista = document.getElementById("menu-ajuda") as HTMLElement;
     const ligacoes = within(lista).getAllByRole("link");
-    expect(ligacoes).toHaveLength(MENU_COMO_FAZER.length);
-    expect(ligacoes.map((a) => a.getAttribute("href"))).toEqual(MENU_COMO_FAZER.map((g) => g.para));
+    expect(ligacoes.map((a) => a.getAttribute("href"))).toEqual([
+      "/tutorial",
+      "/video",
+      ...MENU_COMO_FAZER.map((g) => g.para),
+    ]);
     expect(ligacoes.map((a) => a.textContent)).toEqual([
+      "Tutorial",
+      "Vídeo tutorial",
       "Para escolas",
       "Para associações",
       "Para clubes",
@@ -44,31 +53,40 @@ describe("o grupo «Como fazer» no cabeçalho", () => {
       "Para festas de bairro",
       "Para paróquias",
     ]);
+    expect(within(lista).getByText("Como fazer")).toBeInTheDocument(); // o título do segundo grupo
   });
 
-  it("escolher um guia navega para ele, fecha a lista e marca o grupo como página atual", async () => {
+  it("escolher um guia navega para ele, fecha a lista e marca o menu como página atual", async () => {
     abrir();
-    await userEvent.click(await screen.findByTestId("nav-como-fazer"));
+    await userEvent.click(await screen.findByTestId("nav-ajuda"));
     await userEvent.click(screen.getByTestId("guia-rifas-para-clubes"));
     await waitFor(() => expect(window.location.pathname).toBe("/rifas-para-clubes"));
-    await waitFor(() => expect(document.getElementById("menu-como-fazer")).toBeNull());
-    expect(screen.getByTestId("nav-como-fazer")).toHaveAttribute("aria-current", "page");
+    await waitFor(() => expect(document.getElementById("menu-ajuda")).toBeNull());
+    expect(screen.getByTestId("nav-ajuda")).toHaveAttribute("aria-current", "page");
+  });
+
+  it("o tutorial e o vídeo também marcam o menu como página atual", async () => {
+    abrir();
+    await userEvent.click(await screen.findByTestId("nav-ajuda"));
+    await userEvent.click(screen.getByTestId("nav-video"));
+    await waitFor(() => expect(window.location.pathname).toBe("/video"));
+    expect(screen.getByTestId("nav-ajuda")).toHaveAttribute("aria-current", "page");
   });
 
   it("fecha com Esc (e devolve o foco ao botão) e ao tocar fora", async () => {
     abrir();
-    const botao = await screen.findByTestId("nav-como-fazer");
+    const botao = await screen.findByTestId("nav-ajuda");
     await userEvent.click(botao);
-    expect(document.getElementById("menu-como-fazer")).not.toBeNull();
+    expect(document.getElementById("menu-ajuda")).not.toBeNull();
     await userEvent.keyboard("{Escape}");
-    expect(document.getElementById("menu-como-fazer")).toBeNull();
+    expect(document.getElementById("menu-ajuda")).toBeNull();
     expect(botao).toHaveFocus();
     await userEvent.click(botao);
     await userEvent.click(document.body);
-    expect(document.getElementById("menu-como-fazer")).toBeNull();
+    expect(document.getElementById("menu-ajuda")).toBeNull();
   });
 
-  it("o rodapé já não repete os guias (vivem só neste grupo)", async () => {
+  it("o rodapé já não repete os guias (vivem só neste menu)", async () => {
     abrir();
     const rodape = await screen.findByRole("navigation", { name: "Informação" });
     for (const g of MENU_COMO_FAZER) expect(rodape.querySelector(`a[href="${g.para}"]`)).toBeNull();

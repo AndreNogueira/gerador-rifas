@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.48.0 — 2026-11-18
+
+### Îmbunătățit
+- **Meniul «Ajutor» în antet:** tutorialul, videoclipul și ghidurile «Cum se face» sunt acum într-o singură filă, «Ajutor». Antetul este mai scurt, iar numele aplicației apare mereu întreg, pe un singur rând, în orice limbă și la orice dimensiune a ecranului.
+
 ## 3.47.0 — 2026-11-15
 
 ### Îmbunătățit

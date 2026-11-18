@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.48.0 — 2026-11-18
+
+### Verbessert
+- **Menü «Hilfe» in der Kopfzeile:** Anleitung, Video und die «So geht's»-Ratgeber stehen jetzt in einem einzigen Reiter, «Hilfe». Die Kopfzeile ist kürzer und der Name der Anwendung erscheint in jeder Sprache und Bildschirmgröße immer vollständig in einer Zeile.
+
 ## 3.47.0 — 2026-11-15
 
 ### Verbessert

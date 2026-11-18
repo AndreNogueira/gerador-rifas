@@ -25,7 +25,8 @@ describe("título do separador", () => {
   it("acompanha a página (SEO e acessibilidade)", async () => {
     abrir();
     await waitFor(() => expect(document.title).toBe("Gerador de Rifas"));
-    await userEvent.click(await screen.findByTestId("nav-tutorial"));
+    await userEvent.click(await screen.findByTestId("nav-ajuda"));
+    await userEvent.click(screen.getByTestId("nav-tutorial"));
     await waitFor(() => expect(document.title).toMatch(/^Tutorial.* \| Gerador de Rifas$/));
     await userEvent.click(screen.getByTestId("nav-sobre"));
     await waitFor(() => expect(document.title).toMatch(/\| Gerador de Rifas$/));
@@ -36,6 +37,7 @@ describe("título do separador", () => {
     abrir();
     await screen.findByRole("heading", { level: 1, name: "Gerador de Rifas" });
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+    await userEvent.click(screen.getByTestId("nav-ajuda"));
     await userEvent.click(screen.getByTestId("nav-tutorial"));
     await waitFor(() => expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1));
     expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/Tutorial/);

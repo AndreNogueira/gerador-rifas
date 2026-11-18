@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.48.0 — 2026-11-18
+
+### Mejorado
+- **Menú «Ayuda» en la cabecera:** el tutorial, el vídeo y las guías «Cómo hacerlo» pasan a una sola pestaña, «Ayuda». La cabecera es más corta y el nombre de la aplicación se ve siempre completo y en una sola línea, en cualquier idioma y tamaño de pantalla.
+
 ## 3.47.0 — 2026-11-15
 
 ### Mejorado
