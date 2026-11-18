@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.50.0 — 2026-11-18
+
+### Amélioré
+- **Un en-tête qui s'adapte à l'écran :** toutes les options sont alignées à droite, sur une seule ligne et sans trous, et à mesure que l'écran rétrécit elles passent une à une dans un menu « hamburger » (d'abord le mode clair/sombre et le style, le don en dernier). Sur téléphone, il ne reste que le nom de l'application et le bouton du menu, qui s'ouvre avec les pages, l'aide, le partage et les réglages.
+
 ## 3.49.0 — 2026-11-18
 
 ### Nouveautés

@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.50.0 — 2026-11-18
+
+### Migliorato
+- **Un'intestazione che si adatta allo schermo:** tutte le opzioni stanno a destra, su una sola riga e senza vuoti, e mentre lo schermo si restringe passano una a una in un menu «hamburger» (prima la modalità chiaro/scuro e lo stile, per ultima la donazione). Sul telefono restano solo il nome dell'app e il pulsante del menu, che apre pagine, aiuto, condivisione e impostazioni.
+
 ## 3.49.0 — 2026-11-18
 
 ### Novità

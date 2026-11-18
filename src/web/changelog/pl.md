@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.50.0 — 2026-11-18
+
+### Ulepszono
+- **Nagłówek dopasowany do ekranu:** wszystkie opcje są wyrównane do prawej, w jednym rzędzie i bez luk, a gdy ekran się zmniejsza, przechodzą jedna po drugiej do menu «hamburger» (najpierw tryb jasny/ciemny i styl, na końcu darowizna). Na telefonach zostaje tylko nazwa aplikacji i przycisk menu, które otwiera strony, pomoc, udostępnianie i ustawienia.
+
 ## 3.49.0 — 2026-11-18
 
 ### Nowości

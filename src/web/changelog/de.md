@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.50.0 — 2026-11-18
+
+### Verbessert
+- **Eine Kopfzeile, die sich dem Bildschirm anpasst:** alle Optionen stehen rechts in einer einzigen Zeile ohne Lücken, und wenn der Bildschirm schrumpft, wandern sie nacheinander in ein «Hamburger»-Menü (zuerst der Hell/Dunkel-Modus und das Design, zuletzt die Spende). Auf dem Handy bleiben nur der Name der Anwendung und die Menütaste, die Seiten, Hilfe, Teilen und Einstellungen öffnet.
+
 ## 3.49.0 — 2026-11-18
 
 ### Neu

@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.50.0 — 2026-11-18
+
+### Vylepšeno
+- **Záhlaví, které se přizpůsobí obrazovce:** všechny volby jsou zarovnané vpravo v jednom řádku bez mezer a jak se obrazovka zmenšuje, přesouvají se jedna po druhé do «hamburgerové» nabídky (nejdřív světlý/tmavý režim a vzhled, nakonec dar). Na telefonu zůstane jen název aplikace a tlačítko nabídky, která otevře stránky, nápovědu, sdílení a nastavení.
+
 ## 3.49.0 — 2026-11-18
 
 ### Novinky

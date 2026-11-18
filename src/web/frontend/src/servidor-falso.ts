@@ -55,6 +55,7 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_changelog_windows: "Descarregar a app Windows (.exe)",
     web_como_fazer: "Como fazer",
     m_ajuda: "Ajuda",
+    web_menu: "Menu",
     web_galeria_data_formato: "Como mostrar a data",
     web_galeria_data_livre: "Escrever à mão",
     web_galeria_data_antes: "Texto antes da data (opcional)",

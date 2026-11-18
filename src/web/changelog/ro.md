@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.50.0 — 2026-11-18
+
+### Îmbunătățit
+- **Un antet care se adaptează ecranului:** toate opțiunile sunt aliniate la dreapta, pe un singur rând și fără goluri, iar pe măsură ce ecranul se micșorează trec pe rând într-un meniu «hamburger» (întâi modul luminos/întunecat și stilul, la urmă donația). Pe telefon rămân doar numele aplicației și butonul meniului, care deschide paginile, ajutorul, distribuirea și setările.
+
 ## 3.49.0 — 2026-11-18
 
 ### Noutăți

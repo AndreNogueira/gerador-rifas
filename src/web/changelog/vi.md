@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.50.0 — 2026-11-18
+
+### Cải thiện
+- **Đầu trang tự thích ứng với màn hình:** mọi tùy chọn nằm sát phải trên một hàng, không có khoảng trống, và khi màn hình thu nhỏ chúng lần lượt chuyển vào menu «hamburger» (trước hết là chế độ sáng/tối và giao diện, cuối cùng là ủng hộ). Trên điện thoại chỉ còn tên ứng dụng và nút menu, mở ra các trang, trợ giúp, chia sẻ và cài đặt.
+
 ## 3.49.0 — 2026-11-18
 
 ### Mới

@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.50.0 — 2026-11-18
+
+### Förbättrat
+- **Ett sidhuvud som anpassar sig till skärmen:** alla alternativ ligger till höger på en enda rad utan luckor och flyttas, när skärmen blir mindre, ett efter ett till en «hamburgar»-meny (först ljust/mörkt läge och utseende, sist donationen). På mobilen återstår bara appens namn och menyknappen, som öppnar sidor, hjälp, delning och inställningar.
+
 ## 3.49.0 — 2026-11-18
 
 ### Nytt

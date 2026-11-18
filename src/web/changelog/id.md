@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.50.0 — 2026-11-18
+
+### Ditingkatkan
+- **Header yang menyesuaikan layar:** semua opsi rata kanan dalam satu baris tanpa celah, dan saat layar mengecil satu per satu masuk ke menu «burger» (mode terang/gelap dan tampilan lebih dulu, donasi terakhir). Di ponsel hanya tersisa nama aplikasi dan tombol menu, yang membuka halaman, bantuan, berbagi, dan pengaturan.
+
 ## 3.49.0 — 2026-11-18
 
 ### Baru

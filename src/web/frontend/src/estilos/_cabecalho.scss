@@ -50,8 +50,7 @@
 }
 .navegacao {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  gap: 8px;
 }
 .navegacao a,
 .navegacao .nav-botao,
@@ -178,6 +177,10 @@
   }
 }
 // o título de um grupo dentro de um menu flutuante (p. ex. «Como fazer» no menu «Ajuda»)
+.painel-flutuante .menu-titulo-primeiro {
+  margin-top: 0;
+  border-top: 0;
+}
 .painel-flutuante .menu-titulo {
   margin-top: 6px;
   padding: 8px 12px 2px;
@@ -341,12 +344,72 @@
     background: #5b6475;
   }
 }
-.definicoes {
+// tudo o que está à direita do nome (páginas, donativo, partilhar, seletores) é UM bloco encostado à direita, sem buracos: `Cabecalho.tsx` mede o
+// que cabe ao lado do nome e o resto vai para o menu «hambúrguer» (`.burger`), por uma ordem de prioridade
+.cluster {
   display: flex;
+  align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
-  justify-content: flex-end; // quando não cabem ao lado do menu descem para a 2.ª fileira, encostadas à direita como ele
   margin-left: auto;
+  flex: none;
+}
+.item-cab {
+  display: flex;
+  flex: none;
+}
+.burger {
+  font-family: var(--fonte-controlos);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 40px;
+  min-width: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--pilula);
+  color: var(--pilula-texto);
+  box-shadow: var(--pilula-anel);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+
+  &:hover {
+    background: color-mix(in srgb, var(--pilula) 70%, #000);
+  }
+  &[aria-expanded="true"] {
+    background: var(--nav-ativo);
+    color: var(--nav-ativo-texto);
+  }
+}
+// o conteúdo do menu: o que não coube no cabeçalho, em lista (os seletores com o nome por cima)
+.menu-burger {
+  .seletor-menu {
+    display: grid;
+    gap: 4px;
+    padding: 4px 12px 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--suave);
+
+    select {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 10px;
+      font: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--texto);
+      background: var(--campo);
+      border: var(--borda) solid var(--linha);
+      border-radius: 9px;
+    }
+  }
+  .icone-menu {
+    flex: none;
+  }
 }
 .seletor {
   padding-block: 0;
@@ -413,89 +476,21 @@
   }
 }
 
+// em ecrãs pequenos os alvos de toque têm 44 px (o resto do cabeçalho já se reduz sozinho ao menu «hambúrguer»)
 @media (max-width: 560px) {
-  // telemovel: o cabecalho em 3 linhas (nome, paginas, definicoes) e nao em 5; as paginas deslizam na horizontal se nao couberem
-  .navegacao {
-    flex-wrap: nowrap;
-    width: 100%;
-    overflow-x: auto;
-    scrollbar-width: none;
-
-    a {
-      flex: none;
-      padding-inline: 11px;
-    }
-  }
-  .definicoes {
-    flex-wrap: nowrap;
-    width: 100%;
-    gap: 6px;
-  }
-  .seletor {
-    flex: 1 1 auto;
-    min-width: 0;
-    padding-inline: 12px;
-
-    select {
-      flex: 1 1 auto;
-      min-width: 0;
-      text-overflow: ellipsis;
-    }
-  }
-  // «Partilhar» só com o ícone (o texto fica para os leitores de ecrã): o toque tem 44 px
+  .navegacao a,
+  .navegacao .nav-botao,
   .partilhar-topo .partilhar-botao,
-  .donativo-topo .donativo-botao {
-    width: 44px;
+  .donativo-topo .donativo-botao,
+  .burger {
     min-height: 44px;
-    justify-content: center;
-    padding-inline: 0;
-  }
-  .partilhar-topo .partilhar-texto,
-  .donativo-topo .donativo-texto {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  .navegacao .nav-botao {
-    flex: none;
-    padding-inline: 11px;
-    min-height: 44px;
-  }
-  .navegacao a {
-    min-height: 44px;
-  }
-  // a língua e o estilo: sem o ícone, para o nome caber inteiro
-  .seletor:not(.modo-tema) > .icone {
-    display: none;
-  }
-  // o modo claro/escuro: só o ícone (que já mostra o modo atual); o seletor fica por cima, invisível, e abre ao tocar
-  .seletor.modo-tema {
-    position: relative;
-    flex: none;
-    width: 44px;
-    justify-content: center;
-    padding-inline: 0;
-
-    select {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      opacity: 0;
-    }
-  }
-  // o cabeçalho ocupa mais linhas: a faixa cresce com ele
-  body::before {
-    height: calc(var(--banda-altura) + 4.5rem);
   }
   .topo {
-    padding-block: 14px 18px;
+    padding-block: 14px 16px;
   }
   .marca {
     .nome {
-      font-size: 1.35rem;
+      font-size: clamp(0.95rem, 4.2vw, 1.35rem); // encolhe com o ecrã para o botão do menu caber ao lado, sem nunca partir o nome
     }
     img {
       width: 40px;
@@ -503,19 +498,14 @@
     }
   }
 }
-
-// telemóveis estreitos (360 px, p.ex. muitos Android): um pouco menos de folga para o nome da língua caber inteiro
 @media (max-width: 400px) {
-  .seletor {
-    padding-inline: 9px;
+  .marca {
+    gap: 8px;
 
-    select {
-      font-size: 0.86rem;
-      padding-inline: 2px;
+    img {
+      width: 36px;
+      height: 36px;
     }
-  }
-  .navegacao a {
-    font-size: 0.86rem;
   }
 }
 
