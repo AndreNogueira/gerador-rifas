@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { Donativo } from "./Donativo";
 import { useI18n } from "./i18n";
 import { Icone, type NomeIcone } from "./icones";
@@ -8,14 +8,19 @@ import { Ligacao, useLocalizacao } from "./rota";
 import type { Tema } from "./tema";
 import { VISUAIS, type Visual } from "./temas";
 
+/** As páginas soltas do cabeçalho; o tutorial, o vídeo e os guias «como fazer» vivem todos no menu «Ajuda». */
 const PAGINAS: readonly { para: string; chave: string; icone: NomeIcone }[] = [
-  { para: "/tutorial", chave: "tut_titulo", icone: "livro" },
-  { para: "/video", chave: "mi_video", icone: "video" },
   { para: "/sorteio", chave: "web_sorteio", icone: "faiscas" },
   { para: "/sobre", chave: "mi_sobre", icone: "info" },
 ];
 
-/** Os guias «como fazer» (o servidor tem a mesma tabela em `guias.CAMINHOS`): um grupo no cabeçalho, ao lado do tutorial. */
+/** O que o menu «Ajuda» abre à frente dos guias: o tutorial e o vídeo. */
+const AJUDA: readonly { para: string; chave: string; icone: NomeIcone }[] = [
+  { para: "/tutorial", chave: "tut_titulo", icone: "livro" },
+  { para: "/video", chave: "mi_video", icone: "video" },
+];
+
+/** Os guias «como fazer» (o servidor tem a mesma tabela em `guias.CAMINHOS`): a segunda parte do menu «Ajuda». */
 export const MENU_COMO_FAZER: readonly { para: string; chave: string }[] = [
   { para: "/rifas-para-escolas", chave: "web_guia_escolas" },
   { para: "/rifas-para-associacoes", chave: "web_guia_associacoes" },
@@ -25,13 +30,14 @@ export const MENU_COMO_FAZER: readonly { para: string; chave: string }[] = [
   { para: "/rifas-para-igrejas", chave: "web_guia_igrejas" },
 ];
 
-function ComoFazer({ caminho }: { caminho: string }) {
+/** Um só separador para tudo o que ensina a usar o site (tutorial, vídeo e «como fazer»): o cabeçalho fica curto e o nome da app cabe sempre inteiro. */
+function MenuAjuda({ caminho }: { caminho: string }) {
   const { t } = useI18n();
   const menu = useMenuFlutuante("esq");
   const { fechar } = menu;
   // biome-ignore lint/correctness/useExhaustiveDependencies: fecha-se quando a página muda
   useEffect(() => fechar(), [caminho, fechar]);
-  const ativo = MENU_COMO_FAZER.some((g) => g.para === caminho);
+  const ativo = AJUDA.some((g) => g.para === caminho) || MENU_COMO_FAZER.some((g) => g.para === caminho);
   return (
     <div className="grupo-menu">
       <button
@@ -39,17 +45,33 @@ function ComoFazer({ caminho }: { caminho: string }) {
         ref={menu.refBotao}
         className="nav-botao"
         aria-expanded={menu.aberto}
-        aria-controls="menu-como-fazer"
+        aria-controls="menu-ajuda"
         aria-current={ativo ? "page" : undefined}
         onClick={menu.alternar}
-        data-testid="nav-como-fazer"
+        data-testid="nav-ajuda"
       >
-        <Icone nome="lista" tamanho={18} />
-        {t("web_como_fazer")}
+        <Icone nome="livro" tamanho={18} />
+        {t("m_ajuda")}
         <Icone nome="baixo" tamanho={14} />
       </button>
       {menu.aberto && (
-        <ul id="menu-como-fazer" ref={menu.refPainel} className="painel-flutuante" style={menu.estilo}>
+        <ul id="menu-ajuda" ref={menu.refPainel} className="painel-flutuante" style={menu.estilo}>
+          {AJUDA.map((g) => (
+            <li key={g.para}>
+              <Ligacao
+                para={g.para}
+                onClick={menu.fechar}
+                aria-current={caminho === g.para ? "page" : undefined}
+                data-testid={`nav-${g.para.slice(1)}`}
+              >
+                <Icone nome={g.icone} tamanho={18} />
+                {t(g.chave).replace(/…$/, "")}
+              </Ligacao>
+            </li>
+          ))}
+          <li className="menu-titulo" role="presentation">
+            {t("web_como_fazer")}
+          </li>
           {MENU_COMO_FAZER.map((g) => (
             <li key={g.para}>
               <Ligacao
@@ -93,18 +115,17 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual, donativoUrl = 
         )}
       </Ligacao>
       <nav className="navegacao" aria-label={t("app_nome")}>
-        {PAGINAS.map((p, i) => (
-          <Fragment key={p.para}>
-            <Ligacao
-              para={p.para}
-              aria-current={caminho === p.para ? "page" : undefined}
-              data-testid={`nav-${p.para.slice(1)}`}
-            >
-              <Icone nome={p.icone} tamanho={18} />
-              {t(p.chave).replace(/…$/, "")}
-            </Ligacao>
-            {i === 0 && <ComoFazer caminho={caminho ?? ""} />}
-          </Fragment>
+        <MenuAjuda caminho={caminho ?? ""} />
+        {PAGINAS.map((p) => (
+          <Ligacao
+            key={p.para}
+            para={p.para}
+            aria-current={caminho === p.para ? "page" : undefined}
+            data-testid={`nav-${p.para.slice(1)}`}
+          >
+            <Icone nome={p.icone} tamanho={18} />
+            {t(p.chave).replace(/…$/, "")}
+          </Ligacao>
         ))}
       </nav>
       <div className="definicoes">

@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.48.0 — 2026-11-18
+
+### Förbättrat
+- **Menyn «Hjälp» i sidhuvudet:** handledningen, videon och «Så gör du»-guiderna finns nu i en enda flik, «Hjälp». Sidhuvudet är kortare och appens namn visas alltid helt på en rad, på alla språk och skärmstorlekar.
+
 ## 3.47.0 — 2026-11-15
 
 ### Förbättrat

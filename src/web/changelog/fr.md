@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.48.0 — 2026-11-18
+
+### Amélioré
+- **Menu « Aide » dans l'en-tête :** le tutoriel, la vidéo et les guides « Comment faire » sont regroupés dans un seul onglet, « Aide ». L'en-tête est plus court et le nom de l'application s'affiche toujours en entier sur une seule ligne, dans toutes les langues et tailles d'écran.
+
 ## 3.47.0 — 2026-11-15
 
 ### Amélioré

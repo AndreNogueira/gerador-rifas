@@ -23,6 +23,7 @@
   text-decoration: none;
   color: inherit;
   margin-right: auto;
+  flex: none; // o nome da app nunca encolhe nem quebra: quem não cabe numa linha é o resto do cabeçalho
 
   img {
     width: 46px;
@@ -44,6 +45,7 @@
     line-height: 1.2;
     letter-spacing: var(--espaco-marca);
     text-shadow: var(--topo-sombra);
+    white-space: nowrap; // o nome inteiro numa só linha, em qualquer língua
   }
 }
 .navegacao {
@@ -81,7 +83,7 @@
     color: var(--nav-ativo-texto);
   }
 }
-// o botão do grupo «Como fazer» é um <button> com o aspeto das outras páginas do cabeçalho
+// o botão do grupo «Ajuda» é um <button> com o aspeto das outras páginas do cabeçalho
 .navegacao .nav-botao {
   border: 0;
   cursor: pointer;
@@ -174,6 +176,17 @@
       background: color-mix(in srgb, var(--destaque) 22%, transparent);
     }
   }
+}
+// o título de um grupo dentro de um menu flutuante (p. ex. «Como fazer» no menu «Ajuda»)
+.painel-flutuante .menu-titulo {
+  margin-top: 6px;
+  padding: 8px 12px 2px;
+  border-top: 1px solid var(--linha);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--suave);
 }
 // o painel do seletor de desenhos da galeria: uma lista de opções (`role="option"`) com o mini desenho do template e o nome
 .seletor-lista {
@@ -332,6 +345,8 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  justify-content: flex-end; // quando não cabem ao lado do menu descem para a 2.ª fileira, encostadas à direita como ele
+  margin-left: auto;
 }
 .seletor {
   padding-block: 0;
@@ -395,27 +410,6 @@
   > p[aria-busy],
   > p[role="alert"] {
     color: var(--topo-texto);
-  }
-}
-
-// em ecrã muito largo (o conteúdo tem >= 2000 px: cabem o nome e tudo o resto) o cabeçalho é UMA linha, seja qual for a letra do tema:
-// é o nome da app que encolhe (com reticências). Abaixo disto, com o «Como fazer» e o «Partilhar», não cabe numa linha: quebra em duas.
-@media (min-width: 3200px) {
-  .topo {
-    flex-wrap: nowrap;
-  }
-  .marca {
-    min-width: 0;
-
-    .nome {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
-  .navegacao,
-  .definicoes {
-    flex: none;
   }
 }
 

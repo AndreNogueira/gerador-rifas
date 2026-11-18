@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.48.0 — 2026-11-18
+
+### İyileştirildi
+- **Üst bilgide «Yardım» menüsü:** öğretici, video ve «Nasıl yapılır» rehberleri artık tek bir sekmede, «Yardım». Üst bilgi kısaldı ve uygulamanın adı her dilde ve her ekran boyutunda her zaman tam ve tek satırda görünür.
+
 ## 3.47.0 — 2026-11-15
 
 ### İyileştirildi

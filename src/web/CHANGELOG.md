@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.48.0 — 2026-11-18
+
+### Melhorado
+- **Menu «Ajuda» no cabeçalho:** o tutorial, o vídeo e os guias «Como fazer» passaram para um só separador, «Ajuda». O cabeçalho fica mais curto e o nome da aplicação aparece sempre inteiro e numa só linha, em qualquer língua e tamanho de ecrã (antes podia ficar cortado ou partido em duas linhas).
+
 ## 3.47.0 — 2026-11-15
 
 ### Melhorado

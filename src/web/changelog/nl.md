@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.48.0 — 2026-11-18
+
+### Verbeterd
+- **Menu «Help» in de kop:** de handleiding, de video en de «Hoe doe je het»-gidsen staan nu in één tabblad, «Help». De kop is korter en de naam van de app staat altijd volledig op één regel, in elke taal en schermgrootte.
+
 ## 3.47.0 — 2026-11-15
 
 ### Verbeterd
