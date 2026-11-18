@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.50.0 — 2026-11-18
+
+### Improved
+- **A header that adapts to the screen:** all options sit on the right in a single row with no gaps, and as the screen shrinks they move one by one into a “burger” menu (the light/dark mode and the look first, the donation button last). On phones only the app name and the menu button remain; the menu opens with the pages, help, sharing and settings.
+
 ## 3.49.0 — 2026-11-18
 
 ### New

@@ -1635,6 +1635,26 @@ CHAVES: dict[str, dict[str, str]] = {
         "ko": "지우기",
         "hi": "साफ़ करें",
     },
+    "web_menu": {
+        "pt": "Menu",
+        "en": "Menu",
+        "es": "Menú",
+        "fr": "Menu",
+        "de": "Menü",
+        "it": "Menu",
+        "nl": "Menu",
+        "pl": "Menu",
+        "sv": "Meny",
+        "cs": "Menu",
+        "ro": "Meniu",
+        "el": "Μενού",
+        "ru": "Меню",
+        "tr": "Menü",
+        "zh": "菜单",
+        "ja": "メニュー",
+        "ko": "메뉴",
+        "hi": "मेनू",
+    },
 }
 
 

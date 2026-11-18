@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.50.0 — 2026-11-18
+
+### Mejorado
+- **Cabecera que se adapta a la pantalla:** todas las opciones quedan a la derecha, en una sola fila y sin huecos, y a medida que la pantalla se reduce pasan una a una a un menú «hamburguesa» (primero el modo claro/oscuro y el estilo, al final el donativo). En el móvil solo quedan el nombre de la aplicación y el botón del menú, que se abre con las páginas, la ayuda, compartir y los ajustes.
+
 ## 3.49.0 — 2026-11-18
 
 ### Novedades

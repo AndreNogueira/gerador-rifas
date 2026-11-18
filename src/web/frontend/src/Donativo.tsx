@@ -4,10 +4,11 @@ import { Icone } from "./icones";
 /**
  * O donativo, onde se vê. `url` é o `DONATIVO_URL` do servidor (vazio = não há donativo e nada aparece).
  * - `topo`: uma pílula com um coração no cabeçalho, ao lado de «Partilhar» (só o ícone nos telemóveis);
+ * - `menu`: uma linha do menu «hambúrguer» (quando o cabeçalho já não tem espaço para a pílula);
  * - `cartao`: depois de gerar os ficheiros, que é quando o serviço acabou de ser útil: uma frase e o botão.
  * Abre no serviço de pagamento noutro separador e sem referrer; nada é pedido nem guardado aqui.
  */
-export function Donativo({ url, variante }: { url: string; variante: "topo" | "cartao" }) {
+export function Donativo({ url, variante }: { url: string; variante: "topo" | "cartao" | "menu" }) {
   const { t } = useI18n();
   if (!url) return null;
   const ligacao = (
@@ -15,7 +16,9 @@ export function Donativo({ url, variante }: { url: string; variante: "topo" | "c
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className={variante === "cartao" ? "botao secundario" : "donativo-botao"}
+      className={
+        variante === "cartao" ? "botao secundario" : variante === "menu" ? "donativo-menu" : "donativo-botao"
+      }
       data-testid={`donativo-${variante}`}
     >
       <Icone nome="coracao" />
@@ -23,6 +26,7 @@ export function Donativo({ url, variante }: { url: string; variante: "topo" | "c
     </a>
   );
   if (variante === "topo") return <div className="donativo donativo-topo">{ligacao}</div>;
+  if (variante === "menu") return ligacao;
   return (
     <div className="donativo donativo-cartao">
       <p className="donativo-chamada">{t("web_donativo_chamada")}</p>

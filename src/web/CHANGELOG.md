@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.50.0 — 2026-11-18
+
+### Melhorado
+- **Cabeçalho que se adapta ao ecrã:** as opções ficam todas encostadas à direita, numa só fileira e sem buracos, e à medida que o ecrã diminui vão passando, uma a uma, para um menu «hambúrguer» (primeiro o modo claro/escuro e o visual, por fim o donativo). Em telemóveis fica só o nome da aplicação e o botão do menu, que abre com as páginas, a ajuda, o partilhar e as definições.
+
 ## 3.49.0 — 2026-11-18
 
 ### Novo

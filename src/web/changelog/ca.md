@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.50.0 — 2026-11-18
+
+### Millores
+- **Capçalera que s'adapta a la pantalla:** totes les opcions queden a la dreta, en una sola fila i sense buits, i a mesura que la pantalla es redueix passen una a una a un menú «hamburguesa» (primer el mode clar/fosc i l'estil, al final el donatiu). Al mòbil només queden el nom de l'aplicació i el botó del menú, que s'obre amb les pàgines, l'ajuda, compartir i els ajustos.
+
 ## 3.49.0 — 2026-11-18
 
 ### Novetats

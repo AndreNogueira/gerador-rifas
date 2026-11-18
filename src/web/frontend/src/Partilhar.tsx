@@ -44,14 +44,21 @@ export function ligacoesDePartilha(url: string, texto: string, assunto: string):
  * e copiar a ligação) para dar a conhecer o gerador a outras associações, escolas e comissões de festas. Está no cabeçalho (`variante="topo"`,
  * bem à vista, com a lista num painel flutuante) e, depois de gerar, no cartão dos ficheiros (`variante="cartao"`, com uma frase a convidar).
  */
-export function Partilhar({ variante }: { variante: "topo" | "cartao" }) {
+export function Partilhar({
+  variante,
+  aoEscolher,
+}: {
+  variante: "topo" | "cartao" | "menu";
+  aoEscolher?: () => void;
+}) {
   const { t, lingua } = useI18n();
   const { aviso } = useDialogos();
   const menu = useMenuFlutuante("dir");
   const [abertoCartao, setAbertoCartao] = useState(false);
   const flutuante = variante === "topo";
   const aberto = flutuante ? menu.aberto : abertoCartao;
-  const fechar = flutuante ? menu.fechar : () => setAbertoCartao(false);
+  const fechar =
+    variante === "menu" ? (aoEscolher ?? (() => {})) : flutuante ? menu.fechar : () => setAbertoCartao(false);
   const url = enderecoParaPartilhar(window.location.origin, lingua);
   const texto = t("web_partilhar_texto");
   const nativa = typeof navigator !== "undefined" && typeof navigator.share === "function";
@@ -74,14 +81,8 @@ export function Partilhar({ variante }: { variante: "topo" | "cartao" }) {
     fechar();
   };
 
-  const lista = (
-    <ul
-      id={`partilhar-lista-${variante}`}
-      ref={flutuante ? menu.refPainel : undefined}
-      className={`partilhar-lista${flutuante ? " painel-flutuante" : ""}`}
-      style={flutuante ? menu.estilo : undefined}
-      aria-label={t("web_partilhar")}
-    >
+  const itens = (
+    <>
       {nativa && (
         <li>
           <button type="button" onClick={() => void partilharNativa()} data-testid="partilhar-nativa">
@@ -116,8 +117,30 @@ export function Partilhar({ variante }: { variante: "topo" | "cartao" }) {
           {t("web_copiar_ligacao")}
         </button>
       </li>
+    </>
+  );
+  const lista = (
+    <ul
+      id={`partilhar-lista-${variante}`}
+      ref={flutuante ? menu.refPainel : undefined}
+      className={`partilhar-lista${flutuante ? " painel-flutuante" : ""}`}
+      style={flutuante ? menu.estilo : undefined}
+      aria-label={t("web_partilhar")}
+    >
+      {itens}
     </ul>
   );
+
+  // dentro do menu «hambúrguer»: as mesmas opções, já abertas, como linhas do menu
+  if (variante === "menu")
+    return (
+      <>
+        <li className="menu-titulo" role="presentation">
+          {t("web_partilhar")}
+        </li>
+        {itens}
+      </>
+    );
 
   return (
     <div className={`partilhar partilhar-${variante}`} data-testid={`partilhar-${variante}`}>

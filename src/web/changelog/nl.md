@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.50.0 — 2026-11-18
+
+### Verbeterd
+- **Een kop die zich aan het scherm aanpast:** alle opties staan rechts in één rij zonder gaten en worden, naarmate het scherm kleiner wordt, één voor één in een «hamburger»-menu geplaatst (eerst de lichte/donkere modus en de stijl, als laatste de donatie). Op telefoons blijven alleen de naam van de app en de menuknop over; het menu opent met de pagina's, hulp, delen en instellingen.
+
 ## 3.49.0 — 2026-11-18
 
 ### Nieuw

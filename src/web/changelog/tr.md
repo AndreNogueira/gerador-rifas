@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.50.0 — 2026-11-18
+
+### İyileştirildi
+- **Ekrana uyum sağlayan üst bilgi:** tüm seçenekler sağa yaslı, tek satırda ve boşluksuz durur; ekran küçüldükçe tek tek bir «hamburger» menüsüne geçer (önce açık/koyu mod ve görünüm, en son bağış). Telefonlarda yalnızca uygulamanın adı ve menü düğmesi kalır; menü sayfaları, yardımı, paylaşmayı ve ayarları açar.
+
 ## 3.49.0 — 2026-11-18
 
 ### Yeni
