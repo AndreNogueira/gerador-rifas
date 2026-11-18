@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.49.0 — 2026-11-18
+
+### Nieuw
+- **Dashboard met de ontwikkeling dag voor dag:** een nieuwe weergave «Dagelijkse ontwikkeling» toont, tot 90 dagen terug, alles wat de server in de database bewaart (sessies, generaties, gegenereerde nummers, talen, landen, stijlen, galerij, editor, API, verzoeken, responstijden, CPU en geheugen…), met de trend van elke indicator en een CSV-download van alles. Het is een functie van het dashboard van de eigenaar: bezoekers merken er niets van.
+
 ## 3.48.0 — 2026-11-18
 
 ### Verbeterd

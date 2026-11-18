@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.49.0 — 2026-11-18
+
+### Nouveautés
+- **Tableau de bord avec l'évolution jour par jour :** une nouvelle vue « Évolution quotidienne » montre, sur jusqu'à 90 jours, tout ce que le serveur enregistre en base (sessions, générations, numéros générés, langues, pays, styles, galerie, éditeur, API, requêtes, temps de réponse, CPU et mémoire…), avec la tendance de chaque indicateur et le téléchargement de l'ensemble en CSV. C'est une fonction du tableau de bord du propriétaire : les visiteurs ne voient aucune différence.
+
 ## 3.48.0 — 2026-11-18
 
 ### Amélioré

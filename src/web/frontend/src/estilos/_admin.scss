@@ -411,3 +411,93 @@
   gap: 8px 12px;
   align-items: center;
 }
+
+// as abas do painel («Visão geral» / «Evolução diária») e a vista dia a dia
+.admin-vistas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  button {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: var(--borda) solid var(--linha);
+    background: var(--cartao);
+    color: var(--texto);
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+
+    &[aria-pressed="true"] {
+      background: var(--nav-ativo);
+      color: var(--nav-ativo-texto);
+      border-color: transparent;
+    }
+  }
+}
+.admin-evolucao {
+  display: grid;
+  gap: 18px;
+}
+.painel-diario {
+  .resumo-diario {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 2px 8px;
+    margin: 0;
+
+    strong {
+      font-family: var(--fonte-numero);
+      font-size: 1.5rem;
+      font-variant-numeric: tabular-nums;
+      color: var(--destaque);
+    }
+    span {
+      font-size: 0.84rem;
+      color: var(--suave);
+    }
+  }
+  .resumo-series {
+    list-style: none;
+    padding: 0;
+    gap: 2px 16px;
+
+    li {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 4px;
+      font-size: 0.86rem;
+    }
+    strong {
+      font-size: 1.25rem;
+    }
+    .amostra {
+      width: 0.7rem;
+      height: 0.7rem;
+      border-radius: 2px;
+      align-self: center;
+    }
+  }
+  .sem-dados-diario {
+    margin: 0;
+    padding: 18px 0;
+    font-size: 0.9rem;
+    color: var(--suave);
+  }
+}
+.tendencia {
+  font-size: 0.8rem;
+  color: var(--suave);
+
+  &.sobe {
+    color: var(--ok);
+  }
+  &.desce {
+    color: var(--erro);
+  }
+}
+.grafico .grafico-cursor-dia {
+  fill: color-mix(in srgb, var(--destaque) 12%, transparent);
+  pointer-events: none;
+}

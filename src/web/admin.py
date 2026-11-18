@@ -18,13 +18,13 @@ import hashlib
 import hmac
 import time
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, Field
 
 from . import VERSAO, config
 from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
-from .metricas import INTERVALOS
+from .metricas import DIAS_MAXIMOS, INTERVALOS, novo_painel
 from .rotas import Servico, servico
 
 COOKIE = "rifas_admin"
@@ -190,6 +190,42 @@ def dados(intervalo: str = "6h", serv: Servico = Depends(servico)) -> dict:
         "tabela_pedidos": m.tabela_pedidos(desde),
         "resumo": m.resumo(desde),
     }
+
+
+def _paineis_de_outras_tabelas(serv: Servico):
+    """Os paineis que vem de fora das metricas: o gasto da API publica (por dia UTC, como a quota) e as partilhas do editor (so com Postgres)."""
+    def extras(primeiro: int, dias: int, desvio: int, desde: int) -> list[dict]:
+        saida: list[dict] = []
+        try:
+            numeros, lotes, chaves = ([0.0] * dias for _ in range(3))
+            for d, n, lo, c in serv.chaves.uso_por_dia(primeiro):
+                if 0 <= d - primeiro < dias:
+                    numeros[d - primeiro], lotes[d - primeiro], chaves[d - primeiro] = n, lo, c
+            saida.append(novo_painel("API e partilhas", "api_numeros", "API pública: números gastos", {"Números": numeros},
+                                     "Quantos números de rifa a API pública v1 gastou da quota, somando todas as chaves (dias UTC, como a quota)."))
+            saida.append(novo_painel("API e partilhas", "api_lotes", "API pública: lotes e chaves", {"Lotes": lotes, "Chaves usadas": chaves},
+                                     "Quantos lotes se pediram à API pública e quantas chaves distintas foram usadas em cada dia (dias UTC).", "linhas", "", "max"))
+        except Exception:  # noqa: BLE001 - uma tabela em baixo nao pode estragar o resto da vista
+            pass
+        if serv.partilhas is not None:
+            try:
+                criadas = [0.0] * dias
+                for d, n in serv.partilhas.criadas_por_dia(desde, desvio):
+                    if 0 <= d - primeiro < dias:
+                        criadas[d - primeiro] = n
+                saida.append(novo_painel("API e partilhas", "partilhas", "Desenhos partilhados (editor)", {"Criados": criadas},
+                                         "Quantos desenhos do editor se partilharam por ligação em cada dia (só contam os que ainda não passaram do prazo de 90 dias sem acessos)."))
+            except Exception:  # noqa: BLE001
+                pass
+        return saida
+    return extras
+
+
+@router.get("/evolucao", dependencies=[Depends(exigir)])
+def evolucao(dias: int = Query(30, ge=1, le=DIAS_MAXIMOS), fuso: int = Query(0, ge=-840, le=840), serv: Servico = Depends(servico)) -> dict:
+    """TUDO o que se grava na base, dia a dia (ate `DIAS_MAXIMOS`): uma lista de paineis com as series diarias. `fuso` = minutos de diferenca do browser para UTC
+    (local - UTC), para os dias serem os do dono e nao os de Greenwich."""
+    return serv.metricas.evolucao(dias, fuso, _paineis_de_outras_tabelas(serv))
 
 
 @router.get("/erros", dependencies=[Depends(exigir)])

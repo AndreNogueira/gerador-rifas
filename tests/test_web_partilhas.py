@@ -204,6 +204,19 @@ def test_postgres_prazo_renovacao_e_limpeza(pg):
 
 
 @precisa_de_pg
+def test_postgres_criadas_por_dia_segue_o_fuso(pg):
+    pg.guardar("a")
+    pg.guardar("b")
+    pg.r.t += 86400
+    pg.guardar("c")
+    hoje = pg.r.t // 86400
+    assert pg.criadas_por_dia(pg.r.t - 3 * 86400) == [(hoje - 1, 2), (hoje, 1)]
+    assert pg.criadas_por_dia(pg.r.t - 3600) == [(hoje, 1)]                          # só as criadas depois de `desde`
+    t0 = pg.r.t - 86400                                                              # as duas primeiras, criadas a 08:00 UTC
+    assert pg.criadas_por_dia(t0 - 3600, desvio_s=17 * 3600)[0][0] == t0 // 86400 + 1   # a UTC+17 já é o dia seguinte
+
+
+@precisa_de_pg
 def test_postgres_tamanho_maximo_e_ids_unicos(pg):
     with pytest.raises(ValueError):
         pg.guardar("x" * (partilhas.MAX_BYTES + 1))

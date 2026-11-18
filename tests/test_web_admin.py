@@ -62,7 +62,7 @@ def test_sem_token_valido_o_painel_nao_existe(tmp_path, monkeypatch, valor):
     c = _app(tmp_path)
     assert not admin.ativo()
     assert c.get("/admin").status_code == 404
-    for caminho in ("/api/admin/estado", "/api/admin/dados"):
+    for caminho in ("/api/admin/estado", "/api/admin/dados", "/api/admin/evolucao"):
         assert c.get(caminho).status_code == 404
     assert c.post("/api/admin/entrar", json={"token": valor or "x"}).status_code == 404
     assert c.post("/api/admin/sair").status_code == 204                          # nao ha nada para fechar: inofensivo
@@ -83,7 +83,7 @@ def test_a_pagina_do_painel_nao_se_indexa_nem_fica_em_cache(com_token):
 
 # ---------------------------------------------------------------- acesso
 def test_sem_cookie_toda_a_api_do_painel_e_404(com_token):
-    for caminho in ("/api/admin/estado", "/api/admin/dados", "/api/admin/dados?intervalo=24h"):
+    for caminho in ("/api/admin/estado", "/api/admin/dados", "/api/admin/dados?intervalo=24h", "/api/admin/evolucao?dias=7"):
         r = com_token.get(caminho)
         assert r.status_code == 404 and "Cache-Control" in r.headers and "no-store" in r.headers["cache-control"]
 
@@ -128,6 +128,21 @@ def test_com_cookie_o_estado_e_os_dados_funcionam_e_sem_segredos(com_token):
     r = com_token.get("/api/admin/dados?intervalo=24h").json()
     assert r["intervalo"] == "24h" and r["passo_s"] == 300 and set(r) >= {"sistema", "pedidos", "eventos", "tabela_pedidos", "resumo"}
     assert com_token.get("/api/admin/dados?intervalo=1ano").status_code == 422
+
+
+def test_a_evolucao_diaria_devolve_os_paineis_e_valida_os_parametros(com_token):
+    _entrar(com_token)
+    r = com_token.get("/api/admin/evolucao?dias=14&fuso=60")
+    assert r.status_code == 200 and "no-store" in r.headers["cache-control"]
+    d = r.json()
+    assert d["dias"] == 14 and len(d["dias_lista"]) == 14 and d["fuso_min"] == 60 and d["retencao"] == {"eventos_dias": 90, "sistema_dias": 35}
+    ids = [p["id"] for p in d["paineis"]]
+    assert len(ids) == len(set(ids)) and {"sessoes", "geracoes", "numeros", "linguas", "paises", "pedidos", "latencia", "cpu", "memoria", "api_numeros"} <= set(ids)
+    assert all(len(s["valores"]) == 14 for p in d["paineis"] for s in p["series"])
+    assert TOKEN not in r.text
+    assert com_token.get("/api/admin/evolucao").json()["dias"] == 30                              # por omissao 30 dias
+    for mau in ("dias=0", "dias=91", "dias=x", "fuso=900", "fuso=-900"):
+        assert com_token.get(f"/api/admin/evolucao?{mau}").status_code == 422, mau
 
 
 def test_cookie_adulterado_expirado_ou_de_outro_token_e_404(com_token, monkeypatch):

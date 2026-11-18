@@ -55,6 +55,11 @@ class Partilhas:
         linhas = self._executar("UPDATE partilhas SET usado = %s WHERE id = %s AND usado >= %s RETURNING dados", (agora, id_, agora - DIAS * 86400))
         return linhas[0][0] if linhas else None
 
+    def criadas_por_dia(self, desde: int, desvio_s: int = 0) -> list[tuple[int, int]]:
+        """`(dia local desde 1970, quantas)` das partilhas criadas desde `desde` que ainda existem (as que passaram do prazo apagam-se)."""
+        return [(int(d), int(n)) for d, n in
+                self._executar("SELECT (criado + %s) / 86400 AS d, COUNT(*) FROM partilhas WHERE criado >= %s GROUP BY d ORDER BY d", (desvio_s, desde))]
+
     def apagar_tudo(self) -> None:
         """Para os testes."""
         self._executar("DELETE FROM partilhas")

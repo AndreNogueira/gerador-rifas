@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.49.0 — 2026-11-18
+
+### Mới
+- **Bảng điều khiển với diễn biến từng ngày:** chế độ xem mới «Diễn biến theo ngày» hiển thị, tối đa 90 ngày, mọi thứ máy chủ lưu trong cơ sở dữ liệu (phiên, lượt tạo, số đã tạo, ngôn ngữ, quốc gia, giao diện, thư viện, trình chỉnh sửa, API, yêu cầu, thời gian phản hồi, CPU và bộ nhớ…), kèm xu hướng của từng chỉ số và tải tất cả về dạng CSV. Đây là tính năng của bảng điều khiển chủ sở hữu: khách truy cập không thấy khác biệt.
+
 ## 3.48.0 — 2026-11-18
 
 ### Cải thiện

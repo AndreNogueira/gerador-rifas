@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.49.0 — 2026-11-18
+
+### Neu
+- **Dashboard mit der Entwicklung Tag für Tag:** eine neue Ansicht «Tägliche Entwicklung» zeigt über bis zu 90 Tage alles, was der Server in der Datenbank speichert (Sitzungen, Erzeugungen, erzeugte Nummern, Sprachen, Länder, Designs, Galerie, Editor, API, Anfragen, Antwortzeiten, CPU und Speicher …), mit dem Trend jeder Kennzahl und einem CSV-Download von allem. Es ist eine Funktion des Betreiber-Dashboards: Besucher bemerken keinen Unterschied.
+
 ## 3.48.0 — 2026-11-18
 
 ### Verbessert

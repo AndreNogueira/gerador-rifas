@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.49.0 — 2026-11-18
+
+### Novo
+- **Painel com a evolução dia a dia:** uma nova vista «Evolução diária» mostra, ao longo de até 90 dias, tudo o que o servidor guarda na base de dados (sessões, gerações, números gerados, línguas, países, visuais, galeria, editor, API, pedidos, tempos de resposta, CPU e memória…), com a tendência de cada indicador e a possibilidade de descarregar tudo em CSV. É uma funcionalidade do painel do dono: os visitantes não notam diferença.
+
 ## 3.48.0 — 2026-11-18
 
 ### Melhorado

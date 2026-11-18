@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.49.0 — 2026-11-18
+
+### Noutăți
+- **Panou cu evoluția zi cu zi:** o nouă vizualizare «Evoluție zilnică» arată, pe până la 90 de zile, tot ce salvează serverul în baza de date (sesiuni, generări, numere generate, limbi, țări, stiluri, galerie, editor, API, cereri, timpi de răspuns, CPU și memorie…), cu tendința fiecărui indicator și descărcarea tuturor în CSV. Este o funcție a panoului proprietarului: vizitatorii nu observă nicio diferență.
+
 ## 3.48.0 — 2026-11-18
 
 ### Îmbunătățit
