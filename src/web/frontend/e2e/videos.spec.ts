@@ -256,6 +256,31 @@ const CENAS: Cena[] = [
       );
       await escrever(page, page.getByTestId("galeria-titulo"), T("Rifa de Natal", "Christmas raffle"));
       await expect(page.getByTestId("galeria-previa")).toBeVisible();
+      await escrever(page, page.getByTestId("galeria-premio-1"), T("Cabaz de Natal", "Christmas hamper"));
+      await escrever(page, page.getByTestId("galeria-premio-2"), T("Vale de compras", "Shopping voucher"));
+      await legenda(
+        page,
+        T(
+          "Os prémios vêm numerados e cada campo mostra o limite de letras",
+          "The prizes are numbered and every field shows its character limit",
+        ),
+        2800,
+      );
+      await clicar(page, page.getByTestId("galeria-data"));
+      await legenda(
+        page,
+        T(
+          "A data escolhe-se num calendário na língua do site",
+          "The date is picked in a calendar in the site's language",
+        ),
+        2600,
+      );
+      await clicarNoPainel(page, page.getByTestId("galeria-data-seguinte"));
+      await clicarNoPainel(
+        page,
+        page.locator('[data-testid="galeria-data-calendario"] .calendario-dia:not(.fora)[data-iso$="-24"]'),
+      );
+      await pausa(page, 1200);
       await legenda(
         page,
         T(
