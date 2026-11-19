@@ -211,7 +211,7 @@ export function DeixarComentario() {
             </label>
           </div>
           <p className="suave aviso-ip">
-            {t("web_op_aviso_ip")} <Ligacao para="/privacidade">{t("web_privacidade")}</Ligacao>
+            {t("web_op_aviso_pais")} <Ligacao para="/privacidade">{t("web_privacidade")}</Ligacao>
           </p>
           {erro && (
             <p role="alert" className="cor-erro" data-testid="opiniao-erro">

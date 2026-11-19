@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AdminComentarios } from "./AdminComentarios";
 
-let lista: { id: string; ip: string; texto: string }[];
+let lista: { id: string; pais: string; texto: string }[];
 let pedidos: { metodo: string; url: string }[];
 
 function json(corpo: unknown, estado = 200) {
@@ -13,8 +13,8 @@ function json(corpo: unknown, estado = 200) {
 beforeEach(() => {
   pedidos = [];
   lista = [
-    { id: "a", ip: "203.0.113.7", texto: "Muito bom, obrigado!" },
-    { id: "b", ip: "", texto: "Um comentário antigo, sem IP" },
+    { id: "a", pais: "PT", texto: "Muito bom, obrigado!" },
+    { id: "b", pais: "??", texto: "Um comentário vindo de um país desconhecido" },
   ];
   vi.stubGlobal(
     "fetch",
@@ -37,17 +37,17 @@ afterEach(() => {
 });
 
 describe("os comentários no painel do dono", () => {
-  it("mostra só o IP e o texto de cada um", async () => {
+  it("mostra só o país e o texto de cada um", async () => {
     render(<AdminComentarios leitura={false} aoSairDaSessao={() => {}} />);
     const linhas = await screen.findAllByTestId("admin-comentario");
     expect(linhas).toHaveLength(2);
-    expect(within(linhas[0] as HTMLElement).getByText("203.0.113.7")).toBeInTheDocument();
+    expect(within(linhas[0] as HTMLElement).getByText("Portugal (PT)")).toBeInTheDocument();
     expect(within(linhas[0] as HTMLElement).getByText("Muito bom, obrigado!")).toBeInTheDocument();
-    expect(within(linhas[1] as HTMLElement).getByText("(apagado)")).toBeInTheDocument(); // o IP já passou o prazo
+    expect(within(linhas[1] as HTMLElement).getByText("Desconhecido")).toBeInTheDocument();
     const cabecalhos = within(screen.getByTestId("admin-tabela-comentarios"))
       .getAllByRole("columnheader")
       .map((c) => c.textContent);
-    expect(cabecalhos).toEqual(["IP", "Texto", "Apagar"]); // nada sobre quem escreveu
+    expect(cabecalhos).toEqual(["País", "Texto", "Apagar"]); // nada sobre quem escreveu, nem IP
   });
 
   it("apagar pede confirmação, apaga e atualiza a lista", async () => {

@@ -171,10 +171,12 @@ describe("a página «Deixar um comentário»", () => {
     expect(screen.getByTestId("opiniao-texto")).toHaveValue("Texto que não se pode perder");
   });
 
-  it("explica o que se faz ao IP e liga a política de privacidade; o campo-isco está escondido das pessoas", async () => {
+  it("explica que só se guarda o país (nunca o IP) e liga a política de privacidade; o campo-isco está escondido das pessoas", async () => {
     abrir("/opiniao");
     await screen.findByTestId("pagina-opiniao");
-    expect(screen.getByText(/endereço IP fica guardado apenas para o responsável/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Guardamos apenas o país de onde envia o comentário \(nunca o endereço IP\)/),
+    ).toBeInTheDocument();
     expect(
       within(screen.getByTestId("pagina-opiniao")).getByRole("link", { name: "Privacidade" }),
     ).toHaveAttribute("href", "/privacidade");

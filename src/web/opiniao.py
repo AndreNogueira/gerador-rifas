@@ -1,14 +1,15 @@
 """Comentários dos visitantes (página «Comentários») e a ligação ao GitHub para reportar problemas.
 
 PRIVACIDADE (a Política de privacidade das 22 línguas diz exatamente isto, `legal_opiniao.py`):
- - o comentário guarda-se com o texto, o nome que a pessoa quiser mostrar (ou nenhum) e o **endereço IP**, que só o dono vê no painel (para travar abusos) e
-   que se APAGA do comentário passados `DIAS_IP` dias; o comentário em si continua;
- - a página pública nunca devolve o IP nem o id interno do visitante: só o texto, o nome a mostrar e o dia;
+ - o comentário guarda-se com o texto, a data, o nome que a pessoa quiser mostrar (ou nenhum) e o **país** de onde veio (`CF-IPCountry`, o mesmo código de duas letras
+   das estatísticas; `??` se não vier). **Nunca o endereço IP**: o limite de comentários por hora conta-se em memória e esquece-se (`LimiteHorario`);
+ - a página pública nunca devolve o país nem o id interno do visitante: só o texto, o nome a mostrar e o dia; o país só o dono vê, no painel;
  - quem escolhe ficar anónimo não tem nome; quem escolhe mostrar nome e não escreve nenhum aparece como «Visitante n.º ####» (um número tirado do id do comentário).
 O texto de um comentário nunca vai para os registos nem para as métricas (só «houve um comentário», anónimo ou com nome).
 """
 from __future__ import annotations
 
+import contextlib
 import hashlib
 import re
 import secrets
@@ -18,18 +19,19 @@ from pathlib import Path
 
 from .bd_simples import BaseSql
 
-DIAS_IP = 90
 TEXTO_MIN, TEXTO_MAX = 5, 1000
 NOME_MAX = 40
 POR_PAGINA = 20
-POR_IP_E_HORA = 3                                  # comentários por IP numa hora
+POR_IP_E_HORA = 3                                  # comentários por endereço numa hora (contados em memória: o endereço não se guarda)
 TOTAL_POR_HORA = 100                               # e no site inteiro (trava um enxame de robôs)
 
 _ESQUEMA = (
     "CREATE TABLE IF NOT EXISTS comentarios(id TEXT PRIMARY KEY, criado BIGINT NOT NULL, anonimo INTEGER NOT NULL, nome TEXT NOT NULL, "
-    "texto TEXT NOT NULL, ip TEXT NOT NULL)",
+    "texto TEXT NOT NULL, pais TEXT NOT NULL DEFAULT '')",
     "CREATE INDEX IF NOT EXISTS ix_comentarios_criado ON comentarios(criado)",
 )
+# a 1.ª versao guardava o endereco IP: numa tabela que ja exista acrescenta-se o pais e APAGA-SE a coluna do IP (e tudo o que tinha)
+_MIGRACOES = ("ALTER TABLE comentarios ADD COLUMN pais TEXT NOT NULL DEFAULT ''", "ALTER TABLE comentarios DROP COLUMN ip")
 _CONTROLO = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f​-‏‪-‮⁦-⁩]")      # controlo e marcas que invertem/escondem texto
 
 
@@ -75,18 +77,24 @@ class Comentarios(BaseSql):
     def __init__(self, url_bd: str = "", caminho: Path | None = None, relogio=time.time):
         super().__init__(url_bd, caminho)
         self._relogio = relogio
+        self._migrado = False
 
-    def criar(self, texto: str, anonimo: bool, nome: str, ip: str) -> str:
-        """Guarda um comentário (já limpo e validado) e devolve o id. Aproveita para apagar os IPs que passaram do prazo."""
-        agora = int(self._relogio())
-        self._executar("UPDATE comentarios SET ip = '' WHERE ip <> '' AND criado < %s", (agora - DIAS_IP * 86400,))
+    def _executar(self, sql: str, args: tuple = ()) -> list[tuple]:
+        if not self._migrado:
+            super()._executar("SELECT 1")                       # cria a tabela (ou falha: a base esta em baixo e nada se marca como feito)
+            for m in _MIGRACOES:
+                with contextlib.suppress(Exception):            # «a coluna ja existe» / «nao existe»: o que se queria ja esta feito
+                    super()._executar(m)
+            super()._executar("SELECT pais FROM comentarios LIMIT 1")      # falha se a migracao nao chegou ao fim: tenta-se outra vez no pedido seguinte
+            self._migrado = True
+        return super()._executar(sql, args)
+
+    def criar(self, texto: str, anonimo: bool, nome: str, pais: str) -> str:
+        """Guarda um comentário (já limpo e validado) e devolve o id. `pais`: o código de duas letras (ou `??`); nunca o endereço IP."""
         id_ = secrets.token_urlsafe(8)
-        self._executar("INSERT INTO comentarios(id, criado, anonimo, nome, texto, ip) VALUES (%s, %s, %s, %s, %s, %s)",
-                       (id_, agora, 1 if anonimo else 0, "" if anonimo else nome, texto, ip))
+        self._executar("INSERT INTO comentarios(id, criado, anonimo, nome, texto, pais) VALUES (%s, %s, %s, %s, %s, %s)",
+                       (id_, int(self._relogio()), 1 if anonimo else 0, "" if anonimo else nome, texto, pais[:2] if pais else "??"))
         return id_
-
-    def recentes_do_ip(self, ip: str) -> int:
-        return int(self._executar("SELECT COUNT(*) FROM comentarios WHERE ip = %s AND criado >= %s", (ip, int(self._relogio()) - 3600))[0][0])
 
     def na_ultima_hora(self) -> int:
         return int(self._executar("SELECT COUNT(*) FROM comentarios WHERE criado >= %s", (int(self._relogio()) - 3600,))[0][0])
@@ -111,9 +119,9 @@ class Comentarios(BaseSql):
         return int(self._executar("SELECT COUNT(*) FROM comentarios")[0][0])
 
     def para_admin(self, limite: int = 500) -> list[dict]:
-        """O que o dono vê: o id (para apagar), o IP e o texto. Mais nada (não interessa quem escreveu)."""
-        return [{"id": i, "ip": ip, "texto": t} for i, ip, t in
-                self._executar("SELECT id, ip, texto FROM comentarios ORDER BY criado DESC, id DESC LIMIT %s", (limite,))]
+        """O que o dono vê: o id (para apagar), o país de onde veio e o texto. Mais nada (não interessa quem escreveu)."""
+        return [{"id": i, "pais": p or "??", "texto": t} for i, p, t in
+                self._executar("SELECT id, pais, texto FROM comentarios ORDER BY criado DESC, id DESC LIMIT %s", (limite,))]
 
     def apagar(self, id_: str) -> bool:
         existia = bool(self._executar("SELECT 1 FROM comentarios WHERE id = %s", (id_,)))

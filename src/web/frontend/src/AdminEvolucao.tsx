@@ -51,7 +51,7 @@ function Tendencia({ valor }: { valor: number | null }) {
 }
 
 /** Nomes de países por extenso (os painéis trazem os códigos de duas letras). */
-function nomePais(codigo: string): string {
+export function nomePais(codigo: string): string {
   if (!/^[A-Z]{2}$/.test(codigo)) return codigo === "Outros" ? "Outros" : "Desconhecido";
   try {
     const nome = new Intl.DisplayNames(["pt-PT"], { type: "region" }).of(codigo);

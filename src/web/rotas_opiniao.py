@@ -12,7 +12,8 @@ from core import i18n
 
 from . import VERSAO, config, github_issues
 from .modelos import ErroApi
-from .opiniao import NOME_MAX, POR_IP_E_HORA, POR_PAGINA, TEXTO_MAX, TEXTO_MIN, TOTAL_POR_HORA, limpar_texto
+from .metricas import pais_do_cabecalho
+from .opiniao import NOME_MAX, POR_PAGINA, TEXTO_MAX, TEXTO_MIN, TOTAL_POR_HORA, limpar_texto
 from .rotas import Servico, lingua, servico
 
 router = APIRouter(prefix="/api", tags=["opiniao"])
@@ -71,12 +72,12 @@ def comentar(c: NovoComentario, request: Request, serv: Servico = Depends(servic
     if _letras(texto) < TEXTO_MIN:
         raise ErroApi(422, i18n.traduzir("web_op_curto", lg), "aviso")
     ip = _ip(request)
-    if (serv.comentarios.recentes_do_ip(ip) >= POR_IP_E_HORA or serv.comentarios.na_ultima_hora() >= TOTAL_POR_HORA
+    if (not serv.limite_comentarios_ip.permitir(ip) or serv.comentarios.na_ultima_hora() >= TOTAL_POR_HORA
             or not serv.limitador.permitir(ip, "comentario", 5)):
         serv.metricas.evento("limite", "comentario")
         raise ErroApi(429, i18n.traduzir("web_erro_envios", lg), "aviso")
     nome = limpar_texto(c.nome, NOME_MAX, uma_linha=True)
-    serv.comentarios.criar(texto, c.anonimo, nome, ip)
+    serv.comentarios.criar(texto, c.anonimo, nome, pais_do_cabecalho(request.headers.get("cf-ipcountry")))        # o pais, nunca o IP
     serv.metricas.evento("comentario", "anonimo" if c.anonimo else ("nome" if nome else "visitante"))     # só o tipo, nunca o texto
     return Registado()
 

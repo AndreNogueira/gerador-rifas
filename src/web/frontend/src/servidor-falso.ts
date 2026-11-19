@@ -66,8 +66,8 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_op_com_nome: "Mostrar um nome junto ao comentário",
     web_op_nome: "Nome a mostrar",
     web_op_nome_ajuda: "Pode ser um apelido. Se o deixar em branco, aparece «Visitante n.º …».",
-    web_op_aviso_ip:
-      "O seu endereço IP fica guardado apenas para o responsável do site (para travar abusos), nunca é mostrado e é apagado ao fim de 90 dias. Ver a Política de privacidade.",
+    web_op_aviso_pais:
+      "Guardamos apenas o país de onde envia o comentário (nunca o endereço IP), e só o responsável do site o vê. Ver a Política de privacidade.",
     web_op_enviar: "Enviar comentário",
     web_op_obrigado: "Obrigado! O seu comentário já aparece na página de comentários.",
     web_op_curto: "Escreva pelo menos 5 letras.",

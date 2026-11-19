@@ -48,8 +48,8 @@ COPY --from=frontend /frontend/dist ./src/web/frontend/dist
 # Sem `app/assets` (~20 MB de videos e capturas): o servidor descarrega-os no arranque do .zip em ASSETS_URL (armazenamento de objetos; docs/ASSETS.md).
 # Sem essa variavel o tutorial funciona na mesma, so que sem videos nem capturas.
 # Os valores por omissao sao os do .zip publicado (um teste confere o SHA-256 com o dos ficheiros do repositorio); o Render pode sobrepo-los.
-ARG ASSETS_URL=https://br-bitter-base-b9pz4epj.storage.c-7.eu-central-1.aws.neon.tech/site-assets/assets-web-bcd2fbcd8ae3.zip
-ARG ASSETS_SHA256=bcd2fbcd8ae34d263f5db7736b56379ceddd60e2b6a480d63df9bab417d635db
+ARG ASSETS_URL=https://br-bitter-base-b9pz4epj.storage.c-7.eu-central-1.aws.neon.tech/site-assets/assets-web-d9e0baf50449.zip
+ARG ASSETS_SHA256=d9e0baf5044930d66bef2f17ffeb64a74c7448d872576c89529008497ecd62d3
 ENV ASSETS_URL=$ASSETS_URL ASSETS_SHA256=$ASSETS_SHA256
 USER rifas
 EXPOSE 8080

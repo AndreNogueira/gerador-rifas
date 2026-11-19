@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.52.0 — 2026-11-19
+
+### Förbättrat
+- **Kommentarer utan IP-adress:** i stället för IP-adressen sparas bara landet som kommentaren skickades från (bara webbplatsens ansvarige ser det). IP-adressen sparas inte längre: de från tidigare kommentarer har raderats och integritetspolicyn har uppdaterats.
+
 ## 3.51.0 — 2026-11-19
 
 ### Nytt

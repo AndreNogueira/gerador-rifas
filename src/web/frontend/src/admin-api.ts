@@ -178,8 +178,8 @@ export interface Evolucao {
 
 export interface ComentarioDoDono {
   id: string;
-  /** Vazio quando já passaram 90 dias (o IP apaga-se do comentário). */
-  ip: string;
+  /** O país de onde veio, código de duas letras (`??` = desconhecido). Nunca o endereço IP: não se guarda. */
+  pais: string;
   texto: string;
 }
 
@@ -249,7 +249,7 @@ export const adminApi = {
       "DELETE",
     );
   },
-  /** Os comentários como o dono os vê: só o IP e o texto. */
+  /** Os comentários como o dono os vê: só o país e o texto. */
   comentarios: () => ver<{ total: number; itens: ComentarioDoDono[] }>("/api/admin/comentarios"),
   async apagarComentario(id: string): Promise<void> {
     await pedirJson(`/api/admin/comentarios/${encodeURIComponent(id)}`, "DELETE");

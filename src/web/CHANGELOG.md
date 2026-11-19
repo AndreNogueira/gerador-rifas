@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.52.0 — 2026-11-19
+
+### Melhorado
+- **Comentários sem endereço IP:** em vez do IP, passa a guardar-se apenas o país de onde o comentário foi enviado (só o responsável do site o vê). O endereço IP já não se guarda: os dos comentários anteriores foram apagados, e a Política de privacidade foi atualizada.
+
 ## 3.51.0 — 2026-11-19
 
 ### Novo

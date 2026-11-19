@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.52.0 — 2026-11-19
+
+### Verbeterd
+- **Reacties zonder IP-adres:** in plaats van het IP wordt alleen het land bewaard waaruit de reactie is verstuurd (alleen de beheerder ziet het). Het IP-adres wordt niet meer bewaard: die van eerdere reacties zijn verwijderd en het Privacybeleid is bijgewerkt.
+
 ## 3.51.0 — 2026-11-19
 
 ### Nieuw

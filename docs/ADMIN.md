@@ -61,7 +61,7 @@ Uma segunda vista, ao lado da «Visão geral», com **tudo o que está na base d
 
 Os limites são os da retenção (eventos 90 dias, pedidos e sistema 35): os dias mais antigos aparecem vazios. As categorias mostram as 8 mais usadas e juntam o resto em «Outros». Um evento novo aparece aqui acrescentando-o a `Metricas.evolucao` (e ao teste `test_a_evolucao_cobre_todos_os_tipos_de_evento_que_se_gravam`).
 
-A aba **Comentários** mostra os comentários dos visitantes só com o **IP** e o **texto** (e o botão de apagar, só para o dono; ver `docs/OPINIAO.md`).
+A aba **Comentários** mostra os comentários dos visitantes só com o **país** (de onde vieram; nunca o IP, que não se guarda) e o **texto** (e o botão de apagar, só para o dono; ver `docs/OPINIAO.md`).
 
 Os intervalos são a última hora, 6 horas, 24 horas, 7 dias e 30 dias. Os números de «Agora» atualizam de 10 em 10 segundos; os gráficos de 30 em 30.
 

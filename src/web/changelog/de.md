@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.52.0 — 2026-11-19
+
+### Verbessert
+- **Kommentare ohne IP-Adresse:** statt der IP wird nur das Land gespeichert, aus dem der Kommentar gesendet wurde (nur der Betreiber sieht es). Die IP-Adresse wird nicht mehr gespeichert: die früherer Kommentare wurden gelöscht, und die Datenschutzerklärung wurde aktualisiert.
+
 ## 3.51.0 — 2026-11-19
 
 ### Neu

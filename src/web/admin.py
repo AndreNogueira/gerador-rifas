@@ -230,7 +230,7 @@ def evolucao(dias: int = Query(30, ge=1, le=DIAS_MAXIMOS), fuso: int = Query(0, 
 
 @router.get("/comentarios", dependencies=[Depends(exigir)])
 def comentarios_admin(serv: Servico = Depends(servico)) -> dict:
-    """Os comentarios dos visitantes como o dono os ve: SO o endereco IP e o texto (mais o id, para apagar). Nao interessa quem escreveu."""
+    """Os comentarios dos visitantes como o dono os ve: SO o pais e o texto (mais o id, para apagar). Nao interessa quem escreveu."""
     return {"total": serv.comentarios.total(), "itens": serv.comentarios.para_admin()}
 
 
