@@ -302,12 +302,35 @@ export interface QuotasEstado {
   avisos: string[];
 }
 
+export interface ObjetivoDoDono {
+  chave: string;
+  rotulo: string;
+  /** A meta por dia (pelo menos), ou null se não há. */
+  meta: number | null;
+  ontem: number;
+  media7: number;
+  dias_cumpridos: number;
+  dias: number;
+  atingido: boolean | null;
+  pct: number | null;
+}
+
+export interface ObjetivosEstado {
+  /** O último dia completo (`aaaa-mm-dd`), o que se avalia. */
+  dia: string;
+  kpis: ObjetivoDoDono[];
+}
+
 export type TipoRelatorio = "dia" | "semana" | "mes";
 
 const consultaRelatorio = (dia: string, tipo: TipoRelatorio) =>
   `tipo=${tipo}${dia ? `&dia=${encodeURIComponent(dia)}` : ""}`;
 
 export const adminApi = {
+  objetivos: () => ver<ObjetivosEstado>("/api/admin/objetivos"),
+  async definirObjetivo(chave: string, meta: number | null): Promise<void> {
+    await pedirJson("/api/admin/objetivos", "PUT", { chave, meta });
+  },
   quotas: () => ver<QuotasEstado>("/api/admin/quotas"),
   relatorio: () => ver<RelatorioEstado>("/api/admin/relatorio"),
   relatorioPrevia: (dia: string, tipo: TipoRelatorio = "dia") =>

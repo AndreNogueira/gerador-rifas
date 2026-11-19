@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.60.0 — 2026-11-19
+
+### Nieuw
+- **Dagdoelen in het beheerpaneel:** de beheerder stelt een doel per dag in (sessies, generaties, gegenereerde nummers, downloads…) en ziet of de laatste dag het haalde, het 7-daagse gemiddelde en op hoeveel dagen het gehaald werd; het dagelijkse e-mailrapport bevat dezelfde sectie.
+
 ## 3.59.0 — 2026-11-19
 
 ### Nieuw

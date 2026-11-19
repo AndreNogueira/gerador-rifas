@@ -71,6 +71,10 @@ A aba **Relatório diário** mostra o estado do e-mail diário (ligado ou não, 
 
 Os eventos brutos apagam-se aos 90 dias e os pedidos/sistema aos 35. Por isso, depois das 00:05 (`RELATORIO_FUSO`) o servidor grava **uma linha-resumo por dia** na tabela `historico_diario` (o que a «Evolução diária» mostra desse dia, só o que não é zero; ≈ 3 KB por dia, ≈ 1 MB por ano) e, na primeira vez, também os dias que ainda estão na base (até 90). A vista com mais de 90 dias (`GET /api/admin/evolucao?dias=365`, até 730) lê daí (`historico.py`): os dias são os do fuso do relatório (não os do browser), o dia em curso não aparece e os dias anteriores ao histórico aparecem vazios («sem dados», não zero). Funciona sem o e-mail. Sem `DATABASE_URL` vive no disco efémero (perde-se ao reiniciar).
 
+## Objetivos diários (`/admin` → «Evolução diária»)
+
+O cartão «Objetivos diários» (`objetivos.py`, `GET`/`PUT /api/admin/objetivos`) deixa o dono pôr uma **meta por dia** (pelo menos) em sessões, gerações pedidas, números gerados, descargas, páginas vistas por pessoas e comentários (só contagens; não há metas para erros). Mostra, do **último dia completo**, se a meta foi atingida e a percentagem, a média dos últimos 7 dias e em quantos desses dias foi cumprida. Campo vazio = sem meta. As metas guardam-se na tabela `objetivos` (Neon; SQLite local sem `DATABASE_URL`); só o dono as muda (a leitura vê). O **relatório diário por e-mail** leva a secção «Objetivos do dia» (✔/✘) e uma linha «Abaixo do objetivo…» nos avisos; se a base das metas estiver em baixo o relatório sai na mesma, sem essa secção.
+
 ## Quotas do alojamento gratuito (`/admin` → «Visão geral»)
 
 O cartão «Quotas do alojamento» (`quotas.py`, `GET /api/admin/quotas`, também de leitura) mostra:

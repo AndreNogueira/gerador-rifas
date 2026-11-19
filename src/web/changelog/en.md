@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.60.0 — 2026-11-19
+
+### New
+- **Daily goals in the admin panel:** the owner sets a per-day target (sessions, generations, numbers generated, downloads…) and sees whether the last day met it, the 7-day average and on how many of those days it was reached; the daily e-mail report has the same section.
+
 ## 3.59.0 — 2026-11-19
 
 ### New

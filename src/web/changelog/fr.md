@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.60.0 — 2026-11-19
+
+### Nouveautés
+- **Objectifs quotidiens dans le panneau d'administration :** le responsable fixe une cible par jour (sessions, générations, numéros générés, téléchargements…) et voit si le dernier jour l'a atteinte, la moyenne des 7 derniers jours et sur combien elle l'a été ; le rapport quotidien par e-mail contient la même section.
+
 ## 3.59.0 — 2026-11-19
 
 ### Nouveautés

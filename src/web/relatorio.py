@@ -26,6 +26,7 @@ from zoneinfo import ZoneInfo
 
 from . import config, email_envio
 from .bd_simples import BaseSql
+from .objetivos import avaliar as avaliar_objetivos
 
 log = logging.getLogger("rifas.relatorio")
 
@@ -205,6 +206,14 @@ def alertas(ev: dict, paineis: dict[str, dict], dia: date, inicio_ts: int) -> li
 
 
 # ------------------------------------------------------------------ montar o relatório
+def _avisos_de_objetivos(avaliados: list[dict]) -> list[tuple[str, str]]:
+    """Os objetivos diários que não se cumpriram neste dia (só informativo)."""
+    falhados = [o for o in avaliados if o["atingido"] is False]
+    if not falhados:
+        return []
+    return [("info", "Abaixo do objetivo: " + "; ".join(f"{o['rotulo']} {_num(o['ontem'])} de {_num(o['meta'])}" for o in falhados) + ".")]
+
+
 def _avisos_de_quotas(metricas) -> list[tuple[str, str]]:
     """Os avisos das quotas do alojamento (horas do Render, espaço do Neon): ver `quotas.py`. Nunca estragam o relatório."""
     try:
@@ -215,7 +224,7 @@ def _avisos_de_quotas(metricas) -> list[tuple[str, str]]:
         return []
 
 
-def montar(metricas, extras, dia: date, fuso: ZoneInfo) -> dict:
+def montar(metricas, extras, dia: date, fuso: ZoneInfo, objetivos: dict | None = None) -> dict:
     """Os dados do relatório do `dia` (já calculados: as séries, os destaques e os alertas)."""
     desvio, inicio, fim = janela_do_dia(dia, fuso)
     ev = metricas.evolucao(JANELA_DIAS, desvio, extras, fim)
@@ -237,8 +246,10 @@ def montar(metricas, extras, dia: date, fuso: ZoneInfo) -> dict:
         valor, media = _destaque(paineis, painel, serie)
         unidade = paineis.get(painel, {}).get("unidade", "")
         destaques.append({"rotulo": rotulo, "valor": valor, "media": media, "variacao": _variacao(valor, media), "unidade": unidade})
+    avaliados = [o for o in avaliar_objetivos(ev, objetivos) if o["meta"] is not None] if objetivos else []
     return {"dia": dia, "dias_lista": ev["dias_lista"], "grupos": grupos, "inativos": inativos, "destaques": destaques,
-            "alertas": alertas(ev, paineis, dia, inicio) + _avisos_de_quotas(metricas), "fuso": fuso.key, "nome": "relatório diário", "titulo": titulo_do_dia(dia), "curto": titulo_do_dia(dia, True),
+            "alertas": alertas(ev, paineis, dia, inicio) + _avisos_de_quotas(metricas) + _avisos_de_objetivos(avaliados),
+            "objetivos": avaliados, "fuso": fuso.key, "nome": "relatório diário", "titulo": titulo_do_dia(dia), "curto": titulo_do_dia(dia, True),
             "colunas": ("Dia", "Média 7 d", "Variação", "8 dias"),
             "legenda": "«Média 7 d» é a média dos 7 dias anteriores; a miniatura mostra os 8 dias, o último é este."}
 
@@ -263,6 +274,9 @@ def em_texto(d: dict, link: str = "") -> str:
     linhas += [f"EM RESUMO ({d['colunas'][0].lower()} · {d['colunas'][1].lower()})"]
     for x in d["destaques"]:
         linhas.append(f"  {x['rotulo']}: {_num(x['valor'], x['unidade'])} · média {_num(x['media'], x['unidade'])} · {_junta(x['variacao'])}")
+    if d.get("objetivos"):
+        linhas += ["", "OBJETIVOS DO DIA"] + [f"  {'✔' if o['atingido'] else '✘'} {o['rotulo']}: {_num(o['ontem'])} de {_num(o['meta'])} ({o['pct']} %) · média 7 d {_num(o['media7'])} · "
+                                              f"{o['dias_cumpridos']}/{o['dias']} dias cumpridos" for o in d["objetivos"]]
     for grupo, paineis in d["grupos"].items():
         linhas += ["", grupo.upper()]
         for p in paineis:
@@ -317,6 +331,15 @@ def em_html(d: dict, link: str = "") -> str:
         if i % 4 == 3:
             p.append("</tr>")
     p.append("</table></td></tr>")
+    if d.get("objetivos"):
+        p.append(f"<tr><td style='padding:18px 24px 0'><div style='font-size:16px;font-weight:700;color:{_MARCA};margin-bottom:6px'>Objetivos do dia</div>"
+                 "<table role='presentation' width='100%' cellpadding='0' cellspacing='0' style='font-size:13px'>")
+        for o in d["objetivos"]:
+            cor = "#1b7a3a" if o["atingido"] else "#b3261e"
+            p.append(f"<tr><td style='padding:4px 6px;border-bottom:1px solid {_LINHA}'>{_E(o['rotulo'])}</td>"
+                     f"<td style='text-align:right;padding:4px 6px;border-bottom:1px solid {_LINHA};font-weight:600;color:{cor}'>{'✔' if o['atingido'] else '✘'} {_E(_num(o['ontem']))} de {_E(_num(o['meta']))} ({o['pct']} %)</td>"
+                     f"<td style='text-align:right;padding:4px 6px;border-bottom:1px solid {_LINHA};color:{_CINZA}'>média 7 d {_E(_num(o['media7']))} · {o['dias_cumpridos']}/{o['dias']} dias</td></tr>")
+        p.append("</table></td></tr>")
     cab = f"font-size:12px;color:{_CINZA};text-align:right;padding:4px 6px;border-bottom:1px solid {_LINHA}"
     for grupo, paineis in d["grupos"].items():
         p.append(f"<tr><td style='padding:18px 24px 0'><div style='font-size:16px;font-weight:700;color:{_MARCA};margin-bottom:6px'>{_E(grupo)}</div>"
@@ -346,9 +369,9 @@ def em_html(d: dict, link: str = "") -> str:
     return "".join(p)
 
 
-def construir(metricas, extras, dia: date, fuso: ZoneInfo) -> dict:
+def construir(metricas, extras, dia: date, fuso: ZoneInfo, objetivos: dict | None = None) -> dict:
     """`{assunto, html, texto}` do relatório do `dia`."""
-    d = montar(metricas, extras, dia, fuso)
+    d = montar(metricas, extras, dia, fuso, objetivos)
     link = config.url_publica()
     return {"assunto": assunto(d), "html": em_html(d, link), "texto": em_texto(d, link), "dia": dia.isoformat(), "alertas": len(d["alertas"])}
 
@@ -358,14 +381,22 @@ def ativo() -> bool:
     return bool(config.email_chave() and config.relatorio_destinos())
 
 
-def enviar_relatorio(metricas, extras, dia: date, fuso: ZoneInfo, abrir=urllib.request.urlopen, teste: bool = False) -> str:
+def enviar_relatorio(metricas, extras, dia: date, fuso: ZoneInfo, abrir=urllib.request.urlopen, teste: bool = False, objetivos: dict | None = None) -> str:
     """Monta e envia o relatório de `dia`; devolve o id do e-mail. `teste` põe «[Teste]» no assunto."""
-    r = construir(metricas, extras, dia, fuso)
+    r = construir(metricas, extras, dia, fuso, objetivos)
     return email_envio.enviar(config.email_chave(), config.relatorio_remetente(), config.relatorio_destinos(),
                               ("[Teste] " if teste else "") + r["assunto"], r["html"], r["texto"], abrir)
 
 
-def enviar_se_devido(relatorios, metricas, extras, estado: EstadoRelatorio, agora: float | None = None, abrir=urllib.request.urlopen) -> str:
+def _metas(objetivos) -> dict:
+    """As metas do dono (lidas da base só quando se vai enviar o relatório); uma base em baixo não impede o relatório: sai sem a secção de objetivos."""
+    try:
+        return objetivos.todos() if objetivos is not None else {}
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def enviar_se_devido(relatorios, metricas, extras, estado: EstadoRelatorio, agora: float | None = None, abrir=urllib.request.urlopen, objetivos=None) -> str:
     """Chamado de poucos em poucos minutos. Devolve o que fez: `desligado`, `cedo` (ainda antes das 00:05), `espera` (falhou há pouco), `ja_enviado`, `enviado` ou `falhou`."""
     if not ativo() or relatorios is None:
         return "desligado"
@@ -388,7 +419,7 @@ def enviar_se_devido(relatorios, metricas, extras, estado: EstadoRelatorio, agor
         estado.proxima_tentativa = agora + 300
         return "falhou"
     try:
-        enviar_relatorio(metricas, extras, dia, fuso, abrir)
+        enviar_relatorio(metricas, extras, dia, fuso, abrir, objetivos=_metas(objetivos))
     except (email_envio.ErroEmail, ErroRelatorio) as e:
         motivo = str(e) or type(e).__name__
     except Exception as e:  # noqa: BLE001 - nada pode derrubar o ciclo do serviço

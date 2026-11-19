@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.60.0 — 2026-11-19
+
+### Novedades
+- **Objetivos diarios en el panel de administración:** el responsable fija una meta por día (sesiones, generaciones, números generados, descargas…) y ve si el último día la cumplió, la media de los últimos 7 días y en cuántos se alcanzó; el informe diario por correo lleva la misma sección.
+
 ## 3.59.0 — 2026-11-19
 
 ### Novedades

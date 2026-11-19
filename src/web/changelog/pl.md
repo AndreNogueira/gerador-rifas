@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.60.0 — 2026-11-19
+
+### Nowości
+- **Dzienne cele w panelu administracyjnym:** administrator ustala cel na dzień (sesje, generowania, wygenerowane numery, pobrania…) i widzi, czy ostatni dzień go osiągnął, średnią z 7 dni i w ilu z nich cel zrealizowano; dzienny raport e-mail zawiera tę samą sekcję.
+
 ## 3.59.0 — 2026-11-19
 
 ### Nowości

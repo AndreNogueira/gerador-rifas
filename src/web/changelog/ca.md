@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.60.0 — 2026-11-19
+
+### Novetats
+- **Objectius diaris al tauler d'administració:** el responsable fixa una fita per dia (sessions, generacions, números generats, descàrregues…) i veu si l'últim dia la va complir, la mitjana dels últims 7 dies i en quants es va assolir; l'informe diari per correu porta la mateixa secció.
+
 ## 3.59.0 — 2026-11-19
 
 ### Novetats

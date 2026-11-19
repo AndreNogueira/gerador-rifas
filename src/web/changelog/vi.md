@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.60.0 — 2026-11-19
+
+### Mới
+- **Mục tiêu hằng ngày trong bảng quản trị:** người phụ trách đặt mục tiêu cho mỗi ngày (phiên, lượt tạo, số đã tạo, lượt tải…) và xem ngày gần nhất có đạt không, mức trung bình 7 ngày và đạt trong bao nhiêu ngày; báo cáo email hằng ngày có cùng phần này.
+
 ## 3.59.0 — 2026-11-19
 
 ### Mới

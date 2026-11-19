@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.60.0 — 2026-11-19
+
+### Noutăți
+- **Obiective zilnice în panoul de administrare:** responsabilul stabilește o țintă pe zi (sesiuni, generări, numere generate, descărcări…) și vede dacă ultima zi a atins-o, media ultimelor 7 zile și în câte a fost atinsă; raportul zilnic prin e-mail conține aceeași secțiune.
+
 ## 3.59.0 — 2026-11-19
 
 ### Noutăți

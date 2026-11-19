@@ -2,6 +2,7 @@ import { type FormEvent, type ReactNode, useCallback, useEffect, useState } from
 import { AdminComentarios } from "./AdminComentarios";
 import { AdminErros } from "./AdminErros";
 import { AdminEvolucao } from "./AdminEvolucao";
+import { AdminObjetivos } from "./AdminObjetivos";
 import { AdminQuotas } from "./AdminQuotas";
 import { AdminRelatorio } from "./AdminRelatorio";
 import { AdminSeo } from "./AdminSeo";
@@ -423,7 +424,12 @@ export function Admin() {
         </button>
       </nav>
 
-      {vista === "evolucao" && <AdminEvolucao aoSairDaSessao={() => setFase("entrar")} />}
+      {vista === "evolucao" && (
+        <>
+          <AdminObjetivos leitura={estado.papel === "leitura"} aoSairDaSessao={() => setFase("entrar")} />
+          <AdminEvolucao aoSairDaSessao={() => setFase("entrar")} />
+        </>
+      )}
       {vista === "relatorio" && (
         <AdminRelatorio leitura={estado.papel === "leitura"} aoSairDaSessao={() => setFase("entrar")} />
       )}

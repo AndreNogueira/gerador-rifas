@@ -55,6 +55,7 @@ class Servico:
     historico: object | None = None                                         # `historico.HistoricoDiario`: uma linha-resumo por dia, para sempre
     alertas: object | None = None                                           # `alertas.AlertasEnviados`: quando se avisou de cada condicao
     estado_alertas: object = field(default_factory=EstadoAlertas)
+    objetivos: object | None = None                                         # `objetivos.Objetivos`: as metas diarias do dono
     estado_relatorio: object = field(default_factory=EstadoRelatorio)       # o ultimo erro e a proxima tentativa do envio
     criar_issue: object = github_issues.criar_issue                         # troca-se nos testes: nunca se chama o GitHub a sério
 

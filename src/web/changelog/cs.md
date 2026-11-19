@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.60.0 — 2026-11-19
+
+### Novinky
+- **Denní cíle v administračním panelu:** provozovatel nastaví cíl na den (relace, generování, vygenerovaná čísla, stažení…) a vidí, zda ho poslední den splnil, sedmidenní průměr a ve kolika dnech byl splněn; denní e-mailová zpráva obsahuje stejnou sekci.
+
 ## 3.59.0 — 2026-11-19
 
 ### Novinky
