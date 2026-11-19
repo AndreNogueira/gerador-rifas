@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.63.0 — 2026-11-19
+
+### Nytt
+- **Verklig webbplatsprestanda i statistiken:** adminpanelen visar per dag hur lång tid sidan tar att visas, hur mycket innehållet flyttar sig och hur lång tid det tar att svara på ett klick, uppmätt i besökarnas webbläsare (mobil och dator). Bara tre anonyma siffror per besök; integritetspolicyn har uppdaterats.
+
 ## 3.62.0 — 2026-11-19
 
 ### Nytt

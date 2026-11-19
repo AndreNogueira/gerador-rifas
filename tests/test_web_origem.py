@@ -90,7 +90,7 @@ def test_um_nome_de_origem_enorme_ou_invalido_e_recusado_sem_guardar_nada(c):
 def test_a_privacidade_explica_a_origem_em_todas_as_linguas():
     assert set(legal_medicoes.TEXTOS) == set(i18n.LINGUAS)                                                   # uma língua nova obriga a escrever esta frase
     base = [s["titulo"] for s in textos_legais.privacidade("pt")["seccoes"]]
-    assert "Origem das visitas" in base and base[-1] == "Comentários e problemas reportados"                  # a secção dos comentários continua a ser a última
+    assert "Origem das visitas e desempenho" in base and base[-1] == "Comentários e problemas reportados"                  # a secção dos comentários continua a ser a última
     for lg in i18n.LINGUAS:
         pagina = textos_legais.privacidade(lg)
         titulos = [s["titulo"] for s in pagina["seccoes"]]

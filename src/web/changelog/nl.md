@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.63.0 — 2026-11-19
+
+### Nieuw
+- **Echte sitesprestaties in de statistieken:** het beheerpaneel toont per dag hoe lang de pagina erover doet om te verschijnen, hoeveel de inhoud verschuift en hoe lang het duurt om op een klik te reageren, gemeten in de browsers van bezoekers (mobiel en computer). Slechts drie anonieme getallen per bezoek; het Privacybeleid is bijgewerkt.
+
 ## 3.62.0 — 2026-11-19
 
 ### Nieuw

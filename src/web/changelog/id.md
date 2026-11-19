@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.63.0 — 2026-11-19
+
+### Baru
+- **Kinerja nyata situs di statistik:** panel admin menampilkan per hari berapa lama halaman muncul, seberapa banyak konten bergeser, dan berapa lama merespons klik, diukur di peramban pengunjung (ponsel dan komputer). Hanya tiga angka anonim per kunjungan; Kebijakan privasi diperbarui.
+
 ## 3.62.0 — 2026-11-19
 
 ### Baru
