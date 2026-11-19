@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.64.0 — 2026-11-19
+
+### New
+- **Weekly backup of the admin panel data:** every Monday the service saves, in the same provider's storage as the database, a copy of the history, goals, action log, comments and SEO texts (last 8 weeks), with a script to restore it.
+
 ## 3.63.0 — 2026-11-19
 
 ### New

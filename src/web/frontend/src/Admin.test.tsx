@@ -226,6 +226,19 @@ beforeEach(() => {
       }
       if (!autenticado) return json({ detail: "Rota inexistente" }, 404);
       if (url === "/api/admin/estado") return json(ESTADO);
+      if (url === "/api/admin/copia")
+        return json({
+          ativa: false,
+          tem_s3: false,
+          tem_bd: false,
+          bucket: "",
+          tabelas: [],
+          posicoes: 8,
+          ultimo: null,
+          ultimo_tamanho: 0,
+          erro: "",
+          erro_em: null,
+        });
       if (url === "/api/admin/quotas")
         return json({
           render: {

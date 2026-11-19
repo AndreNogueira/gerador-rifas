@@ -24,7 +24,7 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, Field
 
-from . import VERSAO, alertas, auditoria, config, email_envio, historico, objetivos, opiniao, quotas, relatorio, relatorio_periodo
+from . import VERSAO, alertas, auditoria, config, copia, email_envio, historico, objetivos, opiniao, quotas, relatorio, relatorio_periodo
 from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
 from .metricas import DIAS_MAXIMOS, INTERVALOS, novo_painel
@@ -281,6 +281,33 @@ def registo_de_acoes(limite: int = Query(200, ge=1, le=1000), serv: Servico = De
                 "itens": serv.auditoria.recentes(limite)}
     except Exception:  # noqa: BLE001 - a base em baixo: o painel mostra o aviso
         raise HTTPException(503, "O registo nao respondeu: tente outra vez daqui a pouco.", headers=_SEM_CACHE) from None
+
+
+@router.get("/copia", dependencies=[Depends(exigir)])
+def copia_estado(serv: Servico = Depends(servico)) -> dict:
+    """A copia de seguranca semanal (`copia.py`): se esta ligada, para que bucket, a ultima semana feita e o ultimo erro. Nunca as credenciais."""
+    s3 = config.backup_s3()
+    try:
+        ultimo = serv.relatorios.ultimo("backup") if serv.relatorios is not None else None
+    except Exception:  # noqa: BLE001
+        ultimo = None
+    e = serv.estado_copia
+    return {"ativa": copia.ativa(), "tem_s3": s3 is not None, "tem_bd": bool(config.database_url()), "bucket": s3["bucket"] if s3 else "",
+            "tabelas": list(copia.TABELAS), "posicoes": copia.POSICOES, "ultimo": ultimo, "ultimo_tamanho": e.ultimo_tamanho,
+            "erro": e.ultimo_erro, "erro_em": int(e.ultimo_erro_em) or None}
+
+
+@router.post("/copia/fazer", dependencies=[Depends(exigir_admin)])
+def copia_fazer(serv: Servico = Depends(servico)) -> dict:
+    """Faz JA uma copia (para `backups/rifas-manual.json.gz`, sem mexer nas 8 semanas). So o dono."""
+    if not copia.ativa():
+        raise HTTPException(409, "A copia de seguranca esta desligada: faltam as variaveis BACKUP_S3_* (e a base Postgres) no Render.", headers=_SEM_CACHE)
+    try:
+        r = copia.fazer(manual=True)
+    except copia.ErroCopia as e:
+        raise HTTPException(502, f"Nao foi possivel fazer a copia ({e}).", headers=_SEM_CACHE) from None
+    _registar(serv, "copia_manual", detalhe=f"{r['bytes']} bytes")
+    return r
 
 
 @router.get("/quotas", dependencies=[Depends(exigir)])

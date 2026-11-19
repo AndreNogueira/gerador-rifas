@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.64.0 — 2026-11-19
+
+### Noutăți
+- **Copie de siguranță săptămânală a datelor panoului de administrare:** în fiecare luni serviciul salvează, în stocarea aceluiași furnizor ca baza de date, o copie a istoricului, obiectivelor, jurnalului de acțiuni, comentariilor și textelor SEO (ultimele 8 săptămâni), cu un script de restaurare.
+
 ## 3.63.0 — 2026-11-19
 
 ### Noutăți

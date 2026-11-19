@@ -1,6 +1,7 @@
 import { type FormEvent, type ReactNode, useCallback, useEffect, useState } from "react";
 import { AdminAuditoria } from "./AdminAuditoria";
 import { AdminComentarios } from "./AdminComentarios";
+import { AdminCopia } from "./AdminCopia";
 import { AdminErros } from "./AdminErros";
 import { AdminEvolucao } from "./AdminEvolucao";
 import { AdminObjetivos } from "./AdminObjetivos";
@@ -452,6 +453,7 @@ export function Admin() {
       {vista === "geral" && (
         <>
           <AdminQuotas aoSairDaSessao={() => setFase("entrar")} />
+          <AdminCopia leitura={estado.papel === "leitura"} aoSairDaSessao={() => setFase("entrar")} />
           <Seccao
             id="agora"
             titulo="Agora"

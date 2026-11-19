@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.64.0 — 2026-11-19
+
+### Novità
+- **Copia di sicurezza settimanale dei dati del pannello di amministrazione:** ogni lunedì il servizio salva, nell'archiviazione dello stesso fornitore del database, una copia di storico, obiettivi, registro delle azioni, commenti e testi SEO (ultime 8 settimane), con uno script per ripristinarla.
+
 ## 3.63.0 — 2026-11-19
 
 ### Novità

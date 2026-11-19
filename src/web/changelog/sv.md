@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.64.0 — 2026-11-19
+
+### Nytt
+- **Veckovis säkerhetskopia av adminpanelens data:** varje måndag sparar tjänsten, i samma leverantörs lagring som databasen, en kopia av historiken, målen, åtgärdsloggen, kommentarerna och SEO-texterna (senaste 8 veckorna), med ett skript för att återställa.
+
 ## 3.63.0 — 2026-11-19
 
 ### Nytt

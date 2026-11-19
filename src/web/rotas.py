@@ -27,6 +27,7 @@ from . import github_issues
 from .observabilidade import Observabilidade
 from .opiniao import POR_IP_E_HORA, LimiteHorario
 from .alertas import EstadoAlertas
+from .copia import EstadoCopia
 from .relatorio import EstadoRelatorio
 from .modelos import Calculo, Campos, Desempenho, Ecra, ErroApi, Sessao, TrabalhoEstado
 from .sessoes import (Geracao, SessaoEstado, Sessoes, calcular, folha_dos_campos, ler_progresso, texto_de_erro,
@@ -57,6 +58,7 @@ class Servico:
     estado_alertas: object = field(default_factory=EstadoAlertas)
     auditoria: object | None = None                                         # `auditoria.Auditoria`: o registo permanente das acoes do painel
     objetivos: object | None = None                                         # `objetivos.Objetivos`: as metas diarias do dono
+    estado_copia: object = field(default_factory=EstadoCopia)               # a copia de seguranca semanal (copia.py): o que ja se decidiu e o ultimo erro
     estado_relatorio: object = field(default_factory=EstadoRelatorio)       # o ultimo erro e a proxima tentativa do envio
     criar_issue: object = github_issues.criar_issue                         # troca-se nos testes: nunca se chama o GitHub a sério
 

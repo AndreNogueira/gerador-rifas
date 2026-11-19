@@ -338,12 +338,36 @@ export interface AuditoriaEstado {
   itens: AuditoriaItem[];
 }
 
+export interface CopiaEstado {
+  /** Ligada: há destino (BACKUP_S3_*) e base Postgres. */
+  ativa: boolean;
+  tem_s3: boolean;
+  tem_bd: boolean;
+  bucket: string;
+  tabelas: string[];
+  posicoes: number;
+  ultimo: { dia: string; enviado: number } | null;
+  ultimo_tamanho: number;
+  erro: string;
+  erro_em: number | null;
+}
+
+export interface CopiaFeita {
+  chave: string;
+  bytes: number;
+  linhas: Record<string, number>;
+}
+
 export type TipoRelatorio = "dia" | "semana" | "mes";
 
 const consultaRelatorio = (dia: string, tipo: TipoRelatorio) =>
   `tipo=${tipo}${dia ? `&dia=${encodeURIComponent(dia)}` : ""}`;
 
 export const adminApi = {
+  copia: () => ver<CopiaEstado>("/api/admin/copia"),
+  async copiaFazer(): Promise<CopiaFeita> {
+    return (await (await pedirJson("/api/admin/copia/fazer", "POST")).json()) as CopiaFeita;
+  },
   auditoria: () => ver<AuditoriaEstado>("/api/admin/auditoria"),
   objetivos: () => ver<ObjetivosEstado>("/api/admin/objetivos"),
   async definirObjetivo(chave: string, meta: number | null): Promise<void> {

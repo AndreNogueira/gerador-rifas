@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.64.0 — 2026-11-19
+
+### Yeni
+- **Yönetim paneli verilerinin haftalık yedeği:** her pazartesi hizmet, veritabanıyla aynı sağlayıcının depolamasına geçmişin, hedeflerin, işlem günlüğünün, yorumların ve SEO metinlerinin bir kopyasını kaydeder (son 8 hafta); geri yüklemek için bir betik vardır.
+
 ## 3.63.0 — 2026-11-19
 
 ### Yeni

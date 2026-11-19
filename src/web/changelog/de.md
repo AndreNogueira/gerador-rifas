@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.64.0 — 2026-11-19
+
+### Neu
+- **Wöchentliche Sicherung der Admin-Panel-Daten:** jeden Montag speichert der Dienst im Speicher desselben Anbieters wie die Datenbank eine Kopie von Verlauf, Zielen, Aktionsprotokoll, Kommentaren und SEO-Texten (letzte 8 Wochen), mit einem Skript zur Wiederherstellung.
+
 ## 3.63.0 — 2026-11-19
 
 ### Neu

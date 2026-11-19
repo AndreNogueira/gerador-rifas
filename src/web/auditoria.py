@@ -29,6 +29,7 @@ ACOES = {
     "objetivo": "Mudou um objetivo diário",
     "relatorio_teste": "Enviou um relatório de teste por e-mail",
     "alerta_teste": "Enviou um alerta de teste por e-mail",
+    "copia_manual": "Fez uma cópia de segurança dos dados",
 }
 
 

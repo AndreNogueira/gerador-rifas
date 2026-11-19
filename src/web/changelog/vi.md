@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.64.0 — 2026-11-19
+
+### Mới
+- **Sao lưu hằng tuần dữ liệu bảng quản trị:** mỗi thứ Hai dịch vụ lưu, trong kho lưu trữ của cùng nhà cung cấp với cơ sở dữ liệu, một bản sao của lịch sử, mục tiêu, nhật ký thao tác, bình luận và văn bản SEO (8 tuần gần nhất), kèm script để khôi phục.
+
 ## 3.63.0 — 2026-11-19
 
 ### Mới
