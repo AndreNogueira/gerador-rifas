@@ -55,7 +55,7 @@ Painel → **SEO por língua** (`/admin`, `src/web/frontend/src/AdminSeo.tsx`; A
 `titulo:<caminho>`), a descrição (`d_*`), os textos de apoio (`intro`, `como`...) e os **guias «como fazer»** (título, introdução, passos, dicas, fim). Sem novo deploy.
 
 - Guarda-se em `seo_textos_bd(chave, lingua, valor)` (`src/web/seo_bd.py`): Postgres com `DATABASE_URL` (Neon), senão SQLite local e efémero (o painel avisa).
-- **Lê-se uma vez por minuto** em segundo plano para `seo_textos.SOBREPOSTOS`; nenhum pedido de página consulta a base. O código (`seo_textos.py`, `guias/`) continua a ser o valor por omissão
+- **Lê-se de 15 em 15 minutos** em segundo plano (e no arranque; uma edição feita no painel aplica-se logo, porque `definir`/`repor` voltam a ler; assim o Neon gratuito pode adormecer entre leituras) para `seo_textos.SOBREPOSTOS`; nenhum pedido de página consulta a base. O código (`seo_textos.py`, `guias/`) continua a ser o valor por omissão
   e o recurso: base em baixo, texto editado inválido ou com `{parâmetros}` a mais → usa-se o do código, nunca se parte uma página.
 - Valida-se ao gravar **e** ao ler, com as regras de `tests/test_web_seo_linguas.py`: título até 66 de largura (CJK conta dobro), descrição entre 50 e 158 (≤ 160 carateres), os mesmos
   `{parâmetros}` do original, sem quebras de linha (exceto nos textos longos), até 1000 carateres. O HTML escapa tudo.
