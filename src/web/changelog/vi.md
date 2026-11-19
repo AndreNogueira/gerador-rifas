@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.59.0 — 2026-11-19
+
+### Mới
+- **Trạng thái bình luận trong bảng quản trị:** người phụ trách có thể đánh dấu từng bình luận là đã đọc, yêu thích hoặc ẩn (bình luận bị ẩn biến mất khỏi trang công khai nhưng không bị mất), lọc theo trạng thái và xem còn bao nhiêu chưa đọc.
+
 ## 3.58.0 — 2026-11-19
 
 ### Mới

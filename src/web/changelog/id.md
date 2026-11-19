@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.59.0 — 2026-11-19
+
+### Baru
+- **Status komentar di panel admin:** pengelola dapat menandai tiap komentar sebagai dibaca, favorit, atau disembunyikan (komentar yang disembunyikan hilang dari halaman publik tetapi tidak hilang permanen), memfilter menurut status, dan melihat berapa yang belum dibaca.
+
 ## 3.58.0 — 2026-11-19
 
 ### Baru

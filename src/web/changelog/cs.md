@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.59.0 — 2026-11-19
+
+### Novinky
+- **Stavy komentářů v administračním panelu:** provozovatel může každý komentář označit jako přečtený, oblíbený nebo skrytý (skrytý komentář zmizí z veřejné stránky, ale neztratí se), filtrovat podle stavu a vidět, kolik jich je nepřečtených.
+
 ## 3.58.0 — 2026-11-19
 
 ### Novinky

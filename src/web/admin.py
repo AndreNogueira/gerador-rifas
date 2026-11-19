@@ -23,7 +23,7 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, Field
 
-from . import VERSAO, alertas, config, email_envio, historico, quotas, relatorio, relatorio_periodo
+from . import VERSAO, alertas, config, email_envio, historico, opiniao, quotas, relatorio, relatorio_periodo
 from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
 from .metricas import DIAS_MAXIMOS, INTERVALOS, novo_painel
@@ -242,9 +242,35 @@ def quotas_do_alojamento(serv: Servico = Depends(servico)) -> dict:
 
 
 @router.get("/comentarios", dependencies=[Depends(exigir)])
-def comentarios_admin(serv: Servico = Depends(servico)) -> dict:
-    """Os comentarios dos visitantes como o dono os ve: SO o pais e o texto (mais o id, para apagar). Nao interessa quem escreveu."""
-    return {"total": serv.comentarios.total(), "itens": serv.comentarios.para_admin()}
+def comentarios_admin(estado: str = "", serv: Servico = Depends(servico)) -> dict:
+    """Os comentarios dos visitantes como o dono os ve: SO o pais, o texto e o estado (mais o id, para agir). Nao interessa quem escreveu.
+    `estado` filtra (novo, lido, favorito, escondido); `por_ler` conta os novos, `escondidos` os que a pagina publica nao mostra."""
+    c = serv.comentarios
+    return {"total": c.total(), "por_ler": c.por_ler(), "escondidos": c.total() - c.total_publico(), "itens": c.para_admin(estado=estado)}
+
+
+class EstadoComentario(BaseModel):
+    estado: str
+
+
+@router.post("/comentarios/lidos", dependencies=[Depends(exigir_admin)])
+def comentarios_lidos(serv: Servico = Depends(servico)) -> dict:
+    """Marca todos os comentarios novos como lidos."""
+    n = serv.comentarios.marcar_lidos()
+    if n:
+        serv.metricas.evento("admin", "comentarios_lidos")
+    return {"marcados": n}
+
+
+@router.patch("/comentarios/{id_}", dependencies=[Depends(exigir_admin)])
+def estado_do_comentario(id_: str, e: EstadoComentario, serv: Servico = Depends(servico)) -> dict:
+    """Muda o estado de um comentario: lido, favorito, escondido (deixa de aparecer na pagina publica, sem se apagar) ou novo. So o dono."""
+    if e.estado not in opiniao.ESTADOS:
+        raise HTTPException(422, "Estado invalido", headers=_SEM_CACHE)
+    if not serv.comentarios.definir_estado(id_, e.estado):
+        raise HTTPException(404, "Comentário inexistente", headers=_SEM_CACHE)
+    serv.metricas.evento("admin", f"comentario_{e.estado}")
+    return {"estado": e.estado}
 
 
 @router.delete("/comentarios/{id_}", status_code=204, dependencies=[Depends(exigir_admin)])

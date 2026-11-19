@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.59.0 — 2026-11-19
+
+### New
+- **Comment status in the admin panel:** the owner can mark each comment as read, favourite or hidden (a hidden comment disappears from the public page but is not lost), filter by status and see how many are unread.
+
 ## 3.58.0 — 2026-11-19
 
 ### New

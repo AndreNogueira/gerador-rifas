@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.59.0 — 2026-11-19
+
+### Novità
+- **Commenti con stato nel pannello di amministrazione:** il responsabile può segnare ogni commento come letto, preferito o nascosto (un commento nascosto scompare dalla pagina pubblica ma non si perde), filtrare per stato e vedere quanti restano da leggere.
+
 ## 3.58.0 — 2026-11-19
 
 ### Novità

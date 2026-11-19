@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.59.0 — 2026-11-19
+
+### Nowości
+- **Statusy komentarzy w panelu administracyjnym:** administrator może oznaczyć każdy komentarz jako przeczytany, ulubiony lub ukryty (ukryty komentarz znika ze strony publicznej, ale nie jest tracony), filtrować po statusie i widzieć, ile jest nieprzeczytanych.
+
 ## 3.58.0 — 2026-11-19
 
 ### Nowości

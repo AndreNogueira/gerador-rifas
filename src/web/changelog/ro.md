@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.59.0 — 2026-11-19
+
+### Noutăți
+- **Stări ale comentariilor în panoul de administrare:** responsabilul poate marca fiecare comentariu ca citit, favorit sau ascuns (un comentariu ascuns dispare de pe pagina publică, dar nu se pierde), poate filtra după stare și vedea câte sunt necitite.
+
 ## 3.58.0 — 2026-11-19
 
 ### Noutăți

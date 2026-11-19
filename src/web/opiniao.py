@@ -27,11 +27,13 @@ TOTAL_POR_HORA = 100                               # e no site inteiro (trava um
 
 _ESQUEMA = (
     "CREATE TABLE IF NOT EXISTS comentarios(id TEXT PRIMARY KEY, criado BIGINT NOT NULL, anonimo INTEGER NOT NULL, nome TEXT NOT NULL, "
-    "texto TEXT NOT NULL, pais TEXT NOT NULL DEFAULT '')",
+    "texto TEXT NOT NULL, pais TEXT NOT NULL DEFAULT '', estado TEXT NOT NULL DEFAULT 'novo')",
     "CREATE INDEX IF NOT EXISTS ix_comentarios_criado ON comentarios(criado)",
 )
 # a 1.ª versao guardava o endereco IP: numa tabela que ja exista acrescenta-se o pais e APAGA-SE a coluna do IP (e tudo o que tinha)
-_MIGRACOES = ("ALTER TABLE comentarios ADD COLUMN pais TEXT NOT NULL DEFAULT ''", "ALTER TABLE comentarios DROP COLUMN ip")
+_MIGRACOES = ("ALTER TABLE comentarios ADD COLUMN pais TEXT NOT NULL DEFAULT ''", "ALTER TABLE comentarios DROP COLUMN ip",
+              "ALTER TABLE comentarios ADD COLUMN estado TEXT NOT NULL DEFAULT 'novo'")
+ESTADOS = ("novo", "lido", "favorito", "escondido")   # o que o dono faz com cada comentário; «escondido» deixa de aparecer na página pública (sem o apagar)
 _CONTROLO = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f​-‏‪-‮⁦-⁩]")      # controlo e marcas que invertem/escondem texto
 
 
@@ -85,7 +87,7 @@ class Comentarios(BaseSql):
             for m in _MIGRACOES:
                 with contextlib.suppress(Exception):            # «a coluna ja existe» / «nao existe»: o que se queria ja esta feito
                     super()._executar(m)
-            super()._executar("SELECT pais FROM comentarios LIMIT 1")      # falha se a migracao nao chegou ao fim: tenta-se outra vez no pedido seguinte
+            super()._executar("SELECT pais, estado FROM comentarios LIMIT 1")      # falha se a migracao nao chegou ao fim: tenta-se outra vez no pedido seguinte
             self._migrado = True
         return super()._executar(sql, args)
 
@@ -105,10 +107,10 @@ class Comentarios(BaseSql):
         criado_antes, _, id_antes = antes.partition("~")
         if antes and criado_antes.isdigit() and id_antes:
             linhas = self._executar(
-                "SELECT id, criado, anonimo, nome, texto FROM comentarios WHERE criado < %s OR (criado = %s AND id < %s) "
+                "SELECT id, criado, anonimo, nome, texto FROM comentarios WHERE estado <> 'escondido' AND (criado < %s OR (criado = %s AND id < %s)) "
                 "ORDER BY criado DESC, id DESC LIMIT %s", (int(criado_antes), int(criado_antes), id_antes, limite))
         else:
-            linhas = self._executar("SELECT id, criado, anonimo, nome, texto FROM comentarios ORDER BY criado DESC, id DESC LIMIT %s", (limite,))
+            linhas = self._executar("SELECT id, criado, anonimo, nome, texto FROM comentarios WHERE estado <> 'escondido' ORDER BY criado DESC, id DESC LIMIT %s", (limite,))
         saida = []
         for id_, criado, anonimo, nome, texto in linhas:
             visitante = 0 if anonimo or nome else numero_de_visitante(id_)
@@ -116,12 +118,36 @@ class Comentarios(BaseSql):
         return saida
 
     def total(self) -> int:
+        """Todos os comentários (o que o dono vê)."""
         return int(self._executar("SELECT COUNT(*) FROM comentarios")[0][0])
 
-    def para_admin(self, limite: int = 500) -> list[dict]:
-        """O que o dono vê: o id (para apagar), o país de onde veio e o texto. Mais nada (não interessa quem escreveu)."""
-        return [{"id": i, "pais": p or "??", "texto": t} for i, p, t in
-                self._executar("SELECT id, pais, texto FROM comentarios ORDER BY criado DESC, id DESC LIMIT %s", (limite,))]
+    def total_publico(self) -> int:
+        """Os que aparecem na página pública (sem os escondidos)."""
+        return int(self._executar("SELECT COUNT(*) FROM comentarios WHERE estado <> 'escondido'")[0][0])
+
+    def por_ler(self) -> int:
+        return int(self._executar("SELECT COUNT(*) FROM comentarios WHERE estado = 'novo'")[0][0])
+
+    def para_admin(self, limite: int = 500, estado: str = "") -> list[dict]:
+        """O que o dono vê: o id (para agir), o país de onde veio, o texto e o estado (novo, lido, favorito, escondido). Mais nada (não interessa quem escreveu).
+        `estado` filtra por um deles."""
+        onde, args = ("WHERE estado = %s", (estado, limite)) if estado in ESTADOS else ("", (limite,))
+        return [{"id": i, "pais": p or "??", "texto": t, "estado": e} for i, p, t, e in
+                self._executar(f"SELECT id, pais, texto, estado FROM comentarios {onde} ORDER BY criado DESC, id DESC LIMIT %s", args)]    # noqa: S608 - `onde` e constante
+
+    def definir_estado(self, id_: str, estado: str) -> bool:
+        """Muda o estado de um comentário; False se não existe ou o estado é inválido."""
+        if estado not in ESTADOS or not self._executar("SELECT 1 FROM comentarios WHERE id = %s", (id_,)):
+            return False
+        self._executar("UPDATE comentarios SET estado = %s WHERE id = %s", (estado, id_))
+        return True
+
+    def marcar_lidos(self) -> int:
+        """Todos os «novo» passam a «lido»; devolve quantos."""
+        n = self.por_ler()
+        if n:
+            self._executar("UPDATE comentarios SET estado = 'lido' WHERE estado = 'novo'")
+        return n
 
     def apagar(self, id_: str) -> bool:
         existia = bool(self._executar("SELECT 1 FROM comentarios WHERE id = %s", (id_,)))

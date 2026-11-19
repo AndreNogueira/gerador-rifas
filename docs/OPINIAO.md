@@ -7,7 +7,7 @@ Três páginas dos visitantes, **bem à vista** (cabeçalho, rodapé e menu «ha
 | `/comentarios` | A lista dos comentários, mais recentes primeiro (20 de cada vez, «Ver mais»). Anónimos aparecem sem nome. Nunca mostra IPs. |
 | `/opiniao` | O formulário: o texto (5–1000 letras) e **ficar anónimo(a)** ou **mostrar um nome** (até 40 letras; sem nome aparece «Visitante n.º ####», um número tirado do id do comentário). |
 | `/reportar-problema` | Resumo, o que aconteceu, como repetir (opcional) e, se a pessoa marcar, a informação técnica (navegador, ecrã e janela). **«Abrir»** cria um *issue* no GitHub do projeto, sem conta. |
-| `/admin` → aba **Comentários** | O dono vê só o **país** e o **texto** (quem escreveu não interessa) e pode apagar um comentário (spam, abuso). O acesso só de leitura (`CLAUDE_TOKEN`) vê mas não apaga. |
+| `/admin` → aba **Comentários** | O dono vê só o **país**, o **texto** e o **estado** (novo, lido, favorito, escondido; quem escreveu não interessa), filtra por estado, marca como lidos, **esconde** um comentário da página pública sem o apagar e apaga (spam, abuso). O acesso só de leitura (`CLAUDE_TOKEN`) vê mas não muda nada. |
 
 As três páginas dos visitantes estão em `seo.SEM_INDICE`: existem em todas as línguas mas ficam **fora do Google e do sitemap** (o texto é de terceiros).
 
