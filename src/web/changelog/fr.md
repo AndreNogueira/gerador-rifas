@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.56.0 — 2026-11-19
+
+### Nouveautés
+- **Résumé hebdomadaire et mensuel par e-mail pour le responsable du site :** le lundi arrive le résumé de la semaine et le 1er celui du mois, avec les totaux comparés à la période précédente et une miniature de chaque jour. Ils lisent l'historique permanent. Uniquement des comptages.
+
 ## 3.55.0 — 2026-11-19
 
 ### Nouveautés

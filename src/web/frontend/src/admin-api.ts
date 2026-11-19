@@ -249,6 +249,10 @@ export interface RelatorioEstado {
   ultimo: { dia: string; enviado: number } | null;
   erro: string;
   erro_em: number | null;
+  /** Os resumos semanal (segunda-feira) e mensal (dia 1) estão ligados. */
+  periodicos: boolean;
+  ultimo_semana: { dia: string; enviado: number } | null;
+  ultimo_mes: { dia: string; enviado: number } | null;
   alertas: {
     ativo: boolean;
     espera_h: number;
@@ -267,15 +271,20 @@ export interface RelatorioPrevia {
   alertas: number;
 }
 
+export type TipoRelatorio = "dia" | "semana" | "mes";
+
+const consultaRelatorio = (dia: string, tipo: TipoRelatorio) =>
+  `tipo=${tipo}${dia ? `&dia=${encodeURIComponent(dia)}` : ""}`;
+
 export const adminApi = {
   relatorio: () => ver<RelatorioEstado>("/api/admin/relatorio"),
-  relatorioPrevia: (dia: string) =>
-    ver<RelatorioPrevia>(`/api/admin/relatorio/previa${dia ? `?dia=${encodeURIComponent(dia)}` : ""}`),
+  relatorioPrevia: (dia: string, tipo: TipoRelatorio = "dia") =>
+    ver<RelatorioPrevia>(`/api/admin/relatorio/previa?${consultaRelatorio(dia, tipo)}`),
   async alertaTeste(): Promise<void> {
     await pedirJson("/api/admin/relatorio/alerta-teste", "POST");
   },
-  async relatorioEnviar(dia: string): Promise<void> {
-    await pedirJson(`/api/admin/relatorio/enviar${dia ? `?dia=${encodeURIComponent(dia)}` : ""}`, "POST");
+  async relatorioEnviar(dia: string, tipo: TipoRelatorio = "dia"): Promise<void> {
+    await pedirJson(`/api/admin/relatorio/enviar?${consultaRelatorio(dia, tipo)}`, "POST");
   },
   seoVer: (lingua: string) => ver<VistaSeo>(`/api/admin/seo?lingua=${encodeURIComponent(lingua)}`),
   async seoGuardar(chave: string, lingua: string, valor: string): Promise<string> {

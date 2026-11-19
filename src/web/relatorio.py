@@ -61,8 +61,12 @@ class RelatoriosEnviados(BaseSql):
     def libertar(self, dia: str) -> None:
         self._executar("DELETE FROM relatorios WHERE dia = %s", (dia,))
 
-    def ultimo(self) -> dict | None:
-        linhas = self._executar("SELECT dia, enviado FROM relatorios ORDER BY dia DESC LIMIT 1")
+    def ultimo(self, tipo: str = "dia") -> dict | None:
+        """O último envio: `dia` (as chaves são datas) ou um resumo `semana` / `mes` (chaves `semana:2026-11-09`, `mes:2026-10`)."""
+        if tipo == "dia":
+            linhas = self._executar("SELECT dia, enviado FROM relatorios WHERE dia NOT LIKE %s ORDER BY dia DESC LIMIT 1", ("%:%",))
+        else:
+            linhas = self._executar("SELECT dia, enviado FROM relatorios WHERE dia LIKE %s ORDER BY dia DESC LIMIT 1", (f"{tipo}:%",))
         return {"dia": linhas[0][0], "enviado": int(linhas[0][1])} if linhas else None
 
 
@@ -219,7 +223,9 @@ def montar(metricas, extras, dia: date, fuso: ZoneInfo) -> dict:
         unidade = paineis.get(painel, {}).get("unidade", "")
         destaques.append({"rotulo": rotulo, "valor": valor, "media": media, "variacao": _variacao(valor, media), "unidade": unidade})
     return {"dia": dia, "dias_lista": ev["dias_lista"], "grupos": grupos, "inativos": inativos, "destaques": destaques,
-            "alertas": alertas(ev, paineis, dia, inicio), "fuso": fuso.key}
+            "alertas": alertas(ev, paineis, dia, inicio), "fuso": fuso.key, "nome": "relatório diário", "titulo": titulo_do_dia(dia), "curto": titulo_do_dia(dia, True),
+            "colunas": ("Dia", "Média 7 d", "Variação", "8 dias"),
+            "legenda": "«Média 7 d» é a média dos 7 dias anteriores; a miniatura mostra os 8 dias, o último é este."}
 
 
 def titulo_do_dia(dia: date, curto: bool = False) -> str:
@@ -232,14 +238,14 @@ def assunto(d: dict) -> str:
     sessoes = next((x["valor"] for x in d["destaques"] if x["rotulo"] == "Sessões"), 0) or 0
     geracoes = next((x["valor"] for x in d["destaques"] if x["rotulo"] == "Gerações pedidas"), 0) or 0
     avisos = sum(1 for n, _ in d["alertas"] if n == "aviso")
-    return f"Gerador de Rifas · {titulo_do_dia(d['dia'], True)}: {_num(sessoes)} sessões, {_num(geracoes)} gerações" + (f" · ⚠ {avisos} aviso(s)" if avisos else "")
+    return f"Gerador de Rifas · {d['curto']}: {_num(sessoes)} sessões, {_num(geracoes)} gerações" + (f" · ⚠ {avisos} aviso(s)" if avisos else "")
 
 
 def em_texto(d: dict, link: str = "") -> str:
-    linhas = [f"GERADOR DE RIFAS — {titulo_do_dia(d['dia'])}", ""]
+    linhas = [f"GERADOR DE RIFAS — {d['titulo']}", ""]
     if d["alertas"]:
         linhas += ["ATENÇÃO", *[f"  {'!' if n == 'aviso' else '-'} {t}" for n, t in d["alertas"]], ""]
-    linhas += ["EM RESUMO (dia · média dos 7 dias anteriores)"]
+    linhas += [f"EM RESUMO ({d['colunas'][0].lower()} · {d['colunas'][1].lower()})"]
     for x in d["destaques"]:
         linhas.append(f"  {x['rotulo']}: {_num(x['valor'], x['unidade'])} · média {_num(x['media'], x['unidade'])} · {_junta(x['variacao'])}")
     for grupo, paineis in d["grupos"].items():
@@ -276,8 +282,8 @@ def em_html(d: dict, link: str = "") -> str:
         f"<table role='presentation' width='100%' cellpadding='0' cellspacing='0' style='background:#f3f4f7'><tr><td align='center' style='padding:16px 8px'>"
         f"<table role='presentation' width='640' cellpadding='0' cellspacing='0' style='width:100%;max-width:640px;background:#ffffff;border-radius:8px'>"
         f"<tr><td style='padding:20px 24px;background:{_MARCA};color:#ffffff;border-radius:8px 8px 0 0'>"
-        f"<div style='font-size:13px;letter-spacing:.04em;text-transform:uppercase;opacity:.9'>Gerador de Rifas · relatório diário</div>"
-        f"<div style='font-size:22px;font-weight:700;margin-top:4px'>{_E(titulo_do_dia(d['dia']))}</div></td></tr>"]
+        f"<div style='font-size:13px;letter-spacing:.04em;text-transform:uppercase;opacity:.9'>Gerador de Rifas · {_E(d['nome'])}</div>"
+        f"<div style='font-size:22px;font-weight:700;margin-top:4px'>{_E(d['titulo'])}</div></td></tr>"]
     if d["alertas"]:
         p.append("<tr><td style='padding:16px 24px 0'>")
         for nivel, texto in d["alertas"]:
@@ -300,8 +306,8 @@ def em_html(d: dict, link: str = "") -> str:
     for grupo, paineis in d["grupos"].items():
         p.append(f"<tr><td style='padding:18px 24px 0'><div style='font-size:16px;font-weight:700;color:{_MARCA};margin-bottom:6px'>{_E(grupo)}</div>"
                  f"<table role='presentation' width='100%' cellpadding='0' cellspacing='0' style='font-size:13px'>"
-                 f"<tr><td style='{cab};text-align:left'></td><td width='70' style='{cab}'>Dia</td><td width='84' style='{cab}'>Média 7 d</td>"
-                 f"<td width='84' style='{cab}'>Variação</td><td width='96' style='{cab}'>8 dias</td></tr>")
+                 f"<tr><td style='{cab};text-align:left'></td><td width='70' style='{cab}'>{_E(d['colunas'][0])}</td><td width='84' style='{cab}'>{_E(d['colunas'][1])}</td>"
+                 f"<td width='84' style='{cab}'>{_E(d['colunas'][2])}</td><td width='96' style='{cab}'>{_E(d['colunas'][3])}</td></tr>")
         for painel in paineis:
             varias = len(painel["series"]) > 1
             if varias:
@@ -317,8 +323,8 @@ def em_html(d: dict, link: str = "") -> str:
         p.append("</table></td></tr>")
     if d["inativos"]:
         p.append(f"<tr><td style='padding:16px 24px 0;font-size:13px;color:{_CINZA}'>Sem atividade neste período: {_E(', '.join(d['inativos']))}.</td></tr>")
-    p.append(f"<tr><td style='padding:18px 24px 22px;font-size:12px;color:{_CINZA}'>Os dias são os do fuso {_E(d['fuso'])}. «Média 7 d» é a média dos 7 dias anteriores; "
-             f"a miniatura mostra os 8 dias, o último é este. Só contagens: nunca IPs, nomes, ficheiros nem textos de visitantes.")
+    p.append(f"<tr><td style='padding:18px 24px 22px;font-size:12px;color:{_CINZA}'>Os dias são os do fuso {_E(d['fuso'])}. {_E(d['legenda'])} "
+             f"Só contagens: nunca IPs, nomes, ficheiros nem textos de visitantes.")
     if link:
         p.append(f" <a href='{_E(link, quote=True)}/admin' style='color:{_MARCA}'>Abrir o painel</a>.")
     p.append("</td></tr></table></td></tr></table></body></html>")

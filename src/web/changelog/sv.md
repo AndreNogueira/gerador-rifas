@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.56.0 — 2026-11-19
+
+### Nytt
+- **Veckovis och månatlig e-postsammanfattning till webbplatsens ansvarige:** på måndagar kommer veckans sammanfattning och den 1:a månadens, med summor jämförda med föregående period och en miniatyr av varje dag. De läser från den permanenta historiken. Bara antal.
+
 ## 3.55.0 — 2026-11-19
 
 ### Nytt

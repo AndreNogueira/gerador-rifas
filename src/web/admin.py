@@ -23,7 +23,7 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, Field
 
-from . import VERSAO, alertas, config, email_envio, historico, relatorio
+from . import VERSAO, alertas, config, email_envio, historico, relatorio, relatorio_periodo
 from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
 from .metricas import DIAS_MAXIMOS, INTERVALOS, novo_painel
@@ -260,7 +260,15 @@ def relatorio_estado(serv: Servico = Depends(servico)) -> dict:
     e = serv.estado_relatorio
     return {"ativo": relatorio.ativo(), "tem_chave": bool(config.email_chave()), "destinos": [relatorio.mascarar(x) for x in config.relatorio_destinos()],
             "fuso": config.relatorio_fuso(), "persistente": bool(config.database_url()), "ultimo": ultimo,
+            "periodicos": relatorio_periodo.periodicos_ativos(), "ultimo_semana": _ultimo(serv, "semana"), "ultimo_mes": _ultimo(serv, "mes"),
             "erro": e.ultimo_erro, "erro_em": int(e.ultimo_erro_em) or None, "alertas": _estado_alertas(serv)}
+
+
+def _ultimo(serv: Servico, tipo: str) -> dict | None:
+    try:
+        return serv.relatorios.ultimo(tipo) if serv.relatorios is not None else None
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def _estado_alertas(serv: Servico) -> dict:
@@ -277,7 +285,7 @@ def _estado_alertas(serv: Servico) -> dict:
             "ultimos": {r["chave"]: ultimos.get(r["chave"]) for r in regras}, "erro": serv.estado_alertas.ultimo_erro}
 
 
-def _dia_pedido(dia: str, fuso: ZoneInfo) -> date:
+def _dia_pedido(dia: str, fuso: ZoneInfo, tipo: str = "dia") -> date:
     ontem = relatorio.dia_de_ontem(time.time(), fuso)
     if not dia:
         return ontem
@@ -285,29 +293,56 @@ def _dia_pedido(dia: str, fuso: ZoneInfo) -> date:
         d = date.fromisoformat(dia)
     except ValueError:
         raise HTTPException(422, "Dia invalido (AAAA-MM-DD)", headers=_SEM_CACHE) from None
-    if not ontem - timedelta(days=80) <= d <= ontem:
+    limite = 80 if tipo == "dia" else historico.DIAS_HISTORICO_MAX                      # os resumos leem do historico permanente
+    if not ontem - timedelta(days=limite) <= d <= ontem:
         raise HTTPException(422, "So ha dados dos ultimos dias (ate ontem)", headers=_SEM_CACHE)
     return d
 
 
+def _tipo_pedido(tipo: str) -> str:
+    if tipo not in relatorio_periodo.TIPOS:
+        raise HTTPException(422, "Tipo invalido (dia, semana ou mes)", headers=_SEM_CACHE)
+    return tipo
+
+
+def _periodo_pedido(tipo: str, dia: str, fuso: ZoneInfo) -> tuple[date, date]:
+    """O periodo pedido: o que contem `dia` (por omissao, o ultimo completo); o que ainda nao acabou corta-se em ontem."""
+    if not dia:
+        return relatorio_periodo.ultimo_completo(tipo, relatorio.dia_de_ontem(time.time(), fuso) + timedelta(days=1))
+    ini, fim = relatorio_periodo.periodo_de(tipo, _dia_pedido(dia, fuso, tipo))
+    return ini, min(fim, relatorio.dia_de_ontem(time.time(), fuso))
+
+
 @router.get("/relatorio/previa", dependencies=[Depends(exigir)])
-def relatorio_previa(dia: str = "", serv: Servico = Depends(servico)) -> dict:
-    """O relatorio de um dia (por omissao ontem) tal como seria enviado: assunto, HTML e texto. Nao envia nada."""
+def relatorio_previa(dia: str = "", tipo: str = "dia", serv: Servico = Depends(servico)) -> dict:
+    """O relatorio tal como seria enviado: assunto, HTML e texto. `tipo`: `dia` (por omissao ontem), `semana` ou `mes` (por omissao o ultimo completo; `dia` = um
+    dia desse periodo). Nao envia nada."""
     fuso = ZoneInfo(config.relatorio_fuso())
+    tipo = _tipo_pedido(tipo)
     try:
-        return relatorio.construir(serv.metricas, paineis_de_outras_tabelas(serv), _dia_pedido(dia, fuso), fuso)
-    except relatorio.ErroRelatorio:
+        if tipo == "dia":
+            return relatorio.construir(serv.metricas, paineis_de_outras_tabelas(serv), _dia_pedido(dia, fuso), fuso)
+        ini, fim = _periodo_pedido(tipo, dia, fuso)
+        return relatorio_periodo.construir_periodo(serv.historico, serv.metricas, paineis_de_outras_tabelas(serv), tipo, ini, fim, fuso)
+    except relatorio.ErroRelatorio as e:
+        if str(e) == "sem_dados":
+            raise HTTPException(404, "Ainda nao ha dias gravados no historico para esse periodo.", headers=_SEM_CACHE) from None
         raise HTTPException(503, "A base de dados nao respondeu: tente outra vez daqui a pouco.", headers=_SEM_CACHE) from None
 
 
 @router.post("/relatorio/enviar", dependencies=[Depends(exigir_admin)])
-def relatorio_enviar(dia: str = "", serv: Servico = Depends(servico)) -> dict:
+def relatorio_enviar(dia: str = "", tipo: str = "dia", serv: Servico = Depends(servico)) -> dict:
     """Envia JA uma copia de teste do relatorio (assunto «[Teste]»). Nao conta como o envio do dia: o da meia-noite sai na mesma."""
     if not relatorio.ativo():
         raise HTTPException(409, "O relatorio por e-mail esta desligado: faltam RESEND_API_KEY e RELATORIO_EMAIL_PARA no Render.", headers=_SEM_CACHE)
     fuso = ZoneInfo(config.relatorio_fuso())
+    tipo = _tipo_pedido(tipo)
     try:
-        relatorio.enviar_relatorio(serv.metricas, paineis_de_outras_tabelas(serv), _dia_pedido(dia, fuso), fuso, teste=True)
+        if tipo == "dia":
+            relatorio.enviar_relatorio(serv.metricas, paineis_de_outras_tabelas(serv), _dia_pedido(dia, fuso), fuso, teste=True)
+        else:
+            ini, fim = _periodo_pedido(tipo, dia, fuso)
+            relatorio_periodo.enviar_periodo(serv.historico, serv.metricas, paineis_de_outras_tabelas(serv), tipo, ini, fim, fuso, teste=True)
     except (email_envio.ErroEmail, relatorio.ErroRelatorio) as e:
         serv.metricas.evento("admin", "relatorio_teste_falhou")
         raise HTTPException(502, f"Nao foi possivel enviar ({e}).", headers=_SEM_CACHE) from None

@@ -24,7 +24,7 @@ from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, 
 from .chaves_api import Chaves
 from .assets_remotos import AssetsRemotos
 from .limites import Limitador
-from . import alertas, historico, relatorio, seo_textos
+from . import alertas, historico, relatorio, relatorio_periodo, seo_textos
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
@@ -170,6 +170,8 @@ async def _relatorio_diario(servico: Servico, cada_s: float) -> None:
         extras = admin.paineis_de_outras_tabelas(servico)
         with contextlib.suppress(Exception):
             await asyncio.to_thread(historico.gravar_pendentes, servico.historico, servico.metricas, extras, ZoneInfo(config.relatorio_fuso()))
+        with contextlib.suppress(Exception):
+            await asyncio.to_thread(relatorio_periodo.enviar_periodicos_se_devido, servico.relatorios, servico.historico, servico.metricas, extras, servico.estado_relatorio)
         with contextlib.suppress(Exception):
             await asyncio.to_thread(relatorio.enviar_se_devido, servico.relatorios, servico.metricas, extras, servico.estado_relatorio)
         await asyncio.sleep(cada_s)
