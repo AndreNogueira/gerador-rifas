@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.66.0 — 2026-11-19
+
+### Neu
+- **Einladung zu einem Kommentar:** nach dem Herunterladen Ihrer Lose erscheint (einmal pro Gerät) ein dezenter Hinweis, der zu einem Kommentar einlädt, auf Wunsch anonym. Mit „Jetzt nicht“ lässt er sich schließen.
+
 ## 3.65.0 — 2026-11-19
 
 ### Verbessert

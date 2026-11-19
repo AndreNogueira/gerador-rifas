@@ -43,3 +43,7 @@ O texto do visitante vai **sempre dentro de blocos de código** (nada de @menç�
 ## Para quem mexe no código
 
 `src/web/opiniao.py` (base e limites), `rotas_opiniao.py` (a API), `github_issues.py` (o issue), `admin.py` (`/api/admin/comentarios`), `legal_opiniao.py` (privacidade); no frontend `Comentarios.tsx` (lista e formulário), `Problema.tsx`, `AdminComentarios.tsx`. Testes: `tests/test_web_opiniao.py` (o GitHub nunca é chamado: `Servico.criar_issue` troca-se por uma função falsa), `Opiniao.test.tsx`, `AdminComentarios.test.tsx`. Textos: `web_op_*`, `web_com_*`, `web_bug_*` (22 línguas) e os tópicos `tut_f_comentarios_*`/`tut_f_problema_*`.
+
+## O convite a comentar (`Convite.tsx`)
+
+Depois de a pessoa **clicar em «Descarregar»** (nunca antes, nem no painel) aparece, no cartão da entrega, um aviso discreto (`role="status"`, não é uma janela) a convidar a deixar um comentário (liga a `/opiniao`), com «Agora não» para o dispensar. Mostra-se **uma só vez por aparelho** (a marca `rifas.convite` no armazenamento local; sem armazenamento não se mostra). Textos: `web_convite_*` (22 línguas). Não se conta quantas vezes aparece: o que interessa é quantos comentários chegam (`Comentários deixados` na «Evolução diária»).

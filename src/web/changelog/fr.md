@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.66.0 — 2026-11-19
+
+### Nouveautés
+- **Invitation à laisser un commentaire :** après le téléchargement de vos tombolas, un avis discret apparaît (une seule fois par appareil) pour vous inviter à laisser un commentaire, anonyme si vous le souhaitez. Vous pouvez le fermer avec « Pas maintenant ».
+
 ## 3.65.0 — 2026-11-19
 
 ### Amélioré

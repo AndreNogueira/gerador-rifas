@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.66.0 — 2026-11-19
+
+### Noutăți
+- **Invitație de a lăsa un comentariu:** după ce descărcați biletele, apare (o singură dată pe dispozitiv) un mesaj discret care vă invită să lăsați un comentariu, anonim dacă doriți. Îl puteți închide cu „Nu acum”.
+
 ## 3.65.0 — 2026-11-19
 
 ### Îmbunătățit

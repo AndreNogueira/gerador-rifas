@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Calculo, Campos, Sessao } from "./api";
 import { api, ErroApi, ErroRede } from "./api";
+import { ConviteComentario, jaConvidou } from "./Convite";
 import { CartaoAlgarismos, CartaoDestino, CartaoNumeros, CartaoTemplate } from "./cartoes";
 import { Donativo } from "./Donativo";
 import { useDialogos } from "./dialogos";
@@ -250,6 +251,7 @@ function Acoes({
 }
 
 function Entrega({ entrega }: { entrega: NonNullable<Sessao["trabalho"]["entrega"]> }) {
+  const [convidar, setConvidar] = useState(false);
   const { t } = useI18n();
   return (
     <div className="entrega">
@@ -260,10 +262,19 @@ function Entrega({ entrega }: { entrega: NonNullable<Sessao["trabalho"]["entrega
         ))}
         {entrega.total > entrega.ficheiros.length && <li>… (+{entrega.total - entrega.ficheiros.length})</li>}
       </ul>
-      <a className="botao" href={entrega.url} download={entrega.nome} data-testid="descarregar">
+      <a
+        className="botao"
+        href={entrega.url}
+        download={entrega.nome}
+        data-testid="descarregar"
+        onClick={() => {
+          if (!jaConvidou()) setConvidar(true); // um convite a deixar um comentário, uma só vez por aparelho e só depois de descarregar
+        }}
+      >
         <Icone nome="descarregar" />
         {t("web_descarregar")} — {entrega.nome}
       </a>
+      {convidar && <ConviteComentario />}
     </div>
   );
 }

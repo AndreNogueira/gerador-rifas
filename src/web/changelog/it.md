@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.66.0 — 2026-11-19
+
+### Novità
+- **Invito a lasciare un commento:** dopo aver scaricato i biglietti compare (una sola volta per dispositivo) un avviso discreto che invita a lasciare un commento, anonimo se vuoi. Puoi chiuderlo con «Non ora».
+
 ## 3.65.0 — 2026-11-19
 
 ### Migliorato

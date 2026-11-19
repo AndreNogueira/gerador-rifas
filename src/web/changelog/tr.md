@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.66.0 — 2026-11-19
+
+### Yeni
+- **Yorum bırakma daveti:** biletleri indirdikten sonra (cihaz başına bir kez) isterseniz anonim bir yorum bırakmaya davet eden sade bir bildirim çıkar. “Şimdi değil” ile kapatabilirsiniz.
+
 ## 3.65.0 — 2026-11-19
 
 ### İyileştirildi

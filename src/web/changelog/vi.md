@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.66.0 — 2026-11-19
+
+### Mới
+- **Lời mời để lại bình luận:** sau khi tải vé rút thăm, một thông báo kín đáo hiện ra (mỗi thiết bị một lần) mời bạn để lại bình luận, ẩn danh nếu muốn. Bạn có thể đóng bằng “Để sau”.
+
 ## 3.65.0 — 2026-11-19
 
 ### Cải thiện

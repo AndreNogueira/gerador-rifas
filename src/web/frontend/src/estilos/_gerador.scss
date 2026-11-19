@@ -477,3 +477,17 @@
     padding-block: 11px;
   }
 }
+
+// o convite a deixar um comentário depois de descarregar (Convite.tsx): um aviso discreto dentro do cartão da entrega, não uma janela
+.convite {
+  display: grid;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--linha);
+
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--suave);
+  }
+}

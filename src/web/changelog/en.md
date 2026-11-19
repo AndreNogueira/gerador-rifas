@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.66.0 — 2026-11-19
+
+### New
+- **Invitation to leave a comment:** after downloading your raffles, a discreet notice appears (once per device) inviting you to leave a comment, anonymous if you like. You can dismiss it with “Not now”.
+
 ## 3.65.0 — 2026-11-19
 
 ### Improved

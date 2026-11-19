@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.66.0 — 2026-11-19
+
+### Nytt
+- **Inbjudan att lämna en kommentar:** efter nedladdningen av dina lotter visas (en gång per enhet) en diskret ruta som bjuder in till en kommentar, anonymt om du vill. Du kan stänga den med ”Inte nu”.
+
 ## 3.65.0 — 2026-11-19
 
 ### Förbättrat

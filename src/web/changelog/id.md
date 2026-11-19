@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.66.0 — 2026-11-19
+
+### Baru
+- **Ajakan memberi komentar:** setelah mengunduh tiket undian, muncul (sekali per perangkat) pemberitahuan sederhana yang mengajak Anda meninggalkan komentar, anonim jika mau. Anda bisa menutupnya dengan “Nanti saja”.
+
 ## 3.65.0 — 2026-11-19
 
 ### Ditingkatkan
