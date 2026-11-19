@@ -4,7 +4,7 @@
     uv run python scripts/restaurar_copia.py copia.json.gz --url "postgresql://..." --juntar   # junta as linhas que faltam (ON CONFLICT DO NOTHING)
 
 Como obter a cópia: o ficheiro está no bucket das cópias (`backups/rifas-semana-N.json.gz`, 8 semanas rotativas, ou `backups/rifas-manual.json.gz`); descarrega-se com um URL pré-assinado
-(`presign_storage_object` do MCP do Neon, operação `download`) ou com qualquer cliente S3 com uma credencial de LEITURA (a do serviço só escreve). `--url` pode vir de `DATABASE_URL`.
+(`presign_storage_object` do MCP do Neon, operação `download`) ou com qualquer cliente S3 com uma credencial `storage:read`. `--url` pode vir de `DATABASE_URL`.
 Sem `--url` e sem `DATABASE_URL` não faz nada. Cria as tabelas que faltem (como a app) e nunca apaga linhas. `--ver` só diz o que a cópia tem.
 """
 from __future__ import annotations

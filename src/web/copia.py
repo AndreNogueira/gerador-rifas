@@ -6,7 +6,8 @@ O QUE VAI NA CÓPIA (só com `DATABASE_URL`, tudo na mesma base): `historico_dia
 
 QUANDO: na segunda-feira depois das 00:05 (hora do `RELATORIO_FUSO`), ou quando o serviço acordar se dormia; a reserva da semana (`backup:<segunda-feira>`) está na tabela `relatorios`, por
 isso um arranque novo não a repete. Cada cópia vai para uma de **8 posições rotativas** (`backups/rifas-semana-N.json.gz`, N = a semana do ano módulo 8): guardam-se as últimas 8 semanas e
-a credencial do serviço só precisa de **escrever** (nunca ler nem apagar), por isso uma fuga dessa credencial não expõe nenhuma cópia.
+o serviço só usa o `PUT` (nunca lista nem apaga). ATENÇÃO: a credencial do Neon `storage:write` **também lê e apaga** e vale para TODOS os buckets do ramo (o Neon não a limita a um bucket nem a só escrever),
+por isso uma fuga dela deixa ler e apagar as cópias: guarda-se só no Render, como a `DATABASE_URL` (que já dá acesso a tudo o que está nas cópias).
 
 LIGAR: as variáveis `BACKUP_S3_ENDPOINT`, `BACKUP_S3_BUCKET`, `BACKUP_S3_REGION`, `BACKUP_S3_ACCESS_KEY_ID` e `BACKUP_S3_SECRET_ACCESS_KEY` (as últimas duas são palavras-passe: só no Render).
 RESTAURAR: `scripts/restaurar_copia.py` (ver `docs/ADMIN.md`). Nada de dados de visitantes sai do Neon: é o mesmo fornecedor da base.
