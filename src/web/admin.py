@@ -228,6 +228,21 @@ def evolucao(dias: int = Query(30, ge=1, le=DIAS_MAXIMOS), fuso: int = Query(0, 
     return serv.metricas.evolucao(dias, fuso, _paineis_de_outras_tabelas(serv))
 
 
+@router.get("/comentarios", dependencies=[Depends(exigir)])
+def comentarios_admin(serv: Servico = Depends(servico)) -> dict:
+    """Os comentarios dos visitantes como o dono os ve: SO o endereco IP e o texto (mais o id, para apagar). Nao interessa quem escreveu."""
+    return {"total": serv.comentarios.total(), "itens": serv.comentarios.para_admin()}
+
+
+@router.delete("/comentarios/{id_}", status_code=204, dependencies=[Depends(exigir_admin)])
+def apagar_comentario(id_: str, serv: Servico = Depends(servico)) -> Response:
+    """Apaga um comentario (spam, abuso, nome de outra pessoa...). So o dono: a leitura recebe 403."""
+    if not serv.comentarios.apagar(id_):
+        raise HTTPException(404, "Comentário inexistente", headers=_SEM_CACHE)
+    serv.metricas.evento("admin", "comentario_apagado")
+    return Response(status_code=204, headers=_SEM_CACHE)
+
+
 @router.get("/erros", dependencies=[Depends(exigir)])
 def erros(intervalo: str = "24h", serv: Servico = Depends(servico)) -> dict:
     """O livro de erros (observabilidade.py): o que falhou desde o ultimo arranque, agrupado por assinatura (tipo, rota, estado, classe da excecao, sitio)."""

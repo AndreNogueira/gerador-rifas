@@ -4,6 +4,7 @@ import { Anuncio } from "./Anuncio";
 import { api, type Publico } from "./api";
 import { Cabecalho } from "./Cabecalho";
 import { Changelog } from "./Changelog";
+import { Comentarios, DeixarComentario } from "./Comentarios";
 import { ProvedorDialogos } from "./dialogos";
 import { Editor } from "./Editor";
 import { registarEcra } from "./ecra";
@@ -12,6 +13,7 @@ import { Gerador } from "./Gerador";
 import { GUIAS, Guia } from "./Guia";
 import { useI18n } from "./i18n";
 import { PaginaTexto } from "./PaginaTexto";
+import { ReportarProblema } from "./Problema";
 import { Sobre, Tutorial, Video } from "./paginas";
 import { registarServiceWorker } from "./pwa";
 import { Ligacao, useLocalizacao } from "./rota";
@@ -37,6 +39,7 @@ function Aplicacao() {
     anuncios_cliente: "",
     anuncios_slot: "",
     partilha_editor: false,
+    problemas: false,
   });
   const caminho = useLocalizacao().split("?")[0] ?? "/";
   const { sessao } = useSessao();
@@ -53,6 +56,9 @@ function Aplicacao() {
       "/sobre": t("mi_sobre"),
       "/sorteio": t("web_sorteio"),
       "/editor": t("web_editor"),
+      "/comentarios": t("web_comentarios"),
+      "/opiniao": t("web_op_titulo"),
+      "/reportar-problema": t("web_bug_titulo"),
     };
     const pagina = traduzidas[caminho] ?? TITULOS_PT[caminho] ?? "";
     document.title = pagina ? `${pagina.replace(/…$/, "")} | ${nome}` : nome;
@@ -99,6 +105,12 @@ function Aplicacao() {
           <Editor partilha={publico.partilha_editor} />
         ) : GUIAS[caminho] ? (
           <Guia nome={GUIAS[caminho]} />
+        ) : caminho === "/comentarios" ? (
+          <Comentarios />
+        ) : caminho === "/opiniao" ? (
+          <DeixarComentario />
+        ) : caminho === "/reportar-problema" ? (
+          <ReportarProblema ativo={publico.problemas} />
         ) : caminho === "/changelog" ? (
           <Changelog />
         ) : caminho === "/termos" || caminho === "/privacidade" || caminho === "/contacto" ? (
@@ -114,6 +126,9 @@ function Aplicacao() {
         <footer className="rodape">
           <span>v{versao}</span>
           <nav aria-label="Informação">
+            <Ligacao para="/comentarios">{t("web_comentarios")}</Ligacao>
+            <Ligacao para="/opiniao">{t("web_com_escrever")}</Ligacao>
+            <Ligacao para="/reportar-problema">{t("web_reportar")}</Ligacao>
             <Ligacao para="/changelog">Changelog</Ligacao>
             <Ligacao para="/termos">{t("web_termos")}</Ligacao>
             <Ligacao para="/privacidade">{t("web_privacidade")}</Ligacao>

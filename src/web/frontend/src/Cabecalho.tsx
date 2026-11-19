@@ -9,9 +9,16 @@ import type { Tema } from "./tema";
 import { VISUAIS, type Visual } from "./temas";
 
 /** As páginas soltas do cabeçalho; o tutorial, o vídeo e os guias «como fazer» vivem todos no menu «Ajuda». */
-const PAGINAS: readonly { para: string; chave: string; icone: NomeIcone; id: "sorteio" | "sobre" }[] = [
+const PAGINAS: readonly {
+  para: string;
+  chave: string;
+  icone: NomeIcone;
+  id: "sorteio" | "sobre" | "comentarios" | "reportar";
+}[] = [
   { para: "/sorteio", chave: "web_sorteio", icone: "faiscas", id: "sorteio" },
   { para: "/sobre", chave: "mi_sobre", icone: "info", id: "sobre" },
+  { para: "/comentarios", chave: "web_comentarios", icone: "comentario", id: "comentarios" },
+  { para: "/reportar-problema", chave: "web_reportar", icone: "bug", id: "reportar" },
 ];
 
 /** O que o menu «Ajuda» abre à frente dos guias: o tutorial e o vídeo. */
@@ -30,19 +37,31 @@ export const MENU_COMO_FAZER: readonly { para: string; chave: string }[] = [
   { para: "/rifas-para-igrejas", chave: "web_guia_igrejas" },
 ];
 
-export type ItemId = "ajuda" | "sorteio" | "sobre" | "donativo" | "partilhar" | "lingua" | "visual" | "tema";
+export type ItemId =
+  | "ajuda"
+  | "sorteio"
+  | "sobre"
+  | "comentarios"
+  | "reportar"
+  | "donativo"
+  | "partilhar"
+  | "lingua"
+  | "visual"
+  | "tema";
 /** A ordem em que se vêem, da esquerda para a direita. */
 const ORDEM: readonly ItemId[] = [
   "ajuda",
   "sorteio",
   "sobre",
+  "comentarios",
+  "reportar",
   "donativo",
   "partilhar",
   "lingua",
   "visual",
   "tema",
 ];
-/** A ordem em que saem do cabeçalho para o menu «hambúrguer» quando o ecrã estreita (o último a sair é o donativo). */
+/** A ordem em que saem do cabeçalho para o menu «hambúrguer» quando o ecrã estreita. «Comentários» e «Reportar problema» têm de se ver: saem quase por último. */
 export const SAI_PRIMEIRO: readonly ItemId[] = [
   "tema",
   "visual",
@@ -51,6 +70,8 @@ export const SAI_PRIMEIRO: readonly ItemId[] = [
   "lingua",
   "ajuda",
   "partilhar",
+  "reportar",
+  "comentarios",
   "donativo",
 ];
 const FOLGA_ENTRE_ITENS = 8; // px: o `gap` do `.cluster`

@@ -1,4 +1,5 @@
 import { type FormEvent, type ReactNode, useCallback, useEffect, useState } from "react";
+import { AdminComentarios } from "./AdminComentarios";
 import { AdminErros } from "./AdminErros";
 import { AdminEvolucao } from "./AdminEvolucao";
 import { AdminSeo } from "./AdminSeo";
@@ -226,7 +227,7 @@ export function Admin() {
   const [dados, setDados] = useState<Dados | null>(null);
   const [intervalo, setIntervalo] = useState("6h");
   const [fase, setFase] = useState<"a_ver" | "entrar" | "dentro">("a_ver");
-  const [vista, setVista] = useState<"geral" | "evolucao">("geral");
+  const [vista, setVista] = useState<"geral" | "evolucao" | "comentarios">("geral");
   const [falha, setFalha] = useState("");
 
   const carregarEstado = useCallback(async () => {
@@ -402,9 +403,20 @@ export function Admin() {
         >
           Evolução diária
         </button>
+        <button
+          type="button"
+          aria-pressed={vista === "comentarios"}
+          onClick={() => setVista("comentarios")}
+          data-testid="admin-vista-comentarios"
+        >
+          Comentários
+        </button>
       </nav>
 
       {vista === "evolucao" && <AdminEvolucao aoSairDaSessao={() => setFase("entrar")} />}
+      {vista === "comentarios" && (
+        <AdminComentarios leitura={estado.papel === "leitura"} aoSairDaSessao={() => setFase("entrar")} />
+      )}
 
       {vista === "geral" && (
         <>

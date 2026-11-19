@@ -20,7 +20,7 @@ Para um assistente (o Claude) poder **ver** o painel sem partilhar a palavra-pas
 
 1. Gera outra palavra-passe (mínimo **24** caracteres, **diferente** do `ADMIN_TOKEN`; se for igual, ou curta, fica desligada): `python -c "import secrets; print(secrets.token_urlsafe(32))"`.
 2. No Render → **Environment**: **`CLAUDE_TOKEN`** = essa palavra-passe (como o `ADMIN_TOKEN`: variável do serviço, nunca no repositório). O Render reinicia o serviço.
-3. Quem a tem pode: **entrar** em `/admin` com ela (o painel mostra «Só de leitura»), ou, sem cookie, pôr `Authorization: Bearer <CLAUDE_TOKEN>` num pedido **GET** (`/api/admin/estado`, `/dados`, `/erros`, `/chaves`, `/seo`).
+3. Quem a tem pode: **entrar** em `/admin` com ela (o painel mostra «Só de leitura»), ou, sem cookie, pôr `Authorization: Bearer <CLAUDE_TOKEN>` num pedido **GET** (`/api/admin/estado`, `/dados`, `/erros`, `/chaves`, `/seo`, `/comentarios`).
 4. Não pode: criar ou revogar chaves da API, nem editar ou repor textos de SEO (responde **403**); nem usar o `ADMIN_TOKEN` como *bearer* (o do dono só entra por cookie). As credenciais certas por cabeçalho não gastam tentativas; **10 erradas por minuto e por IP** travam o acesso por cabeçalho até passar o minuto.
 5. Com só o `CLAUDE_TOKEN` (sem `ADMIN_TOKEN`) o painel existe **só em leitura**. Mudar qualquer um dos dois tokens fecha todas as sessões abertas. O painel regista só o código `entrou_leitura` (nunca o token).
 
@@ -60,6 +60,8 @@ Uma segunda vista, ao lado da «Visão geral», com **tudo o que está na base d
 | **API e partilhas** | números e lotes gastos pela API pública (`api_uso`, dias UTC) e desenhos do editor partilhados (`partilhas`, só com Postgres) |
 
 Os limites são os da retenção (eventos 90 dias, pedidos e sistema 35): os dias mais antigos aparecem vazios. As categorias mostram as 8 mais usadas e juntam o resto em «Outros». Um evento novo aparece aqui acrescentando-o a `Metricas.evolucao` (e ao teste `test_a_evolucao_cobre_todos_os_tipos_de_evento_que_se_gravam`).
+
+A aba **Comentários** mostra os comentários dos visitantes só com o **IP** e o **texto** (e o botão de apagar, só para o dono; ver `docs/OPINIAO.md`).
 
 Os intervalos são a última hora, 6 horas, 24 horas, 7 dias e 30 dias. Os números de «Agora» atualizam de 10 em 10 segundos; os gráficos de 30 em 30.
 

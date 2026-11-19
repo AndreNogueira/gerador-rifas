@@ -592,7 +592,7 @@ class Metricas:
             paineis.append(novo_painel(*args, **kwargs))
 
         eventos = agrupado(("sessao", "previa", "template", "algarismos", "geracao", "descarga", "logotipo", "galeria", "editor", "verificacao",
-                            "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra"), "a")
+                            "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra", "comentario", "problema"), "a")
         humanos = agrupado(("pagina",), "CASE WHEN c = 'robo' THEN 'Robôs' ELSE 'Pessoas' END")
         rotas = agrupado(("pagina",), "a", "AND c <> 'robo'")
         por_tema = agrupado(("sessao",), "b")
@@ -643,6 +643,12 @@ class Metricas:
         painel(f, "logotipo", "Logótipo", ok_erro("logotipo"), "Logótipos enviados e quantos foram recusados (tipo ou tamanho).")
         painel(f, "verificacao", "Verificação de bilhetes (QR)", por_chave(eventos, "verificacao", topo=4), "Quantas vezes se leu o QR de um bilhete e o resultado: origem confirmada, código inválido ou indisponível.")
         painel(f, "api_geracao", "API pública (pedidos em lote)", por_chave(eventos, "api_geracao", topo=5), "Itens gerados pela API pública v1, por resultado.")
+        nomes_comentario = {"anonimo": "Anónimos", "nome": "Com nome", "visitante": "Com «Visitante n.º»"}
+        painel(f, "comentarios", "Comentários deixados", por_chave(eventos, "comentario", topo=4, nome=lambda k: nomes_comentario.get(k, k or "?")),
+               "Comentários enviados pela página «Comentários»: anónimos, com o nome que a pessoa escolheu e sem nome (aparece «Visitante n.º»). Só se conta, nunca o texto.")
+        nomes_problema = {"ok": "Registados no GitHub", "falhou": "Falharam"}
+        painel(f, "problemas", "Problemas reportados", por_chave(eventos, "problema", topo=4, nome=lambda k: nomes_problema.get(k, k or "?")),
+               "Pedidos de «Reportar problema»: os que viraram um issue no GitHub e os que o GitHub recusou ou não respondeu.")
         painel(f, "limites", "Limites atingidos", por_chave(eventos, "limite", topo=6), "Pedidos recusados por excederem um limite (sessões, pedidos por minuto, geração em curso…).")
 
         g = "Público"

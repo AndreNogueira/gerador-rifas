@@ -2,6 +2,13 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.51.0 — 2026-11-19
+
+### Yeni
+- **Yorumlar:** herkesin diğer kişilerin oluşturucu hakkında ne düşündüğünü gördüğü bir «Yorumlar» sayfası ve kendi yorumunuzu bırakacağınız bir sayfa: anonim kalabilir veya ad gösterebilirsiniz (adsız «Ziyaretçi no. …» görünür). IP adresi yalnızca site sorumlusu için, kötüye kullanımı önlemek amacıyla saklanır, asla gösterilmez ve 90 gün sonra silinir.
+- **Sorun bildir:** bir hatayı anlattığınız yeni sayfa; «Aç»a basınca hesap gerekmeden doğrudan projenin GitHub sayfasında oluşturulur (IP adresiniz gönderilmez, tarayıcının teknik bilgileri yalnızca eklerseniz gönderilir).
+- İki sayfa ve «Yorumlar» ile «Sorun bildir» düğmeleri üst bilgide, menüde ve alt bilgide göz önündedir; Gizlilik politikası (22 dil) nelerin saklandığını açıklar.
+
 ## 3.50.0 — 2026-11-18
 
 ### İyileştirildi

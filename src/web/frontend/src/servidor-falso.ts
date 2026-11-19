@@ -56,6 +56,42 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_como_fazer: "Como fazer",
     m_ajuda: "Ajuda",
     web_menu: "Menu",
+    web_comentarios: "Comentários",
+    web_reportar: "Reportar problema",
+    web_op_titulo: "Deixe o seu comentário",
+    web_op_intro:
+      "Diga-nos o que acha do {app}: o que correu bem, o que falta e o que podemos melhorar. Lemos tudo.",
+    web_op_texto: "O seu comentário",
+    web_op_anonimo: "Quero ficar anónimo(a)",
+    web_op_com_nome: "Mostrar um nome junto ao comentário",
+    web_op_nome: "Nome a mostrar",
+    web_op_nome_ajuda: "Pode ser um apelido. Se o deixar em branco, aparece «Visitante n.º …».",
+    web_op_aviso_ip:
+      "O seu endereço IP fica guardado apenas para o responsável do site (para travar abusos), nunca é mostrado e é apagado ao fim de 90 dias. Ver a Política de privacidade.",
+    web_op_enviar: "Enviar comentário",
+    web_op_obrigado: "Obrigado! O seu comentário já aparece na página de comentários.",
+    web_op_curto: "Escreva pelo menos 5 letras.",
+    web_erro_envios: "Enviou muitas mensagens seguidas. Tente outra vez daqui a pouco.",
+    web_com_intro: "O que as pessoas dizem do {app}. Os comentários anónimos aparecem sem nome.",
+    web_com_vazio: "Ainda não há comentários. Seja a primeira pessoa!",
+    web_com_anonimo: "Anónimo(a)",
+    web_com_visitante: "Visitante n.º {n}",
+    web_com_escrever: "Deixar um comentário",
+    web_com_mais: "Ver mais comentários",
+    web_bug_titulo: "Reportar um problema",
+    web_bug_intro:
+      "Encontrou um erro? Descreva-o e, ao carregar em «Abrir», criamos um registo diretamente no GitHub do projeto para o corrigirmos.",
+    web_bug_resumo: "Resumo do problema",
+    web_bug_descricao: "O que aconteceu?",
+    web_bug_passos: "Como repetir o problema (opcional)",
+    web_bug_tecnica: "Juntar informação técnica (versão, língua, navegador e ecrã)",
+    web_bug_aviso:
+      "O que escrever fica visível para a equipa no GitHub. Não escreva dados pessoais nem palavras-passe; o seu endereço IP não é enviado.",
+    web_bug_abrir: "Abrir",
+    web_bug_obrigado: "Obrigado! O problema ficou registado (n.º {n}). Vamos analisá-lo.",
+    web_bug_curto: "Preencha o resumo e a descrição (pelo menos 10 letras cada).",
+    web_bug_indisponivel: "Esta função ainda não está ativa. Tente mais tarde.",
+    web_bug_falhou: "Não foi possível registar o problema agora. Tente outra vez daqui a pouco.",
     web_galeria_data_formato: "Como mostrar a data",
     web_galeria_data_livre: "Escrever à mão",
     web_galeria_data_antes: "Texto antes da data (opcional)",
@@ -234,6 +270,19 @@ export class ServidorFalso {
   anunciosCliente = "";
   anunciosSlot = "";
   partilhaEditor = false;
+  problemasAtivos = true;
+  comentarios: {
+    id: string;
+    criado: number;
+    anonimo: boolean;
+    nome: string;
+    visitante: number;
+    texto: string;
+  }[] = [];
+  comentariosEnviados: { texto: string; anonimo: boolean; nome: string; site: string }[] = [];
+  comentarioErro = "";
+  problemasEnviados: unknown[] = [];
+  problemaErro = "";
   partilhados = new Map<string, unknown>();
   logotipoErro = "";
   temContacto = false;
@@ -285,6 +334,36 @@ export class ServidorFalso {
       if (this.galeriaErro) return this.responder({ detail: this.galeriaErro, tipo: "aviso" }, 422);
       return Promise.resolve(new Response(new Blob(["png"]), { status: 200 }));
     }
+    if (url.startsWith("/api/comentarios")) {
+      if (metodo === "POST") {
+        const c = corpo as { texto: string; anonimo: boolean; nome: string; site: string };
+        if (this.comentarioErro) return this.responder({ detail: this.comentarioErro, tipo: "aviso" }, 429);
+        this.comentariosEnviados.push(c);
+        this.comentarios.unshift({
+          id: `c${this.comentarios.length}`,
+          criado: 1_800_000_000 + this.comentarios.length,
+          anonimo: c.anonimo,
+          nome: c.anonimo ? "" : c.nome,
+          visitante: c.anonimo || c.nome ? 0 : 4321,
+          texto: c.texto,
+        });
+        return this.responder({ ok: true }, 201);
+      }
+      const antes = new URL(url, "http://x").searchParams.get("antes") ?? "";
+      const inicio = antes ? this.comentarios.findIndex((c) => `${c.criado}~${c.id}` === antes) + 1 : 0;
+      const itens = this.comentarios.slice(inicio, inicio + 2); // 2 por página: assim se testa o «Ver mais»
+      const ultimo = itens[itens.length - 1];
+      return this.responder({
+        total: this.comentarios.length,
+        itens,
+        seguinte: ultimo && inicio + 2 < this.comentarios.length ? `${ultimo.criado}~${ultimo.id}` : "",
+      });
+    }
+    if (url === "/api/problemas" && metodo === "POST") {
+      if (this.problemaErro) return this.responder({ detail: this.problemaErro, tipo: "erro" }, 502);
+      this.problemasEnviados.push(corpo);
+      return this.responder({ numero: 42 }, 201);
+    }
     if (url === "/api/publico")
       return this.responder({
         donativo_url: this.donativoUrl,
@@ -293,6 +372,7 @@ export class ServidorFalso {
         anuncios_cliente: this.anunciosCliente,
         anuncios_slot: this.anunciosSlot,
         partilha_editor: this.partilhaEditor,
+        problemas: this.problemasAtivos,
       });
     const pg = /^\/api\/pagina\/(\w+)$/.exec(url);
     if (pg?.[1])

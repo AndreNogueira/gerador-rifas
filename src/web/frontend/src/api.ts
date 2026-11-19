@@ -141,6 +141,24 @@ export interface GuiaDeTexto {
   dicas: string[];
   fim: string;
 }
+export interface ComentarioPublico {
+  id: string;
+  /** Segundos desde 1970. */
+  criado: number;
+  anonimo: boolean;
+  /** O nome que a pessoa escolheu mostrar (vazio: anónimo, ou o `visitante`). */
+  nome: string;
+  /** Sem nome e sem anonimato: o número de «Visitante n.º …» (0 = não se aplica). */
+  visitante: number;
+  texto: string;
+}
+export interface ListaComentarios {
+  total: number;
+  itens: ComentarioPublico[];
+  /** Vazio = não há mais comentários; senão passa-se em `antes` para pedir os seguintes. */
+  seguinte: string;
+}
+
 export interface Publico {
   donativo_url: string;
   contacto: boolean;
@@ -152,6 +170,8 @@ export interface Publico {
   anuncios_slot: string;
   /** O editor pode partilhar desenhos por ligação (o servidor tem base de dados). */
   partilha_editor: boolean;
+  /** «Reportar problema» está ligado ao GitHub do projeto. */
+  problemas: boolean;
 }
 
 export interface Imagem {
@@ -275,6 +295,18 @@ export const api = {
   folhaDeControlo: (campos: Campos) =>
     pedir<Blob>("POST", "/api/exportar/controlo.pdf", { json: campos, bruto: true }),
   publico: () => pedir<Publico>("GET", "/api/publico"),
+  comentarios: (antes = "") =>
+    pedir<ListaComentarios>("GET", `/api/comentarios${antes ? `?antes=${encodeURIComponent(antes)}` : ""}`),
+  comentar: (c: { texto: string; anonimo: boolean; nome: string; site: string }) =>
+    pedir<{ ok: boolean }>("POST", "/api/comentarios", { json: c }),
+  reportarProblema: (p: {
+    resumo: string;
+    descricao: string;
+    passos: string;
+    tecnica: string;
+    pagina: string;
+    site: string;
+  }) => pedir<{ numero: number }>("POST", "/api/problemas", { json: p }),
   guia: (nome: string) => pedir<GuiaDeTexto>("GET", `/api/guia/${encodeURIComponent(nome)}`),
   pagina: (nome: string) => pedir<PaginaDeTexto>("GET", `/api/pagina/${encodeURIComponent(nome)}`),
   changelog: () => pedir<{ entradas: EntradaChangelog[] }>("GET", "/api/changelog"),

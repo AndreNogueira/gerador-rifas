@@ -13,6 +13,41 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.getByTestId("sorteio-resultado").locator("li")).toHaveText(["29", "38", "74"]);
   });
 
+  test("os comentários: deixar um (anónimo) e vê-lo na lista, sem IP; os botões estão à vista", async ({
+    page,
+    request,
+  }) => {
+    await page.goto("/");
+    await expect(page.getByTestId("nav-comentarios")).toBeVisible();
+    await expect(page.getByTestId("nav-reportar-problema")).toBeVisible();
+    await page.getByTestId("nav-comentarios").click();
+    await page.getByTestId("comentarios-escrever").click();
+    await page.getByTestId("opiniao-texto").fill("Comentário do teste e2e, muito útil.");
+    await page.getByTestId("opiniao-enviar").click();
+    await expect(page.getByTestId("comentario-enviado")).toBeVisible();
+    await page.getByTestId("comentario-ver").click();
+    const c = page.getByTestId("comentario").first();
+    await expect(c).toContainText("Comentário do teste e2e");
+    await expect(c).toContainText("Anónimo(a)");
+    const api = await (await request.get("/api/comentarios")).text();
+    expect(api).not.toMatch(/127\.0\.0\.1|"ip"/); // a página pública nunca devolve o IP
+  });
+
+  test("reportar problema sem o GitHub ligado avisa e não deixa abrir; o painel dos comentários não existe sem sessão", async ({
+    page,
+    request,
+  }) => {
+    await page.goto("/reportar-problema");
+    await expect(page.getByTestId("problema-inativo")).toBeVisible();
+    await expect(page.getByTestId("problema-abrir")).toBeDisabled();
+    expect(
+      (
+        await request.post("/api/problemas", { data: { resumo: "x".repeat(20), descricao: "y".repeat(20) } })
+      ).status(),
+    ).toBe(503);
+    expect((await request.get("/api/admin/comentarios")).status()).toBe(404);
+  });
+
   test("changelog, termos e privacidade abrem; o rodapé liga-os", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("link", { name: "Changelog" }).click();

@@ -2,6 +2,13 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.51.0 — 2026-11-19
+
+### Baru
+- **Komentar:** halaman «Komentar» tempat semua orang melihat pendapat orang lain tentang pembuat undian, dan halaman untuk meninggalkan komentar Anda: bisa anonim atau menampilkan nama (tanpa nama tampil «Pengunjung no. …»). Alamat IP disimpan hanya untuk pengelola situs, untuk mencegah penyalahgunaan, tidak pernah ditampilkan, dan dihapus setelah 90 hari.
+- **Laporkan masalah:** halaman baru untuk menjelaskan bug; saat menekan «Buka», bug dibuat langsung di GitHub proyek tanpa akun (IP Anda tidak dikirim dan informasi teknis peramban hanya jika Anda menyertakannya).
+- Kedua halaman dan tombol «Komentar» serta «Laporkan masalah» terlihat jelas di header, menu, dan footer; Kebijakan privasi (22 bahasa) menjelaskan apa yang disimpan.
+
 ## 3.50.0 — 2026-11-18
 
 ### Ditingkatkan

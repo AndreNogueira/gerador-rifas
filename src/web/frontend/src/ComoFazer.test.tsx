@@ -27,11 +27,13 @@ describe("o menu «Ajuda» no cabeçalho (tutorial, vídeo e «como fazer» num 
     expect(botao).toHaveTextContent("Ajuda");
     expect(botao).toHaveAttribute("aria-expanded", "false");
     const nav = botao.closest("nav") as HTMLElement;
-    // o cabeçalho só tem o menu e as páginas soltas: o tutorial e o vídeo já não são separadores à parte
+    // o cabeçalho só tem o menu e as páginas soltas (com os comentários e o reportar problema): o tutorial e o vídeo já não são separadores à parte
     expect([...nav.querySelectorAll("a, button")].map((e) => e.getAttribute("data-testid"))).toEqual([
       "nav-ajuda",
       "nav-sorteio",
       "nav-sobre",
+      "nav-comentarios",
+      "nav-reportar-problema",
     ]);
     expect(screen.queryByTestId("guia-rifas-para-escolas")).toBeNull();
     await userEvent.click(botao);

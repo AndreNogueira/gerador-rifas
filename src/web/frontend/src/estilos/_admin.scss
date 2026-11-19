@@ -501,3 +501,16 @@
   fill: color-mix(in srgb, var(--destaque) 12%, transparent);
   pointer-events: none;
 }
+
+// a tabela dos comentários: o IP e o texto à esquerda (as outras tabelas do painel são de números e alinham à direita)
+[data-testid="admin-tabela-comentarios"] {
+  th,
+  td {
+    text-align: left;
+    vertical-align: top;
+  }
+  .ip-comentario {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+}

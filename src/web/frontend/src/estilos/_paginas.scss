@@ -403,3 +403,133 @@
     }
   }
 }
+
+// «Comentários», «Deixar um comentário» e «Reportar problema»
+.opiniao {
+  display: grid;
+  gap: 14px;
+  max-width: 46rem;
+
+  h1,
+  p {
+    margin: 0;
+  }
+  .botoes a,
+  .botoes button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+.opiniao .aviso-opiniao {
+  padding: 10px 14px;
+  border: var(--borda) dashed var(--linha);
+  border-radius: var(--raio-c);
+  background: var(--campo);
+  color: var(--texto);
+  font-weight: 600;
+}
+.formulario-opiniao {
+  display: grid;
+  gap: 14px;
+
+  label {
+    display: grid;
+    gap: 6px;
+    font-weight: 600;
+  }
+  textarea,
+  input:not([type="radio"], [type="checkbox"]) {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 6rem;
+  }
+  .campo-contado {
+    position: relative;
+    display: block;
+
+    .contagem {
+      position: absolute;
+      right: 10px;
+      bottom: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--suave);
+      pointer-events: none;
+    }
+    input {
+      padding-right: 4.2rem;
+    }
+  }
+  .escolha-nome {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .opcao {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    min-height: 44px;
+    cursor: pointer;
+
+    input {
+      width: 1.2rem;
+      height: 1.2rem;
+      flex: none;
+    }
+  }
+  .ajuda-campo {
+    font-size: 0.84rem;
+    font-weight: 400;
+  }
+  .aviso-ip {
+    font-size: 0.86rem;
+  }
+  // o campo-isco: fora do ecrã (não `display: none`, que alguns robôs saltam); as pessoas nunca o veem nem lhe chegam com o teclado
+  .isco {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+}
+.lista-comentarios {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.comentario {
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border: var(--borda) solid var(--linha);
+  border-radius: var(--raio-c);
+  background: var(--campo);
+
+  .comentario-autor {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 12px;
+
+    time {
+      font-size: 0.82rem;
+      color: var(--suave);
+    }
+  }
+  .texto-longo {
+    overflow-wrap: anywhere;
+  }
+}

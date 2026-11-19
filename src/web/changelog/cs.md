@@ -2,6 +2,13 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.51.0 — 2026-11-19
+
+### Novinky
+- **Komentáře:** stránka «Komentáře», kde každý vidí, co si ostatní o generátoru myslí, a stránka pro vlastní komentář: můžete zůstat anonymní nebo ukázat jméno (bez jména se zobrazí «Návštěvník č. …»). IP adresa se ukládá jen pro provozovatele webu, proti zneužití, nikdy se nezobrazuje a po 90 dnech se maže.
+- **Nahlásit problém:** nová stránka, kde popíšete chybu; po stisknutí «Otevřít» se vytvoří přímo na GitHubu projektu, bez účtu (vaše IP se neodesílá a technické údaje prohlížeče jen pokud je přidáte).
+- Obě stránky a tlačítka «Komentáře» a «Nahlásit problém» jsou dobře vidět v záhlaví, nabídce i patičce; Zásady ochrany soukromí (22 jazyků) vysvětlují, co se ukládá.
+
 ## 3.50.0 — 2026-11-18
 
 ### Vylepšeno

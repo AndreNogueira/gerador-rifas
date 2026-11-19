@@ -610,6 +610,105 @@ const CENAS: Cena[] = [
     },
   },
   {
+    id: "comentarios",
+    rodar: async (page, T) => {
+      await page.goto("/");
+      await legenda(page, T("Diga o que acha do gerador", "Tell us what you think of the generator"), 2200);
+      await clicar(page, page.getByTestId("nav-comentarios"));
+      await expect(page.getByTestId("pagina-comentarios")).toBeVisible();
+      await legenda(
+        page,
+        T(
+          "Em «Comentários» estão as opiniões das outras pessoas",
+          "“Comments” shows what other people think",
+        ),
+        2600,
+      );
+      await clicar(page, page.getByTestId("comentarios-escrever"));
+      await escrever(
+        page,
+        page.getByTestId("opiniao-texto"),
+        T("Muito útil para a rifa da nossa escola!", "Very useful for our school raffle!"),
+      );
+      await legenda(
+        page,
+        T("Pode ficar anónimo(a) ou mostrar um nome", "You can stay anonymous or show a name"),
+        2600,
+      );
+      await clicar(page, page.getByTestId("opiniao-com-nome"));
+      await escrever(page, page.getByTestId("opiniao-nome"), "Ana");
+      await legenda(
+        page,
+        T(
+          "O IP só o responsável vê, para travar abusos; nunca aparece",
+          "Only the site owner sees the IP, to stop abuse; it is never shown",
+        ),
+        3000,
+      );
+      await clicar(page, page.getByTestId("opiniao-enviar"));
+      await expect(page.getByTestId("comentario-enviado")).toBeVisible();
+      await legenda(page, T("Obrigado!", "Thank you!"), 1600);
+      await clicar(page, page.getByTestId("comentario-ver"));
+      await expect(page.getByTestId("comentario").first()).toBeVisible();
+      await legenda(
+        page,
+        T("O comentário já aparece, sem endereço IP", "Your comment already appears, without any IP address"),
+        3200,
+      );
+    },
+  },
+  {
+    id: "problema",
+    rodar: async (page, T) => {
+      // no servidor de teste não há token do GitHub: finge-se que está ligado e que o GitHub criou o problema n.º 42 (nada vai a sério para o GitHub)
+      await page.route("**/api/publico", async (route) => {
+        const resposta = await route.fetch();
+        await route.fulfill({ response: resposta, json: { ...(await resposta.json()), problemas: true } });
+      });
+      await page.route("**/api/problemas", (route) =>
+        route.fulfill({ status: 201, contentType: "application/json", body: JSON.stringify({ numero: 42 }) }),
+      );
+      await page.goto("/");
+      await legenda(page, T("Encontrou um erro?", "Found a bug?"), 2000);
+      await clicar(page, page.getByTestId("nav-reportar-problema"));
+      await expect(page.getByTestId("pagina-problema")).toBeVisible();
+      await escrever(
+        page,
+        page.getByTestId("problema-resumo"),
+        T("O botão Gerar não faz nada", "The Generate button does nothing"),
+      );
+      await escrever(
+        page,
+        page.getByTestId("problema-descricao"),
+        T("Carrego em Gerar e nada acontece.", "I press Generate and nothing happens."),
+      );
+      await legenda(
+        page,
+        T(
+          "Se quiser, junte como repetir e a informação técnica",
+          "If you like, add how to repeat it and the technical information",
+        ),
+        2800,
+      );
+      await clicar(page, page.getByTestId("problema-tecnica"));
+      await legenda(
+        page,
+        T(
+          "«Abrir» cria o problema no GitHub do projeto, sem conta",
+          "“Open” creates the issue on the project's GitHub, no account needed",
+        ),
+        2800,
+      );
+      await clicar(page, page.getByTestId("problema-abrir"));
+      await expect(page.getByTestId("problema-registado")).toBeVisible();
+      await legenda(
+        page,
+        T("Fica registado e vamos analisá-lo", "It is recorded and we will look into it"),
+        3000,
+      );
+    },
+  },
+  {
     id: "instalar",
     rodar: async (page, T) => {
       await page.goto("/");

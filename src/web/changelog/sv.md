@@ -2,6 +2,13 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.51.0 — 2026-11-19
+
+### Nytt
+- **Kommentarer:** en sida «Kommentarer» där alla ser vad andra tycker om generatorn, och en sida för att lämna din egen: du kan vara anonym eller visa ett namn (utan namn visas «Besökare nr …»). IP-adressen sparas bara för webbplatsens ansvarige, mot missbruk, visas aldrig och raderas efter 90 dagar.
+- **Rapportera problem:** ny sida där du beskriver ett fel; med «Öppna» skapas det direkt på projektets GitHub, utan konto (din IP skickas inte och webbläsarens tekniska uppgifter bara om du lägger till dem).
+- Båda sidorna och knapparna «Kommentarer» och «Rapportera problem» syns tydligt i sidhuvudet, menyn och sidfoten; integritetspolicyn (22 språk) förklarar vad som sparas.
+
 ## 3.50.0 — 2026-11-18
 
 ### Förbättrat
