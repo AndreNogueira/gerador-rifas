@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.54.0 — 2026-11-19
+
+### Nowości
+- **Trwała historia w panelu administracyjnym:** po północy zapisywane jest podsumowanie każdego dnia, więc dzienny przebieg pokazuje teraz miesiące i do 2 lat (wcześniej tylko 90 dni). Tylko liczby, jak reszta panelu.
+
 ## 3.53.0 — 2026-11-19
 
 ### Nowości

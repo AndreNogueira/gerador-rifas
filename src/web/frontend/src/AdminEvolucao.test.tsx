@@ -95,7 +95,10 @@ beforeEach(() => {
       pedidos.push(url);
       if (url.startsWith("/api/admin/evolucao")) {
         const dias = Number(new URL(url, "http://x").searchParams.get("dias"));
-        return Promise.resolve(new Response(JSON.stringify({ ...EVOLUCAO, dias }), { status: 200 }));
+        const historico = dias > 90 ? { origem: "historico", dias_com_dados: 4 } : {};
+        return Promise.resolve(
+          new Response(JSON.stringify({ ...EVOLUCAO, dias, ...historico }), { status: 200 }),
+        );
       }
       return Promise.resolve(new Response("{}", { status: 404 }));
     }),
@@ -155,6 +158,15 @@ describe("a vista «Evolução diária»", () => {
     await userEvent.selectOptions(screen.getByTestId("evolucao-periodo"), "90");
     await waitFor(() => expect(screen.getByTestId("evolucao-intervalo")).toBeInTheDocument());
     expect(screen.queryByRole("note")).toBeNull(); // 90 dias cabem na retenção dos eventos
+  });
+
+  it("mais de 90 dias vêm do histórico permanente e a vista avisa quantos dias há gravados", async () => {
+    render(<AdminEvolucao aoSairDaSessao={() => {}} />);
+    await userEvent.selectOptions(await screen.findByTestId("evolucao-periodo"), "365");
+    const aviso = await screen.findByTestId("evolucao-historico");
+    expect(aviso).toHaveTextContent("histórico permanente");
+    expect(aviso).toHaveTextContent("Só há 4 dias gravados");
+    expect(pedidos.some((u) => u.startsWith("/api/admin/evolucao?dias=365&"))).toBe(true);
   });
 
   it("sem sessão (404) avisa o painel para voltar a pedir a palavra-passe", async () => {

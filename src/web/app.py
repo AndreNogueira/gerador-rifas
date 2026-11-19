@@ -11,6 +11,7 @@ import mimetypes
 import os
 import time
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from core import i18n
 from core.armazenamento import ArmazenamentoLocal
@@ -23,7 +24,7 @@ from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, 
 from .chaves_api import Chaves
 from .assets_remotos import AssetsRemotos
 from .limites import Limitador
-from . import relatorio, seo_textos
+from . import historico, relatorio, seo_textos
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
@@ -163,11 +164,14 @@ async def _amostrar(servico: Servico, cada_s: float) -> None:
 
 
 async def _relatorio_diario(servico: Servico, cada_s: float) -> None:
-    """De poucos em poucos minutos: se ja passou a meia-noite e o relatorio de ontem nao foi enviado, envia-o (ver `relatorio.py`; sem RESEND_API_KEY e
-    RELATORIO_EMAIL_PARA nao faz nada). A reserva do dia esta na base, por isso um arranque a meio da noite nao o duplica."""
+    """De poucos em poucos minutos, depois da meia-noite: grava o resumo de ontem no historico permanente (`historico.py`) e, se esta ligado, envia o relatorio
+    por e-mail (`relatorio.py`; sem RESEND_API_KEY e RELATORIO_EMAIL_PARA nao envia). A reserva do dia esta na base, por isso um arranque a meio da noite nao o duplica."""
     while True:
+        extras = admin.paineis_de_outras_tabelas(servico)
         with contextlib.suppress(Exception):
-            await asyncio.to_thread(relatorio.enviar_se_devido, servico.relatorios, servico.metricas, admin.paineis_de_outras_tabelas(servico), servico.estado_relatorio)
+            await asyncio.to_thread(historico.gravar_pendentes, servico.historico, servico.metricas, extras, ZoneInfo(config.relatorio_fuso()))
+        with contextlib.suppress(Exception):
+            await asyncio.to_thread(relatorio.enviar_se_devido, servico.relatorios, servico.metricas, extras, servico.estado_relatorio)
         await asyncio.sleep(cada_s)
 
 
@@ -191,6 +195,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     servico.chaves = chaves if chaves is not None else Chaves(config.database_url(), armazem.raiz / "api.sqlite3")
     servico.seo = seo_bd if seo_bd is not None else SeoBd(config.database_url(), armazem.raiz / "seo.sqlite3")
     servico.comentarios = comentarios if comentarios is not None else Comentarios(config.database_url(), armazem.raiz / "comentarios.sqlite3")
+    servico.historico = historico.HistoricoDiario(config.database_url(), armazem.raiz / "historico.sqlite3")
     servico.relatorios = relatorio.RelatoriosEnviados(config.database_url(), armazem.raiz / "relatorios.sqlite3")
     seo_textos.definir_sobreposicoes({})                 # cada app comeca com os textos do codigo; os editados chegam da base (`_atualizar_seo`)
     assets_rem = None

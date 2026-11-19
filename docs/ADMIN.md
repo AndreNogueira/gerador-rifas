@@ -65,6 +65,10 @@ A aba **Comentários** mostra os comentários dos visitantes só com o **país**
 
 A aba **Relatório diário** mostra o estado do e-mail diário (ligado ou não, para onde vai, último dia enviado, último erro), **pré-visualiza** o relatório de qualquer dia e manda **um e-mail de teste** (só o dono; assunto «[Teste]», não conta como o envio do dia).
 
+## Histórico permanente (`/admin` → «Evolução diária» → 180 dias, 1 ano, 2 anos)
+
+Os eventos brutos apagam-se aos 90 dias e os pedidos/sistema aos 35. Por isso, depois das 00:05 (`RELATORIO_FUSO`) o servidor grava **uma linha-resumo por dia** na tabela `historico_diario` (o que a «Evolução diária» mostra desse dia, só o que não é zero; ≈ 3 KB por dia, ≈ 1 MB por ano) e, na primeira vez, também os dias que ainda estão na base (até 90). A vista com mais de 90 dias (`GET /api/admin/evolucao?dias=365`, até 730) lê daí (`historico.py`): os dias são os do fuso do relatório (não os do browser), o dia em curso não aparece e os dias anteriores ao histórico aparecem vazios («sem dados», não zero). Funciona sem o e-mail. Sem `DATABASE_URL` vive no disco efémero (perde-se ao reiniciar).
+
 ## Relatório diário por e-mail
 
 Todos os dias, um pouco depois da meia-noite (`RELATORIO_FUSO`, por omissão `Europe/Lisbon`), o servidor envia um e-mail HTML com **tudo o que se gravou no dia que acabou**: os números grandes (sessões, gerações, números gerados, descargas, páginas vistas, comentários, problemas, erros 5xx), **avisos** (erros 5xx, gerações falhadas, reinícios do motor, memória perto de 512 MB, resposta lenta, dados incompletos) e, por grupo, cada série com o **dia, a média dos 7 dias anteriores, a variação e uma miniatura dos 8 dias** (`relatorio.py`, a mesma base da «Evolução diária»). Só contagens e códigos de país: nunca IPs, nomes, ficheiros nem o texto dos comentários.

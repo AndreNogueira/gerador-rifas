@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.54.0 — 2026-11-19
+
+### Nieuw
+- **Permanente geschiedenis in het beheerpaneel:** na middernacht wordt een samenvatting van elke dag opgeslagen, zodat de dagelijkse ontwikkeling nu maanden en tot 2 jaar toont (voorheen alleen 90 dagen). Alleen aantallen, zoals de rest van het paneel.
+
 ## 3.53.0 — 2026-11-19
 
 ### Nieuw

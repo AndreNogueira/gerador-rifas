@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.54.0 — 2026-11-19
+
+### Neu
+- **Dauerhafter Verlauf im Admin-Panel:** nach Mitternacht wird eine Zusammenfassung jedes Tages gespeichert, daher zeigt die Tagesentwicklung jetzt Monate und bis zu 2 Jahre (vorher nur 90 Tage). Nur Zählwerte, wie im Rest des Panels.
+
 ## 3.53.0 — 2026-11-19
 
 ### Neu

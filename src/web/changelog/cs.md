@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.54.0 — 2026-11-19
+
+### Novinky
+- **Trvalá historie v administračním panelu:** po půlnoci se uloží souhrn každého dne, takže denní vývoj nyní ukazuje měsíce a až 2 roky (dříve jen 90 dnů). Pouze počty, jako zbytek panelu.
+
 ## 3.53.0 — 2026-11-19
 
 ### Novinky

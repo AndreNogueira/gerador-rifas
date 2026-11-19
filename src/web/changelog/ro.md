@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.54.0 — 2026-11-19
+
+### Noutăți
+- **Istoric permanent în panoul de administrare:** după miezul nopții se salvează un rezumat al fiecărei zile, deci evoluția zilnică arată acum luni și până la 2 ani (înainte doar 90 de zile). Doar numărători, ca restul panoului.
+
 ## 3.53.0 — 2026-11-19
 
 ### Noutăți

@@ -173,6 +173,9 @@ export interface Evolucao {
   dias_lista: string[];
   retencao: { eventos_dias: number; sistema_dias: number };
   dados_desde: number;
+  /** «historico»: lido do histórico permanente (mais de 90 dias; um resumo por dia, até ontem). */
+  origem?: "historico";
+  dias_com_dados?: number;
   paineis: PainelDiario[];
 }
 
