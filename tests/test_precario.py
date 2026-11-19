@@ -1,0 +1,123 @@
+"""O preçário (`core/precario.py`): o PDF sai em todas as línguas e temas, com os preços na moeda certa, o ajuste de letra e de páginas, e recusa o que o PDF não consegue escrever."""
+import io
+
+import core
+import pytest
+from core import galeria, i18n, moeda, precario, precario_catalogo as cat
+from core.motor import ErroRifas
+from core.precario import Linha, Precario
+from pypdf import PdfReader
+
+LINGUAS = list(i18n.LINGUAS)
+
+
+def texto_do_pdf(pdf: bytes) -> str:
+    return "\n".join(p.extract_text() or "" for p in PdfReader(io.BytesIO(pdf)).pages)
+
+
+def com_precos(p: Precario, base: int = 1500, passo: int = 250) -> Precario:
+    return Precario(**{**p.__dict__, "linhas": tuple(Linha(artigo=ln.artigo, nome=ln.nome, categoria=ln.categoria, emoji=ln.emoji, preco=base + passo * (i % 5)) for i, ln in enumerate(p.linhas))})
+
+
+def test_um_precario_simples_leva_o_titulo_os_artigos_e_os_precos():
+    p = com_precos(precario.de_ocasiao("santos_populares", "pt", subtitulo="Associação Exemplo", rodape="Obrigado!"))
+    pdf = precario.criar_pdf(p)
+    t = texto_do_pdf(pdf)
+    assert pdf.startswith(b"%PDF") and len(PdfReader(io.BytesIO(pdf)).pages) == 1
+    for esperado in ("Santos Populares", "Associação Exemplo", "Obrigado!", "Bebidas", "Sardinha assada", "Caldo verde", "1,50 €", "1,75 €"):
+        assert esperado in t, esperado
+    assert core.png_de_pagina(pdf, 60)[:8] == b"\x89PNG\r\n\x1a\n"                    # e a pré-visualização desenha-se
+
+
+@pytest.mark.parametrize("lg", LINGUAS)
+def test_sai_em_todas_as_linguas_com_a_moeda_do_pais(lg):
+    p = com_precos(precario.de_ocasiao("festa_popular", lg), 1500)
+    pdf = precario.criar_pdf(p)
+    assert len(PdfReader(io.BytesIO(pdf)).pages) == 1
+    esperado = moeda.formatar(1500, p.moeda, lg).replace(" ", "").replace("\xa0", "")
+    assert esperado in texto_do_pdf(pdf).replace(" ", "").replace("\xa0", ""), (lg, esperado)       # o preço escreve-se na moeda e no formato da língua
+
+
+@pytest.mark.parametrize("desenho", list(galeria.POR_ID))
+def test_sai_com_cada_um_dos_24_desenhos(desenho):
+    p = com_precos(Precario(linhas=tuple(Linha(artigo=a) for a in ("agua", "cerveja", "bolo", "pizza", "gelado", "tiro_ao_alvo")), titulo="Festa", desenho=desenho))
+    assert len(PdfReader(io.BytesIO(precario.criar_pdf(p))).pages) == 1
+
+
+@pytest.mark.parametrize("formato", ["A5", "A4", "A3"])
+@pytest.mark.parametrize("orientacao", ["vertical", "horizontal"])
+@pytest.mark.parametrize("colunas", [0, 1, 2, 3])
+def test_formatos_orientacoes_e_colunas(formato, orientacao, colunas):
+    p = com_precos(precario.de_ocasiao("natal", "pt", formato=formato, orientacao=orientacao, colunas=colunas))
+    leitor = PdfReader(io.BytesIO(precario.criar_pdf(p)))
+    larg, alt = (float(leitor.pages[0].mediabox.width), float(leitor.pages[0].mediabox.height))
+    esperado = precario.FORMATOS[formato] if orientacao == "vertical" else precario.FORMATOS[formato][::-1]
+    assert (round(larg), round(alt)) == (round(esperado[0]), round(esperado[1]))
+
+
+def test_com_muitos_artigos_passa_a_mais_paginas_sem_perder_nenhum():
+    todos = tuple(Linha(artigo=a.id, preco=1000 + i * 10) for i, a in enumerate(cat.artigos_da_lingua("pt")))[:70]
+    p = Precario(linhas=todos, titulo="Tudo", rodape="rodapé", colunas=1)
+    leitor = PdfReader(io.BytesIO(precario.criar_pdf(p)))
+    assert 2 <= len(leitor.pages) <= precario.MAX_PAGINAS
+    t = "\n".join(pg.extract_text() or "" for pg in leitor.pages)
+    for ln in todos:
+        assert cat.nome_imprimivel(cat.ARTIGOS[ln.artigo], "pt").split()[0] in t, ln.artigo
+    assert "1/" in t and "2/" in t
+
+
+def test_com_poucos_artigos_cabe_numa_so_folha():
+    p = com_precos(Precario(linhas=(Linha(artigo="agua"), Linha(artigo="cerveja")), titulo="Bar"))
+    assert len(PdfReader(io.BytesIO(precario.criar_pdf(p))).pages) == 1
+
+
+def test_o_preco_em_branco_deixa_um_traco_e_com_preco_escreve_se():
+    sem = texto_do_pdf(precario.criar_pdf(Precario(linhas=(Linha(artigo="agua"),), titulo="X")))
+    assert "€" not in sem and "Água" in sem
+    com = texto_do_pdf(precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", preco=0),), titulo="X")))
+    assert "0,00 €" in com
+
+
+def test_moeda_inventada_e_textos_livres_com_imagem_e_categoria():
+    p = Precario(linhas=(Linha(nome="Bolo da avó", preco=2000, categoria="doces", emoji="1f370"), Linha(artigo="agua", nome="Água fresca", preco=1000), Linha(nome="Sem imagem", preco=3000)),
+                 titulo="Quermesse", moeda=moeda.MoedaInventada("fichas"))
+    t = texto_do_pdf(precario.criar_pdf(p))
+    for esperado in ("Bolo da avó", "2 fichas", "Água fresca", "1 fichas", "Sem imagem", "3 fichas", "Doces", "Outros"):
+        assert esperado in t, esperado
+
+
+def test_sem_imagens_nao_ha_imagens_no_pdf():
+    com = precario.criar_pdf(com_precos(precario.de_ocasiao("natal", "pt", imagens=True)))
+    sem = precario.criar_pdf(com_precos(precario.de_ocasiao("natal", "pt", imagens=False)))
+    assert len(sem) < len(com) - 20_000
+    assert not any(pg.images for pg in PdfReader(io.BytesIO(sem)).pages)
+
+
+def test_o_mesmo_precario_da_os_mesmos_bytes():
+    p = com_precos(precario.de_ocasiao("natal", "en"))
+    assert precario.criar_pdf(p) == precario.criar_pdf(p)
+
+
+@pytest.mark.parametrize("campos, chave", [
+    (dict(titulo="x" * 41), "err_precario_texto"), (dict(subtitulo="y" * 71), "err_precario_texto"), (dict(rodape="z" * 121), "err_precario_texto"),
+    (dict(titulo="नमस्ते"), "err_precario_texto"), (dict(titulo="emoji \U0001F600"), "err_precario_texto"),
+    (dict(desenho="nao_existe"), "err_precario_texto"), (dict(formato="A0"), "err_precario_texto"), (dict(colunas=4), "err_precario_texto"), (dict(lingua="xx"), "err_precario_texto"),
+    (dict(linhas=()), "err_precario_linhas"), (dict(linhas=(Linha(nome="  "),)), "err_precario_linhas"), (dict(linhas=tuple(Linha(nome=f"a{i}") for i in range(81))), "err_precario_linhas"),
+    (dict(linhas=(Linha(artigo="nao_existe"),)), "err_precario_texto"), (dict(linhas=(Linha(nome="ok", preco=-1),)), "err_precario_texto"),
+    (dict(linhas=(Linha(nome="ok", preco=moeda.MAX_VALOR + 1),)), "err_precario_texto"), (dict(linhas=(Linha(nome="ok", emoji="zzzz"),)), "err_precario_texto"),
+    (dict(linhas=(Linha(nome="ok", categoria="nada"),)), "err_precario_texto"), (dict(linhas=(Linha(nome="चाय"),)), "err_precario_texto"),
+    (dict(moeda=moeda.MoedaInventada("fichas2")), "err_precario_texto"),
+])
+def test_recusa_o_que_nao_serve_com_uma_mensagem_traduzida(campos, chave):
+    base = dict(linhas=(Linha(artigo="agua"),), titulo="T")
+    base.update(campos)
+    with pytest.raises(ErroRifas) as e:
+        precario.criar_pdf(Precario(**base))
+    assert e.value.chave == chave
+    for lg in LINGUAS:
+        assert "{" not in e.value.em(lg)                                      # os {parâmetros} vieram todos preenchidos
+
+
+def test_textos_com_acentos_chineses_e_cirilicos_servem():
+    for titulo, nome in (("Çà é ñ", "Pão"), ("Праздник", "Пиво"), ("お祭り", "ビール"), ("축제", "맥주"), ("Φεστιβάλ", "Μπύρα"), ("Lễ hội", "Bia")):
+        assert len(PdfReader(io.BytesIO(precario.criar_pdf(Precario(linhas=(Linha(nome=nome, preco=1000),), titulo=titulo)))).pages) == 1
