@@ -14,7 +14,7 @@ const ficheiros = readdirSync(assets);
 const erros = [];
 
 // as únicas partes que se carregam à parte (o nome do ficheiro leva o da página: `Admin-<hash>.js`); uma parte nova tem de se acrescentar aqui de propósito
-const PARTES = ["Admin", "Editor", "Sorteio"];
+const PARTES = ["Admin", "Editor", "Precario", "Sorteio"];
 // o pedaço que o principal e as partes partilham (o runtime do JSX): fica à parte e o index.html liga-o com `modulepreload` (única ligação permitida)
 const COMUNS = ["jsx-runtime"];
 const css = ficheiros.filter((f) => f.endsWith(".css"));

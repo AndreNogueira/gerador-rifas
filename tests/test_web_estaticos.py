@@ -86,7 +86,7 @@ def test_o_dist_real_tem_um_js_principal_um_css_sem_mapas_e_so_as_partes_conheci
     todos = sorted(f.name for f in assets.glob("*.js"))
     principais = [n for n in todos if n.startswith("index-")]
     assert len(principais) == 1 and len(list(assets.glob("*.css"))) == 1
-    assert {n.split("-")[0] for n in todos} == {"index", "Admin", "Editor", "Sorteio", "jsx"}           # o principal, as 3 paginas a parte e o pedaco partilhado: mais nada
+    assert {n.split("-")[0] for n in todos} == {"index", "Admin", "Editor", "Precario", "Sorteio", "jsx"}           # o principal, as 4 paginas a parte e o pedaco partilhado: mais nada
     assert not list(dist_real.rglob("*.map"))
     html = (dist_real / "index.html").read_text(encoding="utf-8")
     assert len(re.findall(r'<script[^>]+src="', html)) == 1 and len(re.findall(r'rel="stylesheet"', html)) == 1 and principais[0] in html

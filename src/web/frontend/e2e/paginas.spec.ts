@@ -11,6 +11,30 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.locator("body")).not.toContainText(/ficheiro|ecrã|descarregar/i); // e nada de Portugal
   });
 
+  test("o preçário: escolher a ocasião, escrever preços, ver a pré-visualização e descarregar o PDF e a imagem", async ({
+    page,
+  }) => {
+    await page.goto("/precario");
+    await page.getByTestId("precario-ocasiao").selectOption("festa_popular");
+    await page.getByTestId("precario-preco-agua").fill("1,5");
+    await page.getByTestId("precario-pais").selectOption("BR");
+    await expect(page.getByTestId("precario-moeda")).toHaveValue("BRL");
+    await expect(page.getByTestId("precario-previa-img")).toBeVisible(); // desenhada pelo servidor (PNG a sério)
+    const [pdf] = await Promise.all([
+      page.waitForEvent("download"),
+      page.getByTestId("precario-pdf").click(),
+    ]);
+    expect(pdf.suggestedFilename()).toBe("precario.pdf");
+    const [img] = await Promise.all([
+      page.waitForEvent("download"),
+      page.getByTestId("precario-imagem").click(),
+    ]);
+    expect(img.suggestedFilename()).toBe("precario.png");
+    await page.getByTestId("precario-meu-nome").fill("Bolo da avó");
+    await page.getByTestId("precario-meu-juntar").click();
+    await expect(page.getByTestId("precario-erro")).toHaveCount(0);
+  });
+
   test("o sorteio dá os números de referência e a ligação repete-o", async ({ page }) => {
     await page.goto("/sorteio");
     await page.getByTestId("sorteio-n").fill("3");

@@ -70,6 +70,7 @@ _GENERO = [
     ("ligação", "link", "links", "m"), ("ligações", "link", "links", "m"),
     ("ecrã", "tela", "telas", "f"), ("ecrãs", "tela", "telas", "f"),
     ("separador", "aba", "abas", "f"), ("separadores", "aba", "abas", "f"),
+    ("preçário", "lista de preços", "listas de preços", "f"), ("preçários", "lista de preços", "listas de preços", "f"),
 ]
 
 

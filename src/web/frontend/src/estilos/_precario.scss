@@ -1,0 +1,140 @@
+// O gerador de preçários: o editor à esquerda (cartões), a pré-visualização à direita (fixa em ecrãs largos) e uma só coluna em telemóvel.
+.precario {
+  select {
+    color: var(--texto); // o cinzento global dos <select> não chega a 4,5:1 em todos os temas (medido no Arcade escuro)
+  }
+  .precario-grelha {
+    display: grid;
+    gap: 18px;
+    align-items: start;
+    @media (min-width: 62rem) {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    }
+  }
+  .precario-editor {
+    display: grid;
+    gap: 18px;
+  }
+  .cartao > label,
+  .cartao > .precario-opcoes {
+    display: grid;
+    gap: 4px;
+    margin: 8px 0;
+  }
+  .precario-opcoes {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    > label {
+      display: grid;
+      gap: 4px;
+    }
+  }
+  .precario-categoria {
+    border: var(--borda) solid var(--linha);
+    border-radius: var(--raio-c);
+    margin: 12px 0 0;
+    padding: 8px 10px 12px;
+    legend {
+      padding: 0 6px;
+      font-weight: 700;
+    }
+  }
+  .precario-fichas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  // as fichas dos artigos não são botões de ação: ficam como campos e, ligadas, com o destaque do tema (sem herdar o gradiente dos botões)
+  button.precario-ficha {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 4px 10px 4px 6px;
+    cursor: pointer;
+    background: var(--campo);
+    color: var(--texto);
+    border: var(--borda) solid var(--linha);
+    box-shadow: none;
+    text-shadow: none;
+    font-weight: 500;
+    &:hover {
+      border-color: var(--destaque);
+    }
+    &.ligada {
+      border-color: var(--destaque);
+      background: color-mix(in srgb, var(--destaque) 22%, var(--campo));
+      box-shadow: inset 0 0 0 1px var(--destaque);
+      font-weight: 700;
+    }
+    img {
+      flex: none;
+      border-radius: 6px;
+    }
+  }
+  .precario-sem-imagem {
+    display: inline-block;
+    flex: none;
+    width: 28px;
+    height: 28px;
+  }
+  .precario-meu {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: 1fr auto;
+    margin-top: 14px;
+    @media (max-width: 30rem) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .precario-linha {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) minmax(6rem, 8rem) auto;
+    gap: 8px;
+    align-items: center;
+    margin-top: 8px;
+    .precario-nome {
+      overflow-wrap: anywhere;
+    }
+  }
+  .precario-linha-categoria {
+    grid-template-columns: minmax(0, 1fr) minmax(6rem, 8rem);
+    font-weight: 600;
+  }
+  .precario-caixa {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+  }
+  .precario-inventada {
+    display: grid;
+    gap: 8px;
+    margin: 4px 0 8px;
+  }
+  .precario-previa {
+    @media (min-width: 62rem) {
+      position: sticky;
+      top: 12px;
+    }
+    .precario-imagem {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: var(--borda) solid var(--linha);
+      border-radius: var(--raio-c);
+      background: #fff;
+      transition: opacity 0.15s;
+      &.a-desenhar {
+        opacity: 0.55;
+      }
+    }
+  }
+  .precario-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+}

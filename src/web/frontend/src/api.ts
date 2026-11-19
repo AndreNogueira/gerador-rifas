@@ -148,6 +148,39 @@ export interface GuiaNaLista {
   titulo: string;
   resumo: string;
 }
+/** O catálogo do preçário na língua escolhida (`GET /api/precario/catalogo`): artigos por categoria (com o código do emoji que é a imagem), ocasiões, desenhos, moedas e países. */
+export interface PrecarioCatalogo {
+  categorias: { id: string; nome: string; artigos: { id: string; nome: string; emoji: string }[] }[];
+  ocasioes: { id: string; nome: string; desenho: string; artigos: string[]; meses: number[] }[];
+  sugerida: string;
+  desenhos: { id: string; nome: string }[];
+  moedas: { codigo: string; simbolo: string; decimais: number }[];
+  paises: Record<string, string>;
+  pais: string;
+  moeda: string;
+  limites: {
+    linhas: number;
+    titulo: number;
+    subtitulo: number;
+    rodape: number;
+    nome: number;
+    moeda_inventada: number;
+  };
+  formatos: string[];
+}
+/** O corpo de `POST /api/precario/{previa.png,pdf,imagem.png}`: os preços vão como o utilizador os escreveu (o servidor lê-os na língua do pedido). */
+export interface PedidoPrecario {
+  linhas: { artigo: string; nome: string; preco: string; categoria: string; emoji: string }[];
+  titulo: string;
+  subtitulo: string;
+  rodape: string;
+  desenho: string;
+  formato: string;
+  orientacao: string;
+  colunas: number;
+  imagens: boolean;
+  moeda: { codigo?: string; nome?: string; antes?: boolean; decimais?: number };
+}
 export interface ComentarioPublico {
   id: string;
   /** Segundos desde 1970. */
@@ -301,6 +334,12 @@ export const api = {
   listaCsv: (campos: Campos) => pedir<Blob>("POST", "/api/exportar/lista.csv", { json: campos, bruto: true }),
   folhaDeControlo: (campos: Campos) =>
     pedir<Blob>("POST", "/api/exportar/controlo.pdf", { json: campos, bruto: true }),
+  precarioCatalogo: (mes: number) => pedir<PrecarioCatalogo>("GET", `/api/precario/catalogo?mes=${mes}`),
+  precarioPrevia: (p: PedidoPrecario, sinal?: AbortSignal) =>
+    pedir<Blob>("POST", "/api/precario/previa.png", { json: p, bruto: true, sinal }),
+  precarioPdf: (p: PedidoPrecario) => pedir<Blob>("POST", "/api/precario/pdf", { json: p, bruto: true }),
+  precarioImagem: (p: PedidoPrecario) =>
+    pedir<Blob>("POST", "/api/precario/imagem.png", { json: p, bruto: true }),
   publico: () => pedir<Publico>("GET", "/api/publico"),
   comentarios: (antes = "") =>
     pedir<ListaComentarios>("GET", `/api/comentarios${antes ? `?antes=${encodeURIComponent(antes)}` : ""}`),

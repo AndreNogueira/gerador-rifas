@@ -336,6 +336,7 @@ def renderizar(html_base: str, pagina: Pagina, base: str, lg: str = "pt") -> str
 SEM_INDICE: dict[str, Pagina] = {p.caminho: p for p in (
     Pagina("/comentarios", "d_inicio", _corpo_opiniao("web_comentarios"), _nome_pagina("web_comentarios"), indexavel=False, no_mapa=False),
     Pagina("/opiniao", "d_inicio", _corpo_opiniao("web_op_titulo"), _nome_pagina("web_op_titulo"), indexavel=False, no_mapa=False),
+    Pagina("/precario", "d_inicio", _corpo_opiniao("web_precario_titulo"), _nome_pagina("web_precario_titulo"), indexavel=False, no_mapa=False),       # fica fora do Google até ter o seu texto de SEO (fase 6b)
     Pagina("/reportar-problema", "d_inicio", _corpo_opiniao("web_bug_titulo"), _nome_pagina("web_bug_titulo"), indexavel=False, no_mapa=False),
 )}
 
