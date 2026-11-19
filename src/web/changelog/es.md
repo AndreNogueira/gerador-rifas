@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.62.0 — 2026-11-19
+
+### Novedades
+- **Origen de las visitas en las estadísticas:** el panel de administración muestra ahora de dónde vienen las visitas, en categorías generales (búsqueda, redes sociales, correo, otros sitios o directas) y por campaña (utm_source), para medir una difusión. Nunca se guarda la dirección de la página de origen ni la IP; se actualizó la Política de privacidad.
+
 ## 3.61.0 — 2026-11-19
 
 ### Novedades

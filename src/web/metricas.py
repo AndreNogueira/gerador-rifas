@@ -237,6 +237,32 @@ def _somar(a: list[int], b: list[int]) -> list[int]:
     return [x + y for x, y in zip(a, b, strict=True)]
 
 
+_REDES = re.compile(r"(^|\.)(facebook|fb|instagram|twitter|x|linkedin|reddit|youtube|tiktok|whatsapp|telegram|pinterest|threads|discord)\.[a-z.]{2,8}$|^(t\.co|lnkd\.in|youtu\.be|wa\.me|t\.me)$")
+_BUSCAS = re.compile(r"(^|\.)(google|bing|duckduckgo|ecosia|yahoo|yandex|baidu|startpage|qwant|search\.brave)\.[a-z.]{2,8}$")
+_CAMPANHA = re.compile(r"[a-z0-9][a-z0-9_-]{0,29}")
+
+
+def categoria_de_origem(referrer: str | None, host_proprio: str = "") -> str:
+    """De onde veio a visita, em CATEGORIAS: `direta` (sem origem, ou o proprio site), `email`, `rede_social`, `pesquisa` ou `outro_site`. Recebe so o
+    nome do servidor (host) da pagina de origem, nunca o endereco completo; o que nao se reconhece e «outro_site» e o nome nao se guarda."""
+    h = (referrer or "").strip().lower().removeprefix("www.").split(":")[0]
+    if not h or (host_proprio and h == host_proprio.strip().lower().removeprefix("www.").split(":")[0]):
+        return "direta"
+    if h.startswith(("mail.", "webmail.", "outlook.")) or "webmail" in h:
+        return "email"
+    if _REDES.search(h):
+        return "rede_social"
+    if _BUSCAS.search(h):
+        return "pesquisa"
+    return "outro_site"
+
+
+def campanha_limpa(valor: str | None) -> str:
+    """O `utm_source` do endereco (o nome que o dono deu a uma campanha): so letras minusculas, algarismos, «_» e «-» (ate 30); qualquer outra coisa e ignorada."""
+    v = (valor or "").strip().lower()
+    return v if _CAMPANHA.fullmatch(v) else ""
+
+
 def pais_do_cabecalho(valor: str | None) -> str:
     """O país (ISO 3166, duas letras maiúsculas) que a rede do alojamento põe em `CF-IPCountry`; qualquer outra coisa (em falta, `XX` = desconhecido,
     `T1` = Tor, texto livre) é «??». Só esta forma fechada chega às métricas: o valor bruto de um cabeçalho nunca é guardado."""
@@ -632,7 +658,7 @@ class Metricas:
             paineis.append(novo_painel(*args, **kwargs))
 
         eventos = agrupado(("sessao", "previa", "template", "algarismos", "geracao", "descarga", "logotipo", "galeria", "editor", "verificacao",
-                            "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra", "comentario", "problema"), "a")
+                            "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra", "comentario", "problema", "origem"), "a")
         humanos = agrupado(("pagina",), "CASE WHEN c = 'robo' THEN 'Robôs' ELSE 'Pessoas' END")
         rotas = agrupado(("pagina",), "a", "AND c <> 'robo'")
         por_tema = agrupado(("sessao",), "b")
@@ -696,6 +722,12 @@ class Metricas:
         painel(g, "temas", "Visuais (temas)", por_chave(por_tema, "sessao"), "O visual escolhido em cada sessão (o «Premiado» é o de origem).")
         painel(g, "dispositivos", "Dispositivos", por_chave(por_aparelho, "sessao", topo=5), "O tipo de aparelho em cada sessão, pelo navegador (telemóvel, tablet, computador).")
         painel(g, "paises", "Países", por_chave(eventos, "pais"), "O país de cada sessão (código de duas letras que a rede do alojamento acrescenta; nunca o IP).", rotulos="pais")
+        nomes_origem = {"direta": "Direta", "pesquisa": "Pesquisa (Google, Bing…)", "rede_social": "Redes sociais", "email": "E-mail", "outro_site": "Outros sites"}
+        painel(g, "origens", "Origem das visitas", por_chave(eventos, "origem", topo=5, nome=lambda k: nomes_origem.get(k, k or "?")),
+               "De onde veio cada visita (uma por separador aberto), em categorias gerais: direta (sem origem), pesquisa, redes sociais, e-mail ou outros sites. Nunca o endereço da página de origem.")
+        campanhas = agrupado(("origem",), "b", "AND b <> ''")
+        painel(g, "campanhas", "Campanhas (utm_source)", por_chave(campanhas, "origem", topo=6),
+               "As visitas que chegaram por um endereço com «?utm_source=nome» (para medir uma divulgação: uma ligação com o nome que escolher). Só se guarda esse nome.")
         painel(g, "classes_ecra", "Tipos de ecrã", por_chave(eventos, "ecra", topo=6), "A classe de ecrã comunicada uma vez por separador (telemóvel, tablet, portátil, secretária…).")
         painel(g, "janelas", "Largura da janela", por_chave(janelas, "ecra", topo=6), "A largura da JANELA do browser, em escalões: mostra quem usa janelas estreitas num ecrã grande.")
         painel(g, "rotas", "Páginas mais vistas", por_chave(rotas, "pagina"), "As páginas públicas mais visitadas por pessoas (sem robôs).")

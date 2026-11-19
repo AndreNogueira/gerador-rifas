@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.62.0 — 2026-11-19
+
+### Mới
+- **Nguồn lượt truy cập trong thống kê:** bảng quản trị giờ hiển thị lượt truy cập đến từ đâu, theo các nhóm chung (tìm kiếm, mạng xã hội, email, trang khác hoặc trực tiếp) và theo chiến dịch (utm_source), để đo hiệu quả một đợt quảng bá. Địa chỉ trang nguồn và IP không bao giờ được lưu; Chính sách quyền riêng tư đã được cập nhật.
+
 ## 3.61.0 — 2026-11-19
 
 ### Mới

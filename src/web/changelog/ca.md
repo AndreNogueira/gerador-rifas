@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.62.0 — 2026-11-19
+
+### Novetats
+- **Origen de les visites a les estadístiques:** el tauler d'administració mostra ara d'on vénen les visites, en categories generals (cerca, xarxes socials, correu, altres llocs o directes) i per campanya (utm_source), per mesurar una difusió. L'adreça de la pàgina d'origen i la IP no es desen mai; s'ha actualitzat la Política de privadesa.
+
 ## 3.61.0 — 2026-11-19
 
 ### Novetats

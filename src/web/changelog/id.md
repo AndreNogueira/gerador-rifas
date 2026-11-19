@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.62.0 — 2026-11-19
+
+### Baru
+- **Asal kunjungan di statistik:** panel admin kini menampilkan dari mana kunjungan berasal, dalam kategori umum (pencarian, jejaring sosial, email, situs lain atau langsung) dan menurut kampanye (utm_source), untuk mengukur sebuah promosi. Alamat halaman asal dan IP tidak pernah disimpan; Kebijakan privasi diperbarui.
+
 ## 3.61.0 — 2026-11-19
 
 ### Baru
