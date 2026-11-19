@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.65.0 — 2026-11-19
+
+### İyileştirildi
+- **Daha hafif ve daha güvenli bir site:** yalnızca çekiliş bileti üretiyorsanız %24 daha az kod indirirsiniz (yönetim paneli, şablon düzenleyici ve çekiliş sayfası yalnızca açtığınızda yüklenir). Site artık güvenlik başlıkları da gönderiyor ve bağlantı denetleyicilerine ve paylaşım önizlemelerine yanıt veriyor.
+
 ## 3.64.0 — 2026-11-19
 
 ### Yeni

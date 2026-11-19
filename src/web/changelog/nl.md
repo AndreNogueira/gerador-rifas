@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.65.0 — 2026-11-19
+
+### Verbeterd
+- **Een lichtere en veiligere site:** wie alleen loten genereert, downloadt 24 % minder code (het beheerpaneel, de sjablooneditor en de trekking laden pas als je de pagina opent). De site stuurt nu ook beveiligingsheaders en antwoordt linkcontroles en deelvoorbeelden.
+
 ## 3.64.0 — 2026-11-19
 
 ### Nieuw

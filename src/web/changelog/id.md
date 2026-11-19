@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.65.0 — 2026-11-19
+
+### Ditingkatkan
+- **Situs yang lebih ringan dan lebih aman:** jika Anda hanya membuat tiket undian, kode yang diunduh 24 % lebih sedikit (panel admin, editor templat, dan halaman undian hanya dimuat saat dibuka). Situs kini juga mengirim header keamanan dan menjawab pemeriksa tautan serta pratinjau berbagi.
+
 ## 3.64.0 — 2026-11-19
 
 ### Baru

@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.65.0 — 2026-11-19
+
+### Melhorado
+- **Site mais leve e mais seguro:** quem só gera rifas descarrega menos 24 % de código (o painel de administração, o editor de templates e o sorteio só se carregam quando se abre a página). O site passou também a enviar cabeçalhos de segurança e a responder a verificadores de ligações e a pré-visualizações de partilha.
+
 ## 3.64.0 — 2026-11-19
 
 ### Novo

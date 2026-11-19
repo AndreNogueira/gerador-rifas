@@ -1,12 +1,14 @@
 # O JS e o CSS que a app entrega
 
-A app entrega ao browser **um só ficheiro de JS e um só de CSS** (`dist/assets/index-*.js`, `style-*.css`), sem mapas, e cada um já comprimido (`.br`, `.gz`). (Há ainda `dist/sw.js`, o *service worker* da PWA: um ficheiro à parte, legível, que as páginas não carregam como script, só registam com `?v=<versão>`; guarda a «casca» da app para abrir sem rede e **nunca** toca em `/api` (exceto os textos), `/health`, `/admin`, `/ajuda` e `/videos`. O servidor entrega-o com `Cache-Control: no-cache`.)
+A app entrega ao browser **um só CSS e um só script ligado no `index.html`** (`dist/assets/index-*.js`, `style-*.css`), sem mapas, mais **três páginas que se carregam à parte, só quando se abre a página** (`Admin-*.js`, o painel do dono; `Editor-*.js`, o editor de templates; `Sorteio-*.js`, o sorteio: `src/preguicoso.ts`, `React.lazy`) e um pedaço pequeno que o principal partilha com elas (`jsx-runtime-*.js`, ligado no `index.html` com `modulepreload` para se pedir em paralelo). Quem só gera rifas não descarrega o código dessas três páginas: **o primeiro carregamento (JS + CSS, em brotli) passou de 151 KB para 115 KB (−24 %)**; o painel pesa 32 KB, o editor 8 KB e o sorteio 4 KB em brotli. Cada ficheiro vem e cada um já comprimido (`.br`, `.gz`). (Há ainda `dist/sw.js`, o *service worker* da PWA: um ficheiro à parte, legível, que as páginas não carregam como script, só registam com `?v=<versão>`; guarda a «casca» da app para abrir sem rede e **nunca** toca em `/api` (exceto os textos), `/health`, `/admin`, `/ajuda` e `/videos`. O servidor entrega-o com `Cache-Control: no-cache`.)
 `pnpm build` encadeia: `tsc` → `vite build` → `scripts/comprimir-dist.mjs` → `scripts/verificar-dist.mjs`, que **falha** se:
 
-- não houver exatamente 1 `.js` e 1 `.css` em `dist/assets`, ou o `index.html` não ligar 1 de cada;
-- houver um mapa (`.map`), um `<style>` embutido ou um `modulepreload`;
-- faltar a versão `.br` ou `.gz` do JS/CSS, ou ela não descomprimir para o original;
-- o JS não estiver ofuscado (a chave `rifas.sessao` do nosso código aparece em claro).
+- não houver exatamente 1 `.js` principal e 1 `.css` em `dist/assets`, ou o `index.html` não ligar 1 script e 1 folha de estilos, ou faltar um dos ficheiros das partes preguiçosas (`PARTES` em `verificar-dist.mjs`: uma parte nova tem de se acrescentar ali de propósito) ou o `index.html` ligar algum deles;
+- houver um mapa (`.map`), um `<style>` embutido ou um `modulepreload` que não seja o do pedaço partilhado;
+- faltar a versão `.br` ou `.gz` de algum JS/CSS, ou ela não descomprimir para o original;
+- algum JS não estiver ofuscado (a chave `rifas.sessao` do nosso código aparece em claro).
+
+**Armadilhas das páginas à parte:** (1) o ofuscador não pode esconder os caminhos dos `import("./Admin")` na tabela de cadeias, senão o empacotador deixa de os resolver e a página nem entra no `dist` (`reservedStrings` em `ofuscar.ts`; o verificador falha se faltar uma parte); (2) depois de um deploy os ficheiros com o nome antigo desaparecem: um separador já aberto falha ao carregar a página e `preguicoso.ts` recarrega-o UMA vez (marca na sessão, sem ciclos; `e2e/leve.spec.ts` simula-o); (3) a página inicial não pode pedir nenhuma das partes (o mesmo e2e verifica-o).
 
 O CI e o `Dockerfile` correm o mesmo `pnpm build`. O servidor (`src/web/app.py`) escolhe a versão comprimida pelo `Accept-Encoding` e nunca serve `.map`, `.br` ou `.gz` como ficheiros soltos (`tests/test_web_estaticos.py`).
 

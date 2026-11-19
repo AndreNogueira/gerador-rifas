@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.65.0 — 2026-11-19
+
+### Îmbunătățit
+- **Un site mai ușor și mai sigur:** cine doar generează bilete descarcă cu 24 % mai puțin cod (panoul de administrare, editorul de șabloane și tragerea se încarcă doar când deschideți pagina). Site-ul trimite acum și antete de securitate și răspunde verificatoarelor de linkuri și previzualizărilor de partajare.
+
 ## 3.64.0 — 2026-11-19
 
 ### Noutăți

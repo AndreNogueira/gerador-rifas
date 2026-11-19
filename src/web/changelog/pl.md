@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.65.0 — 2026-11-19
+
+### Ulepszono
+- **Lżejsza i bezpieczniejsza strona:** kto tylko generuje losy, pobiera o 24 % mniej kodu (panel administracyjny, edytor szablonów i losowanie ładują się dopiero po otwarciu strony). Strona wysyła też teraz nagłówki bezpieczeństwa i odpowiada weryfikatorom linków oraz podglądom udostępniania.
+
 ## 3.64.0 — 2026-11-19
 
 ### Nowości

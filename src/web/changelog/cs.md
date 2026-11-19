@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.65.0 — 2026-11-19
+
+### Vylepšeno
+- **Lehčí a bezpečnější web:** kdo jen generuje losy, stahuje o 24 % méně kódu (administrační panel, editor šablon a losování se načtou až při otevření stránky). Web nyní také posílá bezpečnostní hlavičky a odpovídá kontrolám odkazů a náhledům při sdílení.
+
 ## 3.64.0 — 2026-11-19
 
 ### Novinky

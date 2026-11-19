@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.65.0 — 2026-11-19
+
+### Cải thiện
+- **Trang nhẹ hơn và an toàn hơn:** nếu bạn chỉ tạo vé rút thăm, bạn tải về ít hơn 24 % mã (bảng quản trị, trình soạn mẫu và trang rút thăm chỉ tải khi bạn mở). Trang giờ cũng gửi tiêu đề bảo mật và phản hồi trình kiểm tra liên kết và bản xem trước khi chia sẻ.
+
 ## 3.64.0 — 2026-11-19
 
 ### Mới

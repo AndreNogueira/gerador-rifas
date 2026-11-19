@@ -77,17 +77,22 @@ def test_aceita(cabecalho, codificacao, esperado):
     assert _aceita(cabecalho, codificacao) is esperado
 
 
-def test_o_dist_real_tem_um_js_um_css_sem_mapas(tmp_path):
+def test_o_dist_real_tem_um_js_principal_um_css_sem_mapas_e_so_as_partes_conhecidas(tmp_path):
     """Se o frontend foi compilado (`pnpm build`), confere o que o `verificar-dist.mjs` garante (nao falha se nao houver `dist`)."""
     dist_real = Path(modulo_app.__file__).parent / "frontend" / "dist"
     if not (dist_real / "index.html").is_file():
         pytest.skip("frontend por compilar")
     assets = dist_real / "assets"
-    assert len(list(assets.glob("*.js"))) == 1 and len(list(assets.glob("*.css"))) == 1
+    todos = sorted(f.name for f in assets.glob("*.js"))
+    principais = [n for n in todos if n.startswith("index-")]
+    assert len(principais) == 1 and len(list(assets.glob("*.css"))) == 1
+    assert {n.split("-")[0] for n in todos} == {"index", "Admin", "Editor", "Sorteio", "jsx"}           # o principal, as 3 paginas a parte e o pedaco partilhado: mais nada
     assert not list(dist_real.rglob("*.map"))
     html = (dist_real / "index.html").read_text(encoding="utf-8")
-    assert len(re.findall(r'<script[^>]+src="', html)) == 1 and len(re.findall(r'rel="stylesheet"', html)) == 1
+    assert len(re.findall(r'<script[^>]+src="', html)) == 1 and len(re.findall(r'rel="stylesheet"', html)) == 1 and principais[0] in html
+    assert not any(n in html for n in todos if not n.startswith(("index-", "jsx-")))                    # a pagina inicial nao liga as partes: carregam-se quando se abre a pagina
     c = TestClient(criar_app(frontend=dist_real, armazenamento=tmp_path / "dados"))
-    js = next(assets.glob("*.js")).name
-    r = c.get(f"/assets/{js}", headers={"Accept-Encoding": "br"})
-    assert r.headers["content-encoding"] == "br" and len(r.content) < next(assets.glob("*.js")).stat().st_size / 2
+    for nome in todos:
+        r = c.get(f"/assets/{nome}", headers={"Accept-Encoding": "br"})
+        assert r.status_code == 200 and r.headers["content-encoding"] == "br" and r.headers["content-type"].startswith("text/javascript"), nome
+        assert len(r.content) < (assets / nome).stat().st_size / 2 or (assets / nome).stat().st_size < 20000, nome

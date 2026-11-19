@@ -12,7 +12,9 @@ export default defineConfig({
     outDir: "dist",
     sourcemap: false, // um mapa publicado desfaria a ofuscação (e pesa mais de 1 MB)
     cssCodeSplit: false, // UM só CSS
-    modulePreload: false, // um só JS: não há nada para pré-carregar
+    // as partes preguiçosas (Admin, Editor, Sorteio) são ficheiros à parte e partilham com o principal um pedaço pequeno (o runtime do JSX): o Vite liga-o no
+    // index.html com `modulepreload` para o browser o pedir JÁ, em paralelo com o principal (senão só o descobria depois de o carregar: uma viagem a mais à rede)
+    modulePreload: { polyfill: false },
   },
   // 20 s: os testes dos temas compilam os 14 temas com o Sass, o que numa máquina ocupada passa dos 5 s por omissão
   test: {
