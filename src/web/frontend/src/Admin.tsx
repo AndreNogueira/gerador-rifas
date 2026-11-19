@@ -2,6 +2,7 @@ import { type FormEvent, type ReactNode, useCallback, useEffect, useState } from
 import { AdminComentarios } from "./AdminComentarios";
 import { AdminErros } from "./AdminErros";
 import { AdminEvolucao } from "./AdminEvolucao";
+import { AdminQuotas } from "./AdminQuotas";
 import { AdminRelatorio } from "./AdminRelatorio";
 import { AdminSeo } from "./AdminSeo";
 import {
@@ -432,6 +433,7 @@ export function Admin() {
 
       {vista === "geral" && (
         <>
+          <AdminQuotas aoSairDaSessao={() => setFase("entrar")} />
           <Seccao
             id="agora"
             titulo="Agora"

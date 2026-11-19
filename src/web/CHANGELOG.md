@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.58.0 — 2026-11-19
+
+### Novo
+- **Quotas do alojamento gratuito no painel de administração:** vê-se quantas das 750 horas mensais do Render o serviço já gastou (com a projeção até ao fim do mês) e quanto espaço a base de dados ocupa no plano grátis do Neon, com aviso por e-mail no relatório diário antes de as quotas acabarem.
+
 ## 3.57.0 — 2026-11-19
 
 ### Novo

@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.58.0 — 2026-11-19
+
+### Neu
+- **Kontingente des Gratis-Hostings im Admin-Panel:** zu sehen ist, wie viele der 750 monatlichen Render-Stunden der Dienst verbraucht hat (mit Hochrechnung bis Monatsende) und wie viel Platz die Datenbank im Gratisplan von Neon belegt, mit Warnung im täglichen E-Mail-Bericht, bevor die Kontingente ausgehen.
+
 ## 3.57.0 — 2026-11-19
 
 ### Neu

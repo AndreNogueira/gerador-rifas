@@ -226,6 +226,22 @@ beforeEach(() => {
       }
       if (!autenticado) return json({ detail: "Rota inexistente" }, 404);
       if (url === "/api/admin/estado") return json(ESTADO);
+      if (url === "/api/admin/quotas")
+        return json({
+          render: {
+            mes: "2026-11",
+            gastas: 10,
+            limite: 750,
+            pct: 1,
+            projecao: null,
+            horas_do_mes: 720,
+            decorridas: 12,
+            persistente: true,
+            dados_desde: null,
+          },
+          neon: null,
+          avisos: [],
+        });
       if (url.startsWith("/api/admin/dados"))
         return json({ ...DADOS, intervalo: new URL(url, "http://x").searchParams.get("intervalo") });
       return json({}, 404);

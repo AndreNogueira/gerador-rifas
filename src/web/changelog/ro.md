@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.58.0 — 2026-11-19
+
+### Noutăți
+- **Cotele găzduirii gratuite în panoul de administrare:** se vede câte din cele 750 de ore lunare Render a consumat serviciul (cu proiecția până la sfârșitul lunii) și cât spațiu ocupă baza de date în planul gratuit Neon, cu avertisment în raportul zilnic prin e-mail înainte să se epuizeze cotele.
+
 ## 3.57.0 — 2026-11-19
 
 ### Noutăți

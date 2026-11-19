@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.58.0 — 2026-11-19
+
+### Novedades
+- **Cuotas del alojamiento gratuito en el panel de administración:** muestra cuántas de las 750 horas mensuales de Render ha gastado el servicio (con la proyección hasta fin de mes) y cuánto espacio ocupa la base de datos en el plan gratuito de Neon, con aviso en el informe diario por correo antes de que se agoten.
+
 ## 3.57.0 — 2026-11-19
 
 ### Novedades

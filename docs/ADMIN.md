@@ -71,6 +71,13 @@ A aba **Relatório diário** mostra o estado do e-mail diário (ligado ou não, 
 
 Os eventos brutos apagam-se aos 90 dias e os pedidos/sistema aos 35. Por isso, depois das 00:05 (`RELATORIO_FUSO`) o servidor grava **uma linha-resumo por dia** na tabela `historico_diario` (o que a «Evolução diária» mostra desse dia, só o que não é zero; ≈ 3 KB por dia, ≈ 1 MB por ano) e, na primeira vez, também os dias que ainda estão na base (até 90). A vista com mais de 90 dias (`GET /api/admin/evolucao?dias=365`, até 730) lê daí (`historico.py`): os dias são os do fuso do relatório (não os do browser), o dia em curso não aparece e os dias anteriores ao histórico aparecem vazios («sem dados», não zero). Funciona sem o e-mail. Sem `DATABASE_URL` vive no disco efémero (perde-se ao reiniciar).
 
+## Quotas do alojamento gratuito (`/admin` → «Visão geral»)
+
+O cartão «Quotas do alojamento» (`quotas.py`, `GET /api/admin/quotas`, também de leitura) mostra:
+- **Horas do Render no mês (750 por conta, mês civil UTC):** conta as horas distintas do mês com pelo menos uma amostra do sistema (de 30 em 30 s, só com o serviço acordado), com a **projeção** ao ritmo atual e um aviso a 90 % (`RENDER_HORAS_LIMITE` muda os 750). É uma estimativa **deste** serviço: o limite é da conta, outros serviços também gastam. Sem `DATABASE_URL` só conta desde o último reinício; se a base só existe desde meio do mês, o cartão diz desde quando. Um serviço sempre acordado (anti-sono ligado) gasta ≈ 744 h por mês.
+- **Espaço do Neon (0,5 GB no plano grátis):** `pg_database_size` e as 8 tabelas maiores, com aviso a 80 % (`NEON_LIMITE_MB` muda os 512). Só com `DATABASE_URL`. As horas de computação do Neon (191,9 h/mês) só se veem no painel do Neon.
+Os avisos (90 % das horas, 80 % do espaço) vão também no **relatório diário**; a «Evolução diária» tem o painel «Horas acordado (estimativa)» por dia (e fica no histórico).
+
 ## Os ciclos e o Neon gratuito
 
 O Neon adormece a base ao fim de uns 5 minutos sem consultas (é assim que poupa as horas de computação do plano grátis). Por isso os ciclos do histórico, do relatório diário, dos resumos e dos alertas **lembram-se em memória do que já trataram** (`HistoricoDiario.feito_ate`, `EstadoRelatorio.dia_tratado`/`periodicos_tratados`, `EstadoAlertas.avisados`): depois de tratado o dia, só voltam a consultar a base depois da meia-noite seguinte (e um alerta que continua mau só pergunta uma vez por espera de 6 horas). Um arranque novo pergunta uma vez e lembra-se. `tests/test_web_sem_consultas.py` conta as consultas.

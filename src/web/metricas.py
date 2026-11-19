@@ -338,6 +338,23 @@ class Metricas:
         """Se os dados sobrevivem a um reinicio do servico (base externa): o painel deixa de avisar que se perdem."""
         return self._armazem.tipo == "postgres"
 
+    def horas_acordado(self, desde: int) -> int:
+        """Quantas horas distintas desde `desde` tem pelo menos uma amostra do sistema (de 30 em 30 s, so com o servico acordado): o gasto de horas do Render."""
+        r = self._consultar("SELECT COUNT(DISTINCT ts / 3600) FROM sistema WHERE ts >= ?", (int(desde),))
+        return int(r[0][0]) if r and r[0][0] else 0
+
+    def espaco_bd(self) -> dict | None:
+        """O espaco que a base ocupa (so no Postgres): o total e as tabelas maiores, em MB. None no SQLite ou se a base nao responde."""
+        if not self.persistente:
+            return None
+        total = self._consultar("SELECT pg_database_size(current_database())", atualizar=False)
+        if not total:
+            return None
+        tabelas = self._consultar("SELECT c.relname, pg_total_relation_size(c.oid) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace "
+                                  "WHERE n.nspname = 'public' AND c.relkind = 'r' ORDER BY 2 DESC LIMIT 8", atualizar=False)
+        mb = 1024 * 1024
+        return {"total_mb": round(int(total[0][0]) / mb, 1), "tabelas": [{"nome": n, "mb": round(int(b) / mb, 2)} for n, b in tabelas]}
+
     def estado_bd(self) -> dict:
         return {"tipo": self._armazem.tipo, "erro": self.erro_bd, "intervalo_min": round(self._intervalo_bd_s / 60) if self.persistente else 0}
 
@@ -716,6 +733,11 @@ class Metricas:
         painel(si, "cpu", "CPU", {"Média": col(0), "Máxima": col(1)}, "Quanto do processador se usou em cada dia (a média das amostras e o pico). Só há amostras dos últimos 35 dias.", "linhas", " %", "media", agregados={"Máxima": "max"})
         painel(si, "memoria", "Memória (pico do dia)", {"Servidor": col(2), "Motor": col(3), "Contentor": col(4)}, "O máximo de memória em cada dia, em MB: a API, o processo do motor e o contentor inteiro (o Render gratuito tem 512 MB).", "linhas", " MB", "max")
         painel(si, "disco", "Disco usado (pico do dia)", {"Ficheiros temporários": col(5)}, "O espaço ocupado pelos ficheiros das sessões (em MB).", "linhas", " MB", "max")
+        horas = [0.0] * dias
+        for d, n in ler("SELECT (ts + ?) / 86400 AS d, COUNT(DISTINCT ts / 3600) FROM sistema WHERE ts >= ? GROUP BY d", (desvio, desde)):
+            if pos(d) is not None:
+                horas[pos(d)] = float(n)
+        painel(si, "horas", "Horas acordado (estimativa)", {"Horas": horas}, "Quantas horas de cada dia o serviço esteve acordado (com pelo menos uma amostra do sistema): é o que o Render gratuito conta nas 750 h por mês (só deste serviço; o limite é da conta).", "barras", " h")
         painel(si, "simultaneos", "Em simultâneo (pico do dia)", {"Sessões": col(6, 0), "Gerações": col(7, 0)}, "O máximo de sessões abertas e de gerações em curso ao mesmo tempo, em cada dia.", "linhas", "", "max")
 
         if extras is not None:

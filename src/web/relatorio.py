@@ -205,6 +205,16 @@ def alertas(ev: dict, paineis: dict[str, dict], dia: date, inicio_ts: int) -> li
 
 
 # ------------------------------------------------------------------ montar o relatório
+def _avisos_de_quotas(metricas) -> list[tuple[str, str]]:
+    """Os avisos das quotas do alojamento (horas do Render, espaço do Neon): ver `quotas.py`. Nunca estragam o relatório."""
+    try:
+        from . import quotas
+
+        return [("aviso", t) for t in quotas.estado(metricas)["avisos"]]
+    except Exception:  # noqa: BLE001
+        return []
+
+
 def montar(metricas, extras, dia: date, fuso: ZoneInfo) -> dict:
     """Os dados do relatório do `dia` (já calculados: as séries, os destaques e os alertas)."""
     desvio, inicio, fim = janela_do_dia(dia, fuso)
@@ -228,7 +238,7 @@ def montar(metricas, extras, dia: date, fuso: ZoneInfo) -> dict:
         unidade = paineis.get(painel, {}).get("unidade", "")
         destaques.append({"rotulo": rotulo, "valor": valor, "media": media, "variacao": _variacao(valor, media), "unidade": unidade})
     return {"dia": dia, "dias_lista": ev["dias_lista"], "grupos": grupos, "inativos": inativos, "destaques": destaques,
-            "alertas": alertas(ev, paineis, dia, inicio), "fuso": fuso.key, "nome": "relatório diário", "titulo": titulo_do_dia(dia), "curto": titulo_do_dia(dia, True),
+            "alertas": alertas(ev, paineis, dia, inicio) + _avisos_de_quotas(metricas), "fuso": fuso.key, "nome": "relatório diário", "titulo": titulo_do_dia(dia), "curto": titulo_do_dia(dia, True),
             "colunas": ("Dia", "Média 7 d", "Variação", "8 dias"),
             "legenda": "«Média 7 d» é a média dos 7 dias anteriores; a miniatura mostra os 8 dias, o último é este."}
 
