@@ -52,6 +52,7 @@ class EstadoAlertas:
     bd_falhas_seguidas: int = 0
     proxima_tentativa: float = 0.0
     ultimo_erro: str = ""
+    avisados: dict[str, float] = field(default_factory=dict)              # quando se avisou (ou se soube que se avisou) de cada condição: sem consultas à base durante a espera
     enviados: list[tuple[float, str]] = field(default_factory=list)       # (quando, chave) desde o arranque, para o painel
 
 
@@ -114,8 +115,12 @@ def verificar_e_enviar(alertas, metricas, estado: EstadoAlertas, agora: float | 
     novos: dict[str, str] = {}
     try:
         for chave, detalhe in ativas.items():
+            if agora - estado.avisados.get(chave, -1e18) < ESPERA_ENTRE_REPETICOES_S:
+                continue                                           # uma condição que continua má não faz uma consulta por minuto (o Neon pode adormecer)
             if alertas.reservar(chave, agora):
                 novos[chave] = detalhe
+            else:
+                estado.avisados[chave] = agora - ESPERA_ENTRE_REPETICOES_S + 3600          # outro arranque já avisou: volta-se a ver daqui a 1 hora
     except Exception:  # noqa: BLE001 - a base em baixo: tenta-se no minuto seguinte (o alerta de «base de dados» sai na mesma, se for o caso)
         estado.proxima_tentativa = agora + 60
         return "falhou"
@@ -126,6 +131,7 @@ def verificar_e_enviar(alertas, metricas, estado: EstadoAlertas, agora: float | 
         email_envio.enviar(config.email_chave(), config.relatorio_remetente(), config.relatorio_destinos(), assunto, corpo, texto, abrir)
     except Exception as e:  # noqa: BLE001 - nada derruba o ciclo; só a classe fica
         for chave in novos:
+            estado.avisados.pop(chave, None)
             try:
                 alertas.libertar(chave)                         # a próxima tentativa volta a avisar
             except Exception:  # noqa: BLE001
@@ -134,6 +140,7 @@ def verificar_e_enviar(alertas, metricas, estado: EstadoAlertas, agora: float | 
         estado.proxima_tentativa = agora + ESPERA_APOS_FALHA_S
         return "falhou"
     estado.ultimo_erro = ""
+    estado.avisados.update({c: agora for c in novos})
     estado.enviados += [(agora, c) for c in novos]
     del estado.enviados[:-20]
     return "enviado"

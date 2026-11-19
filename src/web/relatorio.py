@@ -19,7 +19,7 @@ import html
 import logging
 import time
 import urllib.request
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 from datetime import time as hora_do_dia
 from zoneinfo import ZoneInfo
@@ -76,6 +76,8 @@ class EstadoRelatorio:
     proxima_tentativa: float = 0.0
     ultimo_erro: str = ""
     ultimo_erro_em: float = 0.0
+    dia_tratado: str = ""                                    # o último relatório diário já enviado (ou visto como enviado): sem consultas até à meia-noite seguinte
+    periodicos_tratados: set[str] = field(default_factory=set)       # chaves dos resumos semanal/mensal já decididos (`relatorio_periodo.py`)
 
 
 # ------------------------------------------------------------------ o dia e o fuso
@@ -363,8 +365,11 @@ def enviar_se_devido(relatorios, metricas, extras, estado: EstadoRelatorio, agor
         return "espera"
     dia = local.date() - timedelta(days=1)
     chave = dia.isoformat()
+    if estado.dia_tratado == chave:
+        return "ja_enviado"                                  # já tratado: nem consulta a base (o Neon pode adormecer entre uma meia-noite e a seguinte)
     try:
         if not relatorios.reservar(chave, agora):
+            estado.dia_tratado = chave
             return "ja_enviado"
     except Exception:  # noqa: BLE001 - a base de dados em baixo: tenta-se daqui a pouco
         estado.proxima_tentativa = agora + 300
@@ -377,6 +382,7 @@ def enviar_se_devido(relatorios, metricas, extras, estado: EstadoRelatorio, agor
         motivo = type(e).__name__
     else:
         estado.ultimo_erro = ""
+        estado.dia_tratado = chave
         log.info("relatorio diario enviado: %s", chave)
         return "enviado"
     try:
