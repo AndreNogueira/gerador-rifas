@@ -28,6 +28,7 @@ from .observabilidade import Observabilidade
 from .opiniao import POR_IP_E_HORA, LimiteHorario
 from .alertas import EstadoAlertas
 from .copia import EstadoCopia
+from .indexnow import EstadoIndexNow
 from .relatorio import EstadoRelatorio
 from .modelos import Calculo, Campos, Desempenho, Ecra, ErroApi, Sessao, TrabalhoEstado
 from .sessoes import (Geracao, SessaoEstado, Sessoes, calcular, folha_dos_campos, ler_progresso, texto_de_erro,
@@ -60,6 +61,7 @@ class Servico:
     objetivos: object | None = None                                         # `objetivos.Objetivos`: as metas diarias do dono
     estado_copia: object = field(default_factory=EstadoCopia)               # a copia de seguranca semanal (copia.py): o que ja se decidiu e o ultimo erro
     estado_relatorio: object = field(default_factory=EstadoRelatorio)       # o ultimo erro e a proxima tentativa do envio
+    estado_indexnow: object = field(default_factory=EstadoIndexNow)         # o aviso do IndexNow a cada versao (indexnow.py)
     criar_issue: object = github_issues.criar_issue                         # troca-se nos testes: nunca se chama o GitHub a sério
 
     def __post_init__(self) -> None:
