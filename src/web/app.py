@@ -186,8 +186,13 @@ async def _vigiar(servico: Servico, cada_s: float) -> None:
             await asyncio.to_thread(alertas.verificar_e_enviar, servico.alertas, servico.metricas, servico.estado_alertas)
 
 
+SEO_LEITURA_S = 15 * 60                              # de quanto em quanto tempo se voltam a ler os textos de SEO da base
+
+
 async def _atualizar_seo(servico: Servico, cada_s: float) -> None:
-    """Le de minuto a minuto os textos de SEO editados no painel (a 1.a vez ja no arranque). Nenhum pedido de pagina consulta a base."""
+    """Le de 15 em 15 minutos os textos de SEO editados no painel (a 1.a vez ja no arranque). Nenhum pedido de pagina consulta a base. Uma edicao feita no painel
+    aplica-se logo neste servico (`SeoBd.definir`/`repor` chamam `atualizar`): esta leitura so apanha mudancas feitas por outro processo. Ler menos vezes deixa o
+    Neon gratuito adormecer entre consultas (as horas de computacao do plano gratis contam-se enquanto esta acordado)."""
     while True:
         await asyncio.to_thread(servico.seo.atualizar)
         await asyncio.sleep(cada_s)
@@ -222,7 +227,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             assets_rem.garantir()                            # em segundo plano: o servidor arranca (e o /health responde) sem esperar
         armazem.limpar_antigas(0)                            # pastas de um arranque anterior (nao ha sessoes em memoria para elas)
         limpeza = asyncio.create_task(_limpeza_periodica(servico, 60))
-        seo_tarefa = asyncio.create_task(_atualizar_seo(servico, 60))
+        seo_tarefa = asyncio.create_task(_atualizar_seo(servico, SEO_LEITURA_S))
         amostrador = asyncio.create_task(_amostrar(servico, 30))
         relatorio_tarefa = asyncio.create_task(_relatorio_diario(servico, 300))
         vigia = asyncio.create_task(_vigiar(servico, 60))

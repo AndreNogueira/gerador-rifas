@@ -178,3 +178,13 @@ def test_seo_no_postgres():
     assert seo_textos.sobreposto("d_inicio", "pt") == DESC_OK + " Edição."
     assert bd._executar("SELECT count(*) FROM seo_textos_bd")[0][0] == 1
     assert bd.repor("d_inicio", "pt") and not bd.repor("d_inicio", "pt") and seo_textos.sobreposto("d_inicio", "pt") is None
+
+
+def test_a_leitura_periodica_e_espacada_e_uma_edicao_aplica_se_logo(cliente):
+    from web import app
+
+    assert app.SEO_LEITURA_S >= 600                                  # ler a cada minuto impediria o Neon gratuito de adormecer
+    novo = "Aprenda a fazer rifas numeradas com o Canva em quatro passos simples e sem instalar nada no computador."
+    assert f'content="{novo}"' not in cliente.get("/tutorial").text
+    cliente.serv.seo.definir("d_tutorial", "pt", novo)               # sem esperar pelo ciclo de leitura
+    assert f'content="{novo}"' in cliente.get("/tutorial").text
