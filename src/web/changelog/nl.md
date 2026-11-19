@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.64.0 — 2026-11-19
+
+### Nieuw
+- **Wekelijkse back-up van de gegevens van het beheerpaneel:** elke maandag slaat de dienst, in de opslag van dezelfde leverancier als de database, een kopie op van de geschiedenis, doelen, het actielogboek, reacties en SEO-teksten (laatste 8 weken), met een script om te herstellen.
+
 ## 3.63.0 — 2026-11-19
 
 ### Nieuw

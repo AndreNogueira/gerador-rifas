@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.64.0 — 2026-11-19
+
+### Novinky
+- **Týdenní záloha dat administračního panelu:** každé pondělí služba uloží do úložiště stejného poskytovatele jako databáze kopii historie, cílů, protokolu akcí, komentářů a SEO textů (posledních 8 týdnů), se skriptem pro obnovení.
+
 ## 3.63.0 — 2026-11-19
 
 ### Novinky

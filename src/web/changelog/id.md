@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.64.0 — 2026-11-19
+
+### Baru
+- **Cadangan mingguan data panel admin:** setiap Senin layanan menyimpan, di penyimpanan penyedia yang sama dengan database, salinan riwayat, target, catatan tindakan, komentar, dan teks SEO (8 minggu terakhir), dengan skrip untuk memulihkan.
+
 ## 3.63.0 — 2026-11-19
 
 ### Baru

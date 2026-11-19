@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.64.0 — 2026-11-19
+
+### Novetats
+- **Còpia de seguretat setmanal de les dades del tauler d'administració:** cada dilluns el servei desa, a l'emmagatzematge del mateix proveïdor que la base de dades, una còpia de l'historial, els objectius, el registre d'accions, els comentaris i els textos de SEO (últimes 8 setmanes), amb un script per restaurar-la.
+
 ## 3.63.0 — 2026-11-19
 
 ### Novetats

@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.64.0 — 2026-11-19
+
+### Nowości
+- **Tygodniowa kopia zapasowa danych panelu administracyjnego:** w każdy poniedziałek usługa zapisuje w magazynie tego samego dostawcy co baza danych kopię historii, celów, dziennika działań, komentarzy i tekstów SEO (ostatnie 8 tygodni), ze skryptem do przywracania.
+
 ## 3.63.0 — 2026-11-19
 
 ### Nowości

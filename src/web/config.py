@@ -204,6 +204,16 @@ def relatorio_fuso() -> str:
     return v
 
 
+def backup_s3() -> dict | None:
+    """O destino das copias de seguranca semanais (Neon Object Storage, S3): `BACKUP_S3_ENDPOINT` (https), `BACKUP_S3_BUCKET`, `BACKUP_S3_REGION` e as duas
+    credenciais `BACKUP_S3_ACCESS_KEY_ID` e `BACKUP_S3_SECRET_ACCESS_KEY` (palavras-passe: so no Render, NUNCA no repositorio, num log ou numa resposta; uma
+    credencial so com `storage:write`). Falta alguma (ou o endpoint nao e https) = sem copias: devolve None."""
+    e = {n: os.environ.get(f"BACKUP_S3_{n}", "").strip() for n in ("ENDPOINT", "BUCKET", "REGION", "ACCESS_KEY_ID", "SECRET_ACCESS_KEY")}
+    if not all(e.values()) or not re.fullmatch(r"https://[A-Za-z0-9.\-]+(:\d+)?", e["ENDPOINT"].rstrip("/")) or not re.fullmatch(r"[a-z0-9][a-z0-9.\-]{2,62}", e["BUCKET"]):
+        return None
+    return {"endpoint": e["ENDPOINT"].rstrip("/"), "bucket": e["BUCKET"], "regiao": e["REGION"], "id": e["ACCESS_KEY_ID"], "segredo": e["SECRET_ACCESS_KEY"]}
+
+
 def donativo_url() -> str:
     """Ligacao para donativos (MB Way, PayPal, Ko-fi...): DONATIVO_URL. So `https://` (outra coisa ignora-se); vazio = sem botao."""
     v = os.environ.get("DONATIVO_URL", "").strip()

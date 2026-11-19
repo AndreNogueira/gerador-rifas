@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.64.0 — 2026-11-19
+
+### Nouveautés
+- **Sauvegarde hebdomadaire des données du panneau d'administration :** chaque lundi le service enregistre, dans le stockage du même fournisseur que la base de données, une copie de l'historique, des objectifs, du journal des actions, des commentaires et des textes SEO (8 dernières semaines), avec un script pour la restaurer.
+
 ## 3.63.0 — 2026-11-19
 
 ### Nouveautés

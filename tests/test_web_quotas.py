@@ -116,7 +116,7 @@ def test_postgres_espaco_da_base_e_tabelas():
     m.amostrar(10.0, 100.0, 50.0, 200.0, 40.0, 1, 0)
     m.descarregar(tudo=True)
     e = m.espaco_bd()
-    assert e["total_mb"] > 0 and any(t["nome"] == "sistema" for t in e["tabelas"]) and all(t["mb"] >= 0 for t in e["tabelas"])
+    assert e["total_mb"] > 0 and 1 <= len(e["tabelas"]) <= 8 and all(isinstance(t["nome"], str) and t["mb"] >= 0 for t in e["tabelas"])      # as 8 maiores: quais depende do que mais houver na base
     assert m.horas_acordado(0) >= 1
     est = quotas.estado(m)
     assert est["neon"]["limite_mb"] == 512 and est["neon"]["pct"] >= 0

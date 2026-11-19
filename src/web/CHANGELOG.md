@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.64.0 — 2026-11-19
+
+### Novo
+- **Cópia de segurança semanal dos dados do painel de administração:** todas as segundas-feiras o serviço grava, no armazenamento do mesmo fornecedor da base de dados, uma cópia do histórico, dos objetivos, do registo de ações, dos comentários e dos textos de SEO (últimas 8 semanas), com um script para restaurar.
+
 ## 3.63.0 — 2026-11-19
 
 ### Novo
