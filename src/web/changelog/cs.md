@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.61.0 — 2026-11-19
+
+### Novinky
+- **Protokol akcí v administračním panelu:** kdo, co a kdy v panelu udělal, se uchovává 400 dnů (přihlášení, smazané nebo skryté komentáře, klíče API, SEO texty, cíle), bez údajů návštěvníků a hesel.
+
 ## 3.60.0 — 2026-11-19
 
 ### Novinky

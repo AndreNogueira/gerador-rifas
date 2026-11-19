@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.61.0 — 2026-11-19
+
+### Nieuw
+- **Actielogboek in het beheerpaneel:** wie wat wanneer in het paneel deed, wordt 400 dagen bewaard (aanmeldingen, verwijderde of verborgen reacties, API-sleutels, SEO-teksten, doelen), zonder bezoekersgegevens of wachtwoorden.
+
 ## 3.60.0 — 2026-11-19
 
 ### Nieuw

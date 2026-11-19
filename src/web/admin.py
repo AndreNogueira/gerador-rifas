@@ -14,6 +14,7 @@ vai para o repositorio). Sem ela (ou com menos de 12 caracteres) o painel NAO EX
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import hashlib
 import hmac
 import time
@@ -23,7 +24,7 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, Field
 
-from . import VERSAO, alertas, config, email_envio, historico, objetivos, opiniao, quotas, relatorio, relatorio_periodo
+from . import VERSAO, alertas, auditoria, config, email_envio, historico, objetivos, opiniao, quotas, relatorio, relatorio_periodo
 from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
 from .metricas import DIAS_MAXIMOS, INTERVALOS, novo_painel
@@ -113,6 +114,13 @@ def exigir_admin(request: Request, resposta: Response, serv: Servico = Depends(s
     return papel
 
 
+def _registar(serv: Servico, acao: str, papel: str = PAPEL_ADMIN, detalhe: str = "") -> None:
+    """Conta a acao nas metricas («Acessos ao painel») e guarda-a no registo permanente (`auditoria.py`): nunca parte o pedido se a base falhar."""
+    serv.metricas.evento("admin", acao)
+    with contextlib.suppress(Exception):
+        serv.auditoria.registar(acao, papel, detalhe)
+
+
 class Credencial(BaseModel):
     token: str
 
@@ -137,7 +145,7 @@ async def entrar(c: Credencial, request: Request, resposta: Response, serv: Serv
     expira = int(time.time()) + DURACAO_S
     resposta.set_cookie(COOKIE, _assinar(expira, papel), max_age=DURACAO_S, path="/api/admin", httponly=True, samesite="strict",
                         secure=request.url.scheme == "https")
-    serv.metricas.evento("admin", "entrou" if e_admin else "entrou_leitura")
+    _registar(serv, "entrou" if e_admin else "entrou_leitura", papel)
     return {"ok": True, "expira": expira, "papel": papel}
 
 
@@ -261,8 +269,18 @@ def definir_objetivo(o: NovoObjetivo, serv: Servico = Depends(servico)) -> dict:
         raise HTTPException(422, "A meta tem de ser maior que zero", headers=_SEM_CACHE)
     else:
         serv.objetivos.definir(o.chave, o.meta)
-    serv.metricas.evento("admin", "objetivo")
+    _registar(serv, "objetivo", detalhe=f"{o.chave}: {'apagado' if o.meta is None else o.meta}")
     return {"chave": o.chave, "meta": o.meta}
+
+
+@router.get("/auditoria", dependencies=[Depends(exigir)])
+def registo_de_acoes(limite: int = Query(200, ge=1, le=1000), serv: Servico = Depends(servico)) -> dict:
+    """O registo das acoes do painel (quem, o que, quando; sem dados de visitantes): as mais recentes primeiro. A leitura tambem o ve."""
+    try:
+        return {"total": serv.auditoria.total(), "retencao_dias": auditoria.RETENCAO_S // 86400, "persistente": bool(config.database_url()),
+                "itens": serv.auditoria.recentes(limite)}
+    except Exception:  # noqa: BLE001 - a base em baixo: o painel mostra o aviso
+        raise HTTPException(503, "O registo nao respondeu: tente outra vez daqui a pouco.", headers=_SEM_CACHE) from None
 
 
 @router.get("/quotas", dependencies=[Depends(exigir)])
@@ -288,7 +306,7 @@ def comentarios_lidos(serv: Servico = Depends(servico)) -> dict:
     """Marca todos os comentarios novos como lidos."""
     n = serv.comentarios.marcar_lidos()
     if n:
-        serv.metricas.evento("admin", "comentarios_lidos")
+        _registar(serv, "comentarios_lidos", detalhe=f"{n} comentário(s)")
     return {"marcados": n}
 
 
@@ -299,7 +317,7 @@ def estado_do_comentario(id_: str, e: EstadoComentario, serv: Servico = Depends(
         raise HTTPException(422, "Estado invalido", headers=_SEM_CACHE)
     if not serv.comentarios.definir_estado(id_, e.estado):
         raise HTTPException(404, "Comentário inexistente", headers=_SEM_CACHE)
-    serv.metricas.evento("admin", f"comentario_{e.estado}")
+    _registar(serv, f"comentario_{e.estado}", detalhe=id_)
     return {"estado": e.estado}
 
 
@@ -308,7 +326,7 @@ def apagar_comentario(id_: str, serv: Servico = Depends(servico)) -> Response:
     """Apaga um comentario (spam, abuso, nome de outra pessoa...). So o dono: a leitura recebe 403."""
     if not serv.comentarios.apagar(id_):
         raise HTTPException(404, "Comentário inexistente", headers=_SEM_CACHE)
-    serv.metricas.evento("admin", "comentario_apagado")
+    _registar(serv, "comentario_apagado", detalhe=id_)
     return Response(status_code=204, headers=_SEM_CACHE)
 
 
@@ -408,7 +426,7 @@ def relatorio_enviar(dia: str = "", tipo: str = "dia", serv: Servico = Depends(s
     except (email_envio.ErroEmail, relatorio.ErroRelatorio) as e:
         serv.metricas.evento("admin", "relatorio_teste_falhou")
         raise HTTPException(502, f"Nao foi possivel enviar ({e}).", headers=_SEM_CACHE) from None
-    serv.metricas.evento("admin", "relatorio_teste")
+    _registar(serv, "relatorio_teste", detalhe=f"{tipo} {dia}".strip())
     return {"enviado": True}
 
 
@@ -422,7 +440,7 @@ def alerta_teste(serv: Servico = Depends(servico)) -> dict:
         email_envio.enviar(config.email_chave(), config.relatorio_remetente(), config.relatorio_destinos(), "[Teste] " + assunto, corpo, texto)
     except email_envio.ErroEmail as e:
         raise HTTPException(502, f"Nao foi possivel enviar ({e}).", headers=_SEM_CACHE) from None
-    serv.metricas.evento("admin", "alerta_teste")
+    _registar(serv, "alerta_teste")
     return {"enviado": True}
 
 
@@ -455,7 +473,7 @@ def chaves(serv: Servico = Depends(servico)) -> list[dict]:
 def criar_chave(n: NovaChave, serv: Servico = Depends(servico)) -> dict:
     """Cria uma chave. A chave em claro **so aparece nesta resposta** (guarda-se o SHA-256); nao fica em nenhum log."""
     info, chave = serv.chaves.criar(n.nome.strip(), n.quota_dia)
-    serv.metricas.evento("admin", "chave_criada")
+    _registar(serv, "chave_criada", detalhe=f"{info.nome} ({info.id})")
     return {"id": info.id, "nome": info.nome, "prefixo": info.prefixo, "quota_dia": info.quota, "chave": chave}
 
 
@@ -463,7 +481,7 @@ def criar_chave(n: NovaChave, serv: Servico = Depends(servico)) -> dict:
 def revogar_chave(id_: str, serv: Servico = Depends(servico)) -> Response:
     if not serv.chaves.revogar(id_):
         raise HTTPException(404, "Chave inexistente", headers=_SEM_CACHE)
-    serv.metricas.evento("admin", "chave_revogada")
+    _registar(serv, "chave_revogada", detalhe=id_)
     return Response(status_code=204, headers=_SEM_CACHE)
 
 
@@ -491,12 +509,12 @@ def seo_guardar(t: TextoSeo, serv: Servico = Depends(servico)) -> dict:
         valor = serv.seo.definir(t.chave, t.lingua, t.valor)
     except ValueError as e:
         raise HTTPException(422, str(e), headers=_SEM_CACHE) from None
-    serv.metricas.evento("admin", "seo_editado")
+    _registar(serv, "seo_editado", detalhe=f"{t.chave} · {t.lingua}")
     return {"chave": t.chave, "lingua": t.lingua, "valor": valor}
 
 
 @router.delete("/seo", status_code=204, dependencies=[Depends(exigir_admin)])
 def seo_repor(chave: str, lingua: str, serv: Servico = Depends(servico)) -> Response:
     serv.seo.repor(chave, lingua)
-    serv.metricas.evento("admin", "seo_reposto")
+    _registar(serv, "seo_reposto", detalhe=f"{chave} · {lingua}")
     return Response(status_code=204, headers=_SEM_CACHE)

@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.61.0 — 2026-11-19
+
+### Novedades
+- **Registro de acciones en el panel de administración:** se guarda durante 400 días quién hizo qué y cuándo en el panel (entradas, comentarios borrados u ocultos, claves de la API, textos de SEO, objetivos), sin datos de visitantes ni contraseñas.
+
 ## 3.60.0 — 2026-11-19
 
 ### Novedades

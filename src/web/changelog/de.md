@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.61.0 — 2026-11-19
+
+### Neu
+- **Aktionsprotokoll im Admin-Panel:** wer was wann im Panel getan hat, wird 400 Tage gespeichert (Anmeldungen, gelöschte oder ausgeblendete Kommentare, API-Schlüssel, SEO-Texte, Ziele), ohne Besucherdaten oder Passwörter.
+
 ## 3.60.0 — 2026-11-19
 
 ### Neu

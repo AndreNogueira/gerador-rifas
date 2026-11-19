@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.61.0 — 2026-11-19
+
+### New
+- **Action log in the admin panel:** who did what and when in the panel is kept for 400 days (logins, comments deleted or hidden, API keys, SEO texts, goals), with no visitor data or passwords.
+
 ## 3.60.0 — 2026-11-19
 
 ### New

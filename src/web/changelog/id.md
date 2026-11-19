@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.61.0 — 2026-11-19
+
+### Baru
+- **Catatan tindakan di panel admin:** siapa melakukan apa dan kapan di panel disimpan selama 400 hari (masuk, komentar yang dihapus atau disembunyikan, kunci API, teks SEO, target), tanpa data pengunjung atau kata sandi.
+
 ## 3.60.0 — 2026-11-19
 
 ### Baru

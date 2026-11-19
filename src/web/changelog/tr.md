@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.61.0 — 2026-11-19
+
+### Yeni
+- **Yönetim panelinde işlem günlüğü:** panelde kimin neyi ne zaman yaptığı 400 gün saklanır (girişler, silinen veya gizlenen yorumlar, API anahtarları, SEO metinleri, hedefler); ziyaretçi verisi veya parola içermez.
+
 ## 3.60.0 — 2026-11-19
 
 ### Yeni
