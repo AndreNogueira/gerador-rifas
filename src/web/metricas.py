@@ -28,6 +28,8 @@ from collections import deque
 from datetime import date, timedelta
 from pathlib import Path
 
+from . import VERSAO
+
 log = logging.getLogger(__name__)
 
 LIMITES_MS = (5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000)      # +1 balde para o que passa do ultimo
@@ -279,7 +281,7 @@ class Metricas:
         self._memoria_recente: deque = deque(maxlen=120)   # (ts, MB do contentor) das ultimas amostras
         self._cliente: deque = deque(maxlen=5000)          # (ts, privado, xff, hash do ip, o cabecalho do pais veio)
         self._sal = secrets.token_bytes(16)                # muda a cada arranque: nao da para ligar hashes entre arranques
-        self.evento("arranque")
+        self.evento("arranque", VERSAO)                    # a versao: o painel marca nos graficos o dia em que chegou cada uma
 
     # ------------------------------------------------------------------ registo (rapido, sem disco)
     def evento(self, tipo: str, a: str = "", b: str = "", c: str = "", v1: float = 0.0, v2: float = 0.0, v3: float = 0.0) -> None:
@@ -719,9 +721,15 @@ class Metricas:
         if extras is not None:
             paineis.extend(extras(primeiro, dias, desvio, desde))
 
+        versoes = []                                        # o dia em que cada versao arrancou pela primeira vez (as que arrancaram antes da retencao dos eventos nao aparecem)
+        for v, t in sorted(ler("SELECT a, MIN(ts) FROM eventos WHERE tipo = 'arranque' AND a <> '' GROUP BY a"), key=lambda r: r[1]):
+            i = pos((int(t) + desvio) // 86400)
+            if i is not None:
+                versoes.append({"dia": (date(1970, 1, 1) + timedelta(days=primeiro + i)).isoformat(), "versao": v})
+
         return {"dias": dias, "fuso_min": desvio // 60, "dias_lista": [(date(1970, 1, 1) + timedelta(days=primeiro + i)).isoformat() for i in range(dias)],
                 "retencao": {"eventos_dias": RETENCAO_EVENTOS_S // 86400, "sistema_dias": RETENCAO_SISTEMA_S // 86400},
-                "dados_desde": self.dados_desde(), "paineis": paineis}
+                "dados_desde": self.dados_desde(), "versoes": versoes, "paineis": paineis}
 
     def _janelas(self, desde: int) -> list[dict]:
         """A largura da JANELA do browser (nao do ecra) por escaloes: mostra quem usa janelas pequenas num ecra grande."""

@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.57.0 — 2026-11-19
+
+### Novinky
+- **Značky verzí v grafech administračního panelu:** každý denní graf označí den, kdy přišla nová verze aplikace (a denní zpráva řekne, jaká), aby šel nárůst chyb nebo doby odezvy spojit s aktualizací, která ho způsobila.
+
 ## 3.56.0 — 2026-11-19
 
 ### Novinky

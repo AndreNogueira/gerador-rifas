@@ -525,3 +525,19 @@
   border-radius: 8px;
   background: #fff;
 }
+
+// as marcas de versão nos gráficos diários: uma linha tracejada no dia em que chegou uma versão nova e um triângulo na base
+.grafico-versao {
+  line {
+    stroke: var(--suave);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+    opacity: 0.7;
+  }
+  path {
+    fill: var(--suave);
+  }
+}
+.marca-versao {
+  color: var(--suave);
+}

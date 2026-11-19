@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.57.0 — 2026-11-19
+
+### Novetats
+- **Marques de versió als gràfics del tauler d'administració:** cada gràfic diari assenyala el dia en què va arribar una versió nova de l'aplicació (i l'informe diari diu quina), per relacionar una pujada d'errors o del temps de resposta amb l'actualització que la va causar.
+
 ## 3.56.0 — 2026-11-19
 
 ### Novetats

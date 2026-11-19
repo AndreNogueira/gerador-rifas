@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.57.0 — 2026-11-19
+
+### Yeni
+- **Yönetim paneli grafiklerinde sürüm işaretleri:** her günlük grafik, uygulamanın yeni bir sürümünün geldiği günü işaretler (günlük rapor da hangisi olduğunu söyler); böylece hata veya yanıt süresindeki artış, buna yol açan güncellemeyle ilişkilendirilebilir.
+
 ## 3.56.0 — 2026-11-19
 
 ### Yeni

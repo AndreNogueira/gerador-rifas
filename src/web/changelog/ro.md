@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.57.0 — 2026-11-19
+
+### Noutăți
+- **Marcaje de versiune în graficele panoului de administrare:** fiecare grafic zilnic marchează ziua în care a venit o versiune nouă a aplicației (iar raportul zilnic spune care), pentru a lega o creștere a erorilor sau a timpului de răspuns de actualizarea care a cauzat-o.
+
 ## 3.56.0 — 2026-11-19
 
 ### Noutăți

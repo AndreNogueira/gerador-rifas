@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.57.0 — 2026-11-19
+
+### Mới
+- **Dấu phiên bản trên biểu đồ bảng quản trị:** mỗi biểu đồ theo ngày đánh dấu ngày một phiên bản mới của ứng dụng xuất hiện (và báo cáo hằng ngày nói rõ phiên bản nào), để gắn mức tăng lỗi hoặc thời gian phản hồi với bản cập nhật gây ra nó.
+
 ## 3.56.0 — 2026-11-19
 
 ### Mới

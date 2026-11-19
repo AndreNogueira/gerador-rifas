@@ -100,3 +100,41 @@ def test_postgres_grava_le_e_substitui():
     h.gravar("2026-11-17", {"sessoes": {"Sessões": 3}}, 2)
     assert h.total() == 2 and h.primeiro() == "2026-11-17"
     assert h.ler("2026-11-17", "2026-11-18") == [("2026-11-17", {"sessoes": {"Sessões": 3}}), ("2026-11-18", {"sessoes": {"Sessões": 9}})]
+
+
+# ------------------------------------------------------------------ as marcas de versão nos gráficos
+def test_cada_versao_marca_o_dia_em_que_arrancou_pela_primeira_vez(tmp_path):
+    from web import VERSAO
+
+    m, rel = metricas_com_dados(tmp_path)
+    rel.t = ts(2026, 11, 15, 10)
+    m.evento("arranque", "3.99.0")
+    rel.t = ts(2026, 11, 17, 10)
+    m.evento("arranque", "3.99.0")                                    # outro arranque da mesma versão (adormecer/acordar): não é uma versão nova
+    m.evento("arranque", "")                                           # arranques antigos sem versão: ignoram-se
+    assert m.evolucao(15, 0, None, ts(2026, 11, 18, 23))["versoes"] == [{"dia": "2026-11-09", "versao": VERSAO}, {"dia": "2026-11-15", "versao": "3.99.0"}]
+    assert m.evolucao(5, 0, None, ts(2026, 11, 18, 23))["versoes"] == [{"dia": "2026-11-15", "versao": "3.99.0"}]       # fora da janela, fora das marcas
+
+
+def test_o_historico_guarda_as_versoes_do_dia_e_a_vista_longa_devolve_as(tmp_path):
+    m, rel = metricas_com_dados(tmp_path)
+    rel.t = ts(2026, 11, 15, 10)
+    m.evento("arranque", "3.99.0")
+    rel.t = ts(2026, 11, 19, 0, 30)
+    h = HistoricoDiario(caminho=tmp_path / "h.sqlite3")
+    historico.gravar_pendentes(h, m, None, LISBOA, ts(2026, 11, 19, 1))
+    assert dict(h.ler("2026-11-15", "2026-11-15"))["2026-11-15"]["_versoes"] == ["3.99.0"]
+    ev = historico.evolucao_historica(h, m, None, LISBOA, 200, ts(2026, 11, 19, 12))
+    assert {"dia": "2026-11-15", "versao": "3.99.0"} in ev["versoes"]
+    assert all("_versoes" != p["id"] for p in ev["paineis"])
+
+
+def test_o_relatorio_diario_diz_que_versao_chegou_nesse_dia(tmp_path):
+    from web import relatorio
+
+    m, rel = metricas_com_dados(tmp_path)
+    rel.t = ts(2026, 11, 18, 10)
+    m.evento("arranque", "3.99.0")
+    rel.t = ts(2026, 11, 19, 0, 30)
+    d = relatorio.montar(m, None, date(2026, 11, 18), LISBOA)
+    assert any("Chegou a versão 3.99.0" in t for _, t in d["alertas"])

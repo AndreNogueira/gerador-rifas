@@ -53,6 +53,9 @@ def resumo_do_dia(ev: dict, i: int) -> dict:
         valores = {s["nome"]: s["valores"][i] for s in p["series"] if s["valores"][i]}
         if valores:
             saida[p["id"]] = valores
+    versoes = [v["versao"] for v in ev.get("versoes", []) if v["dia"] == ev["dias_lista"][i]]
+    if versoes:
+        saida["_versoes"] = versoes                                # as versoes que chegaram nesse dia (para as marcas nos graficos da vista de meses)
     return saida
 
 
@@ -107,6 +110,7 @@ def evolucao_historica(historico, metricas, extras, fuso: ZoneInfo, dias: int, a
         agregados = {s["nome"]: s["agregado"] for s in p["series"]}
         paineis.append(novo_painel(p["grupo"], p["id"], p["titulo"], series, p["explica"], p["tipo"], p["unidade"], p["agregado"], p["rotulos"], agregados))
     primeiro_dia = historico.primeiro()
-    return {"dias": dias, "fuso_min": 0, "dias_lista": lista, "origem": "historico", "dias_com_dados": len(linhas),
+    versoes = [{"dia": d, "versao": v} for d in lista for v in linhas.get(d, {}).get("_versoes", [])]
+    return {"dias": dias, "fuso_min": 0, "dias_lista": lista, "origem": "historico", "dias_com_dados": len(linhas), "versoes": versoes,
             "retencao": {"eventos_dias": DIAS_HISTORICO_MAX, "sistema_dias": DIAS_HISTORICO_MAX},
             "dados_desde": _inicio_do_dia(date.fromisoformat(primeiro_dia), fuso) if primeiro_dia else int(agora), "paineis": paineis}

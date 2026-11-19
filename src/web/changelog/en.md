@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.57.0 — 2026-11-19
+
+### New
+- **Version markers on the admin panel charts:** each daily chart flags the day a new app version arrived (and the daily report says which), so a rise in errors or response time can be tied to the update that caused it.
+
 ## 3.56.0 — 2026-11-19
 
 ### New

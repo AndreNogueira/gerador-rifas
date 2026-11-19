@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.57.0 — 2026-11-19
+
+### Nowości
+- **Znaczniki wersji na wykresach panelu administracyjnego:** każdy wykres dzienny oznacza dzień, w którym pojawiła się nowa wersja aplikacji (a raport dzienny podaje którą), aby powiązać wzrost błędów lub czasu odpowiedzi z aktualizacją, która go spowodowała.
+
 ## 3.56.0 — 2026-11-19
 
 ### Nowości

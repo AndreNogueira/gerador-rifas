@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.57.0 — 2026-11-19
+
+### Neu
+- **Versionsmarken in den Diagrammen des Admin-Panels:** jedes Tagesdiagramm markiert den Tag, an dem eine neue App-Version kam (und der Tagesbericht nennt sie), damit ein Anstieg von Fehlern oder Antwortzeit dem verursachenden Update zugeordnet werden kann.
+
 ## 3.56.0 — 2026-11-19
 
 ### Neu
