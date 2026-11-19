@@ -319,6 +319,18 @@
     flex-wrap: wrap;
     gap: 8px;
   }
+  // o índice de guias e «Outros guias» no fim de cada um
+  .lista-guias {
+    display: grid;
+    gap: 10px;
+    margin: 4px 0;
+    padding-left: 1.2rem;
+  }
+  .outros-guias {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: var(--borda) solid var(--linha);
+  }
 }
 
 // O convite ao donativo no cartão dos ficheiros gerados: uma frase e o botão, antes do «Partilhar»

@@ -2,6 +2,12 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.67.0 — 2026-11-19
+
+### Yeni
+- **«Nasıl yapılır» rehberleri dizini** (`/como-fazer`): tüm rehberleri kısa birer özetle listeleyen bir sayfa; her rehber diğerlerine bağlantılarla biter. «Yardım» menüsünde de («Tüm rehberler»).
+- Rehberler ve dizin, Google'a bulundukları yolu (Ana sayfa › Nasıl yapılır › rehber) bildirir; böylece arama sonuçlarında görünebilir.
+
 ## 3.66.0 — 2026-11-19
 
 ### Yeni

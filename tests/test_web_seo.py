@@ -119,9 +119,9 @@ def test_sitemap_so_tem_as_paginas_publicas(publico):
     assert r.status_code == 200 and r.headers["content-type"].startswith("application/xml")
     ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     urls = [e.text for e in ElementTree.fromstring(r.text).findall("s:url/s:loc", ns)]
-    paginas = ["/", "/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/rifas-para-escolas", "/rifas-para-associacoes", "/rifas-para-clubes", "/rifas-para-bombeiros", "/rifas-para-festas", "/rifas-para-igrejas", "/termos", "/privacidade", "/contacto", "/changelog"]
+    paginas = ["/", "/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/como-fazer", "/rifas-para-escolas", "/rifas-para-associacoes", "/rifas-para-clubes", "/rifas-para-bombeiros", "/rifas-para-festas", "/rifas-para-igrejas", "/termos", "/privacidade", "/contacto", "/changelog"]
     assert urls[::len(i18n.LINGUAS)] == [f"{URL}{c}" for c in paginas]                    # por pagina: primeiro o portugues (sem prefixo), depois as outras com prefixo (ver test_web_seo_linguas.py)
-    assert len(urls) == 16 * len(i18n.LINGUAS) and len(set(urls)) == len(urls)
+    assert len(urls) == 17 * len(i18n.LINGUAS) and len(set(urls)) == len(urls)
 
 
 def test_rotas_desconhecidas_sao_404_a_serio_e_nao_se_indexam(publico):
@@ -188,3 +188,45 @@ def test_a_pagina_inicial_liga_aos_guias_em_todas_as_linguas(cliente):
         for destino in ("escolas", "associacoes", "clubes", "bombeiros", "festas", "igrejas"):
             esperado = f"/rifas-para-{destino}" if lg == "pt" else f"/{lg}/rifas-para-{destino}"
             assert f'href="{esperado}"' in html, (lg, destino)
+
+
+# ------------------------------------------------------------------ o índice de guias, as ligações entre guias e as migalhas de pão
+def test_o_indice_lista_todos_os_guias_e_cada_guia_liga_aos_outros_e_ao_indice(cliente, publico):
+    from web import guias
+
+    indice = cliente.get("/como-fazer").text
+    for nome in guias.NOMES:
+        assert f'href="/rifas-para-{nome}"' in indice
+    assert "<h1>Como fazer uma rifa: guias passo a passo</h1>" in indice and f'<link rel="canonical" href="{URL}/como-fazer" />' in indice
+    en = cliente.get("/en/como-fazer").text
+    assert 'href="/en/rifas-para-escolas"' in en and "<h1>How to run a raffle: step-by-step guides</h1>" in en
+    escolas = cliente.get("/rifas-para-escolas").text
+    assert "<h2>Outros guias</h2>" in escolas and 'href="/como-fazer"' in escolas
+    assert 'href="/rifas-para-clubes"' in escolas and 'href="/rifas-para-escolas"' not in escolas.split("<h2>Outros guias</h2>")[1]       # liga aos outros, nunca a si próprio
+
+
+def test_as_migalhas_de_pao_dos_guias_e_do_indice():
+    import json
+    import re
+
+    def migalhas(html):
+        m = [json.loads(x) for x in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)]
+        return next(x for x in m if x["@type"] == "BreadcrumbList")
+
+    from web import seo
+    base = "https://rifas.exemplo.pt"
+    html_base = '<!doctype html><html lang="pt"><head><!--seo:cabecalho--></head><body><div id="raiz"><!--seo:corpo--></div></body></html>'
+    guia = migalhas(seo.renderizar(html_base, seo.ROTAS["/rifas-para-escolas"], base, "pt"))
+    assert [i["name"] for i in guia["itemListElement"]] == ["Gerador de Rifas", "Como fazer uma rifa: guias passo a passo", "Como fazer uma rifa para a escola"]
+    assert [i["item"] for i in guia["itemListElement"]] == [f"{base}/", f"{base}/como-fazer", f"{base}/rifas-para-escolas"] and [i["position"] for i in guia["itemListElement"]] == [1, 2, 3]
+    en = migalhas(seo.renderizar(html_base, seo.ROTAS["/rifas-para-escolas"], base, "en"))
+    assert en["itemListElement"][2]["item"] == f"{base}/en/rifas-para-escolas"
+    assert len(migalhas(seo.renderizar(html_base, seo.ROTAS["/como-fazer"], base, "pt"))["itemListElement"]) == 2
+    assert not re.findall(r"BreadcrumbList", seo.renderizar(html_base, seo.ROTAS["/tutorial"], base, "pt"))                              # só nos guias e no índice
+
+
+def test_a_api_dos_guias_devolve_titulo_e_resumo_na_lingua(cliente):
+    pt = cliente.get("/api/guias", headers={"X-Lingua": "pt"}).json()["guias"]
+    assert [g["nome"] for g in pt] == ["escolas", "associacoes", "clubes", "bombeiros", "festas", "igrejas"] and pt[0]["caminho"] == "/rifas-para-escolas"
+    assert pt[0]["titulo"] == "Como fazer uma rifa para a escola" and pt[0]["resumo"].endswith(".") and len(pt[0]["resumo"]) <= 175
+    assert cliente.get("/api/guias", headers={"X-Lingua": "en"}).json()["guias"][0]["titulo"] == "How to run a raffle for your school"

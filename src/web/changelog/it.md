@@ -2,6 +2,12 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.67.0 — 2026-11-19
+
+### Novità
+- **Indice delle guide «Come fare»** (`/como-fazer`): una pagina con tutte le guide e un riepilogo di ciascuna; ogni guida termina con link alle altre. Anche nel menu «Aiuto» («Tutte le guide»).
+- Le guide e l'indice indicano a Google il loro percorso (Home › Come fare › guida) per mostrarlo nei risultati.
+
 ## 3.66.0 — 2026-11-19
 
 ### Novità

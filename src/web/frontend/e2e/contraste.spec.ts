@@ -27,6 +27,7 @@ const PAGINAS = [
   "/tutorial",
   "/termos",
   "/editor",
+  "/como-fazer",
   "/rifas-para-escolas",
   "/comentarios",
   "/opiniao",

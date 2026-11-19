@@ -10,6 +10,7 @@ import { registarEcra } from "./ecra";
 import { useFormulario } from "./formulario";
 import { Gerador } from "./Gerador";
 import { GUIAS, Guia } from "./Guia";
+import { IndiceGuias } from "./IndiceGuias";
 import { useI18n } from "./i18n";
 import { PaginaTexto } from "./PaginaTexto";
 import { ReportarProblema } from "./Problema";
@@ -60,6 +61,7 @@ function Aplicacao() {
       "/sobre": t("mi_sobre"),
       "/sorteio": t("web_sorteio"),
       "/editor": t("web_editor"),
+      "/como-fazer": t("web_comofazer_titulo"),
       "/comentarios": t("web_comentarios"),
       "/opiniao": t("web_op_titulo"),
       "/reportar-problema": t("web_bug_titulo"),
@@ -110,6 +112,8 @@ function Aplicacao() {
             <Sorteio />
           ) : caminho === "/editor" ? (
             <Editor partilha={publico.partilha_editor} />
+          ) : caminho === "/como-fazer" ? (
+            <IndiceGuias />
           ) : GUIAS[caminho] ? (
             <Guia nome={GUIAS[caminho]} />
           ) : caminho === "/comentarios" ? (

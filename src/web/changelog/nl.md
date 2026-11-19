@@ -2,6 +2,12 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.67.0 — 2026-11-19
+
+### Nieuw
+- **Overzicht van de «Hoe doe je het»-stappenplannen** (`/como-fazer`): één pagina met alle stappenplannen en een korte samenvatting; elk stappenplan eindigt met links naar de andere. Ook in het menu «Hulp» («Alle stappenplannen»).
+- De stappenplannen en het overzicht geven Google hun pad door (Start › Hoe doe je het › stappenplan), zodat het in de zoekresultaten kan staan.
+
 ## 3.66.0 — 2026-11-19
 
 ### Nieuw

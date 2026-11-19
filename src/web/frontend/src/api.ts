@@ -141,6 +141,13 @@ export interface GuiaDeTexto {
   dicas: string[];
   fim: string;
 }
+/** Um guia «como fazer» na lista (o índice e as ligações entre guias): o título e o resumo na língua escolhida. */
+export interface GuiaNaLista {
+  nome: string;
+  caminho: string;
+  titulo: string;
+  resumo: string;
+}
 export interface ComentarioPublico {
   id: string;
   /** Segundos desde 1970. */
@@ -308,6 +315,7 @@ export const api = {
     site: string;
   }) => pedir<{ numero: number }>("POST", "/api/problemas", { json: p }),
   guia: (nome: string) => pedir<GuiaDeTexto>("GET", `/api/guia/${encodeURIComponent(nome)}`),
+  guias: () => pedir<{ guias: GuiaNaLista[] }>("GET", "/api/guias"),
   pagina: (nome: string) => pedir<PaginaDeTexto>("GET", `/api/pagina/${encodeURIComponent(nome)}`),
   changelog: () => pedir<{ entradas: EntradaChangelog[] }>("GET", "/api/changelog"),
   criarSessao: () => pedir<Sessao>("POST", "/api/sessoes"),

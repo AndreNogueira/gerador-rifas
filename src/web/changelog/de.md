@@ -2,6 +2,12 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.67.0 — 2026-11-19
+
+### Neu
+- **Übersicht der «So geht's»-Anleitungen** (`/como-fazer`): eine Seite mit allen Anleitungen samt Kurzbeschreibung; jede Anleitung endet mit Links zu den anderen. Auch im Menü «Hilfe» («Alle Anleitungen»).
+- Die Anleitungen und die Übersicht teilen Google ihren Pfad mit (Start › So geht's › Anleitung), damit er in den Suchergebnissen erscheinen kann.
+
 ## 3.66.0 — 2026-11-19
 
 ### Neu

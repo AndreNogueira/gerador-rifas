@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api, ErroApi, type GuiaDeTexto } from "./api";
+import { OutrosGuias } from "./IndiceGuias";
 import { useI18n } from "./i18n";
 import { Voltar } from "./paginas";
 import { Ligacao } from "./rota";
@@ -72,6 +73,7 @@ export function Guia({ nome }: { nome: string }) {
                 {t("tut_titulo")}
               </Ligacao>
             </p>
+            <OutrosGuias menos={nome} />
           </>
         )}
         <Voltar />

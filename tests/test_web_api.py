@@ -68,7 +68,7 @@ def test_lingua_por_defeito(cliente, cabecalho, esperado):
 
 def test_textos_de_cada_lingua_tem_as_mesmas_chaves_que_o_portugues(cliente):
     pt = cliente.get("/api/textos/pt").json()
-    assert pt["lingua"] == "pt" and len(pt["textos"]) == 351 and pt["textos"]["app_nome"] == "Gerador de Rifas"
+    assert pt["lingua"] == "pt" and len(pt["textos"]) == 355 and pt["textos"]["app_nome"] == "Gerador de Rifas"
     for lg in i18n.LINGUAS:
         d = cliente.get(f"/api/textos/{lg}").json()
         assert d["lingua"] == lg and d["textos"].keys() == pt["textos"].keys(), lg

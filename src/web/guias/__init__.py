@@ -16,6 +16,25 @@ for _nome, _novas in (("escolas", novas.ESCOLAS), ("associacoes", novas.ASSOCIAC
 CAMINHOS = {nome: f"/rifas-para-{nome}" for nome in DADOS}
 NOMES = tuple(DADOS)
 N_PASSOS, N_DICAS = 5, 3
+INDICE = "/como-fazer"                                # a pagina que lista todos os guias e liga a cada um (e cada guia liga de volta)
+
+
+def resumo(intro: str, maximo: int = 170) -> str:
+    """A primeira frase da introducao (ate ao primeiro ponto final), cortada em `maximo` letras: o que se mostra ao lado de cada guia no indice."""
+    for fim in (". ", "。", "! ", "? "):
+        i = intro.find(fim)
+        if 0 < i < maximo:
+            return intro[: i + len(fim.strip())]
+    return intro[:maximo].rsplit(" ", 1)[0] + "…" if len(intro) > maximo else intro
+
+
+def lista(lingua: str = "pt") -> list[dict]:
+    """Os guias na `lingua`, para o indice e para as ligacoes entre guias: `{nome, caminho, titulo, resumo}`."""
+    saida = []
+    for nome in NOMES:
+        g = guia(nome, lingua)
+        saida.append({"nome": nome, "caminho": CAMINHOS[nome], "titulo": g["titulo"], "resumo": resumo(g["intro"])})
+    return saida
 
 
 def padrao(nome: str, lingua: str = "pt") -> dict:

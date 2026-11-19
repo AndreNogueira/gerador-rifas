@@ -57,6 +57,10 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     m_ajuda: "Ajuda",
     web_menu: "Menu",
     web_comentarios: "Comentários",
+    web_comofazer_titulo: "Como fazer uma rifa: guias passo a passo",
+    web_comofazer_intro: "Guias passo a passo para organizar a sua rifa.",
+    web_guias_outros: "Outros guias",
+    web_guia_todos: "Todos os guias",
     web_convite_texto: "Gostou? Diga-nos o que achou.",
     web_convite_botao: "Deixar um comentário",
     web_convite_depois: "Agora não",
@@ -411,6 +415,23 @@ export class ServidorFalso {
         ? this.responder({ desenho: d, sem_imagens: true })
         : this.responder({ detail: "Esta ligação já não existe ou o desenho expirou.", tipo: "aviso" }, 404);
     }
+    if (url === "/api/guias")
+      return this.responder({
+        guias: [
+          {
+            nome: "escolas",
+            caminho: "/rifas-para-escolas",
+            titulo: "Como fazer uma rifa para a escola",
+            resumo: "Uma forma simples de angariar fundos.",
+          },
+          {
+            nome: "associacoes",
+            caminho: "/rifas-para-associacoes",
+            titulo: "Como fazer uma rifa para a associação",
+            resumo: "Bilhetes numerados em minutos.",
+          },
+        ],
+      });
     if (url.startsWith("/api/guia/")) {
       const nome = url.slice("/api/guia/".length);
       return this.responder({

@@ -2,6 +2,12 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.67.0 — 2026-11-19
+
+### Nytt
+- **Översikt över «Så gör du»-guiderna** (`/como-fazer`): en sida med alla guider och en kort sammanfattning av varje; varje guide slutar med länkar till de andra. Finns även i menyn «Hjälp» («Alla guider»).
+- Guiderna och översikten talar om för Google vilken sökväg de ligger på (Start › Så gör du › guide) så att den kan visas i sökresultaten.
+
 ## 3.66.0 — 2026-11-19
 
 ### Nytt
