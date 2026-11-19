@@ -121,3 +121,29 @@ def test_recusa_o_que_nao_serve_com_uma_mensagem_traduzida(campos, chave):
 def test_textos_com_acentos_chineses_e_cirilicos_servem():
     for titulo, nome in (("Çà é ñ", "Pão"), ("Праздник", "Пиво"), ("お祭り", "ビール"), ("축제", "맥주"), ("Φεστιβάλ", "Μπύρα"), ("Lễ hội", "Bia")):
         assert len(PdfReader(io.BytesIO(precario.criar_pdf(Precario(linhas=(Linha(nome=nome, preco=1000),), titulo=titulo)))).pages) == 1
+
+
+# ------------------------------------------------------------------ de e para dicionários
+def test_de_dict_le_precos_escritos_na_lingua_e_milesimos_e_da_o_mesmo_de_volta():
+    d = {"titulo": "Festa", "desenho": "natal", "colunas": 2, "moeda": {"codigo": "BRL"}, "lingua": "pt-br",
+         "linhas": [{"artigo": "coxinha", "preco": "5,50"}, {"nome": "Bolo", "categoria": "doces", "emoji": "1f370", "preco": 3000}, {"artigo": "agua"}]}
+    p = precario.de_dict(d)
+    assert [ln.preco for ln in p.linhas] == [5500, 3000, None] and p.moeda.codigo == "BRL" and p.colunas == 2 and p.lingua == "pt-br"
+    assert precario.de_dict(precario.para_dict(p)) == p and precario.para_dict(p)["linhas"][0]["preco"] == 5500
+    assert "R$ 5,50" in texto_do_pdf(precario.criar_pdf(p))
+
+
+def test_de_dict_moeda_por_omissao_inventada_e_a_lingua_do_pedido_ganha():
+    base = {"linhas": [{"artigo": "agua", "preco": "1"}]}
+    assert precario.de_dict(base, "pt-br").moeda.codigo == "BRL" and precario.de_dict(base, "ja").moeda.codigo == "JPY" and precario.de_dict(base).moeda.codigo == "EUR"
+    ficha = precario.de_dict({**base, "moeda": {"nome": "fichas", "antes": True, "decimais": 1}})
+    assert ficha.moeda == moeda.MoedaInventada("fichas", True, 1) and precario.de_dict(precario.para_dict(ficha)) == ficha
+    assert precario.de_dict({**base, "lingua": "en"}, "pt").lingua == "pt"
+
+
+@pytest.mark.parametrize("d", [None, [], "x", {"titulo": 3}, {"linhas": "x"}, {"linhas": [1]}, {"linhas": [{"preco": True}]}, {"linhas": [{"preco": "abc"}]}, {"linhas": [{"preco": 1.5}]},
+                               {"moeda": "EUR"}, {"moeda": {"codigo": "XXX"}}, {"moeda": {"nome": "f", "decimais": "2"}}, {"colunas": "2"}, {"colunas": True}, {"linhas": [{"artigo": 5}]}])
+def test_de_dict_recusa_tipos_errados_com_erro_traduzido(d):
+    with pytest.raises(ErroRifas) as e:
+        precario.de_dict(d)
+    assert e.value.chave in ("err_precario_texto", "err_precario_linhas")

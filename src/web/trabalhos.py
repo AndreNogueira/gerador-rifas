@@ -135,6 +135,16 @@ def galeria_png(desenho: str, titulo: str, organizacao: str, premios: tuple, dat
         return _erro(e)
 
 
+def precario_png(pedido: dict, lingua: str, dpi: int = 110) -> tuple:
+    """O PNG da 1.a pagina de um preçário (o dicionario de `core.precario.de_dict`): (\"ok\", bytes) | erro (letras que o PDF nao tem, linhas a mais, desenho desconhecido)."""
+    try:
+        with core.i18n.com_lingua(lingua):
+            pdf = core.precario.criar_pdf(core.precario.de_dict(pedido, lingua))
+        return ("ok", core.png_de_pagina(pdf, dpi))
+    except Exception as e:  # noqa: BLE001
+        return _erro(e)
+
+
 def editor_png(desenho: dict, dpi: int = 110) -> tuple:
     """O PNG de um desenho do editor de templates: (\"ok\", bytes) | erro (letras que a Vera nao tem, algarismos que o motor confundiria, limites)."""
     try:
