@@ -560,3 +560,30 @@
     background: var(--aviso, #b45309);
   }
 }
+
+// o estado de cada comentário no painel (novo, lido, favorito, escondido) e os botões de ação
+.estado-comentario {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: var(--borda) solid var(--linha);
+  font-size: 0.8rem;
+  font-weight: 650;
+
+  &.estado-novo {
+    background: var(--nav-ativo);
+    color: var(--nav-ativo-texto);
+    border-color: transparent;
+  }
+  &.estado-escondido {
+    opacity: 0.7;
+    text-decoration: line-through;
+  }
+}
+.acoes-comentario {
+  white-space: nowrap;
+
+  button + button {
+    margin-left: 6px;
+  }
+}

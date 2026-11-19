@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.59.0 — 2026-11-19
+
+### Yeni
+- **Yönetim panelinde yorum durumları:** sorumlu her yorumu okundu, favori veya gizli olarak işaretleyebilir (gizli yorum herkese açık sayfadan kalkar ama kaybolmaz), duruma göre süzebilir ve kaç tanesinin okunmadığını görebilir.
+
 ## 3.58.0 — 2026-11-19
 
 ### Yeni

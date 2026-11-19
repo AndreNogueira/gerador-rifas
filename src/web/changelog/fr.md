@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.59.0 — 2026-11-19
+
+### Nouveautés
+- **Commentaires avec statut dans le panneau d'administration :** le responsable peut marquer chaque commentaire comme lu, favori ou masqué (un commentaire masqué disparaît de la page publique mais n'est pas perdu), filtrer par statut et voir combien restent à lire.
+
 ## 3.58.0 — 2026-11-19
 
 ### Nouveautés

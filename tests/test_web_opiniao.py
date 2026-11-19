@@ -115,7 +115,7 @@ def test_guarda_se_o_pais_e_nunca_o_ip(tmp_path):
     assert {x["texto"]: x["pais"] for x in cm.para_admin()} == {"Comentário de Portugal": "PT", "Comentário sem país": "??"}
     with sqlite3.connect(tmp_path / "c.sqlite3") as lig:
         colunas = [c[1] for c in lig.execute("PRAGMA table_info(comentarios)")]
-    assert colunas == ["id", "criado", "anonimo", "nome", "texto", "pais"]                   # não há coluna de IP
+    assert colunas == ["id", "criado", "anonimo", "nome", "texto", "pais", "estado"]                   # não há coluna de IP
 
 
 def test_uma_tabela_da_primeira_versao_perde_a_coluna_do_ip_e_os_ips(tmp_path):
@@ -126,7 +126,7 @@ def test_uma_tabela_da_primeira_versao_perde_a_coluna_do_ip_e_os_ips(tmp_path):
         lig.execute("CREATE TABLE comentarios(id TEXT PRIMARY KEY, criado BIGINT NOT NULL, anonimo INTEGER NOT NULL, nome TEXT NOT NULL, texto TEXT NOT NULL, ip TEXT NOT NULL)")
         lig.execute("INSERT INTO comentarios VALUES ('a', 1800000000, 1, '', 'Um comentário antigo', '203.0.113.7')")
     cm = Comentarios(caminho=ficheiro)
-    assert cm.para_admin() == [{"id": "a", "pais": "??", "texto": "Um comentário antigo"}]       # o texto fica; do IP já nada
+    assert cm.para_admin() == [{"id": "a", "pais": "??", "texto": "Um comentário antigo", "estado": "novo"}]       # o texto fica; do IP já nada
     cm.criar("Um novo, depois da migração", True, "", "BR")
     with sqlite3.connect(ficheiro) as lig:
         assert "ip" not in [c[1] for c in lig.execute("PRAGMA table_info(comentarios)")]
@@ -181,7 +181,7 @@ def test_o_painel_so_mostra_pais_e_texto(admin):
     assert admin.get("/api/admin/comentarios").status_code == 404                              # sem sessao: nao existe
     admin.post("/api/admin/entrar", json={"token": TOKEN})
     d = admin.get("/api/admin/comentarios").json()
-    assert d["total"] == 2 and all(set(i) == {"id", "pais", "texto"} for i in d["itens"])
+    assert d["total"] == 2 and all(set(i) == {"id", "pais", "texto", "estado"} for i in d["itens"])
     assert {i["texto"]: i["pais"] for i in d["itens"]} == {"Texto para o dono ler": "??", "Outro, vindo de Espanha": "ES"}   # sem cabeçalho: «??»
     assert "Fulano" not in json.dumps(d) and "testclient" not in json.dumps(d)                 # nem quem escreveu nem o IP
 
@@ -339,10 +339,10 @@ def test_postgres_comentarios_criar_listar_paginar_apagar_e_migrar():
         lig.execute("INSERT INTO comentarios VALUES ('velho', 1800000000, 1, '', 'Antigo com IP', '203.0.113.7')")
     t = [1_800_000_000]
     cm = Comentarios(url_bd=URL_PG, relogio=lambda: t[0])
-    assert cm.para_admin() == [{"id": "velho", "pais": "??", "texto": "Antigo com IP"}]
+    assert cm.para_admin() == [{"id": "velho", "pais": "??", "texto": "Antigo com IP", "estado": "novo"}]
     with psycopg.connect(URL_PG) as lig:
         colunas = {c for (c,) in lig.execute("SELECT column_name FROM information_schema.columns WHERE table_name='comentarios'").fetchall()}
-    assert colunas == {"id", "criado", "anonimo", "nome", "texto", "pais"}                    # a coluna do IP desapareceu
+    assert colunas == {"id", "criado", "anonimo", "nome", "texto", "pais", "estado"}                    # a coluna do IP desapareceu
     ids = []
     for i in range(5):
         ids.append(cm.criar(f"Comentário {i} no Postgres", i % 2 == 0, f"Nome{i}", "PT"))
@@ -353,3 +353,73 @@ def test_postgres_comentarios_criar_listar_paginar_apagar_e_migrar():
     assert all("pais" not in x and "ip" not in x for x in primeira + resto)
     assert cm.na_ultima_hora() >= 5
     assert cm.apagar(ids[0]) and not cm.apagar(ids[0]) and cm.total() == 5
+
+
+# ------------------------------------------------------------------ o estado de cada comentário (novo, lido, favorito, escondido)
+def test_os_comentarios_novos_chegam_como_novo_e_o_dono_filtra_por_estado(admin):
+    for t in ("Primeiro comentário", "Segundo comentário"):
+        comentar(admin, t)
+    admin.post("/api/admin/entrar", json={"token": TOKEN})
+    d = admin.get("/api/admin/comentarios").json()
+    assert d["por_ler"] == 2 and d["escondidos"] == 0 and {i["estado"] for i in d["itens"]} == {"novo"}
+    id_ = d["itens"][0]["id"]
+    assert admin.patch(f"/api/admin/comentarios/{id_}", json={"estado": "favorito"}).status_code == 200
+    assert [i["id"] for i in admin.get("/api/admin/comentarios", params={"estado": "favorito"}).json()["itens"]] == [id_]
+    assert admin.get("/api/admin/comentarios").json()["por_ler"] == 1
+    assert len(admin.get("/api/admin/comentarios", params={"estado": "lixo"}).json()["itens"]) == 2        # um filtro inválido não filtra
+
+
+def test_um_comentario_escondido_some_da_pagina_publica_mas_fica_para_o_dono(admin):
+    comentar(admin, "Para esconder daqui a pouco")
+    comentar(admin, "Este fica visível sempre")
+    admin.post("/api/admin/entrar", json={"token": TOKEN})
+    id_ = next(i["id"] for i in admin.get("/api/admin/comentarios").json()["itens"] if "esconder" in i["texto"])
+    assert admin.patch(f"/api/admin/comentarios/{id_}", json={"estado": "escondido"}).status_code == 200
+    publico = admin.get("/api/comentarios").json()
+    assert publico["total"] == 1 and [i["texto"] for i in publico["itens"]] == ["Este fica visível sempre"]
+    dono = admin.get("/api/admin/comentarios").json()
+    assert dono["total"] == 2 and dono["escondidos"] == 1                                             # o dono continua a vê-lo
+    admin.patch(f"/api/admin/comentarios/{id_}", json={"estado": "lido"})                             # desfaz-se
+    assert admin.get("/api/comentarios").json()["total"] == 2
+
+
+def test_a_paginacao_publica_ignora_os_escondidos(tmp_path):
+    cm = Comentarios(caminho=tmp_path / "c.sqlite3")
+    ids = [cm.criar(f"Comentário {i:02d} de teste", True, "", "PT") for i in range(6)]
+    cm.definir_estado(ids[2], "escondido")
+    primeira = cm.publicos("", 3)
+    resto = cm.publicos(f'{primeira[-1]["criado"]}~{primeira[-1]["id"]}', 9)
+    assert {x["id"] for x in primeira + resto} == set(ids) - {ids[2]} and cm.total_publico() == 5 and cm.total() == 6
+
+
+def test_marcar_todos_como_lidos_e_estados_invalidos(admin):
+    for t in ("Um comentário qualquer", "Outro comentário qualquer"):
+        comentar(admin, t)
+    admin.post("/api/admin/entrar", json={"token": TOKEN})
+    id_ = admin.get("/api/admin/comentarios").json()["itens"][0]["id"]
+    assert admin.patch(f"/api/admin/comentarios/{id_}", json={"estado": "apagado"}).status_code == 422
+    assert admin.patch("/api/admin/comentarios/nao-existe", json={"estado": "lido"}).status_code == 404
+    assert admin.post("/api/admin/comentarios/lidos").json() == {"marcados": 2}
+    assert admin.get("/api/admin/comentarios").json()["por_ler"] == 0 and admin.post("/api/admin/comentarios/lidos").json() == {"marcados": 0}
+
+
+def test_a_leitura_ve_os_estados_mas_nao_os_muda(admin):
+    comentar(admin, "Um comentário para a leitura")
+    ler = {"Authorization": f"Bearer {LEITURA}"}
+    assert admin.get("/api/admin/comentarios", headers=ler).json()["por_ler"] == 1
+    admin.post("/api/admin/entrar", json={"token": LEITURA})
+    id_ = admin.get("/api/admin/comentarios").json()["itens"][0]["id"]
+    assert admin.patch(f"/api/admin/comentarios/{id_}", json={"estado": "escondido"}).status_code == 403
+    assert admin.post("/api/admin/comentarios/lidos").status_code == 403
+    assert admin.get("/api/comentarios").json()["total"] == 1
+
+
+def test_uma_tabela_sem_a_coluna_estado_ganha_a_e_os_antigos_ficam_novos(tmp_path):
+    import sqlite3
+
+    ficheiro = tmp_path / "meio.sqlite3"
+    with sqlite3.connect(ficheiro) as lig:
+        lig.execute("CREATE TABLE comentarios(id TEXT PRIMARY KEY, criado BIGINT NOT NULL, anonimo INTEGER NOT NULL, nome TEXT NOT NULL, texto TEXT NOT NULL, pais TEXT NOT NULL DEFAULT '')")
+        lig.execute("INSERT INTO comentarios VALUES ('a', 1800000000, 1, '', 'Já existia', 'PT')")
+    cm = Comentarios(caminho=ficheiro)
+    assert cm.para_admin() == [{"id": "a", "pais": "PT", "texto": "Já existia", "estado": "novo"}] and cm.por_ler() == 1

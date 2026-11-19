@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.59.0 — 2026-11-19
+
+### Novo
+- **Comentários com estado no painel de administração:** o responsável pode marcar cada comentário como lido, favorito ou escondido (um comentário escondido deixa de aparecer na página pública, mas não se perde), filtrar por estado e ver quantos há por ler.
+
 ## 3.58.0 — 2026-11-19
 
 ### Novo

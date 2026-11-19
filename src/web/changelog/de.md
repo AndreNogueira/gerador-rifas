@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.59.0 — 2026-11-19
+
+### Neu
+- **Kommentarstatus im Admin-Panel:** der Betreiber kann jeden Kommentar als gelesen, Favorit oder ausgeblendet markieren (ein ausgeblendeter Kommentar verschwindet von der öffentlichen Seite, geht aber nicht verloren), nach Status filtern und sehen, wie viele ungelesen sind.
+
 ## 3.58.0 — 2026-11-19
 
 ### Neu

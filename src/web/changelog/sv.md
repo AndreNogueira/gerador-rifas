@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.59.0 — 2026-11-19
+
+### Nytt
+- **Kommentarsstatus i adminpanelen:** ansvarig kan markera varje kommentar som läst, favorit eller dold (en dold kommentar försvinner från den offentliga sidan men går inte förlorad), filtrera på status och se hur många som är olästa.
+
 ## 3.58.0 — 2026-11-19
 
 ### Nytt

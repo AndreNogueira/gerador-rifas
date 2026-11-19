@@ -59,7 +59,7 @@ def listar(antes: str = "", serv: Servico = Depends(servico)) -> ListaComentario
     itens = serv.comentarios.publicos(antes[:40], POR_PAGINA + 1)
     tem_mais = len(itens) > POR_PAGINA
     itens = itens[:POR_PAGINA]
-    return ListaComentarios(total=serv.comentarios.total(), itens=[ComentarioPublico(**i) for i in itens],
+    return ListaComentarios(total=serv.comentarios.total_publico(), itens=[ComentarioPublico(**i) for i in itens],
                             seguinte=f'{itens[-1]["criado"]}~{itens[-1]["id"]}' if tem_mais and itens else "")
 
 

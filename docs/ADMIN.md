@@ -63,7 +63,7 @@ Os limites são os da retenção (eventos 90 dias, pedidos e sistema 35): os dia
 
 **Marcas de versão:** cada gráfico diário leva uma linha tracejada e um triângulo ▲ no dia em que chegou uma versão nova da app (o evento `arranque` guarda a `VERSAO`; conta a primeira vez que cada versão arrancou, não os reinícios; `Metricas.evolucao` devolve `versoes: [{dia, versao}]`). Passando o rato vê-se qual. Na vista de mais de 90 dias vêm do histórico (`_versoes` na linha do dia). O relatório diário diz «Chegou a versão X neste dia». As versões que arrancaram antes da retenção dos eventos (90 dias) não aparecem.
 
-A aba **Comentários** mostra os comentários dos visitantes só com o **país** (de onde vieram; nunca o IP, que não se guarda) e o **texto** (e o botão de apagar, só para o dono; ver `docs/OPINIAO.md`).
+A aba **Comentários** mostra os comentários dos visitantes só com o **país** (de onde vieram; nunca o IP, que não se guarda), o **texto** e o **estado** que o dono lhe dá: *novo* (até o marcar), *lido*, *favorito* ou *escondido* (deixa de aparecer na página pública, mas não se perde; o dono continua a vê-lo). Há filtros por estado, a contagem de «por ler», «Marcar todos como lidos» e apagar (só o dono: `PATCH /api/admin/comentarios/{id}`, `POST /api/admin/comentarios/lidos`; a leitura vê mas recebe 403). Ver `docs/OPINIAO.md`.
 
 A aba **Relatório diário** mostra o estado do e-mail diário (ligado ou não, para onde vai, último dia enviado, último erro), **pré-visualiza** o relatório de qualquer dia e manda **um e-mail de teste** (só o dono; assunto «[Teste]», não conta como o envio do dia).
 

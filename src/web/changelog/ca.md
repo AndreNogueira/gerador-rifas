@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.59.0 — 2026-11-19
+
+### Novetats
+- **Comentaris amb estat al tauler d'administració:** el responsable pot marcar cada comentari com a llegit, preferit o amagat (un comentari amagat deixa d'aparèixer a la pàgina pública, però no es perd), filtrar per estat i veure quants en queden per llegir.
+
 ## 3.58.0 — 2026-11-19
 
 ### Novetats

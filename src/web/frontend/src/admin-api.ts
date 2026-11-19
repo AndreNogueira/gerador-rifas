@@ -186,6 +186,17 @@ export interface ComentarioDoDono {
   /** O país de onde veio, código de duas letras (`??` = desconhecido). Nunca o endereço IP: não se guarda. */
   pais: string;
   texto: string;
+  estado: EstadoComentario;
+}
+
+/** O que o dono faz com cada comentário: «escondido» tira-o da página pública sem o apagar. */
+export type EstadoComentario = "novo" | "lido" | "favorito" | "escondido";
+
+export interface ComentariosDoDono {
+  total: number;
+  por_ler: number;
+  escondidos: number;
+  itens: ComentarioDoDono[];
 }
 
 export class NaoAutenticado extends Error {}
@@ -318,8 +329,15 @@ export const adminApi = {
       "DELETE",
     );
   },
-  /** Os comentários como o dono os vê: só o país e o texto. */
-  comentarios: () => ver<{ total: number; itens: ComentarioDoDono[] }>("/api/admin/comentarios"),
+  /** Os comentários como o dono os vê: só o país, o texto e o estado (`estado` filtra por um deles). */
+  comentarios: (estado: EstadoComentario | "" = "") =>
+    ver<ComentariosDoDono>(`/api/admin/comentarios${estado ? `?estado=${estado}` : ""}`),
+  async comentarioEstado(id: string, estado: EstadoComentario): Promise<void> {
+    await pedirJson(`/api/admin/comentarios/${encodeURIComponent(id)}`, "PATCH", { estado });
+  },
+  async comentariosLidos(): Promise<void> {
+    await pedirJson("/api/admin/comentarios/lidos", "POST");
+  },
   async apagarComentario(id: string): Promise<void> {
     await pedirJson(`/api/admin/comentarios/${encodeURIComponent(id)}`, "DELETE");
   },

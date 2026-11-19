@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.59.0 — 2026-11-19
+
+### Nieuw
+- **Reactiestatus in het beheerpaneel:** de beheerder kan elke reactie markeren als gelezen, favoriet of verborgen (een verborgen reactie verdwijnt van de openbare pagina maar gaat niet verloren), op status filteren en zien hoeveel er nog ongelezen zijn.
+
 ## 3.58.0 — 2026-11-19
 
 ### Nieuw

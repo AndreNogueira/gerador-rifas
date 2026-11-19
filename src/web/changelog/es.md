@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.59.0 — 2026-11-19
+
+### Novedades
+- **Comentarios con estado en el panel de administración:** el responsable puede marcar cada comentario como leído, favorito u oculto (un comentario oculto deja de aparecer en la página pública, pero no se pierde), filtrar por estado y ver cuántos quedan por leer.
+
 ## 3.58.0 — 2026-11-19
 
 ### Novedades
