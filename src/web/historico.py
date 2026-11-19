@@ -23,6 +23,7 @@ DIAS_HISTORICO_MAX = 730                     # dois anos
 
 
 class HistoricoDiario(BaseSql):
+    feito_ate = ""                       # o último dia («aaaa-mm-dd») já tratado, em memória: depois disso as rondas de 5 minutos nem tocam na base (o Neon pode adormecer)
     ESQUEMA = ("CREATE TABLE IF NOT EXISTS historico_diario(dia TEXT PRIMARY KEY, dados TEXT NOT NULL, criado BIGINT NOT NULL)",)
 
     def gravar(self, dia: str, dados: dict, agora: float) -> None:
@@ -66,8 +67,11 @@ def gravar_pendentes(historico, metricas, extras, fuso: ZoneInfo, agora: float |
     if historico is None or local.time() < DEPOIS_DAS:
         return 0
     ontem = local.date() - timedelta(days=1)
+    if historico.feito_ate == ontem.isoformat():
+        return 0                                                   # já tratado: nenhuma consulta até à meia-noite seguinte
     existentes = historico.dias((ontem - timedelta(days=DIAS_MAXIMOS)).isoformat(), ontem.isoformat())
     if ontem.isoformat() in existentes:
+        historico.feito_ate = ontem.isoformat()
         return 0
     desvio, _, fim = janela_do_dia(ontem, fuso)
     ev = metricas.evolucao(DIAS_MAXIMOS, desvio, extras, fim)
@@ -79,6 +83,7 @@ def gravar_pendentes(historico, metricas, extras, fuso: ZoneInfo, agora: float |
             continue
         historico.gravar(dia, resumo_do_dia(ev, i), agora)
         n += 1
+    historico.feito_ate = ontem.isoformat()                        # (um dia anterior ao 1.º registo não tem nada para gravar: também é «tratado»)
     return n
 
 

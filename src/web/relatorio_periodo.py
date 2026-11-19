@@ -157,11 +157,16 @@ def enviar_periodicos_se_devido(relatorios, historico, metricas, extras, estado:
             continue                                               # um mês que acabou há mais de uma semana já não vale a pena enviar
         ini, fim = ultimo_completo(tipo, local.date())
         chave = chave_de(tipo, ini)
+        if chave in estado.periodicos_tratados:
+            continue                                               # já decidido: nenhuma consulta à base (o Neon pode adormecer)
         try:
             gravados = {d for d, _ in historico.ler(ini.isoformat(), fim.isoformat())}
             if fim.isoformat() not in gravados or len(gravados) * 2 < len(_dias(ini, fim)):
+                if historico.feito_ate == (local.date() - timedelta(days=1)).isoformat():
+                    estado.periodicos_tratados.add(chave)          # o histórico de ontem já está feito e não chega: a decisão é definitiva
                 continue                                           # o último dia ainda não foi gravado, ou há menos de metade dos dias: não vale a pena
             if not relatorios.reservar(chave, agora):
+                estado.periodicos_tratados.add(chave)
                 continue
         except Exception:  # noqa: BLE001 - a base em baixo: tenta-se daqui a pouco
             estado.proxima_tentativa = agora + 300
@@ -175,6 +180,7 @@ def enviar_periodicos_se_devido(relatorios, historico, metricas, extras, estado:
         else:
             log.info("resumo %s enviado: %s", tipo, chave)
             enviados.append(chave)
+            estado.periodicos_tratados.add(chave)
             continue
         try:
             relatorios.libertar(chave)
