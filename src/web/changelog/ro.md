@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.61.0 — 2026-11-19
+
+### Noutăți
+- **Jurnal de acțiuni în panoul de administrare:** cine ce a făcut și când în panou se păstrează 400 de zile (autentificări, comentarii șterse sau ascunse, chei API, texte SEO, obiective), fără date ale vizitatorilor sau parole.
+
 ## 3.60.0 — 2026-11-19
 
 ### Noutăți

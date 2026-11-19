@@ -321,12 +321,30 @@ export interface ObjetivosEstado {
   kpis: ObjetivoDoDono[];
 }
 
+export interface AuditoriaItem {
+  /** Segundos desde 1970. */
+  ts: number;
+  acao: string;
+  /** A ação em português (ou o código, se não tiver tradução). */
+  texto: string;
+  papel: "admin" | "leitura" | string;
+  detalhe: string;
+}
+
+export interface AuditoriaEstado {
+  total: number;
+  retencao_dias: number;
+  persistente: boolean;
+  itens: AuditoriaItem[];
+}
+
 export type TipoRelatorio = "dia" | "semana" | "mes";
 
 const consultaRelatorio = (dia: string, tipo: TipoRelatorio) =>
   `tipo=${tipo}${dia ? `&dia=${encodeURIComponent(dia)}` : ""}`;
 
 export const adminApi = {
+  auditoria: () => ver<AuditoriaEstado>("/api/admin/auditoria"),
   objetivos: () => ver<ObjetivosEstado>("/api/admin/objetivos"),
   async definirObjetivo(chave: string, meta: number | null): Promise<void> {
     await pedirJson("/api/admin/objetivos", "PUT", { chave, meta });

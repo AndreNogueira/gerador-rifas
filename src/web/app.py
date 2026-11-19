@@ -24,7 +24,7 @@ from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, 
 from .chaves_api import Chaves
 from .assets_remotos import AssetsRemotos
 from .limites import Limitador
-from . import alertas, historico, objetivos, relatorio, relatorio_periodo, seo_textos
+from . import alertas, auditoria, historico, objetivos, relatorio, relatorio_periodo, seo_textos
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
@@ -207,6 +207,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     servico.seo = seo_bd if seo_bd is not None else SeoBd(config.database_url(), armazem.raiz / "seo.sqlite3")
     servico.comentarios = comentarios if comentarios is not None else Comentarios(config.database_url(), armazem.raiz / "comentarios.sqlite3")
     servico.alertas = alertas.AlertasEnviados(config.database_url(), armazem.raiz / "alertas.sqlite3")
+    servico.auditoria = auditoria.Auditoria(config.database_url(), armazem.raiz / "auditoria.sqlite3")
     servico.objetivos = objetivos.Objetivos(config.database_url(), armazem.raiz / "objetivos.sqlite3")
     servico.historico = historico.HistoricoDiario(config.database_url(), armazem.raiz / "historico.sqlite3")
     servico.relatorios = relatorio.RelatoriosEnviados(config.database_url(), armazem.raiz / "relatorios.sqlite3")

@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.61.0 — 2026-11-19
+
+### Mới
+- **Nhật ký thao tác trong bảng quản trị:** ai đã làm gì và khi nào trong bảng được lưu 400 ngày (đăng nhập, bình luận bị xóa hoặc ẩn, khóa API, văn bản SEO, mục tiêu), không có dữ liệu khách truy cập hay mật khẩu.
+
 ## 3.60.0 — 2026-11-19
 
 ### Mới

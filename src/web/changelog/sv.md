@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.61.0 — 2026-11-19
+
+### Nytt
+- **Åtgärdslogg i adminpanelen:** vem som gjorde vad och när i panelen sparas i 400 dagar (inloggningar, raderade eller dolda kommentarer, API-nycklar, SEO-texter, mål), utan besöksdata eller lösenord.
+
 ## 3.60.0 — 2026-11-19
 
 ### Nytt

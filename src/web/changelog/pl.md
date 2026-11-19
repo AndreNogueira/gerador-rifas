@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.61.0 — 2026-11-19
+
+### Nowości
+- **Dziennik działań w panelu administracyjnym:** kto, co i kiedy zrobił w panelu, jest przechowywane przez 400 dni (logowania, usunięte lub ukryte komentarze, klucze API, teksty SEO, cele), bez danych odwiedzających i haseł.
+
 ## 3.60.0 — 2026-11-19
 
 ### Nowości

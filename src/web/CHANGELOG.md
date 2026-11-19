@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.61.0 — 2026-11-19
+
+### Novo
+- **Registo de ações no painel de administração:** fica guardado (400 dias) quem fez o quê e quando no painel (entradas, comentários apagados ou escondidos, chaves da API, textos de SEO, objetivos), sem dados de visitantes nem palavras-passe.
+
 ## 3.60.0 — 2026-11-19
 
 ### Novo

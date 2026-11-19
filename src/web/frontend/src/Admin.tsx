@@ -1,4 +1,5 @@
 import { type FormEvent, type ReactNode, useCallback, useEffect, useState } from "react";
+import { AdminAuditoria } from "./AdminAuditoria";
 import { AdminComentarios } from "./AdminComentarios";
 import { AdminErros } from "./AdminErros";
 import { AdminEvolucao } from "./AdminEvolucao";
@@ -230,7 +231,9 @@ export function Admin() {
   const [dados, setDados] = useState<Dados | null>(null);
   const [intervalo, setIntervalo] = useState("6h");
   const [fase, setFase] = useState<"a_ver" | "entrar" | "dentro">("a_ver");
-  const [vista, setVista] = useState<"geral" | "evolucao" | "comentarios" | "relatorio">("geral");
+  const [vista, setVista] = useState<"geral" | "evolucao" | "comentarios" | "relatorio" | "auditoria">(
+    "geral",
+  );
   const [falha, setFalha] = useState("");
 
   const carregarEstado = useCallback(async () => {
@@ -422,6 +425,14 @@ export function Admin() {
         >
           Relatório diário
         </button>
+        <button
+          type="button"
+          aria-pressed={vista === "auditoria"}
+          onClick={() => setVista("auditoria")}
+          data-testid="admin-vista-auditoria"
+        >
+          Registo de ações
+        </button>
       </nav>
 
       {vista === "evolucao" && (
@@ -430,6 +441,7 @@ export function Admin() {
           <AdminEvolucao aoSairDaSessao={() => setFase("entrar")} />
         </>
       )}
+      {vista === "auditoria" && <AdminAuditoria aoSairDaSessao={() => setFase("entrar")} />}
       {vista === "relatorio" && (
         <AdminRelatorio leitura={estado.papel === "leitura"} aoSairDaSessao={() => setFase("entrar")} />
       )}

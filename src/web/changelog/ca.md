@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.61.0 — 2026-11-19
+
+### Novetats
+- **Registre d'accions al tauler d'administració:** qui ha fet què i quan al tauler es conserva 400 dies (entrades, comentaris esborrats o amagats, claus de l'API, textos de SEO, objectius), sense dades dels visitants ni contrasenyes.
+
 ## 3.60.0 — 2026-11-19
 
 ### Novetats

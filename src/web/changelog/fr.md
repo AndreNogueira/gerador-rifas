@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.61.0 — 2026-11-19
+
+### Nouveautés
+- **Journal des actions dans le panneau d'administration :** qui a fait quoi et quand dans le panneau est conservé 400 jours (connexions, commentaires supprimés ou masqués, clés d'API, textes SEO, objectifs), sans données de visiteurs ni mots de passe.
+
 ## 3.60.0 — 2026-11-19
 
 ### Nouveautés
