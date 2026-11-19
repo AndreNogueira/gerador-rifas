@@ -17,6 +17,12 @@ from .i18n import t
 TOPICO_ALGARISMOS = 3          # posicao do topico «2 Algarismos» na lista
 IMAGENS_FIXAS = ("modelo.jpg", "modelo1.jpg", "digitos.png", "folha.png")
 LINGUAS_COM_VIDEO = ("pt", "en")
+SEM_CAPTURAS_PROPRIAS = ("pt-br",)         # o portugues do Brasil usa as capturas e os videos do portugues (os textos da interface sao quase iguais)
+
+
+def ordem_de_recurso(lingua: str) -> tuple:
+    """Onde procurar uma captura ou um video: a propria lingua, depois a lingua de recurso (o portugues para o do Brasil; o ingles para as outras) e a outra."""
+    return (lingua, "pt", "en") if lingua in SEM_CAPTURAS_PROPRIAS else (lingua, "en", "pt")
 VIDEO_MIN_BYTES = 100_000
 ESTADOS_DE_CAPTURA = ("a", "b", "c")          # capturas da app Windows (<lg>_a.png ...)
 ESTADOS_WEB = ("wa", "wb", "wc")               # capturas do site (<lg>_wa.png ...; e2e/capturas.spec.ts): os mesmos 3 estados, com o prefixo «w»
@@ -142,7 +148,7 @@ def verificar_ajuda(pasta_ajuda: Path, pasta_video: Path, linguas, plataformas=P
                 if not f.exists() or f.stat().st_size < VIDEO_FUNC_MIN_BYTES:
                     problemas.append(f"falta o video {f.name}")
     zonas = caixas(pasta_ajuda)
-    for lg in linguas:
+    for lg in (x for x in linguas if x not in SEM_CAPTURAS_PROPRIAS):
         for estado in [e for p in plataformas for e in (ESTADOS_DE_CAPTURA if p == "windows" else ESTADOS_WEB)]:
             if not (pasta_ajuda / f"{lg}_{estado}.png").exists() or estado not in zonas.get(lg, {}):
                 problemas.append(f"falta a captura {lg}_{estado}")
@@ -152,7 +158,7 @@ def verificar_ajuda(pasta_ajuda: Path, pasta_video: Path, linguas, plataformas=P
 def ficheiro_video(pasta_video: Path, lingua: str) -> Path | None:
     """O video tutorial na `lingua` (ou em ingles / portugues, se nao houver nessa lingua); None se nao ha nenhum.
     Na webapp serve-se como ficheiro estatico (<video>) em vez de abrir o leitor do sistema."""
-    for lg in (lingua, "en", "pt"):
+    for lg in ordem_de_recurso(lingua):
         f = Path(pasta_video) / f"tutorial_{lg}.mp4"
         if f.exists():
             return f
@@ -161,7 +167,7 @@ def ficheiro_video(pasta_video: Path, lingua: str) -> Path | None:
 
 def video_da_funcionalidade(pasta_video: Path, plataforma: str, id_: str, lingua: str) -> Path | None:
     """O video da funcionalidade `id_` nesta plataforma, na `lingua` (ou em ingles / portugues); None se nao ha nenhum."""
-    for lg in (lingua, "en", "pt"):
+    for lg in ordem_de_recurso(lingua):
         f = Path(pasta_video) / f"{plataforma}_{id_}_{lg}.mp4"
         if f.exists():
             return f
@@ -174,7 +180,7 @@ def recorte(pasta_ajuda: Path, lingua: str, estado: str, zona: str) -> tuple | N
     from PIL import Image
     pasta_ajuda = Path(pasta_ajuda)
     zonas = caixas(pasta_ajuda)
-    for lg in (lingua, "en", "pt"):
+    for lg in ordem_de_recurso(lingua):
         info = zonas.get(lg, {}).get(estado)
         ficheiro = pasta_ajuda / f"{lg}_{estado}.png"
         if info and zona in info and ficheiro.exists():

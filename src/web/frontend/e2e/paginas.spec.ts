@@ -1,6 +1,16 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("páginas, sorteio e PWA", () => {
+  test("o português do Brasil abre em /pt-br, com o vocabulário de lá, lang pt-BR e o seletor nesse valor", async ({
+    page,
+  }) => {
+    await page.goto("/pt-br/tutorial");
+    await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+    await expect(page.getByTestId("lingua")).toHaveValue("pt-br");
+    await expect(page.locator("body")).toContainText(/arquivo|tela|baixar/i); // o vocabulário do Brasil (espera pelo tutorial)
+    await expect(page.locator("body")).not.toContainText(/ficheiro|ecrã|descarregar/i); // e nada de Portugal
+  });
+
   test("o sorteio dá os números de referência e a ligação repete-o", async ({ page }) => {
     await page.goto("/sorteio");
     await page.getByTestId("sorteio-n").fill("3");

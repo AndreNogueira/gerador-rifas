@@ -106,7 +106,7 @@ class Tutorial(ctk.CTkToplevel):
                 self._abertas[espec[1]] = im
                 return im.convert("RGB"), float(im.width)
             _, estado, zona = espec
-            for lg in (i18n.atual(), "en", "pt"):
+            for lg in tutorial.ordem_de_recurso(i18n.atual()):
                 info = self._caixas.get(lg, {}).get(estado)
                 ficheiro = PASTA / f"{lg}_{estado}.png"
                 if info and zona in info and ficheiro.exists():

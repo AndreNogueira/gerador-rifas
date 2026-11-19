@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.69.0 — 2026-11-19
+
+### Novo
+- **Português do Brasil** (`/pt-br`): o site, os guias e as páginas legais passam a existir também em português do Brasil, com o vocabulário de lá (arquivo, baixar, tela, link…), a Política de privacidade adaptada à LGPD e a língua escolhida sozinha quando o navegador está em pt-BR. O português de Portugal continua o mesmo, sem prefixo no endereço.
+
 ## 3.68.0 — 2026-11-19
 
 ### Novo

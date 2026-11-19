@@ -1,4 +1,4 @@
-NOME = "Português"
+NOME = "Português (Portugal)"
 T = {
     "err_abrir_template": "Não consegui abrir o PDF do template:\n{erro}",
     "err_sem_paginas": "O PDF do template não tem páginas.",

@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.69.0 — 2026-11-19
+
+### Baru
+- **Portugis Brasil** (`/pt-br`): situs, panduan, dan halaman hukum kini juga tersedia dalam bahasa Portugis Brasil, dengan kosakatanya sendiri, Kebijakan Privasi yang disesuaikan dengan LGPD Brasil, dan bahasa dipilih otomatis saat peramban berbahasa pt-BR. Portugis Portugal tetap sama, tanpa awalan di alamat.
+
 ## 3.68.0 — 2026-11-19
 
 ### Baru

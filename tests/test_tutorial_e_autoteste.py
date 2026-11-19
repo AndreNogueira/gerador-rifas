@@ -112,7 +112,7 @@ def test_o_site_usa_as_suas_capturas_e_a_app_windows_as_dela():
     assert [[("rec", im[1][1:], im[2]) if im[0] == "rec" else im for im in t[3]] for t in web] == [t[3] for t in windows]      # mesma estrutura
 
 
-@pytest.mark.parametrize("lg", list(i18n.LINGUAS))
+@pytest.mark.parametrize("lg", [x for x in i18n.LINGUAS if x not in tutorial.SEM_CAPTURAS_PROPRIAS])
 def test_as_capturas_do_site_existem_e_as_zonas_cabem_na_imagem(lg):
     from PIL import Image
     zonas = tutorial.caixas(ASSETS / "ajuda")[lg]

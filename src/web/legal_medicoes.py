@@ -105,3 +105,8 @@ def aplicar(pagina: dict, lingua: str) -> dict:
     d = TEXTOS.get(lingua, TEXTOS["pt"])
     pagina["seccoes"].append({"titulo": d["titulo"], "paragrafos": list(d["paragrafos"])})
     return pagina
+
+
+from core import ptbr  # noqa: E402
+
+TEXTOS["pt-br"] = ptbr.derivar_tudo(TEXTOS["pt"])       # o português do Brasil deriva-se do de Portugal (core/ptbr.py)

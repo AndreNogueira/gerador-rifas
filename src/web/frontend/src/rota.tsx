@@ -7,6 +7,7 @@ const EVENTO = "rifas:navegar";
 
 /** As línguas com prefixo no URL, pela ordem de `core.i18n.LINGUAS` sem o português (um teste confere com o servidor: `seo.LINGUAS_URL`). */
 export const LINGUAS_COM_PREFIXO = [
+  "pt-br",
   "en",
   "es",
   "fr",

@@ -4,6 +4,16 @@ O site e a app Windows têm **22 línguas** (`core.i18n.LINGUAS`). As 18 primeir
 recentes (**catalão `ca`, ucraniano `uk`, indonésio `id`, vietnamita `vi`**) foram feitas de outra maneira, mais simples, e é a que se usa daqui em diante: **um ficheiro por língua**.
 Sem revisão por falantes nativos (o aviso das páginas legais diz que, havendo divergência, vale o português).
 
+## Uma língua DERIVADA: o português do Brasil (`pt-br`)
+
+A 23.ª entrada do seletor (a seguir ao português de Portugal) **não é uma tradução à mão**: deriva-se do `pt` por `core/ptbr.py` (glossário: ficheiro→arquivo, descarregar→baixar, ecrã→tela, ligação→link com o artigo no género certo,
+«carregue em»→«clique em», «a gerar»→«gerando», câmara municipal→prefeitura, RGPD→LGPD…), por isso **um texto novo em `pt` já sai em `pt-br`** sem nada a fazer. Onde fica cada coisa:
+`idiomas/pt_br.py` (nome e `OVERRIDES` por chave), `legal/pt_br.py` (páginas legais derivadas + as frases que citam a lei), e uma linha `["pt-br"] = derivar…` no fim de `seo_textos.py`, `guias/__init__.py`,
+`legal_anuncios.py`, `legal_opiniao.py`, `legal_partilhas.py` e `legal_medicoes.py`; o changelog deriva-se do `CHANGELOG.md` ao ler (sem ficheiro nem resumo a escrever). As capturas e os vídeos do tutorial são os do português
+(`tutorial.SEM_CAPTURAS_PROPRIAS`). O URL tem prefixo `/pt-br/`, o `hreflang` e o `<html lang>` levam `pt-BR` (`i18n.bcp47`) e o `Accept-Language: pt-BR` escolhe-o (`pt-PT` e `pt` continuam a dar o de Portugal).
+**Quando uma frase de Portugal sai mal no Brasil:** acrescentar uma regra a `ptbr.FRASES`/`PALAVRAS` (vale para tudo) ou, só para uma chave, a `OVERRIDES`; `tests/test_ptbr.py` tem a lista negra de palavras de Portugal
+(`ptbr.LISTA_NEGRA`) que nenhum texto derivado pode ter. Sem revisão por brasileiros nem jurídica das páginas legais: ver `PLANO_PTBR.md`.
+
 ## Lista (por esta ordem)
 
 1. **Interface e tutoriais** — `src/core/idiomas/<lg>.py` com `NOME` (o nome da língua nela própria) e `T` com **todas** as chaves de `i18n.TEXTOS["en"]` (hoje 293), mesmos `{parâmetros}` e mesmo

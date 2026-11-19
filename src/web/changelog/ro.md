@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.69.0 — 2026-11-19
+
+### Noutăți
+- **Portugheza braziliană** (`/pt-br`): site-ul, ghidurile și paginile juridice există acum și în portugheza braziliană, cu vocabularul ei, o Politică de confidențialitate adaptată LGPD din Brazilia și limba aleasă automat când browserul este setat pe pt-BR. Portugheza din Portugalia rămâne la fel, fără prefix în adresă.
+
 ## 3.68.0 — 2026-11-19
 
 ### Noutăți

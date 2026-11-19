@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.69.0 — 2026-11-19
+
+### Novinky
+- **Brazilská portugalština** (`/pt-br`): web, návody a právní stránky jsou nově i v brazilské portugalštině, s vlastní slovní zásobou, zásadami ochrany soukromí upravenými podle brazilského LGPD a automatickým výběrem jazyka, když má prohlížeč pt-BR. Evropská portugalština zůstává stejná, bez předpony v adrese.
+
 ## 3.68.0 — 2026-11-19
 
 ### Novinky

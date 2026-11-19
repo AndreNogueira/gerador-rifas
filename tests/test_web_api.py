@@ -52,15 +52,15 @@ def test_health_funciona_sem_frontend_compilado(tmp_path):
 
 
 # ------------------------------------------------------------------ linguas e textos
-def test_linguas_sao_as_18_e_por_defeito_vem_do_browser(cliente):
+def test_linguas_sao_as_23_e_por_defeito_vem_do_browser(cliente):
     r = cliente.get("/api/linguas", headers={"Accept-Language": "ja-JP,ja;q=0.9,en;q=0.8"})
     d = r.json()
-    assert [x["codigo"] for x in d["linguas"]] == list(i18n.LINGUAS) and len(d["linguas"]) == 22
-    assert d["linguas"][0] == {"codigo": "pt", "nome": "Português"}
+    assert [x["codigo"] for x in d["linguas"]] == list(i18n.LINGUAS) and len(d["linguas"]) == 23
+    assert d["linguas"][0] == {"codigo": "pt", "nome": "Português (Portugal)"}
     assert d["por_defeito"] == "ja"
 
 
-@pytest.mark.parametrize("cabecalho, esperado", [("pt-PT,pt;q=0.9", "pt"), ("zh-CN", "zh"), ("xx-YY", "en"), (None, "en")])
+@pytest.mark.parametrize("cabecalho, esperado", [("pt-PT,pt;q=0.9", "pt"), ("pt-BR,pt;q=0.9", "pt-br"), ("zh-CN", "zh"), ("xx-YY", "en"), (None, "en")])
 def test_lingua_por_defeito(cliente, cabecalho, esperado):
     r = cliente.get("/api/linguas", headers={"Accept-Language": cabecalho} if cabecalho else {})
     assert r.json()["por_defeito"] == esperado

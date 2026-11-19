@@ -480,6 +480,6 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             return HTMLResponse(seo.renderizar(html_base, seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
         if not request.scope.get("rifas_head"):                                     # um HEAD (verificadores de ligacoes, pre-visualizacoes) nao e uma visita
             servico.metricas.evento("pagina", rota, c=dispositivo(request.headers.get("user-agent", "")))
-        return HTMLResponse(seo.renderizar(html_base, pagina, base, lg), headers={**cab, "Content-Language": lg})
+        return HTMLResponse(seo.renderizar(html_base, pagina, base, lg), headers={**cab, "Content-Language": i18n.bcp47(lg)})
 
     return app

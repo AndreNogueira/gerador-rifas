@@ -15,9 +15,9 @@ PARAMS = re.compile(r"\{(\w+)\}")
 
 
 def test_linguas_e_ordem():
-    assert ORDEM == ["pt", "en", "es", "fr", "de", "it", "nl", "pl", "sv", "cs", "ro", "el", "ru", "tr", "zh", "ja", "ko", "hi", "ca", "uk", "id", "vi"]
+    assert ORDEM == ["pt", "pt-br", "en", "es", "fr", "de", "it", "nl", "pl", "sv", "cs", "ro", "el", "ru", "tr", "zh", "ja", "ko", "hi", "ca", "uk", "id", "vi"]
     assert list(NOMES) == ORDEM and list(TEXTOS) == ORDEM
-    assert list(i18n.LINGUAS.items())[:3] == [("pt", "Português"), ("en", "English"), ("es", "Español")]
+    assert list(i18n.LINGUAS.items())[:4] == [("pt", "Português (Portugal)"), ("pt-br", "Português (Brasil)"), ("en", "English"), ("es", "Español")]
     assert NOMES["zh"] == "简体中文" and NOMES["hi"] == "हिन्दी" and NOMES["ca"] == "Català" and NOMES["uk"] == "Українська"
 
 
@@ -92,7 +92,7 @@ def test_detetar_devolve_uma_lingua_suportada():
     assert i18n.detetar() in i18n.LINGUAS
 
 
-@pytest.mark.parametrize("codigo, lingua", [("pt-PT", "pt"), ("pt_BR", "pt"), ("zh-CN", "zh"), ("EN-us", "en"), ("de", "de"),
+@pytest.mark.parametrize("codigo, lingua", [("pt-PT", "pt"), ("pt_BR", "pt-br"), ("pt-br", "pt-br"), ("pt", "pt"), ("zh-CN", "zh"), ("EN-us", "en"), ("de", "de"),
                                             ("xx-YY", "en"), ("", "en"), ("hi-IN", "hi")])
 def test_lingua_de_codigo(codigo, lingua):
     assert i18n.lingua_de_codigo(codigo) == lingua
@@ -139,3 +139,18 @@ def test_erro_rifas_traduz_com_a_lingua_global():
     pt = str(e)
     i18n.definir("de")
     assert str(e) != pt
+
+
+def test_pt_br_negoceia_pelo_cabecalho_e_tem_etiqueta_bcp47():
+    assert i18n.lingua_de_accept_language("pt-BR,pt;q=0.9,en;q=0.8") == "pt-br"
+    assert i18n.lingua_de_accept_language("pt-PT,pt;q=0.9") == "pt" and i18n.lingua_de_accept_language("pt") == "pt"
+    assert i18n.lingua_de_accept_language("en;q=0.9,pt-BR;q=1") == "pt-br"
+    assert i18n.bcp47("pt-br") == "pt-BR" and i18n.bcp47("pt") == "pt" and i18n.bcp47("zh") == "zh"
+
+
+def test_pt_br_vem_do_pt_pelo_glossario_e_as_chaves_sao_as_mesmas():
+    assert set(TEXTOS["pt-br"]) == set(TEXTOS["pt"])
+    assert i18n.traduzir("app_nome", "pt-br") == "Gerador de Rifas"
+    pt, br = TEXTOS["pt"], TEXTOS["pt-br"]
+    mudadas = [k for k in pt if pt[k] != br[k]]
+    assert len(mudadas) > 50 and all(isinstance(br[k], str) for k in br)

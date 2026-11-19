@@ -7,6 +7,8 @@ no HTML estático. As regras de licença de uma rifa variam por país e por tipo
 """
 from __future__ import annotations
 
+from core import ptbr as _ptbr
+
 from ..seo_textos import sobreposto
 from . import associacoes, bombeiros, clubes, escolas, festas, igrejas, novas, numerar, quantos, sorteio
 
@@ -18,6 +20,8 @@ DADOS.update({"numerar": numerar.DADOS, "sorteio": sorteio.DADOS, "quantos": qua
 CAMINHOS = {nome: f"/rifas-para-{nome}" for nome in PARA_PUBLICOS}
 CAMINHOS.update({"numerar": "/como-numerar-bilhetes-de-rifa", "sorteio": "/sorteio-de-rifa-verificavel", "quantos": "/quantos-bilhetes-de-rifa-fazer"})
 NOMES = tuple(DADOS)
+for _nome in DADOS:
+    DADOS[_nome]["pt-br"] = _ptbr.derivar_tudo(DADOS[_nome]["pt"])      # o portugues do Brasil deriva-se do de Portugal (core/ptbr.py)
 N_PASSOS, N_DICAS = 5, 3
 INDICE = "/como-fazer"                                # a pagina que lista todos os guias e liga a cada um (e cada guia liga de volta)
 

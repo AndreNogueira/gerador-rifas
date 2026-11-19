@@ -60,3 +60,8 @@ from .legal import LINGUAS_NOVAS  # noqa: E402
 
 for _lg in LINGUAS_NOVAS:
     TEXTOS[_lg] = import_module(f"{__package__}.legal.{_lg}").PARTILHAS
+
+
+from core import ptbr  # noqa: E402
+
+TEXTOS["pt-br"] = ptbr.derivar_tudo(TEXTOS["pt"])       # o português do Brasil deriva-se do de Portugal (core/ptbr.py)

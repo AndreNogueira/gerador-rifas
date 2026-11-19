@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.69.0 — 2026-11-19
+
+### Yeni
+- **Brezilya Portekizcesi** (`/pt-br`): site, rehberler ve hukuki sayfalar artık Brezilya Portekizcesiyle de var; kendi sözcük dağarcığı, Brezilya LGPD'sine uyarlanmış gizlilik politikası ve tarayıcı pt-BR ise otomatik dil seçimi ile. Portekiz Portekizcesi aynı kalır, adreste önek yoktur.
+
 ## 3.68.0 — 2026-11-19
 
 ### Yeni
