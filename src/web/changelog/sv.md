@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.54.0 — 2026-11-19
+
+### Nytt
+- **Permanent historik i adminpanelen:** efter midnatt sparas en sammanfattning av varje dag, så den dagliga utvecklingen visar nu månader och upp till 2 år (förut bara 90 dagar). Bara antal, som resten av panelen.
+
 ## 3.53.0 — 2026-11-19
 
 ### Nytt

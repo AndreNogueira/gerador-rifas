@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.54.0 — 2026-11-19
+
+### Nouveautés
+- **Historique permanent dans le panneau d'administration :** un résumé de chaque jour est enregistré après minuit, l'évolution quotidienne montre donc des mois et jusqu'à 2 ans (avant, seulement 90 jours). Uniquement des comptages, comme le reste du panneau.
+
 ## 3.53.0 — 2026-11-19
 
 ### Nouveautés

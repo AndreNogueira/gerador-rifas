@@ -141,7 +141,7 @@ def test_a_evolucao_diaria_devolve_os_paineis_e_valida_os_parametros(com_token):
     assert all(len(s["valores"]) == 14 for p in d["paineis"] for s in p["series"])
     assert TOKEN not in r.text
     assert com_token.get("/api/admin/evolucao").json()["dias"] == 30                              # por omissao 30 dias
-    for mau in ("dias=0", "dias=91", "dias=x", "fuso=900", "fuso=-900"):
+    for mau in ("dias=0", "dias=731", "dias=x", "fuso=900", "fuso=-900"):
         assert com_token.get(f"/api/admin/evolucao?{mau}").status_code == 422, mau
 
 

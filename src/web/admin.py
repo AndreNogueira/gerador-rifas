@@ -23,7 +23,7 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, Field
 
-from . import VERSAO, config, email_envio, relatorio
+from . import VERSAO, config, email_envio, historico, relatorio
 from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
 from .metricas import DIAS_MAXIMOS, INTERVALOS, novo_painel
@@ -224,9 +224,14 @@ def paineis_de_outras_tabelas(serv: Servico):
 
 
 @router.get("/evolucao", dependencies=[Depends(exigir)])
-def evolucao(dias: int = Query(30, ge=1, le=DIAS_MAXIMOS), fuso: int = Query(0, ge=-840, le=840), serv: Servico = Depends(servico)) -> dict:
+def evolucao(dias: int = Query(30, ge=1, le=historico.DIAS_HISTORICO_MAX), fuso: int = Query(0, ge=-840, le=840), serv: Servico = Depends(servico)) -> dict:
     """TUDO o que se grava na base, dia a dia (ate `DIAS_MAXIMOS`): uma lista de paineis com as series diarias. `fuso` = minutos de diferenca do browser para UTC
     (local - UTC), para os dias serem os do dono e nao os de Greenwich."""
+    if dias > DIAS_MAXIMOS:                                  # mais do que a retencao dos eventos: vem do historico permanente (um resumo por dia)
+        try:
+            return historico.evolucao_historica(serv.historico, serv.metricas, paineis_de_outras_tabelas(serv), ZoneInfo(config.relatorio_fuso()), dias)
+        except Exception:  # noqa: BLE001 - a base em baixo: o painel mostra o aviso de sempre
+            raise HTTPException(503, "O historico nao respondeu: tente outra vez daqui a pouco.", headers=_SEM_CACHE) from None
     return serv.metricas.evolucao(dias, fuso, paineis_de_outras_tabelas(serv))
 
 

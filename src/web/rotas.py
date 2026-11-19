@@ -51,6 +51,7 @@ class Servico:
     limite_problemas_ip: LimiteHorario = field(default_factory=lambda: LimiteHorario(3))        # problemas reportados por IP e hora
     limite_problemas_total: LimiteHorario = field(default_factory=lambda: LimiteHorario(20))    # e no site todo
     relatorios: object | None = None                                        # `relatorio.RelatoriosEnviados`: os dias cujo relatorio diario ja foi enviado
+    historico: object | None = None                                         # `historico.HistoricoDiario`: uma linha-resumo por dia, para sempre
     estado_relatorio: object = field(default_factory=EstadoRelatorio)       # o ultimo erro e a proxima tentativa do envio
     criar_issue: object = github_issues.criar_issue                         # troca-se nos testes: nunca se chama o GitHub a sério
 

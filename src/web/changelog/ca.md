@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.54.0 — 2026-11-19
+
+### Novetats
+- **Historial permanent al tauler d'administració:** després de mitjanit es desa un resum de cada dia, de manera que l'evolució diària mostra ara mesos i fins a 2 anys (abans només 90 dies). Només recomptes, com la resta del tauler.
+
 ## 3.53.0 — 2026-11-19
 
 ### Novetats

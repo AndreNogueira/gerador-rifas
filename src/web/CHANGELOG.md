@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.54.0 — 2026-11-19
+
+### Novo
+- **Histórico permanente no painel de administração:** depois da meia-noite grava-se um resumo de cada dia, por isso a «Evolução diária» passa a mostrar meses e até 2 anos (antes só 90 dias). Só contagens, como o resto do painel.
+
 ## 3.53.0 — 2026-11-19
 
 ### Novo

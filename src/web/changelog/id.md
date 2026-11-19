@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.54.0 — 2026-11-19
+
+### Baru
+- **Riwayat permanen di panel admin:** setelah tengah malam ringkasan tiap hari disimpan, sehingga perkembangan harian kini menampilkan berbulan-bulan hingga 2 tahun (sebelumnya hanya 90 hari). Hanya hitungan, seperti bagian panel lainnya.
+
 ## 3.53.0 — 2026-11-19
 
 ### Baru

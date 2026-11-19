@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.54.0 — 2026-11-19
+
+### Mới
+- **Lịch sử vĩnh viễn trong bảng quản trị:** sau nửa đêm, bản tóm tắt của mỗi ngày được lưu lại, nên diễn biến theo ngày giờ hiển thị được nhiều tháng và tới 2 năm (trước đây chỉ 90 ngày). Chỉ có số đếm, như phần còn lại của bảng.
+
 ## 3.53.0 — 2026-11-19
 
 ### Mới

@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.54.0 — 2026-11-19
+
+### New
+- **Permanent history in the admin panel:** a summary of each day is saved after midnight, so the daily evolution now shows months and up to 2 years (before, only 90 days). Counts only, like the rest of the panel.
+
 ## 3.53.0 — 2026-11-19
 
 ### New

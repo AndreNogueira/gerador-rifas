@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.54.0 — 2026-11-19
+
+### Novità
+- **Storico permanente nel pannello di amministrazione:** dopo la mezzanotte si salva un riepilogo di ogni giorno, quindi l'evoluzione giornaliera mostra mesi e fino a 2 anni (prima solo 90 giorni). Solo conteggi, come il resto del pannello.
+
 ## 3.53.0 — 2026-11-19
 
 ### Novità

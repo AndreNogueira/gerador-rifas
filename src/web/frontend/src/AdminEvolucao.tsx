@@ -9,7 +9,7 @@ import { Icone } from "./icones";
  * (o painel é do dono).
  */
 
-const PERIODOS = [7, 14, 30, 60, 90] as const;
+const PERIODOS = [7, 14, 30, 60, 90, 180, 365, 730] as const;
 
 const resumir = (valores: (number | null)[], como: PainelDiario["agregado"]): number | null => {
   const reais = valores.filter((v): v is number => v !== null);
@@ -183,7 +183,7 @@ export function AdminEvolucao({ aoSairDaSessao }: { aoSairDaSessao: () => void }
             >
               {PERIODOS.map((d) => (
                 <option key={d} value={d}>
-                  Últimos {d} dias
+                  Últimos {d} dias{d > 90 ? " (histórico)" : ""}
                 </option>
               ))}
             </select>
@@ -209,7 +209,14 @@ export function AdminEvolucao({ aoSairDaSessao }: { aoSairDaSessao: () => void }
             a pouco.
           </p>
         )}
-        {dados && dados.dias > dados.retencao.eventos_dias && (
+        {dados?.origem === "historico" && (
+          <p className="aviso-efemero" role="note" data-testid="evolucao-historico">
+            Vista do histórico permanente: um resumo por dia, gravado depois da meia-noite (hora de Lisboa),
+            até ontem. Só há {dados.dias_com_dados ?? 0} dias gravados (o histórico só existe desde que foi
+            ligado); os outros aparecem vazios.
+          </p>
+        )}
+        {dados && dados.origem !== "historico" && dados.dias > dados.retencao.eventos_dias && (
           <p className="aviso-efemero" role="note">
             Só se guardam {dados.retencao.eventos_dias} dias de eventos e {dados.retencao.sistema_dias} de
             pedidos e sistema: os dias mais antigos aparecem vazios.

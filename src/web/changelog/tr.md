@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.54.0 — 2026-11-19
+
+### Yeni
+- **Yönetim panelinde kalıcı geçmiş:** gece yarısından sonra her günün özeti kaydedilir; böylece günlük gelişim artık aylarca ve 2 yıla kadar gösterilir (önceden yalnızca 90 gün). Panelin geri kalanı gibi yalnızca sayımlar.
+
 ## 3.53.0 — 2026-11-19
 
 ### Yeni
