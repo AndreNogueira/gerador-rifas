@@ -2,6 +2,12 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.67.0 — 2026-11-19
+
+### Nowości
+- **Spis poradników «Jak to zrobić»** (`/como-fazer`): jedna strona z wszystkimi poradnikami i krótkim opisem każdego; każdy poradnik kończy się odnośnikami do pozostałych. Także w menu «Pomoc» («Wszystkie poradniki»).
+- Poradniki i spis podają Google swoją ścieżkę (Start › Jak to zrobić › poradnik), by mogła się pokazać w wynikach.
+
 ## 3.66.0 — 2026-11-19
 
 ### Nowości

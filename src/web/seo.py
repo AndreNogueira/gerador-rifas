@@ -129,14 +129,27 @@ def _corpo_editor(lg: str) -> str:
     return f"<h1>{html.escape(_nome_pagina('web_editor')(lg))}</h1><p>{html.escape(texto('d_editor', lg))}</p>{_voltar(lg)}"
 
 
+def _lista_de_guias(lg: str, menos: str = "") -> str:
+    """`<ul>` com uma ligacao (e o resumo) para cada guia, menos `menos`: o indice e o fim de cada guia usam-na (ligacoes internas entre guias)."""
+    itens = "".join(f'<li><a href="{_l(lg, g["caminho"])}">{html.escape(g["titulo"])}</a>: {html.escape(g["resumo"])}</li>' for g in guias.lista(lg) if g["nome"] != menos)
+    return f"<ul>{itens}</ul>"
+
+
 def _corpo_guia(nome: str) -> Callable[[str], str]:
     def corpo(lg: str) -> str:
         g = guias.guia(nome, lg)
         passos = "".join(f"<li><strong>{html.escape(p['titulo'])}.</strong> {html.escape(p['texto'])}</li>" for p in g["passos"])
         dicas = "".join(f"<li>{html.escape(d)}</li>" for d in g["dicas"])
+        outros = (f'<h2>{html.escape(i18n.traduzir("web_guias_outros", lg))}</h2>{_lista_de_guias(lg, nome)}'
+                  f'<p><a href="{_l(lg, guias.INDICE)}">{html.escape(i18n.traduzir("web_guia_todos", lg))}</a></p>')
         return (f"<h1>{html.escape(g['titulo'])}</h1><p>{html.escape(g['intro'])}</p><ol>{passos}</ol><ul>{dicas}</ul>"
-                f"<p>{html.escape(g['fim'])}</p>{_voltar(lg)}")
+                f"<p>{html.escape(g['fim'])}</p>{outros}{_voltar(lg)}")
     return corpo
+
+
+def _corpo_comofazer(lg: str) -> str:
+    return (f"<h1>{html.escape(i18n.traduzir('web_comofazer_titulo', lg))}</h1><p>{html.escape(i18n.traduzir('web_comofazer_intro', lg))}</p>"
+            f"{_lista_de_guias(lg)}{_voltar(lg)}")
 
 
 def _corpo_changelog(lg: str) -> str:
@@ -190,6 +203,7 @@ ROTAS: dict[str, Pagina] = {p.caminho: p for p in (
     Pagina("/sobre", "d_sobre", _corpo_sobre, _nome_pagina("mi_sobre")),
     Pagina("/sorteio", "d_sorteio", _corpo_sorteio, _nome_pagina("web_sorteio")),
     Pagina("/editor", "d_editor", _corpo_editor, _nome_pagina("web_editor")),
+    Pagina(guias.INDICE, "d_comofazer", _corpo_comofazer, _nome_pagina("web_comofazer_titulo")),
     Pagina(guias.CAMINHOS["escolas"], "d_guia_escolas", _corpo_guia("escolas"), lambda lg: guias.guia("escolas", lg)["titulo"]),
     Pagina(guias.CAMINHOS["associacoes"], "d_guia_associacoes", _corpo_guia("associacoes"), lambda lg: guias.guia("associacoes", lg)["titulo"]),
     Pagina(guias.CAMINHOS["clubes"], "d_guia_clubes", _corpo_guia("clubes"), lambda lg: guias.guia("clubes", lg)["titulo"]),
@@ -235,6 +249,17 @@ def _dados_estruturados(base: str, lg: str) -> dict:
     }
 
 
+def _migalhas(pagina: Pagina, base: str, lg: str) -> dict | None:
+    """Os `BreadcrumbList` das paginas de guias (Inicio > Como fazer > guia) e do indice (Inicio > Como fazer): o Google mostra o caminho nos resultados."""
+    if pagina.caminho != guias.INDICE and pagina.caminho not in guias.CAMINHOS.values():
+        return None
+    passos = [(_app(lg), "/"), (i18n.traduzir("web_comofazer_titulo", lg), guias.INDICE)]
+    if pagina.caminho != guias.INDICE:
+        passos.append((pagina.titulo(lg).rsplit(" | ", 1)[0], pagina.caminho))
+    return {"@context": "https://schema.org", "@type": "BreadcrumbList",
+            "itemListElement": [{"@type": "ListItem", "position": i, "name": nome, "item": _url(base, c, lg)} for i, (nome, c) in enumerate(passos, 1)]}
+
+
 def _url(base: str, caminho: str, lg: str) -> str:
     c = caminho_na_lingua(caminho, lg)
     return f"{base}/" if c == "/" else f"{base}{c}"
@@ -276,6 +301,9 @@ def cabecalho(pagina: Pagina, base: str, lg: str = "pt") -> str:
             f'<meta name="twitter:image" content="{_e(imagem)}" />',
             f'<meta name="twitter:image:alt" content="{_e(alt)}" />',
         ]
+    migalhas = _migalhas(pagina, base, lg) if pagina.indexavel else None
+    if migalhas:
+        linhas.append(f'<script type="application/ld+json">{_json_ld(migalhas)}</script>')
     cliente = config.adsense_cliente()
     if cliente and pagina.indexavel:                         # AdSense (so com ADSENSE_CLIENTE): o script traz tambem a mensagem de consentimento do EEE
         linhas.append(f'<script async src="{ADSENSE_JS}?client={_e(cliente)}" crossorigin="anonymous"></script>')

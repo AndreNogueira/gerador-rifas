@@ -2,6 +2,12 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.67.0 — 2026-11-19
+
+### Mới
+- **Mục lục hướng dẫn «Cách làm»** (`/como-fazer`): một trang liệt kê mọi hướng dẫn kèm tóm tắt; mỗi hướng dẫn kết thúc bằng liên kết tới các hướng dẫn khác. Cũng có trong menu «Trợ giúp» («Tất cả hướng dẫn»).
+- Các hướng dẫn và mục lục cho Google biết đường dẫn của chúng (Trang chủ › Cách làm › hướng dẫn) để có thể hiển thị trong kết quả.
+
 ## 3.66.0 — 2026-11-19
 
 ### Mới

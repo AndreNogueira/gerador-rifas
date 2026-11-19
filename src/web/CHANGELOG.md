@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.67.0 — 2026-11-19
+
+### Novo
+- **Índice dos guias «Como fazer»** (`/como-fazer`): uma página que lista todos os guias com um resumo de cada, e cada guia passa a terminar com ligações para os outros. Também está no menu «Ajuda» («Todos os guias»).
+- Os guias e o índice indicam ao Google o caminho em que estão (Início › Como fazer › guia), para o mostrar nos resultados da pesquisa.
+
 ## 3.66.0 — 2026-11-19
 
 ### Novo

@@ -2,6 +2,12 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.67.0 — 2026-11-19
+
+### Baru
+- **Indeks panduan «Cara membuat»** (`/como-fazer`): satu halaman berisi semua panduan dengan ringkasan masing-masing; setiap panduan diakhiri tautan ke panduan lain. Ada juga di menu «Bantuan» («Semua panduan»).
+- Panduan dan indeks memberi tahu Google jalurnya (Beranda › Cara membuat › panduan) agar dapat tampil di hasil pencarian.
+
 ## 3.66.0 — 2026-11-19
 
 ### Baru

@@ -2,6 +2,12 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.67.0 — 2026-11-19
+
+### Novetats
+- **Índex de les guies «Com fer»** (`/como-fazer`): una pàgina amb totes les guies i un resum de cadascuna; cada guia acaba amb enllaços a les altres. També al menú «Ajuda» («Totes les guies»).
+- Les guies i l'índex indiquen a Google el seu camí (Inici › Com fer › guia) perquè es pugui mostrar als resultats.
+
 ## 3.66.0 — 2026-11-19
 
 ### Novetats

@@ -2,6 +2,12 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.67.0 — 2026-11-19
+
+### Noutăți
+- **Index al ghidurilor «Cum faci»** (`/como-fazer`): o pagină cu toate ghidurile și un rezumat al fiecăruia; fiecare ghid se încheie cu linkuri către celelalte. Și în meniul «Ajutor» («Toate ghidurile»).
+- Ghidurile și indexul spun Google pe ce cale se află (Acasă › Cum faci › ghid), ca să poată apărea în rezultate.
+
 ## 3.66.0 — 2026-11-19
 
 ### Noutăți

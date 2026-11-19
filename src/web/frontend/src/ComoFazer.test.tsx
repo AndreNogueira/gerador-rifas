@@ -43,11 +43,13 @@ describe("o menu «Ajuda» no cabeçalho (tutorial, vídeo e «como fazer» num 
     expect(ligacoes.map((a) => a.getAttribute("href"))).toEqual([
       "/tutorial",
       "/video",
+      "/como-fazer", // o índice de todos os guias, à frente de cada um
       ...MENU_COMO_FAZER.map((g) => g.para),
     ]);
     expect(ligacoes.map((a) => a.textContent)).toEqual([
       "Tutorial",
       "Vídeo tutorial",
+      "Todos os guias",
       "Para escolas",
       "Para associações",
       "Para clubes",

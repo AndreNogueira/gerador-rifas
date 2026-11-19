@@ -2,6 +2,12 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.67.0 — 2026-11-19
+
+### Novedades
+- **Índice de guías «Cómo hacer»** (`/como-fazer`): una página con todas las guías y un resumen de cada una; cada guía termina con enlaces a las demás. También en el menú «Ayuda» («Todas las guías»).
+- Las guías y el índice indican a Google su ruta (Inicio › Cómo hacer › guía) para mostrarla en los resultados.
+
 ## 3.66.0 — 2026-11-19
 
 ### Novedades

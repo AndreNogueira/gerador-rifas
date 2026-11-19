@@ -79,7 +79,9 @@ def test_o_html_estatico_leva_o_guia_inteiro_em_cada_lingua(c, nome):
         h = c.get(url).text
         g = guias.guia(nome, lg)
         corpo = h.split('<div class="seo-estatico">')[1]
-        assert len(re.findall(r"<h1>", corpo)) == 1 and corpo.count("<li>") == guias.N_PASSOS + guias.N_DICAS, (lg, nome)
+        propria, outros = corpo.split("<h2>", 1)[0], corpo.split("<h2>", 1)[1]        # o guia, e a seguir «Outros guias» (ligações aos restantes)
+        assert len(re.findall(r"<h1>", corpo)) == 1 and propria.count("<li>") == guias.N_PASSOS + guias.N_DICAS, (lg, nome)
+        assert outros.count("<li>") == len(guias.NOMES) - 1 and f'href="{url}"' not in outros, (lg, nome)
         assert html.escape(g["titulo"]) in corpo and f"<title>{html.escape(g['titulo'])}" in h
         assert f'<link rel="canonical" href="{URL}{url}" />' in h
 

@@ -141,6 +141,17 @@ class PassoGuia(BaseModel):
     texto: str
 
 
+class GuiaNaLista(BaseModel):
+    nome: str
+    caminho: str
+    titulo: str
+    resumo: str
+
+
+class ListaGuias(BaseModel):
+    guias: list[GuiaNaLista]
+
+
 class GuiaTexto(BaseModel):
     titulo: str
     intro: str
@@ -316,6 +327,13 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         resposta.headers["Cache-Control"] = "public, max-age=300"
         resposta.headers["Vary"] = "X-Lingua, Accept-Language"        # a resposta depende da lingua: as caches nao a podem misturar
         return PaginaTexto(**textos_legais.pagina(nome, lg))
+
+    @app.get("/api/guias", response_model=ListaGuias, tags=["sistema"])
+    def lista_de_guias(resposta: Response, lg: str = Depends(rotas.lingua)) -> ListaGuias:
+        """Todos os guias «como fazer» na lingua do pedido (titulo e resumo): o indice `/como-fazer` e as ligacoes entre guias."""
+        resposta.headers["Cache-Control"] = "public, max-age=300"
+        resposta.headers["Vary"] = "X-Lingua, Accept-Language"
+        return ListaGuias(guias=[GuiaNaLista(**g) for g in guias.lista(lg)])
 
     @app.get("/api/guia/{nome}", response_model=GuiaTexto, tags=["sistema"])
     def guia_de_como_fazer(nome: str, resposta: Response, lg: str = Depends(rotas.lingua)) -> GuiaTexto:

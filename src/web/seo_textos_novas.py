@@ -86,6 +86,12 @@ CHAVES: dict[str, dict[str, str]] = {
         "id": "Cara membuat undian untuk gereja: tiket berlambang dengan kupon, satu seri per kelompok, tanda potong, kontrol penjualan, pengundian terverifikasi.",
         "vi": "Cách tổ chức bốc thăm cho giáo xứ: vé có huy hiệu và cuống, mỗi nhóm một sê-ri, dấu cắt, kiểm soát doanh số và bốc thăm kiểm chứng được.",
     },
+    "d_comofazer": {
+        "ca": "Guies pas a pas per organitzar la teva rifa: butlletes numerades, impressió, control de vendes i sorteig, per a escoles, entitats, clubs i festes.",
+        "uk": "Покрокові посібники з лотереї: нумеровані квитки, друк, облік продажів і розіграш, для шкіл, асоціацій, клубів і свят.",
+        "id": "Panduan langkah demi langkah untuk undian Anda: tiket bernomor, cetak, kontrol penjualan, dan pengundian, untuk sekolah, perkumpulan, klub, dan pesta warga.",
+        "vi": "Hướng dẫn từng bước cho buổi bốc thăm: vé đánh số, in, kiểm soát doanh số và bốc thăm, cho trường học, hội nhóm, câu lạc bộ và lễ hội.",
+    },
     "d_termos": {
         "ca": "Les normes d'ús del Generador de Rifes: què fa el servei, què no fa i qui és responsable de la rifa.",
         "uk": "Правила користування Генератором лотерей: що робить сервіс, чого не робить і хто відповідає за лотерею.",

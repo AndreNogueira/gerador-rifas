@@ -60,3 +60,10 @@ Painel → **SEO por língua** (`/admin`, `src/web/frontend/src/AdminSeo.tsx`; A
 - Valida-se ao gravar **e** ao ler, com as regras de `tests/test_web_seo_linguas.py`: título até 66 de largura (CJK conta dobro), descrição entre 50 e 158 (≤ 160 carateres), os mesmos
   `{parâmetros}` do original, sem quebras de linha (exceto nos textos longos), até 1000 carateres. O HTML escapa tudo.
 - Uma língua nova (`docs/LINGUAS.md`) herda os textos do código; edita-se depois no painel. Testes: `tests/test_web_seo_bd.py`, `AdminSeo.test.tsx`.
+
+## Índice dos guias e migalhas de pão
+
+- **`/como-fazer`** (`guias.INDICE`, `seo.ROTAS`, `IndiceGuias.tsx`, `GET /api/guias`): lista todos os guias com título e resumo (a primeira frase da introdução, `guias.resumo`), nas 22 línguas e no HTML estático. Cada guia termina com «Outros guias» (ligações aos outros, nunca a si próprio) e «Todos os guias»: ligações internas para quem lê e para quem indexa. O menu «Ajuda» ganhou «Todos os guias» antes dos seis guias por público.
+- **`BreadcrumbList`** (JSON-LD, `seo._migalhas`): Início › Como fazer › guia (e Início › Como fazer no índice), com os URLs de cada língua. Só nas páginas de guias e no índice.
+- Guia novo = módulo em `guias/`, entrada em `guias.CAMINHOS`/`NOMES`, `d_guia_<nome>` e a chave `web_guia_<nome>` (o índice e as ligações saem sozinhos da lista; o menu do cabeçalho tem a sua lista em `MENU_COMO_FAZER`).
+

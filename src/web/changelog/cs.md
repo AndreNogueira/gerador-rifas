@@ -2,6 +2,12 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.67.0 — 2026-11-19
+
+### Novinky
+- **Přehled návodů «Jak na to»** (`/como-fazer`): jedna stránka se všemi návody a krátkým popisem; každý návod končí odkazy na ostatní. Také v nabídce «Nápověda» («Všechny návody»).
+- Návody a přehled sdělují Googlu svou cestu (Domů › Jak na to › návod), aby se mohla zobrazit ve výsledcích.
+
 ## 3.66.0 — 2026-11-19
 
 ### Novinky

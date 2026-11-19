@@ -2,6 +2,12 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.67.0 — 2026-11-19
+
+### New
+- **«How to» guides index** (`/como-fazer`): one page listing every guide with a short summary, and each guide now ends with links to the others. Also in the «Help» menu («All guides»).
+- The guides and the index tell Google the path they sit on (Home › How to › guide), so search results can show it.
+
 ## 3.66.0 — 2026-11-19
 
 ### New

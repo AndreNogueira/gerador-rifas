@@ -137,6 +137,16 @@ function LigacoesDeAjuda({
       <li className="menu-titulo" role="presentation">
         {t("web_como_fazer")}
       </li>
+      <li>
+        <Ligacao
+          para="/como-fazer"
+          onClick={aoEscolher}
+          aria-current={caminho === "/como-fazer" ? "page" : undefined}
+          data-testid="guia-como-fazer"
+        >
+          {t("web_guia_todos")}
+        </Ligacao>
+      </li>
       {MENU_COMO_FAZER.map((g) => (
         <li key={g.para}>
           <Ligacao
@@ -154,7 +164,9 @@ function LigacoesDeAjuda({
 }
 
 const estaNaAjuda = (caminho: string) =>
-  AJUDA.some((g) => g.para === caminho) || MENU_COMO_FAZER.some((g) => g.para === caminho);
+  AJUDA.some((g) => g.para === caminho) ||
+  caminho === "/como-fazer" ||
+  MENU_COMO_FAZER.some((g) => g.para === caminho);
 
 /** Um só separador para tudo o que ensina a usar o site (tutorial, vídeo e «como fazer»): o cabeçalho fica curto e o nome da app cabe sempre inteiro. */
 function MenuAjuda({ caminho }: { caminho: string }) {
