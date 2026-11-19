@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.53.0 — 2026-11-19
+
+### Neu
+- **Täglicher E-Mail-Bericht für den Betreiber:** jeden Tag kurz nach Mitternacht kommt eine E-Mail mit allem, was am gerade zu Ende gegangenen Tag aufgezeichnet wurde (Nutzung, Publikum, Fehler und Serverressourcen), verglichen mit dem Durchschnitt der 7 Vortage, damit sich die App verfolgen lässt, ohne das Panel zu öffnen. Nur Zählwerte: nie Besucherdaten.
+
 ## 3.52.0 — 2026-11-19
 
 ### Verbessert

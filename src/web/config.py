@@ -168,6 +168,42 @@ def github_repo() -> str:
     return v if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9._-]{1,100}", v) else ""
 
 
+_ENDERECO = r"[A-Za-z0-9._%+\-]{1,64}@[A-Za-z0-9.\-]{1,200}\.[A-Za-z]{2,24}"
+
+
+def email_chave() -> str:
+    """A chave da API de e-mail (Resend): RESEND_API_KEY. Palavra-passe: so no Render, NUNCA no repositorio, num log ou numa resposta. Vazio = sem e-mails."""
+    return os.environ.get("RESEND_API_KEY", "").strip()
+
+
+def relatorio_destinos() -> list[str]:
+    """Quem recebe o relatorio diario: RELATORIO_EMAIL_PARA, um endereco (ou ate 3 separados por virgula). Enderecos invalidos ignoram-se; vazio = sem relatorio.
+    So no Render (e um dado pessoal): nunca no repositorio."""
+    bons = [e.strip() for e in os.environ.get("RELATORIO_EMAIL_PARA", "").split(",")]
+    return [e for e in bons if re.fullmatch(_ENDERECO, e)][:3]
+
+
+def relatorio_remetente() -> str:
+    """O remetente: RELATORIO_EMAIL_DE (`Nome <endereco>` ou so o endereco; um dominio verificado no Resend). Por omissao o remetente de teste do Resend,
+    que so entrega ao e-mail da propria conta (chega para receber o relatorio)."""
+    v = os.environ.get("RELATORIO_EMAIL_DE", "").strip()
+    if re.fullmatch(rf"[^<>\r\n]{{1,60}}<{_ENDERECO}>|{_ENDERECO}", v):
+        return v
+    return "Gerador de Rifas <onboarding@resend.dev>"
+
+
+def relatorio_fuso() -> str:
+    """O fuso dos «dias» do relatorio (a meia-noite de la): RELATORIO_FUSO, por omissao Europe/Lisbon. Um nome que nao exista volta ao por omissao."""
+    from zoneinfo import ZoneInfo
+
+    v = os.environ.get("RELATORIO_FUSO", "").strip() or "Europe/Lisbon"
+    try:
+        ZoneInfo(v)
+    except Exception:  # noqa: BLE001 - ZoneInfoNotFoundError, ValueError (caminhos)...
+        return "Europe/Lisbon"
+    return v
+
+
 def donativo_url() -> str:
     """Ligacao para donativos (MB Way, PayPal, Ko-fi...): DONATIVO_URL. So `https://` (outra coisa ignora-se); vazio = sem botao."""
     v = os.environ.get("DONATIVO_URL", "").strip()

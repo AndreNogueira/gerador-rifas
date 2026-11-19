@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.53.0 — 2026-11-19
+
+### Noutăți
+- **Raport zilnic prin e-mail pentru responsabilul site-ului:** în fiecare zi, imediat după miezul nopții, sosește un e-mail cu tot ce s-a înregistrat în ziua care tocmai s-a încheiat (utilizare, public, erori și resursele serverului), comparat cu media celor 7 zile anterioare, pentru a urmări aplicația fără a deschide panoul. Doar numărători: niciodată datele vizitatorilor.
+
 ## 3.52.0 — 2026-11-19
 
 ### Îmbunătățit

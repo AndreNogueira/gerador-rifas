@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.53.0 — 2026-11-19
+
+### Yeni
+- **Site sorumlusu için günlük e-posta raporu:** her gün gece yarısından hemen sonra, yeni biten günde kaydedilen her şeyi (kullanım, kitle, hatalar ve sunucu kaynakları) önceki 7 günün ortalamasıyla karşılaştıran bir e-posta gelir; böylece paneli açmadan uygulama izlenebilir. Yalnızca sayımlar: ziyaretçi verileri asla.
+
 ## 3.52.0 — 2026-11-19
 
 ### İyileştirildi

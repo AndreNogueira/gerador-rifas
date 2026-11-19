@@ -540,11 +540,12 @@ class Metricas:
         primeiro = (int(agora) + desvio) // 86400 - dias + 1
         return primeiro, dias, desvio, primeiro * 86400 - desvio
 
-    def evolucao(self, dias: int = 30, desvio_min: int = 0, extras=None) -> dict:
+    def evolucao(self, dias: int = 30, desvio_min: int = 0, extras=None, ate: float | None = None) -> dict:
         """TUDO o que esta na base, dia a dia: uma lista de paineis (cada um com 1 ou mais series de `dias` valores), prontos a desenhar.
         Os dias sao os do fuso do browser (`desvio_min`); o ultimo e hoje (incompleto). `extras(primeiro, dias, desvio_s, desde)` devolve paineis
-        de outras tabelas (chaves da API, partilhas). Nada identifica ninguem: so contagens por dia, como o resto do painel."""
-        agora = int(self._agora())
+        de outras tabelas (chaves da API, partilhas). `ate`: o instante em que a janela acaba (por omissao agora; o relatorio diario pede o fim de ontem, para o ultimo
+        dia ser o que acabou). Nada identifica ninguem: so contagens por dia, como o resto do painel."""
+        agora = int(self._agora() if ate is None else ate)
         primeiro, dias, desvio, desde = self.janela_de_dias(agora, dias, desvio_min)
         with contextlib.suppress(Exception):
             self.descarregar(tudo=True)                     # uma so vez: as consultas abaixo ja nao o repetem

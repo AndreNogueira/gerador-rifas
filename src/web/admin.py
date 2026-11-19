@@ -17,11 +17,13 @@ import asyncio
 import hashlib
 import hmac
 import time
+from datetime import date, timedelta
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, Field
 
-from . import VERSAO, config
+from . import VERSAO, config, email_envio, relatorio
 from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
 from .metricas import DIAS_MAXIMOS, INTERVALOS, novo_painel
@@ -192,7 +194,7 @@ def dados(intervalo: str = "6h", serv: Servico = Depends(servico)) -> dict:
     }
 
 
-def _paineis_de_outras_tabelas(serv: Servico):
+def paineis_de_outras_tabelas(serv: Servico):
     """Os paineis que vem de fora das metricas: o gasto da API publica (por dia UTC, como a quota) e as partilhas do editor (so com Postgres)."""
     def extras(primeiro: int, dias: int, desvio: int, desde: int) -> list[dict]:
         saida: list[dict] = []
@@ -225,7 +227,7 @@ def _paineis_de_outras_tabelas(serv: Servico):
 def evolucao(dias: int = Query(30, ge=1, le=DIAS_MAXIMOS), fuso: int = Query(0, ge=-840, le=840), serv: Servico = Depends(servico)) -> dict:
     """TUDO o que se grava na base, dia a dia (ate `DIAS_MAXIMOS`): uma lista de paineis com as series diarias. `fuso` = minutos de diferenca do browser para UTC
     (local - UTC), para os dias serem os do dono e nao os de Greenwich."""
-    return serv.metricas.evolucao(dias, fuso, _paineis_de_outras_tabelas(serv))
+    return serv.metricas.evolucao(dias, fuso, paineis_de_outras_tabelas(serv))
 
 
 @router.get("/comentarios", dependencies=[Depends(exigir)])
@@ -241,6 +243,57 @@ def apagar_comentario(id_: str, serv: Servico = Depends(servico)) -> Response:
         raise HTTPException(404, "Comentário inexistente", headers=_SEM_CACHE)
     serv.metricas.evento("admin", "comentario_apagado")
     return Response(status_code=204, headers=_SEM_CACHE)
+
+
+@router.get("/relatorio", dependencies=[Depends(exigir)])
+def relatorio_estado(serv: Servico = Depends(servico)) -> dict:
+    """O relatorio diario por e-mail: se esta ligado, para onde vai (mascarado), o ultimo dia enviado e o ultimo erro."""
+    try:
+        ultimo = serv.relatorios.ultimo() if serv.relatorios is not None else None
+    except Exception:  # noqa: BLE001 - a base em baixo nao estraga o painel
+        ultimo = None
+    e = serv.estado_relatorio
+    return {"ativo": relatorio.ativo(), "tem_chave": bool(config.email_chave()), "destinos": [relatorio.mascarar(x) for x in config.relatorio_destinos()],
+            "fuso": config.relatorio_fuso(), "persistente": bool(config.database_url()), "ultimo": ultimo,
+            "erro": e.ultimo_erro, "erro_em": int(e.ultimo_erro_em) or None}
+
+
+def _dia_pedido(dia: str, fuso: ZoneInfo) -> date:
+    ontem = relatorio.dia_de_ontem(time.time(), fuso)
+    if not dia:
+        return ontem
+    try:
+        d = date.fromisoformat(dia)
+    except ValueError:
+        raise HTTPException(422, "Dia invalido (AAAA-MM-DD)", headers=_SEM_CACHE) from None
+    if not ontem - timedelta(days=80) <= d <= ontem:
+        raise HTTPException(422, "So ha dados dos ultimos dias (ate ontem)", headers=_SEM_CACHE)
+    return d
+
+
+@router.get("/relatorio/previa", dependencies=[Depends(exigir)])
+def relatorio_previa(dia: str = "", serv: Servico = Depends(servico)) -> dict:
+    """O relatorio de um dia (por omissao ontem) tal como seria enviado: assunto, HTML e texto. Nao envia nada."""
+    fuso = ZoneInfo(config.relatorio_fuso())
+    try:
+        return relatorio.construir(serv.metricas, paineis_de_outras_tabelas(serv), _dia_pedido(dia, fuso), fuso)
+    except relatorio.ErroRelatorio:
+        raise HTTPException(503, "A base de dados nao respondeu: tente outra vez daqui a pouco.", headers=_SEM_CACHE) from None
+
+
+@router.post("/relatorio/enviar", dependencies=[Depends(exigir_admin)])
+def relatorio_enviar(dia: str = "", serv: Servico = Depends(servico)) -> dict:
+    """Envia JA uma copia de teste do relatorio (assunto «[Teste]»). Nao conta como o envio do dia: o da meia-noite sai na mesma."""
+    if not relatorio.ativo():
+        raise HTTPException(409, "O relatorio por e-mail esta desligado: faltam RESEND_API_KEY e RELATORIO_EMAIL_PARA no Render.", headers=_SEM_CACHE)
+    fuso = ZoneInfo(config.relatorio_fuso())
+    try:
+        relatorio.enviar_relatorio(serv.metricas, paineis_de_outras_tabelas(serv), _dia_pedido(dia, fuso), fuso, teste=True)
+    except (email_envio.ErroEmail, relatorio.ErroRelatorio) as e:
+        serv.metricas.evento("admin", "relatorio_teste_falhou")
+        raise HTTPException(502, f"Nao foi possivel enviar ({e}).", headers=_SEM_CACHE) from None
+    serv.metricas.evento("admin", "relatorio_teste")
+    return {"enviado": True}
 
 
 @router.get("/erros", dependencies=[Depends(exigir)])

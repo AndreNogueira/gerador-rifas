@@ -514,3 +514,14 @@
     font-variant-numeric: tabular-nums;
   }
 }
+
+// a pré-visualização do relatório diário: o HTML do e-mail num iframe sem permissões (sem scripts), sempre sobre branco como num cliente de e-mail
+.relatorio-previa {
+  display: block;
+  width: 100%;
+  height: 70vh;
+  min-height: 420px;
+  border: var(--borda) solid var(--linha);
+  border-radius: 8px;
+  background: #fff;
+}

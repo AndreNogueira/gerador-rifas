@@ -237,7 +237,32 @@ async function pedirJson(url: string, metodo: string, corpo?: unknown): Promise<
   return r;
 }
 
+export interface RelatorioEstado {
+  ativo: boolean;
+  tem_chave: boolean;
+  destinos: string[];
+  fuso: string;
+  persistente: boolean;
+  ultimo: { dia: string; enviado: number } | null;
+  erro: string;
+  erro_em: number | null;
+}
+
+export interface RelatorioPrevia {
+  assunto: string;
+  html: string;
+  texto: string;
+  dia: string;
+  alertas: number;
+}
+
 export const adminApi = {
+  relatorio: () => ver<RelatorioEstado>("/api/admin/relatorio"),
+  relatorioPrevia: (dia: string) =>
+    ver<RelatorioPrevia>(`/api/admin/relatorio/previa${dia ? `?dia=${encodeURIComponent(dia)}` : ""}`),
+  async relatorioEnviar(dia: string): Promise<void> {
+    await pedirJson(`/api/admin/relatorio/enviar${dia ? `?dia=${encodeURIComponent(dia)}` : ""}`, "POST");
+  },
   seoVer: (lingua: string) => ver<VistaSeo>(`/api/admin/seo?lingua=${encodeURIComponent(lingua)}`),
   async seoGuardar(chave: string, lingua: string, valor: string): Promise<string> {
     const r = await pedirJson("/api/admin/seo", "PUT", { chave, lingua, valor });

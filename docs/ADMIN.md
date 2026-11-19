@@ -63,6 +63,23 @@ Os limites são os da retenção (eventos 90 dias, pedidos e sistema 35): os dia
 
 A aba **Comentários** mostra os comentários dos visitantes só com o **país** (de onde vieram; nunca o IP, que não se guarda) e o **texto** (e o botão de apagar, só para o dono; ver `docs/OPINIAO.md`).
 
+A aba **Relatório diário** mostra o estado do e-mail diário (ligado ou não, para onde vai, último dia enviado, último erro), **pré-visualiza** o relatório de qualquer dia e manda **um e-mail de teste** (só o dono; assunto «[Teste]», não conta como o envio do dia).
+
+## Relatório diário por e-mail
+
+Todos os dias, um pouco depois da meia-noite (`RELATORIO_FUSO`, por omissão `Europe/Lisbon`), o servidor envia um e-mail HTML com **tudo o que se gravou no dia que acabou**: os números grandes (sessões, gerações, números gerados, descargas, páginas vistas, comentários, problemas, erros 5xx), **avisos** (erros 5xx, gerações falhadas, reinícios do motor, memória perto de 512 MB, resposta lenta, dados incompletos) e, por grupo, cada série com o **dia, a média dos 7 dias anteriores, a variação e uma miniatura dos 8 dias** (`relatorio.py`, a mesma base da «Evolução diária»). Só contagens e códigos de país: nunca IPs, nomes, ficheiros nem o texto dos comentários.
+
+**Ligar (o que SÓ tu podes fazer):**
+1. Em [resend.com](https://resend.com) cria uma conta gratuita (100 e-mails/dia: sobra) e, em **API Keys**, uma chave só com «Sending access».
+2. No Render → o serviço → **Environment**: `RESEND_API_KEY` = a chave (**é uma palavra-passe**: nunca no repositório nem no chat) e `RELATORIO_EMAIL_PARA` = o teu e-mail (até 3 separados por vírgula). Sem domínio próprio o remetente é `onboarding@resend.dev`, que **só entrega ao e-mail da conta do Resend**: usa esse e-mail. Para outro destinatário, verifica um domínio no Resend e define `RELATORIO_EMAIL_DE` (`Nome <endereco@o-teu-dominio>`).
+3. Na aba **Relatório diário** do painel carrega em «Enviar um teste agora».
+
+**Porque HTTPS e não SMTP:** o Render gratuito bloqueia as portas de saída do SMTP, por isso o envio usa a API do Resend (`email_envio.py`, só `urllib`).
+
+**Garantias:** o envio do dia é **reservado na base** (tabela `relatorios`, no Neon com `DATABASE_URL`) antes de se mandar: dois arranques sobrepostos ou uma atualização a meio da noite não o duplicam; se o serviço estava a dormir à meia-noite o e-mail sai quando acordar (de 5 em 5 minutos, depois das 00:05); se o envio falha a reserva desfaz-se e tenta-se outra vez de hora a hora (o painel mostra o erro, só a classe e o código HTTP, nunca a chave nem os endereços). Sem `DATABASE_URL` a reserva vive no disco efémero e uma atualização a meio da manhã pode repetir o relatório. Nos dois dias de mudança de hora a janela fica uma hora desfasada. Se a base de dados de métricas estiver em baixo, não se envia um relatório a zeros: tenta-se mais tarde.
+
+**Privacidade:** o Resend (o fornecedor de e-mail) vê o relatório e o teu endereço; é o único terceiro. Não leva dados de visitantes, por isso a Política de privacidade não muda.
+
 Os intervalos são a última hora, 6 horas, 24 horas, 7 dias e 30 dias. Os números de «Agora» atualizam de 10 em 10 segundos; os gráficos de 30 em 30.
 
 ## Privacidade: só agregados
