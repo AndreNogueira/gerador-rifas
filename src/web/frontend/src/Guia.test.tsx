@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { App } from "./App";
 import { ProvedorI18n } from "./i18n";
@@ -28,7 +28,8 @@ describe("guias «como fazer»", () => {
     expect(guia.querySelectorAll("ol > li")).toHaveLength(5);
     expect(guia.querySelectorAll("ul > li")).toHaveLength(3);
     expect(within(guia).getByTestId("guia-gerador")).toHaveAttribute("href", "/");
-    expect(document.title).toContain("Como fazer uma rifa para a escola");
+    // o título do separador põe-se num efeito, depois de desenhar o guia: esperar por ele em vez de o ler logo (era a causa de um teste instável)
+    await waitFor(() => expect(document.title).toContain("Como fazer uma rifa para a escola"));
   });
 
   it("a das associações é outra página, com o seu próprio guia", async () => {
