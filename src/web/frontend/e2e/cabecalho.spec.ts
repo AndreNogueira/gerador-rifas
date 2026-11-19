@@ -62,7 +62,7 @@ test.describe("cabeçalho", () => {
     await page.goto("/");
     await expect(page.getByTestId("nav-tutorial")).toHaveCount(0); // já não são separadores soltos
     await page.getByTestId("nav-ajuda").click();
-    await expect(page.locator("#menu-ajuda a")).toHaveCount(8);
+    await expect(page.locator("#menu-ajuda a")).toHaveCount(9); // tutorial, vídeo, «Todos os guias» e os 6 guias
     await page.getByTestId("nav-video").click();
     await expect(page).toHaveURL(/\/video$/);
     await expect(page.getByTestId("nav-ajuda")).toHaveAttribute("aria-current", "page");

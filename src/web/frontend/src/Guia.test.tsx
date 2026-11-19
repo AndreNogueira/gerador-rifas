@@ -25,8 +25,10 @@ describe("guias «como fazer»", () => {
     expect(
       await within(guia).findByRole("heading", { level: 1, name: "Como fazer uma rifa para a escola" }),
     ).toBeInTheDocument();
+    await within(guia).findByTestId("outros-guias"); // já chegou a lista dos outros guias: a contagem seguinte tem de a ignorar
     expect(guia.querySelectorAll("ol > li")).toHaveLength(5);
-    expect(guia.querySelectorAll("ul > li")).toHaveLength(3);
+    // as dicas, sem a lista «Outros guias» (que aparece quando o servidor responde: contá-la fazia o teste depender de quem chegava primeiro)
+    expect(guia.querySelectorAll("ul:not(.lista-guias) > li")).toHaveLength(3);
     expect(within(guia).getByTestId("guia-gerador")).toHaveAttribute("href", "/");
     // o título do separador põe-se num efeito, depois de desenhar o guia: esperar por ele em vez de o ler logo (era a causa de um teste instável)
     await waitFor(() => expect(document.title).toContain("Como fazer uma rifa para a escola"));
