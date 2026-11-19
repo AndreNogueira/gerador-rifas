@@ -1,6 +1,6 @@
 # Plano: gerador de preçários para festas
 
-> **Estado: proposta para rever (2026-11-19).** Nada disto está feito. Quando estiver aprovado, cada fase é um PR pequeno, pela ordem abaixo.
+> **Estado (2026-11-19): aprovado pelo dono com estas decisões** (as recomendações seguem-se; o pt-BR já está feito na 3.69.0) e em execução pela ordem das fases abaixo. A ideia: o utilizador escolhe os artigos de uma lista extensa nossa (com imagens e temas ligados às épocas do ano), escreve os preços na moeda do seu **país** (ou numa moeda inventada) e sai um preçário pronto a imprimir, na webapp **e** na app Windows (que é também onde se valida o resultado).
 > Ideia do dono: o utilizador escolhe os artigos de uma lista extensa nossa (com imagens e temas ligados às épocas do ano), escreve os preços na moeda que quiser
 > (por omissão a da língua do site, ou uma moeda inventada) e sai um preçário pronto a imprimir. Na webapp **e** na app Windows.
 
@@ -25,16 +25,16 @@
 |---|---|---|---|
 | D1 | **Imagens dos artigos** | (a) desenhá-las nós em código, como os enfeites; (b) usar um conjunto aberto de emojis/pictogramas (Noto Emoji, Apache 2.0 ou OFL; Twemoji pede atribuição); (c) misto | **(b)** para ter ~150 artigos já, no mesmo estilo; reservar (a) para os enfeites dos temas, onde já existe. **Antes de começar a fase 3 confirmo a licença exata do conjunto escolhido** e, se pedir atribuição, ponho-a no rodapé do PDF e na página «Acerca». |
 | D2 | **Nomes dos artigos nas 22 línguas** | (a) as 22 desde o início (≈150 × 22 = 3 300 textos); (b) pt+en agora e as outras por fases, com recurso à língua do site → en → pt | **(a) por categorias**, mas sem bloquear o resto: o catálogo cai para en → pt enquanto falta. O texto livre do utilizador nunca precisa de tradução. As 4 línguas que não têm letra (hindi) saem em inglês como já acontece na folha de controlo. |
-| D3 | **Moeda por omissão em inglês** | `$`, `£` ou `€` | `$`; a lista de moedas está logo ao lado. Português → `€` (o pt-BR, se avançar, → `R$`, ver abaixo). |
+| D3 | **Moeda** | por língua / por país | **Por país** (decidido pelo dono): a língua só sugere o país de omissão (`pt`→PT, `pt-br`→BR, `en`→US…) e o browser afina-o pela região do `navigator.language` (`en-GB`→GBP, `es-MX`→MXN; nada vai ao servidor); o utilizador muda o país ou a moeda numa lista. Separadores e posição do símbolo seguem a **língua** do site. |
 | D4 | **Sem sessão** | Preçário como rota «sem sessão» (campos → PDF), como a folha de controlo | **Sem sessão.** Rascunho no `localStorage` (`rifas.precario`), como o editor. Partilhar por ligação fica para depois (precisa de BD). |
 | D5 | **Imagem do utilizador** (logótipo da associação, foto de um artigo) | já / depois | **Logótipo já** (reaproveita `core/marca.py`); fotos de artigos depois. |
-| D6 | **pt-BR** | antes / depois do preçário | Depois, como combinado («depois do resto»). O preçário já fica preparado: a moeda é dado, não código. |
+| D6 | **pt-BR** | antes / depois do preçário | **Feito antes** (3.69.0): o catálogo tem itens de Portugal (bifana, caldo verde…) e do Brasil (coxinha, pão de queijo, quentão, pipoca…), mostrados conforme a língua. |
 
 ## 4. Desenho técnico
 
 ### 4.1 Núcleo (`src/core`, sem UI, partilhado pelas duas apps)
 
-- **`moeda.py`** — tabela das moedas (código, símbolo, antes/depois do número, casas decimais, separador decimal e de milhares por língua) e `formatar(valor, moeda, lingua)`. `moeda_por_omissao(lingua)`: pt/es/fr/de/it/nl/el/ca → `€`; pl `zł`; sv `kr`; cs `Kč`; ro `lei`; ru `₽`; tr `₺`; zh `¥`; ja `¥`; ko `₩`; hi `₹`; uk `₴`; id `Rp`; vi `₫`; en `$`. **Moeda inventada** = `{nome, posicao, decimais}`. O valor guarda-se como **inteiro em milésimos** (nunca `float`: 0,10 + 0,20 não pode dar 0,30000001). Verificado: todos estes símbolos têm letra nas famílias que já embebemos (`letras.em_falta` devolve vazio; o ฿ tailandês não, mas não há tailandês).
+- **`moeda.py`** — a tabela das moedas (código ISO, símbolo, casas decimais) e dos **países** (código ISO → moeda), `moeda_do_pais(pais)`, `pais_por_omissao(lingua)` e `formatar(valor, moeda, lingua)`: o separador decimal e de milhares e o símbolo antes/depois seguem a língua («1,50 €», «€1.50», «R$ 1,50», «1,50 zł»). **Moeda inventada** = `{nome, posicao, decimais}` (validada nas letras do PDF). O valor guarda-se como **inteiro em milésimos** (nunca `float`: 0,10 + 0,20 não pode dar 0,30000001). Verificado: os símbolos das moedas das 23 línguas têm letra nas famílias que já embebemos (`letras.em_falta` devolve vazio; o ฿ tailandês não, mas não há tailandês).
 - **`precario_catalogo.py`** — `Artigo(id, categoria, icone, nomes{lg})`, `Categoria`, `Ocasiao(id, desenho, artigos)`; funções `nome(artigo, lingua)` (com o recurso en → pt) e `sugestao_da_epoca(data)` (mês → tema). Dados em ficheiros «lado a lado» por categoria, como os guias.
 - **`precario.py`** — o modelo `Precario` (título, subtítulo, desenho, formato, orientação, colunas, moeda, linhas, rodapé, logótipo opcional) e o **motor de disposição**: reparte as linhas por colunas e páginas, encolhe a letra até um mínimo legível e, se ainda não couber, passa a **2.ª página** (com aviso na interface). Usa `letras.fonte(texto)` por texto, nunca mistura famílias numa linha. Limites validados (n.º de linhas, tamanho dos textos) com `ErroRifas("err_precario_*")` traduzidos, como a galeria e o editor.
 - **Imagens** em `core/icones_precario/*.png` (256 px, ~10 KB cada) geradas por `scripts/gerar_icones_precario.py` a partir do conjunto escolhido; a interface web usa uma folha de miniaturas `.webp` (como `public/galeria/`).
@@ -67,12 +67,13 @@ Funcionalidade de utilizador = **tópico no tutorial** (`FUNCIONALIDADES`, 22 l�
 | **3** | Ícones: script de geração, licença confirmada, `core/icones_precario/`, miniaturas `.webp`, linha na página «Acerca» se for preciso | M | PDF com as imagens a 300 dpi sem pixelização visível a 25 mm |
 | **4** | `core/precario.py`: disposição (A5/A4/A3, 1–2 colunas, páginas), **cartaz do tema Quermesse** como primeiro caso e depois os outros 23 | L | Testes por língua e com 0/1/12/60 artigos, nomes longos, CJK; nenhuma linha corta o texto; PDF abre no PDFium |
 | **5** | API web + métricas + teste de privacidade | S | `GET /catalogo`, `POST /previa.png`, `/pdf`; limites; evento sem texto |
-| **6** | Página `/precario` (React), rascunho em `localStorage`, preguiçosa, menu, acessibilidade, e2e (contraste dos 14 temas do site) | L | Fluxo completo no telemóvel e no ecrã grande; `e2e/leve.spec.ts` verde |
-| **7** | SEO: rota em `seo.ROTAS` + `d_precario` ×22, texto estático, **1–2 guias** (como preparar um preçário para a festa; como definir os preços de uma tasquinha), ligações cruzadas com `/como-fazer` e os guias de rifas | M | Larguras de `test_web_seo_linguas`; sitemap atualizado; sem promessas de lei |
-| **8** | App Windows: janela, `.precario`, testes, `--selftest`, build do `.exe` (sem publicar) | L | `teste_extras.py` verde num ecrã a sério; `dist\GeradorRifas.exe --selftest` igual |
-| **9** | Tutorial + vídeos (web e Windows, pt/en) + Changelog (pt + 21) + `CLAUDE.md`/`docs/` | M | `test_funcionalidades.py` e `test_traducoes_paginas.py` verdes |
+| **6** | Página `/precario` (React: rascunho em `localStorage`, página preguiçosa, menu, país/moeda, acessibilidade) **e a janela «Preçário» da app Windows** (`app/extras.py`, `.precario`) no mesmo PR ou em dois seguidos; tutorial + vídeos (web e Windows, pt/en) + Changelog (pt + 21) + `CLAUDE.md`/`docs/`; e2e (contraste dos 14 temas) | L | Fluxo completo no telemóvel e no ecrã grande; `e2e/leve.spec.ts` verde; **`app\testes\teste_extras.py` e `--selftest` validam o mesmo preçário na app Windows** |
+| **6b** | SEO e **guia do preçário**: `/precario` em `seo.ROTAS` + `d_precario` ×23, texto estático, **1 guia** (como preparar um preçário para a festa e definir os preços) com ligações cruzadas a `/como-fazer` e aos guias de rifas | M | Larguras de `test_web_seo_linguas`; sitemap atualizado; sem promessas de lei |
+| **7** | **Vales de fichas numerados**: quando a «moeda inventada» são fichas, gerar os próprios vales com o motor das rifas (séries, QR de verificação): um vale por ficha, numerado, pronto a imprimir | M | Mesmo motor e mesmos limites das rifas; teste com séries e QR; validado na app Windows |
+| **8** | **Extras**: fotos próprias dos artigos; 2 tamanhos e combos mais ricos; cartões de mesa (menus pequenos, 4 por folha); preçário em formato «quadro negro»; partilha por ligação (precisa de BD) | L | Cada extra é um PR pequeno, com os seus testes |
+| **9** | **Anúncios** na página `/precario` **só onde `docs/ADSENSE.md` já os permite**; **nunca dentro da pré-visualização** do preçário nem do PDF | S | O mapa de anúncios de `docs/ADSENSE.md` atualizado; teste de que a pré-visualização não tem anúncios |
 
-**Ordem de valor:** as fases 1–6 dão já o preçário na web; a 7 traz as visitas; a 8 fecha a promessa da app Windows. Posso entregar 1–2 antes de si ver nada de visual, mas **a 4 pede-lhe um olhar** (o aspeto dos cartazes é o que decide se agrada).
+**Ordem de valor:** as fases 1–6 dão já o preçário na web e na app Windows; a 6b traz as visitas; 7–9 são os extras que o dono pediu. Posso entregar 1–3 antes de ver nada de visual, mas **a 4 pede-lhe um olhar** (o aspeto dos cartazes é o que decide se agrada).
 
 ## 6. Riscos e como os tratamos
 
@@ -84,9 +85,8 @@ Funcionalidade de utilizador = **tópico no tutorial** (`FUNCIONALIDADES`, 22 l�
 - **Conteúdo parecido em massa e o Google** (nota do agente lateral): poucas páginas novas, cada uma com utilidade própria (a ferramenta `/precario`, 1–2 guias de intenções diferentes); nada de uma página por artigo ou por tema.
 - **Tamanho do `.exe` e da imagem Docker**: ~150 PNG × 10 KB ≈ 1,5 MB; aceitável.
 
-## 7. Ideias para depois (fora deste plano)
+## 7. Decisões já tomadas pelo dono (2026-11-19)
 
-- **Vales de fichas numerados**: quando a «moeda inventada» são fichas, gerar os próprios vales com o motor das rifas (séries, QR de verificação). É a ligação natural entre os dois produtos.
-- Fotos próprias dos artigos; 2 tamanhos e combos mais ricos; cartões de mesa (menus pequenos, 4 por folha); preçário em formato «quadro negro»; partilha por ligação.
-- Moeda por país (não só por língua) e `pt-BR` com `R$`.
+- Ordem: pt-BR → preçário (fases 1–6) → guia do preçário → vales de fichas (7) → extras (8) → anúncios (9). **A app Windows serve para validar** cada fase com lógica em `core`.
+- Moeda **por país** (não só por língua) e `pt-BR` com `R$`; moeda inventada.
 - Anúncios: só onde `docs/ADSENSE.md` já os permite; nunca dentro da pré-visualização do preçário.
