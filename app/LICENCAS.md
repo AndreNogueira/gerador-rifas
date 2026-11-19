@@ -28,6 +28,7 @@ versão anterior.
 | reportlab (BSD) | permissiva | na app: a galeria de templates (desenha os PDFs; traz a letra Vera) |
 | fontTools (MIT), psutil (BSD-3) | permissivas | só nos testes (`testes\`) e para criar os exemplos |
 | Letra Vera (Bitstream Vera, vem com o reportlab) | licença livre (permite usar e embutir) | na galeria de templates e nos ficheiros de exemplo (`exemplos\`) |
+| [Noto Emoji](https://github.com/googlefonts/noto-emoji) (Google; imagens Apache 2.0 / OFL 1.1) | permissivas (permitem usar e redistribuir) | as imagens dos artigos do preçário (`core\icones_precario\`, com o `LICENSE.txt`), redimensionadas |
 | [ffmpeg](https://ffmpeg.org/) + x264 (via `imageio-ffmpeg`) | GPL (o ffmpeg usado) | **só para gravar os vídeos do tutorial** (`testes\fazer_video.py`); não faz parte do programa nem vai no `.exe`. O que fica é o ficheiro `.mp4`, gerado por nós. |
 
 Se preferir não usar nem uma ferramenta AGPL só para construir, a alternativa é distribuir o código em Python
