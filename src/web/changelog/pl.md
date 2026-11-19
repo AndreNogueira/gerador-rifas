@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.62.0 — 2026-11-19
+
+### Nowości
+- **Źródło wizyt w statystykach:** panel administracyjny pokazuje teraz, skąd przychodzą wizyty, w ogólnych kategoriach (wyszukiwarka, sieci społecznościowe, e-mail, inne strony lub bezpośrednio) i według kampanii (utm_source), aby mierzyć promocję. Adres strony źródłowej i IP nigdy nie są zapisywane; zaktualizowano Politykę prywatności.
+
 ## 3.61.0 — 2026-11-19
 
 ### Nowości

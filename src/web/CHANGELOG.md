@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.62.0 — 2026-11-19
+
+### Novo
+- **Origem das visitas nas estatísticas:** o painel de administração passa a mostrar de onde vêm as visitas, em categorias gerais (pesquisa, redes sociais, e-mail, outros sites ou diretas) e por campanha (utm_source), para medir uma divulgação. Nunca se guarda o endereço da página de origem nem o IP; a Política de privacidade foi atualizada.
+
 ## 3.61.0 — 2026-11-19
 
 ### Novo

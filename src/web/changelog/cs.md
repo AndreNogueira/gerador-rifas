@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.62.0 — 2026-11-19
+
+### Novinky
+- **Původ návštěv ve statistikách:** administrační panel nově ukazuje, odkud návštěvy přicházejí, v obecných kategoriích (vyhledávání, sociální sítě, e-mail, jiné weby nebo přímo) a podle kampaně (utm_source), aby šlo měřit propagaci. Adresa původní stránky ani IP se nikdy neukládají; Zásady ochrany soukromí byly aktualizovány.
+
 ## 3.61.0 — 2026-11-19
 
 ### Novinky

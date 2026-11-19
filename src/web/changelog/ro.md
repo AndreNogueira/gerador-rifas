@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.62.0 — 2026-11-19
+
+### Noutăți
+- **Proveniența vizitelor în statistici:** panoul de administrare arată acum de unde vin vizitele, în categorii generale (căutare, rețele sociale, e-mail, alte site-uri sau directe) și pe campanii (utm_source), pentru a măsura o promovare. Adresa paginii de origine și IP-ul nu se păstrează niciodată; Politica de confidențialitate a fost actualizată.
+
 ## 3.61.0 — 2026-11-19
 
 ### Noutăți

@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.62.0 — 2026-11-19
+
+### New
+- **Visit sources in the statistics:** the admin panel now shows where visits come from, in general categories (search, social networks, e-mail, other sites or direct) and by campaign (utm_source), to measure a promotion. The address of the page of origin and the IP are never stored; the Privacy policy was updated.
+
 ## 3.61.0 — 2026-11-19
 
 ### New

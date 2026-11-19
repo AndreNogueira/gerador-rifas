@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.62.0 — 2026-11-19
+
+### Nieuw
+- **Herkomst van bezoeken in de statistieken:** het beheerpaneel toont nu waar bezoeken vandaan komen, in algemene categorieën (zoeken, sociale netwerken, e-mail, andere sites of direct) en per campagne (utm_source), om een promotie te meten. Het adres van de herkomstpagina en het IP worden nooit bewaard; het Privacybeleid is bijgewerkt.
+
 ## 3.61.0 — 2026-11-19
 
 ### Nieuw

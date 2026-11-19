@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.62.0 — 2026-11-19
+
+### Yeni
+- **İstatistiklerde ziyaret kaynağı:** yönetim paneli artık ziyaretlerin nereden geldiğini genel kategorilerle (arama, sosyal ağlar, e-posta, diğer siteler veya doğrudan) ve kampanyaya (utm_source) göre gösterir; böylece bir tanıtım ölçülebilir. Kaynak sayfanın adresi ve IP asla saklanmaz; Gizlilik politikası güncellendi.
+
 ## 3.61.0 — 2026-11-19
 
 ### Yeni

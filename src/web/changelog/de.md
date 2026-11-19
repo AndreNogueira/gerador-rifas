@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.62.0 — 2026-11-19
+
+### Neu
+- **Herkunft der Besuche in den Statistiken:** das Admin-Panel zeigt jetzt, woher die Besuche kommen, in allgemeinen Kategorien (Suche, soziale Netzwerke, E-Mail, andere Websites oder direkt) und nach Kampagne (utm_source), um eine Verbreitung zu messen. Die Adresse der Herkunftsseite und die IP werden nie gespeichert; die Datenschutzerklärung wurde aktualisiert.
+
 ## 3.61.0 — 2026-11-19
 
 ### Neu

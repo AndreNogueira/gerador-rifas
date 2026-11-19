@@ -22,7 +22,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 from . import VERSAO, config, seo, trabalhos
 from .limites import Limitador, ler_corpo
 from .manter_acordado import EstadoAcordado
-from .metricas import Metricas, classe_do_ecra, dispositivo, familia, modelo_limpo, pais_do_cabecalho
+from .metricas import Metricas, campanha_limpa, categoria_de_origem, classe_do_ecra, dispositivo, familia, modelo_limpo, pais_do_cabecalho
 from . import github_issues
 from .observabilidade import Observabilidade
 from .opiniao import POR_IP_E_HORA, LimiteHorario
@@ -544,4 +544,5 @@ def registar_ecra(e: Ecra, request: Request, serv: Servico = Depends(servico)) -
         modelo = modelo_limpo(e.modelo)
         serv.metricas.evento("ecra", classe, f"{e.ecra_l}×{e.ecra_a} @{dens}", modelo or familia(ua, e.toque, e.ecra_l),
                              v1=e.janela_l, v2=e.janela_a, v3=1 if e.toque else 0)
+        serv.metricas.evento("origem", categoria_de_origem(e.origem, request.headers.get("host", "")), campanha_limpa(e.campanha))     # so a categoria e o nome da campanha
     return Response(status_code=204)

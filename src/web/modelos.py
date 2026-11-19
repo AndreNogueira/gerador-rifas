@@ -133,3 +133,5 @@ class Ecra(BaseModel):
     dpr: float = Field(ge=0.5, le=8)              # densidade de pixeis (2 e 3 nos telemoveis recentes)
     toque: bool = False
     modelo: str = Field(default="", max_length=80)  # `navigator.userAgentData` (so o Chrome o da); vazio se nao se sabe
+    origem: str = Field(default="", max_length=253)   # SO o nome do servidor de onde o visitante veio (`document.referrer`): nunca o endereco completo; vira uma categoria
+    campanha: str = Field(default="", max_length=40)  # o `utm_source` do endereco, se tiver (so letras, algarismos, «_» e «-»)

@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.62.0 — 2026-11-19
+
+### Nytt
+- **Besökens ursprung i statistiken:** adminpanelen visar nu varifrån besöken kommer, i allmänna kategorier (sökning, sociala nätverk, e-post, andra webbplatser eller direkt) och per kampanj (utm_source), för att mäta en spridning. Adressen till ursprungssidan och IP sparas aldrig; integritetspolicyn har uppdaterats.
+
 ## 3.61.0 — 2026-11-19
 
 ### Nytt
