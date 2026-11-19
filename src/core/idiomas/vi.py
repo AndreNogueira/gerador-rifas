@@ -360,4 +360,6 @@ T = {
     "tut_f_visual_b": "Chọn diện mạo của chương trình: trang web có mười bốn giao diện và ứng dụng Windows có Premiado và Natal (Giáng sinh). Vào tháng 12, Giáng sinh là giao diện tự động; việc chọn giao diện khác được ghi nhớ, và chọn lại Giáng sinh sẽ trở về chế độ tự động. Sáng và tối độc lập với giao diện. Bố cục và các nút luôn ở cùng một chỗ. {onde}",
     "tut_f_editor_t": "Trình chỉnh sửa mẫu",
     "tut_f_editor_b": "Thay vì dùng mẫu Canva, hãy thiết kế vé ngay tại đây: thêm văn bản, hình chữ nhật, đường kẻ và số 0001 (một lần, hoặc hai lần nếu có cuống), kéo từng thành phần vào vị trí và đổi màu, kích thước. Bấm “Dùng mẫu này” và phần còn lại như cũ: chọn các số rồi tạo. Văn bản không được chứa chuỗi như 0123 vì sẽ bị nhầm với số của vé. Bạn có thể hoàn tác và làm lại, nhân đôi thành phần và đổi thành phần nào nằm trên; trên trang web còn có thể thêm logo và chia sẻ thiết kế bằng liên kết. {onde}",
+    "err_precario_texto": "Không thể dùng văn bản này trong bảng giá («{car}»): chỉ chấp nhận các chữ cái có sẵn (Latin, Hy Lạp, Kirin, Trung, Nhật, Hàn) và văn bản ngắn.",
+    "err_precario_linhas": "Bảng giá phải có từ 1 đến {max} dòng, dòng nào cũng có tên.",
 }

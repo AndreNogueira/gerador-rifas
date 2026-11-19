@@ -360,4 +360,6 @@ T = {
     "tut_f_visual_b": "Pilih tampilan program: situs memiliki empat belas tema dan aplikasi Windows memiliki Premiado dan Natal. Pada bulan Desember, Natal menjadi tema otomatis; pilihan tema lain diingat, dan memilih Natal lagi kembali ke otomatis. Terang dan gelap tidak bergantung pada tema. Tata letak dan tombol selalu di tempat yang sama. {onde}",
     "tut_f_editor_t": "Editor templat",
     "tut_f_editor_b": "Sebagai ganti templat Canva, rancang tiket di sini: tambahkan teks, persegi panjang, garis dan nomor 0001 (sekali, atau dua kali jika ada kupon), seret setiap elemen ke tempatnya dan ubah warna serta ukuran. Tekan “Gunakan templat ini” dan sisanya sama: pilih nomor lalu buat. Teks tidak boleh berisi urutan seperti 0123 yang akan dikira nomor tiket. Anda dapat mengurungkan dan mengulangi, menggandakan elemen dan mengubah mana yang di atas; di situs Anda juga dapat menambahkan logo dan membagikan desain lewat tautan. {onde}",
+    "err_precario_texto": "Teks ini tidak dapat dipakai pada daftar harga («{car}»): hanya huruf yang tersedia (Latin, Yunani, Sirilik, Mandarin, Jepang, Korea) dan teks pendek yang diterima.",
+    "err_precario_linhas": "Daftar harga harus memiliki 1 sampai {max} baris, semuanya dengan nama.",
 }

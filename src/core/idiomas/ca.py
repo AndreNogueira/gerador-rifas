@@ -360,4 +360,6 @@ T = {
     "tut_f_visual_b": "Trieu l'aspecte del programa: el lloc té catorze temes i l'aplicació per a Windows té Premiado i Natal (Nadal). Al desembre, Nadal és el tema automàtic; es recorda si en trieu un altre, i tornar a triar Nadal torna a l'automàtic. El clar i el fosc són independents del tema. La disposició i els botons sempre queden al mateix lloc. {onde}",
     "tut_f_editor_t": "Editor de plantilles",
     "tut_f_editor_b": "En lloc d'una plantilla de Canva, dissenyeu la butlleta aquí: afegiu textos, rectangles, línies i el número 0001 (una vegada, o dues si té taló), arrossegueu cada element al seu lloc i canvieu colors i mides. Premeu «Fes servir aquesta plantilla» i la resta és igual: trieu els números i genereu. Els textos no poden contenir seqüències com 0123, que es confondrien amb el número de la butlleta. Podeu desfer i refer, duplicar elements i canviar quin és a sobre; al lloc també podeu afegir el logotip i compartir el disseny per enllaç. {onde}",
+    "err_precario_texto": "Aquest text no es pot fer servir a la llista de preus («{car}»): només admet les lletres disponibles (llatines, gregues, ciríl·liques, xineses, japoneses i coreanes) i textos curts.",
+    "err_precario_linhas": "La llista de preus ha de tenir entre 1 i {max} línies, totes amb un nom.",
 }
