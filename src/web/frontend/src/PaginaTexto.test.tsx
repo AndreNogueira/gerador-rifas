@@ -23,10 +23,13 @@ function abrir() {
 }
 
 describe("rodapé e páginas de texto", () => {
-  it("sem configuração o rodapé só tem o Changelog, os Termos e a Privacidade", async () => {
+  it("sem configuração o rodapé só tem as páginas dos visitantes, o Changelog, os Termos e a Privacidade", async () => {
     abrir();
     const rodape = await screen.findByRole("navigation", { name: "Informação" });
     expect(Array.from(rodape.querySelectorAll("a")).map((a) => a.textContent)).toEqual([
+      "Comentários",
+      "Deixar um comentário",
+      "Reportar problema",
       "Changelog",
       "Termos",
       "Privacidade",

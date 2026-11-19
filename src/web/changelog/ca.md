@@ -2,6 +2,13 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.51.0 — 2026-11-19
+
+### Novetats
+- **Comentaris:** una pàgina «Comentaris» on tothom veu què en pensen els altres del generador, i una pàgina per deixar el vostre: podeu romandre anònim/a o mostrar un nom (sense nom apareix «Visitant núm. …»). L'adreça IP es desa només per al responsable del lloc, per frenar abusos, no es mostra mai i s'esborra als 90 dies.
+- **Informa d'un problema:** pàgina nova on descriviu un error; en prémer «Obre» es crea directament al GitHub del projecte, sense compte (la vostra IP no s'envia i la informació tècnica del navegador només si l'afegiu).
+- Les dues pàgines i els botons «Comentaris» i «Informa d'un problema» són ben visibles a la capçalera, al menú i al peu de pàgina; la Política de privadesa (22 idiomes) explica què es desa.
+
 ## 3.50.0 — 2026-11-18
 
 ### Millores

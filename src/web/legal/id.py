@@ -94,3 +94,8 @@ ANUNCIOS = {
 
 PARTILHAS = {"titulo": "Desain yang dibagikan", "paragrafos": [
     "Jika Anda menekan “Bagikan lewat tautan” di Editor templat, desain (bentuk, teks dan warna, tanpa gambar) disimpan di server kami, dengan alamat yang sulit ditebak, selama 90 hari setelah akses terakhir, dan siapa pun yang memiliki tautan dapat membukanya. Kami tidak menyimpan alamat IP Anda atau data lain tentang siapa yang membagikan: jangan menulis data pribadi atau rahasia di desain. Desain yang tidak Anda bagikan hanya dikirim ke server untuk membuat templat dan dihapus bersama sesi."]}
+
+OPINIAO = {"titulo": "Komentar dan masalah yang dilaporkan", "paragrafos": [
+    "Jika Anda meninggalkan komentar di halaman «Komentar», kami menyimpan teks, tanggal, dan nama yang Anda pilih untuk ditampilkan (tidak ada, jika Anda ingin anonim; jika Anda meminta nama ditampilkan tetapi mengosongkannya, tampil «Pengunjung no. …»). Komentar terlihat oleh semua orang, tanpa alamat IP Anda. Kami juga menyimpan alamat IP Anda, yang hanya dilihat pengelola situs, semata-mata untuk mencegah penyalahgunaan: dihapus dari komentar setelah 90 hari. Jangan menulis data pribadi di komentar; untuk menghapusnya, hubungi kami (lihat Kontak).",
+    "Jika Anda melaporkan masalah, teks yang Anda tulis (dan, jika Anda mencentang opsi itu, versi aplikasi, bahasa, peramban, dan layar) dikirim ke GitHub proyek, tempat teks itu dicatat dan terlihat oleh tim. Alamat IP Anda tidak dikirim. Jangan menulis data pribadi atau kata sandi.",
+]}

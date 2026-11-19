@@ -19,7 +19,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_verificar, seo, textos_legais
+from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_opiniao, rotas_verificar, seo, textos_legais
 from .chaves_api import Chaves
 from .assets_remotos import AssetsRemotos
 from .limites import Limitador
@@ -27,6 +27,7 @@ from . import seo_textos
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
+from .opiniao import Comentarios
 from .partilhas import Partilhas
 from .rotas import Servico
 from .seo_bd import SeoBd
@@ -135,6 +136,7 @@ class Publico(BaseModel):
     anuncios_cliente: str = ""  # identificador da AdSense (ca-pub-…): vazio = sem anuncios (ADSENSE_CLIENTE)
     anuncios_slot: str = ""     # bloco de anuncios: vazio = o script carrega-se mas nao se mostra nenhum bloco (ADSENSE_SLOT)
     partilha_editor: bool = False   # o editor pode partilhar desenhos por ligacao (so com DATABASE_URL)
+    problemas: bool = False         # «Reportar problema» esta ligado (GITHUB_ISSUES_TOKEN e GITHUB_REPO)
 
 
 async def _limpeza_periodica(servico: Servico, cada_s: float) -> None:
@@ -168,7 +170,7 @@ async def _atualizar_seo(servico: Servico, cada_s: float) -> None:
 
 
 def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, motor: Motor | None = None,
-              metricas: Metricas | None = None, partilhas: Partilhas | None = None, chaves: Chaves | None = None, seo_bd: SeoBd | None = None) -> FastAPI:
+              metricas: Metricas | None = None, partilhas: Partilhas | None = None, chaves: Chaves | None = None, seo_bd: SeoBd | None = None, comentarios: Comentarios | None = None) -> FastAPI:
     """`frontend`: pasta do frontend compilado; `armazenamento`: onde ficam as sessoes (RIFAS_ARMAZENAMENTO); `motor`, `metricas`: para os testes."""
     pasta = (frontend or config.pasta_frontend()).resolve()
     armazem = ArmazenamentoLocal(armazenamento, limite_bytes=config.limite_sessao_mb() * 1024 * 1024)
@@ -179,6 +181,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     servico.partilhas = partilhas if partilhas is not None else (Partilhas(config.database_url()) if config.database_url() else None)
     servico.chaves = chaves if chaves is not None else Chaves(config.database_url(), armazem.raiz / "api.sqlite3")
     servico.seo = seo_bd if seo_bd is not None else SeoBd(config.database_url(), armazem.raiz / "seo.sqlite3")
+    servico.comentarios = comentarios if comentarios is not None else Comentarios(config.database_url(), armazem.raiz / "comentarios.sqlite3")
     seo_textos.definir_sobreposicoes({})                 # cada app comeca com os textos do codigo; os editados chegam da base (`_atualizar_seo`)
     assets_rem = None
     if config.assets_zip_url() and not os.environ.get("RIFAS_ASSETS", "").strip():       # videos e capturas fora da imagem Docker (ver assets_remotos.py)
@@ -244,7 +247,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         resposta.headers["Cache-Control"] = "public, max-age=300"
         return Publico(donativo_url=config.donativo_url(), contacto=bool(config.contacto_email()), qr=bool(config.verificacao_chave()),
                        anuncios_cliente=config.adsense_cliente(), anuncios_slot=config.adsense_slot(),
-                       partilha_editor=servico.partilhas is not None)
+                       partilha_editor=servico.partilhas is not None, problemas=bool(config.github_token() and config.github_repo()))
 
     @app.get("/api/pagina/{nome}", response_model=PaginaTexto, tags=["sistema"])
     def pagina_de_texto(nome: str, resposta: Response, lg: str = Depends(rotas.lingua)) -> PaginaTexto:
@@ -285,6 +288,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     app.include_router(rotas_galeria.router)
     app.include_router(rotas_editor.router)
     app.include_router(rotas_verificar.router)
+    app.include_router(rotas_opiniao.router)
     app.include_router(admin.router)
     app.mount("/api/v1", api_v1.criar_api_v1(servico), name="api_v1")      # a API publica em lote, com o seu Swagger em /api/v1/docs
 
@@ -360,7 +364,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         if lg == "pt-prefixado":                                                    # /pt/tutorial -> /tutorial (um so URL por pagina)
             return RedirectResponse("/" + sem_prefixo.rstrip("/"), status_code=301)
         rota = "/" if sem_prefixo in ("", "index.html") else "/" + sem_prefixo.rstrip("/")
-        if caminho.endswith("/") and caminho != "" and rota in seo.ROTAS:          # /tutorial/ -> /tutorial, /en/ -> /en
+        if caminho.endswith("/") and caminho != "" and (rota in seo.ROTAS or rota in seo.SEM_INDICE):          # /tutorial/ -> /tutorial, /en/ -> /en
             return RedirectResponse(seo.caminho_na_lingua(rota, lg), status_code=301)
         base = seo.url_publica(request)
         cab = {"Cache-Control": "no-cache"}
@@ -369,7 +373,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             if not admin.ativo():
                 return HTMLResponse(seo.renderizar(html_base, seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
             return HTMLResponse(seo.renderizar(html_base, seo.ADMIN, base), headers={"Cache-Control": "no-store", "X-Robots-Tag": "noindex, nofollow"})
-        pagina = seo.ROTAS.get(rota)
+        pagina = seo.ROTAS.get(rota) or seo.SEM_INDICE.get(rota)
         if pagina is None:
             return HTMLResponse(seo.renderizar(html_base, seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
         servico.metricas.evento("pagina", rota, c=dispositivo(request.headers.get("user-agent", "")))

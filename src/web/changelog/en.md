@@ -2,6 +2,13 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.51.0 — 2026-11-19
+
+### New
+- **Comments:** a “Comments” page where everyone can see what other people think of the generator, and a page to leave yours: you can stay anonymous or show a name (without a name, “Visitor no. …” appears). Your IP address is kept only for the site owner, to stop abuse, is never shown and is deleted after 90 days.
+- **Report a problem:** a new page where you describe a bug and, when you press “Open”, it is created directly on the project's GitHub, no account needed (your IP is not sent and the browser's technical information is only included if you add it).
+- Both pages and the “Comments” and “Report a problem” buttons are in plain view in the header, the menu and the footer; the Privacy policy (22 languages) explains what is stored.
+
 ## 3.50.0 — 2026-11-18
 
 ### Improved

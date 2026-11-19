@@ -13,7 +13,7 @@ import importlib
 from collections.abc import Callable
 from functools import lru_cache
 
-from . import config, legal_anuncios, legal_partilhas
+from . import config, legal_anuncios, legal_opiniao, legal_partilhas
 
 NOMES = ("termos", "privacidade", "contacto")
 
@@ -55,6 +55,8 @@ def pagina(nome: str, lingua: str = "pt") -> dict:
         s["paragrafos"] = [p.format_map(valores) for p in s["paragrafos"]]
     if nome == "privacidade" and config.adsense_cliente():           # com anuncios o texto «sem anuncios» deixava de ser verdade
         legal_anuncios.aplicar(saida, lingua if lingua in legal_anuncios.TEXTOS else "pt")
+    if nome == "privacidade":                                           # os comentarios e os problemas reportados (opiniao.py, github_issues.py): sempre
+        legal_opiniao.aplicar(saida, lingua if lingua in legal_opiniao.TEXTOS else "pt")
     if nome == "privacidade" and config.database_url():              # com base de dados o editor partilha desenhos por ligação (partilhas.py)
         legal_partilhas.aplicar(saida, lingua if lingua in legal_partilhas.TEXTOS else "pt")
     return saida

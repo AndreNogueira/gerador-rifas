@@ -2,6 +2,13 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.51.0 — 2026-11-19
+
+### Novità
+- **Commenti:** una pagina «Commenti» dove tutti vedono cosa pensano gli altri del generatore, e una pagina per lasciare il proprio: si può restare anonimi o mostrare un nome (senza nome compare «Visitatore n. …»). L'indirizzo IP è conservato solo per il responsabile del sito, per limitare gli abusi, non viene mai mostrato e si elimina dopo 90 giorni.
+- **Segnala un problema:** nuova pagina dove descrive un errore e, premendo «Apri», viene creato direttamente sul GitHub del progetto, senza account (il suo IP non viene inviato e le informazioni tecniche del browser solo se le aggiunge).
+- Le due pagine e i pulsanti «Commenti» e «Segnala un problema» sono ben visibili nell'intestazione, nel menu e a piè di pagina; l'Informativa sulla privacy (22 lingue) spiega cosa viene conservato.
+
 ## 3.50.0 — 2026-11-18
 
 ### Migliorato

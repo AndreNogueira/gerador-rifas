@@ -1,3 +1,6 @@
+import { mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { defineConfig, devices } from "@playwright/test";
 
 // Os testes e2e correm num browser a sério contra a app compilada (`pnpm build`) servida pelo FastAPI (`python -m src.web`).
@@ -28,6 +31,7 @@ export default defineConfig({
       PUBLIC_URL: URL,
       VERIFICACAO_CHAVE: "chave-so-para-os-testes-e2e-1234567890", // o QR de verificação só existe com chave
       KEEPALIVE: "0",
+      RIFAS_ARMAZENAMENTO: mkdtempSync(join(tmpdir(), "rifas-e2e-")), // uma pasta nova a cada corrida: os comentários e o resto não se acumulam (há 3 comentários por IP e hora)
     },
   },
 });

@@ -2,6 +2,13 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.51.0 — 2026-11-19
+
+### Mới
+- **Bình luận:** trang «Bình luận» nơi mọi người xem người khác nghĩ gì về trình tạo, và trang để để lại bình luận của bạn: có thể ẩn danh hoặc hiện tên (không có tên sẽ hiện «Khách số …»). Địa chỉ IP chỉ được lưu cho người phụ trách trang, để chặn lạm dụng, không bao giờ hiển thị và bị xóa sau 90 ngày.
+- **Báo cáo sự cố:** trang mới để mô tả lỗi; khi bấm «Mở», lỗi được tạo trực tiếp trên GitHub của dự án, không cần tài khoản (IP của bạn không được gửi và thông tin kỹ thuật của trình duyệt chỉ gửi nếu bạn đính kèm).
+- Hai trang và các nút «Bình luận» và «Báo cáo sự cố» hiển thị rõ ở đầu trang, menu và chân trang; Chính sách quyền riêng tư (22 ngôn ngữ) giải thích những gì được lưu.
+
 ## 3.50.0 — 2026-11-18
 
 ### Cải thiện

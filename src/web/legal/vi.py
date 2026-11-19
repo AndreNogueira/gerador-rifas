@@ -94,3 +94,8 @@ ANUNCIOS = {
 
 PARTILHAS = {"titulo": "Thiết kế được chia sẻ", "paragrafos": [
     "Nếu bạn bấm “Chia sẻ bằng liên kết” trong Trình chỉnh sửa mẫu, thiết kế (hình dạng, văn bản và màu sắc, không kèm hình ảnh) được lưu trên máy chủ của chúng tôi, tại một địa chỉ khó đoán, trong 90 ngày kể từ lần truy cập cuối, và bất kỳ ai có liên kết đều có thể mở nó. Chúng tôi không lưu địa chỉ IP của bạn hay dữ liệu khác về người chia sẻ: đừng viết dữ liệu cá nhân hay bí mật vào thiết kế. Thiết kế bạn không chia sẻ chỉ được gửi lên máy chủ để tạo mẫu và bị xóa cùng phiên."]}
+
+OPINIAO = {"titulo": "Bình luận và sự cố được báo cáo", "paragrafos": [
+    "Nếu bạn để lại bình luận ở trang «Bình luận», chúng tôi lưu nội dung, ngày và tên bạn chọn hiển thị (không có tên nếu bạn muốn ẩn danh; nếu bạn chọn hiển thị tên nhưng để trống, sẽ hiện «Khách số …»). Bình luận hiển thị cho mọi người, không kèm địa chỉ IP của bạn. Chúng tôi cũng lưu địa chỉ IP của bạn, chỉ người phụ trách trang xem được, duy nhất để chặn lạm dụng: nó bị xóa khỏi bình luận sau 90 ngày. Đừng viết dữ liệu cá nhân vào bình luận; muốn xóa bình luận, hãy viết thư cho chúng tôi (xem Liên hệ).",
+    "Nếu bạn báo cáo sự cố, nội dung bạn viết (và, nếu bạn chọn tùy chọn đó, phiên bản ứng dụng, ngôn ngữ, trình duyệt và màn hình) được gửi đến GitHub của dự án, nơi nó được ghi lại và hiển thị cho nhóm. Địa chỉ IP của bạn không được gửi. Đừng viết dữ liệu cá nhân hay mật khẩu.",
+]}

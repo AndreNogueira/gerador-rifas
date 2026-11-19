@@ -2,6 +2,13 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.51.0 — 2026-11-19
+
+### Noutăți
+- **Comentarii:** o pagină «Comentarii» unde oricine vede ce cred alții despre generator și o pagină pentru a-l lăsa pe al tău: poți rămâne anonim sau poți arăta un nume (fără nume apare «Vizitator nr. …»). Adresa IP este păstrată doar pentru responsabilul site-ului, contra abuzurilor, nu este afișată niciodată și se șterge după 90 de zile.
+- **Raportează o problemă:** pagină nouă în care descrii o eroare; la apăsarea «Deschide» ea este creată direct pe GitHub-ul proiectului, fără cont (IP-ul tău nu este trimis, iar informațiile tehnice ale browserului doar dacă le adaugi).
+- Ambele pagini și butoanele «Comentarii» și «Raportează o problemă» sunt la vedere în antet, meniu și subsol; Politica de confidențialitate (22 de limbi) explică ce se păstrează.
+
 ## 3.50.0 — 2026-11-18
 
 ### Îmbunătățit

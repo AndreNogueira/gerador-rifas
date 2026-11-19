@@ -118,6 +118,13 @@ def _corpo_sorteio(lg: str) -> str:
     return f"<h1>{html.escape(_nome_pagina('web_sorteio')(lg))}</h1><p>{html.escape(texto('d_sorteio', lg))}</p>{_voltar(lg)}"
 
 
+def _corpo_opiniao(chave: str) -> Callable[[str], str]:
+    """As paginas de comentarios e de problemas: so o titulo (o conteudo e dos visitantes e do formulario; nao se indexam)."""
+    def corpo(lg: str) -> str:
+        return f"<h1>{html.escape(_nome_pagina(chave)(lg))}</h1>{_voltar(lg)}"
+    return corpo
+
+
 def _corpo_editor(lg: str) -> str:
     return f"<h1>{html.escape(_nome_pagina('web_editor')(lg))}</h1><p>{html.escape(texto('d_editor', lg))}</p>{_voltar(lg)}"
 
@@ -293,6 +300,13 @@ def renderizar(html_base: str, pagina: Pagina, base: str, lg: str = "pt") -> str
         html_base = html_base.replace(MARCADOR_CORPO, corpo, 1)
     return html_base
 
+
+# Paginas dos visitantes (comentarios, opiniao, problemas): bem visiveis no site, mas FORA do Google e do sitemap (o texto e de terceiros) e por isso fora de `ROTAS`.
+SEM_INDICE: dict[str, Pagina] = {p.caminho: p for p in (
+    Pagina("/comentarios", "d_inicio", _corpo_opiniao("web_comentarios"), _nome_pagina("web_comentarios"), indexavel=False, no_mapa=False),
+    Pagina("/opiniao", "d_inicio", _corpo_opiniao("web_op_titulo"), _nome_pagina("web_op_titulo"), indexavel=False, no_mapa=False),
+    Pagina("/reportar-problema", "d_inicio", _corpo_opiniao("web_bug_titulo"), _nome_pagina("web_bug_titulo"), indexavel=False, no_mapa=False),
+)}
 
 ADMIN = Pagina("/admin", "", lambda lg: "<h1>Painel</h1>", indexavel=False, no_mapa=False,
                titulo_fixo=f"Painel | {NOME}", descricao_fixa="Painel de administração.")

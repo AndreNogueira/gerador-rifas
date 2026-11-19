@@ -4,6 +4,13 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.51.0 — 2026-11-19
+
+### Novo
+- **Comentários:** há uma página «Comentários» onde toda a gente vê o que as outras pessoas acham do gerador, e uma página para deixar o seu: pode ficar anónimo(a) ou mostrar um nome (sem nome, aparece «Visitante n.º …»). O endereço IP fica guardado só para o responsável do site, para travar abusos, nunca é mostrado e apaga-se ao fim de 90 dias.
+- **Reportar problema:** nova página onde descreve um erro e, ao carregar em «Abrir», ele é criado diretamente no GitHub do projeto, sem precisar de conta (o seu IP não é enviado e a informação técnica do navegador só vai se a juntar).
+- As duas páginas e os botões «Comentários» e «Reportar problema» estão à vista no cabeçalho, no menu e no rodapé; a Política de privacidade (22 línguas) explica o que se guarda.
+
 ## 3.50.0 — 2026-11-18
 
 ### Melhorado

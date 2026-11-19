@@ -23,7 +23,9 @@ from . import VERSAO, config, seo, trabalhos
 from .limites import Limitador, ler_corpo
 from .manter_acordado import EstadoAcordado
 from .metricas import Metricas, classe_do_ecra, dispositivo, familia, modelo_limpo, pais_do_cabecalho
+from . import github_issues
 from .observabilidade import Observabilidade
+from .opiniao import LimiteHorario
 from .modelos import Calculo, Campos, Ecra, ErroApi, Sessao, TrabalhoEstado
 from .sessoes import (Geracao, SessaoEstado, Sessoes, calcular, folha_dos_campos, ler_progresso, texto_de_erro,
                       trabalho_dos_campos, vista, _trabalho)
@@ -43,6 +45,10 @@ class Servico:
     chaves: object | None = None                                            # `chaves_api.Chaves`: as chaves da API publica v1 (Postgres, ou SQLite local)
     seo: object | None = None                                               # `seo_bd.SeoBd`: os textos de SEO editados no painel (Postgres, ou SQLite local)
     obs: Observabilidade = field(default_factory=lambda: Observabilidade(versao=VERSAO))   # registo estruturado e livro de erros (observabilidade.py)
+    comentarios: object | None = None                                       # `opiniao.Comentarios`: os comentarios dos visitantes (Postgres, ou SQLite local)
+    limite_problemas_ip: LimiteHorario = field(default_factory=lambda: LimiteHorario(3))        # problemas reportados por IP e hora
+    limite_problemas_total: LimiteHorario = field(default_factory=lambda: LimiteHorario(20))    # e no site todo
+    criar_issue: object = github_issues.criar_issue                         # troca-se nos testes: nunca se chama o GitHub a sério
 
     def __post_init__(self) -> None:
         if self.observador is None:

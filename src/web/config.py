@@ -156,6 +156,18 @@ def url_publica() -> str:
     return ""
 
 
+def github_token() -> str:
+    """O token para criar *issues* a partir de «Reportar problema»: GITHUB_ISSUES_TOKEN (um fine-grained token só com «Issues: read and write» no repositorio).
+    Palavra-passe: so no Render, NUNCA no repositorio, num log ou numa resposta. Vazio = a funcao fica desligada."""
+    return os.environ.get("GITHUB_ISSUES_TOKEN", "").strip()
+
+
+def github_repo() -> str:
+    """O repositorio onde se criam os problemas, `dono/nome`: GITHUB_REPO. Invalido ou vazio = a funcao fica desligada."""
+    v = os.environ.get("GITHUB_REPO", "").strip()
+    return v if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,38}/[A-Za-z0-9._-]{1,100}", v) else ""
+
+
 def donativo_url() -> str:
     """Ligacao para donativos (MB Way, PayPal, Ko-fi...): DONATIVO_URL. So `https://` (outra coisa ignora-se); vazio = sem botao."""
     v = os.environ.get("DONATIVO_URL", "").strip()

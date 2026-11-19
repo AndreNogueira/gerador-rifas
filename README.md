@@ -73,6 +73,7 @@ O painel só mostra **agregados** (nunca IPs, nomes de ficheiros, conteúdo ou t
 | `CONTACTO_EMAIL` | O e-mail que as páginas **Termos**, **Privacidade** e **Contacto** mostram. | A página Contacto desaparece do rodapé e os textos não mostram nenhum e-mail. |
 | `RESPONSAVEL` | O nome de quem gere o serviço («O serviço é gerido por …»), nas páginas Termos e Privacidade. Até 100 caracteres. | Os textos dizem «gerido pelo seu autor». |
 | `DONATIVO_URL` | Uma ligação `https://` onde as pessoas podem apoiar o projeto (ver [Donativos](#donativos-donativo_url)). | Não aparece o botão «Donativo» (cabeçalho, fim da geração e rodapé). |
+| `GITHUB_ISSUES_TOKEN` + `GITHUB_REPO` | Um *fine-grained token* só com «Issues: Read and write» no repositório e o `dono/nome` dele: «Reportar problema» cria um *issue* no GitHub (ver [`docs/OPINIAO.md`](docs/OPINIAO.md)). **O token é uma palavra-passe: só no Render.** | A página «Reportar problema» existe mas diz que ainda não está ativa e o botão «Abrir» fica desligado. |
 
 ### Anúncios (Google AdSense)
 

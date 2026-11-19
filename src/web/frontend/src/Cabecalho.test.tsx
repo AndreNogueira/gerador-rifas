@@ -6,24 +6,35 @@ import { calcularOcultos, type ItemId, SAI_PRIMEIRO } from "./Cabecalho";
 import { ProvedorI18n } from "./i18n";
 import { ServidorFalso } from "./servidor-falso";
 
-const TODOS: ItemId[] = ["ajuda", "sorteio", "sobre", "donativo", "partilhar", "lingua", "visual", "tema"];
+const TODOS: ItemId[] = [
+  "ajuda",
+  "sorteio",
+  "sobre",
+  "comentarios",
+  "reportar",
+  "donativo",
+  "partilhar",
+  "lingua",
+  "visual",
+  "tema",
+];
 const LARGURAS = new Map<ItemId, number>(TODOS.map((id) => [id, 100]));
 const soma = (n: number) => n * 100 + (n - 1) * 8; // n itens de 100 px com 8 px entre eles
 
 describe("o que sai do cabeçalho para o menu «hambúrguer»", () => {
   it("não tira nada quando tudo cabe", () => {
-    expect(calcularOcultos(soma(8), LARGURAS, TODOS)).toEqual([]);
+    expect(calcularOcultos(soma(10), LARGURAS, TODOS)).toEqual([]);
     expect(calcularOcultos(5000, LARGURAS, TODOS)).toEqual([]);
   });
 
   it("tira primeiro o modo claro/escuro, depois o visual, e por aí fora, deixando lugar ao botão do menu", () => {
-    expect(calcularOcultos(soma(8) - 1, LARGURAS, TODOS)).toEqual(["tema"]); // 7 itens + o botão do menu: 7*100+7*8+44 = 800 ≤ 907
-    expect(calcularOcultos(soma(6) + 8 + 44, LARGURAS, TODOS)).toEqual(["tema", "visual"]);
+    expect(calcularOcultos(soma(10) - 1, LARGURAS, TODOS)).toEqual(["tema"]); // 9 itens + o botão do menu
+    expect(calcularOcultos(soma(8) + 8 + 44, LARGURAS, TODOS)).toEqual(["tema", "visual"]);
   });
 
   it("quanto menos espaço, mais itens vão para o menu, sempre pela ordem de prioridade", () => {
     let anterior = 0;
-    for (let largura = soma(8); largura >= 0; largura -= 20) {
+    for (let largura = soma(10); largura >= 0; largura -= 20) {
       const ocultos = calcularOcultos(largura, LARGURAS, TODOS);
       expect(ocultos.length).toBeGreaterThanOrEqual(anterior);
       anterior = ocultos.length;
@@ -38,7 +49,7 @@ describe("o que sai do cabeçalho para o menu «hambúrguer»", () => {
 
   it("sem donativo configurado esse item nem conta", () => {
     const sem = TODOS.filter((id) => id !== "donativo");
-    expect(calcularOcultos(soma(7), LARGURAS, sem)).toEqual([]);
+    expect(calcularOcultos(soma(9), LARGURAS, sem)).toEqual([]);
     expect(calcularOcultos(0, LARGURAS, sem)).toEqual(SAI_PRIMEIRO.filter((id) => id !== "donativo"));
   });
 
@@ -85,13 +96,23 @@ describe("o menu «hambúrguer» no cabeçalho", () => {
     const botao = await screen.findByTestId("nav-burger");
     expect(botao).toHaveAttribute("aria-label", "Menu");
     expect(botao).toHaveAttribute("aria-expanded", "false");
-    expect(screen.getByTestId("nav-ajuda")).toBeInTheDocument(); // dos que ficam
-    expect(screen.getByTestId("partilhar-abrir-topo")).toBeInTheDocument();
-    for (const id of ["nav-sorteio", "nav-sobre", "lingua", "visual", "tema"])
+    // «Comentários» e «Reportar problema» são os últimos a sair: ficam à vista
+    expect(screen.getByTestId("nav-comentarios")).toBeInTheDocument();
+    expect(screen.getByTestId("nav-reportar-problema")).toBeInTheDocument();
+    for (const id of [
+      "nav-ajuda",
+      "nav-sorteio",
+      "nav-sobre",
+      "partilhar-abrir-topo",
+      "lingua",
+      "visual",
+      "tema",
+    ])
       expect(screen.queryByTestId(id)).toBeNull();
     await userEvent.click(botao);
     const menu = screen.getByRole("list", { name: "Menu" });
     const dentro = within(menu);
+    expect(dentro.getByTestId("burger-tutorial")).toBeInTheDocument(); // a Ajuda
     expect(dentro.getByTestId("burger-sorteio")).toBeInTheDocument();
     expect(dentro.getByTestId("burger-sobre")).toBeInTheDocument();
     expect(dentro.getByTestId("burger-lingua")).toHaveValue("pt");
@@ -118,6 +139,8 @@ describe("o menu «hambúrguer» no cabeçalho", () => {
     expect(menu.getByTestId("burger-video")).toBeInTheDocument();
     expect(menu.getByTestId("guia-rifas-para-escolas")).toBeInTheDocument();
     expect(menu.getByTestId("partilhar-whatsapp")).toBeInTheDocument(); // as redes de «Partilhar», já abertas
+    expect(menu.getByTestId("burger-comentarios")).toHaveAttribute("href", "/comentarios");
+    expect(menu.getByTestId("burger-reportar")).toHaveAttribute("href", "/reportar-problema");
     expect(screen.queryByTestId("nav-ajuda")).toBeNull();
     expect(screen.queryByTestId("partilhar-abrir-topo")).toBeNull();
   });

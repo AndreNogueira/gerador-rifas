@@ -2,6 +2,13 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.51.0 — 2026-11-19
+
+### Nieuw
+- **Reacties:** een pagina ‘Reacties’ waar iedereen ziet wat anderen van de generator vinden, en een pagina om de uwe achter te laten: anoniem blijven of een naam tonen (zonder naam staat er ‘Bezoeker nr. …’). Het IP-adres wordt alleen voor de beheerder bewaard, tegen misbruik, nooit getoond en na 90 dagen verwijderd.
+- **Probleem melden:** nieuwe pagina waar u een fout beschrijft; met ‘Openen’ wordt die direct op de GitHub van het project aangemaakt, zonder account (uw IP wordt niet verstuurd en technische browsergegevens alleen als u ze toevoegt).
+- Beide pagina's en de knoppen ‘Reacties’ en ‘Probleem melden’ staan duidelijk in beeld in de kop, het menu en de voettekst; het Privacybeleid (22 talen) legt uit wat wordt bewaard.
+
 ## 3.50.0 — 2026-11-18
 
 ### Verbeterd
