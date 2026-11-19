@@ -97,7 +97,8 @@ export function AdminComentarios({
             {dados.itens.length < dados.total && filtro === "" && ` (os ${dados.itens.length} mais recentes)`}
           </p>
           <div className="botoes">
-            <div className="admin-vistas" role="group" aria-label="Filtrar por estado">
+            <fieldset className="admin-vistas">
+              <legend className="so-leitores">Filtrar por estado</legend>
               {FILTROS.map(([valor, nome]) => (
                 <button
                   key={valor || "todos"}
@@ -109,7 +110,7 @@ export function AdminComentarios({
                   {nome}
                 </button>
               ))}
-            </div>
+            </fieldset>
             {!leitura && dados.por_ler > 0 && (
               <button
                 type="button"
