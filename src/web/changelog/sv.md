@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.69.0 — 2026-11-19
+
+### Nytt
+- **Brasiliansk portugisiska** (`/pt-br`): sajten, guiderna och de juridiska sidorna finns nu även på brasiliansk portugisiska, med eget ordförråd, en integritetspolicy anpassad till Brasiliens LGPD och automatiskt språkval när webbläsaren står på pt-BR. Europeisk portugisiska är oförändrad, utan prefix i adressen.
+
 ## 3.68.0 — 2026-11-19
 
 ### Nytt

@@ -246,7 +246,7 @@ def _dados_estruturados(base: str, lg: str) -> dict:
         "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "Any (browser)",
         "browserRequirements": "Requires JavaScript",
-        "inLanguage": list(i18n.LINGUAS),
+        "inLanguage": [i18n.bcp47(x) for x in i18n.LINGUAS],
         "image": f"{base}{IMAGEM}",
         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
     }
@@ -285,7 +285,7 @@ def cabecalho(pagina: Pagina, base: str, lg: str = "pt") -> str:
     ]
     if pagina.indexavel:
         linhas.append(f'<link rel="canonical" href="{_e(url)}" />')
-        linhas += [f'<link rel="alternate" hreflang="{outra}" href="{_e(_url(base, pagina.caminho, outra))}" />' for outra in i18n.LINGUAS]
+        linhas += [f'<link rel="alternate" hreflang="{i18n.bcp47(outra)}" href="{_e(_url(base, pagina.caminho, outra))}" />' for outra in i18n.LINGUAS]
         linhas.append(f'<link rel="alternate" hreflang="x-default" href="{_e(_url(base, pagina.caminho, "pt"))}" />')
         linhas += [
             '<meta property="og:type" content="website" />',
@@ -322,7 +322,7 @@ def renderizar(html_base: str, pagina: Pagina, base: str, lg: str = "pt") -> str
     """O `index.html` compilado com o `<head>` e o corpo estatico desta pagina, na lingua `lg` (tambem o `<html lang>`)."""
     cab = cabecalho(pagina, base, lg)
     corpo = f'<div class="seo-estatico">{pagina.corpo(lg)}</div>'
-    html_base = re.sub(r'<html lang="[^"]*"', f'<html lang="{lg}"', html_base, count=1)
+    html_base = re.sub(r'<html lang="[^"]*"', f'<html lang="{i18n.bcp47(lg)}"', html_base, count=1)
     if MARCADOR_CABECALHO in html_base:
         html_base = html_base.replace(MARCADOR_CABECALHO, cab, 1)
     else:                                                    # frontend sem marcadores (testes, desenvolvimento): antes de </head>
@@ -359,7 +359,7 @@ def sitemap(base: str) -> str:
     for p in ROTAS.values():
         if not (p.indexavel and p.no_mapa):
             continue
-        alternativas = "".join(f'<xhtml:link rel="alternate" hreflang="{lg}" href="{_e(_url(base, p.caminho, lg))}"/>' for lg in i18n.LINGUAS)
+        alternativas = "".join(f'<xhtml:link rel="alternate" hreflang="{i18n.bcp47(lg)}" href="{_e(_url(base, p.caminho, lg))}"/>' for lg in i18n.LINGUAS)
         alternativas += f'<xhtml:link rel="alternate" hreflang="x-default" href="{_e(_url(base, p.caminho, "pt"))}"/>'
         urls += [f"<url><loc>{_e(_url(base, p.caminho, lg))}</loc>{alternativas}</url>" for lg in i18n.LINGUAS]
     return ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '

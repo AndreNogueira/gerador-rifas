@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.69.0 — 2026-11-19
+
+### Mới
+- **Tiếng Bồ Đào Nha của Brazil** (`/pt-br`): trang web, các hướng dẫn và trang pháp lý nay cũng có bằng tiếng Bồ Đào Nha của Brazil, với từ vựng riêng, Chính sách quyền riêng tư điều chỉnh theo LGPD của Brazil và tự chọn ngôn ngữ khi trình duyệt đặt pt-BR. Tiếng Bồ Đào Nha của Bồ Đào Nha giữ nguyên, địa chỉ không có tiền tố.
+
 ## 3.68.0 — 2026-11-19
 
 ### Mới

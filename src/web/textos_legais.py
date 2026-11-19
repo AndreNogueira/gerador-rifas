@@ -27,7 +27,7 @@ def _modulo(lingua: str):
     """O módulo `legal.<língua>`; o português se a língua não tiver tradução (ou não existir)."""
     for lg in (lingua, "pt"):
         try:
-            return importlib.import_module(f"{__package__}.legal.{lg}")
+            return importlib.import_module(f"{__package__}.legal.{lg.replace('-', '_')}")
         except ImportError:
             continue
     raise ImportError("legal.pt em falta")

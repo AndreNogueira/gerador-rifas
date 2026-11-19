@@ -19,6 +19,7 @@ INDEX = (
 URL = "https://rifas.exemplo.pt"
 LINGUAS = list(i18n.LINGUAS)
 OUTRAS = [lg for lg in LINGUAS if lg != "pt"]
+TRADUZIDAS = [lg for lg in OUTRAS if lg != "pt-br"]            # o português do Brasil deriva-se do de Portugal (`core/ptbr.py`): pode coincidir em textos sem vocabulário próprio
 RAIZ = Path(__file__).resolve().parent.parent
 
 
@@ -50,7 +51,7 @@ def test_cada_texto_de_seo_tem_as_18_linguas_e_os_mesmos_parametros():
     assert set(seo_textos.LOCALE_OG) == set(LINGUAS)
 
 
-@pytest.mark.parametrize("lg", OUTRAS)
+@pytest.mark.parametrize("lg", TRADUZIDAS)
 def test_os_textos_de_seo_estao_traduzidos_e_nao_sao_o_portugues(lg):
     for chave, por_lingua in seo_textos.CHAVES.items():
         assert por_lingua[lg] != por_lingua["pt"], (chave, lg)
@@ -60,7 +61,7 @@ def test_a_lista_de_linguas_do_router_do_frontend_e_a_do_servidor():
     fonte = (RAIZ / "src" / "web" / "frontend" / "src" / "rota.tsx").read_text(encoding="utf-8")
     m = re.search(r"LINGUAS_COM_PREFIXO\s*=\s*\[([^\]]*)\]", fonte)
     assert m, "rota.tsx tem de declarar LINGUAS_COM_PREFIXO"
-    assert re.findall(r'"([a-z]{2})"', m.group(1)) == list(seo.LINGUAS_URL)
+    assert re.findall(r'"([a-z]{2}(?:-[a-z]{2})?)"', m.group(1)) == list(seo.LINGUAS_URL)
 
 
 # ------------------------------------------------------------------ as páginas
@@ -69,21 +70,21 @@ def test_a_lista_de_linguas_do_router_do_frontend_e_a_do_servidor():
 def test_cada_pagina_sai_na_lingua_do_url_com_canonico_hreflang_e_h1(c, caminho, lg):
     url = seo.caminho_na_lingua(caminho, lg)
     r = c.get(url)
-    assert r.status_code == 200 and r.headers["content-language"] == lg, (url, r.status_code)
+    assert r.status_code == 200 and r.headers["content-language"] == i18n.bcp47(lg), (url, r.status_code)
     h = r.text
-    assert f'<html lang="{lg}"' in h
+    assert f'<html lang="{i18n.bcp47(lg)}"' in h
     esperado = f"{URL}/" if url == "/" else f"{URL}{url}"
     assert f'<link rel="canonical" href="{esperado}" />' in h
     assert _meta(h, "property", "og:locale") == seo_textos.LOCALE_OG[lg] and _meta(h, "property", "og:url") == esperado
     alternativas = re.findall(r'<link rel="alternate" hreflang="([^"]+)" href="([^"]+)" />', h)
-    assert [a for a, _ in alternativas] == LINGUAS + ["x-default"]
+    assert [a for a, _ in alternativas] == [i18n.bcp47(x) for x in LINGUAS] + ["x-default"]
     assert dict(alternativas)["x-default"] == (f"{URL}/" if caminho == "/" else f"{URL}{caminho}")        # o x-default é o português, sem prefixo
-    assert dict(alternativas)[lg] == esperado
+    assert dict(alternativas)[i18n.bcp47(lg)] == esperado
     titulo = re.search(r"<title>([^<]+)</title>", h).group(1)
     descricao = _meta(h, "name", "description")
     assert 8 <= len(titulo) <= 90 and 20 <= len(descricao) <= 200, (url, len(titulo), len(descricao))
     assert len(re.findall(r"<h1>", h)) == 1 and "{" not in h.split('<div class="seo-estatico">')[1], url
-    if lg != "pt":
+    if lg not in ("pt", "pt-br"):                  # o do Brasil deriva-se do de Portugal (core/ptbr.py): pode coincidir
         pt = c.get(caminho).text
         assert re.search(r"<title>([^<]+)</title>", pt).group(1) != titulo or caminho == "/changelog"
         assert _meta(pt, "name", "description") != descricao
@@ -145,7 +146,7 @@ def test_o_sitemap_lista_cada_pagina_em_todas_as_linguas_com_as_alternativas(c):
     assert len(entradas) == len(seo.ROTAS) * len(i18n.LINGUAS)
     for e in entradas:
         links = e.findall("x:link", ns)
-        assert [(lk.get("hreflang")) for lk in links] == LINGUAS + ["x-default"]
+        assert [(lk.get("hreflang")) for lk in links] == [i18n.bcp47(x) for x in LINGUAS] + ["x-default"]
         assert e.find("s:loc", ns).text in [lk.get("href") for lk in links]
     locs = [e.find("s:loc", ns).text for e in entradas]
     assert f"{URL}/en" in locs and f"{URL}/ja/tutorial" in locs and f"{URL}/tutorial" in locs and f"{URL}/pt/tutorial" not in locs

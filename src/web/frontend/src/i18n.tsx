@@ -63,7 +63,10 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
       .then((r) => {
         if (!atual) return;
         definirLingua(r.lingua); // antes de os componentes pedirem à API na língua nova
-        document.documentElement.lang = r.lingua;
+        document.documentElement.lang = r.lingua.replace(
+          /-([a-z]{2})$/,
+          (_, regiao: string) => `-${regiao.toUpperCase()}`,
+        ); // pt-br → pt-BR
         definirLinguaDaRota(r.lingua); // o URL passa a ter o prefixo desta língua
         setCarregados({ lingua: r.lingua, textos: r.textos });
         try {

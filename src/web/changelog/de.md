@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.69.0 — 2026-11-19
+
+### Neu
+- **Brasilianisches Portugiesisch** (`/pt-br`): Die Website, die Anleitungen und die Rechtsseiten gibt es jetzt auch auf brasilianischem Portugiesisch, mit eigenem Wortschatz, einer an die brasilianische LGPD angepassten Datenschutzerklärung und automatischer Sprachwahl, wenn der Browser auf pt-BR steht. Das europäische Portugiesisch bleibt unverändert, ohne Präfix in der Adresse.
+
 ## 3.68.0 — 2026-11-19
 
 ### Neu

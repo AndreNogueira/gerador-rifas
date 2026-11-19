@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.69.0 — 2026-11-19
+
+### Novedades
+- **Portugués de Brasil** (`/pt-br`): el sitio, las guías y las páginas legales existen también en portugués de Brasil, con su vocabulario, una Política de privacidad adaptada a la LGPD brasileña y el idioma elegido solo cuando el navegador está en pt-BR. El portugués de Portugal sigue igual, sin prefijo en la dirección.
+
 ## 3.68.0 — 2026-11-19
 
 ### Novedades

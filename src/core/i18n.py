@@ -84,10 +84,24 @@ def msg(chave: str, **params) -> Mensagem:
     return Mensagem(chave, **params)
 
 
+def _suportada(etiqueta: str) -> str | None:
+    """A lingua nossa para uma etiqueta de lingua: a etiqueta inteira se existir («pt-BR» -> «pt-br»), senao so a base («pt-PT» -> «pt», «zh_CN» -> «zh»)."""
+    e = etiqueta.strip().replace("_", "-").lower()
+    if e in LINGUAS:
+        return e
+    base = e.split("-")[0]
+    return base if base in LINGUAS else None
+
+
+def bcp47(lingua: str) -> str:
+    """A etiqueta BCP 47 de uma lingua nossa (`pt-br` -> `pt-BR`; as outras ficam como estao): o que vai em `<html lang>`, `hreflang` e `Intl`."""
+    base, _, regiao = lingua.partition("-")
+    return f"{base}-{regiao.upper()}" if regiao else lingua
+
+
 def lingua_de_codigo(codigo: str) -> str:
-    """'pt-PT' -> 'pt', 'zh_CN' -> 'zh'; se a lingua nao for suportada, 'en'."""
-    base = codigo.replace("_", "-").split("-")[0].lower()
-    return base if base in LINGUAS else "en"
+    """'pt-PT' -> 'pt', 'pt-BR' -> 'pt-br', 'zh_CN' -> 'zh'; se a lingua nao for suportada, 'en'."""
+    return _suportada(codigo) or "en"
 
 
 def lingua_de_accept_language(cabecalho: str | None, por_defeito: str = "en") -> str:
@@ -112,9 +126,9 @@ def lingua_de_accept_language(cabecalho: str | None, por_defeito: str = "en") ->
             continue
         candidatas.append((-q, pos, etiqueta))
     for _, _, etiqueta in sorted(candidatas):
-        base = etiqueta.replace("_", "-").split("-")[0].lower()
-        if base in LINGUAS:
-            return base
+        escolhida = _suportada(etiqueta)
+        if escolhida:
+            return escolhida
     return por_defeito
 
 

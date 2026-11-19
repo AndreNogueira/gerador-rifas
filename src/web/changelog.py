@@ -11,6 +11,8 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
 
+from core import ptbr
+
 FICHEIRO = Path(__file__).with_name("CHANGELOG.md")          # o original, em portugues
 PASTA = Path(__file__).with_name("changelog")                # as traducoes: <lingua>.md
 _VERSAO = re.compile(r"^##\s+(\d+\.\d+\.\d+)\s*[—-]\s*(\d{4}-\d{2}-\d{2})\s*$")
@@ -55,4 +57,6 @@ def ficheiro(lingua: str) -> Path:
 
 @lru_cache(maxsize=32)
 def entradas(lingua: str = "pt") -> tuple[Entrada, ...]:
+    if lingua == "pt-br":                                  # o portugues do Brasil deriva-se do original (core/ptbr.py): sem ficheiro proprio, sem resumo a escrever a cada versao
+        return tuple(ler(ptbr.derivar(FICHEIRO.read_text(encoding="utf-8"))))
     return tuple(ler(ficheiro(lingua).read_text(encoding="utf-8")))

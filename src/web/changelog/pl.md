@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.69.0 — 2026-11-19
+
+### Nowości
+- **Portugalski brazylijski** (`/pt-br`): strona, poradniki i strony prawne są teraz także po brazylijsku, z własnym słownictwem, polityką prywatności dostosowaną do brazylijskiej LGPD i automatycznym wyborem języka, gdy przeglądarka ma pt-BR. Portugalski europejski zostaje bez zmian, bez prefiksu w adresie.
+
 ## 3.68.0 — 2026-11-19
 
 ### Nowości

@@ -1,6 +1,6 @@
 # Plano: português do Brasil (`pt-BR`) como 23.ª língua
 
-> **Estado: proposta para rever (2026-11-19).** Combinado como «depois do resto». Nada está feito.
+> **Estado (2026-11-19): feito na 3.69.0** (derivado do pt por `core/ptbr.py`; ver `docs/LINGUAS.md`). Por fazer: revisão por brasileiros, revisão jurídica das páginas legais, guias com exemplos próprios do Brasil (festa junina, condomínio…) e a decisão sobre a lei das rifas (ponto 1 abaixo).
 
 ## Porquê
 

@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.69.0 — 2026-11-19
+
+### Nieuw
+- **Braziliaans Portugees** (`/pt-br`): de site, de stappenplannen en de juridische pagina's bestaan nu ook in Braziliaans Portugees, met eigen woordenschat, een privacyverklaring aangepast aan de Braziliaanse LGPD en automatische taalkeuze als de browser op pt-BR staat. Het Europese Portugees blijft hetzelfde, zonder voorvoegsel in het adres.
+
 ## 3.68.0 — 2026-11-19
 
 ### Nieuw

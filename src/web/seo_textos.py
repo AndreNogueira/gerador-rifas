@@ -514,6 +514,13 @@ for _chave, _valores in _novas.CHAVES.items():
     CHAVES[_chave].update(_valores)
 LOCALE_OG.update(_novas.LOCALE_OG)
 
+# o português do Brasil deriva-se do de Portugal (`core/ptbr.py`): titulos e descricoes tem de continuar a caber (`tests/test_web_seo_linguas.py`)
+from core import ptbr as _ptbr  # noqa: E402
+
+for _valores in CHAVES.values():
+    _valores["pt-br"] = _ptbr.derivar(_valores["pt"])
+LOCALE_OG["pt-br"] = "pt_BR"
+
 # Os textos editados no painel (guardados na base de dados, `seo_bd.py`): (chave, lingua) -> texto. Mandam sobre os de cima, que continuam a ser o
 # valor por omissao e o recurso se a base estiver em baixo ou o texto editado nao servir. Substitui-se o dicionario inteiro (nunca se muda no sitio).
 SOBREPOSTOS: dict[tuple[str, str], str] = {}

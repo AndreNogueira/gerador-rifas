@@ -196,7 +196,7 @@ def test_ambiente_no_windows_real(ambiente):
     ("fr-CH, fr;q=0.9, en;q=0.8, de;q=0.7, *;q=0.5", "fr"),
     ("xx,yy;q=0.9,de;q=0.5", "de"),                               # a primeira suportada pela ordem de q
     ("de;q=0.5,es;q=0.9", "es"),                                  # q manda, nao a posicao
-    ("zh-CN", "zh"), ("hi", "hi"), ("PT_br", "pt"),
+    ("zh-CN", "zh"), ("hi", "hi"), ("PT_br", "pt-br"),
     ("*", "en"), ("", "en"), (None, "en"), ("klingon", "en"), (";;;,", "en"),
     ("de;q=0", "en"),                                             # q=0 = «nao aceito»
     ("de;q=abc,es;q=0.1", "es"),                                  # q invalido: ignora essa entrada
