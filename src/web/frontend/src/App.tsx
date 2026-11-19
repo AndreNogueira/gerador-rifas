@@ -25,6 +25,7 @@ import { useTema, useVisual } from "./tema";
 const Admin = preguicoso(() => import("./Admin").then((m) => ({ default: m.Admin })));
 const Editor = preguicoso(() => import("./Editor").then((m) => ({ default: m.Editor })));
 const Sorteio = preguicoso(() => import("./Sorteio").then((m) => ({ default: m.Sorteio })));
+const Precario = preguicoso(() => import("./Precario").then((m) => ({ default: m.Precario })));
 
 /** Páginas com título fixo: «Changelog» é um nome e o painel é só em português. Os Termos, a Privacidade e o Contacto põem o título que o servidor
  * entrega, já na língua escolhida (ver PaginaTexto). */
@@ -62,6 +63,7 @@ function Aplicacao() {
       "/sorteio": t("web_sorteio"),
       "/editor": t("web_editor"),
       "/como-fazer": t("web_comofazer_titulo"),
+      "/precario": t("web_precario_titulo"),
       "/comentarios": t("web_comentarios"),
       "/opiniao": t("web_op_titulo"),
       "/reportar-problema": t("web_bug_titulo"),
@@ -110,6 +112,8 @@ function Aplicacao() {
             <Sobre versao={versao} />
           ) : caminho === "/sorteio" ? (
             <Sorteio />
+          ) : caminho === "/precario" ? (
+            <Precario />
           ) : caminho === "/editor" ? (
             <Editor partilha={publico.partilha_editor} />
           ) : caminho === "/como-fazer" ? (

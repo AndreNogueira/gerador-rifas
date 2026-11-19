@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-// O site fica leve para quem só gera rifas: o painel do dono, o editor e o sorteio são ficheiros à parte (`src/preguicoso.ts`) que só se pedem quando se abre a página.
-const PARTES = /\/assets\/(Admin|Editor|Sorteio)-[^/]+\.js/;
+// O site fica leve para quem só gera rifas: o painel do dono, o editor, o preçário e o sorteio são ficheiros à parte (`src/preguicoso.ts`) que só se pedem quando se abre a página.
+const PARTES = /\/assets\/(Admin|Editor|Precario|Sorteio)-[^/]+\.js/;
 
 function partesPedidas(page: import("@playwright/test").Page): string[] {
   const nomes: string[] = [];
@@ -12,7 +12,7 @@ function partesPedidas(page: import("@playwright/test").Page): string[] {
   return nomes;
 }
 
-test("a página inicial não descarrega o painel, o editor nem o sorteio", async ({ page }) => {
+test("a página inicial não descarrega o painel, o editor, o preçário nem o sorteio", async ({ page }) => {
   const pedidas = partesPedidas(page);
   await page.goto("/");
   await expect(page.getByTestId("gerador").or(page.locator("main"))).toBeVisible();
@@ -26,6 +26,14 @@ test("o sorteio descarrega só o seu ficheiro e funciona", async ({ page }) => {
   await expect(page.getByTestId("sorteio-n")).toBeVisible(); // só existe na página desenhada (o <h1> do HTML estático de SEO aparece antes de o React montar)
   await page.waitForLoadState("networkidle");
   expect(pedidas).toEqual(["Sorteio"]);
+});
+
+test("o preçário descarrega só o seu ficheiro e funciona", async ({ page }) => {
+  const pedidas = partesPedidas(page);
+  await page.goto("/precario");
+  await expect(page.getByTestId("precario-ocasiao")).toBeVisible(); // só existe na página desenhada
+  await page.waitForLoadState("networkidle");
+  expect(pedidas).toEqual(["Precario"]);
 });
 
 test("o editor descarrega só o seu ficheiro e funciona", async ({ page }) => {

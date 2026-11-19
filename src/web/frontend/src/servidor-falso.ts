@@ -57,6 +57,42 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     m_ajuda: "Ajuda",
     web_menu: "Menu",
     web_comentarios: "Comentários",
+    web_precario: "Preçário",
+    web_precario_titulo: "Gerador de preçários para festas",
+    web_precario_intro: "Escolha os artigos, escreva os preços e imprima.",
+    web_precario_ocasiao: "Ocasião e tema",
+    web_precario_sugerida: "Sugerido para esta época",
+    web_precario_artigos: "Artigos",
+    web_precario_pesquisar: "Procurar artigos…",
+    web_precario_meu_artigo: "Acrescentar um artigo meu",
+    web_precario_nome_artigo: "Nome do artigo",
+    web_precario_escolhidos: "Preços ({n} artigos)",
+    web_precario_preco: "Preço",
+    web_precario_tirar: "Tirar",
+    web_precario_dica_preco: "Sem preço, fica um traço.",
+    web_precario_moeda: "País e moeda",
+    web_precario_pais: "País",
+    web_precario_moeda_inventada: "Moeda inventada",
+    web_precario_inventada_nome: "Nome da moeda",
+    web_precario_inventada_antes: "Escrever antes do número",
+    web_precario_inventada_casas: "Casas decimais",
+    web_precario_aspeto: "Aspeto",
+    web_precario_campo_titulo: "Título",
+    web_precario_campo_subtitulo: "Subtítulo",
+    web_precario_campo_rodape: "Rodapé",
+    web_precario_formato: "Formato",
+    web_precario_vertical: "Vertical",
+    web_precario_horizontal: "Horizontal",
+    web_precario_colunas: "Colunas",
+    web_precario_auto: "Automático",
+    web_precario_imagens: "Com imagens",
+    web_precario_previa: "Pré-visualização do preçário",
+    web_precario_pdf: "Descarregar PDF",
+    web_precario_imagem: "Descarregar imagem",
+    web_precario_vazio: "Escolha pelo menos um artigo.",
+    web_precario_recomecar: "Recomeçar",
+    web_precario_a_desenhar: "A desenhar…",
+    web_precario_preco_categoria: "Preço da categoria",
     web_comofazer_titulo: "Como fazer uma rifa: guias passo a passo",
     web_comofazer_intro: "Guias passo a passo para organizar a sua rifa.",
     web_guias_outros: "Outros guias",
@@ -272,6 +308,8 @@ export class ServidorFalso {
   donativoUrl = "";
   exportarErro = "";
   galeriaErro = "";
+  /** Se preenchido, o preçário responde 422 com este texto (pré-visualização e descarregar). */
+  precarioErro = "";
   /** Se preenchido, a pré-visualização responde 422 com este texto. */
   previaErro = "";
   anunciosCliente = "";
@@ -336,6 +374,64 @@ export class ServidorFalso {
     if (url === "/api/exportar/lista.csv" || url === "/api/exportar/controlo.pdf") {
       if (this.exportarErro) return this.responder({ detail: this.exportarErro, tipo: "aviso" }, 422);
       return Promise.resolve(new Response(new Blob([url.endsWith("csv") ? "csv" : "%PDF"]), { status: 200 }));
+    }
+    if (url.startsWith("/api/precario/catalogo")) {
+      return this.responder({
+        categorias: [
+          {
+            id: "bebidas",
+            nome: "Bebidas",
+            artigos: [
+              { id: "agua", nome: "Água", emoji: "1f4a7" },
+              { id: "sumo", nome: "Sumo", emoji: "1f9c3" },
+            ],
+          },
+          {
+            id: "comida",
+            nome: "Comida",
+            artigos: [
+              { id: "pizza", nome: "Pizza", emoji: "1f355" },
+              { id: "sopa", nome: "Sopa", emoji: "1f372" },
+            ],
+          },
+          { id: "doces", nome: "Doces", artigos: [{ id: "bolo", nome: "Bolo", emoji: "1f370" }] },
+          { id: "extras", nome: "Outros", artigos: [] },
+        ],
+        ocasioes: [
+          {
+            id: "festa_popular",
+            nome: "Festa popular",
+            desenho: "arraial",
+            artigos: ["agua", "pizza", "bolo"],
+            meses: [6, 7, 8],
+          },
+          { id: "natal", nome: "Natal", desenho: "natal", artigos: ["sumo", "bolo"], meses: [11, 12] },
+        ],
+        sugerida: "festa_popular",
+        desenhos: [
+          { id: "arraial", nome: "Arraial" },
+          { id: "natal", nome: "Natal" },
+          { id: "quermesse", nome: "Quermesse" },
+        ],
+        moedas: [
+          { codigo: "EUR", simbolo: "€", decimais: 2 },
+          { codigo: "BRL", simbolo: "R$", decimais: 2 },
+          { codigo: "USD", simbolo: "$", decimais: 2 },
+        ],
+        paises: { PT: "EUR", BR: "BRL", US: "USD" },
+        pais: "PT",
+        moeda: "EUR",
+        limites: { linhas: 80, titulo: 40, subtitulo: 70, rodape: 120, nome: 40, moeda_inventada: 14 },
+        formatos: ["A5", "A4", "A3"],
+      });
+    }
+    if (
+      url === "/api/precario/previa.png" ||
+      url === "/api/precario/pdf" ||
+      url === "/api/precario/imagem.png"
+    ) {
+      if (this.precarioErro) return this.responder({ detail: this.precarioErro, tipo: "aviso" }, 422);
+      return Promise.resolve(new Response(new Blob([url.endsWith("pdf") ? "%PDF" : "png"]), { status: 200 }));
     }
     if (url.startsWith("/api/galeria/previa.png")) {
       if (this.galeriaErro) return this.responder({ detail: this.galeriaErro, tipo: "aviso" }, 422);
