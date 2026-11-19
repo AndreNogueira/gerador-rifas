@@ -303,12 +303,12 @@ def test_a_evolucao_inclui_pedidos_latencia_e_sistema_sem_as_sondagens(m, relogi
 
 
 def test_a_evolucao_cobre_todos_os_tipos_de_evento_que_se_gravam(m, relogio):
-    for tipo, a in (("galeria", "natal"), ("editor", "usar"), ("logotipo", "ok"), ("verificacao", "ok"), ("api_geracao", "ok"), ("limite", "sessoes"),
+    for tipo, a in (("galeria", "natal"), ("precario", "natal"), ("precario_moeda", "EUR"), ("editor", "usar"), ("logotipo", "ok"), ("verificacao", "ok"), ("api_geracao", "ok"), ("limite", "sessoes"),
                     ("erro_http", "404"), ("admin", "entrou"), ("pais", "PT"), ("ecra", "telemovel"), ("comentario", "anonimo"), ("problema", "ok")):
         m.evento(tipo, a, v1=390)
     m.evento("motor_reiniciado")
     d = m.evolucao(1)
-    for id_, nome in (("galeria", "natal"), ("editor", "Usado"), ("logotipo", "Certo"), ("verificacao", "ok"), ("api_geracao", "ok"), ("limites", "sessoes"),
+    for id_, nome in (("galeria", "natal"), ("precario", "natal"), ("precario_moeda", "EUR"), ("editor", "Usado"), ("logotipo", "Certo"), ("verificacao", "ok"), ("api_geracao", "ok"), ("limites", "sessoes"),
                       ("erros_http", "404"), ("admin", "entrou"), ("paises", "PT"), ("classes_ecra", "telemovel"), ("comentarios", "Anónimos"), ("problemas", "Registados no GitHub")):
         assert _serie(d, id_, nome) == [1], id_
     assert _serie(d, "motor", "Reinícios do motor") == [1] and _serie(d, "motor", "Arranques do serviço") == [1]

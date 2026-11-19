@@ -431,3 +431,68 @@ def de_ocasiao(ocasiao: str, lingua: str, **campos) -> Precario:
     base = dict(linhas=linhas, titulo=cat.nome_imprimivel(o, lingua), desenho=o.desenho, lingua=lingua, moeda=mod_moeda.moeda_por_omissao(lingua))
     base.update(campos)
     return Precario(**base)
+
+
+# ------------------------------------------------------------------ de e para dicionários (a API, o ficheiro `.precario` da app Windows e o rascunho do browser usam o mesmo formato)
+def _texto(valor, padrao: str = "") -> str:
+    if valor is None:
+        return padrao
+    if not isinstance(valor, str):
+        raise ErroRifas("err_precario_texto", car="?")
+    return valor
+
+
+def _preco(valor, lingua: str) -> int | None:
+    """O preço de uma linha: `None`/«» = em branco; um inteiro = milésimos (o formato do ficheiro); um texto = o que a pessoa escreveu («1,5»)."""
+    if valor is None or valor == "":
+        return None
+    if isinstance(valor, bool) or not isinstance(valor, (int, str)):
+        raise ErroRifas("err_precario_texto", car="?")
+    if isinstance(valor, int):
+        return valor
+    n = mod_moeda.valor_de_texto(valor, lingua)
+    if n is None:
+        raise ErroRifas("err_precario_texto", car=valor.strip()[:14] or "?")
+    return n
+
+
+def de_dict(d: dict, lingua: str | None = None) -> Precario:
+    """O `Precario` de um dicionário (JSON): `titulo`, `subtitulo`, `rodape`, `desenho`, `formato`, `orientacao`, `colunas`, `imagens`, `lingua`,
+    `moeda` (`{"codigo": "EUR"}` ou `{"nome": "fichas", "antes": false, "decimais": 0}`; sem ela, a do país da língua) e `linhas` (`artigo`, `nome`, `preco`, `categoria`, `emoji`).
+    Tipos errados e valores impossíveis dão `ErroRifas` (a validação completa é a de `validar`, que `criar_pdf` chama)."""
+    if not isinstance(d, dict):
+        raise ErroRifas("err_precario_texto", car="?")
+    lg = lingua or _texto(d.get("lingua"), "pt")
+    m = d.get("moeda") or {}
+    if not isinstance(m, dict):
+        raise ErroRifas("err_precario_texto", car="?")
+    if _texto(m.get("nome")).strip():
+        decimais = m.get("decimais", 0)
+        if isinstance(decimais, bool) or not isinstance(decimais, int):
+            raise ErroRifas("err_precario_texto", car="?")
+        moeda_ = mod_moeda.MoedaInventada(_texto(m.get("nome")), bool(m.get("antes", False)), decimais)
+    elif _texto(m.get("codigo")).strip():
+        try:
+            moeda_ = mod_moeda.moeda_de_codigo(m["codigo"])
+        except mod_moeda.ErroMoeda:
+            raise ErroRifas("err_precario_texto", car=_texto(m.get("codigo"))[:14]) from None
+    else:
+        moeda_ = mod_moeda.moeda_por_omissao(lg)
+    linhas = d.get("linhas") or []
+    if not isinstance(linhas, (list, tuple)) or any(not isinstance(x, dict) for x in linhas):
+        raise ErroRifas("err_precario_linhas", max=MAX_LINHAS)
+    colunas = d.get("colunas", 0)
+    if isinstance(colunas, bool) or not isinstance(colunas, int):
+        raise ErroRifas("err_precario_texto", car="?")
+    return Precario(
+        linhas=tuple(Linha(_texto(x.get("artigo")), _texto(x.get("nome")), _preco(x.get("preco"), lg), _texto(x.get("categoria")), _texto(x.get("emoji"))) for x in linhas),
+        titulo=_texto(d.get("titulo")), subtitulo=_texto(d.get("subtitulo")), rodape=_texto(d.get("rodape")), desenho=_texto(d.get("desenho"), "quermesse"),
+        formato=_texto(d.get("formato"), "A4"), orientacao=_texto(d.get("orientacao"), "vertical"), colunas=colunas, imagens=bool(d.get("imagens", True)), moeda=moeda_, lingua=lg)
+
+
+def para_dict(p: Precario) -> dict:
+    """O inverso de `de_dict`, com os preços em milésimos (não dependem da língua): o que se guarda num ficheiro `.precario`."""
+    m = ({"nome": p.moeda.nome, "antes": p.moeda.antes, "decimais": p.moeda.decimais} if isinstance(p.moeda, mod_moeda.MoedaInventada) else {"codigo": p.moeda.codigo})
+    return {"titulo": p.titulo, "subtitulo": p.subtitulo, "rodape": p.rodape, "desenho": p.desenho, "formato": p.formato, "orientacao": p.orientacao, "colunas": p.colunas,
+            "imagens": p.imagens, "lingua": p.lingua, "moeda": m,
+            "linhas": [{"artigo": ln.artigo, "nome": ln.nome, "preco": ln.preco, "categoria": ln.categoria, "emoji": ln.emoji} for ln in p.linhas]}
