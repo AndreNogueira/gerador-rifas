@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.63.0 — 2026-11-19
+
+### Novo
+- **Desempenho real do site nas estatísticas:** o painel de administração mostra, por dia, quanto demora a página a aparecer, quanto o conteúdo se mexe e quanto demora a responder a um clique, medido nos browsers dos visitantes (telemóvel e computador). São só três números anónimos por visita; a Política de privacidade foi atualizada.
+
 ## 3.62.0 — 2026-11-19
 
 ### Novo

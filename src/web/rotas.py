@@ -28,7 +28,7 @@ from .observabilidade import Observabilidade
 from .opiniao import POR_IP_E_HORA, LimiteHorario
 from .alertas import EstadoAlertas
 from .relatorio import EstadoRelatorio
-from .modelos import Calculo, Campos, Ecra, ErroApi, Sessao, TrabalhoEstado
+from .modelos import Calculo, Campos, Desempenho, Ecra, ErroApi, Sessao, TrabalhoEstado
 from .sessoes import (Geracao, SessaoEstado, Sessoes, calcular, folha_dos_campos, ler_progresso, texto_de_erro,
                       trabalho_dos_campos, vista, _trabalho)
 from .sistema import Observador
@@ -530,6 +530,17 @@ def descarregar(id_: str, serv: Servico = Depends(servico), lg: str = Depends(li
 
 # ------------------------------------------------------------------ o tipo de ecra (so para as metricas: nunca muda nada)
 router_ecra = APIRouter(prefix="/api/ecra", tags=["metricas"])
+router_desempenho = APIRouter(prefix="/api/desempenho", tags=["metricas"])
+
+
+@router_desempenho.post("", status_code=204, dependencies=[Depends(leve)])
+def registar_desempenho(d: Desempenho, request: Request, serv: Servico = Depends(servico)) -> Response:
+    """O browser diz, uma vez por separador, quanto demorou a pagina a aparecer (LCP), quanto o conteudo se mexeu (CLS) e a resposta mais lenta a um clique
+    (INP). Guardam-se so estes tres numeros e a classe do aparelho (telemovel ou computador): sem IP, sem User-Agent, sem a pagina. Os robos nao contam."""
+    classe = dispositivo(request.headers.get("user-agent", ""))
+    if classe != "robo":
+        serv.metricas.evento("desempenho", classe, v1=d.lcp, v2=d.cls, v3=d.inp)
+    return Response(status_code=204)
 
 
 @router_ecra.post("", status_code=204, dependencies=[Depends(leve)])

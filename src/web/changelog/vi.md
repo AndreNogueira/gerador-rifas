@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.63.0 — 2026-11-19
+
+### Mới
+- **Hiệu năng thực của trang trong thống kê:** bảng quản trị hiển thị theo ngày trang mất bao lâu để hiện ra, nội dung dịch chuyển bao nhiêu và mất bao lâu để phản hồi một cú nhấp, đo trong trình duyệt của khách truy cập (điện thoại và máy tính). Chỉ ba con số ẩn danh mỗi lượt; Chính sách quyền riêng tư đã được cập nhật.
+
 ## 3.62.0 — 2026-11-19
 
 ### Mới

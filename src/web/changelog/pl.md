@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.63.0 — 2026-11-19
+
+### Nowości
+- **Rzeczywista wydajność strony w statystykach:** panel administracyjny pokazuje dzień po dniu, ile trwa pojawienie się strony, jak bardzo przesuwa się zawartość i ile trwa reakcja na kliknięcie, mierzone w przeglądarkach odwiedzających (telefon i komputer). Tylko trzy anonimowe liczby na wizytę; zaktualizowano Politykę prywatności.
+
 ## 3.62.0 — 2026-11-19
 
 ### Nowości

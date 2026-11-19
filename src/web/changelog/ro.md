@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.63.0 — 2026-11-19
+
+### Noutăți
+- **Performanța reală a site-ului în statistici:** panoul de administrare arată, pe zile, cât durează să apară pagina, cât se mișcă conținutul și cât durează să răspundă la un clic, măsurat în browserele vizitatorilor (telefon și computer). Doar trei numere anonime pe vizită; Politica de confidențialitate a fost actualizată.
+
 ## 3.62.0 — 2026-11-19
 
 ### Noutăți

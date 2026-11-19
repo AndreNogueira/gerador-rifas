@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.63.0 — 2026-11-19
+
+### Novinky
+- **Skutečný výkon webu ve statistikách:** administrační panel ukazuje po dnech, jak dlouho trvá zobrazení stránky, jak moc se obsah posouvá a jak dlouho trvá odpověď na kliknutí, měřeno v prohlížečích návštěvníků (mobil a počítač). Jen tři anonymní čísla za návštěvu; Zásady ochrany soukromí byly aktualizovány.
+
 ## 3.62.0 — 2026-11-19
 
 ### Novinky

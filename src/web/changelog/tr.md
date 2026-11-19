@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.63.0 — 2026-11-19
+
+### Yeni
+- **İstatistiklerde sitenin gerçek performansı:** yönetim paneli, ziyaretçilerin tarayıcılarında (mobil ve bilgisayar) ölçülen sayfanın görünme süresini, içeriğin ne kadar kaydığını ve bir tıklamaya yanıt süresini günlük gösterir. Ziyaret başına yalnızca üç anonim sayı; Gizlilik politikası güncellendi.
+
 ## 3.62.0 — 2026-11-19
 
 ### Yeni

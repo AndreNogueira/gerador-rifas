@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.63.0 — 2026-11-19
+
+### Novetats
+- **Rendiment real del lloc a les estadístiques:** el tauler d'administració mostra, per dia, quant triga a aparèixer la pàgina, quant es mou el contingut i quant triga a respondre a un clic, mesurat als navegadors dels visitants (mòbil i ordinador). Només tres números anònims per visita; s'ha actualitzat la Política de privadesa.
+
 ## 3.62.0 — 2026-11-19
 
 ### Novetats

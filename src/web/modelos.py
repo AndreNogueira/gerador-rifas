@@ -124,6 +124,13 @@ class Calculo(BaseModel):
     confirmar: str = ""            # texto a confirmar antes de gerar (muitas rifas por folha), vazio se nao e preciso
 
 
+class Desempenho(BaseModel):
+    """O desempenho que o browser mediu (Core Web Vitals), uma vez por separador, para as metricas do painel: tres numeros, nada que identifique o visitante."""
+    lcp: int = Field(ge=0, le=60000)              # tempo ate ao maior elemento da pagina aparecer, em ms
+    cls: int = Field(ge=0, le=10000)              # mudancas de posicao do conteudo (CLS) vezes 1000
+    inp: int = Field(ge=0, le=10000)              # a resposta mais lenta a um clique ou tecla, em ms (0 = nao houve interacao)
+
+
 class Ecra(BaseModel):
     """O que o browser diz do seu ecra (para as metricas do painel de administracao)."""
     ecra_l: int = Field(ge=100, le=20000)         # largura e altura do ECRA em px CSS

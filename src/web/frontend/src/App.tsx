@@ -5,6 +5,7 @@ import { api, type Publico } from "./api";
 import { Cabecalho } from "./Cabecalho";
 import { Changelog } from "./Changelog";
 import { Comentarios, DeixarComentario } from "./Comentarios";
+import { iniciarDesempenho } from "./desempenho";
 import { ProvedorDialogos } from "./dialogos";
 import { Editor } from "./Editor";
 import { registarEcra } from "./ecra";
@@ -66,7 +67,9 @@ function Aplicacao() {
 
   // o tipo de ecra, para as estatisticas (uma vez por separador; o painel do dono nao conta)
   useEffect(() => {
-    if (window.location.pathname !== "/admin") void registarEcra();
+    if (window.location.pathname === "/admin") return;
+    void registarEcra();
+    iniciarDesempenho();
   }, []);
 
   useEffect(() => {

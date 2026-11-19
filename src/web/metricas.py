@@ -658,7 +658,7 @@ class Metricas:
             paineis.append(novo_painel(*args, **kwargs))
 
         eventos = agrupado(("sessao", "previa", "template", "algarismos", "geracao", "descarga", "logotipo", "galeria", "editor", "verificacao",
-                            "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra", "comentario", "problema", "origem"), "a")
+                            "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra", "comentario", "problema", "origem", "desempenho"), "a")
         humanos = agrupado(("pagina",), "CASE WHEN c = 'robo' THEN 'Robôs' ELSE 'Pessoas' END")
         rotas = agrupado(("pagina",), "a", "AND c <> 'robo'")
         por_tema = agrupado(("sessao",), "b")
@@ -731,6 +731,26 @@ class Metricas:
         painel(g, "classes_ecra", "Tipos de ecrã", por_chave(eventos, "ecra", topo=6), "A classe de ecrã comunicada uma vez por separador (telemóvel, tablet, portátil, secretária…).")
         painel(g, "janelas", "Largura da janela", por_chave(janelas, "ecra", topo=6), "A largura da JANELA do browser, em escalões: mostra quem usa janelas estreitas num ecrã grande.")
         painel(g, "rotas", "Páginas mais vistas", por_chave(rotas, "pagina"), "As páginas públicas mais visitadas por pessoas (sem robôs).")
+
+        # o desempenho que os browsers mediram (LCP, CLS, INP): o percentil 75 de cada dia e classe, que e o que o Google usa para dizer «bom» ou «mau»
+        medidas: dict[tuple[int, str], list[tuple]] = {}
+        for d, classe, lcp, cls, inp in ler("SELECT (ts + ?) / 86400, a, v1, v2, v3 FROM eventos WHERE tipo = 'desempenho' AND ts >= ?", (desvio, desde)):
+            if pos(d) is not None:
+                medidas.setdefault((pos(d), classe), []).append((lcp, cls, inp))
+
+        def p75(indice: int, classe: str, coluna: int, so_positivos: bool = False) -> float | None:
+            xs = sorted(m[coluna] for m in medidas.get((indice, classe), []) if m[coluna] > 0 or not so_positivos)
+            return xs[min(len(xs) - 1, int(0.75 * len(xs)))] if xs else None
+        classes = {"movel": "Telemóvel", "computador": "Computador"}
+        dr = "Desempenho real"
+        painel(dr, "medicoes", "Medições de desempenho", {n: [float(len(medidas.get((i, c), []))) for i in range(dias)] for c, n in classes.items()},
+               "Quantas páginas mediram o seu desempenho (uma por separador aberto, só em browsers que o permitem): quanto mais medições, mais fiáveis os números abaixo.")
+        painel(dr, "lcp", "Carregamento (LCP, p75)", {n: [p75(i, c, 0) for i in range(dias)] for c, n in classes.items()},
+               "Quanto tempo passa até o maior elemento da página aparecer, medido nos browsers dos visitantes: 75 % das visitas foram mais rápidas do que isto. Bom: até 2500 ms.", "linhas", " ms", "media")
+        painel(dr, "cls", "Estabilidade visual (CLS, p75)", {n: [None if (v := p75(i, c, 1)) is None else round(v / 1000, 3) for i in range(dias)] for c, n in classes.items()},
+               "Quanto o conteúdo salta de sítio enquanto a página carrega (0 = nada se mexe). Bom: até 0,1.", "linhas", "", "media")
+        painel(dr, "inp", "Resposta aos cliques (INP, p75)", {n: [p75(i, c, 2, True) for i in range(dias)] for c, n in classes.items()},
+               "A resposta mais lenta a um clique ou tecla, só nas visitas em que houve interação: 75 % responderam mais depressa do que isto. Bom: até 200 ms.", "linhas", " ms", "media")
 
         sa = "Saúde"
         pedidos = {"Certos": [0.0] * dias, "Erros do cliente (4xx)": [0.0] * dias, "Erros do servidor (5xx)": [0.0] * dias}

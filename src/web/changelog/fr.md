@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.63.0 — 2026-11-19
+
+### Nouveautés
+- **Performances réelles du site dans les statistiques :** le panneau d'administration montre, par jour, le temps d'affichage de la page, le mouvement du contenu et le temps de réponse à un clic, mesurés dans les navigateurs des visiteurs (mobile et ordinateur). Seulement trois nombres anonymes par visite ; la Politique de confidentialité a été mise à jour.
+
 ## 3.62.0 — 2026-11-19
 
 ### Nouveautés

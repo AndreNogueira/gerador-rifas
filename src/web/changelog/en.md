@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.63.0 — 2026-11-19
+
+### New
+- **Real site performance in the statistics:** the admin panel shows, per day, how long the page takes to appear, how much the content moves and how long it takes to respond to a click, measured in visitors' browsers (mobile and desktop). Just three anonymous numbers per visit; the Privacy policy was updated.
+
 ## 3.62.0 — 2026-11-19
 
 ### New

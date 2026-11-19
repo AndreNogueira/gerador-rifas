@@ -317,6 +317,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     app.include_router(rotas.router)
     app.include_router(rotas_ajuda.router)
     app.include_router(rotas.router_ecra)
+    app.include_router(rotas.router_desempenho)
     app.include_router(rotas_listas.router)
     app.include_router(rotas_galeria.router)
     app.include_router(rotas_editor.router)
