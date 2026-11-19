@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.52.0 — 2026-11-19
+
+### Vylepšeno
+- **Komentáře bez IP adresy:** místo IP se ukládá jen země, ze které byl komentář odeslán (vidí ji pouze provozovatel webu). IP adresa se už neukládá: ty u dřívějších komentářů byly smazány a Zásady ochrany soukromí byly aktualizovány.
+
 ## 3.51.0 — 2026-11-19
 
 ### Novinky

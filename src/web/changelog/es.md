@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.52.0 — 2026-11-19
+
+### Mejorado
+- **Comentarios sin dirección IP:** en lugar de la IP, se guarda solo el país desde el que se envió el comentario (solo lo ve el responsable del sitio). La dirección IP ya no se guarda: las de los comentarios anteriores se borraron y se actualizó la Política de privacidad.
+
 ## 3.51.0 — 2026-11-19
 
 ### Novedades

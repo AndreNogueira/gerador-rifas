@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.52.0 — 2026-11-19
+
+### İyileştirildi
+- **IP adresi olmayan yorumlar:** IP yerine yalnızca yorumun gönderildiği ülke saklanır (yalnızca site sorumlusu görür). IP adresi artık saklanmıyor: önceki yorumlardakiler silindi ve Gizlilik politikası güncellendi.
+
 ## 3.51.0 — 2026-11-19
 
 ### Yeni

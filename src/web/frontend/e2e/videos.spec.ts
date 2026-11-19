@@ -640,8 +640,8 @@ const CENAS: Cena[] = [
       await legenda(
         page,
         T(
-          "O IP só o responsável vê, para travar abusos; nunca aparece",
-          "Only the site owner sees the IP, to stop abuse; it is never shown",
+          "Só se guarda o país de onde vem (nunca o IP) e só o responsável o vê",
+          "Only the country is stored (never the IP) and only the site owner sees it",
         ),
         3000,
       );
@@ -652,7 +652,10 @@ const CENAS: Cena[] = [
       await expect(page.getByTestId("comentario").first()).toBeVisible();
       await legenda(
         page,
-        T("O comentário já aparece, sem endereço IP", "Your comment already appears, without any IP address"),
+        T(
+          "O comentário já aparece, sem IP nem país",
+          "Your comment already appears, without any IP or country",
+        ),
         3200,
       );
     },

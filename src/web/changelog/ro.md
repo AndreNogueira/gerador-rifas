@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.52.0 — 2026-11-19
+
+### Îmbunătățit
+- **Comentarii fără adresă IP:** în loc de IP se păstrează doar țara din care a fost trimis comentariul (o vede doar responsabilul site-ului). Adresa IP nu se mai păstrează: cele ale comentariilor anterioare au fost șterse, iar Politica de confidențialitate a fost actualizată.
+
 ## 3.51.0 — 2026-11-19
 
 ### Noutăți

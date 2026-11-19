@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.52.0 — 2026-11-19
+
+### Ulepszono
+- **Komentarze bez adresu IP:** zamiast IP przechowywany jest tylko kraj, z którego wysłano komentarz (widzi go tylko administrator serwisu). Adres IP nie jest już przechowywany: te z wcześniejszych komentarzy usunięto, a Politykę prywatności zaktualizowano.
+
 ## 3.51.0 — 2026-11-19
 
 ### Nowości

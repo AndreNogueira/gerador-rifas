@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.52.0 — 2026-11-19
+
+### Millores
+- **Comentaris sense adreça IP:** en lloc de la IP, només es desa el país des d'on s'ha enviat el comentari (només el veu el responsable del lloc). L'adreça IP ja no es desa: les dels comentaris anteriors s'han esborrat i s'ha actualitzat la Política de privadesa.
+
 ## 3.51.0 — 2026-11-19
 
 ### Novetats

@@ -1,4 +1,4 @@
-"""Comentários dos visitantes e problemas reportados: a privacidade (o IP só no painel, nunca na página pública), as defesas e o issue do GitHub."""
+"""Comentários dos visitantes e problemas reportados: a privacidade (só o país, e só no painel; nunca o IP), as defesas e o issue do GitHub."""
 import json
 import os
 import urllib.error
@@ -94,7 +94,7 @@ def test_paginacao_dos_mais_recentes_para_os_mais_antigos_mesmo_no_mesmo_segundo
     cm = Comentarios(caminho=tmp_path / "c.sqlite3", relogio=lambda: base[0])
     for i in range(25):
         base[0] += 0 if i % 5 else 10                          # grupos de 5 comentarios no mesmo segundo
-        cm.criar(f"Comentário {i:02d} de teste", True, "", f"ip{i}")
+        cm.criar(f"Comentário {i:02d} de teste", True, "", "PT")
     vistos, cursor = [], ""
     for _ in range(5):
         pagina = cm.publicos(cursor, 7)
@@ -106,19 +106,32 @@ def test_paginacao_dos_mais_recentes_para_os_mais_antigos_mesmo_no_mesmo_segundo
     assert vistos[0] > vistos[-1] or True
 
 
-def test_o_ip_apaga_se_do_comentario_aos_90_dias_mas_o_comentario_fica(tmp_path):
-    t = [1_800_000_000]
-    cm = Comentarios(caminho=tmp_path / "c.sqlite3", relogio=lambda: t[0])
-    cm.criar("Texto que fica para sempre", False, "Rui", "203.0.113.7")
-    assert cm.para_admin()[0]["ip"] == "203.0.113.7"
-    t[0] += 89 * 86400
-    cm.criar("Outro", True, "", "198.51.100.1")
-    assert {x["ip"] for x in cm.para_admin()} == {"203.0.113.7", "198.51.100.1"}
-    t[0] += 2 * 86400                                          # 91 dias depois do primeiro
-    cm.criar("Terceiro", True, "", "198.51.100.2")
-    ips = {x["texto"]: x["ip"] for x in cm.para_admin()}
-    assert ips["Texto que fica para sempre"] == "" and ips["Outro"] == "198.51.100.1"
-    assert cm.total() == 3
+def test_guarda_se_o_pais_e_nunca_o_ip(tmp_path):
+    import sqlite3
+
+    cm = Comentarios(caminho=tmp_path / "c.sqlite3")
+    cm.criar("Comentário de Portugal", False, "Rui", "PT")
+    cm.criar("Comentário sem país", True, "", "")
+    assert {x["texto"]: x["pais"] for x in cm.para_admin()} == {"Comentário de Portugal": "PT", "Comentário sem país": "??"}
+    with sqlite3.connect(tmp_path / "c.sqlite3") as lig:
+        colunas = [c[1] for c in lig.execute("PRAGMA table_info(comentarios)")]
+    assert colunas == ["id", "criado", "anonimo", "nome", "texto", "pais"]                   # não há coluna de IP
+
+
+def test_uma_tabela_da_primeira_versao_perde_a_coluna_do_ip_e_os_ips(tmp_path):
+    import sqlite3
+
+    ficheiro = tmp_path / "velha.sqlite3"
+    with sqlite3.connect(ficheiro) as lig:
+        lig.execute("CREATE TABLE comentarios(id TEXT PRIMARY KEY, criado BIGINT NOT NULL, anonimo INTEGER NOT NULL, nome TEXT NOT NULL, texto TEXT NOT NULL, ip TEXT NOT NULL)")
+        lig.execute("INSERT INTO comentarios VALUES ('a', 1800000000, 1, '', 'Um comentário antigo', '203.0.113.7')")
+    cm = Comentarios(caminho=ficheiro)
+    assert cm.para_admin() == [{"id": "a", "pais": "??", "texto": "Um comentário antigo"}]       # o texto fica; do IP já nada
+    cm.criar("Um novo, depois da migração", True, "", "BR")
+    with sqlite3.connect(ficheiro) as lig:
+        assert "ip" not in [c[1] for c in lig.execute("PRAGMA table_info(comentarios)")]
+        assert "203.0.113.7" not in str(lig.execute("SELECT * FROM comentarios").fetchall())
+    assert Comentarios(caminho=ficheiro).total() == 2                                          # abrir outra vez não parte nada
 
 
 def test_o_limite_horario():
@@ -137,11 +150,12 @@ def test_um_comentario_conta_se_nas_metricas_sem_texto(c):
 
 # ------------------------------------------------------------------ a pagina de privacidade e o SEO
 @pytest.mark.parametrize("lg", list(i18n.LINGUAS))
-def test_a_privacidade_explica_os_comentarios_e_o_ip_em_todas_as_linguas(lg):
+def test_a_privacidade_explica_os_comentarios_e_o_pais_em_todas_as_linguas(lg):
     p = textos_legais.pagina("privacidade", lg)
     ultima = p["seccoes"][-1]
     assert ultima["titulo"] and len(ultima["paragrafos"]) == 2
-    assert "90" in ultima["paragrafos"][0] and "GitHub" in ultima["paragrafos"][1]
+    assert "PT" in ultima["paragrafos"][0] and "GitHub" in ultima["paragrafos"][1]
+    assert "90" not in ultima["paragrafos"][0]                    # já não há prazo para apagar IPs: não se guardam
 
 
 def test_as_paginas_dos_visitantes_existem_mas_ficam_fora_do_google_e_do_sitemap(c):
@@ -153,7 +167,7 @@ def test_as_paginas_dos_visitantes_existem_mas_ficam_fora_do_google_e_do_sitemap
     assert set(seo.SEM_INDICE) == {"/comentarios", "/opiniao", "/reportar-problema"} and not set(seo.SEM_INDICE) & set(seo.ROTAS)
 
 
-# ------------------------------------------------------------------ o painel: IP e texto, nada mais
+# ------------------------------------------------------------------ o painel: país e texto, nada mais
 @pytest.fixture
 def admin(tmp_path, monkeypatch):
     monkeypatch.setenv("ADMIN_TOKEN", TOKEN)
@@ -161,14 +175,22 @@ def admin(tmp_path, monkeypatch):
     return _cliente(tmp_path)
 
 
-def test_o_painel_so_mostra_ip_e_texto(admin):
+def test_o_painel_so_mostra_pais_e_texto(admin):
     comentar(admin, "Texto para o dono ler", anonimo=False, nome="Fulano")
+    admin.post("/api/comentarios", json={"texto": "Outro, vindo de Espanha", "anonimo": True, "nome": "", "site": ""}, headers={"CF-IPCountry": "es"})
     assert admin.get("/api/admin/comentarios").status_code == 404                              # sem sessao: nao existe
     admin.post("/api/admin/entrar", json={"token": TOKEN})
     d = admin.get("/api/admin/comentarios").json()
-    assert d["total"] == 1 and set(d["itens"][0]) == {"id", "ip", "texto"}
-    assert d["itens"][0]["ip"] == "testclient" and d["itens"][0]["texto"] == "Texto para o dono ler"
-    assert "Fulano" not in json.dumps(d)                                                       # quem escreveu nao interessa
+    assert d["total"] == 2 and all(set(i) == {"id", "pais", "texto"} for i in d["itens"])
+    assert {i["texto"]: i["pais"] for i in d["itens"]} == {"Texto para o dono ler": "??", "Outro, vindo de Espanha": "ES"}   # sem cabeçalho: «??»
+    assert "Fulano" not in json.dumps(d) and "testclient" not in json.dumps(d)                 # nem quem escreveu nem o IP
+
+
+def test_o_pais_so_aceita_o_codigo_de_duas_letras(admin):
+    for cabecalho in ("PT<script>", "XX", "portugal"):                     # 3 comentarios: é o máximo por IP e hora
+        admin.post("/api/comentarios", json={"texto": f"Cabeçalho {cabecalho or 'vazio'} aqui", "anonimo": True, "nome": "", "site": ""}, headers={"CF-IPCountry": cabecalho})
+    admin.post("/api/admin/entrar", json={"token": TOKEN})
+    assert {i["pais"] for i in admin.get("/api/admin/comentarios").json()["itens"]} == {"??"}
 
 
 def test_so_o_dono_apaga_e_a_leitura_so_ve(admin):
@@ -308,24 +330,26 @@ URL_PG = os.environ.get("TEST_DATABASE_URL", "")
 
 
 @pytest.mark.skipif(not URL_PG, reason="sem TEST_DATABASE_URL")
-def test_postgres_comentarios_criar_listar_paginar_apagar_e_ips():
+def test_postgres_comentarios_criar_listar_paginar_apagar_e_migrar():
     import psycopg
 
-    with psycopg.connect(URL_PG, autocommit=True) as lig:
+    with psycopg.connect(URL_PG, autocommit=True) as lig:                                     # uma tabela da 1.ª versao (com IP) a migrar
         lig.execute("DROP TABLE IF EXISTS comentarios")
+        lig.execute("CREATE TABLE comentarios(id TEXT PRIMARY KEY, criado BIGINT NOT NULL, anonimo INTEGER NOT NULL, nome TEXT NOT NULL, texto TEXT NOT NULL, ip TEXT NOT NULL)")
+        lig.execute("INSERT INTO comentarios VALUES ('velho', 1800000000, 1, '', 'Antigo com IP', '203.0.113.7')")
     t = [1_800_000_000]
     cm = Comentarios(url_bd=URL_PG, relogio=lambda: t[0])
+    assert cm.para_admin() == [{"id": "velho", "pais": "??", "texto": "Antigo com IP"}]
+    with psycopg.connect(URL_PG) as lig:
+        colunas = {c for (c,) in lig.execute("SELECT column_name FROM information_schema.columns WHERE table_name='comentarios'").fetchall()}
+    assert colunas == {"id", "criado", "anonimo", "nome", "texto", "pais"}                    # a coluna do IP desapareceu
     ids = []
     for i in range(5):
-        ids.append(cm.criar(f"Comentário {i} no Postgres", i % 2 == 0, f"Nome{i}", f"203.0.113.{i}"))
+        ids.append(cm.criar(f"Comentário {i} no Postgres", i % 2 == 0, f"Nome{i}", "PT"))
     primeira = cm.publicos("", 3)
-    assert len(primeira) == 3 and cm.total() == 5
-    resto = cm.publicos(f'{primeira[-1]["criado"]}~{primeira[-1]["id"]}', 3)
-    assert len(resto) == 2 and {x["id"] for x in primeira + resto} == set(ids)           # todos, sem repetir, no mesmo segundo
-    assert all("ip" not in x for x in primeira + resto)
-    assert {x["ip"] for x in cm.para_admin()} == {f"203.0.113.{i}" for i in range(5)}
-    assert cm.recentes_do_ip("203.0.113.1") == 1 and cm.na_ultima_hora() == 5
-    t[0] += 91 * 86400
-    cm.criar("Outro, 91 dias depois", True, "", "198.51.100.9")
-    assert sorted(x["ip"] for x in cm.para_admin()) == ["", "", "", "", "", "198.51.100.9"]
+    assert len(primeira) == 3 and cm.total() == 6
+    resto = cm.publicos(f'{primeira[-1]["criado"]}~{primeira[-1]["id"]}', 9)
+    assert {x["id"] for x in primeira + resto} == set(ids) | {"velho"}                       # todos, sem repetir, no mesmo segundo
+    assert all("pais" not in x and "ip" not in x for x in primeira + resto)
+    assert cm.na_ultima_hora() >= 5
     assert cm.apagar(ids[0]) and not cm.apagar(ids[0]) and cm.total() == 5

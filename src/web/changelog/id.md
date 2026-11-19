@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.52.0 — 2026-11-19
+
+### Ditingkatkan
+- **Komentar tanpa alamat IP:** sebagai ganti IP, hanya negara asal komentar yang disimpan (hanya pengelola situs yang melihatnya). Alamat IP tidak lagi disimpan: yang ada pada komentar sebelumnya telah dihapus dan Kebijakan privasi diperbarui.
+
 ## 3.51.0 — 2026-11-19
 
 ### Baru

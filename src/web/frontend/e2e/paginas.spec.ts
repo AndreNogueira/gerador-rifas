@@ -13,7 +13,7 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.getByTestId("sorteio-resultado").locator("li")).toHaveText(["29", "38", "74"]);
   });
 
-  test("os comentários: deixar um (anónimo) e vê-lo na lista, sem IP; os botões estão à vista", async ({
+  test("os comentários: deixar um (anónimo) e vê-lo na lista, sem IP nem país; os botões estão à vista", async ({
     page,
     request,
   }) => {

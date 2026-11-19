@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { nomePais } from "./AdminEvolucao";
 import { adminApi, type ComentarioDoDono, ErroEntrada, NaoAutenticado } from "./admin-api";
 import { Icone } from "./icones";
 
 /*
- * A vista «Comentários» do painel: SÓ o endereço IP e o texto de cada comentário (mais o botão de apagar, para o dono). Não se mostra nem se guarda
- * para aqui quem escreveu: não interessa. O IP apaga-se sozinho do comentário aos 90 dias (`opiniao.py`). Texto só em português (o painel é do dono).
+ * A vista «Comentários» do painel: SÓ o país e o texto de cada comentário (mais o botão de apagar, para o dono). Não se mostra nem se guarda
+ * para aqui quem escreveu: não interessa, e o endereço IP nem sequer se guarda (`opiniao.py`). Texto só em português (o painel é do dono).
  */
 export function AdminComentarios({
   leitura,
@@ -47,9 +48,10 @@ export function AdminComentarios({
     <section className="cartao admin-seccao" aria-labelledby="comentarios-t" data-testid="admin-comentarios">
       <h2 id="comentarios-t">Comentários dos visitantes</h2>
       <p className="explica">
-        O que as pessoas escreveram na página «Comentários», só com o endereço IP e o texto (quem escreveu não
-        interessa: não se mostra). O IP apaga-se sozinho do comentário ao fim de 90 dias, e então aparece
-        vazio. Se um comentário for spam ou abuso, apague-o: deixa logo de aparecer na página pública.
+        O que as pessoas escreveram na página «Comentários», só com o <b>país</b> de onde vieram e o texto
+        (quem escreveu não interessa: não se mostra; e o endereço IP nem se guarda). O país vem da rede do
+        alojamento; «Desconhecido» quer dizer que ela não o indicou. Se um comentário for spam ou abuso,
+        apague-o: deixa logo de aparecer na página pública.
       </p>
       {falha && (
         <p role="alert" className="cor-aviso">
@@ -68,10 +70,10 @@ export function AdminComentarios({
           ) : (
             <div className="tabela-rolavel">
               <table data-testid="admin-tabela-comentarios">
-                <caption className="so-leitores">Comentários: endereço IP e texto</caption>
+                <caption className="so-leitores">Comentários: país e texto</caption>
                 <thead>
                   <tr>
-                    <th scope="col">IP</th>
+                    <th scope="col">País</th>
                     <th scope="col">Texto</th>
                     {!leitura && <th scope="col">Apagar</th>}
                   </tr>
@@ -79,7 +81,7 @@ export function AdminComentarios({
                 <tbody>
                   {dados.itens.map((c) => (
                     <tr key={c.id} data-testid="admin-comentario">
-                      <td className="ip-comentario">{c.ip || "(apagado)"}</td>
+                      <td className="ip-comentario">{nomePais(c.pais)}</td>
                       <td className="texto-longo">{c.texto}</td>
                       {!leitura && (
                         <td>

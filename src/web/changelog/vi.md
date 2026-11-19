@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.52.0 — 2026-11-19
+
+### Cải thiện
+- **Bình luận không còn lưu địa chỉ IP:** thay cho IP, chỉ lưu quốc gia nơi bình luận được gửi (chỉ người phụ trách trang xem được). Địa chỉ IP không còn được lưu: IP của các bình luận trước đã bị xóa và Chính sách quyền riêng tư đã được cập nhật.
+
 ## 3.51.0 — 2026-11-19
 
 ### Mới
