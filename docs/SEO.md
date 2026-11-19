@@ -30,8 +30,16 @@ O canónico, o Open Graph e o sitemap precisam do URL certo. Ordem: variável **
 ## O que SÓ tu podes fazer
 
 1. **Google Search Console**: adiciona uma propriedade do tipo **Prefixo do URL** (`https://gerador-rifas.onrender.com`; a de «Domínio» pede DNS e o `onrender.com` não é teu), verifica-a com a **etiqueta HTML** (copia só o valor do `content`, ex. `aB3…`, para a variável **`GOOGLE_VERIFICACAO`** do serviço no Render; o servidor escreve a `<meta name="google-site-verification">` na página inicial), submete `sitemap.xml` em *Sitemaps* e pede a indexação da página inicial em *Inspeção de URL*. Sem isto o Google demora (muito) a encontrar um site novo. Não tires a variável depois de verificar: o Google volta a conferir de tempos a tempos.
-2. **Bing Webmaster Tools**: importa o site da Search Console.
+2. **Bing Webmaster Tools**: importa o site da Search Console e **envia o `sitemap.xml`** (*Sitemaps → Enviar*; a importação nem sempre o leva). O Bing alimenta o DuckDuckGo, o Yahoo e o Copilot.
 3. Se o serviço **adormece** (plano gratuito do Render, 15 min), o primeiro pedido de um robô pode demorar ~1 min e dar *timeout*: ver «Para depois» abaixo.
+
+## IndexNow (avisar o Bing de cada versão, sem fazer nada)
+
+`indexnow.py`: ao arrancar uma **versão nova**, o servidor envia ao IndexNow (`api.indexnow.org`: Bing, Yandex, Seznam, Naver; **o Google não o usa**) os endereços do sitemap (cada página × cada língua), para as voltarem a ler já em vez de esperar pelo rastreio.
+
+- **Sem passos nem segredos:** a chave do protocolo é pública por desenho (um ficheiro `/<chave>.txt` no site prova que é nosso) e deriva-se do `PUBLIC_URL` (`indexnow.chave`); o ficheiro serve-se sozinho. `INDEXNOW=0` desliga; sem a variável só liga no Render (`RENDER=true`) e com `https://` num anfitrião público (nunca em localhost nem nos testes).
+- **Uma vez por versão:** reserva `indexnow:<versao>` na tabela `relatorios` (acordar o Render, reiniciar ou dois arranques sobrepostos não repetem); se falha, tenta de hora a hora, no máximo 3 vezes. Depois de tratada a versão a ronda de 5 minutos não volta a tocar na base.
+- **Só endereços públicos** vão para fora: nada de visitantes, textos ou números. Verificar depois de um deploy: `curl https://<o-teu-site>/<chave>.txt` (a chave: `python -c "from web import indexnow; print(indexnow.chave('https://<o-teu-site>'))"` com `src/` no caminho) e, no Bing Webmaster Tools, *IndexNow* mostra os envios recebidos.
 
 ## Como verificar
 

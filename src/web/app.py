@@ -24,7 +24,7 @@ from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, 
 from .chaves_api import Chaves
 from .assets_remotos import AssetsRemotos
 from .limites import Limitador
-from . import alertas, auditoria, copia, historico, objetivos, relatorio, relatorio_periodo, seo_textos
+from . import alertas, auditoria, copia, historico, indexnow, objetivos, relatorio, relatorio_periodo, seo_textos
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
@@ -207,6 +207,8 @@ async def _relatorio_diario(servico: Servico, cada_s: float) -> None:
         with contextlib.suppress(Exception):
             await asyncio.to_thread(relatorio.enviar_se_devido, servico.relatorios, servico.metricas, extras, servico.estado_relatorio,
                                     None, relatorio.urllib.request.urlopen, servico.objetivos)
+        with contextlib.suppress(Exception):
+            await asyncio.to_thread(indexnow.enviar_se_devido, servico.relatorios, VERSAO, config.url_publica(), servico.estado_indexnow)
         await asyncio.sleep(cada_s)
 
 
@@ -426,6 +428,15 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             raise HTTPException(404, "Sem anúncios")
         linha = f"google.com, pub-{cliente.removeprefix('ca-pub-')}, DIRECT, f08c47fec0942fa0"
         return PlainTextResponse(linha + chr(10), headers={"Cache-Control": "public, max-age=3600"})
+
+    base_indexnow = config.url_publica()
+    if base_indexnow and indexnow.ligado(base_indexnow):
+        chave_indexnow = indexnow.chave(base_indexnow)
+
+        @app.get(f"/{chave_indexnow}.txt", include_in_schema=False)
+        def indexnow_chave() -> PlainTextResponse:
+            """O ficheiro público com a chave do IndexNow (prova ao Bing e aos outros que o site é nosso; não é segredo: `indexnow.py`)."""
+            return PlainTextResponse(chave_indexnow, headers={"Cache-Control": "public, max-age=86400"})
 
     @app.get("/sitemap.xml", include_in_schema=False)
     def sitemap_xml(request: Request) -> RespostaSimples:
