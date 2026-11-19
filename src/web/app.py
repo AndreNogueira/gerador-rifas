@@ -57,6 +57,19 @@ def _aceita(accept_encoding: str, nome: str) -> bool:
     return False
 
 
+# Cabecalhos de seguranca em TODA a resposta. `nosniff`: o browser respeita o Content-Type (um ficheiro com o tipo errado deixa de se executar: `tests/test_web_cabecalhos.py`
+# verifica o de cada ficheiro do `dist`); `SAMEORIGIN`: so este site se desenha dentro de uma `<iframe>` (a pre-visualizacao do PDF); a `Permissions-Policy` fecha o que o site
+# nunca usa (nao lista o que os anuncios precisam); o HSTS so com HTTPS e sem `includeSubDomains`/`preload` (o dominio `onrender.com` nao e nosso). Sem CSP por agora:
+# os anuncios (AdSense), o PDF.js e os estilos «inline» pedem uma politica medida com cuidado, e uma so de relatorio, sem para onde enviar os relatorios, nao faz nada.
+CABECALHOS_SEGURANCA = {
+    "X-Content-Type-Options": "nosniff",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "X-Frame-Options": "SAMEORIGIN",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+}
+HSTS = "max-age=31536000"
+
+
 def _enviar(alvo: Path, request: Request, cabecalhos: dict[str, str]) -> FileResponse:
     """O ficheiro, ou a sua versao `.br`/`.gz` se existir e o browser a aceitar (nunca re-comprime: so entrega)."""
     media = mimetypes.guess_type(alvo.name)[0]
@@ -345,13 +358,26 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         t0 = time.perf_counter()
         caminho = request.url.path
         rid = observabilidade.novo_id()
+        era_head = request.method == "HEAD" and not caminho.startswith(("/api/", "/health"))
+        if era_head:                                                              # as paginas, o sitemap e os ficheiros respondem a HEAD como a GET, sem corpo
+            request.scope["method"] = "GET"
+            request.scope["rifas_head"] = True                                    # nao conta como pagina vista
         try:
             resposta = await call_next(request)
         except Exception as exc:                                                  # um erro que ninguem tratou: regista (classe e sitio, nunca a mensagem) e responde 500
             rota = getattr(request.scope.get("route"), "path", None) or "(sem rota)"
             servico.obs.excecao(rid, request.method, rota, exc)
             resposta = JSONResponse({"detail": i18n.traduzir("erro_inesperado", rotas.lingua(request), erro=rid), "tipo": "erro", "id": rid}, status_code=500)
+        if era_head:
+            corpo = getattr(resposta, "body_iterator", None)
+            if corpo is not None and hasattr(corpo, "aclose"):
+                await corpo.aclose()                                              # liberta o ficheiro/fluxo que nunca se vai ler
+            resposta = RespostaSimples(b"", status_code=resposta.status_code, headers=dict(resposta.headers))      # os mesmos cabecalhos (e o mesmo Content-Length) de um GET, sem corpo
         resposta.headers["X-Request-ID"] = rid
+        for nome, valor in CABECALHOS_SEGURANCA.items():
+            resposta.headers.setdefault(nome, valor)
+        if request.url.scheme == "https" or request.headers.get("x-forwarded-proto", "").lower() == "https":
+            resposta.headers.setdefault("Strict-Transport-Security", HSTS)
         if caminho.startswith(("/api/", "/health")):
             resposta.headers["X-Robots-Tag"] = "noindex, nofollow"
         if caminho.startswith("/api/"):
@@ -417,7 +443,8 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         pagina = seo.ROTAS.get(rota) or seo.SEM_INDICE.get(rota)
         if pagina is None:
             return HTMLResponse(seo.renderizar(html_base, seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
-        servico.metricas.evento("pagina", rota, c=dispositivo(request.headers.get("user-agent", "")))
+        if not request.scope.get("rifas_head"):                                     # um HEAD (verificadores de ligacoes, pre-visualizacoes) nao e uma visita
+            servico.metricas.evento("pagina", rota, c=dispositivo(request.headers.get("user-agent", "")))
         return HTMLResponse(seo.renderizar(html_base, pagina, base, lg), headers={**cab, "Content-Language": lg})
 
     return app
