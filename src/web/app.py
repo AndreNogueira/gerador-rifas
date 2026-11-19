@@ -24,7 +24,7 @@ from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, 
 from .chaves_api import Chaves
 from .assets_remotos import AssetsRemotos
 from .limites import Limitador
-from . import historico, relatorio, seo_textos
+from . import alertas, historico, relatorio, seo_textos
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
@@ -175,6 +175,14 @@ async def _relatorio_diario(servico: Servico, cada_s: float) -> None:
         await asyncio.sleep(cada_s)
 
 
+async def _vigiar(servico: Servico, cada_s: float) -> None:
+    """De minuto a minuto: se algo corre mal (erros 5xx, reinicios do motor, memoria, base de dados) avisa por e-mail (`alertas.py`; mesmo destino do relatorio)."""
+    while True:
+        await asyncio.sleep(cada_s)
+        with contextlib.suppress(Exception):
+            await asyncio.to_thread(alertas.verificar_e_enviar, servico.alertas, servico.metricas, servico.estado_alertas)
+
+
 async def _atualizar_seo(servico: Servico, cada_s: float) -> None:
     """Le de minuto a minuto os textos de SEO editados no painel (a 1.a vez ja no arranque). Nenhum pedido de pagina consulta a base."""
     while True:
@@ -195,6 +203,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     servico.chaves = chaves if chaves is not None else Chaves(config.database_url(), armazem.raiz / "api.sqlite3")
     servico.seo = seo_bd if seo_bd is not None else SeoBd(config.database_url(), armazem.raiz / "seo.sqlite3")
     servico.comentarios = comentarios if comentarios is not None else Comentarios(config.database_url(), armazem.raiz / "comentarios.sqlite3")
+    servico.alertas = alertas.AlertasEnviados(config.database_url(), armazem.raiz / "alertas.sqlite3")
     servico.historico = historico.HistoricoDiario(config.database_url(), armazem.raiz / "historico.sqlite3")
     servico.relatorios = relatorio.RelatoriosEnviados(config.database_url(), armazem.raiz / "relatorios.sqlite3")
     seo_textos.definir_sobreposicoes({})                 # cada app comeca com os textos do codigo; os editados chegam da base (`_atualizar_seo`)
@@ -211,6 +220,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         seo_tarefa = asyncio.create_task(_atualizar_seo(servico, 60))
         amostrador = asyncio.create_task(_amostrar(servico, 30))
         relatorio_tarefa = asyncio.create_task(_relatorio_diario(servico, 300))
+        vigia = asyncio.create_task(_vigiar(servico, 60))
         url_acordado, cada_s = config.manter_acordado()
         acordado = None
         if url_acordado:
@@ -227,6 +237,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             seo_tarefa.cancel()
             amostrador.cancel()
             relatorio_tarefa.cancel()
+            vigia.cancel()
             if acordado is not None:
                 acordado.cancel()
             servico.motor.parar()

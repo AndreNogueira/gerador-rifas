@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.55.0 — 2026-11-19
+
+### Novetats
+- **Alertes immediates per correu per al responsable del lloc:** si hi ha una ratxa d'errors del servidor, reinicis del motor, memòria prop del límit o la base de dades sense resposta, arriba un avís a l'instant (sense esperar l'informe diari i sense repetir-se durant 6 hores). Només recomptes.
+
 ## 3.54.0 — 2026-11-19
 
 ### Novetats

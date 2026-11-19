@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.55.0 — 2026-11-19
+
+### Noutăți
+- **Alerte imediate prin e-mail pentru responsabilul site-ului:** la o serie de erori de server, reporniri ale motorului, memorie aproape de limită sau bază de date fără răspuns, vine imediat un avertisment (fără a aștepta raportul zilnic și fără repetare timp de 6 ore). Doar numărători.
+
 ## 3.54.0 — 2026-11-19
 
 ### Noutăți

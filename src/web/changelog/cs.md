@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.55.0 — 2026-11-19
+
+### Novinky
+- **Okamžitá e-mailová upozornění pro provozovatele webu:** při sérii chyb serveru, restartech motoru, paměti blízko limitu nebo neodpovídající databázi přijde varování ihned (bez čekání na denní zprávu a bez opakování po 6 hodin). Pouze počty.
+
 ## 3.54.0 — 2026-11-19
 
 ### Novinky

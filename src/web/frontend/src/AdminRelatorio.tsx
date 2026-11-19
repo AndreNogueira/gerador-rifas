@@ -61,6 +61,22 @@ export function AdminRelatorio({
     }
   }
 
+  async function alertaTeste() {
+    setAFazer("enviar");
+    setAviso(null);
+    try {
+      await adminApi.alertaTeste();
+      setAviso({
+        ok: true,
+        texto: "Alerta de teste enviado: veja a caixa de entrada (e o spam, da primeira vez).",
+      });
+    } catch (e) {
+      falhou(e, "Não foi possível enviar o alerta de teste.");
+    } finally {
+      setAFazer("");
+    }
+  }
+
   async function enviar() {
     setAFazer("enviar");
     setAviso(null);
@@ -165,6 +181,47 @@ export function AdminRelatorio({
             Deixe o dia em branco para ontem (o que sai à meia-noite). O teste leva «[Teste]» no assunto e não
             conta como o envio do dia.
           </p>
+          <h3>Alertas imediatos</h3>
+          <p className="explica">
+            Sem esperar pela meia-noite: o servidor avisa por e-mail (o mesmo destino) assim que uma destas
+            condições se verifica, e só volta a avisar da mesma passadas {estado.alertas.espera_h} horas.
+          </p>
+          <ul data-testid="admin-alertas-regras">
+            {estado.alertas.regras.map((r) => {
+              const ultimo = estado.alertas.ultimos[r.chave];
+              return (
+                <li key={r.chave}>
+                  {r.texto}
+                  {ultimo ? ` (último aviso: ${quando(ultimo)})` : ""}
+                </li>
+              );
+            })}
+          </ul>
+          {!estado.alertas.ativo && (
+            <p className="aviso-efemero" role="note" data-testid="admin-alertas-desligados">
+              Desligados: precisam das mesmas variáveis do relatório (e de <code>ALERTAS_EMAIL</code>{" "}
+              diferente de 0).
+            </p>
+          )}
+          {estado.alertas.erro && (
+            <p role="alert" className="cor-aviso">
+              O último alerta não saiu ({estado.alertas.erro}). Volta a tentar passados 15 minutos.
+            </p>
+          )}
+          {!leitura && (
+            <div className="botoes">
+              <button
+                type="button"
+                className="secundario"
+                onClick={() => void alertaTeste()}
+                disabled={aFazer !== "" || !estado.alertas.ativo}
+                data-testid="admin-alerta-teste"
+              >
+                <Icone nome="email" />
+                Enviar um alerta de teste
+              </button>
+            </div>
+          )}
         </>
       )}
       {aviso && (

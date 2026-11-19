@@ -22,6 +22,16 @@ beforeEach(() => {
     ultimo: { dia: "2026-11-18", enviado: 1_800_000_000 },
     erro: "",
     erro_em: null,
+    alertas: {
+      ativo: true,
+      espera_h: 6,
+      regras: [
+        { chave: "erros5xx", texto: "5 ou mais erros do servidor (5xx) em 15 minutos" },
+        { chave: "memoria", texto: "memória do contentor acima de 460 MB (limite do Render: 512)" },
+      ],
+      ultimos: { erros5xx: 1_800_000_000, memoria: null },
+      erro: "",
+    },
   };
   vi.stubGlobal(
     "fetch",
@@ -82,6 +92,25 @@ describe("o relatório diário no painel", () => {
     expect(
       pedidos.some((p) => p.metodo === "POST" && p.url === "/api/admin/relatorio/enviar?dia=2026-11-17"),
     ).toBe(true);
+  });
+
+  it("lista as regras dos alertas, quando avisaram, e envia um alerta de teste", async () => {
+    render(<AdminRelatorio leitura={false} aoSairDaSessao={() => {}} />);
+    const regras = await screen.findByTestId("admin-alertas-regras");
+    expect(regras).toHaveTextContent("5 ou mais erros do servidor");
+    expect(regras).toHaveTextContent("último aviso");
+    await userEvent.click(screen.getByTestId("admin-alerta-teste"));
+    expect(await screen.findByTestId("admin-relatorio-aviso")).toHaveTextContent("Alerta de teste enviado");
+    expect(pedidos.some((p) => p.metodo === "POST" && p.url === "/api/admin/relatorio/alerta-teste")).toBe(
+      true,
+    );
+  });
+
+  it("alertas desligados avisam e não deixam enviar o teste", async () => {
+    estado = { ...estado, alertas: { ...(estado.alertas as object), ativo: false } };
+    render(<AdminRelatorio leitura={false} aoSairDaSessao={() => {}} />);
+    expect(await screen.findByTestId("admin-alertas-desligados")).toBeInTheDocument();
+    expect(screen.getByTestId("admin-alerta-teste")).toBeDisabled();
   });
 
   it("um envio recusado mostra o motivo", async () => {

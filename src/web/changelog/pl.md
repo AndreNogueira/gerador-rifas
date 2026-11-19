@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.55.0 — 2026-11-19
+
+### Nowości
+- **Natychmiastowe alerty e-mail dla administratora serwisu:** przy serii błędów serwera, restartach silnika, pamięci blisko limitu lub bazie danych bez odpowiedzi ostrzeżenie przychodzi od razu (bez czekania na raport dzienny i bez powtórzeń przez 6 godzin). Tylko liczby.
+
 ## 3.54.0 — 2026-11-19
 
 ### Nowości

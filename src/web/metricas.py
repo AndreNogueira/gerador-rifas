@@ -275,6 +275,8 @@ class Metricas:
         self._eventos: list[tuple] = []
         self._amostras: list[tuple] = []
         self._pedidos: dict[tuple[int, str], list] = {}
+        self._recentes: dict[str, deque] = {"5xx": deque(maxlen=2000), "reinicio": deque(maxlen=200)}      # instantes dos ultimos erros 5xx e reinicios do motor (para os alertas)
+        self._memoria_recente: deque = deque(maxlen=120)   # (ts, MB do contentor) das ultimas amostras
         self._cliente: deque = deque(maxlen=5000)          # (ts, privado, xff, hash do ip, o cabecalho do pais veio)
         self._sal = secrets.token_bytes(16)                # muda a cada arranque: nao da para ligar hashes entre arranques
         self.evento("arranque")
@@ -284,6 +286,8 @@ class Metricas:
         linha = (int(self._agora()), tipo, str(a)[:40], str(b)[:40], str(c)[:40], float(v1), float(v2), float(v3))
         with self._trava:
             self._eventos.append(linha)
+            if tipo == "motor_reiniciado":
+                self._recentes["reinicio"].append(linha[0])
         if self.observar is not None:                        # o registo estruturado e o livro de erros (observabilidade.py): nunca partem um evento
             with contextlib.suppress(Exception):
                 self.observar(*linha[1:])
@@ -298,6 +302,8 @@ class Metricas:
             linha[3] += ms
             linha[4] = max(linha[4], ms)
             linha[5][_balde(ms)] += 1
+            if estado >= 500 and grupo not in SONDAGENS:
+                self._recentes["5xx"].append(float(self._agora()))
 
     def cliente(self, ip: str, tem_xff: bool, tem_pais: bool = False) -> None:
         """Para verificar o proxy: o IP vira um hash com sal (em memoria, ultima hora) e guarda-se se era privado, se vinha X-Forwarded-For e se
@@ -309,6 +315,20 @@ class Metricas:
     def amostrar(self, cpu: float, mem_srv: float, mem_motor: float, mem_cont: float | None, disco: float, sessoes: int, geracoes: int) -> None:
         with self._trava:
             self._amostras.append((int(self._agora()), cpu, mem_srv, mem_motor, mem_cont, disco, sessoes, geracoes))
+            self._memoria_recente.append((float(self._agora()), mem_cont if mem_cont is not None else mem_srv + mem_motor))
+
+    def recentes(self, tipo: str, janela_s: float, agora: float | None = None) -> int:
+        """Quantos erros 5xx (`5xx`) ou reinicios do motor (`reinicio`) houve nos ultimos `janela_s` segundos (em memoria, desde o arranque)."""
+        agora = self._agora() if agora is None else agora
+        with self._trava:
+            return sum(1 for t in self._recentes[tipo] if agora - janela_s <= t <= agora)
+
+    def memoria_recente(self, janela_s: float, agora: float | None = None) -> float | None:
+        """O maximo de memoria do contentor (MB) nas amostras dos ultimos `janela_s` segundos; None se nao houve amostras."""
+        agora = self._agora() if agora is None else agora
+        with self._trava:
+            valores = [m for t, m in self._memoria_recente if agora - janela_s <= t <= agora and m is not None]
+        return max(valores) if valores else None
 
     # ------------------------------------------------------------------ base de dados
     @property

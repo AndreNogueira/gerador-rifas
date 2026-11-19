@@ -23,7 +23,7 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, Field
 
-from . import VERSAO, config, email_envio, historico, relatorio
+from . import VERSAO, alertas, config, email_envio, historico, relatorio
 from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
 from .metricas import DIAS_MAXIMOS, INTERVALOS, novo_painel
@@ -260,7 +260,21 @@ def relatorio_estado(serv: Servico = Depends(servico)) -> dict:
     e = serv.estado_relatorio
     return {"ativo": relatorio.ativo(), "tem_chave": bool(config.email_chave()), "destinos": [relatorio.mascarar(x) for x in config.relatorio_destinos()],
             "fuso": config.relatorio_fuso(), "persistente": bool(config.database_url()), "ultimo": ultimo,
-            "erro": e.ultimo_erro, "erro_em": int(e.ultimo_erro_em) or None}
+            "erro": e.ultimo_erro, "erro_em": int(e.ultimo_erro_em) or None, "alertas": _estado_alertas(serv)}
+
+
+def _estado_alertas(serv: Servico) -> dict:
+    """Os alertas imediatos: se estao ligados, as regras, quando se avisou de cada uma (desde sempre) e o ultimo erro de envio."""
+    try:
+        ultimos = serv.alertas.ultimos() if serv.alertas is not None else {}
+    except Exception:  # noqa: BLE001
+        ultimos = {}
+    regras = [{"chave": "erros5xx", "texto": f"{alertas.LIMITE_5XX} ou mais erros do servidor (5xx) em {alertas.JANELA_S // 60} minutos"},
+              {"chave": "reinicios", "texto": f"{alertas.LIMITE_REINICIOS} ou mais reinícios do motor em {alertas.JANELA_S // 60} minutos"},
+              {"chave": "memoria", "texto": f"memória do contentor acima de {alertas.LIMITE_MEMORIA_MB} MB (limite do Render: 512)"},
+              {"chave": "base_de_dados", "texto": f"a base de dados sem resposta há {alertas.VERIFICACOES_BD} verificações seguidas"}]
+    return {"ativo": alertas.ativos(), "espera_h": alertas.ESPERA_ENTRE_REPETICOES_S // 3600, "regras": regras,
+            "ultimos": {r["chave"]: ultimos.get(r["chave"]) for r in regras}, "erro": serv.estado_alertas.ultimo_erro}
 
 
 def _dia_pedido(dia: str, fuso: ZoneInfo) -> date:
@@ -298,6 +312,20 @@ def relatorio_enviar(dia: str = "", serv: Servico = Depends(servico)) -> dict:
         serv.metricas.evento("admin", "relatorio_teste_falhou")
         raise HTTPException(502, f"Nao foi possivel enviar ({e}).", headers=_SEM_CACHE) from None
     serv.metricas.evento("admin", "relatorio_teste")
+    return {"enviado": True}
+
+
+@router.post("/relatorio/alerta-teste", dependencies=[Depends(exigir_admin)])
+def alerta_teste(serv: Servico = Depends(servico)) -> dict:
+    """Envia JA um alerta de exemplo (assunto «[Teste]») para ver como chega. Nao conta para a espera entre repeticoes."""
+    if not alertas.ativos():
+        raise HTTPException(409, "Os alertas estao desligados: faltam RESEND_API_KEY e RELATORIO_EMAIL_PARA no Render (ou ALERTAS_EMAIL=0).", headers=_SEM_CACHE)
+    assunto, corpo, texto = alertas.montar({"teste": "Isto é um alerta de teste: se o recebeu, os alertas imediatos estão a funcionar."}, time.time(), config.url_publica())
+    try:
+        email_envio.enviar(config.email_chave(), config.relatorio_remetente(), config.relatorio_destinos(), "[Teste] " + assunto, corpo, texto)
+    except email_envio.ErroEmail as e:
+        raise HTTPException(502, f"Nao foi possivel enviar ({e}).", headers=_SEM_CACHE) from None
+    serv.metricas.evento("admin", "alerta_teste")
     return {"enviado": True}
 
 

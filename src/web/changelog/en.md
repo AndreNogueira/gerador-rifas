@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.55.0 — 2026-11-19
+
+### New
+- **Instant e-mail alerts for the site owner:** if there is a run of server errors, engine restarts, memory near the limit or the database not responding, a warning arrives right away (without waiting for the daily report and without repeating for 6 hours). Counts only.
+
 ## 3.54.0 — 2026-11-19
 
 ### New
