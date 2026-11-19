@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Admin } from "./Admin";
+import { Suspense, useEffect, useState } from "react";
 import { Anuncio } from "./Anuncio";
 import { api, type Publico } from "./api";
 import { Cabecalho } from "./Cabecalho";
@@ -7,7 +6,6 @@ import { Changelog } from "./Changelog";
 import { Comentarios, DeixarComentario } from "./Comentarios";
 import { iniciarDesempenho } from "./desempenho";
 import { ProvedorDialogos } from "./dialogos";
-import { Editor } from "./Editor";
 import { registarEcra } from "./ecra";
 import { useFormulario } from "./formulario";
 import { Gerador } from "./Gerador";
@@ -16,11 +14,16 @@ import { useI18n } from "./i18n";
 import { PaginaTexto } from "./PaginaTexto";
 import { ReportarProblema } from "./Problema";
 import { Sobre, Tutorial, Video } from "./paginas";
+import { preguicoso } from "./preguicoso";
 import { registarServiceWorker } from "./pwa";
 import { Ligacao, useLocalizacao } from "./rota";
-import { Sorteio } from "./Sorteio";
 import { ProvedorSessao, useSessao } from "./sessao";
 import { useTema, useVisual } from "./tema";
+
+// carregam-se à parte, só quando se abre a página (ver `preguicoso.ts`): o painel do dono, o editor de templates e o sorteio
+const Admin = preguicoso(() => import("./Admin").then((m) => ({ default: m.Admin })));
+const Editor = preguicoso(() => import("./Editor").then((m) => ({ default: m.Editor })));
+const Sorteio = preguicoso(() => import("./Sorteio").then((m) => ({ default: m.Sorteio })));
 
 /** Páginas com título fixo: «Changelog» é um nome e o painel é só em português. Os Termos, a Privacidade e o Contacto põem o título que o servidor
  * entrega, já na língua escolhida (ver PaginaTexto). */
@@ -96,33 +99,35 @@ function Aplicacao() {
         donativoUrl={publico.donativo_url}
       />
       <main className="conteudo">
-        {caminho === "/tutorial" ? (
-          <Tutorial />
-        ) : caminho === "/video" ? (
-          <Video />
-        ) : caminho === "/sobre" ? (
-          <Sobre versao={versao} />
-        ) : caminho === "/sorteio" ? (
-          <Sorteio />
-        ) : caminho === "/editor" ? (
-          <Editor partilha={publico.partilha_editor} />
-        ) : GUIAS[caminho] ? (
-          <Guia nome={GUIAS[caminho]} />
-        ) : caminho === "/comentarios" ? (
-          <Comentarios />
-        ) : caminho === "/opiniao" ? (
-          <DeixarComentario />
-        ) : caminho === "/reportar-problema" ? (
-          <ReportarProblema ativo={publico.problemas} />
-        ) : caminho === "/changelog" ? (
-          <Changelog />
-        ) : caminho === "/termos" || caminho === "/privacidade" || caminho === "/contacto" ? (
-          <PaginaTexto nome={caminho.slice(1)} />
-        ) : caminho === "/admin" ? (
-          <Admin />
-        ) : (
-          <Gerador {...formulario} donativoUrl={publico.donativo_url} />
-        )}
+        <Suspense fallback={<p aria-busy="true">…</p>}>
+          {caminho === "/tutorial" ? (
+            <Tutorial />
+          ) : caminho === "/video" ? (
+            <Video />
+          ) : caminho === "/sobre" ? (
+            <Sobre versao={versao} />
+          ) : caminho === "/sorteio" ? (
+            <Sorteio />
+          ) : caminho === "/editor" ? (
+            <Editor partilha={publico.partilha_editor} />
+          ) : GUIAS[caminho] ? (
+            <Guia nome={GUIAS[caminho]} />
+          ) : caminho === "/comentarios" ? (
+            <Comentarios />
+          ) : caminho === "/opiniao" ? (
+            <DeixarComentario />
+          ) : caminho === "/reportar-problema" ? (
+            <ReportarProblema ativo={publico.problemas} />
+          ) : caminho === "/changelog" ? (
+            <Changelog />
+          ) : caminho === "/termos" || caminho === "/privacidade" || caminho === "/contacto" ? (
+            <PaginaTexto nome={caminho.slice(1)} />
+          ) : caminho === "/admin" ? (
+            <Admin />
+          ) : (
+            <Gerador {...formulario} donativoUrl={publico.donativo_url} />
+          )}
+        </Suspense>
       </main>
       <Anuncio key={caminho} publico={publico} caminho={caminho} />
       {versao && (

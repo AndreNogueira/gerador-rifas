@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.65.0 — 2026-11-19
+
+### Millores
+- **Un lloc més lleuger i més segur:** qui només genera rifes descarrega un 24 % menys de codi (el tauler d'administració, l'editor de plantilles i el sorteig només es carreguen en obrir la pàgina). El lloc també envia ara capçaleres de seguretat i respon a verificadors d'enllaços i a previsualitzacions en compartir.
+
 ## 3.64.0 — 2026-11-19
 
 ### Novetats

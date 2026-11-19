@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.65.0 — 2026-11-19
+
+### Migliorato
+- **Un sito più leggero e più sicuro:** chi genera solo biglietti scarica il 24 % di codice in meno (il pannello di amministrazione, l'editor dei modelli e l'estrazione si caricano solo quando si apre la pagina). Il sito ora invia anche intestazioni di sicurezza e risponde ai verificatori di link e alle anteprime di condivisione.
+
 ## 3.64.0 — 2026-11-19
 
 ### Novità

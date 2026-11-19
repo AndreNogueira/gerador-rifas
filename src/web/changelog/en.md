@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.65.0 — 2026-11-19
+
+### Improved
+- **A lighter and safer site:** if you only generate raffles, you now download 24 % less code (the admin panel, the template editor and the draw page only load when you open them). The site also now sends security headers and answers link checkers and share previews.
+
 ## 3.64.0 — 2026-11-19
 
 ### New

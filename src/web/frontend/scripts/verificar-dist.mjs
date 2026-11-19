@@ -1,6 +1,7 @@
 // Corre no fim de `pnpm build` (depois de `comprimir-dist.mjs`): garante o que prometemos entregar ao browser.
-//  - UM só ficheiro de estilos e UM só de JS, cada um ligado uma vez no index.html;
-//  - nenhum mapa (.map) nem <style> embutido nem pré-carregamentos;
+//  - UM só ficheiro de estilos e UM só script ligado no index.html (o principal); só as páginas «preguiçosas» conhecidas (PARTES: painel, editor, sorteio) têm o seu
+//    ficheiro `.js` à parte, que o principal carrega quando se vai a elas (`src/preguicoso.ts`);
+//  - nenhum mapa (.map) nem <style> embutido nem pré-carregamentos (menos o do pedaço partilhado, COMUNS);
 //  - o JS e o CSS têm a versão .br e .gz e descomprimem para o mesmo conteúdo;
 //  - com a ofuscação por omissão, o código da app não aparece em claro (ver mais abaixo).
 import { readdirSync, readFileSync } from "node:fs";
@@ -12,10 +13,18 @@ const assets = join(dist, "assets");
 const ficheiros = readdirSync(assets);
 const erros = [];
 
+// as únicas partes que se carregam à parte (o nome do ficheiro leva o da página: `Admin-<hash>.js`); uma parte nova tem de se acrescentar aqui de propósito
+const PARTES = ["Admin", "Editor", "Sorteio"];
+// o pedaço que o principal e as partes partilham (o runtime do JSX): fica à parte e o index.html liga-o com `modulepreload` (única ligação permitida)
+const COMUNS = ["jsx-runtime"];
 const css = ficheiros.filter((f) => f.endsWith(".css"));
-const js = ficheiros.filter((f) => f.endsWith(".js"));
+const todosJs = ficheiros.filter((f) => f.endsWith(".js"));
+const comuns = todosJs.filter((f) => COMUNS.some((p) => f.startsWith(`${p}-`)));
+const partes = todosJs.filter((f) => PARTES.some((p) => f.startsWith(`${p}-`)));
+const js = todosJs.filter((f) => !partes.includes(f) && !comuns.includes(f)); // o principal
 if (css.length !== 1) erros.push(`esperava 1 .css em dist/assets e há ${css.length}: ${css.join(", ") || "nenhum"}`);
-if (js.length !== 1) erros.push(`esperava 1 .js em dist/assets e há ${js.length}: ${js.join(", ") || "nenhum"}`);
+if (js.length !== 1) erros.push(`esperava 1 .js principal em dist/assets e há ${js.length}: ${js.join(", ") || "nenhum"} (partes permitidas: ${PARTES.join(", ")})`);
+for (const p of PARTES) if (partes.filter((f) => f.startsWith(`${p}-`)).length !== 1) erros.push(`falta o ficheiro da página preguiçosa ${p} (ou há mais do que um)`);
 const mapas = [...ficheiros, ...readdirSync(dist)].filter((f) => f.endsWith(".map"));
 if (mapas.length) erros.push(`não pode haver mapas (.map): ${mapas.join(", ")}`);
 
@@ -27,10 +36,14 @@ const html = readFileSync(join(dist, "index.html"), "utf8");
 const conta = (re) => [...html.matchAll(re)].length;
 if (conta(/<link[^>]+rel="stylesheet"[^>]*>/g) !== 1) erros.push("o index.html deve ligar exatamente 1 folha de estilos");
 if (conta(/<script[^>]+src="[^"]+"[^>]*>/g) !== 1) erros.push("o index.html deve ligar exatamente 1 script");
+for (const f of partes) if (html.includes(f)) erros.push(`o index.html não deve ligar ${f}: carrega-se à parte, quando se abre a página`);
 if (/<style[\s>]/.test(html)) erros.push("o index.html não deve ter <style> embutido");
-if (/rel="modulepreload"/.test(html)) erros.push("o index.html não deve ter modulepreload (há um só JS)");
+for (const m of html.matchAll(/<link[^>]+rel="modulepreload"[^>]*>/g)) {
+  const href = /href="\/assets\/([^"]+)"/.exec(m[0])?.[1] ?? "";
+  if (!comuns.includes(href)) erros.push(`o index.html só pode pré-carregar o pedaço partilhado (${COMUNS.join(", ")}), não ${href || m[0]}`);
+}
 
-for (const nome of [...css, ...js]) {
+for (const nome of [...css, ...js, ...partes, ...comuns]) {
   const original = readFileSync(join(assets, nome));
   for (const [ext, descomprimir] of [[".br", brotliDecompressSync], [".gz", gunzipSync]]) {
     try {
@@ -46,12 +59,14 @@ for (const nome of [...css, ...js]) {
 // sessão, não pode aparecer em claro; o Vite minifica depois, por isso procurar `_0x…` não serve.
 const nivel = process.env.OFUSCAR_NIVEL ?? "medio";
 if (js[0] && nivel === "medio") {
-  const codigo = readFileSync(join(assets, js[0]), "utf8");
-  if (codigo.includes("rifas.sessao")) erros.push("o JS não parece ofuscado: a chave «rifas.sessao» do nosso código aparece em claro");
+  for (const nome of [...js, ...partes, ...comuns]) {
+    const codigo = readFileSync(join(assets, nome), "utf8");
+    if (codigo.includes("rifas.sessao")) erros.push(`${nome} não parece ofuscado: a chave «rifas.sessao» do nosso código aparece em claro`);
+  }
 }
 
 if (erros.length) {
   console.error(`verificar-dist: ${erros.length} problema(s):\n - ${erros.join("\n - ")}`);
   process.exit(1);
 }
-console.log(`verificar-dist: ok (${js[0]}, ${css[0]})`);
+console.log(`verificar-dist: ok (${js[0]}${partes.length ? ` + ${partes.join(", ")}` : ""}, ${css[0]})`);

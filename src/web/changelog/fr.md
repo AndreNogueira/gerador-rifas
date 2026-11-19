@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.65.0 — 2026-11-19
+
+### Amélioré
+- **Un site plus léger et plus sûr :** si vous ne faites que générer des tombolas, vous téléchargez 24 % de code en moins (le panneau d'administration, l'éditeur de modèles et le tirage ne se chargent qu'à l'ouverture de la page). Le site envoie aussi désormais des en-têtes de sécurité et répond aux vérificateurs de liens et aux aperçus de partage.
+
 ## 3.64.0 — 2026-11-19
 
 ### Nouveautés

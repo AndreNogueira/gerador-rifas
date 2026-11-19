@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.65.0 — 2026-11-19
+
+### Mejorado
+- **Un sitio más ligero y más seguro:** quien solo genera rifas descarga un 24 % menos de código (el panel de administración, el editor de plantillas y el sorteo solo se cargan al abrir la página). El sitio también envía ahora cabeceras de seguridad y responde a verificadores de enlaces y a vistas previas al compartir.
+
 ## 3.64.0 — 2026-11-19
 
 ### Novedades

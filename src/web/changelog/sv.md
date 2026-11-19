@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.65.0 — 2026-11-19
+
+### Förbättrat
+- **En lättare och säkrare webbplats:** den som bara genererar lotter laddar ner 24 % mindre kod (adminpanelen, mallredigeraren och dragningen laddas först när du öppnar sidan). Webbplatsen skickar nu också säkerhetsrubriker och svarar länkkontrollanter och delningsförhandsvisningar.
+
 ## 3.64.0 — 2026-11-19
 
 ### Nytt

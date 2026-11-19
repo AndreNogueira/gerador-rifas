@@ -24,6 +24,9 @@ const BASE: ObfuscatorOptions = {
   numbersToExpressions: false,
   splitStrings: false,
   unicodeEscapeSequence: false,
+  // os caminhos dos `import("./Admin")` das páginas preguiçosas (`src/preguicoso.ts`) NÃO se podem esconder na tabela de cadeias: o empacotador deixava de os
+  // resolver e a página nem entrava no `dist` (e o `import()` falhava no browser). O `verificar-dist.mjs` confirma que cada parte existe.
+  reservedStrings: ["^\\./[A-Za-z]+$"],
 };
 
 const NIVEIS: Record<string, ObfuscatorOptions> = {
