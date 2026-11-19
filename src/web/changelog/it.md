@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.53.0 — 2026-11-19
+
+### Novità
+- **Rapporto giornaliero via e-mail per il responsabile del sito:** ogni giorno, subito dopo la mezzanotte, arriva un'e-mail con tutto ciò che è stato registrato nel giorno appena finito (utilizzo, pubblico, errori e risorse del server), confrontato con la media dei 7 giorni precedenti, per seguire l'app senza aprire il pannello. Solo conteggi: mai dati dei visitatori.
+
 ## 3.52.0 — 2026-11-19
 
 ### Migliorato

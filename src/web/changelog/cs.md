@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.53.0 — 2026-11-19
+
+### Novinky
+- **Denní e-mailová zpráva pro provozovatele webu:** každý den těsně po půlnoci přijde e-mail se vším, co se zaznamenalo za právě skončený den (využití, publikum, chyby a zdroje serveru), porovnané s průměrem předchozích 7 dnů, aby šlo aplikaci sledovat bez otevření panelu. Pouze počty: nikdy údaje návštěvníků.
+
 ## 3.52.0 — 2026-11-19
 
 ### Vylepšeno

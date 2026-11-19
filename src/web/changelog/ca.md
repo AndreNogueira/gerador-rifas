@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.53.0 — 2026-11-19
+
+### Novetats
+- **Informe diari per correu per al responsable del lloc:** cada dia, just després de mitjanit, arriba un correu amb tot el que s'ha registrat el dia que acaba de finalitzar (ús, públic, errors i recursos del servidor), comparat amb la mitjana dels 7 dies anteriors, per seguir l'aplicació sense obrir el tauler. Només recomptes: mai dades dels visitants.
+
 ## 3.52.0 — 2026-11-19
 
 ### Millores

@@ -207,6 +207,7 @@ web = [
     { name = "psycopg", extra = ["binary"] },
     { name = "reportlab" },
     { name = "segno" },
+    { name = "tzdata" },
     { name = "uvicorn" },
 ]
 
@@ -229,6 +230,7 @@ web = [
     { name = "psycopg", extras = ["binary"], specifier = ">=3.3.8" },
     { name = "reportlab" },
     { name = "segno" },
+    { name = "tzdata", specifier = ">=2026.6" },
     { name = "uvicorn" },
 ]
 

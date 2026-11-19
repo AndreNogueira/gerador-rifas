@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.53.0 — 2026-11-19
+
+### Mới
+- **Báo cáo hằng ngày qua email cho người phụ trách trang:** mỗi ngày, ngay sau nửa đêm, một email gửi đến với mọi thứ đã ghi nhận trong ngày vừa kết thúc (mức sử dụng, người dùng, lỗi và tài nguyên máy chủ), so với trung bình 7 ngày trước, để theo dõi ứng dụng mà không cần mở bảng quản trị. Chỉ có số đếm: không bao giờ có dữ liệu của khách truy cập.
+
 ## 3.52.0 — 2026-11-19
 
 ### Cải thiện

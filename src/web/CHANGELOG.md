@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.53.0 — 2026-11-19
+
+### Novo
+- **Relatório diário por e-mail para o responsável do site:** todos os dias, logo depois da meia-noite, chega um e-mail com tudo o que se gravou no dia que acabou (utilização, público, erros e recursos do servidor), comparado com a média dos 7 dias anteriores, para acompanhar a app sem abrir o painel. Só contagens: nunca dados dos visitantes.
+
 ## 3.52.0 — 2026-11-19
 
 ### Melhorado

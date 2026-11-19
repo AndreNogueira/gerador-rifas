@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.53.0 — 2026-11-19
+
+### Nowości
+- **Dzienny raport e-mailem dla administratora serwisu:** codziennie tuż po północy przychodzi e-mail ze wszystkim, co zapisano w minionym dniu (użycie, odbiorcy, błędy i zasoby serwera), w porównaniu ze średnią z 7 poprzednich dni, aby śledzić aplikację bez otwierania panelu. Tylko liczby: nigdy dane odwiedzających.
+
 ## 3.52.0 — 2026-11-19
 
 ### Ulepszono

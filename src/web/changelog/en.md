@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.53.0 — 2026-11-19
+
+### New
+- **Daily e-mail report for the site owner:** every day, just after midnight, an e-mail arrives with everything recorded during the day that just ended (usage, audience, errors and server resources), compared with the average of the previous 7 days, so the app can be followed without opening the admin panel. Counts only: never visitor data.
+
 ## 3.52.0 — 2026-11-19
 
 ### Improved

@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.53.0 — 2026-11-19
+
+### Nytt
+- **Daglig e-postrapport till webbplatsens ansvarige:** varje dag strax efter midnatt kommer ett e-brev med allt som registrerats under dagen som just tagit slut (användning, publik, fel och serverresurser), jämfört med genomsnittet för de 7 föregående dagarna, så att appen kan följas utan att öppna panelen. Bara antal: aldrig besökares uppgifter.
+
 ## 3.52.0 — 2026-11-19
 
 ### Förbättrat

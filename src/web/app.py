@@ -23,7 +23,7 @@ from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, 
 from .chaves_api import Chaves
 from .assets_remotos import AssetsRemotos
 from .limites import Limitador
-from . import seo_textos
+from . import relatorio, seo_textos
 from .manter_acordado import ciclo as ciclo_acordado
 from .metricas import Metricas, caminho_por_defeito, dispositivo
 from .modelos import ErroApi
@@ -162,6 +162,15 @@ async def _amostrar(servico: Servico, cada_s: float) -> None:
         await asyncio.sleep(cada_s)
 
 
+async def _relatorio_diario(servico: Servico, cada_s: float) -> None:
+    """De poucos em poucos minutos: se ja passou a meia-noite e o relatorio de ontem nao foi enviado, envia-o (ver `relatorio.py`; sem RESEND_API_KEY e
+    RELATORIO_EMAIL_PARA nao faz nada). A reserva do dia esta na base, por isso um arranque a meio da noite nao o duplica."""
+    while True:
+        with contextlib.suppress(Exception):
+            await asyncio.to_thread(relatorio.enviar_se_devido, servico.relatorios, servico.metricas, admin.paineis_de_outras_tabelas(servico), servico.estado_relatorio)
+        await asyncio.sleep(cada_s)
+
+
 async def _atualizar_seo(servico: Servico, cada_s: float) -> None:
     """Le de minuto a minuto os textos de SEO editados no painel (a 1.a vez ja no arranque). Nenhum pedido de pagina consulta a base."""
     while True:
@@ -182,6 +191,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     servico.chaves = chaves if chaves is not None else Chaves(config.database_url(), armazem.raiz / "api.sqlite3")
     servico.seo = seo_bd if seo_bd is not None else SeoBd(config.database_url(), armazem.raiz / "seo.sqlite3")
     servico.comentarios = comentarios if comentarios is not None else Comentarios(config.database_url(), armazem.raiz / "comentarios.sqlite3")
+    servico.relatorios = relatorio.RelatoriosEnviados(config.database_url(), armazem.raiz / "relatorios.sqlite3")
     seo_textos.definir_sobreposicoes({})                 # cada app comeca com os textos do codigo; os editados chegam da base (`_atualizar_seo`)
     assets_rem = None
     if config.assets_zip_url() and not os.environ.get("RIFAS_ASSETS", "").strip():       # videos e capturas fora da imagem Docker (ver assets_remotos.py)
@@ -195,6 +205,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         limpeza = asyncio.create_task(_limpeza_periodica(servico, 60))
         seo_tarefa = asyncio.create_task(_atualizar_seo(servico, 60))
         amostrador = asyncio.create_task(_amostrar(servico, 30))
+        relatorio_tarefa = asyncio.create_task(_relatorio_diario(servico, 300))
         url_acordado, cada_s = config.manter_acordado()
         acordado = None
         if url_acordado:
@@ -210,6 +221,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             limpeza.cancel()
             seo_tarefa.cancel()
             amostrador.cancel()
+            relatorio_tarefa.cancel()
             if acordado is not None:
                 acordado.cancel()
             servico.motor.parar()

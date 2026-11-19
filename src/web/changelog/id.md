@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.53.0 — 2026-11-19
+
+### Baru
+- **Laporan harian lewat email untuk pengelola situs:** setiap hari, tepat setelah tengah malam, sebuah email tiba berisi semua yang tercatat pada hari yang baru berakhir (penggunaan, audiens, kesalahan, dan sumber daya server), dibandingkan dengan rata-rata 7 hari sebelumnya, agar aplikasi bisa dipantau tanpa membuka panel. Hanya hitungan: tidak pernah data pengunjung.
+
 ## 3.52.0 — 2026-11-19
 
 ### Ditingkatkan

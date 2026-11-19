@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.53.0 — 2026-11-19
+
+### Nouveautés
+- **Rapport quotidien par e-mail pour le responsable du site :** chaque jour, juste après minuit, un e-mail arrive avec tout ce qui a été enregistré pendant la journée qui vient de se terminer (utilisation, public, erreurs et ressources du serveur), comparé à la moyenne des 7 jours précédents, pour suivre l'application sans ouvrir le panneau. Uniquement des comptages : jamais de données des visiteurs.
+
 ## 3.52.0 — 2026-11-19
 
 ### Amélioré

@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.53.0 — 2026-11-19
+
+### Nieuw
+- **Dagelijks e-mailrapport voor de beheerder van de site:** elke dag, vlak na middernacht, komt er een e-mail met alles wat is vastgelegd op de dag die net voorbij is (gebruik, publiek, fouten en serverbronnen), vergeleken met het gemiddelde van de 7 voorgaande dagen, zodat de app te volgen is zonder het paneel te openen. Alleen aantallen: nooit gegevens van bezoekers.
+
 ## 3.52.0 — 2026-11-19
 
 ### Verbeterd
