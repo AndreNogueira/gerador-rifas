@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.66.0 — 2026-11-19
+
+### Novedades
+- **Invitación a dejar un comentario:** después de descargar las rifas, aparece (una sola vez por dispositivo) un aviso discreto que invita a dejar un comentario, anónimo si lo desea. Puede descartarlo con «Ahora no».
+
 ## 3.65.0 — 2026-11-19
 
 ### Mejorado

@@ -222,6 +222,74 @@ describe("pré-visualizar e gerar", () => {
     expect(t("progresso")).toHaveValue(1);
   });
 
+  it("depois de descarregar convida a deixar um comentário, uma só vez por aparelho, e dispensa-se", async () => {
+    localStorage.removeItem("rifas.convite");
+    servidor.passos = [
+      {
+        ...gerando({ feitas: 10, total: 10, registo: ["✔ A.pdf: 10 páginas"], proximo: 1 }),
+        estado: "ok",
+        texto: "✔ 1 PDF gerado.",
+        cor: "ok",
+        entrega: {
+          tipo: "pdf",
+          nome: "A.pdf",
+          ficheiros: ["A.pdf"],
+          total: 1,
+          url: "/api/sessoes/sessao1/descarregar",
+        },
+      },
+    ];
+    abrir();
+    await screen.findByRole("heading", { name: "Gerador de Rifas" });
+    await waitFor(() => expect(t("upload-template")).toBeInTheDocument());
+    await carregarTemplateEAlgarismos();
+    await userEvent.type(t("nome"), "A");
+    await userEvent.click(t("gerar"));
+    const ligacao = await screen.findByTestId("descarregar", {}, { timeout: 4000 });
+    expect(screen.queryByTestId("convite-comentario")).toBeNull(); // só depois de descarregar, não antes
+    ligacao.addEventListener("click", (e) => e.preventDefault()); // o jsdom não navega
+    await userEvent.click(ligacao);
+    const convite = await screen.findByTestId("convite-comentario");
+    expect(convite).toHaveAttribute("role", "status"); // um aviso, não uma janela
+    expect(convite).toHaveTextContent("Gostou? Diga-nos o que achou.");
+    expect(screen.getByTestId("convite-abrir")).toHaveAttribute("href", "/opiniao");
+    expect(localStorage.getItem("rifas.convite")).toBe("1");
+    await userEvent.click(screen.getByTestId("convite-depois"));
+    expect(screen.queryByTestId("convite-comentario")).toBeNull();
+    await userEvent.click(ligacao); // descarregar outra vez: já não convida
+    expect(screen.queryByTestId("convite-comentario")).toBeNull();
+  });
+
+  it("quem já foi convidado neste aparelho não volta a ver o convite", async () => {
+    localStorage.setItem("rifas.convite", "1");
+    servidor.passos = [
+      {
+        ...gerando({ feitas: 10, total: 10, registo: ["✔ A.pdf: 10 páginas"], proximo: 1 }),
+        estado: "ok",
+        texto: "✔ 1 PDF gerado.",
+        cor: "ok",
+        entrega: {
+          tipo: "pdf",
+          nome: "A.pdf",
+          ficheiros: ["A.pdf"],
+          total: 1,
+          url: "/api/sessoes/sessao1/descarregar",
+        },
+      },
+    ];
+    abrir();
+    await screen.findByRole("heading", { name: "Gerador de Rifas" });
+    await waitFor(() => expect(t("upload-template")).toBeInTheDocument());
+    await carregarTemplateEAlgarismos();
+    await userEvent.type(t("nome"), "A");
+    await userEvent.click(t("gerar"));
+    const ligacao = await screen.findByTestId("descarregar", {}, { timeout: 4000 });
+    ligacao.addEventListener("click", (e) => e.preventDefault());
+    await userEvent.click(ligacao);
+    expect(screen.queryByTestId("convite-comentario")).toBeNull();
+    localStorage.removeItem("rifas.convite");
+  });
+
   it("cancelar pede o cancelamento ao servidor", async () => {
     servidor.passos = [gerando({ feitas: 1, total: 100 })];
     abrir();

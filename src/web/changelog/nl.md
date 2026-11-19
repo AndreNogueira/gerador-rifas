@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.66.0 — 2026-11-19
+
+### Nieuw
+- **Uitnodiging om een reactie achter te laten:** na het downloaden van uw loten verschijnt (eenmaal per apparaat) een discrete melding die uitnodigt tot een reactie, desgewenst anoniem. U kunt hem sluiten met “Niet nu”.
+
 ## 3.65.0 — 2026-11-19
 
 ### Verbeterd

@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.66.0 — 2026-11-19
+
+### Novetats
+- **Invitació a deixar un comentari:** després de descarregar les rifes, apareix (una sola vegada per dispositiu) un avís discret que convida a deixar un comentari, anònim si ho vols. Pots descartar-lo amb «Ara no».
+
 ## 3.65.0 — 2026-11-19
 
 ### Millores

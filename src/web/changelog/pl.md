@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.66.0 — 2026-11-19
+
+### Nowości
+- **Zaproszenie do zostawienia komentarza:** po pobraniu losów pojawia się (raz na urządzenie) dyskretny komunikat zachęcający do zostawienia komentarza, anonimowo, jeśli wolisz. Możesz go zamknąć przyciskiem „Nie teraz”.
+
 ## 3.65.0 — 2026-11-19
 
 ### Ulepszono

@@ -57,6 +57,9 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     m_ajuda: "Ajuda",
     web_menu: "Menu",
     web_comentarios: "Comentários",
+    web_convite_texto: "Gostou? Diga-nos o que achou.",
+    web_convite_botao: "Deixar um comentário",
+    web_convite_depois: "Agora não",
     web_reportar: "Reportar problema",
     web_op_titulo: "Deixe o seu comentário",
     web_op_intro:

@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.66.0 — 2026-11-19
+
+### Novo
+- **Convite para deixar um comentário:** depois de descarregar as rifas, aparece (uma só vez por aparelho) um aviso discreto a convidar a deixar um comentário, anónimo se quiser. Pode dispensá-lo com «Agora não».
+
 ## 3.65.0 — 2026-11-19
 
 ### Melhorado

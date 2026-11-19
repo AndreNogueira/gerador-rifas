@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.66.0 — 2026-11-19
+
+### Novinky
+- **Pozvánka k zanechání komentáře:** po stažení losů se (jednou na zařízení) objeví nenápadné upozornění s pozváním ke komentáři, klidně anonymnímu. Zavřete ho tlačítkem „Teď ne“.
+
 ## 3.65.0 — 2026-11-19
 
 ### Vylepšeno
