@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.60.0 — 2026-11-19
+
+### Yeni
+- **Yönetim panelinde günlük hedefler:** sorumlu gün başına bir hedef belirler (oturumlar, üretimler, üretilen numaralar, indirmeler…) ve son günün hedefi tutturup tutturmadığını, 7 günlük ortalamayı ve kaç günde tutturulduğunu görür; günlük e-posta raporu aynı bölümü içerir.
+
 ## 3.59.0 — 2026-11-19
 
 ### Yeni

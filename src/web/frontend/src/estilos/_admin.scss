@@ -594,3 +594,14 @@ fieldset.admin-vistas {
   padding: 0;
   min-width: 0;
 }
+
+// o campo da meta de cada objetivo diário e o botão ao lado
+.meta-objetivo {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+
+  input {
+    width: 7rem;
+  }
+}

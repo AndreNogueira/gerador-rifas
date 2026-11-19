@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.60.0 — 2026-11-19
+
+### Novità
+- **Obiettivi giornalieri nel pannello di amministrazione:** il responsabile fissa un traguardo al giorno (sessioni, generazioni, numeri generati, download…) e vede se l'ultimo giorno l'ha raggiunto, la media degli ultimi 7 giorni e in quanti è stato raggiunto; il rapporto giornaliero via e-mail ha la stessa sezione.
+
 ## 3.59.0 — 2026-11-19
 
 ### Novità

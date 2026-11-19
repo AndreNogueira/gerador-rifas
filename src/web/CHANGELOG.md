@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.60.0 — 2026-11-19
+
+### Novo
+- **Objetivos diários no painel de administração:** o responsável define uma meta por dia (sessões, gerações, números gerados, descargas…) e vê se o último dia a cumpriu, a média dos últimos 7 dias e em quantos deles foi atingida; o relatório diário por e-mail leva a mesma secção.
+
 ## 3.59.0 — 2026-11-19
 
 ### Novo

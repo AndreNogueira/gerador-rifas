@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.60.0 — 2026-11-19
+
+### Baru
+- **Target harian di panel admin:** pengelola menetapkan target per hari (sesi, pembuatan, nomor yang dibuat, unduhan…) dan melihat apakah hari terakhir mencapainya, rata-rata 7 hari terakhir, dan berapa hari target tercapai; laporan harian lewat email memuat bagian yang sama.
+
 ## 3.59.0 — 2026-11-19
 
 ### Baru

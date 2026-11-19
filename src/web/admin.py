@@ -23,7 +23,7 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, Field
 
-from . import VERSAO, alertas, config, email_envio, historico, opiniao, quotas, relatorio, relatorio_periodo
+from . import VERSAO, alertas, config, email_envio, historico, objetivos, opiniao, quotas, relatorio, relatorio_periodo
 from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
 from .metricas import DIAS_MAXIMOS, INTERVALOS, novo_painel
@@ -235,6 +235,36 @@ def evolucao(dias: int = Query(30, ge=1, le=historico.DIAS_HISTORICO_MAX), fuso:
     return serv.metricas.evolucao(dias, fuso, paineis_de_outras_tabelas(serv))
 
 
+@router.get("/objetivos", dependencies=[Depends(exigir)])
+def objetivos_do_dono(serv: Servico = Depends(servico)) -> dict:
+    """As metas diarias do dono e como foi o ultimo dia completo face a elas (so contagens)."""
+    fuso = ZoneInfo(config.relatorio_fuso())
+    try:
+        return objetivos.estado(serv.metricas, paineis_de_outras_tabelas(serv), serv.objetivos, fuso)
+    except Exception:  # noqa: BLE001 - a base em baixo: o painel mostra o aviso
+        raise HTTPException(503, "A base de dados nao respondeu: tente outra vez daqui a pouco.", headers=_SEM_CACHE) from None
+
+
+class NovoObjetivo(BaseModel):
+    chave: str
+    meta: float | None = Field(None, description="Meta por dia; vazio apaga o objetivo")
+
+
+@router.put("/objetivos", dependencies=[Depends(exigir_admin)])
+def definir_objetivo(o: NovoObjetivo, serv: Servico = Depends(servico)) -> dict:
+    """Define (ou, sem `meta`, apaga) o objetivo diario de um numero. So o dono."""
+    if o.chave not in objetivos.KPIS:
+        raise HTTPException(422, "Numero desconhecido", headers=_SEM_CACHE)
+    if o.meta is None:
+        serv.objetivos.apagar(o.chave)
+    elif not 0 < o.meta <= objetivos.META_MAX:
+        raise HTTPException(422, "A meta tem de ser maior que zero", headers=_SEM_CACHE)
+    else:
+        serv.objetivos.definir(o.chave, o.meta)
+    serv.metricas.evento("admin", "objetivo")
+    return {"chave": o.chave, "meta": o.meta}
+
+
 @router.get("/quotas", dependencies=[Depends(exigir)])
 def quotas_do_alojamento(serv: Servico = Depends(servico)) -> dict:
     """As horas do Render no mes e o espaco da base no Neon (estimativas deste servico), com a projecao e os avisos. Ver `quotas.py`."""
@@ -353,7 +383,7 @@ def relatorio_previa(dia: str = "", tipo: str = "dia", serv: Servico = Depends(s
     tipo = _tipo_pedido(tipo)
     try:
         if tipo == "dia":
-            return relatorio.construir(serv.metricas, paineis_de_outras_tabelas(serv), _dia_pedido(dia, fuso), fuso)
+            return relatorio.construir(serv.metricas, paineis_de_outras_tabelas(serv), _dia_pedido(dia, fuso), fuso, relatorio._metas(serv.objetivos))
         ini, fim = _periodo_pedido(tipo, dia, fuso)
         return relatorio_periodo.construir_periodo(serv.historico, serv.metricas, paineis_de_outras_tabelas(serv), tipo, ini, fim, fuso)
     except relatorio.ErroRelatorio as e:
@@ -371,7 +401,7 @@ def relatorio_enviar(dia: str = "", tipo: str = "dia", serv: Servico = Depends(s
     tipo = _tipo_pedido(tipo)
     try:
         if tipo == "dia":
-            relatorio.enviar_relatorio(serv.metricas, paineis_de_outras_tabelas(serv), _dia_pedido(dia, fuso), fuso, teste=True)
+            relatorio.enviar_relatorio(serv.metricas, paineis_de_outras_tabelas(serv), _dia_pedido(dia, fuso), fuso, teste=True, objetivos=relatorio._metas(serv.objetivos))
         else:
             ini, fim = _periodo_pedido(tipo, dia, fuso)
             relatorio_periodo.enviar_periodo(serv.historico, serv.metricas, paineis_de_outras_tabelas(serv), tipo, ini, fim, fuso, teste=True)

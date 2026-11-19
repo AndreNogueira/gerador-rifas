@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.60.0 — 2026-11-19
+
+### Neu
+- **Tagesziele im Admin-Panel:** der Betreiber legt ein Ziel pro Tag fest (Sitzungen, Erzeugungen, erzeugte Nummern, Downloads…) und sieht, ob der letzte Tag es erreicht hat, den 7-Tage-Durchschnitt und an wie vielen dieser Tage es erreicht wurde; der tägliche E-Mail-Bericht enthält denselben Abschnitt.
+
 ## 3.59.0 — 2026-11-19
 
 ### Neu

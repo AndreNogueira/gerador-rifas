@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.60.0 — 2026-11-19
+
+### Nytt
+- **Dagliga mål i adminpanelen:** ansvarig sätter ett mål per dag (sessioner, genereringar, genererade nummer, nedladdningar…) och ser om senaste dagen nådde det, 7-dagarssnittet och på hur många av dagarna det nåddes; den dagliga e-postrapporten har samma avsnitt.
+
 ## 3.59.0 — 2026-11-19
 
 ### Nytt
