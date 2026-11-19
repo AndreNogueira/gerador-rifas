@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.68.0 — 2026-11-19
+
+### Nieuw
+- **Drie nieuwe stappenplannen, per onderwerp** (niet per doelgroep): loten nummeren, een controleerbare trekking houden (verwijst naar de pagina «Trekking») en hoeveel loten tegen welke prijs. Te vinden onder «Alle stappenplannen» (`/como-fazer`), in 22 talen.
+
 ## 3.67.0 — 2026-11-19
 
 ### Nieuw

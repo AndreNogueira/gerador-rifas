@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.68.0 — 2026-11-19
+
+### Novinky
+- **Tři nové návody podle tématu** (ne podle publika): jak číslovat losy, jak uspořádat ověřitelné losování (odkazuje na stránku «Losování») a kolik losů vytisknout a za jakou cenu. Najdete je ve «Všechny návody» (`/como-fazer`), ve 22 jazycích.
+
 ## 3.67.0 — 2026-11-19
 
 ### Novinky

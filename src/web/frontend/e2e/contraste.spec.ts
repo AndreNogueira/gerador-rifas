@@ -29,6 +29,7 @@ const PAGINAS = [
   "/editor",
   "/como-fazer",
   "/rifas-para-escolas",
+  "/como-numerar-bilhetes-de-rifa",
   "/comentarios",
   "/opiniao",
   "/reportar-problema",

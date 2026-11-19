@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.68.0 — 2026-11-19
+
+### Novedades
+- **Tres guías nuevas, por tema** (no por público): cómo numerar los boletos de una rifa, cómo hacer un sorteo verificable (enlaza con la página «Sorteo») y cuántos boletos hacer y a qué precio. Están en «Todas las guías» (`/como-fazer`), en 22 idiomas.
+
 ## 3.67.0 — 2026-11-19
 
 ### Novedades

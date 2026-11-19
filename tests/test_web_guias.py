@@ -49,7 +49,7 @@ def test_estrutura_igual_em_todas_as_linguas(nome, lg):
         assert "{" not in texto and "}" not in texto and "<" not in texto, (lg, texto[:40])
 
 
-@pytest.mark.parametrize("nome", guias.NOMES)
+@pytest.mark.parametrize("nome", guias.PARA_PUBLICOS)
 def test_o_primeiro_passo_manda_confirmar_a_licenca_porque_as_regras_variam(nome):
     # nao se afirma nada sobre a lei: o 1.o passo (em todas as linguas) tem de mencionar a autoridade local/licenca; verifica-se so que nao e igual ao dos outros passos
     for lg in LINGUAS:

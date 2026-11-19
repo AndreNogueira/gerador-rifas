@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.68.0 — 2026-11-19
+
+### Novetats
+- **Tres guies noves, per tema** (no per públic): com numerar les butlletes d'una rifa, com fer un sorteig verificable (enllaça amb la pàgina «Sorteig») i quantes butlletes fer i a quin preu. Són a «Totes les guies» (`/como-fazer`), en 22 llengües.
+
 ## 3.67.0 — 2026-11-19
 
 ### Novetats

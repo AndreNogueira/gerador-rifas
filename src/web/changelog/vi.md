@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.68.0 — 2026-11-19
+
+### Mới
+- **Ba hướng dẫn mới, theo chủ đề** (không theo đối tượng): cách đánh số vé, cách bốc thăm có thể kiểm chứng (dẫn tới trang «Bốc thăm») và nên làm bao nhiêu vé, giá bao nhiêu. Có trong «Tất cả hướng dẫn» (`/como-fazer`), bằng 22 ngôn ngữ.
+
 ## 3.67.0 — 2026-11-19
 
 ### Mới

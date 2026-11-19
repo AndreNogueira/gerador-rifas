@@ -3,17 +3,20 @@
 
 Cada guia é um texto com título, introdução, 5 passos (título e texto), 3 dicas e uma frase final (um módulo por guia; uma língua por entrada,
 as traduções sem revisão nativa). A API entrega-o na língua do pedido (`/api/guia/{nome}`), o React desenha-o (`Guia.tsx`) e o `seo.py` põe o mesmo texto
-no HTML estático. As regras de licença de uma rifa variam por país e por tipo: por isso o 1.º passo de ambos manda confirmar na câmara municipal.
+no HTML estático. As regras de licença de uma rifa variam por país e por tipo: por isso o 1.º passo dos guias por público manda confirmar na câmara municipal. Há ainda três guias por TEMA (`numerar`, `sorteio`, `quantos`: `/como-numerar-bilhetes-de-rifa`, `/sorteio-de-rifa-verificavel`, `/quantos-bilhetes-de-rifa-fazer`), com as 22 línguas no próprio módulo.
 """
 from __future__ import annotations
 
 from ..seo_textos import sobreposto
-from . import associacoes, bombeiros, clubes, escolas, festas, igrejas, novas
+from . import associacoes, bombeiros, clubes, escolas, festas, igrejas, novas, numerar, quantos, sorteio
 
 DADOS = {"escolas": escolas.DADOS, "associacoes": associacoes.DADOS, "clubes": clubes.DADOS, "bombeiros": bombeiros.DADOS, "festas": festas.DADOS, "igrejas": igrejas.DADOS}
 for _nome, _novas in (("escolas", novas.ESCOLAS), ("associacoes", novas.ASSOCIACOES), ("clubes", novas.CLUBES), ("bombeiros", novas.BOMBEIROS), ("festas", novas.FESTAS), ("igrejas", novas.IGREJAS)):
     DADOS[_nome].update(_novas)                       # as linguas de um ficheiro so (docs/LINGUAS.md)
-CAMINHOS = {nome: f"/rifas-para-{nome}" for nome in DADOS}
+PARA_PUBLICOS = tuple(DADOS)                         # os guias por PUBLICO (`/rifas-para-<nome>`): o 1.o passo manda confirmar a licenca na camara municipal
+DADOS.update({"numerar": numerar.DADOS, "sorteio": sorteio.DADOS, "quantos": quantos.DADOS})   # os guias por TEMA (as 22 linguas no proprio modulo)
+CAMINHOS = {nome: f"/rifas-para-{nome}" for nome in PARA_PUBLICOS}
+CAMINHOS.update({"numerar": "/como-numerar-bilhetes-de-rifa", "sorteio": "/sorteio-de-rifa-verificavel", "quantos": "/quantos-bilhetes-de-rifa-fazer"})
 NOMES = tuple(DADOS)
 N_PASSOS, N_DICAS = 5, 3
 INDICE = "/como-fazer"                                # a pagina que lista todos os guias e liga a cada um (e cada guia liga de volta)

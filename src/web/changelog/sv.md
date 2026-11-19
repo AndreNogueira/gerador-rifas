@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.68.0 — 2026-11-19
+
+### Nytt
+- **Tre nya guider, efter ämne** (inte efter målgrupp): hur man numrerar lotter, hur man genomför en kontrollerbar dragning (länkar till sidan «Dragning») och hur många lotter till vilket pris. De finns under «Alla guider» (`/como-fazer`), på 22 språk.
+
 ## 3.67.0 — 2026-11-19
 
 ### Nytt

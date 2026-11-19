@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.68.0 — 2026-11-19
+
+### Nouveautés
+- **Trois nouveaux guides, par thème** (et non par public) : comment numéroter les billets d'une tombola, comment faire un tirage vérifiable (il renvoie à la page «Tirage») et combien de billets faire et à quel prix. Ils sont dans «Tous les guides» (`/como-fazer`), en 22 langues.
+
 ## 3.67.0 — 2026-11-19
 
 ### Nouveautés
