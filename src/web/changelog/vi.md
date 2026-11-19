@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.58.0 — 2026-11-19
+
+### Mới
+- **Hạn mức lưu trữ miễn phí trong bảng quản trị:** hiển thị dịch vụ đã dùng bao nhiêu trong 750 giờ Render mỗi tháng (kèm dự báo đến cuối tháng) và cơ sở dữ liệu chiếm bao nhiêu dung lượng trong gói miễn phí của Neon, có cảnh báo trong báo cáo email hằng ngày trước khi hạn mức hết.
+
 ## 3.57.0 — 2026-11-19
 
 ### Mới

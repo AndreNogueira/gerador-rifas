@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.58.0 — 2026-11-19
+
+### New
+- **Free-hosting quotas in the admin panel:** it shows how many of the 750 monthly Render hours the service has used (with a projection to the end of the month) and how much space the database takes on Neon's free plan, with a warning in the daily e-mail report before the quotas run out.
+
 ## 3.57.0 — 2026-11-19
 
 ### New

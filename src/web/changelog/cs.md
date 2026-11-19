@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.58.0 — 2026-11-19
+
+### Novinky
+- **Kvóty bezplatného hostingu v administračním panelu:** vidět, kolik z 750 měsíčních hodin Renderu služba spotřebovala (s předpovědí do konce měsíce) a kolik místa zabírá databáze v bezplatném plánu Neon, s varováním v denní e-mailové zprávě dříve, než kvóty dojdou.
+
 ## 3.57.0 — 2026-11-19
 
 ### Novinky

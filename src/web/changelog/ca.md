@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.58.0 — 2026-11-19
+
+### Novetats
+- **Quotes de l'allotjament gratuït al tauler d'administració:** es veu quantes de les 750 hores mensuals de Render ha gastat el servei (amb la projecció fins a final de mes) i quant d'espai ocupa la base de dades al pla gratuït de Neon, amb avís a l'informe diari per correu abans que s'esgotin.
+
 ## 3.57.0 — 2026-11-19
 
 ### Novetats

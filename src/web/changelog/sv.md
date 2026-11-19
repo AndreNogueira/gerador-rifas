@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.58.0 — 2026-11-19
+
+### Nytt
+- **Kvoter för gratis webbhotell i adminpanelen:** man ser hur många av Renders 750 timmar per månad tjänsten har använt (med prognos till månadens slut) och hur mycket utrymme databasen tar i Neons gratisplan, med varning i den dagliga e-postrapporten innan kvoterna tar slut.
+
 ## 3.57.0 — 2026-11-19
 
 ### Nytt

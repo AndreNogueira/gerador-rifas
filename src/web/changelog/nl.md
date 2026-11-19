@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.58.0 — 2026-11-19
+
+### Nieuw
+- **Quota van de gratis hosting in het beheerpaneel:** te zien is hoeveel van de 750 Render-uren per maand de dienst heeft verbruikt (met een projectie tot het einde van de maand) en hoeveel ruimte de database inneemt in het gratis plan van Neon, met een waarschuwing in het dagelijkse e-mailrapport voordat de quota op zijn.
+
 ## 3.57.0 — 2026-11-19
 
 ### Nieuw

@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.58.0 — 2026-11-19
+
+### Nowości
+- **Limity darmowego hostingu w panelu administracyjnym:** widać, ile z 750 miesięcznych godzin Render usługa już zużyła (z prognozą do końca miesiąca) i ile miejsca zajmuje baza danych w darmowym planie Neon, z ostrzeżeniem w dziennym raporcie e-mail, zanim limity się skończą.
+
 ## 3.57.0 — 2026-11-19
 
 ### Nowości

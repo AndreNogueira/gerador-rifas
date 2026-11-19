@@ -273,12 +273,31 @@ export interface RelatorioPrevia {
   alertas: number;
 }
 
+export interface QuotasEstado {
+  render: {
+    mes: string;
+    gastas: number;
+    limite: number;
+    pct: number;
+    /** Horas até ao fim do mês ao ritmo atual (null até haver um dia de dados). */
+    projecao: number | null;
+    horas_do_mes: number;
+    decorridas: number;
+    persistente: boolean;
+    /** Só há amostras desde este instante (o mês já ia a meio): o que é anterior não se contou. */
+    dados_desde: number | null;
+  };
+  neon: { total_mb: number; limite_mb: number; pct: number; tabelas: { nome: string; mb: number }[] } | null;
+  avisos: string[];
+}
+
 export type TipoRelatorio = "dia" | "semana" | "mes";
 
 const consultaRelatorio = (dia: string, tipo: TipoRelatorio) =>
   `tipo=${tipo}${dia ? `&dia=${encodeURIComponent(dia)}` : ""}`;
 
 export const adminApi = {
+  quotas: () => ver<QuotasEstado>("/api/admin/quotas"),
   relatorio: () => ver<RelatorioEstado>("/api/admin/relatorio"),
   relatorioPrevia: (dia: string, tipo: TipoRelatorio = "dia") =>
     ver<RelatorioPrevia>(`/api/admin/relatorio/previa?${consultaRelatorio(dia, tipo)}`),

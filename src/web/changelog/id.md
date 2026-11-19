@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.58.0 — 2026-11-19
+
+### Baru
+- **Kuota hosting gratis di panel admin:** terlihat berapa dari 750 jam Render per bulan yang sudah terpakai layanan (dengan proyeksi hingga akhir bulan) dan berapa ruang yang dipakai database di paket gratis Neon, dengan peringatan di laporan harian lewat email sebelum kuota habis.
+
 ## 3.57.0 — 2026-11-19
 
 ### Baru

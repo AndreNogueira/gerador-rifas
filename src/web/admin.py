@@ -23,7 +23,7 @@ from zoneinfo import ZoneInfo
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 from pydantic import BaseModel, Field
 
-from . import VERSAO, alertas, config, email_envio, historico, relatorio, relatorio_periodo
+from . import VERSAO, alertas, config, email_envio, historico, quotas, relatorio, relatorio_periodo
 from . import seo_bd
 from .chaves_api import QUOTA_PADRAO
 from .metricas import DIAS_MAXIMOS, INTERVALOS, novo_painel
@@ -233,6 +233,12 @@ def evolucao(dias: int = Query(30, ge=1, le=historico.DIAS_HISTORICO_MAX), fuso:
         except Exception:  # noqa: BLE001 - a base em baixo: o painel mostra o aviso de sempre
             raise HTTPException(503, "O historico nao respondeu: tente outra vez daqui a pouco.", headers=_SEM_CACHE) from None
     return serv.metricas.evolucao(dias, fuso, paineis_de_outras_tabelas(serv))
+
+
+@router.get("/quotas", dependencies=[Depends(exigir)])
+def quotas_do_alojamento(serv: Servico = Depends(servico)) -> dict:
+    """As horas do Render no mes e o espaco da base no Neon (estimativas deste servico), com a projecao e os avisos. Ver `quotas.py`."""
+    return quotas.estado(serv.metricas)
 
 
 @router.get("/comentarios", dependencies=[Depends(exigir)])

@@ -541,3 +541,22 @@
 .marca-versao {
   color: var(--suave);
 }
+
+// a barra das quotas do alojamento (horas do Render, espaço do Neon): cheia a 100 %, cor de aviso a partir de 80-90 %
+.barra-quota {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--linha);
+  overflow: hidden;
+  margin: 6px 0;
+
+  span {
+    display: block;
+    height: 100%;
+    background: var(--nav-ativo);
+  }
+
+  &.aviso span {
+    background: var(--aviso, #b45309);
+  }
+}

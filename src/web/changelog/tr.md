@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.58.0 — 2026-11-19
+
+### Yeni
+- **Yönetim panelinde ücretsiz barındırma kotaları:** hizmetin Render'ın aylık 750 saatinden kaçını kullandığı (ay sonuna kadar projeksiyonla) ve veritabanının Neon'un ücretsiz planında ne kadar yer kapladığı görülür; kotalar bitmeden önce günlük e-posta raporunda uyarı gelir.
+
 ## 3.57.0 — 2026-11-19
 
 ### Yeni
