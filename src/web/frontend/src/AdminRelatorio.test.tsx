@@ -93,7 +93,9 @@ describe("o relatório diário no painel", () => {
     await userEvent.click(screen.getByTestId("admin-relatorio-enviar"));
     expect(await screen.findByTestId("admin-relatorio-aviso")).toHaveTextContent("E-mail de teste enviado");
     expect(
-      pedidos.some((p) => p.metodo === "POST" && p.url === "/api/admin/relatorio/enviar?tipo=dia&dia=2026-11-17"),
+      pedidos.some(
+        (p) => p.metodo === "POST" && p.url === "/api/admin/relatorio/enviar?tipo=dia&dia=2026-11-17",
+      ),
     ).toBe(true);
   });
 
