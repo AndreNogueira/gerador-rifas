@@ -57,7 +57,8 @@ export function AdminCopia({ leitura, aoSairDaSessao }: { leitura: boolean; aoSa
         Todas as segundas-feiras, depois da meia-noite, o serviço grava no armazenamento do Neon uma cópia dos
         dados que não se refazem: o histórico diário, os objetivos, o registo de ações, os comentários, os
         textos de SEO e as chaves da API (só o hash). Guardam-se as últimas {estado?.posicoes ?? 8} semanas,
-        em posições rotativas. A credencial do serviço só consegue escrever: nunca lê nem apaga as cópias.
+        em posições rotativas. O serviço só grava; mas a credencial do Neon (storage:write) também lê e apaga
+        e vale para todos os buckets do ramo: guarde-a só no Render.
       </p>
       {!estado && <p aria-busy="true">…</p>}
       {estado &&
