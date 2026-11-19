@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.56.0 — 2026-11-19
+
+### Yeni
+- **Site sorumlusu için haftalık ve aylık e-posta özeti:** pazartesi günleri haftanın, ayın 1'inde ayın özeti gelir; toplamlar önceki dönemle karşılaştırılır ve her günün küçük bir grafiği bulunur. Kalıcı geçmişten okurlar. Yalnızca sayımlar.
+
 ## 3.55.0 — 2026-11-19
 
 ### Yeni

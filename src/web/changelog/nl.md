@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.56.0 — 2026-11-19
+
+### Nieuw
+- **Wekelijkse en maandelijkse e-mailsamenvatting voor de beheerder van de site:** op maandag komt de samenvatting van de week en op de 1e die van de maand, met de totalen vergeleken met de vorige periode en een miniatuur van elke dag. Ze lezen uit de permanente geschiedenis. Alleen aantallen.
+
 ## 3.55.0 — 2026-11-19
 
 ### Nieuw

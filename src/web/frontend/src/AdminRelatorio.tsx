@@ -5,6 +5,7 @@ import {
   NaoAutenticado,
   type RelatorioEstado,
   type RelatorioPrevia,
+  type TipoRelatorio,
 } from "./admin-api";
 import { Icone } from "./icones";
 
@@ -26,6 +27,7 @@ export function AdminRelatorio({
   const [estado, setEstado] = useState<RelatorioEstado | null>(null);
   const [previa, setPrevia] = useState<RelatorioPrevia | null>(null);
   const [dia, setDia] = useState("");
+  const [tipo, setTipo] = useState<TipoRelatorio>("dia");
   const [aFazer, setAFazer] = useState<"" | "previa" | "enviar">("");
   const [aviso, setAviso] = useState<{ ok: boolean; texto: string } | null>(null);
 
@@ -53,7 +55,7 @@ export function AdminRelatorio({
     setAFazer("previa");
     setAviso(null);
     try {
-      setPrevia(await adminApi.relatorioPrevia(dia));
+      setPrevia(await adminApi.relatorioPrevia(dia, tipo));
     } catch (e) {
       falhou(e, "Não foi possível montar o relatório.");
     } finally {
@@ -81,7 +83,7 @@ export function AdminRelatorio({
     setAFazer("enviar");
     setAviso(null);
     try {
-      await adminApi.relatorioEnviar(dia);
+      await adminApi.relatorioEnviar(dia, tipo);
       setAviso({
         ok: true,
         texto: "E-mail de teste enviado: veja a caixa de entrada (e o spam, da primeira vez).",
@@ -111,6 +113,17 @@ export function AdminRelatorio({
               {estado.ultimo
                 ? ` Último relatório enviado: o de ${estado.ultimo.dia}, em ${quando(estado.ultimo.enviado)}.`
                 : " Ainda não saiu nenhum."}
+              {estado.periodicos && (
+                <span data-testid="admin-relatorio-periodicos">
+                  {" "}
+                  Também chega um <b>resumo semanal</b> (segunda-feira
+                  {estado.ultimo_semana
+                    ? `; último: ${estado.ultimo_semana.dia.replace("semana:", "semana de ")}`
+                    : ""}
+                  ) e um <b>resumo mensal</b> (dia 1
+                  {estado.ultimo_mes ? `; último: ${estado.ultimo_mes.dia.replace("mes:", "mês ")}` : ""}).
+                </span>
+              )}
             </p>
           ) : (
             <div className="aviso-efemero" role="note" data-testid="admin-relatorio-desligado">
@@ -145,6 +158,18 @@ export function AdminRelatorio({
           )}
           <div className="botoes">
             <label className="seletor-admin">
+              <span>Relatório</span>
+              <select
+                value={tipo}
+                onChange={(e) => setTipo(e.target.value as TipoRelatorio)}
+                data-testid="admin-relatorio-tipo"
+              >
+                <option value="dia">Diário</option>
+                <option value="semana">Resumo semanal</option>
+                <option value="mes">Resumo mensal</option>
+              </select>
+            </label>
+            <label className="seletor-admin">
               <span>Dia</span>
               <input
                 type="date"
@@ -178,8 +203,9 @@ export function AdminRelatorio({
             )}
           </div>
           <p id="relatorio-dia-ajuda" className="explica">
-            Deixe o dia em branco para ontem (o que sai à meia-noite). O teste leva «[Teste]» no assunto e não
-            conta como o envio do dia.
+            Deixe o dia em branco para o último período completo (ontem, a semana ou o mês que acabaram); com
+            um dia, vê o período que o contém. Os resumos leem do histórico permanente. O teste leva «[Teste]»
+            no assunto e não conta como o envio do dia.
           </p>
           <h3>Alertas imediatos</h3>
           <p className="explica">

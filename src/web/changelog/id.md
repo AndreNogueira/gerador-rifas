@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.56.0 — 2026-11-19
+
+### Baru
+- **Ringkasan mingguan dan bulanan lewat email untuk pengelola situs:** hari Senin tiba ringkasan minggu itu dan tanggal 1 ringkasan bulan itu, dengan total dibandingkan periode sebelumnya dan miniatur tiap hari. Dibaca dari riwayat permanen. Hanya hitungan.
+
 ## 3.55.0 — 2026-11-19
 
 ### Baru

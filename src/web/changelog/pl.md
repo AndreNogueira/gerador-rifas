@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.56.0 — 2026-11-19
+
+### Nowości
+- **Tygodniowe i miesięczne podsumowanie e-mailem dla administratora serwisu:** w poniedziałki przychodzi podsumowanie tygodnia, a 1. dnia miesiąca — miesiąca, z sumami porównanymi z poprzednim okresem i miniaturą każdego dnia. Czytają z trwałej historii. Tylko liczby.
+
 ## 3.55.0 — 2026-11-19
 
 ### Nowości

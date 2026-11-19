@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.56.0 — 2026-11-19
+
+### Novo
+- **Resumo semanal e mensal por e-mail para o responsável do site:** às segundas-feiras chega o resumo da semana e no dia 1 o do mês, com os totais comparados com o período anterior e uma miniatura de cada dia. Lêem do histórico permanente. Só contagens.
+
 ## 3.55.0 — 2026-11-19
 
 ### Novo

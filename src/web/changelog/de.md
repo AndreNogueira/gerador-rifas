@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.56.0 — 2026-11-19
+
+### Neu
+- **Wöchentliche und monatliche E-Mail-Zusammenfassung für den Betreiber:** montags kommt die Wochenzusammenfassung und am 1. die des Monats, mit den Summen im Vergleich zum Vorzeitraum und einer Miniatur jedes Tages. Sie lesen aus dem dauerhaften Verlauf. Nur Zählwerte.
+
 ## 3.55.0 — 2026-11-19
 
 ### Neu

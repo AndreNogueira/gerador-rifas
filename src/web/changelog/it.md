@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.56.0 — 2026-11-19
+
+### Novità
+- **Riepilogo settimanale e mensile via e-mail per il responsabile del sito:** il lunedì arriva il riepilogo della settimana e il giorno 1 quello del mese, con i totali confrontati con il periodo precedente e una miniatura di ogni giorno. Leggono dallo storico permanente. Solo conteggi.
+
 ## 3.55.0 — 2026-11-19
 
 ### Novità

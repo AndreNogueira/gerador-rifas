@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.56.0 — 2026-11-19
+
+### Novinky
+- **Týdenní a měsíční souhrn e-mailem pro provozovatele webu:** v pondělí přijde souhrn týdne a 1. dne v měsíci souhrn měsíce, se součty porovnanými s předchozím obdobím a miniaturou každého dne. Čtou z trvalé historie. Pouze počty.
+
 ## 3.55.0 — 2026-11-19
 
 ### Novinky

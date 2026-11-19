@@ -22,6 +22,9 @@ beforeEach(() => {
     ultimo: { dia: "2026-11-18", enviado: 1_800_000_000 },
     erro: "",
     erro_em: null,
+    periodicos: true,
+    ultimo_semana: { dia: "semana:2026-11-09", enviado: 1_800_000_000 },
+    ultimo_mes: null,
     alertas: {
       ativo: true,
       espera_h: 6,
@@ -90,8 +93,19 @@ describe("o relatório diário no painel", () => {
     await userEvent.click(screen.getByTestId("admin-relatorio-enviar"));
     expect(await screen.findByTestId("admin-relatorio-aviso")).toHaveTextContent("E-mail de teste enviado");
     expect(
-      pedidos.some((p) => p.metodo === "POST" && p.url === "/api/admin/relatorio/enviar?dia=2026-11-17"),
+      pedidos.some(
+        (p) => p.metodo === "POST" && p.url === "/api/admin/relatorio/enviar?tipo=dia&dia=2026-11-17",
+      ),
     ).toBe(true);
+  });
+
+  it("mostra os resumos semanal e mensal e pede o tipo escolhido", async () => {
+    render(<AdminRelatorio leitura={false} aoSairDaSessao={() => {}} />);
+    expect(await screen.findByTestId("admin-relatorio-periodicos")).toHaveTextContent("semana de 2026-11-09");
+    await userEvent.selectOptions(screen.getByTestId("admin-relatorio-tipo"), "semana");
+    await userEvent.click(screen.getByTestId("admin-relatorio-ver"));
+    await screen.findByTestId("admin-relatorio-previa");
+    expect(pedidos.some((p) => p.url === "/api/admin/relatorio/previa?tipo=semana")).toBe(true);
   });
 
   it("lista as regras dos alertas, quando avisaram, e envia um alerta de teste", async () => {

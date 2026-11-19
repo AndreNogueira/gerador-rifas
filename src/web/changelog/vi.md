@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.56.0 — 2026-11-19
+
+### Mới
+- **Tóm tắt hằng tuần và hằng tháng qua email cho người phụ trách trang:** thứ Hai nhận tóm tắt của tuần và ngày 1 nhận tóm tắt của tháng, với tổng số so với kỳ trước và hình thu nhỏ của từng ngày. Chúng đọc từ lịch sử vĩnh viễn. Chỉ có số đếm.
+
 ## 3.55.0 — 2026-11-19
 
 ### Mới

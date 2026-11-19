@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.56.0 — 2026-11-19
+
+### New
+- **Weekly and monthly e-mail summary for the site owner:** on Mondays the week's summary arrives and on the 1st the month's, with totals compared with the previous period and a thumbnail of each day. They read from the permanent history. Counts only.
+
 ## 3.55.0 — 2026-11-19
 
 ### New

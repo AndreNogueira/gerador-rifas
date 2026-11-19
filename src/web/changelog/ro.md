@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.56.0 — 2026-11-19
+
+### Noutăți
+- **Rezumat săptămânal și lunar prin e-mail pentru responsabilul site-ului:** luni sosește rezumatul săptămânii, iar pe 1 cel al lunii, cu totalurile comparate cu perioada anterioară și o miniatură a fiecărei zile. Citesc din istoricul permanent. Doar numărători.
+
 ## 3.55.0 — 2026-11-19
 
 ### Noutăți
