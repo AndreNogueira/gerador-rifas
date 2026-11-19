@@ -57,6 +57,12 @@ def _aceita(accept_encoding: str, nome: str) -> bool:
     return False
 
 
+# Os tipos dos ficheiros que o site serve, FIXOS e iguais em todos os sistemas: o `mimetypes` do Python le o registo do Windows (onde `.js` e `application/javascript` e `.mjs` e
+# `text/plain`), e com `nosniff` um tipo errado impede o browser de executar o ficheiro. Em Linux (o Render) ja saem certos; assim tambem saem a correr no Windows.
+for _tipo, _extensao in (("text/javascript", ".js"), ("text/javascript", ".mjs"), ("text/css", ".css"), ("application/manifest+json", ".webmanifest"), ("font/woff2", ".woff2"),
+                         ("font/woff", ".woff"), ("font/ttf", ".ttf"), ("image/webp", ".webp"), ("image/svg+xml", ".svg"), ("application/json", ".json"), ("text/plain", ".txt")):
+    mimetypes.add_type(_tipo, _extensao)
+
 # Cabecalhos de seguranca em TODA a resposta. `nosniff`: o browser respeita o Content-Type (um ficheiro com o tipo errado deixa de se executar: `tests/test_web_cabecalhos.py`
 # verifica o de cada ficheiro do `dist`); `SAMEORIGIN`: so este site se desenha dentro de uma `<iframe>` (a pre-visualizacao do PDF); a `Permissions-Policy` fecha o que o site
 # nunca usa (nao lista o que os anuncios precisam); o HSTS so com HTTPS e sem `includeSubDomains`/`preload` (o dominio `onrender.com` nao e nosso). Sem CSP por agora:
