@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.57.0 — 2026-11-19
+
+### Baru
+- **Penanda versi pada grafik panel admin:** setiap grafik harian menandai hari ketika versi baru aplikasi tiba (dan laporan harian menyebut versi mana), sehingga kenaikan kesalahan atau waktu respons dapat dikaitkan dengan pembaruan penyebabnya.
+
 ## 3.56.0 — 2026-11-19
 
 ### Baru

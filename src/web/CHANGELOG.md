@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.57.0 — 2026-11-19
+
+### Novo
+- **Marcas de versão nos gráficos do painel de administração:** cada gráfico diário assinala o dia em que chegou uma versão nova da app (e o relatório diário diz qual), para ligar uma subida de erros ou de tempo de resposta à atualização que a causou.
+
 ## 3.56.0 — 2026-11-19
 
 ### Novo

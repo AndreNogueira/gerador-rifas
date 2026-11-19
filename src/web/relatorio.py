@@ -196,6 +196,9 @@ def alertas(ev: dict, paineis: dict[str, dict], dia: date, inicio_ts: int) -> li
         saida.append(("info", f"O serviço arrancou {_pl(n, 'vez', 'vezes')} (atualizações ou adormecer/acordar)."))
     if (n := hoje("limites")):
         saida.append(("info", f"{_pl(n, 'pedido foi recusado', 'pedidos foram recusados')} por limites (pedidos por minuto, geração em curso…)."))
+    novas = [v["versao"] for v in ev.get("versoes", []) if v["dia"] == dia.isoformat()]
+    if novas:
+        saida.append(("info", f"{'Chegou a versão' if len(novas) == 1 else 'Chegaram as versões'} {', '.join(novas)} neste dia."))
     if hoje("sessoes") == 0:
         saida.append(("info", "Ninguém abriu o gerador neste dia."))
     return saida

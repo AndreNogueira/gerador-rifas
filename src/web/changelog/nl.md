@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.57.0 — 2026-11-19
+
+### Nieuw
+- **Versiemarkeringen in de grafieken van het beheerpaneel:** elke dagelijkse grafiek markeert de dag waarop een nieuwe appversie kwam (en het dagrapport zegt welke), zodat een stijging van fouten of reactietijd gekoppeld kan worden aan de update die haar veroorzaakte.
+
 ## 3.56.0 — 2026-11-19
 
 ### Nieuw

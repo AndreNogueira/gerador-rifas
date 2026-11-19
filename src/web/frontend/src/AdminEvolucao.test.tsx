@@ -169,6 +169,34 @@ describe("a vista «Evolução diária»", () => {
     expect(pedidos.some((u) => u.startsWith("/api/admin/evolucao?dias=365&"))).toBe(true);
   });
 
+  it("marca nos gráficos o dia em que chegou uma versão e explica a marca", async () => {
+    const original = fetch;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (entrada: RequestInfo | URL, init?: RequestInit) => {
+        const r = await original(entrada, init);
+        const corpo = (await r.json()) as Evolucao;
+        return new Response(
+          JSON.stringify({ ...corpo, versoes: [{ dia: "2027-01-14", versao: "3.57.0" }] }),
+          { status: 200 },
+        );
+      }),
+    );
+    render(<AdminEvolucao aoSairDaSessao={() => {}} />);
+    await screen.findByTestId("evolucao-grupo-Utilização");
+    expect(screen.getByTestId("evolucao-legenda-versoes")).toBeInTheDocument();
+    const marcas = screen.getAllByTestId("grafico-versao");
+    expect(marcas.length).toBeGreaterThan(0);
+    expect(marcas[0]).toHaveTextContent("Versão 3.57.0");
+  });
+
+  it("sem versões na janela não aparece legenda nem marcas", async () => {
+    render(<AdminEvolucao aoSairDaSessao={() => {}} />);
+    await screen.findByTestId("evolucao-grupo-Utilização");
+    expect(screen.queryByTestId("evolucao-legenda-versoes")).toBeNull();
+    expect(screen.queryAllByTestId("grafico-versao")).toHaveLength(0);
+  });
+
   it("sem sessão (404) avisa o painel para voltar a pedir a palavra-passe", async () => {
     vi.stubGlobal(
       "fetch",

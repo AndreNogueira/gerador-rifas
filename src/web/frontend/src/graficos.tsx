@@ -569,12 +569,15 @@ export function GraficoDiario({
   series,
   tipo,
   unidade = "",
+  versoes = {},
 }: {
   titulo: string;
   dias: string[];
   series: SerieDia[];
   tipo: "barras" | "linhas";
   unidade?: string;
+  /** As versões da app que chegaram em cada dia (`aaaa-mm-dd` → versões): uma marca vertical nesse dia e a lista no balão. */
+  versoes?: Record<string, string[]>;
 }) {
   const [ativo, setAtivo] = useState<number | null>(null);
   const n = dias.length;
@@ -639,6 +642,15 @@ export function GraficoDiario({
             >
               {rotuloDia(d)}
             </text>
+          ) : null,
+        )}
+        {dias.map((d, i) =>
+          versoes[d] ? (
+            <g key={`v${d}`} className="grafico-versao" data-testid="grafico-versao">
+              <title>{`Versão ${(versoes[d] as string[]).join(", ")}`}</title>
+              <line x1={x(i) + bloco / 2} x2={x(i) + bloco / 2} y1={MARGEM.c} y2={MARGEM.c + AREA.a} />
+              <path d={`M${x(i) + bloco / 2 - 4} ${MARGEM.c + AREA.a + 7}h8l-4 -7z`} />
+            </g>
           ) : null,
         )}
         {empilhado &&
@@ -711,6 +723,11 @@ export function GraficoDiario({
               {s.nome}: {fmt(s.valores[ativo] ?? null)}
             </span>
           ))}
+          {versoes[dias[ativo] as string] && (
+            <span data-testid="balao-versao">
+              ▲ Versão {(versoes[dias[ativo] as string] as string[]).join(", ")}
+            </span>
+          )}
         </div>
       )}
     </figure>

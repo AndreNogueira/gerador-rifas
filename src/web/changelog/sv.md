@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.57.0 — 2026-11-19
+
+### Nytt
+- **Versionsmarkeringar i adminpanelens diagram:** varje dagsdiagram markerar dagen då en ny appversion kom (och dagsrapporten anger vilken), så att en ökning av fel eller svarstid kan kopplas till uppdateringen som orsakade den.
+
 ## 3.56.0 — 2026-11-19
 
 ### Nytt

@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.57.0 — 2026-11-19
+
+### Novità
+- **Indicatori di versione nei grafici del pannello di amministrazione:** ogni grafico giornaliero segnala il giorno in cui è arrivata una nuova versione dell'app (e il rapporto giornaliero dice quale), per collegare un aumento di errori o dei tempi di risposta all'aggiornamento che lo ha causato.
+
 ## 3.56.0 — 2026-11-19
 
 ### Novità

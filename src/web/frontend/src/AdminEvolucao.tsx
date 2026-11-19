@@ -65,7 +65,15 @@ function formatarValor(v: number | null, p: PainelDiario): string {
   return v === null ? "—" : `${formatarNumero(v)}${p.unidade}`;
 }
 
-function Painel({ p, dias }: { p: PainelDiario; dias: string[] }) {
+function Painel({
+  p,
+  dias,
+  versoes,
+}: {
+  p: PainelDiario;
+  dias: string[];
+  versoes: Record<string, string[]>;
+}) {
   const series = p.series.map((s, i) => {
     const nome = p.rotulos === "pais" ? nomePais(s.nome) : s.nome;
     return { nome, cor: corDaSerie(s.nome, i), valores: s.valores };
@@ -93,7 +101,14 @@ function Painel({ p, dias }: { p: PainelDiario; dias: string[] }) {
               ))}
             </ul>
           )}
-          <GraficoDiario titulo={p.titulo} dias={dias} series={series} tipo={p.tipo} unidade={p.unidade} />
+          <GraficoDiario
+            titulo={p.titulo}
+            dias={dias}
+            series={series}
+            tipo={p.tipo}
+            unidade={p.unidade}
+            versoes={versoes}
+          />
         </>
       ) : (
         <p className="sem-dados-diario">Ainda sem registos neste período.</p>
@@ -147,6 +162,12 @@ export function AdminEvolucao({ aoSairDaSessao }: { aoSairDaSessao: () => void }
     const a = setInterval(() => void carregar(), 60000);
     return () => clearInterval(a);
   }, [carregar]);
+
+  const versoesPorDia = useMemo(() => {
+    const m: Record<string, string[]> = {};
+    for (const v of dados?.versoes ?? []) m[v.dia] = [...(m[v.dia] ?? []), v.versao];
+    return m;
+  }, [dados]);
 
   const grupos = useMemo(() => {
     const m = new Map<string, PainelDiario[]>();
@@ -222,6 +243,12 @@ export function AdminEvolucao({ aoSairDaSessao }: { aoSairDaSessao: () => void }
             pedidos e sistema: os dias mais antigos aparecem vazios.
           </p>
         )}
+        {Object.keys(versoesPorDia).length > 0 && (
+          <p className="explica" data-testid="evolucao-legenda-versoes">
+            <span className="marca-versao">▲</span> nos gráficos marca o dia em que chegou uma versão nova da
+            app (passe o rato para ver qual).
+          </p>
+        )}
         {dados && (
           <div className="stats" data-testid="evolucao-destaques">
             {DESTAQUES.map(([id, rotulo, sub]) => {
@@ -255,7 +282,7 @@ export function AdminEvolucao({ aoSairDaSessao }: { aoSairDaSessao: () => void }
             <h2 id={`evolucao-g-${grupo}`}>{grupo}</h2>
             <div className="graficos">
               {paineis.map((p) => (
-                <Painel key={p.id} p={p} dias={dados.dias_lista} />
+                <Painel key={p.id} p={p} dias={dados.dias_lista} versoes={versoesPorDia} />
               ))}
             </div>
           </section>
