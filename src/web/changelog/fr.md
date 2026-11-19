@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.55.0 — 2026-11-19
+
+### Nouveautés
+- **Alertes immédiates par e-mail pour le responsable du site :** en cas de série d'erreurs serveur, de redémarrages du moteur, de mémoire proche de la limite ou de base de données muette, un avertissement arrive aussitôt (sans attendre le rapport quotidien et sans se répéter pendant 6 heures). Uniquement des comptages.
+
 ## 3.54.0 — 2026-11-19
 
 ### Nouveautés

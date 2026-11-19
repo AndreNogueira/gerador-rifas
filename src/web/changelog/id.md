@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.55.0 — 2026-11-19
+
+### Baru
+- **Peringatan email instan untuk pengelola situs:** jika terjadi rentetan kesalahan server, restart mesin, memori mendekati batas, atau database tidak merespons, peringatan langsung tiba (tanpa menunggu laporan harian dan tanpa mengulang selama 6 jam). Hanya hitungan.
+
 ## 3.54.0 — 2026-11-19
 
 ### Baru

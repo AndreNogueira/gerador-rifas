@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.55.0 — 2026-11-19
+
+### Nytt
+- **Omedelbara e-postlarm till webbplatsens ansvarige:** vid en rad serverfel, omstarter av motorn, minne nära gränsen eller en databas som inte svarar kommer en varning direkt (utan att vänta på dagsrapporten och utan upprepning i 6 timmar). Bara antal.
+
 ## 3.54.0 — 2026-11-19
 
 ### Nytt

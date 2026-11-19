@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.55.0 — 2026-11-19
+
+### Yeni
+- **Site sorumlusu için anlık e-posta uyarıları:** sunucu hataları dizisi, motor yeniden başlatmaları, sınıra yakın bellek veya yanıt vermeyen veritabanı olursa uyarı hemen gelir (günlük raporu beklemeden ve 6 saat tekrar etmeden). Yalnızca sayımlar.
+
 ## 3.54.0 — 2026-11-19
 
 ### Yeni

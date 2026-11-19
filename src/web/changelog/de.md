@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.55.0 — 2026-11-19
+
+### Neu
+- **Sofortige E-Mail-Warnungen für den Betreiber:** bei einer Serie von Serverfehlern, Neustarts der Engine, Speicher nahe am Limit oder nicht antwortender Datenbank kommt sofort eine Warnung (ohne auf den Tagesbericht zu warten und ohne Wiederholung für 6 Stunden). Nur Zählwerte.
+
 ## 3.54.0 — 2026-11-19
 
 ### Neu

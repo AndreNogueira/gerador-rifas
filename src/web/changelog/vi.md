@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.55.0 — 2026-11-19
+
+### Mới
+- **Cảnh báo email tức thì cho người phụ trách trang:** khi có chuỗi lỗi máy chủ, động cơ khởi động lại, bộ nhớ gần giới hạn hoặc cơ sở dữ liệu không phản hồi, cảnh báo đến ngay (không chờ báo cáo hằng ngày và không lặp lại trong 6 giờ). Chỉ có số đếm.
+
 ## 3.54.0 — 2026-11-19
 
 ### Mới

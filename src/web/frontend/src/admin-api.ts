@@ -249,6 +249,14 @@ export interface RelatorioEstado {
   ultimo: { dia: string; enviado: number } | null;
   erro: string;
   erro_em: number | null;
+  alertas: {
+    ativo: boolean;
+    espera_h: number;
+    regras: { chave: string; texto: string }[];
+    /** Quando se avisou de cada condição pela última vez (segundos desde 1970), ou null. */
+    ultimos: Record<string, number | null>;
+    erro: string;
+  };
 }
 
 export interface RelatorioPrevia {
@@ -263,6 +271,9 @@ export const adminApi = {
   relatorio: () => ver<RelatorioEstado>("/api/admin/relatorio"),
   relatorioPrevia: (dia: string) =>
     ver<RelatorioPrevia>(`/api/admin/relatorio/previa${dia ? `?dia=${encodeURIComponent(dia)}` : ""}`),
+  async alertaTeste(): Promise<void> {
+    await pedirJson("/api/admin/relatorio/alerta-teste", "POST");
+  },
   async relatorioEnviar(dia: string): Promise<void> {
     await pedirJson(`/api/admin/relatorio/enviar${dia ? `?dia=${encodeURIComponent(dia)}` : ""}`, "POST");
   },

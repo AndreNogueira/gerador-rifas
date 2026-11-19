@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.55.0 — 2026-11-19
+
+### Novo
+- **Alertas imediatos por e-mail para o responsável do site:** se houver uma sequência de erros do servidor, reinícios do motor, memória perto do limite ou a base de dados sem resposta, chega logo um aviso (sem esperar pelo relatório diário e sem repetir durante 6 horas). Só contagens.
+
 ## 3.54.0 — 2026-11-19
 
 ### Novo

@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.55.0 — 2026-11-19
+
+### Nieuw
+- **Directe e-mailmeldingen voor de beheerder van de site:** bij een reeks serverfouten, herstarts van de engine, geheugen vlak bij de limiet of een database die niet reageert, komt er meteen een waarschuwing (zonder te wachten op het dagrapport en zonder herhaling gedurende 6 uur). Alleen aantallen.
+
 ## 3.54.0 — 2026-11-19
 
 ### Nieuw

@@ -26,6 +26,7 @@ from .metricas import Metricas, classe_do_ecra, dispositivo, familia, modelo_lim
 from . import github_issues
 from .observabilidade import Observabilidade
 from .opiniao import POR_IP_E_HORA, LimiteHorario
+from .alertas import EstadoAlertas
 from .relatorio import EstadoRelatorio
 from .modelos import Calculo, Campos, Ecra, ErroApi, Sessao, TrabalhoEstado
 from .sessoes import (Geracao, SessaoEstado, Sessoes, calcular, folha_dos_campos, ler_progresso, texto_de_erro,
@@ -52,6 +53,8 @@ class Servico:
     limite_problemas_total: LimiteHorario = field(default_factory=lambda: LimiteHorario(20))    # e no site todo
     relatorios: object | None = None                                        # `relatorio.RelatoriosEnviados`: os dias cujo relatorio diario ja foi enviado
     historico: object | None = None                                         # `historico.HistoricoDiario`: uma linha-resumo por dia, para sempre
+    alertas: object | None = None                                           # `alertas.AlertasEnviados`: quando se avisou de cada condicao
+    estado_alertas: object = field(default_factory=EstadoAlertas)
     estado_relatorio: object = field(default_factory=EstadoRelatorio)       # o ultimo erro e a proxima tentativa do envio
     criar_issue: object = github_issues.criar_issue                         # troca-se nos testes: nunca se chama o GitHub a sério
 
