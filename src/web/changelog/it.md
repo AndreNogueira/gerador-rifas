@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.68.0 — 2026-11-19
+
+### Novità
+- **Tre nuove guide, per tema** (non per pubblico): come numerare i biglietti di una lotteria, come fare un'estrazione verificabile (rimanda alla pagina «Estrazione») e quanti biglietti fare e a che prezzo. Sono in «Tutte le guide» (`/como-fazer`), in 22 lingue.
+
 ## 3.67.0 — 2026-11-19
 
 ### Novità

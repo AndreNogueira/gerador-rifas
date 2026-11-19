@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.68.0 — 2026-11-19
+
+### Novo
+- **Três guias novos, por tema** (não por público): como numerar os bilhetes de uma rifa, como fazer um sorteio verificável (liga à página «Sorteio») e quantos bilhetes fazer e a que preço. Estão em «Todos os guias» (`/como-fazer`), nas 22 línguas.
+
 ## 3.67.0 — 2026-11-19
 
 ### Novo

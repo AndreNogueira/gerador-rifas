@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.68.0 — 2026-11-19
+
+### Noutăți
+- **Trei ghiduri noi, pe teme** (nu pe public): cum numerotezi biletele, cum faci o tragere verificabilă (trimite la pagina «Tragere») și câte bilete faci și la ce preț. Sunt în «Toate ghidurile» (`/como-fazer`), în 22 de limbi.
+
 ## 3.67.0 — 2026-11-19
 
 ### Noutăți

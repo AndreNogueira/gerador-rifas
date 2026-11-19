@@ -436,7 +436,11 @@ export class ServidorFalso {
       const nome = url.slice("/api/guia/".length);
       return this.responder({
         titulo:
-          nome === "escolas" ? "Como fazer uma rifa para a escola" : "Como fazer uma rifa para a associação",
+          nome === "escolas"
+            ? "Como fazer uma rifa para a escola"
+            : nome === "numerar"
+              ? "Como numerar os bilhetes de uma rifa"
+              : "Como fazer uma rifa para a associação",
         intro: "Uma introdução de teste.",
         passos: [1, 2, 3, 4, 5].map((n) => ({ titulo: `Passo ${n}`, texto: `O texto do passo ${n}.` })),
         dicas: ["Dica 1", "Dica 2", "Dica 3"],

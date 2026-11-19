@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.68.0 — 2026-11-19
+
+### Neu
+- **Drei neue Anleitungen, nach Thema** (nicht nach Zielgruppe): Lose nummerieren, eine nachprüfbare Ziehung durchführen (verweist auf die Seite «Ziehung») und wie viele Lose zu welchem Preis. Zu finden unter «Alle Anleitungen» (`/como-fazer`), in 22 Sprachen.
+
 ## 3.67.0 — 2026-11-19
 
 ### Neu

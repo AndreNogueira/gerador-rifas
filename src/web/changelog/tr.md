@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.68.0 — 2026-11-19
+
+### Yeni
+- **Konuya göre üç yeni rehber** (hedef kitleye göre değil): biletler nasıl numaralandırılır, doğrulanabilir çekiliş nasıl yapılır («Çekiliş» sayfasına bağlanır) ve kaç bilet hangi fiyata. «Tüm rehberler» içinde (`/como-fazer`), 22 dilde.
+
 ## 3.67.0 — 2026-11-19
 
 ### Yeni

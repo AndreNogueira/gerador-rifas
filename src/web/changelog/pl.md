@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.68.0 — 2026-11-19
+
+### Nowości
+- **Trzy nowe poradniki, według tematu** (nie odbiorcy): jak numerować losy, jak przeprowadzić weryfikowalne losowanie (odsyła do strony «Losowanie») oraz ile losów zrobić i w jakiej cenie. Są we «Wszystkie poradniki» (`/como-fazer`), w 22 językach.
+
 ## 3.67.0 — 2026-11-19
 
 ### Nowości

@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.68.0 — 2026-11-19
+
+### Baru
+- **Tiga panduan baru, per topik** (bukan per kelompok): cara memberi nomor tiket, cara menggelar pengundian yang dapat diverifikasi (menaut ke halaman «Pengundian») dan berapa tiket yang dibuat dengan harga berapa. Ada di «Semua panduan» (`/como-fazer`), dalam 22 bahasa.
+
 ## 3.67.0 — 2026-11-19
 
 ### Baru

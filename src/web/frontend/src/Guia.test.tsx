@@ -34,6 +34,15 @@ describe("guias «como fazer»", () => {
     await waitFor(() => expect(document.title).toContain("Como fazer uma rifa para a escola"));
   });
 
+  it("os guias por tema (não por público) têm o seu endereço e o mesmo desenho", async () => {
+    abrir("/como-numerar-bilhetes-de-rifa");
+    const guia = await screen.findByTestId("guia-numerar");
+    expect(
+      await within(guia).findByRole("heading", { level: 1, name: "Como numerar os bilhetes de uma rifa" }),
+    ).toBeInTheDocument();
+    expect(guia.querySelectorAll("ol > li")).toHaveLength(5);
+  });
+
   it("a das associações é outra página, com o seu próprio guia", async () => {
     abrir("/rifas-para-associacoes");
     expect(await screen.findByTestId("guia-associacoes")).toBeInTheDocument();

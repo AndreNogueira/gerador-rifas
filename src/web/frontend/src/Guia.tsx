@@ -13,6 +13,9 @@ export const GUIAS: Record<string, string> = {
   "/rifas-para-bombeiros": "bombeiros",
   "/rifas-para-festas": "festas",
   "/rifas-para-igrejas": "igrejas",
+  "/como-numerar-bilhetes-de-rifa": "numerar",
+  "/sorteio-de-rifa-verificavel": "sorteio",
+  "/quantos-bilhetes-de-rifa-fazer": "quantos",
 };
 
 /**

@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.68.0 — 2026-11-19
+
+### New
+- **Three new guides, by topic** (not by audience): how to number raffle tickets, how to run a verifiable draw (it links to the «Draw» page) and how many tickets to make and at what price. Find them in «All guides» (`/como-fazer`), in 22 languages.
+
 ## 3.67.0 — 2026-11-19
 
 ### New

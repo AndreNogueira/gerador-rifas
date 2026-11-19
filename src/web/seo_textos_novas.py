@@ -86,6 +86,24 @@ CHAVES: dict[str, dict[str, str]] = {
         "id": "Cara membuat undian untuk gereja: tiket berlambang dengan kupon, satu seri per kelompok, tanda potong, kontrol penjualan, pengundian terverifikasi.",
         "vi": "Cách tổ chức bốc thăm cho giáo xứ: vé có huy hiệu và cuống, mỗi nhóm một sê-ri, dấu cắt, kiểm soát doanh số và bốc thăm kiểm chứng được.",
     },
+    "d_guia_numerar": {
+        "ca": "Com numerar les butlletes d'una rifa: xifres adequades, un bloc per venedor, taló igual a la butlleta, números a ometre i la llista per desar.",
+        "uk": "Як нумерувати квитки лотереї: потрібна кількість цифр, блок для кожного продавця, корінець як квиток, пропуск номерів і список для збереження.",
+        "id": "Cara memberi nomor pada tiket undian: jumlah digit yang pas, satu blok per penjual, potongan sama dengan tiket, nomor dilewati, dan daftar untuk disimpan.",
+        "vi": "Cách đánh số vé bốc thăm: số chữ số phù hợp, mỗi người bán một khối, cuống vé giống vé, số bỏ qua và danh sách cần lưu lại.",
+    },
+    "d_guia_sorteio": {
+        "ca": "Com fer un sorteig de rifa verificable: regles abans de vendre, llavor pública, interval de números i un resultat que qualsevol pot repetir.",
+        "uk": "Як провести перевірюваний розіграш лотереї: правила до продажу, публічне зерно, діапазон номерів і результат, який може повторити будь-хто.",
+        "id": "Cara menggelar pengundian yang dapat diverifikasi: aturan sebelum menjual, benih publik, rentang nomor, dan hasil yang bisa diulang siapa pun.",
+        "vi": "Cách tổ chức bốc thăm có thể kiểm chứng: quy định trước khi bán, hạt giống công khai, khoảng số và kết quả mà ai cũng có thể làm lại.",
+    },
+    "d_guia_quantos": {
+        "ca": "Quantes butlletes de rifa fer i a quin preu: meta de recaptació, preu de la butlleta, tirada amb marge, fulls per venedor i premis davant ingressos.",
+        "uk": "Скільки квитків лотереї зробити і за якою ціною: мета збору, ціна квитка, тираж із запасом, аркуші на продавця й призи проти доходу.",
+        "id": "Berapa tiket undian yang dibuat dan harganya: target penggalangan, harga tiket, jumlah cetak dengan cadangan, lembar per penjual, dan hadiah versus pemasukan.",
+        "vi": "Nên làm bao nhiêu vé bốc thăm, giá bao nhiêu: mục tiêu gây quỹ, giá vé, số in có dự phòng, số tờ mỗi người bán và giải thưởng so với thu nhập.",
+    },
     "d_comofazer": {
         "ca": "Guies pas a pas per organitzar la teva rifa: butlletes numerades, impressió, control de vendes i sorteig, per a escoles, entitats, clubs i festes.",
         "uk": "Покрокові посібники з лотереї: нумеровані квитки, друк, облік продажів і розіграш, для шкіл, асоціацій, клубів і свят.",
