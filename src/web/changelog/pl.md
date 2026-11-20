@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.77.0 — 2026-11-20
+
+### Ulepszono
+- **Porządniejsze listy i wiersze cennika**: wszystkie listy rozwijane na stronie wyglądają teraz jak pozostałe pola, ze strzałką dopasowaną do motywu (jasnego i ciemnego). W cenniku × do usuwania pozycji i przycisk zdjęcia zajmują dużo mniej miejsca, ceny nie przeskakują do drugiego wiersza, a na telefonie nazwa jest u góry, a pola pod nią.
+
 ## 3.76.0 — 2026-11-20
 
 ### Nowości

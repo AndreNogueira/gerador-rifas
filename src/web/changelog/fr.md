@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.77.0 — 2026-11-20
+
+### Amélioré
+- **Listes et lignes de la liste de prix mieux rangées** : toutes les listes déroulantes du site ressemblent désormais aux autres champs, avec une flèche qui suit le thème (clair et sombre). Dans la liste de prix, le × qui retire un article et le bouton photo prennent bien moins de place, les prix ne passent plus à la ligne et, sur téléphone, le nom est en haut et les champs en dessous.
+
 ## 3.76.0 — 2026-11-20
 
 ### Nouveautés

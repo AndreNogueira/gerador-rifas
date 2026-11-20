@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.77.0 — 2026-11-20
+
+### Ditingkatkan
+- **Daftar dan baris daftar harga yang lebih rapi**: semua daftar tarik-turun di situs kini tampak seperti kolom lainnya, dengan panah yang mengikuti tema (terang dan gelap). Di daftar harga, tanda × untuk menghapus barang dan tombol foto memakan tempat jauh lebih sedikit, harga tidak lagi lompat ke baris kedua, dan di ponsel nama ada di atas dengan kolom di bawahnya.
+
 ## 3.76.0 — 2026-11-20
 
 ### Baru

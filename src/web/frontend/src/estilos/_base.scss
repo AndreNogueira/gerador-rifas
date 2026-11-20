@@ -130,6 +130,35 @@ button,
   background: var(--campo);
   color: var(--texto);
 }
+// as listas: o mesmo aspeto dos campos em todo o site, com a seta desenhada por nós (a nativa é cinzenta, desalinhada e foge ao tema)
+select {
+  appearance: none;
+  font: inherit;
+  padding: 8px 2.2rem 8px 12px;
+  border: var(--borda) solid var(--linha);
+  border-radius: var(--raio-c);
+  background-color: var(--campo);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--suave) 50%),
+    linear-gradient(135deg, var(--suave) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 52%,
+    calc(100% - 13px) 52%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  color: var(--texto);
+  text-overflow: ellipsis;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  option {
+    background: var(--campo);
+    color: var(--texto);
+  }
+}
 input:not([type="radio"], [type="checkbox"]),
 select {
   width: 100%;

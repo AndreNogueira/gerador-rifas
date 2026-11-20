@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.77.0 — 2026-11-20
+
+### Mejorado
+- **Listas y filas de la lista de precios más ordenadas**: todas las listas desplegables del sitio tienen ahora el aspecto de los demás campos, con una flecha que sigue el tema (claro y oscuro). En la lista de precios, la × para quitar un artículo y el botón de la foto ocupan mucho menos espacio, los precios ya no saltan a una segunda línea y, en el móvil, el nombre queda arriba y los campos debajo.
+
 ## 3.76.0 — 2026-11-20
 
 ### Novedades

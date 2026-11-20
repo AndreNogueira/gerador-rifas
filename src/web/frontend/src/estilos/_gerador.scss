@@ -268,12 +268,6 @@
       select {
         width: auto;
         min-width: 5rem;
-        padding: 8px 12px;
-        font: inherit;
-        border: var(--borda) solid var(--linha);
-        border-radius: var(--raio-c);
-        background: var(--campo); // sem isto o fundo é o do browser (fora do tema) e o contraste falha em temas escuros
-        color: var(--texto);
       }
     }
   }
@@ -303,14 +297,6 @@
         color: var(--suave);
         font-weight: 500;
       }
-    }
-    select {
-      padding: 8px 12px;
-      font: inherit;
-      border: var(--borda) solid var(--linha);
-      border-radius: var(--raio-c);
-      background: var(--campo);
-      color: var(--texto);
     }
   }
 }

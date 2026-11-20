@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.77.0 — 2026-11-20
+
+### Cải thiện
+- **Danh sách và dòng bảng giá gọn gàng hơn**: mọi danh sách thả xuống trên trang giờ trông giống các ô khác, với mũi tên theo giao diện (sáng và tối). Trong bảng giá, dấu × để bỏ một món và nút ảnh chiếm ít chỗ hơn nhiều, giá không còn nhảy xuống dòng thứ hai và trên điện thoại tên nằm trên, các ô nằm dưới.
+
 ## 3.76.0 — 2026-11-20
 
 ### Mới

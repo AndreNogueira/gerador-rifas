@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.77.0 — 2026-11-20
+
+### Vylepšeno
+- **Úhlednější seznamy a řádky ceníku**: všechny rozbalovací seznamy na webu vypadají nově jako ostatní pole, se šipkou, která sleduje motiv (světlý i tmavý). V ceníku zabírají × pro odebrání položky a tlačítko fotky mnohem méně místa, ceny už neskáčou na druhý řádek a v telefonu je nahoře název a pod ním pole.
+
 ## 3.76.0 — 2026-11-20
 
 ### Novinky
