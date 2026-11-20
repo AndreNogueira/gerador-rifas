@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.79.0 — 2026-11-20
+
+### Nytt
+- **Färger och logotyp i prislistan**: du kan ändra motivets huvud-, accent- och pappersfärg (priserna anpassar sig själva så att de alltid går att läsa) och sätta din förenings logotyp (PNG eller JPG) i sidhuvudet, till vänster eller höger, eller i sidfoten (webbplatsen och Windows-appen). Färgerna och platsen sparas i prislistans fil och i den delade länken; logotypen används bara för att rita förhandsvisningen och PDF:en och sparas aldrig.
+
 ## 3.78.0 — 2026-11-20
 
 ### Nytt

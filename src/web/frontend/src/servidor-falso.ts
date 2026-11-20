@@ -434,9 +434,9 @@ export class ServidorFalso {
         ],
         sugerida: "festa_popular",
         desenhos: [
-          { id: "arraial", nome: "Arraial" },
-          { id: "natal", nome: "Natal" },
-          { id: "quermesse", nome: "Quermesse" },
+          { id: "arraial", nome: "Arraial", cores: ["#bf1a2e", "#e68c00", "#fffaf0"] },
+          { id: "natal", nome: "Natal", cores: ["#1f6b3a", "#c0392b", "#ffffff"] },
+          { id: "quermesse", nome: "Quermesse", cores: ["#bf1a2e", "#e38c00", "#fffae6"] },
         ],
         moedas: [
           { codigo: "EUR", simbolo: "€", decimais: 2 },
@@ -447,6 +447,7 @@ export class ServidorFalso {
         pais: "PT",
         moeda: "EUR",
         limites: { linhas: 80, titulo: 40, subtitulo: 70, rodape: 120, nome: 40, moeda_inventada: 14 },
+        logo_lugares: ["esquerda", "direita", "rodape"],
         formatos: ["A5", "A4", "A3"],
       });
     }

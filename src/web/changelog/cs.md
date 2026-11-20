@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.79.0 — 2026-11-20
+
+### Novinky
+- **Barvy a logo v ceníku**: můžete změnit hlavní barvu, barvu zvýraznění a barvu papíru motivu (ceny se samy upraví, aby byly vždy čitelné) a umístit logo svého spolku (PNG nebo JPG) do záhlaví vlevo či vpravo, nebo do zápatí (web i aplikace pro Windows). Barvy a umístění zůstanou v souboru ceníku i ve sdíleném odkazu; logo slouží jen k vykreslení náhledu a PDF a nikdy se neukládá.
+
 ## 3.78.0 — 2026-11-20
 
 ### Novinky

@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.79.0 — 2026-11-20
+
+### Baru
+- **Warna dan logo di daftar harga**: Anda dapat mengubah warna utama, warna aksen, dan warna kertas desain (harga menyesuaikan diri agar selalu terbaca) serta menaruh logo asosiasi Anda (PNG atau JPG) di kepala, kiri atau kanan, atau di kaki halaman (situs dan aplikasi Windows). Warna dan letaknya tersimpan di file daftar harga dan tautan yang dibagikan; logo hanya dipakai untuk menggambar pratinjau dan PDF dan tidak pernah disimpan.
+
 ## 3.78.0 — 2026-11-20
 
 ### Baru

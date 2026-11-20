@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.79.0 — 2026-11-20
+
+### Yeni
+- **Fiyat listesinde renkler ve logo**: tasarımın ana, vurgu ve kâğıt renklerini değiştirebilir (fiyatlar her zaman okunsun diye kendini ayarlar) ve derneğinizin logosunu (PNG veya JPG) başlığa, sola ya da sağa, veya altbilgiye koyabilirsiniz (site ve Windows uygulaması). Renkler ve yer fiyat listesi dosyasında ve paylaşılan bağlantıda kalır; logo yalnızca önizlemeyi ve PDF'yi çizmek için kullanılır ve hiçbir zaman saklanmaz.
+
 ## 3.78.0 — 2026-11-20
 
 ### Yeni

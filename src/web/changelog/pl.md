@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.79.0 — 2026-11-20
+
+### Nowości
+- **Kolory i logo w cenniku**: możesz zmienić kolor główny, akcentu i papieru motywu (ceny dostosowują się same, by zawsze były czytelne) oraz umieścić logo swojego stowarzyszenia (PNG lub JPG) w nagłówku, po lewej lub prawej, albo w stopce (strona i aplikacja na Windows). Kolory i miejsce zostają w pliku cennika i w udostępnionym linku; logo służy tylko do narysowania podglądu i PDF i nigdy nie jest zapisywane.
+
 ## 3.78.0 — 2026-11-20
 
 ### Nowości

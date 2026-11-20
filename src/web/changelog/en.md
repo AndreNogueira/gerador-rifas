@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.79.0 — 2026-11-20
+
+### New
+- **Colors and logo in the price list**: you can change the design's main, accent and paper colors (the prices adjust themselves so they always stay readable) and put your association's logo (PNG or JPG) in the header, on the left or the right, or in the footer (site and Windows app). The colors and the position are kept in the price-list file and in the shared link; the logo is only used to draw the preview and the PDF and is never stored.
+
 ## 3.78.0 — 2026-11-20
 
 ### New

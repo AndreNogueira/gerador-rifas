@@ -1,4 +1,4 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
@@ -38,13 +38,14 @@ const CAT = {
   ],
   ocasioes: [{ id: "natal", nome: "Natal", desenho: "natal", artigos: ["agua"], meses: [12] }],
   sugerida: "",
-  desenhos: [{ id: "natal", nome: "Natal" }],
+  desenhos: [{ id: "natal", nome: "Natal", cores: ["#1f6b3a", "#c0392b", "#ffffff"] }],
   moedas: [{ codigo: "EUR", simbolo: "€", decimais: 2 }],
   paises: { PT: "EUR", GB: "GBP" },
   pais: "PT",
   moeda: "EUR",
   limites: { linhas: 80, titulo: 40, subtitulo: 70, rodape: 120, nome: 40, moeda_inventada: 14 },
   formatos: ["A4"],
+  logo_lugares: ["esquerda", "direita", "rodape"],
 };
 
 describe("o estado e o pedido do preçário", () => {
@@ -310,5 +311,66 @@ describe("as imagens à escolha de cada artigo", () => {
     });
     expect(estadoInicial(CAT, 12, { titulo: "M", linhas: [linha("1f370")] }).linhas[0]?.emoji).toBe("");
     expect(estadoInicial(CAT, 12, { titulo: "M", linhas: [linha("1f6b0")] }).linhas[0]?.emoji).toBe("1f6b0");
+  });
+});
+
+describe("as cores e o logótipo", () => {
+  it("mudar uma cor vai no pedido, repor volta ao desenho e mudar de desenho também repõe", async () => {
+    abrir();
+    const cor = await screen.findByTestId("precario-cor-0");
+    expect(cor).toHaveValue("#bf1a2e"); // a do desenho (o arraial da ocasião sugerida)
+    expect(screen.getByTestId("precario-cores-repor")).toBeDisabled();
+    fireEvent.change(cor, { target: { value: "#112233" } });
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.cores).toEqual(["#112233", "", ""]);
+    });
+    expect(localStorage.getItem("rifas.precario")).toContain("#112233");
+    await userEvent.click(screen.getByTestId("precario-cores-repor"));
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.cores).toEqual(["", "", ""]);
+    });
+  });
+
+  it("o logótipo escolhido vai no pedido com o sítio, tira-se e nunca fica no rascunho", async () => {
+    const png = new File([new Uint8Array([137, 80, 78, 71])], "l.png", { type: "image/png" });
+    vi.stubGlobal("createImageBitmap", async () => ({ width: 400, height: 200, close: () => undefined }));
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+      drawImage: () => undefined,
+    } as never);
+    vi.spyOn(HTMLCanvasElement.prototype, "toDataURL").mockReturnValue("data:image/png;base64,BBBB");
+    abrir();
+    expect(await screen.findByTestId("precario-logo-lugar")).toBeDisabled();
+    await userEvent.upload(screen.getByTestId("precario-logo"), png);
+    expect(await screen.findByTestId("precario-logo-mini")).toBeInTheDocument();
+    await userEvent.selectOptions(screen.getByTestId("precario-logo-lugar"), "rodape");
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.logotipo).toBe("data:image/png;base64,BBBB");
+      expect(p.logo_lugar).toBe("rodape");
+    });
+    expect(localStorage.getItem("rifas.precario") ?? "").not.toContain("BBBB");
+    expect(localStorage.getItem("rifas.precario") ?? "").toContain("rodape");
+    await userEvent.click(screen.getByTestId("precario-logo-tirar"));
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.logotipo).toBeUndefined();
+    });
+    vi.unstubAllGlobals();
+  });
+
+  it("cores estragadas de um rascunho voltam às do desenho", () => {
+    const g = {
+      titulo: "M",
+      cores: ["azul", "", ""],
+      linhas: [{ chave: "agua", artigo: "agua", nome: "", categoria: "", emoji: "", preco: "" }],
+    };
+    expect(estadoInicial(CAT, 12, g).cores).toEqual(["", "", ""]);
+    expect(estadoInicial(CAT, 12, { ...g, cores: ["#aabbcc", "", "#ffffff"] }).cores).toEqual([
+      "#aabbcc",
+      "",
+      "#ffffff",
+    ]);
   });
 });

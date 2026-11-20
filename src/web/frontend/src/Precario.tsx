@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api, ErroApi, type PedidoPrecario, type PrecarioCatalogo } from "./api";
+import { CoresELogo } from "./CoresELogo";
 import { useDialogos } from "./dialogos";
 import { prepararFoto } from "./foto";
 import { guardarBlob } from "./Gerador";
@@ -44,6 +45,11 @@ interface Estado {
   tamanhos: boolean;
   rotulo1: string;
   rotulo2: string;
+  /** As cores mudadas (principal, destaque, papel; vazio = a do desenho). */
+  cores: string[];
+  /** O logótipo (`data:image/…`, já reduzido): só vive nesta página (nem no rascunho nem na ligação partilhada). */
+  logo?: string;
+  logoLugar: string;
 }
 
 const CHAVE = "rifas.precario";
@@ -98,6 +104,8 @@ export function estadoInicial(cat: PrecarioCatalogo, mes: number, guardado: unkn
       return {
         ...base(cat, mes),
         ...g,
+        cores: coresValidas(g.cores),
+        logo: undefined, // o logótipo nunca fica no rascunho
         linhas: linhas.map((l) => ({ ...l, emoji: iconeValido(icones, l.artigo, l.emoji) })),
       } as Estado;
   }
@@ -169,6 +177,9 @@ export function estadoDePartilha(
     tamanhos: p.tamanhos === true,
     rotulo1: texto(rotulos[0]),
     rotulo2: texto(rotulos[1]),
+    cores: coresValidas(p.cores),
+    logo: undefined,
+    logoLugar: texto(p.logo_lugar) || "esquerda",
   };
 }
 
@@ -205,7 +216,18 @@ function base(cat: PrecarioCatalogo, mes: number): Estado {
     tamanhos: false,
     rotulo1: "",
     rotulo2: "",
+    cores: ["", "", ""],
+    logoLugar: "esquerda",
   };
+}
+
+/** As três cores de um rascunho ou de uma ligação (`#rrggbb` ou vazio); qualquer outra coisa volta às cores do desenho. */
+function coresValidas(v: unknown): string[] {
+  return Array.isArray(v) &&
+    v.length === 3 &&
+    v.every((c) => typeof c === "string" && /^(#[0-9a-fA-F]{6})?$/.test(c))
+    ? (v as string[])
+    : ["", "", ""];
 }
 
 export function pedidoDoEstado(e: Estado, padroes: [string, string] = ["P", "G"]): PedidoPrecario {
@@ -229,6 +251,9 @@ export function pedidoDoEstado(e: Estado, padroes: [string, string] = ["P", "G"]
     imagens: e.imagens,
     tamanhos: e.tamanhos,
     rotulos: [e.rotulo1.trim() || padroes[0], e.rotulo2.trim() || padroes[1]],
+    cores: e.cores,
+    ...(e.logo ? { logotipo: e.logo } : {}),
+    logo_lugar: e.logoLugar,
     moeda:
       e.inventada && e.invNome.trim()
         ? { nome: e.invNome.trim(), antes: e.invAntes, decimais: e.invCasas }
@@ -324,7 +349,11 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
     try {
       localStorage.setItem(
         CHAVE,
-        JSON.stringify({ ...e, linhas: e.linhas.map(({ foto: _foto, ...resto }) => resto) }), // as fotos não ficam no rascunho
+        JSON.stringify({
+          ...e,
+          logo: undefined, // nem o logótipo
+          linhas: e.linhas.map(({ foto: _foto, ...resto }) => resto), // as fotos não ficam no rascunho
+        }),
       );
     } catch {
       /* sem armazenamento */
@@ -381,6 +410,7 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
     mudar({
       ocasiao: id,
       desenho: o.desenho,
+      cores: ["", "", ""],
       linhas: [
         ...o.artigos.map((a) => ({
           chave: a,
@@ -509,7 +539,7 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
               <select
                 data-testid="precario-desenho"
                 value={e.desenho}
-                onChange={(ev) => mudar({ desenho: ev.target.value })}
+                onChange={(ev) => mudar({ desenho: ev.target.value, cores: ["", "", ""] })}
               >
                 {cat.desenhos.map((d) => (
                   <option key={d.id} value={d.id}>
@@ -854,6 +884,18 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
                 </select>
               </label>
             </div>
+            <CoresELogo
+              cores={e.cores}
+              padroes={
+                cat.desenhos.find((d) => d.id === e.desenho)?.cores ?? ["#000000", "#000000", "#ffffff"]
+              }
+              logo={e.logo ?? ""}
+              lugar={e.logoLugar}
+              lugares={cat.logo_lugares}
+              aoMudarCores={(cores) => mudar({ cores })}
+              aoMudarLogo={(logo) => mudar({ logo })}
+              aoMudarLugar={(logoLugar) => mudar({ logoLugar })}
+            />
             <label className="precario-caixa">
               <input
                 type="checkbox"

@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.79.0 — 2026-11-20
+
+### Mới
+- **Màu sắc và logo trong bảng giá**: bạn có thể đổi màu chính, màu nhấn và màu giấy của thiết kế (giá tự điều chỉnh để luôn đọc được) và đặt logo của hội bạn (PNG hoặc JPG) ở đầu trang, bên trái hoặc bên phải, hay ở chân trang (trang web và ứng dụng Windows). Màu sắc và vị trí được giữ trong tệp bảng giá và liên kết chia sẻ; logo chỉ dùng để vẽ bản xem trước và PDF và không bao giờ được lưu.
+
 ## 3.78.0 — 2026-11-20
 
 ### Mới

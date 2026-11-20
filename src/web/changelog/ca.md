@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.79.0 — 2026-11-20
+
+### Novetats
+- **Colors i logotip a la llista de preus**: podeu canviar el color principal, el d'accent i el del paper del disseny (els preus s'ajusten sols per llegir-se sempre) i posar el logotip de la vostra associació (PNG o JPG) a la capçalera, a l'esquerra o a la dreta, o al peu (web i app de Windows). Els colors i el lloc es conserven al fitxer de la llista i a l'enllaç compartit; el logotip només serveix per dibuixar la previsualització i el PDF i mai es desa.
+
 ## 3.78.0 — 2026-11-20
 
 ### Novetats

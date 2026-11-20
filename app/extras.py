@@ -760,6 +760,11 @@ class Precario(Janela):
         self.sugerida = precario_catalogo.ocasiao_da_epoca(_hoje(), self.lingua)
         self.linhas: list[dict] = []                   # {chave, artigo, nome, categoria, emoji}
         self.v_preco: dict[str, tk.StringVar] = {}
+        self.cores = ["", "", ""]                            # as cores mudadas (principal, destaque, papel; vazio = a do desenho)
+        self.logo = b""                                      # o logótipo (já reduzido): só vive nesta janela, nunca no ficheiro .precario
+        self.v_logo_lugar = tk.StringVar()
+        self._logo_lugares = {l: t(f"web_precario_logo_{l}") for l in precario.LOGO_LUGARES}
+        self.v_logo_lugar.set(self._logo_lugares["esquerda"])
         self._icones_abertos = ""                            # a chave da linha cujas imagens (até 5) estão à vista
         self._imagens: dict[tuple[str, int], ctk.CTkImage] = {}
         self.fotos: dict[str, bytes] = {}                    # as fotos próprias (já reduzidas): só vivem nesta janela, nunca no ficheiro .precario
@@ -845,6 +850,23 @@ class Precario(Janela):
         for var, padrao in ((self.v_rotulo1, t("web_precario_tamanho_1")), (self.v_rotulo2, t("web_precario_tamanho_2"))):
             app._entrada(linha_r, var, width=120, placeholder_text=padrao).pack(side="left", padx=(0, 6))
             var.trace_add("write", lambda *_: self._agendar())
+        self.etiqueta(esq, t("web_precario_cores")).pack(fill="x", pady=(10, 0))                   # as cores do desenho, que a pessoa muda
+        linha_cores = ctk.CTkFrame(esq, fg_color="transparent")
+        linha_cores.pack(fill="x")
+        self.b_cores = []
+        for i, chave in enumerate(("web_precario_cor_principal", "web_precario_cor_destaque", "web_precario_cor_papel")):
+            b = ctk.CTkButton(linha_cores, text=t(chave), height=30, corner_radius=8, border_width=1, border_color=C["borda"], font=ctk.CTkFont(FONTE, 11), command=lambda k=i: self._escolher_cor(k))
+            b.pack(side="left", expand=True, fill="x", padx=2)
+            self.b_cores.append(b)
+        self.b_repor_cores = app._botao(esq, t("web_precario_cores_repor"), lambda: self._repor_cores(), height=28)
+        self.b_repor_cores.pack(fill="x", pady=(4, 0))
+        self.etiqueta(esq, t("web_precario_logo")).pack(fill="x", pady=(10, 0))
+        self.b_logo = app._botao(esq, t("web_precario_logo_escolher"), self._escolher_logo, height=30)
+        self.b_logo.pack(fill="x")
+        self.m_logo_lugar = self._menu(esq, list(self._logo_lugares.values()), lambda _: self._agendar(0), variavel=self.v_logo_lugar)
+        self.m_logo_lugar.pack(fill="x", pady=(4, 0))
+        self.etiqueta(esq, t("web_precario_logo_dica"), wraplength=400).pack(fill="x", pady=(2, 0))
+        self._atualizar_cores()
         self.b_pdf = app._botao(esq, t("win_precario_pdf"), self._guardar_pdf, True, icone="gerar", height=40)
         self.b_pdf.pack(fill="x", pady=(8, 4))
         app._botao(esq, t("win_precario_imagem"), self._guardar_imagem, height=34).pack(fill="x", pady=2)
@@ -885,6 +907,8 @@ class Precario(Janela):
         self.m_ocasiao.set(nome)
         self.v_desenho.set(o.desenho)
         self.m_desenho.set(precario.POR_ID[o.desenho].nome)
+        self.cores = ["", "", ""]
+        self._atualizar_cores()
         if not self.v_titulo.get().strip() or self.v_titulo.get() == anterior:
             self.v_titulo.set(precario_catalogo.nome(o, self.lingua)[:precario.MAX_TITULO])
         self._ocasiao_anterior = o.id
@@ -896,7 +920,67 @@ class Precario(Janela):
 
     def _mudar_desenho(self, nome: str) -> None:
         self.v_desenho.set(next(d.id for d in precario.DESENHOS if d.nome == nome))
+        self.cores = ["", "", ""]                      # as cores mudadas eram as do desenho anterior
+        self._atualizar_cores()
         self._agendar(0)
+
+    # -- cores e logótipo
+    def _cor_atual(self, i: int) -> str:
+        d = precario.POR_ID[self.v_desenho.get() or "quermesse"]
+        return self.cores[i] or precario.hex_de((d.principal, d.destaque, d.papel)[i])
+
+    def _atualizar_cores(self) -> None:
+        """Pinta cada botão de cor com a cor que representa (o texto claro ou escuro, para se ler) e ajusta o que depende de haver logótipo."""
+        for i, b in enumerate(self.b_cores):
+            cor = self._cor_atual(i)
+            rgb = tuple(int(cor[k:k + 2], 16) / 255 for k in (1, 3, 5))
+            b.configure(fg_color=cor, hover_color=cor, text_color="#111111" if precario._luminancia(rgb) > 0.55 else "#ffffff")
+        self.b_repor_cores.configure(state="normal" if any(self.cores) else "disabled")
+        self.b_logo.configure(text=t("web_precario_logo_tirar") if self.logo else t("web_precario_logo_escolher"))
+        self.m_logo_lugar.configure(state="normal" if self.logo else "disabled")
+
+    def _escolher_cor(self, i: int, valor: str | None = None) -> bool:
+        """Muda uma das 3 cores com o seletor do Windows (`valor` só serve aos testes)."""
+        valor = valor or colorchooser.askcolor(color=self._cor_atual(i), parent=self)[1]
+        if not valor:
+            return False
+        try:
+            marca.cor_de_hex(valor)
+        except core.ErroRifas as e:
+            self.l_erro.configure(text=str(e))
+            return False
+        self.cores[i] = valor.lower()
+        self._atualizar_cores()
+        self._agendar(0)
+        return True
+
+    def _repor_cores(self) -> None:
+        self.cores = ["", "", ""]
+        self._atualizar_cores()
+        self._agendar(0)
+
+    def _escolher_logo(self, ficheiro: str | None = None) -> bool:
+        """Põe o logótipo (PNG ou JPG, reduzido) ou, se já há um, tira-o. `ficheiro` só serve aos testes."""
+        if self.logo and ficheiro is None:
+            self.logo = b""
+            self._atualizar_cores()
+            self._agendar(0)
+            return True
+        ficheiro = ficheiro or filedialog.askopenfilename(parent=self, title=t("web_precario_logo"), filetypes=[("PNG / JPG", "*.png *.jpg *.jpeg")])
+        if not ficheiro:
+            return False
+        try:
+            p = Path(ficheiro)
+            if p.stat().st_size > precario.MAX_LOGO_BYTES:
+                raise core.ErroRifas("err_logotipo", mb=marca.MAX_MB)
+            self.logo = precario.logo_de_bytes(p.read_bytes())
+        except (core.ErroRifas, OSError) as e:
+            self.l_erro.configure(text=str(e) if isinstance(e, core.ErroRifas) else t("err_logotipo", mb=marca.MAX_MB))
+            return False
+        self.l_erro.configure(text="")
+        self._atualizar_cores()
+        self._agendar(0)
+        return True
 
     def _alternar(self, artigo: str) -> None:
         if self.v_artigo[artigo].get():
@@ -1046,7 +1130,8 @@ class Precario(Janela):
         return precario.Precario(linhas=tuple(linhas), titulo=self.v_titulo.get().strip()[:precario.MAX_TITULO], subtitulo=self.v_subtitulo.get().strip()[:precario.MAX_SUBTITULO],
                                  rodape=self.v_rodape.get().strip()[:precario.MAX_RODAPE], desenho=self.v_desenho.get() or "quermesse", formato=formato,
                                  orientacao=orientacao, colunas=colunas, imagens=self.v_imagens.get(), moeda=m, lingua=self.lingua,
-                                 tamanhos=self.v_tamanhos.get(), rotulos=(self.v_rotulo1.get().strip() or t("web_precario_tamanho_1"), self.v_rotulo2.get().strip() or t("web_precario_tamanho_2")))
+                                 tamanhos=self.v_tamanhos.get(), rotulos=(self.v_rotulo1.get().strip() or t("web_precario_tamanho_1"), self.v_rotulo2.get().strip() or t("web_precario_tamanho_2")),
+                                 cores=tuple(self.cores), logo=self.logo, logo_lugar=next((k for k, v in self._logo_lugares.items() if v == self.v_logo_lugar.get()), "esquerda"))
 
     def _agendar(self, atraso: int = 350) -> None:
         if self._a_aplicar or not self.winfo_exists():
@@ -1166,6 +1251,10 @@ class Precario(Janela):
             self.v_tamanhos.set(p.tamanhos)
             self.v_rotulo1.set(p.rotulos[0])
             self.v_rotulo2.set(p.rotulos[1])
+            self.cores = list(p.cores)
+            self.logo = b""                                # o logótipo nunca vem do ficheiro
+            self.v_logo_lugar.set(self._logo_lugares[p.logo_lugar])
+            self._atualizar_cores()
             if isinstance(p.moeda, moeda.MoedaInventada):
                 self.v_inventada.set(True)
                 self.v_inv_nome.set(p.moeda.nome)

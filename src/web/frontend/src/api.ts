@@ -168,7 +168,8 @@ export interface PrecarioCatalogo {
   }[];
   ocasioes: { id: string; nome: string; desenho: string; artigos: string[]; meses: number[] }[];
   sugerida: string;
-  desenhos: { id: string; nome: string }[];
+  /** Os desenhos e as suas três cores (principal, destaque, papel) como `#rrggbb`. */
+  desenhos: { id: string; nome: string; cores: string[] }[];
   moedas: { codigo: string; simbolo: string; decimais: number }[];
   paises: Record<string, string>;
   pais: string;
@@ -182,6 +183,7 @@ export interface PrecarioCatalogo {
     moeda_inventada: number;
   };
   formatos: string[];
+  logo_lugares: string[];
 }
 /** O corpo de `POST /api/precario/{previa.png,pdf,imagem.png}`: os preços vão como o utilizador os escreveu (o servidor lê-os na língua do pedido). */
 export interface PedidoPrecario {
@@ -204,6 +206,11 @@ export interface PedidoPrecario {
   imagens: boolean;
   tamanhos?: boolean;
   rotulos?: string[];
+  /** As cores que a pessoa mudou (principal, destaque, papel; vazio = a do desenho). */
+  cores?: string[];
+  /** O logótipo (`data:image/…`, já reduzido): só vai no pedido. */
+  logotipo?: string;
+  logo_lugar?: string;
   moeda: { codigo?: string; nome?: string; antes?: boolean; decimais?: number };
 }
 export interface ComentarioPublico {

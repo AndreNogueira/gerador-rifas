@@ -11,17 +11,20 @@ Nada se guarda: os textos só entram no PDF.
 from __future__ import annotations
 
 import io
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from functools import lru_cache
 from pathlib import Path
 
-from . import galeria, letras, moeda as mod_moeda, precario_catalogo as cat
+from . import galeria, letras, marca, moeda as mod_moeda, precario_catalogo as cat
 from .motor import ErroRifas
 
 CARTOES = "A6x4"                 # cartões de mesa: o preçário em A6 e 4 por folha A4 (2 x 2), com guias de corte
 MAX_FOTOS = 20                   # fotos próprias por preçário (cada uma ocupa bytes no PDF)
 FOTO_LADO = 192                  # pixéis do lado maior de uma foto depois de reduzida (chega para a linha do preçário, mesmo em A3)
 MAX_FOTO_BYTES = 8_000_000       # o ficheiro que se aceita (a app Windows lê-o do disco; o browser já manda uma foto reduzida)
+LOGO_LADO = 480                  # pixéis do lado maior do logótipo depois de reduzido (chega para 4 cm a 300 dpi)
+MAX_LOGO_BYTES = 2_000_000       # o ficheiro do logótipo que se aceita (como o das rifas, `core.marca`)
+LOGO_LUGARES = ("esquerda", "direita", "rodape")      # onde vai o logótipo: no cabeçalho (no lugar de um dos emblemas) ou no rodapé
 MAX_ROTULO = 10                 # letras de cada rótulo dos tamanhos
 MAX_CARTOES = 12                 # artigos que cabem num cartão A6 com letra legível
 FORMATOS = {"A5": (419.53, 595.28), "A4": (595.28, 841.89), "A3": (841.89, 1190.55), "A6x4": (297.64, 419.53)}      # pt, vertical (o A6x4 é o tamanho de UM cartão)
@@ -57,6 +60,9 @@ class Precario:
     imagens: bool = True
     tamanhos: bool = False          # dois preços por artigo (por omissão «P» e «G»): duas colunas de preços com os rótulos por cima
     rotulos: tuple = ("P", "G")      # os rótulos curtos das duas colunas (até `MAX_ROTULO` letras)
+    cores: tuple = ("", "", "")      # `#RRGGBB` que mudam a cor principal, a de destaque e a do papel do desenho; vazio = a do desenho
+    logo: bytes = b""                # o logótipo (PNG ou JPG já reduzidos por `logo_de_bytes`); nunca vai para o ficheiro `.precario` nem para a ligação partilhada
+    logo_lugar: str = "esquerda"     # um de `LOGO_LUGARES`
     moeda: object = field(default_factory=lambda: mod_moeda.MOEDAS["EUR"])      # `Moeda` ou `MoedaInventada`
     lingua: str = "pt"
 
@@ -91,6 +97,10 @@ def validar(p: Precario) -> None:
         _texto_ok(r, MAX_ROTULO)
     if p.tamanhos and not all(r.strip() for r in p.rotulos):
         raise ErroRifas("err_precario_texto", car="?")
+    if len(p.cores) != 3 or not all(isinstance(c, str) for c in p.cores) or p.logo_lugar not in LOGO_LUGARES:
+        raise ErroRifas("err_precario_texto", car="?")
+    for c in p.cores:
+        marca.cor_de_hex(c)                                                                  # `err_cor` se não é #RRGGBB
     if sum(1 for ln in p.linhas if ln.foto) > MAX_FOTOS:
         raise ErroRifas("err_editor_limite", campo="fotos")
     for ln in p.linhas:
@@ -126,6 +136,18 @@ def desenho_de(id_: str):
     return POR_ID[id_]
 
 
+def hex_de(rgb) -> str:
+    """Uma cor (r, g, b em 0..1) como `#rrggbb`: o que a interface mostra nos seletores de cor."""
+    return "#" + "".join(f"{round(v * 255):02x}" for v in rgb)
+
+
+def _desenho(p: "Precario"):
+    """O desenho de `p` com as cores que a pessoa mudou (principal, destaque, papel); o resto (talão, enfeite) é o do desenho."""
+    d = POR_ID[p.desenho]
+    principal, destaque, papel = (marca.cor_de_hex(c) for c in p.cores)
+    return replace(d, principal=principal or d.principal, destaque=destaque or d.destaque, papel=papel or d.papel)
+
+
 def _escuro(d) -> bool:
     """Papel escuro: o texto passa a giz claro e os realces a amarelo (num papel claro o texto é quase preto e os realces a cor principal)."""
     return _luminancia(d.papel) < 0.4
@@ -143,8 +165,24 @@ def _cor_rodape(d):
     return (0.80, 0.82, 0.78) if _escuro(d) else CINZA_ESCURO
 
 
+def _contraste(a, b) -> float:
+    """A razão de contraste (WCAG) entre duas cores (r, g, b em 0..1)."""
+    def lum(rgb):
+        r, g, b = (v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4 for v in rgb)
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+    la, lb = sorted((lum(a), lum(b)), reverse=True)
+    return (la + 0.05) / (lb + 0.05)
+
+
 def _cor_realce(d):
-    return d.destaque if _escuro(d) else d.principal
+    """A cor dos preços e dos títulos das categorias: a principal (papel claro) ou a de destaque (papel escuro); com cores escolhidas pela pessoa podia ficar ilegível
+    sobre o papel, e então aproxima-se da cor do texto até haver contraste (3:1, o mínimo do WCAG para texto grande e a negrito)."""
+    base = d.destaque if _escuro(d) else d.principal
+    cor, k = base, 0.0
+    while _contraste(cor, d.papel) < 3.0 and k < 1.0:
+        k += 0.1
+        cor = _misturar(base, _cor_texto(d), k)
+    return cor
 
 
 # ------------------------------------------------------------------ medidas
@@ -163,41 +201,60 @@ def _foto(dados: bytes):
     return ImageReader(io.BytesIO(dados))
 
 
-def foto_de_bytes(bruto: bytes) -> bytes:
-    """A foto de um artigo pronta para o PDF: só PNG ou JPG a sério (o tipo real, não o nome), reduzida a `FOTO_LADO` px e recodificada (sem EXIF nem nada que não
-    sejam pixéis): JPG se não tem transparência, PNG se tem. `err_editor_imagem` se não presta."""
+def _reduzida(bruto: bytes, lado: int, maximo: int, chave: str, **params) -> bytes:
+    """Uma imagem pronta para o PDF: só PNG ou JPG a sério (o tipo real, não o nome), reduzida a `lado` px e recodificada (sem EXIF nem nada que não sejam pixéis):
+    JPG se não tem transparência, PNG se tem. `ErroRifas(chave)` se não presta."""
     from PIL import Image, ImageOps, UnidentifiedImageError
-    if not isinstance(bruto, (bytes, bytearray)) or not 0 < len(bruto) <= MAX_FOTO_BYTES:
-        raise ErroRifas("err_editor_imagem")
+    if not isinstance(bruto, (bytes, bytearray)) or not 0 < len(bruto) <= maximo:
+        raise ErroRifas(chave, **params)
     try:
         with Image.open(io.BytesIO(bytes(bruto))) as im:
             if im.format not in ("PNG", "JPEG") or min(im.size) < 1 or max(im.size) > 12000:
-                raise ErroRifas("err_editor_imagem")
+                raise ErroRifas(chave, **params)
             im.load()
             im = ImageOps.exif_transpose(im)
-            im.thumbnail((FOTO_LADO, FOTO_LADO), Image.LANCZOS)
+            im.thumbnail((lado, lado), Image.LANCZOS)
             saida = io.BytesIO()
             if im.mode in ("RGBA", "LA", "P") and (im.mode != "P" or "transparency" in im.info):
                 im.convert("RGBA").save(saida, "PNG", optimize=True)
             else:
                 im.convert("RGB").save(saida, "JPEG", quality=85, optimize=True)
     except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
-        raise ErroRifas("err_editor_imagem") from None
+        raise ErroRifas(chave, **params) from None
     return saida.getvalue()
 
 
-def foto_de_dados(dados) -> bytes:
-    """A foto de um `data:image/png|jpeg;base64,…` (o que o browser envia, já reduzido): ver `foto_de_bytes`."""
+def foto_de_bytes(bruto: bytes) -> bytes:
+    """A foto de um artigo pronta para o PDF (`FOTO_LADO` px). `err_editor_imagem` se não presta."""
+    return _reduzida(bruto, FOTO_LADO, MAX_FOTO_BYTES, "err_editor_imagem")
+
+
+def logo_de_bytes(bruto: bytes) -> bytes:
+    """O logótipo pronto para o PDF (`LOGO_LADO` px, até 2 MB de ficheiro). `err_logotipo` se não presta."""
+    return _reduzida(bruto, LOGO_LADO, MAX_LOGO_BYTES, "err_logotipo", mb=marca.MAX_MB)
+
+
+def _de_dados(dados, ler, maximo: int, chave: str, **params) -> bytes:
     import base64
     import binascii
     import re
     m = re.fullmatch(r"data:image/(png|jpeg|jpg);base64,([A-Za-z0-9+/=\s]+)", dados) if isinstance(dados, str) else None
-    if not m or len(m.group(2)) > MAX_FOTO_BYTES * 4 // 3 + 8:
-        raise ErroRifas("err_editor_imagem")
+    if not m or len(m.group(2)) > maximo * 4 // 3 + 8:
+        raise ErroRifas(chave, **params)
     try:
-        return foto_de_bytes(base64.b64decode(m.group(2), validate=False))
+        return ler(base64.b64decode(m.group(2), validate=False))
     except binascii.Error:
-        raise ErroRifas("err_editor_imagem") from None
+        raise ErroRifas(chave, **params) from None
+
+
+def foto_de_dados(dados) -> bytes:
+    """A foto de um `data:image/png|jpeg;base64,…` (o que o browser envia, já reduzido): ver `foto_de_bytes`."""
+    return _de_dados(dados, foto_de_bytes, MAX_FOTO_BYTES, "err_editor_imagem")
+
+
+def logo_de_dados(dados) -> bytes:
+    """O logótipo de um `data:image/png|jpeg;base64,…`: ver `logo_de_bytes`."""
+    return _de_dados(dados, logo_de_bytes, MAX_LOGO_BYTES, "err_logotipo", mb=marca.MAX_MB)
 
 
 @lru_cache(maxsize=128)
@@ -339,11 +396,15 @@ def _cabecalho(c, p: Precario, d, quadro, altura: float, f: float, completo: boo
     c.rect(qx, topo - altura, qw, altura / 2, stroke=0, fill=1)            # cantos de baixo direitos
     # o ícone do tema, dentro de um emblema claro, de cada lado
     raio = min(altura * 0.34, 30 * f)
-    for cx in (qx + 14 * f + raio, qx + qw - 14 * f - raio):
+    for lado, cx in (("esquerda", qx + 14 * f + raio), ("direita", qx + qw - 14 * f - raio)):
         cy = topo - altura / 2 + (6 * f if completo else 0)
         c.setFillColorRGB(*d.papel)
         c.setStrokeColorRGB(*d.destaque)
         c.setLineWidth(2 * f)
+        if p.logo and p.logo_lugar == lado:                                  # o logótipo no lugar do emblema, sobre um quadrado de papel (serve com fundo transparente ou branco)
+            c.roundRect(cx - raio, cy - raio, 2 * raio, 2 * raio, 6 * f, stroke=1, fill=1)
+            c.drawImage(_foto(p.logo), cx - raio + 3 * f, cy - raio + 3 * f, 2 * raio - 6 * f, 2 * raio - 6 * f, preserveAspectRatio=True, anchor="c", mask="auto")
+            continue
         c.circle(cx, cy, raio, stroke=1, fill=1)
         _icone(c, d, cx, cy, raio * 1.25 / 34)
     util = qw - 2 * (28 * f + 2 * raio)
@@ -490,7 +551,7 @@ def criar_pdf(p: Precario) -> bytes:
     """O PDF do preçário (1 a 5 páginas). Levanta `ErroRifas` se algo não serve (ver `validar`)."""
     validar(p)
     from reportlab.pdfgen import canvas
-    d = POR_ID[p.desenho]
+    d = _desenho(p)
     cartoes = p.formato == CARTOES
     larg, alt = FORMATOS[p.formato]
     if p.orientacao == "horizontal" and not cartoes:                       # o cartão de mesa é sempre de pé
@@ -504,7 +565,8 @@ def criar_pdf(p: Precario) -> bytes:
     pad = 16 * f
     altura_cab1 = min(max(qh * 0.17, 74 * f), 140 * f) if p.orientacao == "vertical" else min(max(qh * 0.2, 64 * f), 110 * f)
     altura_cab2 = 46 * f
-    rodape_h = (34 if p.rodape.strip() else 16) * f + 20 * f
+    logo_rodape = bool(p.logo) and p.logo_lugar == "rodape"
+    rodape_h = (34 if p.rodape.strip() else 16) * f + 20 * f + (34 * f if logo_rodape else 0)
     util_larg = qw - 2 * pad
     gap = 20 * f
     espaco_cab = 22 * f                                                      # a faixa de enfeite que pende do cabeçalho
@@ -576,6 +638,9 @@ def criar_pdf(p: Precario) -> bytes:
             c.setFillColorRGB(*_cor_rodape(d))
             c.setFont(letras.fonte(t), tam)
             c.drawCentredString(qx + qw / 2, qy + 30 * f, t)
+        if logo_rodape:                                                       # o logótipo centrado em cima do texto do rodapé (ou onde ele estaria)
+            y_logo = qy + (44 if p.rodape.strip() else 26) * f
+            c.drawImage(_foto(p.logo), qx + qw / 2 - 70 * f, y_logo, 140 * f, 30 * f, preserveAspectRatio=True, anchor="c", mask="auto")
         if len(paginas) > 1:
             c.setFillColorRGB(*_cor_rodape(d))
             c.setFont("Vera", 9 * f)
@@ -655,9 +720,19 @@ def _rotulos(valor) -> tuple:
     return (valor[0], valor[1])
 
 
+def _cores(valor) -> tuple:
+    """As três cores de um dicionário (lista de 3 textos `#RRGGBB` ou vazios); sem elas, as do desenho."""
+    if valor is None:
+        return ("", "", "")
+    if not isinstance(valor, (list, tuple)) or len(valor) != 3 or any(not isinstance(c, str) for c in valor):
+        raise ErroRifas("err_precario_texto", car="?")
+    return tuple(c.strip() for c in valor)
+
+
 def de_dict(d: dict, lingua: str | None = None) -> Precario:
     """O `Precario` de um dicionário (JSON): `titulo`, `subtitulo`, `rodape`, `desenho`, `formato`, `orientacao`, `colunas`, `imagens`, `lingua`,
-    `moeda` (`{"codigo": "EUR"}` ou `{"nome": "fichas", "antes": false, "decimais": 0}`; sem ela, a do país da língua) e `linhas` (`artigo`, `nome`, `preco`, `categoria`, `emoji`).
+    `moeda` (`{"codigo": "EUR"}` ou `{"nome": "fichas", "antes": false, "decimais": 0}`; sem ela, a do país da língua), `cores` (3 `#RRGGBB`), `logotipo` (um `data:image/…`) com `logo_lugar`,
+    e `linhas` (`artigo`, `nome`, `preco`, `categoria`, `emoji`).
     Tipos errados e valores impossíveis dão `ErroRifas` (a validação completa é a de `validar`, que `criar_pdf` chama)."""
     if not isinstance(d, dict):
         raise ErroRifas("err_precario_texto", car="?")
@@ -686,14 +761,15 @@ def de_dict(d: dict, lingua: str | None = None) -> Precario:
     return Precario(
         linhas=tuple(Linha(_texto(x.get("artigo")), _texto(x.get("nome")), _preco(x.get("preco"), lg), _texto(x.get("categoria")), _texto(x.get("emoji")), _preco(x.get("preco2"), lg), foto_de_dados(x["foto"]) if x.get("foto") else b"") for x in linhas),
         titulo=_texto(d.get("titulo")), subtitulo=_texto(d.get("subtitulo")), rodape=_texto(d.get("rodape")), desenho=_texto(d.get("desenho"), "quermesse"),
-        formato=_texto(d.get("formato"), "A4"), orientacao=_texto(d.get("orientacao"), "vertical"), colunas=colunas, imagens=bool(d.get("imagens", True)), tamanhos=bool(d.get("tamanhos", False)), rotulos=_rotulos(d.get("rotulos")), moeda=moeda_, lingua=lg)
+        formato=_texto(d.get("formato"), "A4"), orientacao=_texto(d.get("orientacao"), "vertical"), colunas=colunas, imagens=bool(d.get("imagens", True)), tamanhos=bool(d.get("tamanhos", False)), rotulos=_rotulos(d.get("rotulos")), moeda=moeda_, lingua=lg,
+        cores=_cores(d.get("cores")), logo=logo_de_dados(d["logotipo"]) if d.get("logotipo") else b"", logo_lugar=_texto(d.get("logo_lugar"), "esquerda"))
 
 
 def para_dict(p: Precario) -> dict:
     """O inverso de `de_dict`, com os preços em milésimos (não dependem da língua): o que se guarda num ficheiro `.precario`."""
     m = ({"nome": p.moeda.nome, "antes": p.moeda.antes, "decimais": p.moeda.decimais} if isinstance(p.moeda, mod_moeda.MoedaInventada) else {"codigo": p.moeda.codigo})
     return {"titulo": p.titulo, "subtitulo": p.subtitulo, "rodape": p.rodape, "desenho": p.desenho, "formato": p.formato, "orientacao": p.orientacao, "colunas": p.colunas,
-            "imagens": p.imagens, "tamanhos": p.tamanhos, "rotulos": list(p.rotulos), "lingua": p.lingua, "moeda": m,
+            "imagens": p.imagens, "tamanhos": p.tamanhos, "rotulos": list(p.rotulos), "cores": list(p.cores), "logo_lugar": p.logo_lugar, "lingua": p.lingua, "moeda": m,
             "linhas": [{"artigo": ln.artigo, "nome": ln.nome, "preco": ln.preco, "preco2": ln.preco2, "categoria": ln.categoria, "emoji": ln.emoji} for ln in p.linhas]}
 
 
