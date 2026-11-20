@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.79.0 — 2026-11-20
+
+### Novedades
+- **Colores y logotipo en la lista de precios**: puede cambiar el color principal, el de acento y el del papel del diseño (los precios se ajustan solos para leerse siempre) y poner el logotipo de su asociación (PNG o JPG) en la cabecera, a la izquierda o a la derecha, o en el pie (sitio y app de Windows). Los colores y el sitio quedan en el archivo de la lista y en el enlace compartido; el logotipo solo sirve para dibujar la vista previa y el PDF y nunca se guarda.
+
 ## 3.78.0 — 2026-11-20
 
 ### Novedades

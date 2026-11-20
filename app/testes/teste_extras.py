@@ -245,6 +245,27 @@ pr._escolher_icone("agua", icones_agua[0])
 pr._escolher_icone("agua")
 ok(pr._icones_abertos == "", "voltar a carregar no botão fecha as imagens")
 
+# --- cores à escolha e logótipo: mudam o preçário, vão (as cores e o sítio) e voltam pelo ficheiro .precario; o logótipo nunca
+ok(pr._escolher_cor(0, "#112233") and pr.precario().cores == ("#112233", "", "") and pr.b_repor_cores.cget("state") == "normal", "mudar a cor principal entra no preçário")
+ok(not pr._escolher_cor(1, "azul") and pr.cores[1] == "", "uma cor que não é #RRGGBB é recusada")
+logo_png = SAIDA / "logo.png"
+Image.new("RGB", (900, 300), (20, 60, 160)).save(logo_png)
+ok(pr._escolher_logo(str(logo_png)) and pr.logo and max(Image.open(__import__("io").BytesIO(pr.logo)).size) == 480 and pr.m_logo_lugar.cget("state") == "normal", "o logótipo é reduzido a 480 px e fica no preçário")
+pr.v_logo_lugar.set(pr._logo_lugares["rodape"])
+foto(pr, "precario_cores_logo.png")
+ok(pr.precario().logo and pr.precario().logo_lugar == "rodape" and pr.precario().cores[0] == "#112233", "o preçário leva o logótipo e o sítio")
+fich_c = pr._guardar_ficheiro(str(SAIDA / "c.precario"))
+ok(b"logo" not in fich_c.read_bytes().replace(b"logo_lugar", b""), "o logótipo nunca vai para o ficheiro .precario")
+pr._repor_cores()
+pr._escolher_logo()
+ok(pr.precario().cores == ("", "", "") and not pr.precario().logo, "repor as cores e voltar a carregar no botão do logótipo tira-o")
+ok(pr._abrir_ficheiro(str(fich_c)) and pr.precario().cores == ("#112233", "", "") and pr.precario().logo_lugar == "rodape" and not pr.precario().logo, "abrir o ficheiro repõe as cores e o sítio, não o logótipo")
+(SAIDA / "mau_logo.png").write_bytes(b"nao e uma imagem")
+ok(not pr._escolher_logo(str(SAIDA / "mau_logo.png")) and pr.l_erro.cget("text") != "" and not pr.logo, "um logótipo que não é PNG nem JPG a sério é recusado com aviso")
+pr.l_erro.configure(text="")
+pr._repor_cores()
+pr.v_logo_lugar.set(pr._logo_lugares["esquerda"])
+
 # --- vales de fichas numerados: só com moeda inventada com nome; pre-visualiza no worker; «Criar» passa o template e os algarismos à janela principal
 pr.v_inventada.set(False)
 pr._vales()

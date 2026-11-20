@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.79.0 — 2026-11-20
+
+### Nieuw
+- **Kleuren en logo in de prijslijst**: u kunt de hoofd-, accent- en papierkleur van het ontwerp wijzigen (de prijzen passen zich vanzelf aan zodat ze leesbaar blijven) en het logo van uw vereniging (PNG of JPG) in de kop, links of rechts, of in de voet plaatsen (site en Windows-app). De kleuren en de plek blijven bewaard in het prijslijstbestand en in de gedeelde link; het logo dient alleen om het voorbeeld en de pdf te tekenen en wordt nooit bewaard.
+
 ## 3.78.0 — 2026-11-20
 
 ### Nieuw

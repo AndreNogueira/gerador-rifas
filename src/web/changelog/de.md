@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.79.0 — 2026-11-20
+
+### Neu
+- **Farben und Logo in der Preisliste**: Sie können Haupt-, Akzent- und Papierfarbe des Motivs ändern (die Preise passen sich selbst an, damit sie lesbar bleiben) und das Logo Ihres Vereins (PNG oder JPG) in der Kopfzeile links oder rechts oder in der Fußzeile platzieren (Website und Windows-App). Farben und Position bleiben in der Preislisten-Datei und im geteilten Link erhalten; das Logo dient nur zum Zeichnen der Vorschau und des PDFs und wird nie gespeichert.
+
 ## 3.78.0 — 2026-11-20
 
 ### Neu

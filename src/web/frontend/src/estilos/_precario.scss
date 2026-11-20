@@ -306,3 +306,60 @@
     background: var(--campo);
   }
 }
+
+// Cores e logótipo do preçário
+.precario {
+  .precario-cores-logo {
+    border: var(--borda) solid var(--linha);
+    border-radius: var(--raio-c);
+    margin: 12px 0 0;
+    padding: 8px 10px 12px;
+    legend {
+      padding: 0 6px;
+      font-weight: 700;
+    }
+  }
+  .precario-cores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-bottom: 10px;
+  }
+  .precario-cor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    input[type="color"] {
+      flex: none;
+      width: 2.6rem;
+      height: 2.2rem;
+      padding: 2px;
+      cursor: pointer;
+    }
+  }
+  .precario-sub {
+    margin: 14px 0 6px;
+    font-size: 1rem;
+  }
+  .precario-logo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .precario-logo-mini {
+    display: block;
+    max-width: 96px;
+    max-height: 56px;
+    object-fit: contain;
+    border: 1px solid var(--linha);
+    border-radius: 6px;
+    background: #fff;
+    padding: 2px;
+  }
+  .precario-logo-onde {
+    display: grid;
+    gap: 4px;
+    margin-top: 10px;
+  }
+}

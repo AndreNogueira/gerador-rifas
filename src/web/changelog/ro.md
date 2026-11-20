@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.79.0 — 2026-11-20
+
+### Noutăți
+- **Culori și logo în lista de prețuri**: poți schimba culoarea principală, cea de accent și cea a hârtiei desenului (prețurile se ajustează singure ca să rămână mereu lizibile) și poți pune logo-ul asociației tale (PNG sau JPG) în antet, la stânga sau la dreapta, ori în subsol (site și aplicația Windows). Culorile și locul rămân în fișierul listei și în linkul partajat; logo-ul servește doar la desenarea previzualizării și a PDF-ului și nu se păstrează niciodată.
+
 ## 3.78.0 — 2026-11-20
 
 ### Noutăți

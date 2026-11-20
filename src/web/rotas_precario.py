@@ -50,6 +50,9 @@ class PedidoPrecario(BaseModel):
     imagens: bool = True
     tamanhos: bool = False
     rotulos: list[Annotated[str, StringConstraints(max_length=32)]] = Field(default_factory=lambda: ["P", "G"], min_length=2, max_length=2)
+    cores: list[Annotated[str, StringConstraints(max_length=7)]] = Field(default_factory=lambda: ["", "", ""], min_length=3, max_length=3)    # `#RRGGBB` (principal, destaque, papel); vazio = a do desenho
+    logotipo: str = Field("", max_length=600_000)             # `data:image/png|jpeg;base64,…` já reduzido pelo browser: só se desenha, nunca se guarda
+    logo_lugar: str = Field("esquerda", max_length=10)
     moeda: MoedaEntrada = Field(default_factory=MoedaEntrada)
 
 
@@ -75,13 +78,14 @@ def catalogo(resposta: Response, mes: int | None = Query(None, ge=1, le=12), lg:
     pais = moeda.pais_por_omissao(lg)
     return {
         **precario_catalogo.catalogo(lg, mes),
-        "desenhos": [{"id": d.id, "nome": d.nome} for d in precario.DESENHOS],
+        "desenhos": [{"id": d.id, "nome": d.nome, "cores": [precario.hex_de(d.principal), precario.hex_de(d.destaque), precario.hex_de(d.papel)]} for d in precario.DESENHOS],
         "moedas": [{"codigo": m.codigo, "simbolo": m.simbolo, "decimais": m.decimais} for m in moeda.MOEDAS.values()],
         "paises": moeda.PAIS_MOEDA,
         "pais": pais, "moeda": moeda.moeda_por_omissao(lg).codigo,
         "limites": {"linhas": precario.MAX_LINHAS, "titulo": precario.MAX_TITULO, "subtitulo": precario.MAX_SUBTITULO, "rodape": precario.MAX_RODAPE, "nome": precario.MAX_NOME,
                     "moeda_inventada": moeda.MAX_NOME_INVENTADA},
         "formatos": list(precario.FORMATOS),
+        "logo_lugares": list(precario.LOGO_LUGARES),
     }
 
 

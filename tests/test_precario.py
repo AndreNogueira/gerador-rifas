@@ -340,3 +340,70 @@ def test_um_artigo_recusa_uma_imagem_que_nao_e_sua():
 def test_a_imagem_escolhida_vai_e_volta_pelo_dicionario_e_pelo_ficheiro():
     p = Precario(linhas=(Linha(artigo="agua", preco=1000, emoji=cat.ARTIGOS["agua"].icones[2]),))
     assert precario.de_dict(precario.para_dict(p)) == p and precario.de_bytes(precario.para_bytes(p)).linhas[0].emoji == p.linhas[0].emoji
+
+
+# ------------------------------------------------------------------ cores à escolha e logótipo
+def _logo(lado=(300, 120), cor=(20, 60, 160)) -> bytes:
+    from PIL import Image
+    b = io.BytesIO()
+    Image.new("RGB", lado, cor).save(b, "PNG")
+    return b.getvalue()
+
+
+def test_as_cores_escolhidas_mudam_o_pdf_e_um_vazio_deixa_a_do_desenho():
+    linhas = (Linha(artigo="agua", preco=1000),)
+    base = precario.criar_pdf(Precario(linhas=linhas, desenho="natal"))
+    assert precario.criar_pdf(Precario(linhas=linhas, desenho="natal", cores=("", "", ""))) == base
+    for cores in (("#112233", "", ""), ("", "#ff00ff", ""), ("", "", "#eeeeaa")):
+        assert precario.criar_pdf(Precario(linhas=linhas, desenho="natal", cores=cores)) != base
+    d = precario._desenho(Precario(linhas=linhas, desenho="natal", cores=("#112233", "", "")))
+    assert precario.hex_de(d.principal) == "#112233" and d.destaque == precario.POR_ID["natal"].destaque
+
+
+@pytest.mark.parametrize("cores", [("azul", "", ""), ("#12345", "", ""), ("#GGGGGG", "", ""), ("", "", "#1234567")])
+def test_uma_cor_que_nao_e_rrggbb_e_recusada(cores):
+    with pytest.raises(ErroRifas) as e:
+        precario.criar_pdf(Precario(linhas=(Linha(artigo="agua"),), cores=cores))
+    assert e.value.chave == "err_cor"
+
+
+def test_o_preco_e_as_categorias_ficam_legiveis_com_qualquer_cor_de_papel_e_principal():
+    for principal in ("#ffffff", "#fffacd", "#000000", "#222222"):
+        for papel in ("#ffffff", "#fffacd", "#000000", "#111111"):
+            d = precario._desenho(Precario(linhas=(Linha(artigo="agua"),), desenho="natal", cores=(principal, "", papel)))
+            assert precario._contraste(precario._cor_realce(d), d.papel) >= 3.0, (principal, papel)
+            assert precario._contraste(precario._cor_texto(d), d.papel) >= 7.0, (principal, papel)
+
+
+def test_o_logotipo_reduz_se_so_aceita_png_ou_jpg_a_serio_e_desenha_se_nos_tres_lugares():
+    from PIL import Image
+    pequeno = precario.logo_de_bytes(_logo((2000, 500)))
+    with Image.open(io.BytesIO(pequeno)) as im:
+        assert max(im.size) == precario.LOGO_LADO and im.size == (480, 120)
+    for mau in (b"", b"nao e imagem", b"GIF89a" + b"\0" * 40, b"%PDF-1.4 x", b"x" * (precario.MAX_LOGO_BYTES + 1)):
+        with pytest.raises(ErroRifas) as e:
+            precario.logo_de_bytes(mau)
+        assert e.value.chave == "err_logotipo"
+    linhas = (Linha(artigo="agua", preco=1000),)
+    sem = precario.criar_pdf(Precario(linhas=linhas, rodape="Obrigado"))
+    pdfs = {precario.criar_pdf(Precario(linhas=linhas, rodape="Obrigado", logo=pequeno, logo_lugar=lugar)) for lugar in precario.LOGO_LUGARES}
+    assert len(pdfs) == 3 and sem not in pdfs                                  # cada lugar desenha-o noutro sítio
+    for formato in ("A5", "A3", "A6x4"):
+        assert precario.criar_pdf(Precario(linhas=linhas, formato=formato, logo=pequeno, logo_lugar="rodape")).startswith(b"%PDF")
+    with pytest.raises(ErroRifas):
+        precario.criar_pdf(Precario(linhas=linhas, logo=pequeno, logo_lugar="meio"))
+
+
+def test_o_logotipo_nunca_vai_para_o_dicionario_nem_para_o_ficheiro_mas_as_cores_e_o_lugar_sim():
+    import base64
+    dados = "data:image/png;base64," + base64.b64encode(_logo()).decode()
+    p = precario.de_dict({"linhas": [{"artigo": "agua", "preco": "1"}], "cores": ["#112233", "", "#ffeedd"], "logotipo": dados, "logo_lugar": "rodape"}, "pt")
+    assert p.logo and p.cores == ("#112233", "", "#ffeedd") and p.logo_lugar == "rodape"
+    d = precario.para_dict(p)
+    assert d["cores"] == ["#112233", "", "#ffeedd"] and d["logo_lugar"] == "rodape" and "logotipo" not in d and "logo" not in d
+    assert b"base64" not in precario.para_bytes(p) and not precario.de_bytes(precario.para_bytes(p)).logo
+    assert precario.de_bytes(precario.para_bytes(p)).cores == p.cores
+    with pytest.raises(ErroRifas):
+        precario.de_dict({"linhas": [{"artigo": "agua"}], "logotipo": "data:image/gif;base64,R0lGOD"}, "pt")
+    with pytest.raises(ErroRifas):
+        precario.de_dict({"linhas": [{"artigo": "agua"}], "cores": ["#fff"]}, "pt")

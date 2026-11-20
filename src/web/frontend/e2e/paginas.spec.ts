@@ -46,6 +46,22 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.getByTestId("precario-icone-agua-4")).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByTestId("precario-previa-img")).toBeVisible();
     await expect(page.getByTestId("precario-erro")).toHaveCount(0);
+    // cores à escolha e logótipo (um PNG de 8 x 8 px): vão no pedido e a pré-visualização continua a desenhar-se
+    await page.getByTestId("precario-cor-0").fill("#0a3d62");
+    await page.getByTestId("precario-logo").setInputFiles({
+      name: "logo.png",
+      mimeType: "image/png",
+      buffer: Buffer.from(
+        "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAFElEQVR4nGM8YWPDgA0wYRUdtBIA/xQBUEfB7b0AAAAASUVORK5CYII=",
+        "base64",
+      ),
+    });
+    await page.getByTestId("precario-logo-lugar").selectOption("rodape");
+    await expect(page.getByTestId("precario-logo-mini")).toBeVisible();
+    await expect(page.getByTestId("precario-previa-img")).toBeVisible();
+    await expect(page.getByTestId("precario-erro")).toHaveCount(0);
+    await page.getByTestId("precario-logo-tirar").click();
+    await page.getByTestId("precario-cores-repor").click();
     // uma foto própria (um PNG de 8 x 8 px): reduz-se no browser, vai no pedido e a pré-visualização continua a desenhar-se
     const png = Buffer.from(
       "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAFElEQVR4nGM8YWPDgA0wYRUdtBIA/xQBUEfB7b0AAAAASUVORK5CYII=",

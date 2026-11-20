@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.79.0 — 2026-11-20
+
+### Novo
+- **Cores e logótipo no preçário**: pode mudar a cor principal, a de destaque e a do papel do desenho (os preços ajustam-se sozinhos para se lerem sempre) e pôr o logótipo da sua associação (PNG ou JPG) no cabeçalho, à esquerda ou à direita, ou no rodapé (site e app Windows). As cores e o sítio ficam no ficheiro do preçário e na ligação partilhada; o logótipo só serve para desenhar a pré-visualização e o PDF e nunca se guarda.
+
 ## 3.78.0 — 2026-11-20
 
 ### Novo

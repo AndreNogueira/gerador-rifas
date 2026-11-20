@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.79.0 — 2026-11-20
+
+### Nouveautés
+- **Couleurs et logo dans la liste de prix** : vous pouvez changer la couleur principale, la couleur d'accent et celle du papier du modèle (les prix s'adaptent seuls pour rester lisibles) et placer le logo de votre association (PNG ou JPG) dans l'en-tête, à gauche ou à droite, ou dans le pied de page (site et appli Windows). Les couleurs et l'emplacement restent dans le fichier de la liste et dans le lien partagé ; le logo ne sert qu'à dessiner l'aperçu et le PDF et n'est jamais conservé.
+
 ## 3.78.0 — 2026-11-20
 
 ### Nouveautés

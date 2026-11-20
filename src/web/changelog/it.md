@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.79.0 — 2026-11-20
+
+### Novità
+- **Colori e logo nel listino**: puoi cambiare il colore principale, quello di evidenza e quello della carta del disegno (i prezzi si adattano da soli per restare sempre leggibili) e mettere il logo della tua associazione (PNG o JPG) nell'intestazione, a sinistra o a destra, o a piè di pagina (sito e app Windows). I colori e la posizione restano nel file del listino e nel link condiviso; il logo serve solo a disegnare l'anteprima e il PDF e non viene mai salvato.
+
 ## 3.78.0 — 2026-11-20
 
 ### Novità
