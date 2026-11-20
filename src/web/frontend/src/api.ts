@@ -214,6 +214,13 @@ export interface PedidoPrecario {
   logo_lugar?: string;
   moeda: { codigo?: string; nome?: string; antes?: boolean; decimais?: number };
 }
+/** O corpo de `POST /api/precario/etiquetas.pdf` e `…/etiquetas-previa.png`: o preçário, a zona de levantamento de cada secção e as cópias de cada artigo. */
+export interface PedidoEtiquetas {
+  precario: PedidoPrecario;
+  zonas: Record<string, string>;
+  copias: number;
+  preco: boolean;
+}
 export interface ComentarioPublico {
   id: string;
   /** Segundos desde 1970. */
@@ -384,6 +391,10 @@ export const api = {
   precarioPdf: (p: PedidoPrecario) => pedir<Blob>("POST", "/api/precario/pdf", { json: p, bruto: true }),
   precarioImagem: (p: PedidoPrecario) =>
     pedir<Blob>("POST", "/api/precario/imagem.png", { json: p, bruto: true }),
+  precarioEtiquetasPdf: (p: PedidoEtiquetas) =>
+    pedir<Blob>("POST", "/api/precario/etiquetas.pdf", { json: p, bruto: true }),
+  precarioEtiquetasPrevia: (p: PedidoEtiquetas) =>
+    pedir<Blob>("POST", "/api/precario/etiquetas-previa.png", { json: p, bruto: true }),
   publico: () => pedir<Publico>("GET", "/api/publico"),
   comentarios: (antes = "") =>
     pedir<ListaComentarios>("GET", `/api/comentarios${antes ? `?antes=${encodeURIComponent(antes)}` : ""}`),

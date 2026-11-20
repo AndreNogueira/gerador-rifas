@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.81.0 — 2026-11-20
+
+### Nowości
+- **Etykiety odbioru**: płaci się w jednym miejscu, a odbiera w innym? Na stronie cennika każda pozycja staje się etykietą z obrazkiem, nazwą, ceną (jeśli chcesz) i strefą odbioru (bar, kuchnia…), w wybranej liczbie kopii, po 24 na kartce A4 z liniami cięcia i jednym kolorem na strefę. Zestaw daje jedną etykietę na pozycję, każdą w strefie jej działu (strona i aplikacja na Windows; z samouczkiem i filmami).
+
 ## 3.80.0 — 2026-11-20
 
 ### Nowości

@@ -19,7 +19,7 @@ from PIL import Image
 
 import ambiente          # noqa: F401  (poe ..\src no sys.path)
 import core
-from core import editor, editor_modelo, galeria, i18n, marca, moeda, precario, precario_catalogo, sorteio, vales
+from core import editor, editor_modelo, etiquetas, galeria, i18n, marca, moeda, precario, precario_catalogo, sorteio, vales
 from core.i18n import t
 from tema import C, FONTE
 
@@ -888,6 +888,7 @@ class Precario(Janela):
         self.b_pdf.pack(fill="x", pady=(8, 4))
         app._botao(esq, t("win_precario_imagem"), self._guardar_imagem, height=34).pack(fill="x", pady=2)
         app._botao(esq, t("web_vales_titulo") + "…", self._vales, height=34).pack(fill="x", pady=2)
+        app._botao(esq, t("web_etiquetas_titulo") + "…", self._etiquetas, height=34).pack(fill="x", pady=2)
         app._botao(esq, t("win_precario_guardar"), self._guardar_ficheiro, height=34).pack(fill="x", pady=2)
         app._botao(esq, t("win_precario_abrir"), self._abrir_ficheiro, height=34).pack(fill="x", pady=2)
         self.l_erro = self.etiqueta(esq, "", wraplength=400)
@@ -1246,6 +1247,22 @@ class Precario(Janela):
             antiga.destroy()
         self.app.w_extras["vales"] = Vales(self.app, nome, vales.desenho_do_vale(self.v_desenho.get()), self.v_subtitulo.get())
 
+    def _etiquetas(self) -> None:
+        """«Etiquetas de levantamento…»: abre a janela das etiquetas com o preçário que está aqui (os artigos, os combos, os preços e o desenho)."""
+        try:
+            self.precario()
+        except core.ErroRifas as e:
+            self.l_erro.configure(text=str(e))
+            return
+        if not self.linhas:
+            self.l_erro.configure(text=t("web_precario_vazio"))
+            return
+        self.l_erro.configure(text="")
+        antiga = self.app.w_extras.get("etiquetas")
+        if antiga is not None and antiga.winfo_exists():
+            antiga.destroy()
+        self.app.w_extras["etiquetas"] = Etiquetas(self.app, self)
+
     def _guardar_pdf(self, destino: str | None = None) -> Path | None:
         return self._guardar(t("win_precario_pdf"), ".pdf", "PDF", lambda p: _com_lingua(p.lingua, precario.criar_pdf, p), destino)
 
@@ -1324,6 +1341,136 @@ class Precario(Janela):
         finally:
             self._a_aplicar = False
         self._precos()
+
+
+# ------------------------------------------------------------------ etiquetas de levantamento do preçário
+class Etiquetas(Janela):
+    """«Etiquetas de levantamento»: paga-se num sítio e levanta-se noutro. Uma etiqueta por artigo do preçário (um combo dá uma por artigo), com a zona onde se levanta (a de cada secção),
+    as cópias de cada artigo e o preço opcional; guarda-se um PDF com 24 por folha A4 e guias de corte (`core.etiquetas`). A pré-visualização desenha-se no worker da app e chega por
+    `App._ev_etiquetas`. Aberta pela janela do preçário, de que lê os artigos a cada desenho."""
+
+    def __init__(self, app, origem: "Precario"):
+        super().__init__(app, t("web_etiquetas_titulo"), 960, 700)
+        self.origem = origem
+        self.token = 0
+        self._espera = None
+        self._foto = None
+        self.v_copias = tk.StringVar(value="10")
+        self.v_preco = tk.BooleanVar(value=True)
+        self.v_zona: dict[str, tk.StringVar] = {}
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        esq = ctk.CTkScrollableFrame(self, fg_color="transparent", width=360)
+        esq.grid(row=0, column=0, sticky="ns", padx=(14, 0), pady=12)
+        self.etiqueta(esq, t("web_etiquetas_intro"), wraplength=340).pack(fill="x", pady=(0, 8))
+        self.etiqueta(esq, t("web_etiquetas_zona")).pack(fill="x")
+        for sec in self.secoes():
+            self.etiqueta(esq, precario_catalogo.nome(precario_catalogo.CATEGORIAS[sec], origem.lingua), suave=False).pack(fill="x", pady=(6, 0))
+            self.v_zona[sec] = tk.StringVar()
+            self.v_zona[sec].trace_add("write", lambda *_: self._agendar())
+            app._entrada(esq, self.v_zona[sec], placeholder_text=t("web_etiquetas_zona_ex")).pack(fill="x")
+        self.etiqueta(esq, t("web_etiquetas_copias")).pack(fill="x", pady=(10, 0))
+        app._entrada(esq, self.v_copias).pack(fill="x")
+        self.v_copias.trace_add("write", lambda *_: self._agendar())
+        self.caixa(esq, t("web_etiquetas_preco"), self.v_preco, command=lambda: self._agendar(0)).pack(anchor="w", pady=(8, 0))
+        self.l_total = self.etiqueta(esq, "", wraplength=340)
+        self.l_total.pack(fill="x", pady=(8, 0))
+        self.b_pdf = app._botao(esq, t("web_etiquetas_pdf"), self._guardar_pdf, True, icone="gerar", height=40)
+        self.b_pdf.pack(fill="x", pady=(8, 0))
+        self.l_erro = self.etiqueta(esq, "", wraplength=340)
+        self.l_erro.configure(text_color=C["erro"])
+        self.l_erro.pack(fill="x", pady=(6, 0))
+        self.previa = ctk.CTkLabel(self, text="…", fg_color=C["visor"], corner_radius=12, text_color=C["suave"])
+        self.previa.grid(row=0, column=1, sticky="nsew", padx=14, pady=12)
+        self._agendar(0)
+
+    def secoes(self) -> list[str]:
+        """As secções das etiquetas: as dos artigos do preçário e as dos artigos dos combos, pela ordem do catálogo."""
+        usadas = set()
+        for ln in self.origem.precario().linhas:
+            if ln.combo:
+                usadas.update(precario_catalogo.ARTIGOS[a].categoria for a in ln.combo)
+            else:
+                usadas.add(precario_catalogo.ARTIGOS[ln.artigo].categoria if ln.artigo else (ln.categoria or "extras"))
+        return [c for c in precario_catalogo.CATEGORIAS if c in usadas]
+
+    def etiquetas(self) -> "etiquetas.Etiquetas":
+        """As etiquetas com o que está nas caixas e no preçário de origem (as cópias que não são um número ficam 0: o `core` recusa-as com a mensagem certa)."""
+        from dataclasses import replace
+        try:
+            copias = int(self.v_copias.get().strip())
+        except ValueError:
+            copias = 0
+        p = replace(self.origem.precario(), formato="A4", orientacao="vertical")
+        return etiquetas.Etiquetas(p, {k: " ".join(v.get().split()) for k, v in self.v_zona.items() if v.get().strip()}, copias, self.v_preco.get())
+
+    def _agendar(self, atraso: int = 350) -> None:
+        if self._espera:
+            self.after_cancel(self._espera)
+        self._espera = self.after(atraso, self._desenhar)
+
+    def _desenhar(self) -> None:
+        self._espera = None
+        self.token += 1
+        token, lingua = self.token, i18n.atual()
+        try:
+            e = self.etiquetas()
+            n = len(etiquetas.senhas(e)) if 1 <= e.copias <= etiquetas.MAX_COPIAS else 0
+        except core.ErroRifas as erro:
+            self.l_erro.configure(text=str(erro))
+            return
+        self.l_total.configure(text=t("web_etiquetas_total", n=n, folhas=max(1, -(-n // (etiquetas.COLUNAS * etiquetas.LINHAS)))))
+        gc.collect()                                     # ver App._analisar: o lixo do Tk apanha-se no fio principal
+
+        def trabalho() -> None:
+            if token != self.token:
+                return
+            try:
+                with i18n.com_lingua(lingua):
+                    png = core.png_de_pagina(etiquetas.criar_pdf(e), 110)
+                self.app.fila.put(("etiquetas", token, png, None))
+            except Exception as erro:                    # noqa: BLE001 - zonas ou cópias inválidas, demasiadas etiquetas, letras que faltam
+                self.app.fila.put(("etiquetas", token, None, erro))
+        self.app.pool.submit(trabalho)
+
+    def resultado(self, token: int, png: bytes | None, erro: Exception | None) -> None:
+        if token != self.token or not self.winfo_exists():
+            return
+        self.l_erro.configure(text="" if erro is None else (str(erro) if isinstance(erro, core.ErroRifas) else t("erro_inesperado", erro=erro)))
+        if png is None:
+            return
+        import io
+        im = Image.open(io.BytesIO(png))
+        self.update_idletasks()
+        im.thumbnail((max(self.previa.winfo_width() - 20, 200), max(self.previa.winfo_height() - 20, 200)), Image.LANCZOS)
+        self._foto = ctk.CTkImage(light_image=im, dark_image=im, size=im.size)
+        self.previa.configure(image=self._foto, text="")
+
+    def _guardar_pdf(self, destino: str | None = None) -> Path | None:
+        try:
+            with i18n.com_lingua(i18n.atual()):
+                pdf = etiquetas.criar_pdf(self.etiquetas())
+        except core.ErroRifas as e:
+            self.l_erro.configure(text=str(e))
+            return None
+        destino = destino or filedialog.asksaveasfilename(parent=self, title=t("web_etiquetas_titulo"), initialdir=self.app._dir_de(self.app.v_saida), initialfile="etiquetas.pdf",
+                                                          defaultextension=".pdf", filetypes=[("PDF", "*.pdf"), (t("dlg_tipo_todos"), "*.*")])
+        if not destino:
+            return None
+        try:
+            Path(destino).write_bytes(pdf)
+        except OSError as e:
+            messagebox.showerror(t("app_nome"), t("erro_inesperado", erro=e))
+            return None
+        self.l_erro.configure(text="")
+        return Path(destino)
+
+    def destroy(self) -> None:
+        if self._espera:
+            self.after_cancel(self._espera)
+            self._espera = None
+        self.token += 1
+        super().destroy()
 
 
 # ------------------------------------------------------------------ vales de fichas numerados (fase 7 do preçário)

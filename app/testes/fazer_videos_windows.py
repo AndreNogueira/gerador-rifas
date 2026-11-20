@@ -299,6 +299,33 @@ def cena_vales(a, g, T):
     g.segundos(3.4, T("O gerador numera os vales: séries, QR de verificação e folhas", "The generator numbers the vouchers: series, verification QR and sheets"))
 
 
+def cena_etiquetas(a, g, T):
+    g.segundos(2.0, T("Paga-se num sítio e levanta-se noutro? Faça etiquetas por artigo", "Pay in one place and pick up in another? Make a ticket per item"))
+    j = abrir(a, "precario", extras.Precario, "+40+30")
+    esperar(a, lambda: j._foto is not None, 10)
+    j._escolher_ocasiao(j._nome_ocasiao(extras.precario_catalogo.OCASIOES["festa_popular"]))
+    esperar(a, lambda: not j._espera and j._foto is not None, 8)
+    g.segundos(2.0, T("Um combo junta artigos de secções diferentes", "A combo joins items from different sections"))
+    j._juntar_combo(["agua", "bolo"], "")
+    esperar(a, lambda: False, 1.2)
+    g.segundos(2.0, T("«Etiquetas de levantamento…» abre as etiquetas do preçário", "“Pick-up tickets…” opens the price list's tickets"))
+    j._etiquetas()
+    et = a.w_extras["etiquetas"]
+    et.geometry("+150+50")
+    et.attributes("-topmost", True)
+    esperar(a, lambda: et._foto is not None, 10)
+    g.segundos(2.0)
+    g.legenda = T("Diga onde se levanta cada secção: o bar, a cozinha…", "Say where each section is picked up: the bar, the kitchen…")
+    for sec, nome in zip(et.secoes(), (T("Bar", "Bar"), T("Cozinha", "Kitchen"), T("Doces", "Sweets"), T("Jogos", "Games"), T("Extras", "Extras"))):
+        g.escrever(et.v_zona[sec], nome, 0.8)
+    esperar(a, lambda: not et._espera, 4)
+    g.segundos(2.4)
+    g.legenda = T("Escolha quantas etiquetas de cada artigo imprimir", "Choose how many tickets of each item to print")
+    g.escrever(et.v_copias, "10", 1)
+    esperar(a, lambda: not et._espera, 4)
+    g.segundos(3.0, T("24 por folha A4, com guias de corte e uma cor por zona", "24 per A4 sheet, with cutting guides and one color per zone"))
+
+
 def cena_editor(a, g, T):
     g.segundos(2.0, T("Sem Canva? Desenhe a sua rifa no editor", "No Canva? Design your ticket in the editor"))
     g.segundos(1.2, T("Menu «Extras» → «Editor de templates…»", "Menu “Extras” → “Template editor…”"))
@@ -403,7 +430,7 @@ def cena_visual(a, g, T):
     a._definir_visual("auto")
 
 
-CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria), "precario": (None, cena_precario), "vales": (None, cena_vales), "editor": (None, cena_editor),
+CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria), "precario": (None, cena_precario), "vales": (None, cena_vales), "etiquetas": (None, cena_etiquetas), "editor": (None, cena_editor),
          "marca": (UMA_RIFA, cena_marca), "sorteio": (VARIAS, cena_sorteio), "visual": (VARIAS, cena_visual), "pedido": (None, cena_pedido)}
 
 

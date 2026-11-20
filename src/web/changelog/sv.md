@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.81.0 — 2026-11-20
+
+### Nytt
+- **Hämtningsetiketter**: betalar man på ett ställe och hämtar på ett annat? På prislistesidan blir varje artikel en etikett med bild, namn, pris (om du vill) och den zon där den hämtas (baren, köket …), i det antal kopior du väljer, 24 per A4-ark med klippguider och en färg per zon. En kombo ger en etikett per artikel, var och en i zonen för sin avdelning (webbplatsen och Windows-appen; med guide och videor).
+
 ## 3.80.0 — 2026-11-20
 
 ### Nytt

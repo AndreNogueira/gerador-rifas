@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.81.0 — 2026-11-20
+
+### Novo
+- **Etiquetas de levantamento**: paga-se num sítio e levanta-se noutro? Na página do preçário, cada artigo vira uma etiqueta com a imagem, o nome, o preço (se quiser) e a zona onde se levanta (o bar, a cozinha…), com as cópias que escolher, 24 por folha A4 com guias de corte e uma cor por zona. Um combo dá uma etiqueta por artigo, cada uma na zona da sua secção (site e app Windows; tutorial e vídeos incluídos).
+
 ## 3.80.0 — 2026-11-20
 
 ### Novo

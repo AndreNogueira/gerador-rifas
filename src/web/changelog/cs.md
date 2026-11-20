@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.81.0 — 2026-11-20
+
+### Novinky
+- **Štítky k vyzvednutí**: platí se na jednom místě a vyzvedává na jiném? Na stránce ceníku se každá položka stane štítkem s obrázkem, názvem, cenou (chcete-li) a zónou vyzvednutí (bar, kuchyně…), v počtu kopií, který zvolíte, 24 na list A4 s vodítky pro stříhání a jednou barvou na zónu. Kombinace dá jeden štítek na položku, každý v zóně svého oddílu (web i aplikace pro Windows; včetně návodu a videí).
+
 ## 3.80.0 — 2026-11-20
 
 ### Novinky

@@ -455,6 +455,8 @@ export class ServidorFalso {
     if (
       url === "/api/precario/previa.png" ||
       url === "/api/precario/pdf" ||
+      url === "/api/precario/etiquetas.pdf" ||
+      url === "/api/precario/etiquetas-previa.png" ||
       url === "/api/precario/imagem.png"
     ) {
       if (this.precarioErro) return this.responder({ detail: this.precarioErro, tipo: "aviso" }, 422);

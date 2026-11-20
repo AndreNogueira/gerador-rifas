@@ -10,7 +10,7 @@ import urllib.parse
 from concurrent.futures.process import BrokenProcessPool
 from typing import Annotated
 
-from core import ErroRifas, i18n, moeda, precario, precario_catalogo
+from core import ErroRifas, etiquetas, i18n, moeda, precario, precario_catalogo
 from fastapi import APIRouter, Depends, Query, Response
 from pydantic import BaseModel, Field, StringConstraints
 
@@ -55,6 +55,13 @@ class PedidoPrecario(BaseModel):
     logotipo: str = Field("", max_length=600_000)             # `data:image/png|jpeg;base64,…` já reduzido pelo browser: só se desenha, nunca se guarda
     logo_lugar: str = Field("esquerda", max_length=10)
     moeda: MoedaEntrada = Field(default_factory=MoedaEntrada)
+
+
+class PedidoEtiquetas(BaseModel):
+    precario: PedidoPrecario
+    zonas: dict[Annotated[str, StringConstraints(max_length=20)], Annotated[str, StringConstraints(max_length=60)]] = Field(default_factory=dict, max_length=12)   # secção -> onde se levanta
+    copias: int = Field(10, ge=1, le=etiquetas.MAX_COPIAS)
+    preco: bool = True
 
 
 def _classe_de_linhas(n: int) -> str:
@@ -130,6 +137,42 @@ async def pdf(pedido: PedidoPrecario, serv: Servico = Depends(servico), lg: str 
         raise ErroApi(422, e.em(lg), "aviso") from None
     _evento(serv, pedido)
     return _anexo(dados, "application/pdf", "precario.pdf")
+
+
+# ------------------------------------------------------------------ etiquetas de levantamento (uma senha por artigo e cópia, com a zona onde se levanta)
+def _classe_de_etiquetas(n: int) -> str:
+    return "1-24" if n <= 24 else "25-120" if n <= 120 else "121-600" if n <= 600 else "601+"
+
+
+def _criar_etiquetas(d: dict, lg: str) -> tuple[bytes, int]:
+    with i18n.com_lingua(lg):
+        e = etiquetas.de_dict(d, lg)
+        return etiquetas.criar_pdf(e), len(etiquetas.senhas(e))
+
+
+@router.post("/etiquetas.pdf", dependencies=[Depends(pesado)])
+async def etiquetas_pdf(pedido: PedidoEtiquetas, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Response:
+    """O PDF das etiquetas de levantamento (folhas A4 com 24 senhas e guias de corte), descarregado. As métricas só levam a classe do total de senhas: nunca zonas, nomes nem preços."""
+    try:
+        dados, n = await asyncio.to_thread(_criar_etiquetas, pedido.model_dump(), lg)
+    except ErroRifas as e:
+        raise ErroApi(422, e.em(lg), "aviso") from None
+    serv.metricas.evento("precario_etiquetas", _classe_de_etiquetas(n))
+    return _anexo(dados, "application/pdf", "etiquetas.pdf")
+
+
+@router.post("/etiquetas-previa.png", dependencies=[Depends(leve)])
+async def etiquetas_previa(pedido: PedidoEtiquetas, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Response:
+    """O PNG da 1.ª folha das etiquetas, para ver antes de imprimir: desenha-se, não se guarda nada."""
+    try:
+        r = await serv.motor.curto(trabalhos.etiquetas_png, pedido.model_dump(), lg, 110)
+    except Ocupado:
+        raise _ocupado(lg) from None
+    except (asyncio.TimeoutError, BrokenProcessPool) as e:
+        raise ErroApi(500, i18n.traduzir("erro_inesperado", lg, erro=_motivo(e)), "erro") from None
+    if r[0] != "ok":
+        _levantar(r, lg)
+    return Response(r[1], media_type="image/png", headers={"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff"})
 
 
 # ------------------------------------------------------------------ partilhar por ligação (`/precario?p=<id>`), com o mesmo armazenamento do editor (`partilhas.py`: só com DATABASE_URL)

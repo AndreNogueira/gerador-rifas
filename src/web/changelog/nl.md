@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.81.0 — 2026-11-20
+
+### Nieuw
+- **Ophaaletiketten**: betaal je op de ene plek en haal je op een andere op? Op de prijslijstpagina wordt elk artikel een etiket met de afbeelding, de naam, de prijs (als je wilt) en de ophaalzone (de bar, de keuken…), in het aantal exemplaren dat je kiest, 24 per A4-vel met snijlijnen en één kleur per zone. Een combo geeft één etiket per artikel, elk in de zone van zijn rubriek (site en Windows-app; met handleiding en video's).
+
 ## 3.80.0 — 2026-11-20
 
 ### Nieuw

@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.81.0 — 2026-11-20
+
+### Neu
+- **Abholetiketten**: Man zahlt an einer Stelle und holt woanders ab? Auf der Preislistenseite wird jeder Artikel zu einer Etikette mit Bild, Name, Preis (wenn Sie möchten) und der Abholzone (Bar, Küche …), in der gewünschten Stückzahl, 24 pro A4-Blatt mit Schnittlinien und einer Farbe pro Zone. Eine Kombi ergibt eine Etikette pro Artikel, jede in der Zone ihres Bereichs (Website und Windows-App; mit Anleitung und Videos).
+
 ## 3.80.0 — 2026-11-20
 
 ### Neu

@@ -145,6 +145,16 @@ def precario_png(pedido: dict, lingua: str, dpi: int = 110) -> tuple:
         return _erro(e)
 
 
+def etiquetas_png(pedido: dict, lingua: str, dpi: int = 110) -> tuple:
+    """O PNG da 1.a folha das etiquetas de levantamento (o dicionario de `core.etiquetas.de_dict`): (\"ok\", bytes) | erro (letras que o PDF nao tem, zonas ou copias invalidas, demasiadas etiquetas)."""
+    try:
+        with core.i18n.com_lingua(lingua):
+            pdf = core.etiquetas.criar_pdf(core.etiquetas.de_dict(pedido, lingua))
+        return ("ok", core.png_de_pagina(pdf, dpi))
+    except Exception as e:  # noqa: BLE001
+        return _erro(e)
+
+
 def vale_png(vale: dict, lingua: str, dpi: int = 110) -> tuple:
     """O PNG de um vale de fichas (o dicionario de `core.vales.de_dict`): ("ok", bytes) | erro (letras que a Vera nao tem, quantidade fora dos limites, algarismos que o motor confundiria)."""
     try:

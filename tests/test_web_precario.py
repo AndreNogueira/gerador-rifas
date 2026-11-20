@@ -181,3 +181,26 @@ def test_combos_pelo_pdf_e_pela_previa_e_o_catalogo_tem_os_menus(c):
     r = c.post("/api/precario/pdf", json={"linhas": [{"combo": ["agua"]}]}, headers={"X-Lingua": "en"})
     assert r.status_code == 422 and r.json()["tipo"] == "aviso" and "combo" in r.json()["detail"].lower()
     assert c.post("/api/precario/pdf", json={"linhas": [{"combo": ["agua", "bolo", "cafe", "sumo", "cha"]}]}).status_code == 422
+
+
+def test_etiquetas_de_levantamento_pelo_pdf_e_pela_previa_e_as_metricas_so_levam_a_classe(c):
+    pedido = {"precario": {"linhas": [{"artigo": "agua", "preco": "1"}, {"combo": ["bifana", "cerveja"], "nome": "Menu da festa"}], "titulo": "Festa secreta"},
+              "zonas": {"bebidas": "Bar", "alcool": "Bar", "comida": "Cozinha secreta"}, "copias": 6}
+    r = c.post("/api/precario/etiquetas.pdf", json=pedido)
+    assert r.status_code == 200 and r.headers["content-type"] == "application/pdf" and r.content.startswith(b"%PDF")
+    assert len(PdfReader(io.BytesIO(r.content)).pages) == 1                      # 18 senhas
+    assert c.post("/api/precario/etiquetas-previa.png", json=pedido).status_code == 200
+    for mau, codigo in (({**pedido, "copias": 0}, 422), ({**pedido, "copias": 100}, 422), ({**pedido, "zonas": {"x": "Bar"}}, 422), ({**pedido, "zonas": {"bebidas": "Y" * 61}}, 422),
+                        ({**pedido, "precario": {"linhas": [{"artigo": "agua"}] * 5, "titulo": "x"}, "copias": 99}, 200)):
+        assert c.post("/api/precario/etiquetas.pdf", json=mau).status_code == codigo
+    r = c.post("/api/precario/etiquetas.pdf", json={**pedido, "zonas": {"bebidas": "नमस्ते"}}, headers={"X-Lingua": "en"})
+    assert r.status_code == 422 and r.json()["tipo"] == "aviso"
+    muitos = {"precario": {"linhas": [{"nome": f"A{i}", "categoria": "extras"} for i in range(30)]}, "copias": 99}
+    r = c.post("/api/precario/etiquetas.pdf", json=muitos, headers={"X-Lingua": "en"})
+    assert r.status_code == 422 and "1200" in r.json()["detail"]
+    serv = c.app.state.servico
+    serv.metricas.descarregar(tudo=True)
+    linhas = serv.metricas._consultar("SELECT tipo, a, b, c FROM eventos WHERE tipo='precario_etiquetas'")
+    assert linhas and all(x[1] in ("1-24", "25-120", "121-600", "601+") and x[2] == "" for x in linhas)
+    tudo = str(serv.metricas._consultar("SELECT * FROM eventos"))
+    assert "secreta" not in tudo and "Bar" not in tudo
