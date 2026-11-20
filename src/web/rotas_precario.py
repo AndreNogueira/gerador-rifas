@@ -5,6 +5,7 @@ como a folha de controlo (`rotas_listas.py`); os textos, os artigos e os preços
 from __future__ import annotations
 
 import asyncio
+import json
 import urllib.parse
 from concurrent.futures.process import BrokenProcessPool
 from typing import Annotated
@@ -13,7 +14,7 @@ from core import ErroRifas, i18n, moeda, precario, precario_catalogo
 from fastapi import APIRouter, Depends, Query, Response
 from pydantic import BaseModel, Field, StringConstraints
 
-from . import trabalhos
+from . import partilhas, trabalhos
 from .modelos import ErroApi
 from .rotas import Ocupado, _levantar, _motivo, _ocupado, leve, lingua, pesado, servico, Servico
 
@@ -123,3 +124,55 @@ async def pdf(pedido: PedidoPrecario, serv: Servico = Depends(servico), lg: str 
         raise ErroApi(422, e.em(lg), "aviso") from None
     _evento(serv, pedido)
     return _anexo(dados, "application/pdf", "precario.pdf")
+
+
+# ------------------------------------------------------------------ partilhar por ligação (`/precario?p=<id>`), com o mesmo armazenamento do editor (`partilhas.py`: só com DATABASE_URL)
+class Partilhado(BaseModel):
+    id: str
+
+
+class PrecarioPartilhado(BaseModel):
+    precario: dict                              # o formato de `core.precario.para_dict` (preços em milésimos: não dependem da língua de quem abre)
+
+
+@router.post("/partilhar", response_model=Partilhado, dependencies=[Depends(pesado)])
+async def partilhar(pedido: PedidoPrecario, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> Partilhado:
+    """Guarda o preçário (só os campos: textos, artigos, preços e aspeto) e devolve o id da ligação. Só existe com `DATABASE_URL`; 90 dias depois do último acesso apaga-se."""
+    if serv.partilhas is None:
+        raise ErroApi(404, "Partilha indisponível", "erro")
+    try:
+        with i18n.com_lingua(lg):
+            p = precario.de_dict(pedido.model_dump(), lg)
+            precario.validar(p)                                # só se guarda o que o gerador aceita
+    except ErroRifas as e:
+        raise ErroApi(422, e.em(lg), "aviso") from None
+    dados = json.dumps(precario.para_dict(p), ensure_ascii=False, separators=(",", ":"), sort_keys=True)
+    try:
+        id_ = await asyncio.to_thread(serv.partilhas.guardar, dados)
+    except ValueError:
+        raise ErroApi(413, i18n.traduzir("err_precario_linhas", lg, max=precario.MAX_LINHAS), "aviso") from None
+    except Exception as e:  # noqa: BLE001 - a base de dados em baixo nao derruba o servidor
+        raise ErroApi(503, i18n.traduzir("erro_inesperado", lg, erro=_motivo(e)), "erro") from None
+    serv.metricas.evento("precario_partilha", "criar")
+    return Partilhado(id=id_)
+
+
+@router.get("/partilha/{id_}", response_model=PrecarioPartilhado, dependencies=[Depends(leve)])
+async def ver_partilha(id_: str, serv: Servico = Depends(servico), lg: str = Depends(lingua)) -> PrecarioPartilhado:
+    """O preçário partilhado (validado outra vez). 404 se o id não existe, o prazo acabou ou a partilha é de outra coisa (um desenho do editor)."""
+    invalido = ErroApi(404, i18n.traduzir("web_precario_ligacao_invalida", lg), "aviso")
+    if serv.partilhas is None or not partilhas.ID.fullmatch(id_):
+        raise invalido
+    try:
+        dados = await asyncio.to_thread(serv.partilhas.obter, id_)
+    except Exception as e:  # noqa: BLE001
+        raise ErroApi(503, i18n.traduzir("erro_inesperado", lg, erro=_motivo(e)), "erro") from None
+    if dados is None:
+        raise invalido
+    try:
+        d = json.loads(dados)
+        with i18n.com_lingua(lg):
+            precario.validar(precario.de_dict(d, lg))
+    except (ValueError, ErroRifas):
+        raise invalido from None
+    return PrecarioPartilhado(precario=d)

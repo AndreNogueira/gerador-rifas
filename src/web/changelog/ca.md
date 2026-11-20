@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.75.0 — 2026-11-20
+
+### Novetats
+- **Compartir la llista de preus per enllaç** (al web, quan el servei té base de dades): «Compartir per enllaç» a la pàgina de la llista crea un enllaç que qualsevol persona pot obrir per veure i continuar la vostra llista (textos, articles, preus i disseny). Es desa 90 dies des de l'últim accés, sense res sobre qui la comparteix; la Política de privacitat s'ha actualitzat.
+
 ## 3.74.0 — 2026-11-20
 
 ### Novetats

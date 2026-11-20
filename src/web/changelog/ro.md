@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.75.0 — 2026-11-20
+
+### Noutăți
+- **Partajarea listei de prețuri prin link** (pe site, când serviciul are bază de date): «Partajează prin link» pe pagina listei creează un link pe care îl poate deschide oricine ca să vadă și să continue lista ta (texte, articole, prețuri și desen). Se păstrează 90 de zile de la ultimul acces, fără nimic despre cine o partajează; Politica de confidențialitate a fost actualizată.
+
 ## 3.74.0 — 2026-11-20
 
 ### Noutăți

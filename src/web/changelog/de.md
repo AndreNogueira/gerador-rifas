@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.75.0 — 2026-11-20
+
+### Neu
+- **Preisliste per Link teilen** (auf der Website, wenn der Dienst eine Datenbank hat): «Per Link teilen» auf der Preislistenseite erzeugt einen Link, den jeder öffnen kann, um Ihre Preisliste (Texte, Artikel, Preise und Motiv) zu sehen und weiterzuführen. Sie wird 90 Tage nach dem letzten Zugriff gespeichert, ohne etwas über die teilende Person; die Datenschutzerklärung wurde aktualisiert.
+
 ## 3.74.0 — 2026-11-20
 
 ### Neu

@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.75.0 — 2026-11-20
+
+### Yeni
+- **Fiyat listesini bağlantıyla paylaşma** (sitede, hizmetin veri tabanı olduğunda): fiyat listesi sayfasındaki «Bağlantıyla paylaş», herkesin açıp fiyat listenizi (metinler, ürünler, fiyatlar ve tasarım) görüp sürdürebileceği bir bağlantı oluşturur. Son erişimden 90 gün sonrasına kadar saklanır, paylaşan kişiyle ilgili hiçbir şey tutulmaz; Gizlilik politikası güncellendi.
+
 ## 3.74.0 — 2026-11-20
 
 ### Yeni

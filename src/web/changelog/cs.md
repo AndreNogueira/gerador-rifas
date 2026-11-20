@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.75.0 — 2026-11-20
+
+### Novinky
+- **Sdílení ceníku odkazem** (na webu, když služba má databázi): «Sdílet odkazem» na stránce ceníku vytvoří odkaz, který může kdokoli otevřít, aby viděl a mohl pokračovat ve vašem ceníku (texty, položky, ceny a motiv). Uchová se 90 dní od posledního přístupu, bez čehokoli o tom, kdo ho sdílí; zásady ochrany soukromí byly aktualizovány.
+
 ## 3.74.0 — 2026-11-20
 
 ### Novinky

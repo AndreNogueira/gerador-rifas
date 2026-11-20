@@ -349,6 +349,12 @@ export const api = {
       "GET",
       `/api/editor/partilha/${encodeURIComponent(id)}`,
     ),
+  /** Partilha o preçário por ligação (`/precario?p=<id>`). Só existe com base de dados (`Publico.partilha_editor`). */
+  partilharPrecario: (p: PedidoPrecario) =>
+    pedir<{ id: string }>("POST", "/api/precario/partilhar", { json: p }),
+  /** O preçário partilhado: o formato de `core.precario.para_dict` (preços em milésimos). */
+  precarioPartilhado: (id: string) =>
+    pedir<{ precario: unknown }>("GET", `/api/precario/partilha/${encodeURIComponent(id)}`),
   /** O PNG do vale com estes textos (só se desenha). */
   valesPrevia: (p: PedidoVale, sinal?: AbortSignal) =>
     pedir<Blob>("POST", "/api/vales/previa.png", { json: p, bruto: true, sinal }),

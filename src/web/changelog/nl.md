@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.75.0 — 2026-11-20
+
+### Nieuw
+- **De prijslijst delen via een link** (op de site, als de dienst een database heeft): «Delen via link» op de prijslijstpagina maakt een link die iedereen kan openen om uw prijslijst (teksten, artikelen, prijzen en ontwerp) te zien en voort te zetten. Ze wordt 90 dagen na de laatste toegang bewaard, zonder iets over wie ze deelt; het privacybeleid is bijgewerkt.
+
 ## 3.74.0 — 2026-11-20
 
 ### Nieuw

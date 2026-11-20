@@ -62,6 +62,35 @@ for _lg in LINGUAS_NOVAS:
     TEXTOS[_lg] = import_module(f"{__package__}.legal.{_lg}").PARTILHAS
 
 
+# o preçário partilhado por ligação usa o mesmo armazenamento: uma frase a mais no mesmo parágrafo, em cada língua
+EXTRA_PRECARIO: dict[str, str] = {
+    "pt": "O mesmo vale para um preçário (títulos, artigos e preços) partilhado por ligação no Gerador de preçários: não escreva nele dados pessoais nem segredos.",
+    "en": "The same applies to a price list (titles, items and prices) shared by link in the Price list generator: do not write personal data or secrets in it.",
+    "es": "Lo mismo vale para una lista de precios (títulos, artículos y precios) compartida por enlace en el Generador de listas de precios: no escriba en ella datos personales ni secretos.",
+    "fr": "Il en va de même pour une liste de prix (titres, articles et prix) partagée par lien dans le Générateur de listes de prix : n'y écrivez pas de données personnelles ni de secrets.",
+    "de": "Dasselbe gilt für eine per Link geteilte Preisliste (Titel, Artikel und Preise) im Preislisten-Generator: Schreiben Sie darin keine persönlichen Daten oder Geheimnisse.",
+    "it": "Lo stesso vale per un listino (titoli, articoli e prezzi) condiviso con un link nel Generatore di listini prezzi: non vi scriva dati personali né segreti.",
+    "nl": "Hetzelfde geldt voor een prijslijst (titels, artikelen en prijzen) die via een link wordt gedeeld in de Prijslijstgenerator: schrijf daarin geen persoonsgegevens of geheimen.",
+    "pl": "To samo dotyczy cennika (tytuły, pozycje i ceny) udostępnionego linkiem w Generatorze cenników: nie wpisuj w nim danych osobowych ani sekretów.",
+    "sv": "Detsamma gäller en prislista (rubriker, artiklar och priser) som delas med länk i Prislistegeneratorn: skriv inga personuppgifter eller hemligheter i den.",
+    "cs": "Totéž platí pro ceník (nadpisy, položky a ceny) sdílený odkazem v Generátoru ceníků: nepište do něj osobní údaje ani tajemství.",
+    "ro": "Același lucru este valabil pentru o listă de prețuri (titluri, articole și prețuri) partajată prin link în Generatorul de liste de prețuri: nu scrie în ea date personale sau secrete.",
+    "el": "Το ίδιο ισχύει για έναν τιμοκατάλογο (τίτλοι, προϊόντα και τιμές) που μοιράζεστε με σύνδεσμο στη Γεννήτρια τιμοκαταλόγων: μη γράφετε σε αυτόν προσωπικά δεδομένα ή μυστικά.",
+    "ru": "То же относится к прайс-листу (заголовки, позиции и цены), которым делятся по ссылке в Генераторе прайс-листов: не вписывайте в него личные данные и секреты.",
+    "tr": "Aynısı, Fiyat listesi oluşturucuda bağlantıyla paylaşılan bir fiyat listesi (başlıklar, ürünler ve fiyatlar) için de geçerlidir: içine kişisel veri veya sır yazmayın.",
+    "zh": "通过价目表生成器的链接分享的价目表（标题、品项和价格）也是如此：请勿在其中写入个人数据或机密。",
+    "ja": "価格表ジェネレーターでリンクにより共有される価格表（タイトル、品目、価格）も同じです。個人データや秘密は書かないでください。",
+    "ko": "가격표 생성기에서 링크로 공유한 가격표(제목, 품목, 가격)도 마찬가지입니다. 개인정보나 비밀은 적지 마세요.",
+    "hi": "मूल्य-सूची जनरेटर में लिंक से साझा की गई मूल्य-सूची (शीर्षक, वस्तुएँ और दाम) पर भी यही लागू होता है: उसमें निजी जानकारी या रहस्य न लिखें।",
+    "ca": "El mateix val per a una llista de preus (títols, articles i preus) compartida per enllaç al Generador de llistes de preus: no hi escriviu dades personals ni secrets.",
+    "uk": "Те саме стосується прайс-листа (заголовки, позиції та ціни), яким діляться за посиланням у Генераторі прайс-листів: не вписуйте в нього особисті дані чи секрети.",
+    "id": "Hal yang sama berlaku untuk daftar harga (judul, barang, dan harga) yang dibagikan lewat tautan di Pembuat daftar harga: jangan menulis data pribadi atau rahasia di dalamnya.",
+    "vi": "Điều tương tự áp dụng cho bảng giá (tiêu đề, món và giá) chia sẻ bằng liên kết trong Trình tạo bảng giá: đừng ghi dữ liệu cá nhân hay bí mật vào đó."
+}
+for _lg, _frase in EXTRA_PRECARIO.items():
+    TEXTOS[_lg]["paragrafos"][0] += " " + _frase
+
+
 from core import ptbr  # noqa: E402
 
 TEXTOS["pt-br"] = ptbr.derivar_tudo(TEXTOS["pt"])       # o português do Brasil deriva-se do de Portugal (core/ptbr.py)

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
@@ -212,5 +212,38 @@ describe("dois tamanhos", () => {
       expect(p.tamanhos).toBe(false);
       expect(p.linhas[0]?.preco2).toBe("");
     });
+  });
+});
+
+describe("partilhar por ligação", () => {
+  it("sem base de dados não há botão; com ela o pedido segue e a ligação aparece", async () => {
+    abrir();
+    await screen.findByTestId("precario-preco-agua");
+    expect(screen.queryByTestId("precario-partilhar")).toBeNull();
+  });
+
+  it("com base de dados: partilha, e abrir a ligação repõe o preçário (preços em milésimos → texto)", async () => {
+    servidor.partilhaEditor = true;
+    abrir();
+    await userEvent.type(await screen.findByTestId("precario-preco-agua"), "1,5");
+    await userEvent.clear(screen.getByTestId("precario-titulo"));
+    await userEvent.type(screen.getByTestId("precario-titulo"), "Festa X");
+    await userEvent.click(await screen.findByTestId("precario-partilhar"));
+    const ligacao = await screen.findByTestId("precario-ligacao");
+    const id = /p=(\w+)/.exec(ligacao.textContent ?? "")?.[1];
+    expect(id).toBeTruthy();
+    cleanup();
+    localStorage.clear();
+    abrir(`/precario?p=${id}`);
+    await waitFor(() => expect(screen.getByTestId("precario-titulo")).toHaveValue("Festa X"));
+    await waitFor(() => expect(screen.getByTestId("precario-preco-agua")).toHaveValue("1,5"));
+    expect(window.location.search).toBe("");
+  });
+
+  it("uma ligação que não existe mostra o aviso e não estraga a página", async () => {
+    servidor.partilhaEditor = true;
+    abrir("/precario?p=naoexiste1");
+    expect(await screen.findByTestId("precario-erro")).toHaveTextContent("já não existe");
+    expect(screen.getByTestId("precario-preco-agua")).toBeInTheDocument();
   });
 });

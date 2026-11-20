@@ -96,6 +96,8 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_precario_auto: "Automático",
     web_precario_imagens: "Com imagens",
     web_precario_cartoes: "Cartões de mesa (4 por folha A4)",
+    web_precario_partilha_ok: "Ligação copiada. O preçário fica guardado 90 dias.",
+    web_precario_ligacao_invalida: "Esta ligação já não existe ou o preçário expirou.",
     web_precario_tamanhos: "Dois tamanhos (dois preços por artigo)",
     web_precario_rotulos: "Nomes dos dois tamanhos",
     web_precario_tamanho_1: "Pequeno",
@@ -523,6 +525,30 @@ export class ServidorFalso {
       const id = `abc${this.partilhados.size}xyzxyz`;
       this.partilhados.set(id, corpo);
       return this.responder({ id });
+    }
+    if (url === "/api/precario/partilhar" && init?.method === "POST") {
+      const id = `prc${this.partilhados.size}xyzxyz`;
+      this.partilhados.set(id, corpo);
+      return this.responder({ id });
+    }
+    if (url.startsWith("/api/precario/partilha/")) {
+      const d = this.partilhados.get(decodeURIComponent(url.slice("/api/precario/partilha/".length))) as
+        | { linhas: { artigo: string; nome: string; preco: string; preco2?: string }[] }
+        | undefined;
+      if (!d)
+        return this.responder(
+          { detail: "Esta ligação já não existe ou o preçário expirou.", tipo: "aviso" },
+          404,
+        );
+      // o servidor devolve o formato de `para_dict`: preços em milésimos
+      const mil = (s: string) =>
+        s.trim() ? Math.round(Number.parseFloat(s.replace(",", ".")) * 1000) : null;
+      return this.responder({
+        precario: {
+          ...d,
+          linhas: d.linhas.map((l) => ({ ...l, preco: mil(l.preco), preco2: mil(l.preco2 ?? "") })),
+        },
+      });
     }
     if (url.startsWith("/api/editor/partilha/")) {
       const d = this.partilhados.get(decodeURIComponent(url.slice("/api/editor/partilha/".length)));

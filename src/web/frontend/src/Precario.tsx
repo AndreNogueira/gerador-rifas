@@ -83,6 +83,73 @@ export function estadoInicial(cat: PrecarioCatalogo, mes: number, guardado: unkn
   return base(cat, mes);
 }
 
+/** Os milésimos de um preço como o texto que se escreve na língua (sem milhares): 1500 → «1,5» em português. */
+function textoDoPreco(milesimos: unknown, lingua: string): string {
+  if (typeof milesimos !== "number" || !Number.isFinite(milesimos)) return "";
+  return (milesimos / 1000).toLocaleString(lingua, { useGrouping: false, maximumFractionDigits: 3 });
+}
+
+/** O estado de um preçário partilhado (`para_dict` do servidor); `null` se não se reconhece. Só se aproveita o que a página conhece. */
+export function estadoDePartilha(
+  cat: PrecarioCatalogo,
+  antes: Estado,
+  d: unknown,
+  lingua: string,
+): Estado | null {
+  const p = d as Record<string, unknown> | null;
+  if (!p || typeof p !== "object" || !Array.isArray(p.linhas) || p.linhas.length === 0) return null;
+  const ids = new Set(cat.categorias.flatMap((c) => c.artigos.map((a) => a.id)));
+  const texto = (v: unknown) => (typeof v === "string" ? v : "");
+  const linhas: Linha[] = [];
+  p.linhas.forEach((x: unknown, i: number) => {
+    const l = (x ?? {}) as Record<string, unknown>;
+    const artigo = texto(l.artigo);
+    if (artigo && !ids.has(artigo)) return;
+    linhas.push({
+      chave: artigo || `c${i}`,
+      artigo,
+      nome: texto(l.nome),
+      categoria: texto(l.categoria),
+      emoji: texto(l.emoji),
+      preco: textoDoPreco(l.preco, lingua),
+      preco2: textoDoPreco(l.preco2, lingua),
+    });
+  });
+  if (linhas.length === 0) return null;
+  const m = (p.moeda ?? {}) as Record<string, unknown>;
+  const inventada = texto(m.nome).trim() !== "";
+  const codigo = texto(m.codigo);
+  const pais =
+    !inventada && codigo
+      ? cat.paises[antes.pais] === codigo
+        ? antes.pais
+        : (Object.keys(cat.paises).find((k) => cat.paises[k] === codigo) ?? antes.pais)
+      : antes.pais;
+  const rotulos = Array.isArray(p.rotulos) ? p.rotulos : [];
+  return {
+    ...antes,
+    ocasiao: "",
+    desenho: texto(p.desenho) || antes.desenho,
+    linhas,
+    titulo: texto(p.titulo),
+    subtitulo: texto(p.subtitulo),
+    rodape: texto(p.rodape),
+    pais,
+    moeda: !inventada && codigo ? codigo : (cat.paises[pais] ?? antes.moeda),
+    inventada,
+    invNome: inventada ? texto(m.nome) : "",
+    invAntes: m.antes === true,
+    invCasas: typeof m.decimais === "number" ? m.decimais : 0,
+    formato: texto(p.formato) || "A4",
+    orientacao: texto(p.orientacao) || "vertical",
+    colunas: typeof p.colunas === "number" ? p.colunas : 0,
+    imagens: p.imagens !== false,
+    tamanhos: p.tamanhos === true,
+    rotulo1: texto(rotulos[0]),
+    rotulo2: texto(rotulos[1]),
+  };
+}
+
 function base(cat: PrecarioCatalogo, mes: number): Estado {
   const oc =
     cat.ocasioes.find((o) => o.id === cat.sugerida) ??
@@ -157,7 +224,7 @@ function Miniatura({ emoji }: { emoji: string }) {
  * O gerador de preçários: escolhe-se a ocasião (e o tema), os artigos, os preços (na moeda do país ou numa inventada) e o aspeto; a pré-visualização
  * desenha-se no servidor a cada alteração e o PDF (ou a imagem) descarrega-se. Nada se guarda no servidor; o rascunho fica só neste browser.
  */
-export function Precario() {
+export function Precario({ partilha = false }: { partilha?: boolean }) {
   const { t, lingua } = useI18n();
   const { aviso } = useDialogos();
   const mes = useMemo(() => new Date().getMonth() + 1, []);
@@ -168,6 +235,7 @@ export function Precario() {
   const [previa, setPrevia] = useState("");
   const [erro, setErro] = useState("");
   const [aDesenhar, setADesenhar] = useState(false);
+  const [ligacao, setLigacao] = useState("");
   const contador = useRef(0);
 
   // o catálogo na língua do site (muda quando a língua muda)
@@ -186,7 +254,10 @@ export function Precario() {
           /* sem armazenamento ou rascunho estragado */
         }
         setE((antes) => {
-          if (!antes) return estadoInicial(c, mes, guardado);
+          if (!antes) {
+            const inicial = estadoInicial(c, mes, guardado);
+            return inicial;
+          }
           const ids = new Set(c.categorias.flatMap((x) => x.artigos.map((a) => a.id)));
           return { ...antes, linhas: antes.linhas.filter((l) => !l.artigo || ids.has(l.artigo)) }; // um artigo de uma região que a língua nova não vê sai
         });
@@ -196,6 +267,24 @@ export function Precario() {
       ativo = false;
     };
   }, [lingua, mes]);
+
+  // abrir uma ligação partilhada (`/precario?p=<id>`): só uma vez, quando o catálogo já chegou; depois a ligação sai do endereço
+  const idPartilha = useRef(new URLSearchParams(window.location.search).get("p"));
+  // biome-ignore lint/correctness/useExhaustiveDependencies: só depois de o catálogo chegar
+  useEffect(() => {
+    const id = idPartilha.current;
+    if (!id || !cat || !e) return;
+    idPartilha.current = null;
+    api
+      .precarioPartilhado(id)
+      .then((r) => {
+        const aberto = estadoDePartilha(cat, e, r.precario, lingua);
+        if (aberto) setE(aberto);
+        else setErro(t("web_precario_ligacao_invalida"));
+        window.history.replaceState({}, "", window.location.pathname);
+      })
+      .catch((x: unknown) => setErro(x instanceof ErroApi ? x.message : t("web_precario_ligacao_invalida")));
+  }, [cat, e]);
 
   const artigos = useMemo(() => {
     const m = new Map<string, { nome: string; emoji: string; categoria: string }>();
@@ -320,6 +409,19 @@ export function Precario() {
   const filtro = semAcentos(pesquisa.trim());
   const sugerida = cat.ocasioes.find((o) => o.id === cat.sugerida);
   const moedaAtual = cat.moedas.find((m) => m.codigo === e.moeda);
+
+  const partilharLigacao = async () => {
+    if (!pedido) return;
+    try {
+      const r = await api.partilharPrecario(pedido);
+      const url = `${window.location.origin}/precario?p=${r.id}`;
+      setLigacao(url);
+      setErro("");
+      await navigator.clipboard?.writeText(url).catch(() => undefined);
+    } catch (x) {
+      setErro(x instanceof ErroApi ? x.message : t("web_precario_ligacao_invalida"));
+    }
+  };
 
   const descarregar = async (fazer: (p: PedidoPrecario) => Promise<Blob>, nome: string) => {
     if (!pedido) return;
@@ -719,6 +821,11 @@ export function Precario() {
               {erro}
             </p>
           )}
+          {ligacao && (
+            <p role="status" data-testid="precario-ligacao">
+              {t("web_precario_partilha_ok")} <code>{ligacao}</code>
+            </p>
+          )}
           <div className="precario-acoes">
             <button
               type="button"
@@ -738,6 +845,17 @@ export function Precario() {
             >
               {t("web_precario_imagem")}
             </button>
+            {partilha && (
+              <button
+                type="button"
+                className="botao secundario"
+                data-testid="precario-partilhar"
+                disabled={e.linhas.length === 0}
+                onClick={() => void partilharLigacao()}
+              >
+                {t("web_editor_partilhar")}
+              </button>
+            )}
             <button
               type="button"
               className="botao secundario"
