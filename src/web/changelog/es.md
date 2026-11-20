@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.78.0 — 2026-11-20
+
+### Novedades
+- **Hasta 5 imágenes a elegir por artículo**: en la lista de precios, pulse la imagen de un artículo del catálogo y elija la que más le guste entre hasta 5 (el agua puede ser una gota, un grifo, hielo, un vaso…). La elección se ve en el PDF y se guarda en el archivo de la lista y en el enlace compartido (sitio y app de Windows).
+
 ## 3.77.0 — 2026-11-20
 
 ### Mejorado

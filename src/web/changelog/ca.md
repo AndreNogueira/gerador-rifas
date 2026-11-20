@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.78.0 — 2026-11-20
+
+### Novetats
+- **Fins a 5 imatges a escollir per article**: a la llista de preus, premeu la imatge d'un article del catàleg i trieu la que més us agradi entre un màxim de 5 (l'aigua pot ser una gota, una aixeta, gel, un got…). L'elecció es veu al PDF i es conserva al fitxer de la llista i a l'enllaç compartit (web i app de Windows).
+
 ## 3.77.0 — 2026-11-20
 
 ### Millores

@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.78.0 — 2026-11-20
+
+### Yeni
+- **Her ürün için en fazla 5 resim seçeneği**: fiyat listesinde katalogdaki bir ürünün resmine basın ve en fazla 5 resim arasından en çok beğendiğinizi seçin (su bir damla, bir musluk, buz ya da bir bardak olabilir…). Seçiminiz PDF'de görünür ve fiyat listesi dosyasında ile paylaşılan bağlantıda saklanır (site ve Windows uygulaması).
+
 ## 3.77.0 — 2026-11-20
 
 ### İyileştirildi

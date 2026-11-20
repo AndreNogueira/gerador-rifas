@@ -8,13 +8,14 @@ Os dados estão em `precario_dados.py` (uma linha por entrada, nas 22 línguas; 
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from . import precario_dados as dados
 from . import ptbr
 
 LINGUAS = dados.LINGUAS + ("pt-br",)
 MAX_NOME = 48
+MAX_ICONES = 5                   # imagens à escolha por artigo (a de omissão e mais 4)
 _EMOJI = re.compile(r"[0-9a-f]{4,6}")
 
 
@@ -31,6 +32,7 @@ class Artigo:
     categoria: str
     regiao: str                     # "" | "pt" | "br"
     nomes: dict
+    icones: tuple = ()              # as imagens à escolha (até `MAX_ICONES`; a 1.ª é `emoji`, a de omissão)
 
 
 @dataclass(frozen=True)
@@ -71,6 +73,15 @@ for _l in _linhas(dados.ARTIGOS):
     if _id in ARTIGOS or _cat not in CATEGORIAS or _reg not in ("", "pt", "br") or not _EMOJI.fullmatch(_emoji):
         raise ValueError(f"artigo inválido: {_id}")
     ARTIGOS[_id] = Artigo(_id, _emoji, _cat, _reg, _nomes(_l[4:], f"artigo {_id}"))
+
+for _l in _linhas(dados.ICONES):
+    _extra = tuple(e for e in _l[1].split(",") if e) if len(_l) > 1 else ()
+    if _l[0] not in ARTIGOS or len(_extra) > MAX_ICONES - 1 or not all(_EMOJI.fullmatch(e) for e in _extra) or ARTIGOS[_l[0]].emoji in _extra or len(set(_extra)) != len(_extra):
+        raise ValueError(f"imagens inválidas: {_l[0]}")
+    ARTIGOS[_l[0]] = replace(ARTIGOS[_l[0]], icones=(ARTIGOS[_l[0]].emoji, *_extra))
+for _id, _a in ARTIGOS.items():
+    if not _a.icones:
+        ARTIGOS[_id] = replace(_a, icones=(_a.emoji,))
 
 OCASIOES: dict[str, Ocasiao] = {}
 for _l in _linhas(dados.OCASIOES):
@@ -123,7 +134,7 @@ def catalogo(lingua: str, mes: int | None = None) -> dict:
     sugerida = ocasiao_da_epoca(mes, lingua) if mes else None
     return {
         "categorias": [{"id": c.id, "nome": nome(c, lingua),
-                        "artigos": [{"id": a.id, "nome": nome(a, lingua), "emoji": a.emoji} for a in artigos_da_lingua(lingua) if a.categoria == c.id]} for c in CATEGORIAS.values()],
+                        "artigos": [{"id": a.id, "nome": nome(a, lingua), "emoji": a.emoji, "icones": list(a.icones)} for a in artigos_da_lingua(lingua) if a.categoria == c.id]} for c in CATEGORIAS.values()],
         "ocasioes": [{"id": o.id, "nome": nome(o, lingua), "desenho": o.desenho, "artigos": [a for a in o.artigos if a in ids], "meses": list(o.meses)} for o in ocasioes_da_lingua(lingua)],
         "sugerida": sugerida.id if sugerida else "",
     }

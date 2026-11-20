@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.78.0 — 2026-11-20
+
+### Nytt
+- **Upp till 5 bilder att välja mellan per artikel**: klicka på bilden för en artikel i katalogen i prislistan och välj den du gillar bäst bland upp till 5 (vatten kan vara en droppe, en kran, is eller ett glas…). Valet syns i PDF:en och sparas i prislistans fil och i den delade länken (webbplatsen och Windows-appen).
+
 ## 3.77.0 — 2026-11-20
 
 ### Förbättrat

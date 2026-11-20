@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.78.0 — 2026-11-20
+
+### New
+- **Up to 5 pictures per item**: in the price list, click an item's picture and choose the one you like best out of up to 5 (water can be a drop, a tap, ice, a glass…). Your choice shows in the PDF and is kept in the price-list file and in the shared link (site and Windows app).
+
 ## 3.77.0 — 2026-11-20
 
 ### Improved

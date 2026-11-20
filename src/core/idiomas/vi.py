@@ -426,4 +426,7 @@ T = {
     "web_precario_foto": "Ảnh",
     "web_precario_foto_tirar": "Bỏ ảnh",
     "web_precario_fotos_dica": "Bạn có thể đặt ảnh của riêng mình cho mỗi món (PNG hoặc JPG). Ảnh chỉ nằm trong trình duyệt và trong PDF: không được lưu trên máy chủ hay trong liên kết chia sẻ.",
+    "web_precario_icone": "Đổi biểu tượng",
+    "web_precario_icone_n": "Biểu tượng {n}",
+    "web_precario_icones_dica": "Bấm vào hình của món để chọn biểu tượng khác (tối đa 5 mỗi món).",
 }

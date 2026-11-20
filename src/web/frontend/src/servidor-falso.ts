@@ -403,19 +403,23 @@ export class ServidorFalso {
             id: "bebidas",
             nome: "Bebidas",
             artigos: [
-              { id: "agua", nome: "Água", emoji: "1f4a7" },
-              { id: "sumo", nome: "Sumo", emoji: "1f9c3" },
+              { id: "agua", nome: "Água", emoji: "1f4a7", icones: ["1f4a7", "1f6b0", "1f9ca"] },
+              { id: "sumo", nome: "Sumo", emoji: "1f9c3", icones: ["1f9c3", "1f34a"] },
             ],
           },
           {
             id: "comida",
             nome: "Comida",
             artigos: [
-              { id: "pizza", nome: "Pizza", emoji: "1f355" },
-              { id: "sopa", nome: "Sopa", emoji: "1f372" },
+              { id: "pizza", nome: "Pizza", emoji: "1f355", icones: ["1f355", "1f9c0"] },
+              { id: "sopa", nome: "Sopa", emoji: "1f372", icones: ["1f372", "1f963"] },
             ],
           },
-          { id: "doces", nome: "Doces", artigos: [{ id: "bolo", nome: "Bolo", emoji: "1f370" }] },
+          {
+            id: "doces",
+            nome: "Doces",
+            artigos: [{ id: "bolo", nome: "Bolo", emoji: "1f370", icones: ["1f370", "1f382"] }],
+          },
           { id: "extras", nome: "Outros", artigos: [] },
         ],
         ocasioes: [

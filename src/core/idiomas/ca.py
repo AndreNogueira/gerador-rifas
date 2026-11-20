@@ -426,4 +426,7 @@ T = {
     "web_precario_foto": "Foto",
     "web_precario_foto_tirar": "Treu la foto",
     "web_precario_fotos_dica": "Podeu posar la vostra foto a cada article (PNG o JPG). Les fotos queden només al vostre navegador i al PDF: no es desen al servidor ni a l'enllaç compartit.",
+    "web_precario_icone": "Canvia la icona",
+    "web_precario_icone_n": "Icona {n}",
+    "web_precario_icones_dica": "Premeu la imatge d'un article per triar una altra icona (fins a 5 per article).",
 }

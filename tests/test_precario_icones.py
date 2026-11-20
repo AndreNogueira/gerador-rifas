@@ -7,7 +7,7 @@ from PIL import Image
 RAIZ = Path(__file__).resolve().parent.parent
 PDF = RAIZ / "src" / "core" / "icones_precario"
 WEB = RAIZ / "src" / "web" / "frontend" / "public" / "precario"
-CODIGOS = sorted({a.emoji for a in cat.ARTIGOS.values()})
+CODIGOS = sorted({e for a in cat.ARTIGOS.values() for e in a.icones})            # a de omissão e as alternativas de cada artigo
 
 
 def test_cada_emoji_do_catalogo_tem_a_imagem_do_pdf_e_a_miniatura_da_pagina():
@@ -23,7 +23,7 @@ def test_tamanho_e_peso_das_imagens():
         assert 1_500 < (PDF / f"{c}.png").stat().st_size < 30_000, c
         with Image.open(WEB / f"{c}.webp") as im:
             assert im.size == (96, 96), c
-    assert sum(f.stat().st_size for f in PDF.glob("*.png")) < 1_500_000                         # a imagem Docker e o .exe não engordam
+    assert sum(f.stat().st_size for f in PDF.glob("*.png")) < 2_500_000                         # a imagem Docker e o .exe não engordam
 
 
 def test_a_licenca_das_imagens_vai_com_elas():

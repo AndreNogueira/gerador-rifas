@@ -140,3 +140,13 @@ def test_fotos_proprias_pelo_pdf_e_pela_previa_e_nada_fica_guardado(c):
     serv = c.app.state.servico
     serv.metricas.descarregar(tudo=True)
     assert "base64" not in str(serv.metricas._consultar("SELECT * FROM eventos"))
+
+
+def test_as_imagens_alternativas_vem_no_catalogo_e_escolhem_se_no_pedido(c):
+    artigos = {a["id"]: a for k in c.get("/api/precario/catalogo").json()["categorias"] for a in k["artigos"]}
+    icones = artigos["agua"]["icones"]
+    assert len(icones) == 5 and icones[0] == artigos["agua"]["emoji"]
+    assert c.post("/api/precario/pdf", json={"linhas": [{"artigo": "agua", "preco": "1", "emoji": icones[3]}]}).status_code == 200
+    assert c.post("/api/precario/previa.png", json={"linhas": [{"artigo": "agua", "emoji": icones[1]}]}).status_code == 200
+    r = c.post("/api/precario/pdf", json={"linhas": [{"artigo": "agua", "emoji": "1f370"}]}, headers={"X-Lingua": "en"})
+    assert r.status_code == 422 and r.json()["tipo"] == "aviso"

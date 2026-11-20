@@ -130,6 +130,55 @@
       }
     }
   }
+  // as imagens à escolha de um artigo (até 5), por baixo da linha: a miniatura da linha abre-as e fecha-as
+  button.precario-mini-botao {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    min-width: 0;
+    height: 32px;
+    min-height: 0;
+    padding: 0;
+    background: transparent;
+    border: var(--borda) solid transparent;
+    box-shadow: none;
+    cursor: pointer;
+    &:hover,
+    &[aria-expanded="true"] {
+      border-color: var(--destaque);
+    }
+  }
+  .precario-icones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-width: 0;
+    margin: 6px 0 0;
+    padding: 0 0 0 36px;
+    border: 0;
+    @media (max-width: 36rem) {
+      padding-left: 0; // em telemóvel as 5 imagens têm de caber numa só fila
+    }
+  }
+  button.precario-icone {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: var(--campo);
+    border: var(--borda) solid var(--linha);
+    box-shadow: none;
+    cursor: pointer;
+    &:hover {
+      border-color: var(--destaque);
+    }
+    &.ligada {
+      border-color: var(--destaque);
+      background: color-mix(in srgb, var(--destaque) 22%, var(--campo));
+      box-shadow: inset 0 0 0 1px var(--destaque);
+    }
+  }
   // o × de tirar um artigo: um quadrado pequeno sem o aspeto de botão de ação (era um botão inteiro e roubava largura aos preços)
   button.precario-tirar {
     display: grid;
@@ -149,10 +198,13 @@
     }
   }
   .precario-linha-categoria {
+    grid-template-areas: none; // é também uma `.precario-linha`: sem isto herdava as áreas da linha de artigo e o campo ficava desalinhado
     grid-template-columns: minmax(0, 1fr) minmax(5rem, 7rem);
     padding-right: 40px; // alinha o preço da categoria com os preços das linhas (a largura do × e do intervalo)
     font-weight: 600;
     @media (max-width: 36rem) {
+      grid-template-areas: none;
+      grid-template-columns: minmax(0, 1fr) minmax(5rem, 7rem);
       padding-right: 0;
     }
   }

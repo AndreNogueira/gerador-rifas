@@ -161,7 +161,11 @@ export interface GuiaNaLista {
 }
 /** O catálogo do preçário na língua escolhida (`GET /api/precario/catalogo`): artigos por categoria (com o código do emoji que é a imagem), ocasiões, desenhos, moedas e países. */
 export interface PrecarioCatalogo {
-  categorias: { id: string; nome: string; artigos: { id: string; nome: string; emoji: string }[] }[];
+  categorias: {
+    id: string;
+    nome: string;
+    artigos: { id: string; nome: string; emoji: string; icones: string[] }[];
+  }[];
   ocasioes: { id: string; nome: string; desenho: string; artigos: string[]; meses: number[] }[];
   sugerida: string;
   desenhos: { id: string; nome: string }[];
