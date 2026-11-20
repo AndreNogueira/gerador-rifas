@@ -229,3 +229,41 @@ def test_postgres_nao_guarda_nada_alem_do_desenho(pg):
     pg.guardar("{}")
     colunas = {c for (c,) in pg._executar("SELECT column_name FROM information_schema.columns WHERE table_name='partilhas'")}
     assert colunas == {"id", "dados", "criado", "usado"}                # nem IP, nem lingua, nem user-agent
+
+
+# ------------------------------------------------------------------ o preçário partilhado por ligação
+PRECARIO = {"linhas": [{"artigo": "agua", "preco": "1,5", "preco2": "2"}, {"nome": "Bolo da avó", "preco": "3"}], "titulo": "Festa da escola", "tamanhos": True,
+            "rotulos": ["Peq.", "Gde."], "desenho": "quadro", "formato": "A6x4", "moeda": {"nome": "fichas", "antes": False, "decimais": 0}}
+
+
+def test_sem_base_de_dados_o_precario_nao_se_partilha(sem_bd):
+    assert sem_bd.post("/api/precario/partilhar", json=PRECARIO).status_code == 404
+    assert sem_bd.get("/api/precario/partilha/abcdefgh12").status_code == 404
+
+
+def test_partilhar_e_abrir_um_precario_devolve_os_campos_com_os_precos_em_milesimos(com_bd):
+    r = com_bd.post("/api/precario/partilhar", json=PRECARIO)
+    assert r.status_code == 200
+    v = com_bd.get(f"/api/precario/partilha/{r.json()['id']}")
+    assert v.status_code == 200
+    p = v.json()["precario"]
+    assert p["titulo"] == "Festa da escola" and p["tamanhos"] is True and p["rotulos"] == ["Peq.", "Gde."] and p["formato"] == "A6x4" and p["desenho"] == "quadro"
+    assert [(ln["preco"], ln["preco2"]) for ln in p["linhas"]] == [(1500, 2000), (3000, None)] and p["moeda"]["nome"] == "fichas"
+
+
+def test_um_precario_que_nao_presta_nao_se_guarda_e_o_de_outra_coisa_nao_abre(com_bd):
+    assert com_bd.post("/api/precario/partilhar", json={**PRECARIO, "titulo": "हिन्दी"}).status_code == 422
+    assert com_bd.post("/api/precario/partilhar", json={**PRECARIO, "linhas": []}).status_code == 422
+    assert com_bd.mem.linhas == {}
+    e = com_bd.post("/api/editor/partilhar", json=desenho()).json()["id"]
+    assert com_bd.get(f"/api/precario/partilha/{e}").status_code == 404                  # um desenho do editor não é um preçário
+    assert com_bd.get("/api/precario/partilha/..%2f..%2fetc").status_code in (404, 422)
+    assert com_bd.get("/api/precario/partilha/naoexiste12", headers={"X-Lingua": "en"}).json()["detail"].startswith("This link")
+
+
+def test_o_metrico_da_partilha_do_precario_so_conta(com_bd):
+    com_bd.post("/api/precario/partilhar", json=PRECARIO)
+    serv = com_bd.app.state.servico
+    serv.metricas.descarregar(tudo=True)
+    assert serv.metricas._consultar("SELECT tipo, a, b, c FROM eventos WHERE tipo='precario_partilha'") == [("precario_partilha", "criar", "", "")]
+    assert "Festa da escola" not in str(serv.metricas._consultar("SELECT * FROM eventos"))

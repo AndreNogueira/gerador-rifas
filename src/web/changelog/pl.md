@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.75.0 — 2026-11-20
+
+### Nowości
+- **Udostępnianie cennika linkiem** (na stronie, gdy usługa ma bazę danych): «Udostępnij linkiem» na stronie cennika tworzy link, który każdy może otworzyć, by zobaczyć i kontynuować twój cennik (teksty, pozycje, ceny i motyw). Cennik jest przechowywany 90 dni od ostatniego dostępu, bez niczego o osobie udostępniającej; zaktualizowano Politykę prywatności.
+
 ## 3.74.0 — 2026-11-20
 
 ### Nowości

@@ -421,4 +421,6 @@ T = {
     "web_precario_rotulos": "Tên của hai cỡ",
     "web_precario_tamanho_1": "Nhỏ",
     "web_precario_tamanho_2": "Lớn",
+    "web_precario_partilha_ok": "Đã sao chép liên kết. Bảng giá được lưu trong 90 ngày.",
+    "web_precario_ligacao_invalida": "Liên kết này không còn tồn tại hoặc bảng giá đã hết hạn.",
 }

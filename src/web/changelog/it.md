@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.75.0 — 2026-11-20
+
+### Novità
+- **Condividere il listino con un link** (sul sito, quando il servizio ha un database): «Condividi con un link» nella pagina del listino crea un link che chiunque può aprire per vedere e continuare il tuo listino (testi, articoli, prezzi e disegno). Resta salvato 90 giorni dall'ultimo accesso, senza nulla su chi lo condivide; l'Informativa sulla privacy è stata aggiornata.
+
 ## 3.74.0 — 2026-11-20
 
 ### Novità

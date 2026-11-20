@@ -421,4 +421,6 @@ T = {
     "web_precario_rotulos": "Назви двох розмірів",
     "web_precario_tamanho_1": "Малий",
     "web_precario_tamanho_2": "Великий",
+    "web_precario_partilha_ok": "Посилання скопійовано. Прайс-лист зберігається 90 днів.",
+    "web_precario_ligacao_invalida": "Це посилання більше не існує або прайс-лист застарів.",
 }

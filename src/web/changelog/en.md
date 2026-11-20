@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.75.0 — 2026-11-20
+
+### New
+- **Share the price list by link** (on the site, when the service has a database): “Share by link” on the price list page creates a link that anyone can open to see and continue your price list (texts, items, prices and design). It is kept for 90 days after its last access, with nothing about who shares it; the Privacy policy was updated.
+
 ## 3.74.0 — 2026-11-20
 
 ### New

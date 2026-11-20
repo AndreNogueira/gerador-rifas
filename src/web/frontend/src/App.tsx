@@ -113,7 +113,7 @@ function Aplicacao() {
           ) : caminho === "/sorteio" ? (
             <Sorteio />
           ) : caminho === "/precario" ? (
-            <Precario />
+            <Precario partilha={publico.partilha_editor} />
           ) : caminho === "/editor" ? (
             <Editor partilha={publico.partilha_editor} />
           ) : caminho === "/como-fazer" ? (

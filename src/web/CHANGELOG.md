@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.75.0 — 2026-11-20
+
+### Novo
+- **Partilhar o preçário por ligação** (no site, quando o serviço tem base de dados): «Partilhar por ligação» na página do preçário cria uma ligação que qualquer pessoa pode abrir para ver e continuar o seu preçário (textos, artigos, preços e aspeto). Fica guardado 90 dias depois do último acesso, sem nada sobre quem o partilha; a Política de privacidade foi atualizada.
+
 ## 3.74.0 — 2026-11-20
 
 ### Novo

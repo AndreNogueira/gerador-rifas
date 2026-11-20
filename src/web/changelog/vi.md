@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.75.0 — 2026-11-20
+
+### Mới
+- **Chia sẻ bảng giá bằng liên kết** (trên trang web, khi dịch vụ có cơ sở dữ liệu): «Chia sẻ bằng liên kết» ở trang bảng giá tạo một liên kết mà ai cũng mở được để xem và tiếp tục bảng giá của bạn (văn bản, món, giá và thiết kế). Bảng giá được lưu 90 ngày sau lần truy cập cuối, không có gì về người chia sẻ; Chính sách quyền riêng tư đã được cập nhật.
+
 ## 3.74.0 — 2026-11-20
 
 ### Mới

@@ -421,4 +421,6 @@ T = {
     "web_precario_rotulos": "Noms de les dues mides",
     "web_precario_tamanho_1": "Petit",
     "web_precario_tamanho_2": "Gran",
+    "web_precario_partilha_ok": "Enllaç copiat. La llista de preus es desa 90 dies.",
+    "web_precario_ligacao_invalida": "Aquest enllaç ja no existeix o la llista de preus ha caducat.",
 }

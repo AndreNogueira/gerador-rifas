@@ -421,4 +421,6 @@ T = {
     "web_precario_rotulos": "Nama kedua ukuran",
     "web_precario_tamanho_1": "Kecil",
     "web_precario_tamanho_2": "Besar",
+    "web_precario_partilha_ok": "Tautan disalin. Daftar harga disimpan selama 90 hari.",
+    "web_precario_ligacao_invalida": "Tautan ini sudah tidak ada atau daftar harga telah kedaluwarsa.",
 }

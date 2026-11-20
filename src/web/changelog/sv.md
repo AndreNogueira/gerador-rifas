@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.75.0 — 2026-11-20
+
+### Nytt
+- **Dela prislistan med länk** (på webbplatsen, när tjänsten har en databas): «Dela med länk» på prislistesidan skapar en länk som vem som helst kan öppna för att se och fortsätta din prislista (texter, artiklar, priser och motiv). Den sparas i 90 dagar efter senaste åtkomst, utan något om vem som delar; integritetspolicyn har uppdaterats.
+
 ## 3.74.0 — 2026-11-20
 
 ### Nytt

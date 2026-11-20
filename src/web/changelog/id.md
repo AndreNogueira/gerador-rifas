@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.75.0 — 2026-11-20
+
+### Baru
+- **Bagikan daftar harga lewat tautan** (di situs, bila layanan punya basis data): «Bagikan lewat tautan» di halaman daftar harga membuat tautan yang dapat dibuka siapa saja untuk melihat dan melanjutkan daftar harga Anda (teks, barang, harga, dan desain). Disimpan 90 hari setelah akses terakhir, tanpa apa pun tentang siapa yang membagikan; Kebijakan privasi telah diperbarui.
+
 ## 3.74.0 — 2026-11-20
 
 ### Baru

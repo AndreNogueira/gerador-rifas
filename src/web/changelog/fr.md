@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.75.0 — 2026-11-20
+
+### Nouveautés
+- **Partager la liste de prix par lien** (sur le site, quand le service a une base de données) : «Partager par lien» sur la page de la liste crée un lien que chacun peut ouvrir pour voir et poursuivre votre liste (textes, articles, prix et modèle). Elle est conservée 90 jours après le dernier accès, sans rien sur qui la partage ; la Politique de confidentialité a été mise à jour.
+
 ## 3.74.0 — 2026-11-20
 
 ### Nouveautés
