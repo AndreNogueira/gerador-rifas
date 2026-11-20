@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.76.0 — 2026-11-20
+
+### New
+- **Your own photos in the price list**: on each item you can press “Photo” and put your own image (PNG or JPG) in place of the icon (up to 20 per price list; site and Windows app). The photo is reduced on your computer and is only used to draw the preview and the PDF: it is not stored on the server, in the price-list file or in the shared link.
+
 ## 3.75.0 — 2026-11-20
 
 ### New

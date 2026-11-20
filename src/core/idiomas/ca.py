@@ -423,4 +423,7 @@ T = {
     "web_precario_tamanho_2": "Gran",
     "web_precario_partilha_ok": "Enllaç copiat. La llista de preus es desa 90 dies.",
     "web_precario_ligacao_invalida": "Aquest enllaç ja no existeix o la llista de preus ha caducat.",
+    "web_precario_foto": "Foto",
+    "web_precario_foto_tirar": "Treu la foto",
+    "web_precario_fotos_dica": "Podeu posar la vostra foto a cada article (PNG o JPG). Les fotos queden només al vostre navegador i al PDF: no es desen al servidor ni a l'enllaç compartit.",
 }

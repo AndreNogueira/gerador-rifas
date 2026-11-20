@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.76.0 — 2026-11-20
+
+### Baru
+- **Foto sendiri di daftar harga**: pada tiap barang Anda dapat menekan «Foto» dan menaruh gambar sendiri (PNG atau JPG) sebagai pengganti ikon (hingga 20 per daftar; situs dan aplikasi Windows). Foto diperkecil di komputer Anda dan hanya dipakai untuk menggambar pratinjau dan PDF: tidak disimpan di server, di file daftar harga, maupun di tautan yang dibagikan.
+
 ## 3.75.0 — 2026-11-20
 
 ### Baru

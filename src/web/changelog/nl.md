@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.76.0 — 2026-11-20
+
+### Nieuw
+- **Eigen foto's in de prijslijst**: bij elk artikel kunt u op «Foto» klikken en een eigen afbeelding (PNG of JPG) in plaats van het pictogram plaatsen (tot 20 per prijslijst; site en Windows-app). De foto wordt op uw computer verkleind en dient alleen om het voorbeeld en de pdf te tekenen: ze wordt niet op de server, in het prijslijstbestand of in de gedeelde link bewaard.
+
 ## 3.75.0 — 2026-11-20
 
 ### Nieuw

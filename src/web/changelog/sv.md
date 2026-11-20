@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.76.0 — 2026-11-20
+
+### Nytt
+- **Egna foton i prislistan**: på varje artikel kan du trycka på «Foto» och sätta en egen bild (PNG eller JPG) i stället för ikonen (upp till 20 per prislista; webbplatsen och Windows-appen). Fotot förminskas på din dator och används bara för att rita förhandsvisningen och PDF:en: det sparas inte på servern, i prislistans fil eller i den delade länken.
+
 ## 3.75.0 — 2026-11-20
 
 ### Nytt

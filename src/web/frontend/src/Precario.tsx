@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api, ErroApi, type PedidoPrecario, type PrecarioCatalogo } from "./api";
 import { useDialogos } from "./dialogos";
+import { prepararFoto } from "./foto";
 import { guardarBlob } from "./Gerador";
 import { useI18n } from "./i18n";
 import { Voltar } from "./paginas";
@@ -16,6 +17,8 @@ interface Linha {
   preco: string;
   /** O segundo preço (só com «dois tamanhos»); os rascunhos antigos não o têm. */
   preco2?: string;
+  /** A foto própria (`data:image/…`, já reduzida): só vive nesta página (nem no rascunho nem na ligação partilhada). */
+  foto?: string;
 }
 
 interface Estado {
@@ -193,6 +196,7 @@ export function pedidoDoEstado(e: Estado, padroes: [string, string] = ["P", "G"]
       nome: l.artigo ? "" : l.nome,
       preco: l.preco.trim(),
       preco2: e.tamanhos ? (l.preco2 ?? "").trim() : "",
+      ...(l.foto ? { foto: l.foto } : {}),
       categoria: l.artigo ? "" : l.categoria,
       emoji: l.artigo ? "" : l.emoji,
     })),
@@ -304,7 +308,10 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
   useEffect(() => {
     if (!e) return;
     try {
-      localStorage.setItem(CHAVE, JSON.stringify(e));
+      localStorage.setItem(
+        CHAVE,
+        JSON.stringify({ ...e, linhas: e.linhas.map(({ foto: _foto, ...resto }) => resto) }), // as fotos não ficam no rascunho
+      );
     } catch {
       /* sem armazenamento */
     }
@@ -395,6 +402,16 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
   };
   const mudarPreco = (chave: string, preco: string) =>
     mudar({ linhas: e.linhas.map((l) => (l.chave === chave ? { ...l, preco } : l)) });
+  const mudarFoto = (chave: string, foto: string) =>
+    mudar({ linhas: e.linhas.map((l) => (l.chave === chave ? { ...l, foto } : l)) });
+  const escolherFoto = async (chave: string, ficheiro: File | undefined) => {
+    if (!ficheiro) return;
+    try {
+      mudarFoto(chave, await prepararFoto(ficheiro));
+    } catch {
+      aviso(t("err_editor_imagem"));
+    }
+  };
   const mudarPreco2 = (chave: string, preco2: string) =>
     mudar({ linhas: e.linhas.map((l) => (l.chave === chave ? { ...l, preco2 } : l)) });
   const precoDaCategoria = (id: string, preco: string) =>
@@ -549,6 +566,7 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
           <section className="cartao texto-pagina">
             <h2>{t("web_precario_escolhidos", { n: e.linhas.length })}</h2>
             <p className="suave">{t("web_precario_dica_preco")}</p>
+            <p className="suave">{t("web_precario_fotos_dica")}</p>
             {cat.categorias.map((c) => {
               const dela = e.linhas.filter((l) => categoriaDe(l) === c.id);
               if (dela.length === 0) return null;
@@ -569,6 +587,33 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
                     <div className="precario-linha" key={l.chave}>
                       <Miniatura emoji={emojiDe(l)} />
                       <span className="precario-nome">{nomeDe(l)}</span>
+                      {l.foto ? (
+                        <button
+                          type="button"
+                          className="precario-foto"
+                          data-testid={`precario-foto-tirar-${l.chave}`}
+                          title={t("web_precario_foto_tirar")}
+                          aria-label={`${t("web_precario_foto_tirar")}: ${nomeDe(l)}`}
+                          onClick={() => mudarFoto(l.chave, "")}
+                        >
+                          <img src={l.foto} alt="" />
+                        </button>
+                      ) : (
+                        <label className="precario-foto botao secundario" title={t("web_precario_foto")}>
+                          {t("web_precario_foto")}
+                          <input
+                            type="file"
+                            accept="image/png,image/jpeg"
+                            hidden
+                            data-testid={`precario-foto-${l.chave}`}
+                            aria-label={`${t("web_precario_foto")}: ${nomeDe(l)}`}
+                            onChange={(ev) => {
+                              void escolherFoto(l.chave, ev.target.files?.[0]);
+                              ev.target.value = "";
+                            }}
+                          />
+                        </label>
+                      )}
                       <input
                         inputMode="decimal"
                         data-testid={`precario-preco-${l.chave}`}

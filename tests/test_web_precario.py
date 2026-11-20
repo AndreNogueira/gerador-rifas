@@ -122,3 +122,21 @@ def test_dois_tamanhos_pelo_pdf_e_pela_previa(c):
     assert c.post("/api/precario/pdf", json={**pedido, "rotulos": ["P"]}).status_code == 422
     assert c.post("/api/precario/pdf", json={**pedido, "rotulos": ["x" * 40, "G"]}).status_code == 422
     assert c.post("/api/precario/pdf", json={**pedido, "linhas": [{"artigo": "agua", "preco2": "abc"}]}).status_code == 422
+
+
+def test_fotos_proprias_pelo_pdf_e_pela_previa_e_nada_fica_guardado(c):
+    import base64
+    import io
+    from PIL import Image
+    b = io.BytesIO()
+    Image.new("RGB", (300, 200), (10, 120, 60)).save(b, "JPEG")
+    foto = "data:image/jpeg;base64," + base64.b64encode(b.getvalue()).decode()
+    pedido = {"linhas": [{"artigo": "agua", "preco": "1", "foto": foto}, {"nome": "Bolo", "foto": foto}], "titulo": "Festa"}
+    assert c.post("/api/precario/pdf", json=pedido).status_code == 200
+    assert c.post("/api/precario/previa.png", json=pedido).status_code == 200
+    r = c.post("/api/precario/pdf", json={**pedido, "linhas": [{"artigo": "agua", "foto": "data:image/gif;base64,R0lGOD"}]}, headers={"X-Lingua": "en"})
+    assert r.status_code == 422 and r.json()["tipo"] == "aviso"
+    assert c.post("/api/precario/pdf", json={"linhas": [{"artigo": "agua", "foto": "x" * 200_001}]}).status_code == 422
+    serv = c.app.state.servico
+    serv.metricas.descarregar(tudo=True)
+    assert "base64" not in str(serv.metricas._consultar("SELECT * FROM eventos"))

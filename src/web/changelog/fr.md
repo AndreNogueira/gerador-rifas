@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.76.0 — 2026-11-20
+
+### Nouveautés
+- **Vos propres photos dans la liste de prix** : sur chaque article, cliquez sur «Photo» pour mettre votre image (PNG ou JPG) à la place de l'icône (jusqu'à 20 par liste ; site et appli Windows). La photo est réduite sur votre ordinateur et ne sert qu'à dessiner l'aperçu et le PDF : elle n'est conservée ni sur le serveur, ni dans le fichier de la liste, ni dans le lien partagé.
+
 ## 3.75.0 — 2026-11-20
 
 ### Nouveautés

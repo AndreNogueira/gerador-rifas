@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.76.0 — 2026-11-20
+
+### Nowości
+- **Własne zdjęcia w cenniku**: przy każdej pozycji możesz kliknąć «Zdjęcie» i wstawić własny obraz (PNG lub JPG) zamiast ikony (do 20 na cennik; strona i aplikacja na Windows). Zdjęcie jest zmniejszane na twoim komputerze i służy tylko do narysowania podglądu i PDF: nie jest zapisywane na serwerze, w pliku cennika ani w udostępnionym linku.
+
 ## 3.75.0 — 2026-11-20
 
 ### Nowości

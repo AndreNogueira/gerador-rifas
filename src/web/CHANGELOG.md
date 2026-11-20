@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.76.0 — 2026-11-20
+
+### Novo
+- **Fotos próprias no preçário**: em cada artigo pode carregar em «Foto» e pôr uma imagem sua (PNG ou JPG) no lugar do ícone (até 20 por preçário; site e app Windows). A foto é reduzida no seu computador e só serve para desenhar a pré-visualização e o PDF: não se guarda no servidor, nem no ficheiro do preçário, nem na ligação partilhada.
+
 ## 3.75.0 — 2026-11-20
 
 ### Novo

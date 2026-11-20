@@ -760,6 +760,7 @@ class Precario(Janela):
         self.sugerida = precario_catalogo.ocasiao_da_epoca(_hoje(), self.lingua)
         self.linhas: list[dict] = []                   # {chave, artigo, nome, categoria, emoji}
         self.v_preco: dict[str, tk.StringVar] = {}
+        self.fotos: dict[str, bytes] = {}                    # as fotos próprias (já reduzidas): só vivem nesta janela, nunca no ficheiro .precario
         self.v_preco2: dict[str, tk.StringVar] = {}           # o segundo preço (só com «dois tamanhos»)
         self.v_tamanhos = tk.BooleanVar()
         self.v_rotulo1, self.v_rotulo2 = tk.StringVar(), tk.StringVar()
@@ -913,6 +914,24 @@ class Precario(Janela):
         self.v_meu.set("")
         self._precos()
 
+    def _escolher_foto(self, chave: str, ficheiro: str | None = None) -> bool:
+        """Põe a foto própria do artigo (PNG ou JPG, reduzida) ou, se já tem uma, tira-a. `ficheiro` só serve aos testes."""
+        if chave in self.fotos and ficheiro is None:
+            del self.fotos[chave]
+            self._precos()
+            return True
+        ficheiro = ficheiro or filedialog.askopenfilename(parent=self, title=t("web_precario_foto"), filetypes=[("PNG / JPG", "*.png *.jpg *.jpeg")])
+        if not ficheiro:
+            return False
+        try:
+            self.fotos[chave] = precario.foto_de_bytes(Path(ficheiro).read_bytes())
+        except (core.ErroRifas, OSError) as e:
+            self.l_erro.configure(text=str(e) if isinstance(e, core.ErroRifas) else t("err_editor_imagem"))
+            return False
+        self.l_erro.configure(text="")
+        self._precos()
+        return True
+
     def _tirar(self, chave: str) -> None:
         ln = next((x for x in self.linhas if x["chave"] == chave), None)
         if ln is None:
@@ -948,6 +967,9 @@ class Precario(Janela):
                     v2.trace_add("write", lambda *_: self._agendar())
                 ctk.CTkEntry(linha, textvariable=v2, width=70, height=28, corner_radius=8, fg_color=C["campo"], border_color=C["borda"], text_color=C["texto"],
                              font=ctk.CTkFont(FONTE, 12), placeholder_text=self.v_rotulo2.get().strip() or t("web_precario_tamanho_2"), placeholder_text_color=C["suave"]).pack(side="left", padx=(0, 4))
+            ctk.CTkButton(linha, text="✓ " + t("web_precario_foto") if ln["chave"] in self.fotos else t("web_precario_foto"), width=64, height=28, corner_radius=8,
+                          fg_color=C["acento_suave"] if ln["chave"] in self.fotos else C["campo"], hover_color=C["borda"], text_color=C["texto"], border_width=1,
+                          border_color=C["borda"], font=ctk.CTkFont(FONTE, 11), command=lambda c=ln["chave"]: self._escolher_foto(c)).pack(side="left", padx=(0, 4))
             ctk.CTkButton(linha, text="×", width=28, height=28, corner_radius=8, fg_color=C["campo"], hover_color=C["borda"], text_color=C["texto"], border_width=1,
                           border_color=C["borda"], command=lambda c=ln["chave"]: self._tirar(c)).pack(side="left")
         if self.v_tamanhos.get():
@@ -973,7 +995,7 @@ class Precario(Janela):
                 preco2 = moeda.valor_de_texto(texto2, self.lingua)
                 if preco2 is None:
                     raise core.ErroRifas("err_precario_texto", car=texto2[:14])
-            linhas.append(precario.Linha(ln["artigo"], ln["nome"], preco, ln["categoria"], ln["emoji"], preco2))
+            linhas.append(precario.Linha(ln["artigo"], ln["nome"], preco, ln["categoria"], ln["emoji"], preco2, self.fotos.get(ln["chave"], b"")))
         nome = " ".join(self.v_inv_nome.get().split())
         if self.v_inventada.get() and nome:
             m = moeda.MoedaInventada(nome, self.v_inv_antes.get(), int(self.v_inv_casas.get() or 0))
@@ -1115,7 +1137,7 @@ class Precario(Janela):
                 self.v_moeda.set(f"{p.moeda.codigo} ({p.moeda.simbolo})")
             for v in self.v_artigo.values():
                 v.set(False)
-            self.linhas, self.v_preco, self.v_preco2 = [], {}, {}
+            self.linhas, self.v_preco, self.v_preco2, self.fotos = [], {}, {}, {}
             for i, ln in enumerate(p.linhas):
                 original = precario_catalogo.ARTIGOS.get(ln.artigo)
                 if ln.artigo in self.artigos:

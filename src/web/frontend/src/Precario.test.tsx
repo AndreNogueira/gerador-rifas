@@ -247,3 +247,28 @@ describe("partilhar por ligação", () => {
     expect(screen.getByTestId("precario-preco-agua")).toBeInTheDocument();
   });
 });
+
+describe("fotos próprias", () => {
+  it("uma foto escolhida vai no pedido, mostra a miniatura e tira-se; nunca fica no rascunho do browser", async () => {
+    const png = new File([new Uint8Array([137, 80, 78, 71])], "f.png", { type: "image/png" });
+    vi.stubGlobal("createImageBitmap", async () => ({ width: 400, height: 200, close: () => undefined }));
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+      drawImage: () => undefined,
+    } as never);
+    vi.spyOn(HTMLCanvasElement.prototype, "toDataURL").mockReturnValue("data:image/png;base64,AAAA");
+    abrir();
+    await userEvent.upload(await screen.findByTestId("precario-foto-agua"), png);
+    expect(await screen.findByTestId("precario-foto-tirar-agua")).toBeInTheDocument();
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.linhas[0]?.foto).toBe("data:image/png;base64,AAAA");
+    });
+    expect(localStorage.getItem("rifas.precario") ?? "").not.toContain("AAAA");
+    await userEvent.click(screen.getByTestId("precario-foto-tirar-agua"));
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.linhas[0]?.foto).toBeUndefined();
+    });
+    vi.unstubAllGlobals();
+  });
+});

@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.76.0 — 2026-11-20
+
+### Noutăți
+- **Poze proprii în lista de prețuri**: la fiecare articol poți apăsa «Poză» și pune propria imagine (PNG sau JPG) în locul pictogramei (până la 20 pe listă; site și aplicația Windows). Poza este micșorată pe calculatorul tău și servește doar la desenarea previzualizării și a PDF-ului: nu se păstrează pe server, în fișierul listei și nici în linkul partajat.
+
 ## 3.75.0 — 2026-11-20
 
 ### Noutăți

@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.76.0 — 2026-11-20
+
+### Yeni
+- **Fiyat listesinde kendi fotoğraflarınız**: her ürünün yanında «Fotoğraf»a basıp simgenin yerine kendi görselinizi (PNG veya JPG) koyabilirsiniz (fiyat listesi başına en fazla 20; site ve Windows uygulaması). Fotoğraf bilgisayarınızda küçültülür ve yalnızca önizlemeyi ve PDF'yi çizmek için kullanılır: sunucuda, fiyat listesi dosyasında veya paylaşılan bağlantıda saklanmaz.
+
 ## 3.75.0 — 2026-11-20
 
 ### Yeni

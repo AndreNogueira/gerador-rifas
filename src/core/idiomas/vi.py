@@ -423,4 +423,7 @@ T = {
     "web_precario_tamanho_2": "Lớn",
     "web_precario_partilha_ok": "Đã sao chép liên kết. Bảng giá được lưu trong 90 ngày.",
     "web_precario_ligacao_invalida": "Liên kết này không còn tồn tại hoặc bảng giá đã hết hạn.",
+    "web_precario_foto": "Ảnh",
+    "web_precario_foto_tirar": "Bỏ ảnh",
+    "web_precario_fotos_dica": "Bạn có thể đặt ảnh của riêng mình cho mỗi món (PNG hoặc JPG). Ảnh chỉ nằm trong trình duyệt và trong PDF: không được lưu trên máy chủ hay trong liên kết chia sẻ.",
 }

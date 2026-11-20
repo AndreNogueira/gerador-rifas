@@ -262,3 +262,60 @@ def test_rotulos_invalidos_so_importam_com_tamanhos(rotulos):
     with pytest.raises(ErroRifas):
         precario.criar_pdf(precario.de_dict({**base, "tamanhos": True}, "pt"))                 # vazio com tamanhos: recusado
     assert precario.criar_pdf(precario.de_dict({**base, "tamanhos": False}, "pt")).startswith(b"%PDF")    # sem tamanhos os rótulos nem se usam
+
+
+# ------------------------------------------------------------------ fotos próprias dos artigos
+def _jpg(lado=(600, 400), cor=(200, 60, 60)) -> bytes:
+    from PIL import Image
+    b = io.BytesIO()
+    Image.new("RGB", lado, cor).save(b, "JPEG")
+    return b.getvalue()
+
+
+def _dados(bruto: bytes, tipo="jpeg") -> str:
+    import base64
+    return f"data:image/{tipo};base64," + base64.b64encode(bruto).decode()
+
+
+def test_a_foto_reduz_se_e_recodifica_sem_metadados():
+    from PIL import Image
+    f = precario.foto_de_bytes(_jpg((3000, 1000)))
+    with Image.open(io.BytesIO(f)) as im:
+        assert im.format == "JPEG" and max(im.size) == precario.FOTO_LADO and im.size == (192, 64)
+    b = io.BytesIO()
+    Image.new("RGBA", (50, 50), (0, 0, 0, 0)).save(b, "PNG")
+    with Image.open(io.BytesIO(precario.foto_de_bytes(b.getvalue()))) as im:
+        assert im.format == "PNG" and im.mode == "RGBA"                          # com transparência fica PNG
+
+
+@pytest.mark.parametrize("mau", [b"", b"nao e imagem", b"GIF89a" + b"\0" * 40, b"%PDF-1.4 x", b"x" * (precario.MAX_FOTO_BYTES + 1)])
+def test_uma_foto_que_nao_e_png_nem_jpg_a_serio_e_recusada(mau):
+    with pytest.raises(ErroRifas) as e:
+        precario.foto_de_bytes(mau)
+    assert e.value.chave == "err_editor_imagem"
+
+
+def test_a_foto_vem_num_data_url_e_so_png_ou_jpg_passam():
+    assert precario.foto_de_dados(_dados(_jpg()))
+    for mau in ("", "data:image/gif;base64,R0lGOD", "data:text/html;base64,PGI+", "https://x/y.png", _dados(b"lixo"), 5, None):
+        with pytest.raises(ErroRifas):
+            precario.foto_de_dados(mau)
+
+
+def test_a_foto_substitui_o_icone_no_pdf_e_nao_vai_para_o_ficheiro_nem_para_o_dicionario():
+    com = precario.de_dict({"linhas": [{"artigo": "agua", "preco": "1", "foto": _dados(_jpg())}], "titulo": "F"}, "pt")
+    sem = precario.de_dict({"linhas": [{"artigo": "agua", "preco": "1"}], "titulo": "F"}, "pt")
+    assert com.linhas[0].foto and not sem.linhas[0].foto
+    assert precario.criar_pdf(com) != precario.criar_pdf(sem)
+    assert "foto" not in precario.para_dict(com)["linhas"][0] and b"foto" not in precario.para_bytes(com)
+    assert not precario.de_bytes(precario.para_bytes(com)).linhas[0].foto           # as fotos nunca saem do computador de quem as pôs
+    assert len(PdfReader(io.BytesIO(precario.criar_pdf(Precario(linhas=com.linhas, imagens=False)))).pages) == 1    # sem imagens, sem fotos
+
+
+def test_ha_um_maximo_de_fotos():
+    foto = precario.foto_de_dados(_dados(_jpg((40, 40))))
+    muitas = Precario(linhas=tuple(Linha(nome=f"A{i}", foto=foto) for i in range(precario.MAX_FOTOS + 1)))
+    with pytest.raises(ErroRifas) as e:
+        precario.criar_pdf(muitas)
+    assert e.value.chave == "err_editor_limite"
+    assert precario.criar_pdf(Precario(linhas=muitas.linhas[:precario.MAX_FOTOS])).startswith(b"%PDF")
