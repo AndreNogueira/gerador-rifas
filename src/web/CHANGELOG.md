@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.73.0 — 2026-11-20
+
+### Novo
+- **Cartões de mesa**: no formato do preçário escolha «Cartões de mesa (4 por folha A4)» (site e app Windows) e o preçário sai em cartões A6, quatro numa folha A4 com guias de corte a tracejado, prontos a imprimir e cortar para pôr nas mesas (até 12 artigos).
+
 ## 3.72.0 — 2026-11-20
 
 ### Novo

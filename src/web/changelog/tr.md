@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.73.0 — 2026-11-20
+
+### Yeni
+- **Masa kartları**: fiyat listesinin biçiminde «Masa kartları (A4 sayfada 4)» seçin (site ve Windows uygulaması); fiyat listesi, bir A4 sayfada dört adet, kesik çizgili kesim kılavuzlarıyla A6 kartlar olarak çıkar; masalar için yazdırıp kesmeye hazırdır (en fazla 12 ürün).
+
 ## 3.72.0 — 2026-11-20
 
 ### Yeni

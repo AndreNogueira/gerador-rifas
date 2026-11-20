@@ -95,6 +95,7 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_precario_colunas: "Colunas",
     web_precario_auto: "Automático",
     web_precario_imagens: "Com imagens",
+    web_precario_cartoes: "Cartões de mesa (4 por folha A4)",
     web_precario_previa: "Pré-visualização do preçário",
     web_precario_pdf: "Descarregar PDF",
     web_precario_imagem: "Descarregar imagem",

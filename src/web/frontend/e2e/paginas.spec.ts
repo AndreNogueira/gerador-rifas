@@ -30,6 +30,11 @@ test.describe("páginas, sorteio e PWA", () => {
       page.getByTestId("precario-imagem").click(),
     ]);
     expect(img.suggestedFilename()).toBe("precario.png");
+    await page.getByTestId("precario-formato").selectOption("A6x4"); // cartões de mesa: 4 por folha A4
+    await expect(page.getByTestId("precario-orientacao")).toBeDisabled();
+    await expect(page.getByTestId("precario-previa-img")).toBeVisible();
+    await expect(page.getByTestId("precario-erro")).toHaveCount(0);
+    await page.getByTestId("precario-formato").selectOption("A4");
     await page.getByTestId("precario-meu-nome").fill("Bolo da avó");
     await page.getByTestId("precario-meu-juntar").click();
     await expect(page.getByTestId("precario-erro")).toHaveCount(0);

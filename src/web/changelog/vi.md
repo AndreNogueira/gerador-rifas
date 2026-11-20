@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.73.0 — 2026-11-20
+
+### Mới
+- **Thẻ để bàn**: ở định dạng của bảng giá, chọn «Thẻ để bàn (4 thẻ trên một tờ A4)» (trang web và ứng dụng Windows) và bảng giá được xuất thành thẻ A6, bốn thẻ trên một tờ A4 kèm đường cắt nét đứt, sẵn sàng in và cắt để đặt lên bàn (tối đa 12 món).
+
 ## 3.72.0 — 2026-11-20
 
 ### Mới

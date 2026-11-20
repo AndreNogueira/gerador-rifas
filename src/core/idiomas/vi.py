@@ -416,4 +416,5 @@ T = {
     "err_vale_quantidade": "Số lượng trên mỗi phiếu phải từ {min} đến {max}.",
     "tut_f_vales_t": "Phiếu xu có số",
     "tut_f_vales_b": "Nếu bảng giá dùng tiền tệ tự đặt (xu, đồng tiền…), hãy làm cả phiếu: chọn thiết kế, tiêu đề và mỗi phiếu trị giá bao nhiêu xu, rồi tạo mẫu. Tiếp tục ở màn hình chính, nơi trình tạo đánh số phiếu với sê-ri («A-», «B-»), mã QR xác minh và tờ in sẵn sàng. {onde}",
+    "web_precario_cartoes": "Thẻ để bàn (4 thẻ trên một tờ A4)",
 }

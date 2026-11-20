@@ -769,8 +769,10 @@ class Precario(Janela):
         self.v_desenho, self.v_ocasiao = tk.StringVar(value="quermesse"), tk.StringVar()
         self._orientacoes = {"vertical": t("web_precario_vertical"), "horizontal": t("web_precario_horizontal")}
         self._colunas = {0: t("web_precario_auto"), 1: "1", 2: "2", 3: "3"}
+        self._formatos = {f: (t("web_precario_cartoes") if f == precario.CARTOES else f) for f in precario.FORMATOS}
         self.v_orientacao.set(self._orientacoes["vertical"])
         self.v_colunas.set(self._colunas[0])
+        self.v_formato.set(self._formatos["A4"])
         self._moedas = {f"{m.codigo} ({m.simbolo})": m.codigo for m in moeda.MOEDAS.values()}
         padrao = moeda.moeda_por_omissao(self.lingua)
         self.v_moeda.set(f"{padrao.codigo} ({padrao.simbolo})")
@@ -821,7 +823,7 @@ class Precario(Janela):
             app._entrada(esq, var).pack(fill="x")
         opcoes = ctk.CTkFrame(esq, fg_color="transparent")
         opcoes.pack(fill="x", pady=(8, 0))
-        for rotulo, valores, var in ((t("web_precario_formato"), list(precario.FORMATOS), self.v_formato),
+        for rotulo, valores, var in ((t("web_precario_formato"), list(self._formatos.values()), self.v_formato),
                                      (t("web_precario_vertical") + " / " + t("web_precario_horizontal"), list(self._orientacoes.values()), self.v_orientacao),
                                      (t("web_precario_colunas"), list(self._colunas.values()), self.v_colunas)):
             col = ctk.CTkFrame(opcoes, fg_color="transparent")
@@ -950,8 +952,9 @@ class Precario(Janela):
             m = moeda.MOEDAS[self._moedas.get(self.v_moeda.get(), "EUR")]
         orientacao = next((k for k, v in self._orientacoes.items() if v == self.v_orientacao.get()), "vertical")
         colunas = next((k for k, v in self._colunas.items() if v == self.v_colunas.get()), 0)
+        formato = next((k for k, v in self._formatos.items() if v == self.v_formato.get()), "A4")
         return precario.Precario(linhas=tuple(linhas), titulo=self.v_titulo.get().strip()[:precario.MAX_TITULO], subtitulo=self.v_subtitulo.get().strip()[:precario.MAX_SUBTITULO],
-                                 rodape=self.v_rodape.get().strip()[:precario.MAX_RODAPE], desenho=self.v_desenho.get() or "quermesse", formato=self.v_formato.get(),
+                                 rodape=self.v_rodape.get().strip()[:precario.MAX_RODAPE], desenho=self.v_desenho.get() or "quermesse", formato=formato,
                                  orientacao=orientacao, colunas=colunas, imagens=self.v_imagens.get(), moeda=m, lingua=self.lingua)
 
     def _agendar(self, atraso: int = 350) -> None:
@@ -1065,7 +1068,7 @@ class Precario(Janela):
             self.v_rodape.set(p.rodape)
             self.v_desenho.set(p.desenho)
             self.m_desenho.set(precario.POR_ID[p.desenho].nome)
-            self.v_formato.set(p.formato)
+            self.v_formato.set(self._formatos[p.formato])
             self.v_orientacao.set(self._orientacoes[p.orientacao])
             self.v_colunas.set(self._colunas[p.colunas])
             self.v_imagens.set(p.imagens)

@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.73.0 — 2026-11-20
+
+### Baru
+- **Kartu meja**: pada format daftar harga pilih «Kartu meja (4 per lembar A4)» (situs dan aplikasi Windows) dan daftar harga keluar sebagai kartu A6, empat per lembar A4 dengan garis potong putus-putus, siap dicetak dan dipotong untuk meja (hingga 12 barang).
+
 ## 3.72.0 — 2026-11-20
 
 ### Baru

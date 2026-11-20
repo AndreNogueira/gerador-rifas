@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.73.0 — 2026-11-20
+
+### Nytt
+- **Bordskort**: välj «Bordskort (4 per A4-ark)» som format för prislistan (webbplatsen och Windows-appen) så kommer prislistan som A6-kort, fyra på ett A4-ark med streckade skärlinjer, klara att skriva ut och klippa för borden (upp till 12 artiklar).
+
 ## 3.72.0 — 2026-11-20
 
 ### Nytt

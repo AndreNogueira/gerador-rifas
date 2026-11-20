@@ -416,4 +416,5 @@ T = {
     "err_vale_quantidade": "La quantitat de cada val ha d'estar entre {min} i {max}.",
     "tut_f_vales_t": "Vals de fitxes numerats",
     "tut_f_vales_b": "Si la llista de preus fa servir una moneda inventada (fitxes, monedes…), feu també els vals: trieu el disseny, el títol i quantes fitxes val cada val, i creeu el model. Continua a la pantalla principal, on el generador numera els vals amb sèries («A-», «B-»), QR de verificació i fulls a punt per imprimir. {onde}",
+    "web_precario_cartoes": "Targetes de taula (4 per full A4)",
 }

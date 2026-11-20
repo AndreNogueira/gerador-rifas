@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.73.0 — 2026-11-20
+
+### Nieuw
+- **Tafelkaartjes**: kies bij het formaat van de prijslijst «Tafelkaartjes (4 per A4-vel)» (site en Windows-app) en de prijslijst komt als A6-kaartjes, vier op een A4-vel met gestippelde snijlijnen, klaar om te printen en uit te knippen voor de tafels (tot 12 artikelen).
+
 ## 3.72.0 — 2026-11-20
 
 ### Nieuw

@@ -187,3 +187,37 @@ def test_o_quadro_negro_pinta_o_fundo_escuro_e_escreve_o_texto_claro():
     w, h = im.size
     r, g, b = im.getpixel((w // 2, int(h * 0.62)))                                         # o miolo do quadro, longe do texto
     assert max(r, g, b) < 80, (r, g, b)
+
+
+# ------------------------------------------------------------------ cartões de mesa (A6, 4 por folha A4)
+def _cartoes(n: int = 6, **kw) -> Precario:
+    return com_precos(Precario(linhas=tuple(Linha(artigo=a) for a in list(cat.ARTIGOS)[:n]),
+                               titulo="Festa", formato=precario.CARTOES, **kw))
+
+
+def test_os_cartoes_de_mesa_sao_uma_folha_a4_com_quatro_cartoes_e_guias_de_corte():
+    leitor = PdfReader(io.BytesIO(precario.criar_pdf(_cartoes())))
+    assert len(leitor.pages) == 1 and [round(float(x)) for x in leitor.pages[0].mediabox[2:]] == [595, 842]
+    import pypdfium2 as pdfium
+    doc = pdfium.PdfDocument(io.BytesIO(precario.criar_pdf(_cartoes())))
+    try:
+        tp = doc[0].get_textpage()
+        texto = tp.get_text_range()
+        tp.close()
+    finally:
+        doc.close()
+    assert texto.count("Festa") == 4                                                       # o titulo do cartao aparece quatro vezes
+
+
+def test_o_cartao_e_sempre_de_pe_e_de_uma_so_face_e_aceita_ate_12_artigos():
+    assert len(PdfReader(io.BytesIO(precario.criar_pdf(_cartoes(12, orientacao="horizontal")))).pages) == 1
+    with pytest.raises(ErroRifas) as e:
+        precario.criar_pdf(Precario(linhas=tuple(Linha(nome=f"Artigo {i}") for i in range(precario.MAX_CARTOES + 1)), formato=precario.CARTOES))
+    assert e.value.chave == "err_precario_linhas" and e.value.params["max"] == precario.MAX_CARTOES
+
+
+def test_o_formato_dos_cartoes_viaja_na_api_e_no_ficheiro():
+    p = _cartoes()
+    assert precario.de_dict(precario.para_dict(p)).formato == precario.CARTOES
+    assert precario.de_bytes(precario.para_bytes(p)).formato == precario.CARTOES
+    assert precario.CARTOES in precario.FORMATOS and list(precario.FORMATOS)[-1] == precario.CARTOES      # no fim da lista: A5, A4, A3 primeiro

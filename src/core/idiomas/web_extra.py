@@ -3475,6 +3475,26 @@ CHAVES: dict[str, dict[str, str]] = {
         "ko": "한 장당 개수는 {min}에서 {max} 사이여야 합니다.",
         "hi": "हर कूपन की मात्रा {min} से {max} के बीच होनी चाहिए।",
     },
+    "web_precario_cartoes": {
+        "pt": "Cartões de mesa (4 por folha A4)",
+        "en": "Table cards (4 per A4 sheet)",
+        "es": "Tarjetas de mesa (4 por hoja A4)",
+        "fr": "Cartes de table (4 par feuille A4)",
+        "de": "Tischkarten (4 pro A4-Blatt)",
+        "it": "Cartoncini da tavolo (4 per foglio A4)",
+        "nl": "Tafelkaartjes (4 per A4-vel)",
+        "pl": "Karty na stół (4 na arkuszu A4)",
+        "sv": "Bordskort (4 per A4-ark)",
+        "cs": "Stolní karty (4 na list A4)",
+        "ro": "Cartonașe de masă (4 pe coala A4)",
+        "el": "Κάρτες τραπεζιού (4 ανά φύλλο A4)",
+        "ru": "Карточки на стол (4 на листе A4)",
+        "tr": "Masa kartları (A4 sayfada 4)",
+        "zh": "桌卡（每张 A4 纸 4 张）",
+        "ja": "テーブルカード（A4に4枚）",
+        "ko": "테이블 카드(A4 한 장에 4개)",
+        "hi": "टेबल कार्ड (हर A4 शीट पर 4)",
+    },
 }
 
 

@@ -596,7 +596,7 @@ export function Precario() {
                 >
                   {cat.formatos.map((f) => (
                     <option key={f} value={f}>
-                      {f}
+                      {f === "A6x4" ? t("web_precario_cartoes") : f}
                     </option>
                   ))}
                 </select>
@@ -605,6 +605,7 @@ export function Precario() {
                 {t("web_precario_vertical")} / {t("web_precario_horizontal")}
                 <select
                   data-testid="precario-orientacao"
+                  disabled={e.formato === "A6x4"}
                   value={e.orientacao}
                   onChange={(ev) => mudar({ orientacao: ev.target.value })}
                 >

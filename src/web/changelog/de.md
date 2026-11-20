@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.73.0 — 2026-11-20
+
+### Neu
+- **Tischkarten**: Wählen Sie beim Format der Preisliste «Tischkarten (4 pro A4-Blatt)» (Website und Windows-App): Die Preisliste kommt als A6-Karten, vier auf einem A4-Blatt mit gestrichelten Schnittlinien, zum Drucken und Ausschneiden für die Tische (bis zu 12 Artikel).
+
 ## 3.72.0 — 2026-11-20
 
 ### Neu

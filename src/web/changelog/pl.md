@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.73.0 — 2026-11-20
+
+### Nowości
+- **Karty na stół**: w formacie cennika wybierz «Karty na stół (4 na arkuszu A4)» (strona i aplikacja na Windows), a cennik wyjdzie jako karty A6, cztery na arkuszu A4 z przerywanymi liniami cięcia, gotowe do wydruku i wycięcia na stoły (do 12 pozycji).
+
 ## 3.72.0 — 2026-11-20
 
 ### Nowości

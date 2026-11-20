@@ -18,7 +18,9 @@ from pathlib import Path
 from . import galeria, letras, moeda as mod_moeda, precario_catalogo as cat
 from .motor import ErroRifas
 
-FORMATOS = {"A5": (419.53, 595.28), "A4": (595.28, 841.89), "A3": (841.89, 1190.55)}      # pt, vertical
+CARTOES = "A6x4"                 # cartões de mesa: o preçário em A6 e 4 por folha A4 (2 x 2), com guias de corte
+MAX_CARTOES = 12                 # artigos que cabem num cartão A6 com letra legível
+FORMATOS = {"A5": (419.53, 595.28), "A4": (595.28, 841.89), "A3": (841.89, 1190.55), "A6x4": (297.64, 419.53)}      # pt, vertical (o A6x4 é o tamanho de UM cartão)
 ORIENTACOES = ("vertical", "horizontal")
 MAX_LINHAS, MAX_TITULO, MAX_SUBTITULO, MAX_RODAPE, MAX_NOME = 80, 40, 70, 120, 40
 ESCALA_MAX, ESCALA_MIN, PASSO_ESCALA, MAX_PAGINAS = 1.5, 0.55, 0.05, 5
@@ -70,8 +72,8 @@ def validar(p: Precario) -> None:
     """Levanta `ErroRifas` (`err_precario_texto`, `err_precario_linhas`) com o que não serve; nada se desenha antes disto."""
     if p.desenho not in POR_ID or p.formato not in FORMATOS or p.orientacao not in ORIENTACOES or not 0 <= p.colunas <= 3 or p.lingua not in cat.LINGUAS:
         raise ErroRifas("err_precario_texto", car="?")
-    if not 1 <= len(p.linhas) <= MAX_LINHAS:
-        raise ErroRifas("err_precario_linhas", max=MAX_LINHAS)
+    if not 1 <= len(p.linhas) <= (MAX_CARTOES if p.formato == CARTOES else MAX_LINHAS):
+        raise ErroRifas("err_precario_linhas", max=MAX_CARTOES if p.formato == CARTOES else MAX_LINHAS)
     letras.registar()
     for t, m in ((p.titulo, MAX_TITULO), (p.subtitulo, MAX_SUBTITULO), (p.rodape, MAX_RODAPE)):
         _texto_ok(t, m)
@@ -364,9 +366,11 @@ def criar_pdf(p: Precario) -> bytes:
     validar(p)
     from reportlab.pdfgen import canvas
     d = POR_ID[p.desenho]
+    cartoes = p.formato == CARTOES
     larg, alt = FORMATOS[p.formato]
-    if p.orientacao == "horizontal":
+    if p.orientacao == "horizontal" and not cartoes:                       # o cartão de mesa é sempre de pé
         larg, alt = alt, larg
+    max_paginas = 1 if cartoes else MAX_PAGINAS                            # um cartão tem uma só face
     f = min(larg, alt) / 595.28                                           # a letra e as margens seguem o lado menor: A4 deitado = A4 de pé
     max_col = 2 if min(larg, alt) < 500 and larg < alt else 3             # num A5 de pé só cabem duas colunas
     margem = 22 * f
@@ -403,12 +407,12 @@ def criar_pdf(p: Precario) -> bytes:
             if escolhido:
                 ncol = n
                 break
-        escolhido = escolhido or encaixar(ncol, ESCALA_MIN, MAX_PAGINAS)
+        escolhido = escolhido or encaixar(ncol, ESCALA_MIN, max_paginas)
     else:
         ncol = min(p.colunas, max_col)
-        escolhido = encaixar(ncol, ESCALA_MIN, MAX_PAGINAS)
+        escolhido = encaixar(ncol, ESCALA_MIN, max_paginas)
     if escolhido is None:
-        raise ErroRifas("err_precario_linhas", max=MAX_LINHAS)
+        raise ErroRifas("err_precario_linhas", max=MAX_CARTOES if cartoes else MAX_LINHAS)
     s, paginas = escolhido
     col_larg = (util_larg - gap * (ncol - 1)) / ncol
 
@@ -453,6 +457,34 @@ def criar_pdf(p: Precario) -> bytes:
             c.drawRightString(qx + qw - 14 * f, qy + 14 * f, f"{n + 1}/{len(paginas)}")
         c.showPage()
     c.save()
+    return _em_folha_a4(saida.getvalue()) if cartoes else saida.getvalue()
+
+
+def _em_folha_a4(cartao: bytes) -> bytes:
+    """Os cartões de mesa: o cartão A6 repetido 4 vezes numa folha A4 (2 x 2), com guias de corte a tracejado no meio e nas pontas. Só se imprime e corta."""
+    from pypdf import PageObject, PdfReader, PdfWriter, Transformation
+    from reportlab.pdfgen import canvas
+    a4l, a4a = FORMATOS["A4"]
+    cl, ca = FORMATOS[CARTOES]
+    origem = PdfReader(io.BytesIO(cartao)).pages[0]
+    folha = PageObject.create_blank_page(width=a4l, height=a4a)
+    for linha in range(2):
+        for coluna in range(2):
+            folha.merge_transformed_page(origem, Transformation().translate(coluna * cl, (1 - linha) * (a4a / 2) + (a4a / 2 - ca) / 2))
+    guias = io.BytesIO()
+    g = canvas.Canvas(guias, pagesize=(a4l, a4a), pageCompression=1, invariant=1)
+    g.setStrokeColorRGB(0.55, 0.55, 0.55)
+    g.setLineWidth(0.5)
+    g.setDash(4, 4)
+    g.line(a4l / 2, 0, a4l / 2, a4a)
+    g.line(0, a4a / 2, a4l, a4a / 2)
+    g.save()
+    folha.merge_page(PdfReader(io.BytesIO(guias.getvalue())).pages[0])
+    saida = io.BytesIO()
+    w = PdfWriter()
+    w.add_page(folha)
+    w.add_metadata({"/Title": "Preçário (cartões de mesa)"})
+    w.write(saida)
     return saida.getvalue()
 
 
