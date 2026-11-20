@@ -8,7 +8,7 @@ import asyncio
 import urllib.parse
 from concurrent.futures.process import BrokenProcessPool
 
-from core import ErroRifas, galeria, i18n, moeda, precario, precario_catalogo
+from core import ErroRifas, i18n, moeda, precario, precario_catalogo
 from fastapi import APIRouter, Depends, Query, Response
 from pydantic import BaseModel, Field
 
