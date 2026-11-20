@@ -866,6 +866,13 @@ def disposicao_da_folha(info: InfoTemplate, papel: str, margem_mm: float, n: int
     maximo = len(pos)
     if n is not None:
         pos = pos[:max(1, min(n, maximo))]
+        # recentrar o subconjunto: truncar tira sempre do fim (ordem de leitura), por isso o que fica ficava
+        # encostado ao topo/esquerda e toda a folga ia para o lado de baixo/direito (margens desiguais, a
+        # guilhotina a direito já não serve para todas as linhas)
+        x0, y0 = min(p[0] for p in pos), min(p[1] for p in pos)
+        x1, y1 = max(p[0] + tam[p[2]][0] for p in pos), max(p[1] + tam[p[2]][1] for p in pos)
+        dx, dy = (W - (x1 - x0)) / 2 - x0, (H - (y1 - y0)) / 2 - y0
+        pos = [(x + dx, y + dy, r) for x, y, r in pos]
     return Disposicao(papel, W, H, margem, pos, maximo, cel, info.celula_origem)
 
 

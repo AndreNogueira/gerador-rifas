@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.82.0 — 2026-11-20
+
+### Opraveno
+- **Nerovnoměrné okraje při vyplnění listu méně losy, než se vešlo**: požadavek na méně losů na list, než bylo maximum, je zarovnal nahoru vlevo, s veškerým volným místem vpravo dole — rovný řez řezačkou už je neoddělil dobře. Nyní jsou vždy vystředěné, se stejným okrajem na všech čtyřech stranách.
+
 ## 3.81.0 — 2026-11-20
 
 ### Novinky

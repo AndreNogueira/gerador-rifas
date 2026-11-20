@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.82.0 — 2026-11-20
+
+### Corrigé
+- **Marges inégales en remplissant la feuille avec moins de tickets que la capacité maximale** : demander moins de tickets par feuille que le maximum les laissait collés en haut à gauche, avec tout le jeu en bas à droite — la guillotine droite ne les séparait plus bien. Ils sont maintenant toujours centrés, avec la même marge sur les quatre côtés.
+
 ## 3.81.0 — 2026-11-20
 
 ### Nouveautés

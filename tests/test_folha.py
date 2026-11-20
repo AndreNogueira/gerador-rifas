@@ -68,7 +68,24 @@ def test_n_pedido_e_cortado_ao_intervalo_1_maximo():
     assert _disp(189, 54, n=0).n == 1                  # quirk: 0 (ou negativo) vira 1
     assert _disp(189, 54, n=-4).n == 1
     assert _disp(189, 54, n=99).n == 5                 # acima do maximo: fica no maximo
-    assert _disp(189, 54, n=3).posicoes == _disp(189, 54).posicoes[:3]      # as primeiras posicoes
+    todas, cortadas = _disp(189, 54).posicoes, _disp(189, 54, n=3).posicoes
+    assert [p[2] for p in cortadas] == [p[2] for p in todas[:3]]            # as primeiras, pela ordem de leitura
+    dy = cortadas[0][1] - todas[0][1]
+    assert dy > 0 and all(round(cx, 2) == round(ax, 2) and round(cy + dy, 2) == round(ay, 2)
+                           for (cx, cy, _), (ax, ay, _) in zip(todas[:3], cortadas, strict=True))  # mesma grelha, só descida (recentrada)
+
+
+def test_n_pedido_abaixo_do_maximo_fica_recentrado_margens_iguais():
+    # truncar sem recentrar (bug corrigido) deixava toda a folga do lado de baixo/direito: a guilhotina a direito
+    # deixava de servir para separar cada rifa (o espaço no topo e no fundo da folha tinham de ficar iguais)
+    for n in (1, 2, 3, 4, 5):
+        d = _disp(189, 54, n=n)
+        cw, ch = d.celula.width, d.celula.height
+        caixas = [(x, y, x + (cw if r == 0 else ch), y + (ch if r == 0 else cw)) for x, y, r in d.posicoes]
+        x0, y0 = min(c[0] for c in caixas), min(c[1] for c in caixas)
+        x1, y1 = max(c[2] for c in caixas), max(c[3] for c in caixas)
+        assert round(y0, 2) == round(d.altura - y1, 2), f"n={n}: margem de cima e de baixo diferentes"
+        assert round(x0, 2) == round(d.largura - x1, 2), f"n={n}: margem da esquerda e da direita diferentes"
 
 
 def test_margem_negativa_vale_zero_e_margem_em_pontos():

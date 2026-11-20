@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.82.0 — 2026-11-20
+
+### Corregido
+- **Márgenes desiguales al llenar la hoja con menos rifas de las que cabían**: pedir menos rifas por hoja que el máximo las dejaba pegadas arriba a la izquierda, con todo el hueco abajo a la derecha — la guillotina recta ya no las separaba bien. Ahora quedan siempre centradas, con el mismo margen en los cuatro lados.
+
 ## 3.81.0 — 2026-11-20
 
 ### Novedades

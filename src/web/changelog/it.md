@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.82.0 — 2026-11-20
+
+### Risolto
+- **Margini diversi riempiendo il foglio con meno biglietti del massimo**: chiedere meno biglietti per foglio del massimo li lasciava in alto a sinistra, con tutto lo spazio libero in basso a destra — il taglio dritto non li separava più bene. Ora restano sempre centrati, con lo stesso margine su tutti i quattro lati.
+
 ## 3.81.0 — 2026-11-20
 
 ### Novità

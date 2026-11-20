@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.82.0 — 2026-11-20
+
+### Naprawione
+- **Nierówne marginesy przy wypełnianiu arkusza mniejszą liczbą losów niż maksymalna**: prośba o mniej losów na arkusz niż maksimum zostawiała je przy górnym lewym rogu, a cały luz zostawał w prawym dolnym — prosty cios gilotyny już nie rozdzielał ich dobrze. Teraz są zawsze wyśrodkowane, z takim samym marginesem po wszystkich czterech stronach.
+
 ## 3.81.0 — 2026-11-20
 
 ### Nowości

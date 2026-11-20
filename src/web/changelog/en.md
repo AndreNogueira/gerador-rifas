@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.82.0 — 2026-11-20
+
+### Fixed
+- **Uneven margins when filling the sheet with fewer tickets than fit**: asking for fewer tickets per sheet than the maximum left them pushed to the top-left, with all the slack at the bottom-right — a straight guillotine cut no longer lined up. They're now always centered, with equal margins on all four sides.
+
 ## 3.81.0 — 2026-11-20
 
 ### New
