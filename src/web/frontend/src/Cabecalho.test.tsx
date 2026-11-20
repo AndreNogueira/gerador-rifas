@@ -9,6 +9,7 @@ import { ServidorFalso } from "./servidor-falso";
 const TODOS: ItemId[] = [
   "ajuda",
   "sorteio",
+  "precario",
   "sobre",
   "comentarios",
   "reportar",
@@ -23,18 +24,18 @@ const soma = (n: number) => n * 100 + (n - 1) * 8; // n itens de 100 px com 8 px
 
 describe("o que sai do cabeçalho para o menu «hambúrguer»", () => {
   it("não tira nada quando tudo cabe", () => {
-    expect(calcularOcultos(soma(10), LARGURAS, TODOS)).toEqual([]);
+    expect(calcularOcultos(soma(11), LARGURAS, TODOS)).toEqual([]);
     expect(calcularOcultos(5000, LARGURAS, TODOS)).toEqual([]);
   });
 
   it("tira primeiro o modo claro/escuro, depois o visual, e por aí fora, deixando lugar ao botão do menu", () => {
-    expect(calcularOcultos(soma(10) - 1, LARGURAS, TODOS)).toEqual(["tema"]); // 9 itens + o botão do menu
-    expect(calcularOcultos(soma(8) + 8 + 44, LARGURAS, TODOS)).toEqual(["tema", "visual"]);
+    expect(calcularOcultos(soma(11) - 1, LARGURAS, TODOS)).toEqual(["tema"]); // 10 itens + o botão do menu
+    expect(calcularOcultos(soma(9) + 8 + 44, LARGURAS, TODOS)).toEqual(["tema", "visual"]);
   });
 
   it("quanto menos espaço, mais itens vão para o menu, sempre pela ordem de prioridade", () => {
     let anterior = 0;
-    for (let largura = soma(10); largura >= 0; largura -= 20) {
+    for (let largura = soma(11); largura >= 0; largura -= 20) {
       const ocultos = calcularOcultos(largura, LARGURAS, TODOS);
       expect(ocultos.length).toBeGreaterThanOrEqual(anterior);
       anterior = ocultos.length;
@@ -49,7 +50,7 @@ describe("o que sai do cabeçalho para o menu «hambúrguer»", () => {
 
   it("sem donativo configurado esse item nem conta", () => {
     const sem = TODOS.filter((id) => id !== "donativo");
-    expect(calcularOcultos(soma(9), LARGURAS, sem)).toEqual([]);
+    expect(calcularOcultos(soma(10), LARGURAS, sem)).toEqual([]);
     expect(calcularOcultos(0, LARGURAS, sem)).toEqual(SAI_PRIMEIRO.filter((id) => id !== "donativo"));
   });
 

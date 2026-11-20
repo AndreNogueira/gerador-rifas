@@ -456,6 +456,61 @@ const CENAS: Cena[] = [
     },
   },
   {
+    id: "precario",
+    rodar: async (page, T) => {
+      await page.goto("/precario");
+      await expect(page.getByTestId("precario-previa-img")).toBeVisible();
+      await legenda(
+        page,
+        T("Um preçário pronto a imprimir para a sua festa", "A price list ready to print for your event"),
+        2400,
+      );
+      await page.getByTestId("precario-ocasiao").selectOption("festa_popular");
+      await expect(page.getByTestId("precario-previa-img")).toBeVisible();
+      await legenda(
+        page,
+        T(
+          "A ocasião traz o desenho e os artigos sugeridos",
+          "The occasion brings the design and the suggested items",
+        ),
+        2600,
+      );
+      await clicar(page, page.getByTestId("precario-artigo-pizza"));
+      await legenda(
+        page,
+        T("Marque ou desmarque artigos do catálogo", "Tick or untick items from the catalogue"),
+        2400,
+      );
+      await escrever(page, page.getByTestId("precario-preco-agua"), "1,5");
+      await escrever(page, page.getByTestId("precario-preco-cerveja"), "2");
+      await escrever(page, page.getByTestId("precario-preco-pizza"), "4,5");
+      await legenda(
+        page,
+        T("Escreva os preços: sem preço fica um traço", "Type the prices: with no price a line is left"),
+        2600,
+      );
+      await page.getByTestId("precario-pais").selectOption("BR");
+      await legenda(
+        page,
+        T(
+          "O país escolhe a moeda e o formato dos números",
+          "The country picks the currency and the number format",
+        ),
+        2800,
+      );
+      await clicar(page, page.getByTestId("precario-inventada"));
+      await escrever(page, page.getByTestId("precario-inv-nome"), T("fichas", "tokens"));
+      await legenda(
+        page,
+        T("Ou uma moeda inventada, como fichas", "Or a made-up currency, like tokens"),
+        2800,
+      );
+      await escrever(page, page.getByTestId("precario-titulo"), T("Festa da escola", "School party"));
+      await clicar(page, page.getByTestId("precario-pdf"));
+      await legenda(page, T("Descarregue o PDF e imprima", "Download the PDF and print it"), 2800);
+    },
+  },
+  {
     id: "sorteio",
     rodar: async (page, T) => {
       await page.goto("/sorteio");

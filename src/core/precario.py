@@ -496,3 +496,32 @@ def para_dict(p: Precario) -> dict:
     return {"titulo": p.titulo, "subtitulo": p.subtitulo, "rodape": p.rodape, "desenho": p.desenho, "formato": p.formato, "orientacao": p.orientacao, "colunas": p.colunas,
             "imagens": p.imagens, "lingua": p.lingua, "moeda": m,
             "linhas": [{"artigo": ln.artigo, "nome": ln.nome, "preco": ln.preco, "categoria": ln.categoria, "emoji": ln.emoji} for ln in p.linhas]}
+
+
+# ------------------------------------------------------------------ o ficheiro `.precario` (app Windows): só os campos, nunca o logotipo nem nada do computador
+FORMATO_FICHEIRO = "gerador-de-rifas-precario"
+VERSAO_FICHEIRO = 1
+EXTENSAO = ".precario"
+MAX_BYTES = 60_000
+
+
+def para_bytes(p: Precario) -> bytes:
+    """O ficheiro (UTF-8) com o preçário: o mesmo dicionário de `para_dict`, com o formato e a versão."""
+    import json
+    return (json.dumps({"formato": FORMATO_FICHEIRO, "versao": VERSAO_FICHEIRO, "precario": para_dict(p)}, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+
+
+def de_bytes(dados: bytes, lingua: str | None = None) -> Precario:
+    """O preçário de um ficheiro `.precario`. `err_pedido_ficheiro` se não é um ficheiro nosso, é grande demais ou está estragado; os campos validam-se como em `de_dict`."""
+    import json
+    if not isinstance(dados, (bytes, bytearray)) or len(dados) > MAX_BYTES:
+        raise ErroRifas("err_pedido_ficheiro")
+    try:
+        d = json.loads(bytes(dados).decode("utf-8-sig"))
+    except (UnicodeDecodeError, ValueError):
+        raise ErroRifas("err_pedido_ficheiro") from None
+    if not isinstance(d, dict) or d.get("formato") != FORMATO_FICHEIRO or not isinstance(d.get("precario"), dict):
+        raise ErroRifas("err_pedido_ficheiro")
+    p = de_dict(d["precario"], lingua)
+    validar(p)
+    return p

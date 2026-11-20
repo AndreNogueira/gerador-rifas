@@ -104,6 +104,18 @@ CHAVES: dict[str, dict[str, str]] = {
         "id": "Berapa tiket undian yang dibuat dan harganya: target penggalangan, harga tiket, jumlah cetak dengan cadangan, lembar per penjual, dan hadiah versus pemasukan.",
         "vi": "Nên làm bao nhiêu vé bốc thăm, giá bao nhiêu: mục tiêu gây quỹ, giá vé, số in có dự phòng, số tờ mỗi người bán và giải thưởng so với thu nhập.",
     },
+    "d_precario": {
+        "ca": "Generador de llistes de preus per a festes: trieu articles d'un catàleg amb imatges, escriviu els preus en la vostra moneda i imprimiu. Gratuït.",
+        "uk": "Генератор прайс-листів для свят: оберіть позиції з каталогу з картинками, впишіть ціни у своїй валюті й надрукуйте. Безкоштовно, без реєстрації.",
+        "id": "Pembuat daftar harga untuk acara: pilih barang dari katalog bergambar, ketik harga dalam mata uang Anda, lalu cetak. Gratis dan tanpa pendaftaran.",
+        "vi": "Trình tạo bảng giá cho sự kiện: chọn món từ danh mục có hình, nhập giá bằng tiền tệ của bạn rồi in. Miễn phí, không cần đăng ký.",
+    },
+    "d_guia_precario": {
+        "ca": "Com fer la llista de preus d'una festa: els articles, els preus, una moneda pròpia amb fitxes, el tema, el format i la impressió.",
+        "uk": "Як зробити прайс-лист для свята: список позицій, ціни, власна валюта з жетонами, тема, формат і друк.",
+        "id": "Cara membuat daftar harga untuk acara: daftar barang, harga, mata uang sendiri dengan koin, tema, ukuran, dan pencetakan.",
+        "vi": "Cách làm bảng giá cho sự kiện: danh sách món, giá, tiền tệ riêng bằng xu, chủ đề, khổ giấy và cách in.",
+    },
     "d_comofazer": {
         "ca": "Guies pas a pas per organitzar la teva rifa: butlletes numerades, impressió, control de vendes i sorteig, per a escoles, entitats, clubs i festes.",
         "uk": "Покрокові посібники з лотереї: нумеровані квитки, друк, облік продажів і розіграш, для шкіл, асоціацій, клубів і свят.",

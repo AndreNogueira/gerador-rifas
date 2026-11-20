@@ -398,4 +398,10 @@ T = {
     "web_precario_recomecar": "Torna a començar",
     "web_precario_a_desenhar": "S'està dibuixant…",
     "web_precario_preco_categoria": "Preu de la categoria",
+    "win_precario_guardar": "Desa la llista de preus…",
+    "win_precario_abrir": "Obre una llista de preus…",
+    "win_precario_pdf": "Desa el PDF…",
+    "win_precario_imagem": "Desa la imatge…",
+    "tut_f_precario_t": "Llista de preus per a festes",
+    "tut_f_precario_b": "Feu la llista de preus de la vostra festa, bar o parada: trieu l'ocasió (se suggereix la de l'època) i els articles d'un catàleg amb imatges, escriviu els preus en la moneda del vostre país o en una d'inventada (fitxes, monedes…) i deseu el PDF a punt per imprimir. Sense preu, queda una ratlla per escriure'l a mà. {onde}",
 }

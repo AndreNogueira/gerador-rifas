@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.70.0 — 2026-11-20
+
+### Novità
+- **Generatore di listini prezzi per feste** (`/precario`, e «Extras → Listino prezzi…» nell'app Windows): scegli l'occasione (viene suggerita quella del periodo) e gli articoli da un catalogo con immagini, scrivi i prezzi nella valuta del tuo paese o in una inventata (gettoni…) e scarica il PDF (o un'immagine) pronto da stampare, in A5, A4 o A3 e con i 24 disegni della galleria. C'è anche una nuova guida: «Come fare il listino prezzi di una festa».
+
 ## 3.69.0 — 2026-11-19
 
 ### Novità

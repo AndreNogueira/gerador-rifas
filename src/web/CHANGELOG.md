@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.70.0 — 2026-11-20
+
+### Novo
+- **Gerador de preçários para festas** (`/precario`, e «Extras → Preçário…» na app Windows): escolha a ocasião (a da época vem sugerida) e os artigos de um catálogo com imagens, escreva os preços na moeda do seu país ou numa moeda inventada (fichas…) e descarregue o PDF (ou uma imagem) pronto a imprimir, em A5, A4 ou A3 e com os 24 desenhos da galeria. Há também um guia novo: «Como fazer o preçário de uma festa».
+
 ## 3.69.0 — 2026-11-19
 
 ### Novo

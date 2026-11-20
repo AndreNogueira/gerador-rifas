@@ -19,7 +19,7 @@ from PIL import Image
 
 import ambiente          # noqa: F401  (poe ..\src no sys.path)
 import core
-from core import editor, editor_modelo, galeria, i18n, marca, sorteio
+from core import editor, editor_modelo, galeria, i18n, marca, moeda, precario, precario_catalogo, sorteio
 from core.i18n import t
 from tema import C, FONTE
 
@@ -729,3 +729,357 @@ class EditorTemplates(Janela):
             except Exception:
                 pass
         super().destroy()
+
+
+# ------------------------------------------------------------------ preçário (gerador de preçários para festas)
+def _com_lingua(lingua: str, fn, *a):
+    with i18n.com_lingua(lingua):
+        return fn(*a)
+
+
+def _hoje() -> int:
+    import datetime
+    return datetime.date.today().month
+
+
+class Precario(Janela):
+    """O preçário na app Windows: a mesma lógica do site (`core.precario`, `core.precario_catalogo`, `core.moeda`) numa janela: ocasião e tema, artigos (caixas por categoria), preços,
+    moeda (a do país da língua ou uma inventada) e aspeto, com a pré-visualização desenhada no worker da app (o PDFium só corre lá; chega por `App._ev_precario`) e «Guardar PDF»,
+    «Guardar imagem» e o ficheiro `.precario` (só os campos). Diferença para o site: a moeda escolhe-se numa lista de moedas (o Tk não tem os nomes dos países)."""
+
+    def __init__(self, app):
+        super().__init__(app, t("web_precario"), 1120, 760)
+        self.lingua = i18n.atual()
+        self.token = 0
+        self._espera = None
+        self._foto = None
+        self._a_aplicar = False                        # ao abrir um ficheiro as variáveis mudam todas de seguida: só se desenha no fim
+        self._ocasiao_anterior = ""
+        self.artigos = {a.id: a for a in precario_catalogo.artigos_da_lingua(self.lingua)}
+        self.ocasioes = precario_catalogo.ocasioes_da_lingua(self.lingua)
+        self.sugerida = precario_catalogo.ocasiao_da_epoca(_hoje(), self.lingua)
+        self.linhas: list[dict] = []                   # {chave, artigo, nome, categoria, emoji}
+        self.v_preco: dict[str, tk.StringVar] = {}
+        self.v_artigo = {a: tk.BooleanVar() for a in self.artigos}
+        self.v_titulo, self.v_subtitulo, self.v_rodape, self.v_meu = (tk.StringVar() for _ in range(4))
+        self.v_moeda = tk.StringVar()
+        self.v_inventada, self.v_inv_antes, self.v_imagens = tk.BooleanVar(), tk.BooleanVar(), tk.BooleanVar(value=True)
+        self.v_inv_nome, self.v_inv_casas = tk.StringVar(), tk.StringVar(value="0")
+        self.v_formato, self.v_orientacao, self.v_colunas = tk.StringVar(value="A4"), tk.StringVar(), tk.StringVar()
+        self.v_desenho, self.v_ocasiao = tk.StringVar(value="quermesse"), tk.StringVar()
+        self._orientacoes = {"vertical": t("web_precario_vertical"), "horizontal": t("web_precario_horizontal")}
+        self._colunas = {0: t("web_precario_auto"), 1: "1", 2: "2", 3: "3"}
+        self.v_orientacao.set(self._orientacoes["vertical"])
+        self.v_colunas.set(self._colunas[0])
+        self._moedas = {f"{m.codigo} ({m.simbolo})": m.codigo for m in moeda.MOEDAS.values()}
+        padrao = moeda.moeda_por_omissao(self.lingua)
+        self.v_moeda.set(f"{padrao.codigo} ({padrao.simbolo})")
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        esq = ctk.CTkScrollableFrame(self, fg_color="transparent", width=420)
+        esq.grid(row=0, column=0, sticky="ns", padx=(14, 0), pady=12)
+        self.etiqueta(esq, t("web_precario_intro"), wraplength=400).pack(fill="x", pady=(0, 6))
+        self.etiqueta(esq, t("web_precario_ocasiao")).pack(fill="x")
+        self.m_ocasiao = self._menu(esq, [self._nome_ocasiao(o) for o in self.ocasioes], self._escolher_ocasiao)
+        self.m_ocasiao.pack(fill="x", pady=(0, 6))
+        self.etiqueta(esq, t("web_precario_aspeto")).pack(fill="x")
+        self.m_desenho = self._menu(esq, [d.nome for d in galeria.DESENHOS], self._mudar_desenho)
+        self.m_desenho.pack(fill="x", pady=(0, 8))
+        self.etiqueta(esq, t("web_precario_artigos")).pack(fill="x", pady=(4, 0))
+        self.f_artigos = ctk.CTkFrame(esq, fg_color="transparent")
+        self.f_artigos.pack(fill="x")
+        for c in precario_catalogo.CATEGORIAS.values():
+            itens = [a for a in self.artigos.values() if a.categoria == c.id]
+            if not itens:
+                continue
+            ctk.CTkLabel(self.f_artigos, text=precario_catalogo.nome(c, self.lingua), anchor="w", text_color=C["texto"], font=ctk.CTkFont(FONTE, 13, "bold")).pack(fill="x", pady=(8, 2))
+            for a in itens:
+                self.caixa(self.f_artigos, precario_catalogo.nome(a, self.lingua), self.v_artigo[a.id], command=lambda i=a.id: self._alternar(i)).pack(anchor="w", pady=1)
+        meu = ctk.CTkFrame(esq, fg_color="transparent")
+        meu.pack(fill="x", pady=(10, 0))
+        self.e_meu = app._entrada(meu, self.v_meu, placeholder_text=t("web_precario_nome_artigo"))
+        self.e_meu.pack(side="left", fill="x", expand=True)
+        app._botao(meu, "+", self._juntar, width=36).pack(side="left", padx=(6, 0))
+        self.etiqueta(esq, t("web_precario_dica_preco"), wraplength=400).pack(fill="x", pady=(10, 0))
+        self.f_precos = ctk.CTkFrame(esq, fg_color="transparent")
+        self.f_precos.pack(fill="x")
+        self.etiqueta(esq, t("web_precario_moeda")).pack(fill="x", pady=(12, 0))
+        self.m_moeda = self._menu(esq, list(self._moedas), lambda _: self._agendar(0), variavel=self.v_moeda)
+        self.m_moeda.pack(fill="x", pady=(0, 4))
+        self.caixa(esq, t("web_precario_moeda_inventada"), self.v_inventada, command=lambda: self._agendar(0)).pack(anchor="w", pady=2)
+        inv = ctk.CTkFrame(esq, fg_color="transparent")
+        inv.pack(fill="x")
+        self.etiqueta(inv, t("web_precario_inventada_nome")).pack(fill="x")
+        app._entrada(inv, self.v_inv_nome).pack(fill="x", pady=(0, 4))
+        self.caixa(inv, t("web_precario_inventada_antes"), self.v_inv_antes, command=lambda: self._agendar(0)).pack(anchor="w")
+        linha_c = ctk.CTkFrame(inv, fg_color="transparent")
+        linha_c.pack(fill="x", pady=(4, 0))
+        self.etiqueta(linha_c, t("web_precario_inventada_casas")).pack(side="left")
+        self._menu(linha_c, ["0", "1", "2"], lambda _: self._agendar(0), variavel=self.v_inv_casas, largura=70).pack(side="right")
+        for rotulo, var in ((t("web_precario_campo_titulo"), self.v_titulo), (t("web_precario_campo_subtitulo"), self.v_subtitulo), (t("web_precario_campo_rodape"), self.v_rodape)):
+            self.etiqueta(esq, rotulo).pack(fill="x", pady=(8, 0))
+            app._entrada(esq, var).pack(fill="x")
+        opcoes = ctk.CTkFrame(esq, fg_color="transparent")
+        opcoes.pack(fill="x", pady=(8, 0))
+        for rotulo, valores, var in ((t("web_precario_formato"), list(precario.FORMATOS), self.v_formato),
+                                     (t("web_precario_vertical") + " / " + t("web_precario_horizontal"), list(self._orientacoes.values()), self.v_orientacao),
+                                     (t("web_precario_colunas"), list(self._colunas.values()), self.v_colunas)):
+            col = ctk.CTkFrame(opcoes, fg_color="transparent")
+            col.pack(side="left", expand=True, fill="x", padx=2)
+            self.etiqueta(col, rotulo, wraplength=120).pack(fill="x")
+            self._menu(col, valores, lambda _: self._agendar(0), variavel=var).pack(fill="x")
+        self.caixa(esq, t("web_precario_imagens"), self.v_imagens, command=lambda: self._agendar(0)).pack(anchor="w", pady=(8, 4))
+        self.b_pdf = app._botao(esq, t("win_precario_pdf"), self._guardar_pdf, True, icone="gerar", height=40)
+        self.b_pdf.pack(fill="x", pady=(8, 4))
+        app._botao(esq, t("win_precario_imagem"), self._guardar_imagem, height=34).pack(fill="x", pady=2)
+        app._botao(esq, t("win_precario_guardar"), self._guardar_ficheiro, height=34).pack(fill="x", pady=2)
+        app._botao(esq, t("win_precario_abrir"), self._abrir_ficheiro, height=34).pack(fill="x", pady=2)
+        self.l_erro = self.etiqueta(esq, "", wraplength=400)
+        self.l_erro.configure(text_color=C["erro"])
+        self.l_erro.pack(fill="x", pady=(6, 0))
+        self.previa = ctk.CTkLabel(self, text=t("web_precario_vazio"), fg_color=C["visor"], corner_radius=12, text_color=C["suave"], wraplength=420)
+        self.previa.grid(row=0, column=1, sticky="nsew", padx=14, pady=12)
+        for v in (self.v_titulo, self.v_subtitulo, self.v_rodape, self.v_inv_nome):
+            v.trace_add("write", lambda *_: self._agendar())
+        inicial = self.sugerida or (self.ocasioes[0] if self.ocasioes else None)
+        if inicial is not None:
+            self._escolher_ocasiao(self._nome_ocasiao(inicial))
+        self._agendar(0)
+
+    # -- widgets
+    def _menu(self, pai, valores, comando, variavel=None, largura=None) -> ctk.CTkOptionMenu:
+        kw = {"width": largura} if largura else {}
+        if variavel is not None:
+            kw["variable"] = variavel
+        return ctk.CTkOptionMenu(pai, values=valores, corner_radius=8, height=32, fg_color=C["campo"], button_color=C["borda"], button_hover_color=C["acento_suave"],
+                                 text_color=C["texto"], dropdown_fg_color=C["cartao"], dropdown_text_color=C["texto"], dropdown_hover_color=C["acento_suave"],
+                                 font=ctk.CTkFont(FONTE, 13), command=comando, **kw)
+
+    def _nome_ocasiao(self, o) -> str:
+        return ("★ " if self.sugerida is not None and self.sugerida.id == o.id else "") + precario_catalogo.nome(o, self.lingua)
+
+    # -- escolhas
+    def _escolher_ocasiao(self, nome: str) -> None:
+        o = next((x for x in self.ocasioes if self._nome_ocasiao(x) == nome), None)
+        if o is None:
+            return
+        anterior = precario_catalogo.nome(precario_catalogo.OCASIOES[self._ocasiao_anterior], self.lingua) if self._ocasiao_anterior else ""
+        self.v_ocasiao.set(o.id)
+        self.m_ocasiao.set(nome)
+        self.v_desenho.set(o.desenho)
+        self.m_desenho.set(galeria.POR_ID[o.desenho].nome)
+        if not self.v_titulo.get().strip() or self.v_titulo.get() == anterior:
+            self.v_titulo.set(precario_catalogo.nome(o, self.lingua)[:precario.MAX_TITULO])
+        self._ocasiao_anterior = o.id
+        for a, v in self.v_artigo.items():
+            v.set(a in o.artigos)
+        livres = [ln for ln in self.linhas if not ln["artigo"]]
+        self.linhas = [{"chave": a, "artigo": a, "nome": "", "categoria": "", "emoji": ""} for a in o.artigos if a in self.artigos] + livres
+        self._precos()
+
+    def _mudar_desenho(self, nome: str) -> None:
+        self.v_desenho.set(next(d.id for d in galeria.DESENHOS if d.nome == nome))
+        self._agendar(0)
+
+    def _alternar(self, artigo: str) -> None:
+        if self.v_artigo[artigo].get():
+            if not any(ln["artigo"] == artigo for ln in self.linhas) and len(self.linhas) < precario.MAX_LINHAS:
+                self.linhas.append({"chave": artigo, "artigo": artigo, "nome": "", "categoria": "", "emoji": ""})
+            else:
+                self.v_artigo[artigo].set(any(ln["artigo"] == artigo for ln in self.linhas))
+        else:
+            self.linhas = [ln for ln in self.linhas if ln["artigo"] != artigo]
+        self._precos()
+
+    def _juntar(self) -> None:
+        nome = self.v_meu.get().strip()[:precario.MAX_NOME]
+        if not nome or len(self.linhas) >= precario.MAX_LINHAS:
+            return
+        self.linhas.append({"chave": f"c{len(self.linhas)}-{nome}", "artigo": "", "nome": nome, "categoria": "extras", "emoji": ""})
+        self.v_meu.set("")
+        self._precos()
+
+    def _tirar(self, chave: str) -> None:
+        ln = next((x for x in self.linhas if x["chave"] == chave), None)
+        if ln is None:
+            return
+        if ln["artigo"]:
+            self.v_artigo[ln["artigo"]].set(False)
+        self.linhas.remove(ln)
+        self._precos()
+
+    def _nome_da_linha(self, ln: dict) -> str:
+        return ln["nome"] or precario_catalogo.nome(self.artigos[ln["artigo"]], self.lingua)
+
+    def _precos(self) -> None:
+        """Refaz as linhas de preço (uma por artigo escolhido); o que já se escreveu fica (as variáveis vivem em `v_preco`)."""
+        for w in self.f_precos.winfo_children():
+            w.destroy()
+        ctk.CTkLabel(self.f_precos, text=t("web_precario_escolhidos", n=len(self.linhas)), anchor="w", text_color=C["texto"], font=ctk.CTkFont(FONTE, 13, "bold")).pack(fill="x", pady=(8, 2))
+        for ln in self.linhas:
+            v = self.v_preco.get(ln["chave"])
+            if v is None:
+                v = self.v_preco[ln["chave"]] = tk.StringVar()
+                v.trace_add("write", lambda *_: self._agendar())
+            linha = ctk.CTkFrame(self.f_precos, fg_color="transparent")
+            linha.pack(fill="x", pady=1)
+            ctk.CTkLabel(linha, text=self._nome_da_linha(ln), anchor="w", text_color=C["texto"], font=ctk.CTkFont(FONTE, 12), width=190).pack(side="left")
+            ctk.CTkEntry(linha, textvariable=v, width=100, height=28, corner_radius=8, fg_color=C["campo"], border_color=C["borda"], text_color=C["texto"],
+                         font=ctk.CTkFont(FONTE, 12), placeholder_text=t("web_precario_preco"), placeholder_text_color=C["suave"]).pack(side="left", padx=4)
+            ctk.CTkButton(linha, text="×", width=28, height=28, corner_radius=8, fg_color=C["campo"], hover_color=C["borda"], text_color=C["texto"], border_width=1,
+                          border_color=C["borda"], command=lambda c=ln["chave"]: self._tirar(c)).pack(side="left")
+        self._agendar(0)
+
+    # -- o preçário e a pré-visualização
+    def precario(self) -> "precario.Precario":
+        """O `core.precario.Precario` do que está na janela (levanta `ErroRifas` se um preço não se lê)."""
+        linhas = []
+        for ln in self.linhas:
+            texto = self.v_preco[ln["chave"]].get().strip() if ln["chave"] in self.v_preco else ""
+            preco = None
+            if texto:
+                preco = moeda.valor_de_texto(texto, self.lingua)
+                if preco is None:
+                    raise core.ErroRifas("err_precario_texto", car=texto[:14])
+            linhas.append(precario.Linha(ln["artigo"], ln["nome"], preco, ln["categoria"], ln["emoji"]))
+        nome = " ".join(self.v_inv_nome.get().split())
+        if self.v_inventada.get() and nome:
+            m = moeda.MoedaInventada(nome, self.v_inv_antes.get(), int(self.v_inv_casas.get() or 0))
+        else:
+            m = moeda.MOEDAS[self._moedas.get(self.v_moeda.get(), "EUR")]
+        orientacao = next((k for k, v in self._orientacoes.items() if v == self.v_orientacao.get()), "vertical")
+        colunas = next((k for k, v in self._colunas.items() if v == self.v_colunas.get()), 0)
+        return precario.Precario(linhas=tuple(linhas), titulo=self.v_titulo.get().strip()[:precario.MAX_TITULO], subtitulo=self.v_subtitulo.get().strip()[:precario.MAX_SUBTITULO],
+                                 rodape=self.v_rodape.get().strip()[:precario.MAX_RODAPE], desenho=self.v_desenho.get() or "quermesse", formato=self.v_formato.get(),
+                                 orientacao=orientacao, colunas=colunas, imagens=self.v_imagens.get(), moeda=m, lingua=self.lingua)
+
+    def _agendar(self, atraso: int = 350) -> None:
+        if self._a_aplicar or not self.winfo_exists():
+            return
+        if self._espera:
+            self.after_cancel(self._espera)
+        self._espera = self.after(atraso, self._desenhar)
+
+    def _desenhar(self) -> None:
+        self._espera = None
+        self.token += 1
+        token = self.token
+        try:
+            p = self.precario()
+        except core.ErroRifas as e:
+            self.l_erro.configure(text=str(e))
+            return
+        if not p.linhas:
+            self.l_erro.configure(text="")
+            self._foto = None
+            self.previa.configure(image="", text=t("web_precario_vazio"))
+            return
+        gc.collect()                                     # ver App._analisar: o lixo do Tk apanha-se no fio principal
+
+        def trabalho() -> None:
+            if token != self.token:
+                return
+            try:
+                with i18n.com_lingua(p.lingua):
+                    png = core.png_de_pagina(precario.criar_pdf(p), 110)
+                self.app.fila.put(("precario", token, png, None))
+            except Exception as e:                       # os textos que a letra nao tem, etc.
+                self.app.fila.put(("precario", token, None, e))
+        self.app.pool.submit(trabalho)
+
+    def resultado(self, token: int, png: bytes | None, erro: Exception | None) -> None:
+        if token != self.token or not self.winfo_exists():
+            return
+        self.l_erro.configure(text="" if erro is None else (str(erro) if isinstance(erro, core.ErroRifas) else t("erro_inesperado", erro=erro)))
+        if png is None:
+            return
+        import io
+        im = Image.open(io.BytesIO(png))
+        self.update_idletasks()
+        im.thumbnail((max(self.previa.winfo_width() - 20, 200), max(self.previa.winfo_height() - 20, 200)), Image.LANCZOS)
+        self._foto = ctk.CTkImage(light_image=im, dark_image=im, size=im.size)
+        self.previa.configure(image=self._foto, text="")
+
+    # -- guardar e abrir
+    def _guardar(self, titulo: str, extensao: str, tipo: str, dados, destino: str | None = None) -> Path | None:
+        try:
+            conteudo = dados(self.precario())
+        except core.ErroRifas as e:
+            self.l_erro.configure(text=str(e))
+            return None
+        destino = destino or filedialog.asksaveasfilename(parent=self, title=titulo.rstrip("…"), initialdir=self.app._dir_de(self.app.v_saida), initialfile="precario" + extensao,
+                                                          defaultextension=extensao, filetypes=[(tipo, "*" + extensao), (t("dlg_tipo_todos"), "*.*")])
+        if not destino:
+            return None
+        try:
+            Path(destino).write_bytes(conteudo)
+        except OSError as e:
+            messagebox.showerror(t("app_nome"), t("erro_inesperado", erro=e))
+            return None
+        self.l_erro.configure(text="")
+        return Path(destino)
+
+    def _guardar_pdf(self, destino: str | None = None) -> Path | None:
+        return self._guardar(t("win_precario_pdf"), ".pdf", "PDF", lambda p: _com_lingua(p.lingua, precario.criar_pdf, p), destino)
+
+    def _guardar_imagem(self, destino: str | None = None) -> Path | None:
+        return self._guardar(t("win_precario_imagem"), ".png", "PNG", lambda p: core.png_de_pagina(_com_lingua(p.lingua, precario.criar_pdf, p), 150), destino)
+
+    def _guardar_ficheiro(self, destino: str | None = None) -> Path | None:
+        return self._guardar(t("win_precario_guardar"), precario.EXTENSAO, "Preçário", precario.para_bytes, destino)
+
+    def _abrir_ficheiro(self, ficheiro: str | None = None) -> bool:
+        """Pergunta que preçário abrir (ou recebe o `ficheiro`, nos testes) e repõe a janela. False se desistiu ou o ficheiro não serve."""
+        destino = ficheiro or filedialog.askopenfilename(parent=self, title=t("win_precario_abrir").rstrip("…"), initialdir=self.app._dir_de(self.app.v_saida),
+                                                         filetypes=[("Preçário", "*" + precario.EXTENSAO), (t("dlg_tipo_todos"), "*.*")])
+        if not destino:
+            return False
+        try:
+            with open(destino, "rb") as f:
+                p = precario.de_bytes(f.read(precario.MAX_BYTES + 1), self.lingua)
+        except (OSError, core.ErroRifas) as e:
+            messagebox.showwarning(t("app_nome"), str(e) if isinstance(e, core.ErroRifas) else t("erro_inesperado", erro=e))
+            return False
+        self.aplicar(p)
+        return True
+
+    def aplicar(self, p: "precario.Precario") -> None:
+        """Repõe a janela com o preçário `p`: os artigos que a língua vê voltam a ser caixas; os outros (de uma região que esta língua não vê, ou textos livres) ficam como linhas livres."""
+        self._a_aplicar = True
+        try:
+            self.v_titulo.set(p.titulo)
+            self.v_subtitulo.set(p.subtitulo)
+            self.v_rodape.set(p.rodape)
+            self.v_desenho.set(p.desenho)
+            self.m_desenho.set(galeria.POR_ID[p.desenho].nome)
+            self.v_formato.set(p.formato)
+            self.v_orientacao.set(self._orientacoes[p.orientacao])
+            self.v_colunas.set(self._colunas[p.colunas])
+            self.v_imagens.set(p.imagens)
+            if isinstance(p.moeda, moeda.MoedaInventada):
+                self.v_inventada.set(True)
+                self.v_inv_nome.set(p.moeda.nome)
+                self.v_inv_antes.set(p.moeda.antes)
+                self.v_inv_casas.set(str(p.moeda.decimais))
+            else:
+                self.v_inventada.set(False)
+                self.v_moeda.set(f"{p.moeda.codigo} ({p.moeda.simbolo})")
+            for v in self.v_artigo.values():
+                v.set(False)
+            self.linhas, self.v_preco = [], {}
+            for i, ln in enumerate(p.linhas):
+                original = precario_catalogo.ARTIGOS.get(ln.artigo)
+                if ln.artigo in self.artigos:
+                    chave = ln.artigo
+                    self.v_artigo[ln.artigo].set(True)
+                    self.linhas.append({"chave": chave, "artigo": ln.artigo, "nome": ln.nome, "categoria": "", "emoji": ""})
+                else:
+                    nome = ln.nome or (precario_catalogo.nome(original, self.lingua) if original else "?")
+                    chave = f"c{i}-{nome}"
+                    self.linhas.append({"chave": chave, "artigo": "", "nome": nome, "categoria": ln.categoria or (original.categoria if original else "extras"), "emoji": ln.emoji or (original.emoji if original else "")})
+                texto = moeda.numero(ln.preco, p.moeda.decimais, self.lingua) if ln.preco is not None else ""
+                var = self.v_preco[chave] = tk.StringVar(value=texto)
+                var.trace_add("write", lambda *_: self._agendar())
+        finally:
+            self._a_aplicar = False
+        self._precos()

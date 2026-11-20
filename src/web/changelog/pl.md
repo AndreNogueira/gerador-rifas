@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.70.0 — 2026-11-20
+
+### Nowości
+- **Generator cenników na imprezy** (`/precario` oraz «Extras → Cennik…» w aplikacji na Windows): wybierz okazję (podpowiadana jest ta z bieżącej pory roku) i pozycje z katalogu z obrazkami, wpisz ceny w walucie swojego kraju lub wymyślonej (żetony…) i pobierz PDF (lub obraz) gotowy do wydruku, w A5, A4 lub A3 i z 24 motywami galerii. Jest też nowy poradnik: «Jak zrobić cennik na imprezę».
+
 ## 3.69.0 — 2026-11-19
 
 ### Nowości

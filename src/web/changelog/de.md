@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.70.0 — 2026-11-20
+
+### Neu
+- **Preislisten-Generator für Feste** (`/precario`, und «Extras → Preisliste…» in der Windows-App): Anlass wählen (der aktuelle wird vorgeschlagen), Artikel aus einem Katalog mit Bildern auswählen, Preise in der Währung Ihres Landes oder einer eigenen (Chips…) eintragen und das druckfertige PDF (oder ein Bild) herunterladen, in A5, A4 oder A3 und mit den 24 Motiven der Galerie. Dazu eine neue Anleitung: «So erstellen Sie die Preisliste für ein Fest».
+
 ## 3.69.0 — 2026-11-19
 
 ### Neu

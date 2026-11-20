@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.70.0 — 2026-11-20
+
+### Novinky
+- **Generátor ceníků na akce** (`/precario` a «Extras → Ceník…» v aplikaci pro Windows): vyberte příležitost (navrhne se ta z aktuální doby) a položky z katalogu s obrázky, napište ceny v měně své země nebo ve vymyšlené (žetony…) a stáhněte PDF (nebo obrázek) připravené k tisku, v A5, A4 nebo A3 a s 24 motivy galerie. Přibyl i nový návod: «Jak udělat ceník na slavnost».
+
 ## 3.69.0 — 2026-11-19
 
 ### Novinky

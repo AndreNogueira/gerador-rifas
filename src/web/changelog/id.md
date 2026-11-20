@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.70.0 — 2026-11-20
+
+### Baru
+- **Pembuat daftar harga untuk acara** (`/precario`, dan «Extras → Daftar harga…» di aplikasi Windows): pilih acara (yang sesuai waktu ini disarankan) dan barang dari katalog bergambar, ketik harga dalam mata uang negara Anda atau mata uang rekaan (koin…), lalu unduh PDF (atau gambar) siap cetak, dalam A5, A4, atau A3 dan dengan 24 desain galeri. Ada juga panduan baru: «Cara membuat daftar harga untuk acara».
+
 ## 3.69.0 — 2026-11-19
 
 ### Baru

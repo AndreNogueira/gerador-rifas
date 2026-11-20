@@ -119,9 +119,9 @@ def test_sitemap_so_tem_as_paginas_publicas(publico):
     assert r.status_code == 200 and r.headers["content-type"].startswith("application/xml")
     ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
     urls = [e.text for e in ElementTree.fromstring(r.text).findall("s:url/s:loc", ns)]
-    paginas = ["/", "/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/como-fazer", "/rifas-para-escolas", "/rifas-para-associacoes", "/rifas-para-clubes", "/rifas-para-bombeiros", "/rifas-para-festas", "/rifas-para-igrejas", "/como-numerar-bilhetes-de-rifa", "/sorteio-de-rifa-verificavel", "/quantos-bilhetes-de-rifa-fazer", "/termos", "/privacidade", "/contacto", "/changelog"]
+    paginas = ["/", "/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/como-fazer", "/rifas-para-escolas", "/rifas-para-associacoes", "/rifas-para-clubes", "/rifas-para-bombeiros", "/rifas-para-festas", "/rifas-para-igrejas", "/precario", "/como-fazer-o-precario-de-uma-festa", "/como-numerar-bilhetes-de-rifa", "/sorteio-de-rifa-verificavel", "/quantos-bilhetes-de-rifa-fazer", "/termos", "/privacidade", "/contacto", "/changelog"]
     assert urls[::len(i18n.LINGUAS)] == [f"{URL}{c}" for c in paginas]                    # por pagina: primeiro o portugues (sem prefixo), depois as outras com prefixo (ver test_web_seo_linguas.py)
-    assert len(urls) == 20 * len(i18n.LINGUAS) and len(set(urls)) == len(urls)
+    assert len(urls) == 22 * len(i18n.LINGUAS) and len(set(urls)) == len(urls)
 
 
 def test_rotas_desconhecidas_sao_404_a_serio_e_nao_se_indexam(publico):
@@ -185,7 +185,7 @@ def test_a_pagina_inicial_liga_aos_guias_em_todas_as_linguas(cliente):
     for lg in i18n.LINGUAS:
         caminho = "/" if lg == "pt" else f"/{lg}/"
         html = cliente.get(caminho).text
-        for destino in ("escolas", "associacoes", "clubes", "bombeiros", "festas", "igrejas", "numerar", "sorteio", "quantos"):
+        for destino in ("escolas", "associacoes", "clubes", "bombeiros", "festas", "igrejas", "numerar", "sorteio", "quantos", "precario"):
             caminho_guia = guias.CAMINHOS[destino]
             esperado = caminho_guia if lg == "pt" else f"/{lg}{caminho_guia}"
             assert f'href="{esperado}"' in html, (lg, destino)
@@ -228,6 +228,6 @@ def test_as_migalhas_de_pao_dos_guias_e_do_indice():
 
 def test_a_api_dos_guias_devolve_titulo_e_resumo_na_lingua(cliente):
     pt = cliente.get("/api/guias", headers={"X-Lingua": "pt"}).json()["guias"]
-    assert [g["nome"] for g in pt] == ["escolas", "associacoes", "clubes", "bombeiros", "festas", "igrejas", "numerar", "sorteio", "quantos"] and pt[0]["caminho"] == "/rifas-para-escolas"
+    assert [g["nome"] for g in pt] == ["escolas", "associacoes", "clubes", "bombeiros", "festas", "igrejas", "numerar", "sorteio", "quantos", "precario"] and pt[0]["caminho"] == "/rifas-para-escolas"
     assert pt[0]["titulo"] == "Como fazer uma rifa para a escola" and pt[0]["resumo"].endswith(".") and len(pt[0]["resumo"]) <= 175
     assert cliente.get("/api/guias", headers={"X-Lingua": "en"}).json()["guias"][0]["titulo"] == "How to run a raffle for your school"

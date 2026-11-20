@@ -125,6 +125,13 @@ def _corpo_opiniao(chave: str) -> Callable[[str], str]:
     return corpo
 
 
+def _corpo_precario(lg: str) -> str:
+    """A ferramenta `/precario`: o titulo, a introducao, a descricao e a ligacao ao guia (o resto desenha-o o React)."""
+    guia = guias.CAMINHOS["precario"]
+    return (f"<h1>{html.escape(i18n.traduzir('web_precario_titulo', lg))}</h1><p>{html.escape(i18n.traduzir('web_precario_intro', lg))}</p>"
+            f"<p>{html.escape(texto('d_precario', lg))}</p><p><a href=\"{_l(lg, guia)}\">{html.escape(guias.guia('precario', lg)['titulo'])}</a></p>{_voltar(lg)}")
+
+
 def _corpo_editor(lg: str) -> str:
     return f"<h1>{html.escape(_nome_pagina('web_editor')(lg))}</h1><p>{html.escape(texto('d_editor', lg))}</p>{_voltar(lg)}"
 
@@ -210,6 +217,8 @@ ROTAS: dict[str, Pagina] = {p.caminho: p for p in (
     Pagina(guias.CAMINHOS["bombeiros"], "d_guia_bombeiros", _corpo_guia("bombeiros"), lambda lg: guias.guia("bombeiros", lg)["titulo"]),
     Pagina(guias.CAMINHOS["festas"], "d_guia_festas", _corpo_guia("festas"), lambda lg: guias.guia("festas", lg)["titulo"]),
     Pagina(guias.CAMINHOS["igrejas"], "d_guia_igrejas", _corpo_guia("igrejas"), lambda lg: guias.guia("igrejas", lg)["titulo"]),
+    Pagina("/precario", "d_precario", _corpo_precario, _nome_pagina("web_precario_titulo")),
+    Pagina(guias.CAMINHOS["precario"], "d_guia_precario", _corpo_guia("precario"), lambda lg: guias.guia("precario", lg)["titulo"]),
     Pagina(guias.CAMINHOS["numerar"], "d_guia_numerar", _corpo_guia("numerar"), lambda lg: guias.guia("numerar", lg)["titulo"]),
     Pagina(guias.CAMINHOS["sorteio"], "d_guia_sorteio", _corpo_guia("sorteio"), lambda lg: guias.guia("sorteio", lg)["titulo"]),
     Pagina(guias.CAMINHOS["quantos"], "d_guia_quantos", _corpo_guia("quantos"), lambda lg: guias.guia("quantos", lg)["titulo"]),
@@ -336,7 +345,6 @@ def renderizar(html_base: str, pagina: Pagina, base: str, lg: str = "pt") -> str
 SEM_INDICE: dict[str, Pagina] = {p.caminho: p for p in (
     Pagina("/comentarios", "d_inicio", _corpo_opiniao("web_comentarios"), _nome_pagina("web_comentarios"), indexavel=False, no_mapa=False),
     Pagina("/opiniao", "d_inicio", _corpo_opiniao("web_op_titulo"), _nome_pagina("web_op_titulo"), indexavel=False, no_mapa=False),
-    Pagina("/precario", "d_inicio", _corpo_opiniao("web_precario_titulo"), _nome_pagina("web_precario_titulo"), indexavel=False, no_mapa=False),       # fica fora do Google até ter o seu texto de SEO (fase 6b)
     Pagina("/reportar-problema", "d_inicio", _corpo_opiniao("web_bug_titulo"), _nome_pagina("web_bug_titulo"), indexavel=False, no_mapa=False),
 )}
 

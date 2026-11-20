@@ -143,6 +143,7 @@ def preparar(app, ficheiros) -> None:
 def abrir(app, nome: str, classe, geometria: str):
     app._abrir_extra(nome, classe)
     j = app.w_extras[nome]
+    j.attributes("-topmost", True)
     j.geometry(geometria)
     esperar(app, lambda: False, 0.9)          # o fade-in das janelas do customtkinter
     return j
@@ -246,6 +247,31 @@ def cena_galeria(a, g, T):
     esperar(a, lambda: a.prep is not None)
     g.segundos(3.4)
     g.segundos(2.4, T("Só falta escolher os números e gerar", "All that is left is choosing the numbers and generating"))
+
+
+def cena_precario(a, g, T):
+    g.segundos(2.0, T("Faça o preçário da sua festa", "Make the price list for your event"))
+    g.segundos(1.2, T("Menu «Extras» → «Preçário…»", "Menu “Extras” → “Price list…”"))
+    j = abrir(a, "precario", extras.Precario, "+90+40")
+    esperar(a, lambda: j._foto is not None, 10)
+    j._escolher_ocasiao(j._nome_ocasiao(extras.precario_catalogo.OCASIOES["festa_popular"]))
+    esperar(a, lambda: not j._espera and j._foto is not None, 8)
+    g.segundos(2.4, T("A ocasião traz o desenho e os artigos sugeridos", "The occasion brings the design and the suggested items"))
+    g.legenda = T("Escreva os preços: sem preço fica um traço", "Type the prices: with no price a line is left")
+    g.escrever(j.v_preco["agua"], "1,5", 1.2)
+    j.v_preco["cerveja"].set("2")
+    j.v_preco["hamburguer"].set(T("4,5", "4.5"))
+    esperar(a, lambda: False, 1.6)
+    g.segundos(2.4)
+    j.m_moeda.set("BRL (R$)")
+    j._agendar(0)
+    esperar(a, lambda: False, 1.4)
+    g.segundos(2.6, T("A moeda é a do país, ou uma inventada como fichas", "The currency is the country's, or a made-up one like tokens"))
+    j.v_inventada.set(True)
+    j.v_inv_nome.set(T("fichas", "tokens"))
+    esperar(a, lambda: False, 1.6)
+    g.segundos(3.0)
+    g.segundos(2.4, T("«Guardar PDF»: pronto a imprimir", "“Save PDF”: ready to print"))
 
 
 def cena_editor(a, g, T):
@@ -356,9 +382,15 @@ CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas":
          "marca": (UMA_RIFA, cena_marca), "sorteio": (VARIAS, cena_sorteio), "visual": (VARIAS, cena_visual), "pedido": (None, cena_pedido)}
 
 
+# Cenas escritas mas ainda por gravar (o video precisa do ecra livre: um jogo ou outra janela por cima estraga a captura). Quando se gravar:
+# `python testesazer_videos_windows.py precario`, mover a cena para CENAS e registar a plataforma «windows» em `core.tutorial.FUNCIONALIDADES`.
+PENDENTES = {"precario": cena_precario}
+
+
 def main() -> int:
     ids = sys.argv[1:] or list(CENAS)
     app = A.App(usar_config=False)
+    app.attributes("-topmost", True)           # o video fotografa o ecra: outra janela por cima (um jogo, o browser) estragava-o
     app.geometry(POS_APP)
     esperar(app, lambda: False, 0.6)
     SAIDA.mkdir(parents=True, exist_ok=True)
@@ -367,7 +399,7 @@ def main() -> int:
         esperar(app, lambda: False, 0.6)
         app.geometry(POS_APP)
         for id_ in ids:
-            ficheiros, cena = CENAS[id_]
+            ficheiros, cena = CENAS[id_] if id_ in CENAS else (None, PENDENTES[id_])
             preparar(app, ficheiros)
             g = Gravador(app, SAIDA / f"windows_{id_}_{lg}.mp4")
             try:

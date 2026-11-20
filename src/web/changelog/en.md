@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.70.0 — 2026-11-20
+
+### New
+- **Price list generator for events** (`/precario`, and “Extras → Price list…” in the Windows app): pick the occasion (the one for this time of year is suggested) and the items from a catalogue with pictures, type the prices in your country's currency or a made-up one (tokens…) and download the PDF (or an image) ready to print, in A5, A4 or A3 and with the gallery's 24 designs. There is also a new guide: “How to make a price list for an event”.
+
 ## 3.69.0 — 2026-11-19
 
 ### New

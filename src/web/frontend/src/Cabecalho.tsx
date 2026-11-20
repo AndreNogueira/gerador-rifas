@@ -13,9 +13,10 @@ const PAGINAS: readonly {
   para: string;
   chave: string;
   icone: NomeIcone;
-  id: "sorteio" | "sobre" | "comentarios" | "reportar";
+  id: "sorteio" | "precario" | "sobre" | "comentarios" | "reportar";
 }[] = [
   { para: "/sorteio", chave: "web_sorteio", icone: "faiscas", id: "sorteio" },
+  { para: "/precario", chave: "web_precario", icone: "lista", id: "precario" },
   { para: "/sobre", chave: "mi_sobre", icone: "info", id: "sobre" },
   { para: "/comentarios", chave: "web_comentarios", icone: "comentario", id: "comentarios" },
   { para: "/reportar-problema", chave: "web_reportar", icone: "bug", id: "reportar" },
@@ -40,6 +41,7 @@ export const MENU_COMO_FAZER: readonly { para: string; chave: string }[] = [
 export type ItemId =
   | "ajuda"
   | "sorteio"
+  | "precario"
   | "sobre"
   | "comentarios"
   | "reportar"
@@ -52,6 +54,7 @@ export type ItemId =
 const ORDEM: readonly ItemId[] = [
   "ajuda",
   "sorteio",
+  "precario",
   "sobre",
   "comentarios",
   "reportar",
@@ -66,6 +69,7 @@ export const SAI_PRIMEIRO: readonly ItemId[] = [
   "tema",
   "visual",
   "sobre",
+  "precario",
   "sorteio",
   "lingua",
   "ajuda",
