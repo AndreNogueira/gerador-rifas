@@ -83,6 +83,7 @@ describe("o estado e o pedido do preçário", () => {
       artigo: "",
       nome: "Bolo da avó",
       preco: "3",
+      preco2: "",
       categoria: "doces",
       emoji: "1f370",
     });
@@ -178,5 +179,38 @@ describe("a página /precario", () => {
     await waitFor(() =>
       expect(JSON.parse(localStorage.getItem("rifas.precario") ?? "{}").titulo).toBe("Festa popular"),
     ); // o rascunho volta ao ponto de partida
+  });
+});
+
+describe("dois tamanhos", () => {
+  it("ligados, cada artigo ganha um segundo preço e o pedido leva os rótulos (por omissão os da língua)", async () => {
+    abrir();
+    await userEvent.type(await screen.findByTestId("precario-preco-agua"), "1");
+    expect(screen.queryByTestId("precario-preco2-agua")).toBeNull();
+    await userEvent.click(screen.getByTestId("precario-tamanhos"));
+    await userEvent.type(await screen.findByTestId("precario-preco2-agua"), "1,8");
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.tamanhos).toBe(true);
+      expect(p.rotulos).toEqual(["Pequeno", "Grande"]);
+      expect(p.linhas[0]).toMatchObject({ preco: "1", preco2: "1,8" });
+    });
+    await userEvent.type(screen.getByTestId("precario-rotulo-1"), "Média");
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.rotulos).toEqual(["Média", "Grande"]);
+    });
+  });
+
+  it("desligados, o segundo preço nem vai no pedido", async () => {
+    abrir();
+    await userEvent.click(await screen.findByTestId("precario-tamanhos"));
+    await userEvent.type(await screen.findByTestId("precario-preco2-agua"), "2");
+    await userEvent.click(screen.getByTestId("precario-tamanhos"));
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.tamanhos).toBe(false);
+      expect(p.linhas[0]?.preco2).toBe("");
+    });
   });
 });

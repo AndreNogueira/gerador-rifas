@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.74.0 — 2026-11-20
+
+### Nieuw
+- **Twee maten in de prijslijst**: zet «Twee maten (twee prijzen per artikel)» aan (site en Windows-app) om bij elk artikel twee prijzen in te vullen (bijvoorbeeld klein en groot, of het artikel en het menu). De twee kolommen staan netjes uitgelijnd, met de namen die u kiest erboven («Klein» en «Groot» standaard), en worden in het prijslijstbestand bewaard.
+
 ## 3.73.0 — 2026-11-20
 
 ### Nieuw

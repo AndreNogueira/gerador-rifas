@@ -7,10 +7,11 @@ from __future__ import annotations
 import asyncio
 import urllib.parse
 from concurrent.futures.process import BrokenProcessPool
+from typing import Annotated
 
 from core import ErroRifas, i18n, moeda, precario, precario_catalogo
 from fastapi import APIRouter, Depends, Query, Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StringConstraints
 
 from . import trabalhos
 from .modelos import ErroApi
@@ -23,6 +24,7 @@ class LinhaEntrada(BaseModel):
     artigo: str = Field("", max_length=40)
     nome: str = Field("", max_length=precario.MAX_NOME)
     preco: str = Field("", max_length=24)                    # o que a pessoa escreveu: lê-se na língua do pedido («1,5», «1.50»)
+    preco2: str = Field("", max_length=24)                   # o segundo preço (só com `tamanhos`)
     categoria: str = Field("", max_length=20)
     emoji: str = Field("", max_length=8)
 
@@ -44,6 +46,8 @@ class PedidoPrecario(BaseModel):
     orientacao: str = Field("vertical", max_length=12)
     colunas: int = Field(0, ge=0, le=3)
     imagens: bool = True
+    tamanhos: bool = False
+    rotulos: list[Annotated[str, StringConstraints(max_length=32)]] = Field(default_factory=lambda: ["P", "G"], min_length=2, max_length=2)
     moeda: MoedaEntrada = Field(default_factory=MoedaEntrada)
 
 

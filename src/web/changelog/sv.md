@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.74.0 — 2026-11-20
+
+### Nytt
+- **Två storlekar i prislistan**: slå på «Två storlekar (två priser per artikel)» (webbplatsen och Windows-appen) för att skriva två priser på varje artikel (till exempel liten och stor, eller artikeln och menyn). De två kolumnerna hamnar i linje, med de namn du väljer ovanför («Liten» och «Stor» som standard), och sparas i prislistans fil.
+
 ## 3.73.0 — 2026-11-20
 
 ### Nytt

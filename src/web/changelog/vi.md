@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.74.0 — 2026-11-20
+
+### Mới
+- **Hai cỡ trong bảng giá**: bật «Hai cỡ (hai giá cho mỗi món)» (trang web và ứng dụng Windows) để ghi hai giá cho mỗi món (ví dụ cỡ nhỏ và cỡ lớn, hoặc món lẻ và suất ăn). Hai cột được căn thẳng hàng, với tên bạn chọn ở phía trên (mặc định «Nhỏ» và «Lớn»), và được lưu trong tệp bảng giá.
+
 ## 3.73.0 — 2026-11-20
 
 ### Mới

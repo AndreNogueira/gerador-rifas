@@ -160,3 +160,21 @@
     background: var(--campo);
   }
 }
+
+// Dois tamanhos: os dois nomes das colunas lado a lado e o segundo preço ao lado do primeiro
+.precario {
+  .precario-rotulos {
+    display: flex;
+    gap: 10px;
+    border: 0;
+    padding: 0;
+    margin: 6px 0 0;
+    legend {
+      padding: 0;
+      margin-bottom: 4px;
+    }
+  }
+  .precario-linha input {
+    min-width: 0;
+  }
+}

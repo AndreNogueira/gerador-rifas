@@ -19,6 +19,7 @@ from . import galeria, letras, moeda as mod_moeda, precario_catalogo as cat
 from .motor import ErroRifas
 
 CARTOES = "A6x4"                 # cartões de mesa: o preçário em A6 e 4 por folha A4 (2 x 2), com guias de corte
+MAX_ROTULO = 10                 # letras de cada rótulo dos tamanhos
 MAX_CARTOES = 12                 # artigos que cabem num cartão A6 com letra legível
 FORMATOS = {"A5": (419.53, 595.28), "A4": (595.28, 841.89), "A3": (841.89, 1190.55), "A6x4": (297.64, 419.53)}      # pt, vertical (o A6x4 é o tamanho de UM cartão)
 ORIENTACOES = ("vertical", "horizontal")
@@ -36,6 +37,7 @@ class Linha:
     preco: int | None = None
     categoria: str = ""             # só nos textos livres (uma categoria do catálogo); vazio = «Outros»
     emoji: str = ""                 # só nos textos livres: a imagem (um código de `core/icones_precario/`)
+    preco2: int | None = None       # o segundo preço (o tamanho grande, o «menu»…) quando `Precario.tamanhos` está ligado; em milésimos
 
 
 @dataclass(frozen=True)
@@ -49,6 +51,8 @@ class Precario:
     orientacao: str = "vertical"
     colunas: int = 0                # 0 = automático (as menos colunas com que a letra fica legível numa folha), 1, 2 ou 3
     imagens: bool = True
+    tamanhos: bool = False          # dois preços por artigo (por omissão «P» e «G»): duas colunas de preços com os rótulos por cima
+    rotulos: tuple = ("P", "G")      # os rótulos curtos das duas colunas (até `MAX_ROTULO` letras)
     moeda: object = field(default_factory=lambda: mod_moeda.MOEDAS["EUR"])      # `Moeda` ou `MoedaInventada`
     lingua: str = "pt"
 
@@ -77,6 +81,12 @@ def validar(p: Precario) -> None:
     letras.registar()
     for t, m in ((p.titulo, MAX_TITULO), (p.subtitulo, MAX_SUBTITULO), (p.rodape, MAX_RODAPE)):
         _texto_ok(t, m)
+    if len(p.rotulos) != 2 or not all(isinstance(r, str) for r in p.rotulos):
+        raise ErroRifas("err_precario_texto", car="?")
+    for r in p.rotulos:
+        _texto_ok(r, MAX_ROTULO)
+    if p.tamanhos and not all(r.strip() for r in p.rotulos):
+        raise ErroRifas("err_precario_texto", car="?")
     for ln in p.linhas:
         if ln.artigo and ln.artigo not in cat.ARTIGOS:
             raise ErroRifas("err_precario_texto", car="?")
@@ -317,6 +327,9 @@ def _item(c, p: Precario, d, ln: Linha, x: float, y_topo: float, largura: float,
         x_texto = x + lado + 8 * f * sf
     elif p.imagens:
         x_texto = x + linha_h * 0.92 + 8 * f * sf
+    if p.tamanhos:
+        _precos_em_colunas(c, p, d, x, x_texto, base, largura, f, s, sf, nome, negro, ln)
+        return
     preco = mod_moeda.formatar(ln.preco, p.moeda, p.lingua) if ln.preco is not None else ""
     fonte_preco = letras.fonte(preco, True) if preco else "Vera"
     tam_preco = 13.5 * f * sf
@@ -349,6 +362,57 @@ def _item(c, p: Precario, d, ln: Linha, x: float, y_topo: float, largura: float,
         c.setLineCap(0)
 
 
+def _largura_coluna(p: Precario, f: float, sf: float) -> float:
+    """A largura de uma coluna de preços (com os dois tamanhos): a do preço mais largo de todo o preçário, para as colunas ficarem alinhadas em todas as linhas e categorias."""
+    tam = 13.5 * f * sf
+    mais = 46 * f * sf
+    for ln in p.linhas:
+        for v in (ln.preco, ln.preco2):
+            if v is not None:
+                mais = max(mais, letras.largura(mod_moeda.formatar(v, p.moeda, p.lingua), True, tam))
+    return mais
+
+
+def _x_coluna(p: Precario, x: float, largura: float, f: float, sf: float, i: int) -> float:
+    """O fim (o lado direito) da coluna `i` (0 = o primeiro tamanho) dos preços."""
+    col = _largura_coluna(p, f, sf)
+    return x + largura - (1 - i) * (col + 10 * f * sf)
+
+
+def _precos_em_colunas(c, p: Precario, d, x: float, x_texto: float, base: float, largura: float, f: float, s: float, sf: float, nome: str, negro, ln: Linha) -> None:
+    """Uma linha com dois preços (os dois tamanhos): o nome, os pontos e duas colunas de preços alinhadas à direita; um preço em branco é um traço."""
+    tam_preco = 13.5 * f * sf
+    col = _largura_coluna(p, f, sf)
+    ocupado = 2 * col + 10 * f * sf
+    cabe = largura - (x_texto - x) - ocupado - 22 * f * sf
+    nome_t, tam_nome = _ajustado(nome, False, 13 * f * sf, max(cabe, 20), 7 * f)
+    c.setFillColorRGB(*negro)
+    c.setFont(letras.fonte(nome_t), tam_nome)
+    y_txt = base - tam_nome * 0.33
+    c.drawString(x_texto, y_txt, nome_t)
+    fim_nome = x_texto + letras.largura(nome_t, False, tam_nome)
+    for i, valor in enumerate((ln.preco, ln.preco2)):
+        fim = _x_coluna(p, x, largura, f, sf, i)
+        if valor is not None:
+            txt = mod_moeda.formatar(valor, p.moeda, p.lingua)
+            c.setFillColorRGB(*_cor_realce(d))
+            c.setFont(letras.fonte(txt, True), tam_preco)
+            c.drawRightString(fim, base - tam_preco * 0.33, txt)
+        else:
+            c.setStrokeColorRGB(*_cor_suave(d))
+            c.setLineWidth(0.9 * f)
+            c.line(fim - col, y_txt - 1.5 * f, fim, y_txt - 1.5 * f)
+    ini_pontos, fim_pontos = fim_nome + 6 * f * sf, x + largura - ocupado - 6 * f * sf
+    if fim_pontos - ini_pontos > 10:
+        c.setStrokeColorRGB(*_cor_suave(d))
+        c.setLineWidth(1.1 * f * sf)
+        c.setLineCap(1)
+        c.setDash(0.1, 3.4 * f * sf)
+        c.line(ini_pontos, y_txt + 1.2 * f * s, fim_pontos, y_txt + 1.2 * f * s)
+        c.setDash()
+        c.setLineCap(0)
+
+
 def _categoria(c, p: Precario, d, categoria: str, x: float, y_topo: float, largura: float, f: float, s: float) -> None:
     nome = cat.nome_imprimivel(cat.CATEGORIAS[categoria], p.lingua)
     sf = min(s, 1.2)
@@ -356,6 +420,12 @@ def _categoria(c, p: Precario, d, categoria: str, x: float, y_topo: float, largu
     c.setFillColorRGB(*_cor_realce(d))
     c.setFont(letras.fonte(t, True), tam)
     c.drawString(x, y_topo - 15.5 * f * s, t)
+    if p.tamanhos:                                                          # os rótulos das duas colunas de preços, por cima delas
+        c.setFillColorRGB(*_cor_suave(d))
+        for i, r in enumerate(p.rotulos):
+            rt, tr = _ajustado(r.strip(), True, 10 * f * sf, _largura_coluna(p, f, sf), 6 * f)
+            c.setFont(letras.fonte(rt, True), tr)
+            c.drawRightString(_x_coluna(p, x, largura, f, sf, i), y_topo - 15.5 * f * s, rt)
     c.setStrokeColorRGB(*d.destaque)
     c.setLineWidth(1.8 * f * s)
     c.line(x, y_topo - 20.5 * f * s, x + largura, y_topo - 20.5 * f * s)
@@ -521,6 +591,15 @@ def _preco(valor, lingua: str) -> int | None:
     return n
 
 
+def _rotulos(valor) -> tuple:
+    """Os dois rótulos dos tamanhos de um dicionário (lista de 2 textos); sem eles, «P» e «G»."""
+    if valor is None:
+        return ("P", "G")
+    if not isinstance(valor, (list, tuple)) or len(valor) != 2 or any(not isinstance(r, str) for r in valor):
+        raise ErroRifas("err_precario_texto", car="?")
+    return (valor[0], valor[1])
+
+
 def de_dict(d: dict, lingua: str | None = None) -> Precario:
     """O `Precario` de um dicionário (JSON): `titulo`, `subtitulo`, `rodape`, `desenho`, `formato`, `orientacao`, `colunas`, `imagens`, `lingua`,
     `moeda` (`{"codigo": "EUR"}` ou `{"nome": "fichas", "antes": false, "decimais": 0}`; sem ela, a do país da língua) e `linhas` (`artigo`, `nome`, `preco`, `categoria`, `emoji`).
@@ -550,17 +629,17 @@ def de_dict(d: dict, lingua: str | None = None) -> Precario:
     if isinstance(colunas, bool) or not isinstance(colunas, int):
         raise ErroRifas("err_precario_texto", car="?")
     return Precario(
-        linhas=tuple(Linha(_texto(x.get("artigo")), _texto(x.get("nome")), _preco(x.get("preco"), lg), _texto(x.get("categoria")), _texto(x.get("emoji"))) for x in linhas),
+        linhas=tuple(Linha(_texto(x.get("artigo")), _texto(x.get("nome")), _preco(x.get("preco"), lg), _texto(x.get("categoria")), _texto(x.get("emoji")), _preco(x.get("preco2"), lg)) for x in linhas),
         titulo=_texto(d.get("titulo")), subtitulo=_texto(d.get("subtitulo")), rodape=_texto(d.get("rodape")), desenho=_texto(d.get("desenho"), "quermesse"),
-        formato=_texto(d.get("formato"), "A4"), orientacao=_texto(d.get("orientacao"), "vertical"), colunas=colunas, imagens=bool(d.get("imagens", True)), moeda=moeda_, lingua=lg)
+        formato=_texto(d.get("formato"), "A4"), orientacao=_texto(d.get("orientacao"), "vertical"), colunas=colunas, imagens=bool(d.get("imagens", True)), tamanhos=bool(d.get("tamanhos", False)), rotulos=_rotulos(d.get("rotulos")), moeda=moeda_, lingua=lg)
 
 
 def para_dict(p: Precario) -> dict:
     """O inverso de `de_dict`, com os preços em milésimos (não dependem da língua): o que se guarda num ficheiro `.precario`."""
     m = ({"nome": p.moeda.nome, "antes": p.moeda.antes, "decimais": p.moeda.decimais} if isinstance(p.moeda, mod_moeda.MoedaInventada) else {"codigo": p.moeda.codigo})
     return {"titulo": p.titulo, "subtitulo": p.subtitulo, "rodape": p.rodape, "desenho": p.desenho, "formato": p.formato, "orientacao": p.orientacao, "colunas": p.colunas,
-            "imagens": p.imagens, "lingua": p.lingua, "moeda": m,
-            "linhas": [{"artigo": ln.artigo, "nome": ln.nome, "preco": ln.preco, "categoria": ln.categoria, "emoji": ln.emoji} for ln in p.linhas]}
+            "imagens": p.imagens, "tamanhos": p.tamanhos, "rotulos": list(p.rotulos), "lingua": p.lingua, "moeda": m,
+            "linhas": [{"artigo": ln.artigo, "nome": ln.nome, "preco": ln.preco, "preco2": ln.preco2, "categoria": ln.categoria, "emoji": ln.emoji} for ln in p.linhas]}
 
 
 # ------------------------------------------------------------------ o ficheiro `.precario` (app Windows): só os campos, nunca o logotipo nem nada do computador

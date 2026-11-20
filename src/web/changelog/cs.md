@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.74.0 — 2026-11-20
+
+### Novinky
+- **Dvě velikosti v ceníku**: zapněte «Dvě velikosti (dvě ceny u položky)» (web a aplikace pro Windows) a u každé položky napište dvě ceny (například malou a velkou, nebo položku a menu). Oba sloupce vyjdou zarovnané, s názvy, které zvolíte, nad nimi (výchozí «Malý» a «Velký»), a uloží se do souboru ceníku.
+
 ## 3.73.0 — 2026-11-20
 
 ### Novinky

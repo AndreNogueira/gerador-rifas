@@ -181,7 +181,14 @@ export interface PrecarioCatalogo {
 }
 /** O corpo de `POST /api/precario/{previa.png,pdf,imagem.png}`: os preços vão como o utilizador os escreveu (o servidor lê-os na língua do pedido). */
 export interface PedidoPrecario {
-  linhas: { artigo: string; nome: string; preco: string; categoria: string; emoji: string }[];
+  linhas: {
+    artigo: string;
+    nome: string;
+    preco: string;
+    preco2?: string;
+    categoria: string;
+    emoji: string;
+  }[];
   titulo: string;
   subtitulo: string;
   rodape: string;
@@ -190,6 +197,8 @@ export interface PedidoPrecario {
   orientacao: string;
   colunas: number;
   imagens: boolean;
+  tamanhos?: boolean;
+  rotulos?: string[];
   moeda: { codigo?: string; nome?: string; antes?: boolean; decimais?: number };
 }
 export interface ComentarioPublico {

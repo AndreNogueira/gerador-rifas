@@ -35,6 +35,12 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.getByTestId("precario-previa-img")).toBeVisible();
     await expect(page.getByTestId("precario-erro")).toHaveCount(0);
     await page.getByTestId("precario-formato").selectOption("A4");
+    await page.getByTestId("precario-tamanhos").check(); // dois tamanhos: o segundo preço e os rótulos
+    await page.getByTestId("precario-preco2-agua").fill("2,5");
+    await page.getByTestId("precario-rotulo-1").fill("Média");
+    await expect(page.getByTestId("precario-previa-img")).toBeVisible();
+    await expect(page.getByTestId("precario-erro")).toHaveCount(0);
+    await page.getByTestId("precario-tamanhos").uncheck();
     await page.getByTestId("precario-meu-nome").fill("Bolo da avó");
     await page.getByTestId("precario-meu-juntar").click();
     await expect(page.getByTestId("precario-erro")).toHaveCount(0);

@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.74.0 — 2026-11-20
+
+### Neu
+- **Zwei Größen in der Preisliste**: Schalten Sie «Zwei Größen (zwei Preise pro Artikel)» ein (Website und Windows-App), um pro Artikel zwei Preise einzutragen (etwa klein und groß, oder Artikel und Menü). Die beiden Spalten stehen untereinander ausgerichtet, mit den Namen Ihrer Wahl darüber («Klein» und «Groß» als Vorgabe), und werden in der Preislisten-Datei gespeichert.
+
 ## 3.73.0 — 2026-11-20
 
 ### Neu

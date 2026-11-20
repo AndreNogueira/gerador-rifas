@@ -111,3 +111,14 @@ def test_os_cartoes_de_mesa_pelo_pdf_e_pela_previa(c):
     assert c.post("/api/precario/previa.png", json=pedido).status_code == 200
     muitos = {**pedido, "linhas": [{"nome": f"Artigo {i}"} for i in range(13)]}
     assert c.post("/api/precario/pdf", json=muitos, headers={"X-Lingua": "en"}).status_code == 422
+
+
+def test_dois_tamanhos_pelo_pdf_e_pela_previa(c):
+    pedido = {"linhas": [{"artigo": "agua", "preco": "1", "preco2": "1,8"}, {"nome": "Bolo", "preco2": "2,5"}], "tamanhos": True, "rotulos": ["Peq.", "Gde."], "titulo": "Festa"}
+    r = c.post("/api/precario/pdf", json=pedido)
+    assert r.status_code == 200 and r.content.startswith(b"%PDF")
+    assert c.post("/api/precario/previa.png", json=pedido).status_code == 200
+    assert c.post("/api/precario/pdf", json={**pedido, "rotulos": ["", "G"]}, headers={"X-Lingua": "en"}).status_code == 422
+    assert c.post("/api/precario/pdf", json={**pedido, "rotulos": ["P"]}).status_code == 422
+    assert c.post("/api/precario/pdf", json={**pedido, "rotulos": ["x" * 40, "G"]}).status_code == 422
+    assert c.post("/api/precario/pdf", json={**pedido, "linhas": [{"artigo": "agua", "preco2": "abc"}]}).status_code == 422

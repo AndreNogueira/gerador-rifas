@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.74.0 — 2026-11-20
+
+### Noutăți
+- **Două mărimi în lista de prețuri**: activează «Două mărimi (două prețuri pe articol)» (site și aplicația Windows) ca să scrii două prețuri la fiecare articol (de exemplu mic și mare, sau articolul și meniul). Cele două coloane ies aliniate, cu numele alese de tine deasupra (implicit «Mic» și «Mare»), și se salvează în fișierul listei.
+
 ## 3.73.0 — 2026-11-20
 
 ### Noutăți

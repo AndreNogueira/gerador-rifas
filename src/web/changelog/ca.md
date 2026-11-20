@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.74.0 — 2026-11-20
+
+### Novetats
+- **Dues mides a la llista de preus**: activeu «Dues mides (dos preus per article)» (web i app de Windows) per escriure dos preus a cada article (per exemple petit i gran, o l'article i el menú). Les dues columnes surten alineades, amb els noms que trieu a sobre («Petit» i «Gran» per defecte), i es desen al fitxer de la llista.
+
 ## 3.73.0 — 2026-11-20
 
 ### Novetats

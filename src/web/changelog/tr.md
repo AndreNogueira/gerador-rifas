@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.74.0 — 2026-11-20
+
+### Yeni
+- **Fiyat listesinde iki boy**: her ürüne iki fiyat yazmak için «İki boy (ürün başına iki fiyat)» seçeneğini açın (site ve Windows uygulaması), örneğin küçük ve büyük ya da ürün ve menü. İki sütun hizalı çıkar, üstlerinde seçtiğiniz adlarla (varsayılan «Küçük» ve «Büyük») ve fiyat listesi dosyasına kaydedilir.
+
 ## 3.73.0 — 2026-11-20
 
 ### Yeni
