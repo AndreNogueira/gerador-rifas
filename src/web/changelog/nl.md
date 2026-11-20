@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.70.0 — 2026-11-20
+
+### Nieuw
+- **Prijslijstgenerator voor feesten** (`/precario`, en «Extras → Prijslijst…» in de Windows-app): kies de gelegenheid (die van het moment wordt voorgesteld) en de artikelen uit een catalogus met afbeeldingen, vul de prijzen in de munt van uw land of een verzonnen munt (fiches…) in en download de printklare pdf (of een afbeelding), in A5, A4 of A3 en met de 24 ontwerpen van de galerij. Er is ook een nieuw stappenplan: «Zo maak je de prijslijst voor een feest».
+
 ## 3.69.0 — 2026-11-19
 
 ### Nieuw

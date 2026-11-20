@@ -398,4 +398,10 @@ T = {
     "web_precario_recomecar": "Mulai ulang",
     "web_precario_a_desenhar": "Menggambar…",
     "web_precario_preco_categoria": "Harga kategori",
+    "win_precario_guardar": "Simpan daftar harga…",
+    "win_precario_abrir": "Buka daftar harga…",
+    "win_precario_pdf": "Simpan PDF…",
+    "win_precario_imagem": "Simpan gambar…",
+    "tut_f_precario_t": "Daftar harga untuk acara",
+    "tut_f_precario_b": "Buat daftar harga untuk acara, bar, atau lapak Anda: pilih acara (yang sesuai waktu ini disarankan) dan barang dari katalog bergambar, ketik harga dalam mata uang negara Anda atau mata uang rekaan (token, koin…), lalu simpan PDF yang siap dicetak. Tanpa harga, tersisa garis untuk ditulis tangan. {onde}",
 }

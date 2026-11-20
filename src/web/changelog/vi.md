@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.70.0 — 2026-11-20
+
+### Mới
+- **Trình tạo bảng giá cho sự kiện** (`/precario`, và «Extras → Bảng giá…» trong ứng dụng Windows): chọn dịp (dịp hợp thời điểm được gợi ý) và các món từ danh mục có hình, nhập giá bằng tiền tệ nước bạn hoặc tiền tệ tự đặt (xu…), rồi tải PDF (hoặc hình ảnh) sẵn sàng để in, khổ A5, A4 hoặc A3 và với 24 thiết kế của thư viện. Cũng có hướng dẫn mới: «Cách làm bảng giá cho sự kiện».
+
 ## 3.69.0 — 2026-11-19
 
 ### Mới

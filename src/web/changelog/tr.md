@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.70.0 — 2026-11-20
+
+### Yeni
+- **Etkinlikler için fiyat listesi oluşturucu** (`/precario` ve Windows uygulamasında «Extras → Fiyat listesi…»): etkinliği seçin (yılın bu dönemine uygun olan önerilir) ve resimli katalogdan ürünleri seçin, fiyatları ülkenizin para biriminde ya da uydurma bir birimde (jeton…) yazın, yazdırmaya hazır PDF'yi (veya resmi) indirin; A5, A4 ya da A3 ve galerinin 24 tasarımıyla. Yeni bir rehber de var: «Bir etkinlik için fiyat listesi nasıl yapılır».
+
 ## 3.69.0 — 2026-11-19
 
 ### Yeni

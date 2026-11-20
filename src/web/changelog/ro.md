@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.70.0 — 2026-11-20
+
+### Noutăți
+- **Generator de liste de prețuri pentru petreceri** (`/precario`, și «Extras → Listă de prețuri…» în aplicația Windows): alege ocazia (este sugerată cea din perioada anului) și articolele dintr-un catalog cu imagini, scrie prețurile în moneda țării tale sau într-una inventată (jetoane…) și descarcă PDF-ul (sau o imagine) gata de tipărit, în A5, A4 sau A3 și cu cele 24 de desene din galerie. Există și un ghid nou: «Cum faci lista de prețuri a unei petreceri».
+
 ## 3.69.0 — 2026-11-19
 
 ### Noutăți

@@ -159,12 +159,12 @@ def test_a_privacidade_explica_os_comentarios_e_o_pais_em_todas_as_linguas(lg):
 
 
 def test_as_paginas_dos_visitantes_existem_mas_ficam_fora_do_google_e_do_sitemap(c):
-    for caminho in ("/comentarios", "/opiniao", "/reportar-problema", "/precario"):
+    for caminho in ("/comentarios", "/opiniao", "/reportar-problema"):
         r = c.get(caminho)
         assert r.status_code == 200 and "noindex" in r.text, caminho
         assert caminho not in c.get("/sitemap.xml").text
         assert c.get(f"/en{caminho}").status_code == 200
-    assert set(seo.SEM_INDICE) == {"/comentarios", "/opiniao", "/reportar-problema", "/precario"} and not set(seo.SEM_INDICE) & set(seo.ROTAS)       # /precario sai daqui na fase 6b (SEO próprio)
+    assert set(seo.SEM_INDICE) == {"/comentarios", "/opiniao", "/reportar-problema"} and not set(seo.SEM_INDICE) & set(seo.ROTAS)
 
 
 # ------------------------------------------------------------------ o painel: país e texto, nada mais

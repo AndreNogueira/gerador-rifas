@@ -10,15 +10,15 @@ from __future__ import annotations
 from core import ptbr as _ptbr
 
 from ..seo_textos import sobreposto
-from . import associacoes, bombeiros, clubes, escolas, festas, igrejas, novas, numerar, quantos, sorteio
+from . import associacoes, bombeiros, clubes, escolas, festas, igrejas, novas, numerar, precario, quantos, sorteio
 
 DADOS = {"escolas": escolas.DADOS, "associacoes": associacoes.DADOS, "clubes": clubes.DADOS, "bombeiros": bombeiros.DADOS, "festas": festas.DADOS, "igrejas": igrejas.DADOS}
 for _nome, _novas in (("escolas", novas.ESCOLAS), ("associacoes", novas.ASSOCIACOES), ("clubes", novas.CLUBES), ("bombeiros", novas.BOMBEIROS), ("festas", novas.FESTAS), ("igrejas", novas.IGREJAS)):
     DADOS[_nome].update(_novas)                       # as linguas de um ficheiro so (docs/LINGUAS.md)
 PARA_PUBLICOS = tuple(DADOS)                         # os guias por PUBLICO (`/rifas-para-<nome>`): o 1.o passo manda confirmar a licenca na camara municipal
-DADOS.update({"numerar": numerar.DADOS, "sorteio": sorteio.DADOS, "quantos": quantos.DADOS})   # os guias por TEMA (as 22 linguas no proprio modulo)
+DADOS.update({"numerar": numerar.DADOS, "sorteio": sorteio.DADOS, "quantos": quantos.DADOS, "precario": precario.DADOS})   # os guias por TEMA (as 22 linguas no proprio modulo)
 CAMINHOS = {nome: f"/rifas-para-{nome}" for nome in PARA_PUBLICOS}
-CAMINHOS.update({"numerar": "/como-numerar-bilhetes-de-rifa", "sorteio": "/sorteio-de-rifa-verificavel", "quantos": "/quantos-bilhetes-de-rifa-fazer"})
+CAMINHOS.update({"numerar": "/como-numerar-bilhetes-de-rifa", "sorteio": "/sorteio-de-rifa-verificavel", "quantos": "/quantos-bilhetes-de-rifa-fazer", "precario": "/como-fazer-o-precario-de-uma-festa"})
 NOMES = tuple(DADOS)
 for _nome in DADOS:
     DADOS[_nome]["pt-br"] = _ptbr.derivar_tudo(DADOS[_nome]["pt"])      # o portugues do Brasil deriva-se do de Portugal (core/ptbr.py)

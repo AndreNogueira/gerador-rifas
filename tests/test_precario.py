@@ -147,3 +147,21 @@ def test_de_dict_recusa_tipos_errados_com_erro_traduzido(d):
     with pytest.raises(ErroRifas) as e:
         precario.de_dict(d)
     assert e.value.chave in ("err_precario_texto", "err_precario_linhas")
+
+
+# ------------------------------------------------------------------ ficheiro .precario
+def _exemplo() -> Precario:
+    return Precario(linhas=[Linha("agua", "Água", 1500), Linha("", "Bolo da avó", None)], titulo="Festa", lingua="pt")
+
+
+def test_o_ficheiro_do_precario_ida_e_volta():
+    p = _exemplo()
+    outro = precario.de_bytes(precario.para_bytes(p))
+    assert precario.para_dict(outro) == precario.para_dict(p)
+
+
+@pytest.mark.parametrize("dados", [b"", b"nao e json", b"[]", b'{"formato": "outro", "precario": {}}', b"x" * (precario.MAX_BYTES + 1)])
+def test_ficheiro_estragado_ou_alheio_e_recusado(dados):
+    with pytest.raises(ErroRifas) as e:
+        precario.de_bytes(dados)
+    assert e.value.chave == "err_pedido_ficheiro"

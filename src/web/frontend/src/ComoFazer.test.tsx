@@ -31,6 +31,7 @@ describe("o menu «Ajuda» no cabeçalho (tutorial, vídeo e «como fazer» num 
     expect([...nav.querySelectorAll("a, button")].map((e) => e.getAttribute("data-testid"))).toEqual([
       "nav-ajuda",
       "nav-sorteio",
+      "nav-precario",
       "nav-sobre",
       "nav-comentarios",
       "nav-reportar-problema",

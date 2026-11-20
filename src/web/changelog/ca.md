@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.70.0 — 2026-11-20
+
+### Novetats
+- **Generador de llistes de preus per a festes** (`/precario`, i «Extras → Llista de preus…» a l'app de Windows): trieu l'ocasió (se suggereix la de l'època) i els articles d'un catàleg amb imatges, escriviu els preus en la moneda del vostre país o en una d'inventada (fitxes…) i baixeu el PDF (o una imatge) a punt per imprimir, en A5, A4 o A3 i amb els 24 dissenys de la galeria. També hi ha una guia nova: «Com fer la llista de preus d'una festa».
+
 ## 3.69.0 — 2026-11-19
 
 ### Novetats

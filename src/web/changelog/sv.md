@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.70.0 — 2026-11-20
+
+### Nytt
+- **Prislistegenerator för fester** (`/precario`, och «Extras → Prislista…» i Windows-appen): välj tillfälle (det som passar årstiden föreslås) och artiklar ur en katalog med bilder, skriv priserna i ditt lands valuta eller i en påhittad (marker…) och ladda ner PDF:en (eller en bild) klar för utskrift, i A5, A4 eller A3 och med galleriets 24 motiv. Det finns också en ny guide: «Så gör du prislistan till en fest».
+
 ## 3.69.0 — 2026-11-19
 
 ### Nytt

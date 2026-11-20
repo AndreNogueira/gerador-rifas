@@ -398,4 +398,10 @@ T = {
     "web_precario_recomecar": "Làm lại từ đầu",
     "web_precario_a_desenhar": "Đang vẽ…",
     "web_precario_preco_categoria": "Giá cả nhóm",
+    "win_precario_guardar": "Lưu bảng giá…",
+    "win_precario_abrir": "Mở bảng giá…",
+    "win_precario_pdf": "Lưu PDF…",
+    "win_precario_imagem": "Lưu hình ảnh…",
+    "tut_f_precario_t": "Bảng giá cho sự kiện",
+    "tut_f_precario_b": "Làm bảng giá cho sự kiện, quầy bar hay gian hàng của bạn: chọn dịp (dịp hợp thời điểm được gợi ý) và các món từ danh mục có hình, nhập giá bằng tiền tệ nước bạn hoặc tiền tệ tự đặt (xu, token…) rồi lưu PDF sẵn sàng để in. Không có giá thì chừa một đường kẻ để viết tay. {onde}",
 }
