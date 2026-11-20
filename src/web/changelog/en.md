@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.72.0 — 2026-11-20
+
+### New
+- **“Blackboard” price list**: a new design in the “Occasion and theme” list (and in the Windows app): dark green school-blackboard background, a wooden frame and chalk-style text (white and yellow), ideal for a food stall, a café terrace or a classroom.
+
 ## 3.71.0 — 2026-11-20
 
 ### New

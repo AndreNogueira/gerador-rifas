@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.72.0 — 2026-11-20
+
+### Novedades
+- **Lista de precios en «pizarra»**: un diseño nuevo en la lista «Ocasión y tema» (y en la app de Windows): fondo verde oscuro de pizarra escolar, marco de madera y texto a tiza (blanco y amarillo), ideal para el puesto, la terraza o el aula.
+
 ## 3.71.0 — 2026-11-20
 
 ### Novedades

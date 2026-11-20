@@ -38,8 +38,8 @@ def test_sai_em_todas_as_linguas_com_a_moeda_do_pais(lg):
     assert esperado in texto_do_pdf(pdf).replace(" ", "").replace("\xa0", ""), (lg, esperado)       # o preço escreve-se na moeda e no formato da língua
 
 
-@pytest.mark.parametrize("desenho", list(galeria.POR_ID))
-def test_sai_com_cada_um_dos_24_desenhos(desenho):
+@pytest.mark.parametrize("desenho", list(precario.POR_ID))
+def test_sai_com_cada_um_dos_25_desenhos(desenho):
     p = com_precos(Precario(linhas=tuple(Linha(artigo=a) for a in ("agua", "cerveja", "bolo", "pizza", "gelado", "tiro_ao_alvo")), titulo="Festa", desenho=desenho))
     assert len(PdfReader(io.BytesIO(precario.criar_pdf(p))).pages) == 1
 
@@ -165,3 +165,25 @@ def test_ficheiro_estragado_ou_alheio_e_recusado(dados):
     with pytest.raises(ErroRifas) as e:
         precario.de_bytes(dados)
     assert e.value.chave == "err_pedido_ficheiro"
+
+
+# ------------------------------------------------------------------ o quadro negro
+def test_o_quadro_negro_e_um_desenho_so_do_preçário_com_papel_escuro_e_texto_a_giz():
+    assert "quadro" in precario.POR_ID and "quadro" not in galeria.POR_ID                 # a galeria de rifas fica como estava
+    d = precario.POR_ID["quadro"]
+    assert precario._escuro(d) and not precario._escuro(galeria.POR_ID["quermesse"])
+    assert precario._cor_texto(d)[0] > 0.9 and precario._cor_texto(galeria.POR_ID["quermesse"])[0] < 0.2     # giz claro num, quase preto noutro
+    assert precario._cor_realce(d) == d.destaque and precario._cor_realce(galeria.POR_ID["quermesse"]) == galeria.POR_ID["quermesse"].principal
+
+
+def test_o_quadro_negro_pinta_o_fundo_escuro_e_escreve_o_texto_claro():
+    import pypdfium2 as pdfium
+    p = com_precos(Precario(linhas=tuple(Linha(artigo=a) for a in ("agua", "cerveja")), titulo="Festa", desenho="quadro", imagens=False))
+    doc = pdfium.PdfDocument(io.BytesIO(precario.criar_pdf(p)))
+    try:
+        im = doc[0].render(scale=0.3).to_pil().convert("RGB")
+    finally:
+        doc.close()
+    w, h = im.size
+    r, g, b = im.getpixel((w // 2, int(h * 0.62)))                                         # o miolo do quadro, longe do texto
+    assert max(r, g, b) < 80, (r, g, b)

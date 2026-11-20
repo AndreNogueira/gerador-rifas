@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.72.0 — 2026-11-20
+
+### Mới
+- **Bảng giá «bảng đen»**: một thiết kế mới trong danh sách «Dịp và chủ đề» (và trong ứng dụng Windows): nền xanh lá đậm của bảng đen trường học, khung gỗ và chữ phấn (trắng và vàng), rất hợp cho quầy hàng, hiên quán hay lớp học.
+
 ## 3.71.0 — 2026-11-20
 
 ### Mới

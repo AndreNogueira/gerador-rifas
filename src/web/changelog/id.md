@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.72.0 — 2026-11-20
+
+### Baru
+- **Daftar harga «papan tulis»**: desain baru di daftar «Acara dan tema» (dan di aplikasi Windows): latar hijau tua papan tulis sekolah, bingkai kayu, dan teks kapur (putih dan kuning), cocok untuk warung, teras, atau kelas.
+
 ## 3.71.0 — 2026-11-20
 
 ### Baru

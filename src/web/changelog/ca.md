@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.72.0 — 2026-11-20
+
+### Novetats
+- **Llista de preus «pissarra»**: un disseny nou a la llista «Ocasió i tema» (i a l'app de Windows): fons verd fosc de pissarra escolar, marc de fusta i text a la guix (blanc i groc), ideal per a la parada, la terrassa o l'aula.
+
 ## 3.71.0 — 2026-11-20
 
 ### Novetats

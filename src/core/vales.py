@@ -44,6 +44,11 @@ class Vale:
         return Vale(self.desenho, t, o, m, m + "s", q, "")
 
 
+def desenho_do_vale(desenho: str) -> str:
+    """O desenho com que o vale sai: o do preçário, menos o «quadro negro» (papel escuro: o vale é impresso, recortado e carimbado, e só tem desenhos claros), que vira «arraial»."""
+    return "arraial" if not desenho or desenho == "quadro" else desenho
+
+
 def validar(v: Vale) -> None:
     """`ErroRifas` se o desenho não existe, a quantidade está fora dos limites, um texto é grande demais, tem letras que nenhuma família tem
     ou tem uma sequência de algarismos que o motor confundiria com o número."""
@@ -149,6 +154,6 @@ def de_dict(d: dict) -> Vale:
         return v
 
     q = d.get("quantidade", 1)
-    v = Vale(texto("desenho") or "arraial", texto("titulo"), texto("organizacao"), texto("moeda"), texto("moeda_plural"), q, texto("nota"))
+    v = Vale(desenho_do_vale(texto("desenho")), texto("titulo"), texto("organizacao"), texto("moeda"), texto("moeda_plural"), q, texto("nota"))
     validar(v)
     return v

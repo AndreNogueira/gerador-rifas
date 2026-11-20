@@ -8,7 +8,7 @@ import asyncio
 import urllib.parse
 from concurrent.futures.process import BrokenProcessPool
 
-from core import ErroRifas, galeria, i18n, moeda, precario, precario_catalogo
+from core import ErroRifas, i18n, moeda, precario, precario_catalogo
 from fastapi import APIRouter, Depends, Query, Response
 from pydantic import BaseModel, Field
 
@@ -69,7 +69,7 @@ def catalogo(resposta: Response, mes: int | None = Query(None, ge=1, le=12), lg:
     pais = moeda.pais_por_omissao(lg)
     return {
         **precario_catalogo.catalogo(lg, mes),
-        "desenhos": [{"id": d.id, "nome": d.nome} for d in galeria.DESENHOS],
+        "desenhos": [{"id": d.id, "nome": d.nome} for d in precario.DESENHOS],
         "moedas": [{"codigo": m.codigo, "simbolo": m.simbolo, "decimais": m.decimais} for m in moeda.MOEDAS.values()],
         "paises": moeda.PAIS_MOEDA,
         "pais": pais, "moeda": moeda.moeda_por_omissao(lg).codigo,

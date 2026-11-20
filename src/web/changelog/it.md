@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.72.0 — 2026-11-20
+
+### Novità
+- **Listino «lavagna»**: un nuovo disegno nell'elenco «Occasione e tema» (e nell'app Windows): sfondo verde scuro da lavagna scolastica, cornice di legno e testo a gesso (bianco e giallo), ideale per il chiosco, il dehors o l'aula.
+
 ## 3.71.0 — 2026-11-20
 
 ### Novità
