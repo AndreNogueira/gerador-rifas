@@ -402,6 +402,8 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
                 await corpo.aclose()                                              # liberta o ficheiro/fluxo que nunca se vai ler
             resposta = RespostaSimples(b"", status_code=resposta.status_code, headers=dict(resposta.headers))      # os mesmos cabecalhos (e o mesmo Content-Length) de um GET, sem corpo
         resposta.headers["X-Request-ID"] = rid
+        if caminho.startswith(("/ajuda/", "/videos/")):
+            resposta.headers.setdefault("Cache-Control", "public, max-age=86400")   # capturas e videos: nome fixo, podem ser regravados; 1 dia poupa o pedido sem arriscar ficar preso a uma versao antiga
         for nome, valor in CABECALHOS_SEGURANCA.items():
             resposta.headers.setdefault(nome, valor)
         if request.url.scheme == "https" or request.headers.get("x-forwarded-proto", "").lower() == "https":
@@ -460,7 +462,11 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         if caminho and caminho != "index.html" and alvo.is_relative_to(pasta) and alvo.is_file():
             if alvo.suffix in _NAO_SERVIR:
                 return JSONResponse({"detail": "Rota inexistente"}, status_code=404)
-            cabecalhos = {"Cache-Control": "public, max-age=31536000, immutable"} if alvo.parent.name == "assets" else {}
+            # `dist/assets` tem nome com hash (o Vite muda-o se o conteudo mudar): cache de 1 ano, `immutable`. Os outros (galeria, icones do
+            # preçário, `icone.svg`, manifesto…) tem nome fixo e podem mudar nalgum deploy (p.ex. `gerar_miniaturas_galeria.py`): só 1 dia,
+            # com `ETag`/`Last-Modified` (do FileResponse) a validar o resto — nunca ficam para sempre em cache, mas poupam o pedido inteiro
+            # num regresso dentro do dia.
+            cabecalhos = {"Cache-Control": "public, max-age=31536000, immutable"} if alvo.parent.name == "assets" else {"Cache-Control": "public, max-age=86400"}
             if alvo.name == "sw.js":                                                  # o browser tem de ver sempre a versao nova do service worker
                 cabecalhos = {"Cache-Control": "no-cache"}
             return _enviar(alvo, request, cabecalhos)

@@ -96,6 +96,8 @@ Os avisos (90 % das horas, 80 % do espaço) vão também no **relatório diário
 
 ## Cópia de segurança semanal (`/admin` → «Visão geral»)
 
+**Confirmado ativo em produção em 2026-11-20** (`/api/admin/copia`): `ativa`, `tem_s3` e `tem_bd` todos verdadeiros, a correr para o bucket `rifas-backups`, última feita em `backup:2026-11-16` (a segunda-feira anterior, no dia certo) sem erro registado.
+
 Os dados que **não se refazem** guardam-se, uma vez por semana, no armazenamento de objetos do Neon (S3; o mesmo fornecedor da base, por isso nenhum terceiro novo vê comentários): `historico_diario` (o essencial: os eventos brutos duram 90 dias), `objetivos`, `auditoria`, `comentarios`, `seo_textos_bd` (os textos de SEO editados) e `api_chaves` (só os SHA-256). Os eventos, pedidos e amostras do sistema ficam de fora. Código: `copia.py` (cópia e restauro) e `s3_simples.py` (o `PUT` com assinatura SigV4 só com `urllib`, sem `boto3`).
 
 - **Quando:** na segunda-feira depois das 00:05 (`RELATORIO_FUSO`), ou quando o serviço acordar se dormia; a reserva `backup:<segunda-feira>` fica na tabela `relatorios`, por isso nenhum arranque a repete; se falha, desfaz-se e tenta-se de hora a hora (o painel mostra só a classe do erro e o código HTTP). Depois de feita a semana, o ciclo não volta a consultar a base até à segunda seguinte (o Neon pode adormecer).
@@ -156,7 +158,9 @@ Outras opções, por ordem de esforço: **disco persistente** do Render (plano p
 
 O servidor limita pedidos por IP. Atrás do Render, o IP real chega no cabeçalho `X-Forwarded-For`, mas o servidor só confia nele se o proxy estiver em `FORWARDED_ALLOW_IPS` (por omissão, as redes privadas `10.x`, `172.16.x`, `192.168.x`). Se não estiver, **todos os visitantes parecem o mesmo** e o limite passa a ser de todos: uma pessoa podia gastá-lo por todos.
 
-A secção «Proxy e limite por IP» olha para a última hora e diz: **«ok»** (vários IPs, públicos), **«problema»** (quase todos os pedidos de 1 ou 2 endereços internos com `X-Forwarded-For`: define `FORWARDED_ALLOW_IPS=*` no serviço) ou **«sem proxy»** (desenvolvimento local). Precisa de uns 20 pedidos para concluir. **Isto fica por confirmar no Render real**: só se vê com visitantes a sério.
+A secção «Proxy e limite por IP» olha para a última hora e diz: **«ok»** (vários IPs, públicos), **«problema»** (quase todos os pedidos de 1 ou 2 endereços internos com `X-Forwarded-For`: define `FORWARDED_ALLOW_IPS=*` no serviço) ou **«sem proxy»** (desenvolvimento local). Precisa de uns 20 pedidos para concluir.
+
+**Espreitado em produção em 2026-11-20** (`/api/admin/estado`): ainda deu `"poucos_pedidos"` (só 1 pedido na última hora nessa instância — o serviço tinha reiniciado há pouco, ver `docs/MEDICOES.md`), mas esse único pedido já veio com `privados_pct: 0` e `xff_pct: 100`: o IP real chegou, não o do proxy. Boa pista de que `FORWARDED_ALLOW_IPS` está bem configurado, mas só um «ok» a sério (20+ pedidos numa hora) confirma por inteiro — voltar a olhar numa hora com tráfego normal.
 
 ## Para quem mexe no código
 
