@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.71.0 — 2026-11-20
+
+### Mới
+- **Phiếu xu có số** (trong bảng giá, với tiền tệ tự đặt; và «Extras → Bảng giá… → Phiếu có số…» trong ứng dụng Windows): chọn mỗi phiếu trị giá bao nhiêu xu, tiêu đề và ghi chú, xem phiếu theo thiết kế của bảng giá rồi tạo. Tiếp tục ở trình tạo vé số, nơi đánh số phiếu với sê-ri, mã QR xác minh và tờ in sẵn sàng.
+
 ## 3.70.0 — 2026-11-20
 
 ### Mới

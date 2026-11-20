@@ -48,6 +48,7 @@ FUNCIONALIDADES = (
     Funcionalidade("marcas", PLATAFORMAS, "web_marcas", ("win_m_extras", "win_opcoes")),
     Funcionalidade("galeria", PLATAFORMAS, "web_galeria", ("win_m_extras", "win_galeria")),
     Funcionalidade("precario", PLATAFORMAS, "web_precario", ("win_m_extras", "web_precario")),
+    Funcionalidade("vales", PLATAFORMAS, "web_precario", ("win_m_extras", "web_precario")),          # o cartão «Vales numerados» do preçário (moeda inventada)
     Funcionalidade("marca", PLATAFORMAS, "web_logotipo", ("win_m_extras", "win_opcoes")),
     Funcionalidade("qr", ("web",), "web_qr"),
     Funcionalidade("editor", PLATAFORMAS, "web_editor", ("win_m_extras", "web_editor")),

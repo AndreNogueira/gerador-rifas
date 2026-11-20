@@ -115,6 +115,17 @@ export interface Calculo {
   confirmar: string;
 }
 
+/** O vale de fichas (`core/vales.py`): o desenho da galeria, os textos, o nome da moeda (singular e plural) e quantas unidades vale cada vale. */
+export interface PedidoVale {
+  desenho: string;
+  titulo: string;
+  organizacao: string;
+  moeda: string;
+  moeda_plural: string;
+  quantidade: number;
+  nota: string;
+}
+
 export interface DadosGaleria {
   desenho: string;
   titulo: string;
@@ -329,6 +340,11 @@ export const api = {
       "GET",
       `/api/editor/partilha/${encodeURIComponent(id)}`,
     ),
+  /** O PNG do vale com estes textos (só se desenha). */
+  valesPrevia: (p: PedidoVale, sinal?: AbortSignal) =>
+    pedir<Blob>("POST", "/api/vales/previa.png", { json: p, bruto: true, sinal }),
+  /** «Criar vales numerados»: o servidor desenha o template do vale e os algarismos na sessão. */
+  usarVales: (id: string, p: PedidoVale) => pedir<Sessao>("POST", `${s(id)}/vales`, { json: p }),
   usarEditor: (id: string, desenho: unknown) => pedir<Sessao>("POST", `${s(id)}/editor`, { json: desenho }),
   /** A lista de bilhetes em CSV e a folha de controlo em PDF do pedido que está no formulário. */
   listaCsv: (campos: Campos) => pedir<Blob>("POST", "/api/exportar/lista.csv", { json: campos, bruto: true }),

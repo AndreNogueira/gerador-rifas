@@ -4,6 +4,7 @@ import { useDialogos } from "./dialogos";
 import { guardarBlob } from "./Gerador";
 import { useI18n } from "./i18n";
 import { Voltar } from "./paginas";
+import { Vales } from "./Vales";
 
 /** Uma linha do preçário: um artigo do catálogo (`artigo`) ou um texto livre (`nome`); `preco` é o que a pessoa escreveu. */
 interface Linha {
@@ -551,6 +552,10 @@ export function Precario() {
               <p className="suave">{`${nomeDoPais(e.pais, lingua)} · ${moedaAtual.codigo} ${moedaAtual.simbolo}`}</p>
             )}
           </section>
+
+          {e.inventada && e.invNome.trim() && (
+            <Vales desenho={e.desenho} moeda={e.invNome.trim()} organizacao={e.subtitulo} />
+          )}
 
           <section className="cartao texto-pagina">
             <h2>{t("web_precario_aspeto")}</h2>

@@ -1179,6 +1179,11 @@ class App(ctk.CTk):
         if j is not None and j.winfo_exists():
             j.resultado(token, png, erro)
 
+    def _ev_vales(self, token: int, png: bytes | None, erro: Exception | None) -> None:
+        j = self.w_extras.get("vales")
+        if j is not None and j.winfo_exists():
+            j.resultado(token, png, erro)
+
     def _ev_precario(self, token: int, png: bytes | None, erro: Exception | None) -> None:
         j = self.w_extras.get("precario")
         if j is not None and j.winfo_exists():

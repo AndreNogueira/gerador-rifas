@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.71.0 — 2026-11-20
+
+### Nouveautés
+- **Bons de jetons numérotés** (dans la liste de prix, avec une monnaie inventée ; et «Extras → Liste de prix… → Bons numérotés…» dans l'appli Windows) : choisissez combien de jetons vaut chaque bon, le titre et une note, voyez le bon au modèle de la liste et créez-les. On continue dans le générateur de tombolas, qui numérote les bons avec séries, QR de vérification et feuilles prêtes à imprimer.
+
 ## 3.70.0 — 2026-11-20
 
 ### Nouveautés

@@ -195,6 +195,33 @@ ok(pr.precario() == guardado and pr.v_titulo.get() == "Festa da escola", "abrir 
 (tmp / "mau.precario").write_text("lixo", encoding="utf-8")
 mensagens.clear()
 ok(not pr._abrir_ficheiro(str(tmp / "mau.precario")) and mensagens, "um ficheiro que não é nosso é recusado com um aviso")
+
+# --- vales de fichas numerados: só com moeda inventada com nome; pre-visualiza no worker; «Criar» passa o template e os algarismos à janela principal
+pr.v_inventada.set(False)
+pr._vales()
+ok(pr.app.w_extras.get("vales") is None and pr.l_erro.cget("text") != "", "sem moeda inventada os vales não abrem e o aviso explica porquê")
+pr.v_inventada.set(True)
+pr.v_inv_nome.set("fichas")
+pr.v_titulo.set("Festa da escola")
+pump(4, lambda: not pr._espera)
+pr._vales()
+va = a.w_extras["vales"]
+pump(8, lambda: va._foto is not None and not va._espera)
+foto(va, "vales.png")
+ok(va._foto is not None and va.l_erro.cget("text") == "", "a janela dos vales pre-visualiza o vale no worker")
+ok(va.vale().moeda == "ficha" and va.vale().moeda_plural == "fichas" and va.vale().quantidade == 1, "o singular propõe-se a partir do plural da moeda do preçário")
+va.v["quantidade"].set("0")
+pump(4, lambda: va.l_erro.cget("text") != "")
+ok(va.l_erro.cget("text") != "", "uma quantidade fora de 1 a 99 mostra o aviso traduzido")
+va.v["quantidade"].set("3")
+va.v["nota"].set("Só na festa")
+pump(6, lambda: not va._espera and va.l_erro.cget("text") == "")
+ok(va.vale().valor_texto() == "3 fichas", "o valor usa o plural quando a quantidade não é 1")
+a.v_prefixos.set("")
+va._usar()
+pump(8, lambda: a.info is not None)
+ok(a.info is not None and a.info.n_campos == 1 and a.info.primeiro == "0001" and "vales-" in a.v_template.get(), "«Criar vales numerados» deixa o template do vale e os algarismos na janela principal, que o analisa")
+ok(not (a.w_extras.get("vales") and a.w_extras["vales"].winfo_exists()), "a janela dos vales fecha-se")
 pr.destroy()
 
 # --- com o template da galeria (uma rifa): marcas de corte, cor, prefixo e pre-visualizacao

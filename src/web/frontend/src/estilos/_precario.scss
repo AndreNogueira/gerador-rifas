@@ -139,3 +139,24 @@
     margin-top: 12px;
   }
 }
+
+// Fase 7: o cartão dos vales de fichas (só aparece com uma moeda inventada)
+.vales {
+  .vales-campos {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  }
+  .vales-previa {
+    display: block;
+    width: 100%;
+    max-width: 28rem;
+    margin: 12px auto;
+    border-radius: var(--raio-c);
+    box-shadow: 0 1px 6px rgb(0 0 0 / 18%);
+  }
+  select,
+  input {
+    background: var(--campo);
+  }
+}

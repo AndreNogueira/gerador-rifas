@@ -20,7 +20,7 @@ from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTex
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_opiniao, rotas_precario, rotas_verificar, seo, textos_legais
+from . import VERSAO, admin, api_v1, changelog, config, guias, observabilidade, rotas, rotas_ajuda, rotas_editor, rotas_galeria, rotas_listas, rotas_opiniao, rotas_precario, rotas_vales, rotas_verificar, seo, textos_legais
 from .chaves_api import Chaves
 from .assets_remotos import AssetsRemotos
 from .limites import Limitador
@@ -367,6 +367,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     app.include_router(rotas_listas.router)
     app.include_router(rotas_galeria.router)
     app.include_router(rotas_precario.router)
+    app.include_router(rotas_vales.router)
     app.include_router(rotas_editor.router)
     app.include_router(rotas_verificar.router)
     app.include_router(rotas_opiniao.router)

@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.71.0 — 2026-11-20
+
+### Nowości
+- **Numerowane bony na żetony** (w cenniku, przy wymyślonej walucie; oraz «Extras → Cennik… → Numerowane bony…» w aplikacji na Windows): wybierz, ile żetonów jest wart każdy bon, tytuł i uwagę, zobacz bon w motywie cennika i utwórz je. Dalej w generatorze losów, który numeruje bony z seriami, kodami QR do weryfikacji i arkuszami gotowymi do wydruku.
+
 ## 3.70.0 — 2026-11-20
 
 ### Nowości

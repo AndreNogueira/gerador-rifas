@@ -19,7 +19,7 @@ from PIL import Image
 
 import ambiente          # noqa: F401  (poe ..\src no sys.path)
 import core
-from core import editor, editor_modelo, galeria, i18n, marca, moeda, precario, precario_catalogo, sorteio
+from core import editor, editor_modelo, galeria, i18n, marca, moeda, precario, precario_catalogo, sorteio, vales
 from core.i18n import t
 from tema import C, FONTE
 
@@ -832,6 +832,7 @@ class Precario(Janela):
         self.b_pdf = app._botao(esq, t("win_precario_pdf"), self._guardar_pdf, True, icone="gerar", height=40)
         self.b_pdf.pack(fill="x", pady=(8, 4))
         app._botao(esq, t("win_precario_imagem"), self._guardar_imagem, height=34).pack(fill="x", pady=2)
+        app._botao(esq, t("web_vales_titulo") + "…", self._vales, height=34).pack(fill="x", pady=2)
         app._botao(esq, t("win_precario_guardar"), self._guardar_ficheiro, height=34).pack(fill="x", pady=2)
         app._botao(esq, t("win_precario_abrir"), self._abrir_ficheiro, height=34).pack(fill="x", pady=2)
         self.l_erro = self.etiqueta(esq, "", wraplength=400)
@@ -1019,6 +1020,18 @@ class Precario(Janela):
         self.l_erro.configure(text="")
         return Path(destino)
 
+    def _vales(self) -> None:
+        """«Vales numerados…»: só com uma moeda inventada com nome (o aviso diz como); abre a janela dos vales com o desenho e a moeda deste preçário."""
+        nome = self.v_inv_nome.get().strip()
+        if not self.v_inventada.get() or not nome:
+            self.l_erro.configure(text=t("web_vales_intro"))
+            return
+        self.l_erro.configure(text="")
+        antiga = self.app.w_extras.get("vales")
+        if antiga is not None and antiga.winfo_exists():
+            antiga.destroy()
+        self.app.w_extras["vales"] = Vales(self.app, nome, self.v_desenho.get(), self.v_subtitulo.get())
+
     def _guardar_pdf(self, destino: str | None = None) -> Path | None:
         return self._guardar(t("win_precario_pdf"), ".pdf", "PDF", lambda p: _com_lingua(p.lingua, precario.criar_pdf, p), destino)
 
@@ -1083,3 +1096,107 @@ class Precario(Janela):
         finally:
             self._a_aplicar = False
         self._precos()
+
+
+# ------------------------------------------------------------------ vales de fichas numerados (fase 7 do preçário)
+class Vales(Janela):
+    """«Vales numerados»: com uma moeda inventada no preçário, desenha o vale (o mesmo desenho do preçário, o valor em grande) e «Criar vales numerados»
+    põe o template e os algarismos na janela principal (como a galeria): o resto (séries, QR de verificação, folhas) é o gerador de rifas.
+    A pré-visualização desenha-se no worker da app e chega por `App._ev_vales`. Aberta pela janela do preçário, que lhe passa o desenho, o nome e a organização."""
+
+    def __init__(self, app, moeda_plural: str, desenho: str, organizacao: str = ""):
+        super().__init__(app, t("web_vales_titulo"), 860, 520)
+        self.token = 0
+        self._espera = None
+        self._foto = None
+        self.desenho, self.moeda_plural, self.organizacao = desenho, moeda_plural.strip(), organizacao
+        self.v = {k: tk.StringVar() for k in ("titulo", "singular", "quantidade", "organizacao", "nota")}
+        self.v["titulo"].set(t("web_vales_cabecalho_padrao"))
+        self.v["quantidade"].set("1")
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+        esq = ctk.CTkFrame(self, fg_color="transparent", width=340)
+        esq.grid(row=0, column=0, sticky="ns", padx=(14, 0), pady=12)
+        self.etiqueta(esq, t("web_vales_intro"), wraplength=330).pack(fill="x", pady=(0, 8))
+        for chave, rotulo in (("titulo", t("web_vales_cabecalho")), ("singular", t("web_vales_singular")), ("quantidade", t("web_vales_quantidade")),
+                              ("organizacao", t("web_galeria_organizacao")), ("nota", t("web_vales_nota"))):
+            self.etiqueta(esq, rotulo, wraplength=330).pack(fill="x")
+            app._entrada(esq, self.v[chave]).pack(fill="x", pady=(0, 6))
+        self.b_usar = app._botao(esq, t("web_vales_criar"), self._usar, True, icone="gerar", height=42)
+        self.b_usar.pack(fill="x", pady=(6, 0))
+        self.l_erro = self.etiqueta(esq, "", wraplength=330)
+        self.l_erro.configure(text_color=C["erro"])
+        self.l_erro.pack(fill="x", pady=(6, 0))
+        self.previa = ctk.CTkLabel(self, text="…", fg_color=C["visor"], corner_radius=12, text_color=C["suave"])
+        self.previa.grid(row=0, column=1, sticky="nsew", padx=14, pady=12)
+        for v in self.v.values():
+            v.trace_add("write", lambda *_: self._agendar())
+        self._agendar(0)
+
+    @staticmethod
+    def singular_de(plural: str) -> str:
+        p = plural.strip()
+        return p[:-1] if len(p) > 2 and p.lower().endswith("s") else p
+
+    def vale(self) -> vales.Vale:
+        """O vale com o que está nas caixas (a quantidade que não é um número fica 0: o `core` recusa-a com a mensagem certa)."""
+        try:
+            q = int(self.v["quantidade"].get().strip())
+        except ValueError:
+            q = 0
+        return vales.Vale(self.desenho, self.v["titulo"].get(), self.v["organizacao"].get() or self.organizacao,
+                          self.v["singular"].get() or self.singular_de(self.moeda_plural), self.moeda_plural, q, self.v["nota"].get())
+
+    def _agendar(self, atraso: int = 350) -> None:
+        if self._espera:
+            self.after_cancel(self._espera)
+        self._espera = self.after(atraso, self._desenhar)
+
+    def _desenhar(self) -> None:
+        self._espera = None
+        self.token += 1
+        token, v, lingua = self.token, self.vale(), i18n.atual()
+        gc.collect()                                     # ver App._analisar: o lixo do Tk apanha-se no fio principal
+
+        def trabalho() -> None:
+            if token != self.token:
+                return
+            try:
+                with i18n.com_lingua(lingua):
+                    png = core.png_de_pagina(vales.criar_template(v), 110)
+                self.app.fila.put(("vales", token, png, None))
+            except Exception as e:                       # noqa: BLE001 - quantidade fora dos limites, letras que faltam, etc.
+                self.app.fila.put(("vales", token, None, e))
+        self.app.pool.submit(trabalho)
+
+    def resultado(self, token: int, png: bytes | None, erro: Exception | None) -> None:
+        if token != self.token or not self.winfo_exists():
+            return
+        self.l_erro.configure(text="" if erro is None else (str(erro) if isinstance(erro, core.ErroRifas) else t("erro_inesperado", erro=erro)))
+        if png is None:
+            return
+        import io
+        im = Image.open(io.BytesIO(png))
+        self.update_idletasks()
+        im.thumbnail((max(self.previa.winfo_width() - 20, 200), max(self.previa.winfo_height() - 20, 200)), Image.LANCZOS)
+        self._foto = ctk.CTkImage(light_image=im, dark_image=im, size=im.size)
+        self.previa.configure(image=self._foto, text="")
+
+    def _usar(self) -> None:
+        try:
+            with i18n.com_lingua(i18n.atual()):
+                v = self.vale()
+                modelo = vales.criar_template(v)
+                digitos = vales.criar_algarismos()
+        except core.ErroRifas as e:
+            self.l_erro.configure(text=str(e))
+            return
+        self.app.usar_galeria(f"vales-{v.desenho}", modelo, digitos)
+        self.destroy()
+
+    def destroy(self) -> None:
+        if self._espera:
+            self.after_cancel(self._espera)
+            self._espera = None
+        self.token += 1
+        super().destroy()
