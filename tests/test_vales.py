@@ -116,3 +116,8 @@ def test_de_dict_so_aceita_dicionarios_com_textos():
 
 def test_os_mesmos_textos_dao_os_mesmos_bytes():
     assert vales.criar_template(VALE) == vales.criar_template(VALE)
+
+
+def test_o_quadro_negro_do_preçário_vira_um_desenho_claro_no_vale():
+    assert vales.desenho_do_vale("quadro") == "arraial" and vales.desenho_do_vale("") == "arraial" and vales.desenho_do_vale("natal") == "natal"
+    assert vales.de_dict({"desenho": "quadro", "moeda": "ficha"}).desenho == "arraial"

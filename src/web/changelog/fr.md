@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.72.0 — 2026-11-20
+
+### Nouveautés
+- **Liste de prix «tableau noir»** : un nouveau modèle dans la liste «Occasion et thème» (et dans l'appli Windows) : fond vert foncé de tableau d'école, cadre en bois et texte à la craie (blanc et jaune), idéal pour la buvette, la terrasse ou la salle de classe.
+
 ## 3.71.0 — 2026-11-20
 
 ### Nouveautés

@@ -37,7 +37,7 @@ def test_o_catalogo_vem_na_lingua_do_pedido_com_desenhos_moedas_e_a_sugestao_do_
     assert r.status_code == 200 and "X-Lingua" in r.headers["vary"] and "max-age" in r.headers["cache-control"]
     ids = {a["id"] for cat in d["categorias"] for a in cat["artigos"]}
     assert "coxinha" in ids and "bifana" not in ids and d["sugerida"] == "festa_junina" and d["pais"] == "BR" and d["moeda"] == "BRL"
-    assert len(d["desenhos"]) == 24 and {"codigo": "BRL", "simbolo": "R$", "decimais": 2} in d["moedas"] and d["paises"]["PT"] == "EUR" and d["limites"]["linhas"] == 80
+    assert len(d["desenhos"]) == 25 and d["desenhos"][-1] == {"id": "quadro", "nome": "Quadro negro"} and {"codigo": "BRL", "simbolo": "R$", "decimais": 2} in d["moedas"] and d["paises"]["PT"] == "EUR" and d["limites"]["linhas"] == 80
     assert d["formatos"] == ["A5", "A4", "A3"] and all(a["emoji"] for cat in d["categorias"] for a in cat["artigos"])
     pt = c.get("/api/precario/catalogo", headers={"X-Lingua": "pt"}).json()
     assert "bifana" in {a["id"] for cat in pt["categorias"] for a in cat["artigos"]} and pt["moeda"] == "EUR" and pt["sugerida"] == ""

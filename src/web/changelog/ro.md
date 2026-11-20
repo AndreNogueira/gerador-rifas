@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.72.0 — 2026-11-20
+
+### Noutăți
+- **Listă de prețuri «tablă»**: un desen nou în lista «Ocazie și temă» (și în aplicația Windows): fundal verde închis de tablă școlară, ramă de lemn și text cu cretă (alb și galben), ideal pentru stand, terasă sau clasă.
+
 ## 3.71.0 — 2026-11-20
 
 ### Noutăți

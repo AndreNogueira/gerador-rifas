@@ -68,7 +68,7 @@ def _nome_da_linha(ln: Linha, lingua: str) -> str:
 
 def validar(p: Precario) -> None:
     """Levanta `ErroRifas` (`err_precario_texto`, `err_precario_linhas`) com o que não serve; nada se desenha antes disto."""
-    if p.desenho not in galeria.POR_ID or p.formato not in FORMATOS or p.orientacao not in ORIENTACOES or not 0 <= p.colunas <= 3 or p.lingua not in cat.LINGUAS:
+    if p.desenho not in POR_ID or p.formato not in FORMATOS or p.orientacao not in ORIENTACOES or not 0 <= p.colunas <= 3 or p.lingua not in cat.LINGUAS:
         raise ErroRifas("err_precario_texto", car="?")
     if not 1 <= len(p.linhas) <= MAX_LINHAS:
         raise ErroRifas("err_precario_linhas", max=MAX_LINHAS)
@@ -92,6 +92,39 @@ def validar(p: Precario) -> None:
             mod_moeda.validar_inventada(p.moeda)
         except mod_moeda.ErroMoeda:
             raise ErroRifas("err_precario_texto", car=p.moeda.nome[:14]) from None
+
+
+# ------------------------------------------------------------------ o «quadro negro» (um desenho só do preçário)
+# Papel verde-escuro como um quadro de escola, moldura de madeira e giz (branco e amarelo). Não está na galeria de rifas: lá os textos são escuros sobre papel claro.
+QUADRO = galeria.Desenho("quadro", "Quadro negro", (0.42, 0.28, 0.15), (0.99, 0.86, 0.38), (0.10, 0.19, 0.16), (0.10, 0.19, 0.16), "escola")
+DESENHOS = (*galeria.DESENHOS, QUADRO)
+POR_ID = {d.id: d for d in DESENHOS}
+
+
+def desenho_de(id_: str):
+    """O desenho (da galeria ou o quadro negro) ou `KeyError`."""
+    return POR_ID[id_]
+
+
+def _escuro(d) -> bool:
+    """Papel escuro: o texto passa a giz claro e os realces a amarelo (num papel claro o texto é quase preto e os realces a cor principal)."""
+    return _luminancia(d.papel) < 0.4
+
+
+def _cor_texto(d):
+    return (0.96, 0.96, 0.92) if _escuro(d) else (0.12, 0.12, 0.12)
+
+
+def _cor_suave(d):
+    return (0.62, 0.66, 0.62) if _escuro(d) else CINZA
+
+
+def _cor_rodape(d):
+    return (0.80, 0.82, 0.78) if _escuro(d) else CINZA_ESCURO
+
+
+def _cor_realce(d):
+    return d.destaque if _escuro(d) else d.principal
 
 
 # ------------------------------------------------------------------ medidas
@@ -273,7 +306,7 @@ def _item(c, p: Precario, d, ln: Linha, x: float, y_topo: float, largura: float,
     sf = min(s, 1.2)                                                       # o texto cresce menos do que as linhas e as imagens: com poucos artigos não fica desproporcionado
     base = y_topo - linha_h / 2
     nome = _nome_da_linha(ln, p.lingua)
-    negro = (0.12, 0.12, 0.12)
+    negro = _cor_texto(d)
     x_texto = x
     emoji = cat.ARTIGOS[ln.artigo].emoji if ln.artigo else ln.emoji
     if p.imagens and emoji:
@@ -295,17 +328,17 @@ def _item(c, p: Precario, d, ln: Linha, x: float, y_topo: float, largura: float,
     c.drawString(x_texto, y_txt, nome_t)
     fim_nome = x_texto + letras.largura(nome_t, False, tam_nome)
     if preco:
-        c.setFillColorRGB(*d.principal)
+        c.setFillColorRGB(*_cor_realce(d))
         c.setFont(fonte_preco, tam_preco)
         c.drawRightString(x + largura, base - tam_preco * 0.33, preco)
         ini_pontos, fim_pontos = fim_nome + 6 * f * sf, x + largura - larg_preco - 6 * f * sf
     else:                                                                  # em branco: um traço para escrever o preço à mão
         ini_pontos, fim_pontos = fim_nome + 6 * f * sf, x + largura - larg_preco - 4 * f * sf
-        c.setStrokeColorRGB(*CINZA)
+        c.setStrokeColorRGB(*_cor_suave(d))
         c.setLineWidth(0.9 * f)
         c.line(x + largura - larg_preco, y_txt - 1.5 * f, x + largura, y_txt - 1.5 * f)
     if fim_pontos - ini_pontos > 10:
-        c.setStrokeColorRGB(*CINZA)
+        c.setStrokeColorRGB(*_cor_suave(d))
         c.setLineWidth(1.1 * f * sf)
         c.setLineCap(1)
         c.setDash(0.1, 3.4 * f * sf)
@@ -318,7 +351,7 @@ def _categoria(c, p: Precario, d, categoria: str, x: float, y_topo: float, largu
     nome = cat.nome_imprimivel(cat.CATEGORIAS[categoria], p.lingua)
     sf = min(s, 1.2)
     t, tam = _ajustado(nome, True, 14.5 * f * sf, largura - 10 * f, 8 * f)
-    c.setFillColorRGB(*d.principal)
+    c.setFillColorRGB(*_cor_realce(d))
     c.setFont(letras.fonte(t, True), tam)
     c.drawString(x, y_topo - 15.5 * f * s, t)
     c.setStrokeColorRGB(*d.destaque)
@@ -330,7 +363,7 @@ def criar_pdf(p: Precario) -> bytes:
     """O PDF do preçário (1 a 5 páginas). Levanta `ErroRifas` se algo não serve (ver `validar`)."""
     validar(p)
     from reportlab.pdfgen import canvas
-    d = galeria.POR_ID[p.desenho]
+    d = POR_ID[p.desenho]
     larg, alt = FORMATOS[p.formato]
     if p.orientacao == "horizontal":
         larg, alt = alt, larg
@@ -411,11 +444,11 @@ def criar_pdf(p: Precario) -> bytes:
         _faixa(c, d, qx + 12 * f, qx + qw - 12 * f, qy + 9 * f, topo=False)
         if p.rodape.strip():
             t, tam = _ajustado(p.rodape.strip(), False, 10.5 * f, qw - 2 * pad - 60 * f, 6.5 * f)
-            c.setFillColorRGB(*CINZA_ESCURO)
+            c.setFillColorRGB(*_cor_rodape(d))
             c.setFont(letras.fonte(t), tam)
             c.drawCentredString(qx + qw / 2, qy + 30 * f, t)
         if len(paginas) > 1:
-            c.setFillColorRGB(*CINZA_ESCURO)
+            c.setFillColorRGB(*_cor_rodape(d))
             c.setFont("Vera", 9 * f)
             c.drawRightString(qx + qw - 14 * f, qy + 14 * f, f"{n + 1}/{len(paginas)}")
         c.showPage()

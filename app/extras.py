@@ -783,7 +783,7 @@ class Precario(Janela):
         self.m_ocasiao = self._menu(esq, [self._nome_ocasiao(o) for o in self.ocasioes], self._escolher_ocasiao)
         self.m_ocasiao.pack(fill="x", pady=(0, 6))
         self.etiqueta(esq, t("web_precario_aspeto")).pack(fill="x")
-        self.m_desenho = self._menu(esq, [d.nome for d in galeria.DESENHOS], self._mudar_desenho)
+        self.m_desenho = self._menu(esq, [d.nome for d in precario.DESENHOS], self._mudar_desenho)
         self.m_desenho.pack(fill="x", pady=(0, 8))
         self.etiqueta(esq, t("web_precario_artigos")).pack(fill="x", pady=(4, 0))
         self.f_artigos = ctk.CTkFrame(esq, fg_color="transparent")
@@ -868,7 +868,7 @@ class Precario(Janela):
         self.v_ocasiao.set(o.id)
         self.m_ocasiao.set(nome)
         self.v_desenho.set(o.desenho)
-        self.m_desenho.set(galeria.POR_ID[o.desenho].nome)
+        self.m_desenho.set(precario.POR_ID[o.desenho].nome)
         if not self.v_titulo.get().strip() or self.v_titulo.get() == anterior:
             self.v_titulo.set(precario_catalogo.nome(o, self.lingua)[:precario.MAX_TITULO])
         self._ocasiao_anterior = o.id
@@ -879,7 +879,7 @@ class Precario(Janela):
         self._precos()
 
     def _mudar_desenho(self, nome: str) -> None:
-        self.v_desenho.set(next(d.id for d in galeria.DESENHOS if d.nome == nome))
+        self.v_desenho.set(next(d.id for d in precario.DESENHOS if d.nome == nome))
         self._agendar(0)
 
     def _alternar(self, artigo: str) -> None:
@@ -1030,7 +1030,7 @@ class Precario(Janela):
         antiga = self.app.w_extras.get("vales")
         if antiga is not None and antiga.winfo_exists():
             antiga.destroy()
-        self.app.w_extras["vales"] = Vales(self.app, nome, self.v_desenho.get(), self.v_subtitulo.get())
+        self.app.w_extras["vales"] = Vales(self.app, nome, vales.desenho_do_vale(self.v_desenho.get()), self.v_subtitulo.get())
 
     def _guardar_pdf(self, destino: str | None = None) -> Path | None:
         return self._guardar(t("win_precario_pdf"), ".pdf", "PDF", lambda p: _com_lingua(p.lingua, precario.criar_pdf, p), destino)
@@ -1064,7 +1064,7 @@ class Precario(Janela):
             self.v_subtitulo.set(p.subtitulo)
             self.v_rodape.set(p.rodape)
             self.v_desenho.set(p.desenho)
-            self.m_desenho.set(galeria.POR_ID[p.desenho].nome)
+            self.m_desenho.set(precario.POR_ID[p.desenho].nome)
             self.v_formato.set(p.formato)
             self.v_orientacao.set(self._orientacoes[p.orientacao])
             self.v_colunas.set(self._colunas[p.colunas])

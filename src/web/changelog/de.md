@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.72.0 — 2026-11-20
+
+### Neu
+- **Preisliste als «Schiefertafel»**: ein neues Motiv in der Liste «Anlass und Motiv» (und in der Windows-App): dunkelgrüner Schultafel-Hintergrund, Holzrahmen und Kreideschrift (weiß und gelb), ideal für den Imbiss, die Terrasse oder das Klassenzimmer.
+
 ## 3.71.0 — 2026-11-20
 
 ### Neu

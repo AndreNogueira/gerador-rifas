@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.72.0 — 2026-11-20
+
+### Novo
+- **Preçário em «quadro negro»**: um novo desenho na lista «Ocasião e tema» (e na app Windows): fundo verde-escuro de quadro de escola, moldura de madeira e texto a giz (branco e amarelo), ideal para a tasquinha, a esplanada ou a sala de aula.
+
 ## 3.71.0 — 2026-11-20
 
 ### Novo

@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.72.0 — 2026-11-20
+
+### Nowości
+- **Cennik «tablica»**: nowy motyw na liście «Okazja i motyw» (i w aplikacji na Windows): ciemnozielone tło szkolnej tablicy, drewniana rama i tekst pisany kredą (biały i żółty), idealny na budkę z jedzeniem, ogródek lub do klasy.
+
 ## 3.71.0 — 2026-11-20
 
 ### Nowości

@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.72.0 — 2026-11-20
+
+### Novinky
+- **Ceník jako «tabule»**: nový motiv v seznamu «Příležitost a motiv» (i v aplikaci pro Windows): tmavozelené pozadí školní tabule, dřevěný rám a text psaný křídou (bílý a žlutý), ideální pro stánek, zahrádku nebo třídu.
+
 ## 3.71.0 — 2026-11-20
 
 ### Novinky

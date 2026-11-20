@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.72.0 — 2026-11-20
+
+### Nytt
+- **Prislista som «griffeltavla»**: ett nytt motiv i listan «Tillfälle och motiv» (och i Windows-appen): mörkgrön skoltavla som bakgrund, träram och kritskrift (vit och gul), perfekt för kiosken, uteserveringen eller klassrummet.
+
 ## 3.71.0 — 2026-11-20
 
 ### Nytt

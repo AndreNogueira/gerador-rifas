@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.72.0 — 2026-11-20
+
+### Nieuw
+- **Prijslijst als «schoolbord»**: een nieuw ontwerp in de lijst «Gelegenheid en thema» (en in de Windows-app): donkergroene schoolbordachtergrond, een houten lijst en krijtletters (wit en geel), ideaal voor de kraam, het terras of het klaslokaal.
+
 ## 3.71.0 — 2026-11-20
 
 ### Nieuw

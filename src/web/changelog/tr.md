@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.72.0 — 2026-11-20
+
+### Yeni
+- **«Kara tahta» fiyat listesi**: «Etkinlik ve tema» listesinde (ve Windows uygulamasında) yeni bir tasarım: koyu yeşil okul tahtası zemini, ahşap çerçeve ve tebeşir yazısı (beyaz ve sarı); tezgâh, teras ya da sınıf için ideal.
+
 ## 3.71.0 — 2026-11-20
 
 ### Yeni
