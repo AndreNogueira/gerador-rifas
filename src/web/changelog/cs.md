@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.76.0 — 2026-11-20
+
+### Novinky
+- **Vlastní fotky v ceníku**: u každé položky můžete kliknout na «Foto» a místo ikony vložit vlastní obrázek (PNG nebo JPG; až 20 na ceník; web a aplikace pro Windows). Fotka se zmenší ve vašem počítači a slouží jen k vykreslení náhledu a PDF: neukládá se na server, do souboru ceníku ani do sdíleného odkazu.
+
 ## 3.75.0 — 2026-11-20
 
 ### Novinky

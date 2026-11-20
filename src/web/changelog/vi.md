@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.76.0 — 2026-11-20
+
+### Mới
+- **Ảnh riêng trong bảng giá**: ở mỗi món, bạn có thể bấm «Ảnh» và đặt hình của mình (PNG hoặc JPG) thay cho biểu tượng (tối đa 20 ảnh mỗi bảng giá; trang web và ứng dụng Windows). Ảnh được thu nhỏ trên máy của bạn và chỉ dùng để vẽ bản xem trước và PDF: không lưu trên máy chủ, trong tệp bảng giá hay trong liên kết chia sẻ.
+
 ## 3.75.0 — 2026-11-20
 
 ### Mới

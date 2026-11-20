@@ -41,6 +41,17 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.getByTestId("precario-previa-img")).toBeVisible();
     await expect(page.getByTestId("precario-erro")).toHaveCount(0);
     await page.getByTestId("precario-tamanhos").uncheck();
+    // uma foto própria (um PNG de 8 x 8 px): reduz-se no browser, vai no pedido e a pré-visualização continua a desenhar-se
+    const png = Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAFElEQVR4nGM8YWPDgA0wYRUdtBIA/xQBUEfB7b0AAAAASUVORK5CYII=",
+      "base64",
+    );
+    await page
+      .getByTestId("precario-foto-agua")
+      .setInputFiles({ name: "agua.png", mimeType: "image/png", buffer: png });
+    await expect(page.getByTestId("precario-foto-tirar-agua")).toBeVisible();
+    await expect(page.getByTestId("precario-previa-img")).toBeVisible();
+    await expect(page.getByTestId("precario-erro")).toHaveCount(0);
     await page.getByTestId("precario-meu-nome").fill("Bolo da avó");
     await page.getByTestId("precario-meu-juntar").click();
     await expect(page.getByTestId("precario-erro")).toHaveCount(0);

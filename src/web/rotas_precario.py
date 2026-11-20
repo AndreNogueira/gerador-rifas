@@ -26,6 +26,7 @@ class LinhaEntrada(BaseModel):
     nome: str = Field("", max_length=precario.MAX_NOME)
     preco: str = Field("", max_length=24)                    # o que a pessoa escreveu: lê-se na língua do pedido («1,5», «1.50»)
     preco2: str = Field("", max_length=24)                   # o segundo preço (só com `tamanhos`)
+    foto: str = Field("", max_length=200_000)                # a foto própria (`data:image/png|jpeg;base64,…`, já reduzida pelo browser): só se desenha, nunca se guarda
     categoria: str = Field("", max_length=20)
     emoji: str = Field("", max_length=8)
 

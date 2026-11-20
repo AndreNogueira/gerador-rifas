@@ -19,6 +19,9 @@ from . import galeria, letras, moeda as mod_moeda, precario_catalogo as cat
 from .motor import ErroRifas
 
 CARTOES = "A6x4"                 # cartões de mesa: o preçário em A6 e 4 por folha A4 (2 x 2), com guias de corte
+MAX_FOTOS = 20                   # fotos próprias por preçário (cada uma ocupa bytes no PDF)
+FOTO_LADO = 192                  # pixéis do lado maior de uma foto depois de reduzida (chega para a linha do preçário, mesmo em A3)
+MAX_FOTO_BYTES = 8_000_000       # o ficheiro que se aceita (a app Windows lê-o do disco; o browser já manda uma foto reduzida)
 MAX_ROTULO = 10                 # letras de cada rótulo dos tamanhos
 MAX_CARTOES = 12                 # artigos que cabem num cartão A6 com letra legível
 FORMATOS = {"A5": (419.53, 595.28), "A4": (595.28, 841.89), "A3": (841.89, 1190.55), "A6x4": (297.64, 419.53)}      # pt, vertical (o A6x4 é o tamanho de UM cartão)
@@ -38,6 +41,7 @@ class Linha:
     categoria: str = ""             # só nos textos livres (uma categoria do catálogo); vazio = «Outros»
     emoji: str = ""                 # só nos textos livres: a imagem (um código de `core/icones_precario/`)
     preco2: int | None = None       # o segundo preço (o tamanho grande, o «menu»…) quando `Precario.tamanhos` está ligado; em milésimos
+    foto: bytes = b""                # a foto própria do artigo (PNG ou JPG já reduzidos por `foto_de_bytes`); nunca vai para o ficheiro `.precario` nem para a ligação partilhada
 
 
 @dataclass(frozen=True)
@@ -87,6 +91,8 @@ def validar(p: Precario) -> None:
         _texto_ok(r, MAX_ROTULO)
     if p.tamanhos and not all(r.strip() for r in p.rotulos):
         raise ErroRifas("err_precario_texto", car="?")
+    if sum(1 for ln in p.linhas if ln.foto) > MAX_FOTOS:
+        raise ErroRifas("err_editor_limite", campo="fotos")
     for ln in p.linhas:
         if ln.artigo and ln.artigo not in cat.ARTIGOS:
             raise ErroRifas("err_precario_texto", car="?")
@@ -147,6 +153,49 @@ def _luminancia(rgb) -> float:
 
 def _misturar(rgb, outro, k: float):
     return tuple(a * (1 - k) + b * k for a, b in zip(rgb, outro, strict=True))
+
+
+@lru_cache(maxsize=64)
+def _foto(dados: bytes):
+    from reportlab.lib.utils import ImageReader
+    return ImageReader(io.BytesIO(dados))
+
+
+def foto_de_bytes(bruto: bytes) -> bytes:
+    """A foto de um artigo pronta para o PDF: só PNG ou JPG a sério (o tipo real, não o nome), reduzida a `FOTO_LADO` px e recodificada (sem EXIF nem nada que não
+    sejam pixéis): JPG se não tem transparência, PNG se tem. `err_editor_imagem` se não presta."""
+    from PIL import Image, ImageOps, UnidentifiedImageError
+    if not isinstance(bruto, (bytes, bytearray)) or not 0 < len(bruto) <= MAX_FOTO_BYTES:
+        raise ErroRifas("err_editor_imagem")
+    try:
+        with Image.open(io.BytesIO(bytes(bruto))) as im:
+            if im.format not in ("PNG", "JPEG") or min(im.size) < 1 or max(im.size) > 12000:
+                raise ErroRifas("err_editor_imagem")
+            im.load()
+            im = ImageOps.exif_transpose(im)
+            im.thumbnail((FOTO_LADO, FOTO_LADO), Image.LANCZOS)
+            saida = io.BytesIO()
+            if im.mode in ("RGBA", "LA", "P") and (im.mode != "P" or "transparency" in im.info):
+                im.convert("RGBA").save(saida, "PNG", optimize=True)
+            else:
+                im.convert("RGB").save(saida, "JPEG", quality=85, optimize=True)
+    except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
+        raise ErroRifas("err_editor_imagem") from None
+    return saida.getvalue()
+
+
+def foto_de_dados(dados) -> bytes:
+    """A foto de um `data:image/png|jpeg;base64,…` (o que o browser envia, já reduzido): ver `foto_de_bytes`."""
+    import base64
+    import binascii
+    import re
+    m = re.fullmatch(r"data:image/(png|jpeg|jpg);base64,([A-Za-z0-9+/=\s]+)", dados) if isinstance(dados, str) else None
+    if not m or len(m.group(2)) > MAX_FOTO_BYTES * 4 // 3 + 8:
+        raise ErroRifas("err_editor_imagem")
+    try:
+        return foto_de_bytes(base64.b64decode(m.group(2), validate=False))
+    except binascii.Error:
+        raise ErroRifas("err_editor_imagem") from None
 
 
 @lru_cache(maxsize=128)
@@ -321,7 +370,11 @@ def _item(c, p: Precario, d, ln: Linha, x: float, y_topo: float, largura: float,
     negro = _cor_texto(d)
     x_texto = x
     emoji = cat.ARTIGOS[ln.artigo].emoji if ln.artigo else ln.emoji
-    if p.imagens and emoji:
+    if p.imagens and ln.foto:                                              # a foto própria ganha ao ícone do catálogo
+        lado = linha_h * 0.92
+        c.drawImage(_foto(ln.foto), x, y_topo - linha_h / 2 - lado / 2, lado, lado, preserveAspectRatio=True, anchor="c", mask="auto")
+        x_texto = x + lado + 8 * f * sf
+    elif p.imagens and emoji:
         lado = linha_h * 0.92
         c.drawImage(_imagem(emoji), x, y_topo - linha_h / 2 - lado / 2, lado, lado, mask="auto")
         x_texto = x + lado + 8 * f * sf
@@ -629,7 +682,7 @@ def de_dict(d: dict, lingua: str | None = None) -> Precario:
     if isinstance(colunas, bool) or not isinstance(colunas, int):
         raise ErroRifas("err_precario_texto", car="?")
     return Precario(
-        linhas=tuple(Linha(_texto(x.get("artigo")), _texto(x.get("nome")), _preco(x.get("preco"), lg), _texto(x.get("categoria")), _texto(x.get("emoji")), _preco(x.get("preco2"), lg)) for x in linhas),
+        linhas=tuple(Linha(_texto(x.get("artigo")), _texto(x.get("nome")), _preco(x.get("preco"), lg), _texto(x.get("categoria")), _texto(x.get("emoji")), _preco(x.get("preco2"), lg), foto_de_dados(x["foto"]) if x.get("foto") else b"") for x in linhas),
         titulo=_texto(d.get("titulo")), subtitulo=_texto(d.get("subtitulo")), rodape=_texto(d.get("rodape")), desenho=_texto(d.get("desenho"), "quermesse"),
         formato=_texto(d.get("formato"), "A4"), orientacao=_texto(d.get("orientacao"), "vertical"), colunas=colunas, imagens=bool(d.get("imagens", True)), tamanhos=bool(d.get("tamanhos", False)), rotulos=_rotulos(d.get("rotulos")), moeda=moeda_, lingua=lg)
 

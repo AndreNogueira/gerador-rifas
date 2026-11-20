@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.76.0 — 2026-11-20
+
+### Novità
+- **Foto tue nel listino**: su ogni articolo puoi premere «Foto» e mettere una tua immagine (PNG o JPG) al posto dell'icona (fino a 20 per listino; sito e app Windows). La foto viene ridotta sul tuo computer e serve solo a disegnare l'anteprima e il PDF: non viene salvata sul server, nel file del listino né nel link condiviso.
+
 ## 3.75.0 — 2026-11-20
 
 ### Novità

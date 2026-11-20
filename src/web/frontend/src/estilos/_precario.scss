@@ -178,3 +178,25 @@
     min-width: 0;
   }
 }
+
+// Foto própria de um artigo: o botão «Foto» (um <label> sobre um <input type=file> escondido) e a miniatura que, ao carregar, tira a foto
+.precario {
+  .precario-foto {
+    flex: none;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    img {
+      display: block;
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+  }
+  button.precario-foto {
+    padding: 0;
+    border: 1px solid var(--linha);
+    background: var(--campo);
+  }
+}

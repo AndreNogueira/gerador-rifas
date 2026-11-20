@@ -220,6 +220,18 @@ pr.v_tamanhos.set(False)
 pr._precos()
 pr.v_inventada.set(False)
 
+# --- fotos próprias: escolhe-se um ficheiro (reduzido), entra no PDF e nunca no ficheiro .precario
+foto_png = SAIDA / "foto.png"
+Image.new("RGB", (800, 500), (30, 140, 90)).save(foto_png)
+ok(pr._escolher_foto("agua", str(foto_png)) and "agua" in pr.fotos and max(Image.open(__import__("io").BytesIO(pr.fotos["agua"])).size) == 192, "a foto própria é reduzida a 192 px e fica no artigo")
+ok(next(ln for ln in pr.precario().linhas if ln.artigo == "agua").foto == pr.fotos["agua"], "o preçário leva a foto")
+ok(b"foto" not in extras.precario.para_bytes(pr.precario()), "a foto nunca vai para o ficheiro .precario")
+(SAIDA / "mau.png").write_bytes(b"nao e uma imagem")
+ok(not pr._escolher_foto("sumo", str(SAIDA / "mau.png")) and pr.l_erro.cget("text") != "" and "sumo" not in pr.fotos, "uma foto que não é PNG nem JPG a sério é recusada com aviso")
+pr._escolher_foto("agua")
+ok("agua" not in pr.fotos, "voltar a carregar no botão tira a foto")
+pr.l_erro.configure(text="")
+
 # --- vales de fichas numerados: só com moeda inventada com nome; pre-visualiza no worker; «Criar» passa o template e os algarismos à janela principal
 pr.v_inventada.set(False)
 pr._vales()

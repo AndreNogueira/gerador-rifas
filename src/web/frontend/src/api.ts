@@ -186,6 +186,7 @@ export interface PedidoPrecario {
     nome: string;
     preco: string;
     preco2?: string;
+    foto?: string;
     categoria: string;
     emoji: string;
   }[];

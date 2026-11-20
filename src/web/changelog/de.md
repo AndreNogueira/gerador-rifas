@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.76.0 — 2026-11-20
+
+### Neu
+- **Eigene Fotos in der Preisliste**: Bei jedem Artikel können Sie auf «Foto» klicken und ein eigenes Bild (PNG oder JPG) anstelle des Symbols einsetzen (bis zu 20 pro Preisliste; Website und Windows-App). Das Foto wird auf Ihrem Computer verkleinert und dient nur zum Zeichnen der Vorschau und des PDFs: Es wird weder auf dem Server noch in der Preislisten-Datei oder im geteilten Link gespeichert.
+
 ## 3.75.0 — 2026-11-20
 
 ### Neu

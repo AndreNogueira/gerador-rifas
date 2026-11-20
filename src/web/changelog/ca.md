@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.76.0 — 2026-11-20
+
+### Novetats
+- **Fotos pròpies a la llista de preus**: a cada article podeu prémer «Foto» i posar una imatge vostra (PNG o JPG) en lloc de la icona (fins a 20 per llista; web i app de Windows). La foto es redueix al vostre ordinador i només serveix per dibuixar la previsualització i el PDF: no es desa al servidor, ni al fitxer de la llista, ni a l'enllaç compartit.
+
 ## 3.75.0 — 2026-11-20
 
 ### Novetats
