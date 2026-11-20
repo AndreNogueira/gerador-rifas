@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.73.0 — 2026-11-20
+
+### Nouveautés
+- **Cartes de table** : dans le format de la liste de prix, choisissez «Cartes de table (4 par feuille A4)» (site et appli Windows) et la liste sort en cartes A6, quatre sur une feuille A4 avec des repères de découpe en pointillés, prêtes à imprimer et à découper pour les tables (jusqu'à 12 articles).
+
 ## 3.72.0 — 2026-11-20
 
 ### Nouveautés

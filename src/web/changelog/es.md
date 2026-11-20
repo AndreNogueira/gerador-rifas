@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.73.0 — 2026-11-20
+
+### Novedades
+- **Tarjetas de mesa**: en el formato de la lista de precios elija «Tarjetas de mesa (4 por hoja A4)» (sitio y app de Windows) y la lista sale en tarjetas A6, cuatro en una hoja A4 con guías de corte, listas para imprimir y cortar para las mesas (hasta 12 artículos).
+
 ## 3.72.0 — 2026-11-20
 
 ### Novedades

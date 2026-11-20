@@ -40,7 +40,7 @@ class PedidoPrecario(BaseModel):
     subtitulo: str = Field("", max_length=precario.MAX_SUBTITULO)
     rodape: str = Field("", max_length=precario.MAX_RODAPE)
     desenho: str = Field("quermesse", max_length=20)
-    formato: str = Field("A4", max_length=3)
+    formato: str = Field("A4", max_length=4)
     orientacao: str = Field("vertical", max_length=12)
     colunas: int = Field(0, ge=0, le=3)
     imagens: bool = True

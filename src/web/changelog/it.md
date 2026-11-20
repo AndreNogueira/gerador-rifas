@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.73.0 — 2026-11-20
+
+### Novità
+- **Cartoncini da tavolo**: nel formato del listino scegli «Cartoncini da tavolo (4 per foglio A4)» (sito e app Windows) e il listino esce in cartoncini A6, quattro su un foglio A4 con guide di taglio tratteggiate, pronti da stampare e tagliare per i tavoli (fino a 12 articoli).
+
 ## 3.72.0 — 2026-11-20
 
 ### Novità

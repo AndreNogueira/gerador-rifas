@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.73.0 — 2026-11-20
+
+### Noutăți
+- **Cartonașe de masă**: la formatul listei de prețuri alege «Cartonașe de masă (4 pe coala A4)» (site și aplicația Windows), iar lista iese ca cartonașe A6, patru pe o coală A4 cu ghidaje de tăiere punctate, gata de tipărit și tăiat pentru mese (până la 12 articole).
+
 ## 3.72.0 — 2026-11-20
 
 ### Noutăți

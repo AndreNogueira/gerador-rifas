@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.73.0 — 2026-11-20
+
+### Novinky
+- **Stolní karty**: ve formátu ceníku zvolte «Stolní karty (4 na list A4)» (web a aplikace pro Windows) a ceník vyjde jako karty A6, čtyři na listu A4 s čárkovanými vodítky pro řezání, připravené k tisku a vystřižení na stoly (až 12 položek).
+
 ## 3.72.0 — 2026-11-20
 
 ### Novinky

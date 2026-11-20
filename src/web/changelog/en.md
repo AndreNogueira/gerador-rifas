@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.73.0 — 2026-11-20
+
+### New
+- **Table cards**: in the price list's format choose “Table cards (4 per A4 sheet)” (site and Windows app) and the price list comes out as A6 cards, four on an A4 sheet with dashed cutting guides, ready to print and cut for the tables (up to 12 items).
+
 ## 3.72.0 — 2026-11-20
 
 ### New

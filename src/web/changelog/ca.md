@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.73.0 — 2026-11-20
+
+### Novetats
+- **Targetes de taula**: al format de la llista de preus trieu «Targetes de taula (4 per full A4)» (web i app de Windows) i la llista surt en targetes A6, quatre en un full A4 amb guies de tall a ratlles, a punt per imprimir i retallar per a les taules (fins a 12 articles).
+
 ## 3.72.0 — 2026-11-20
 
 ### Novetats

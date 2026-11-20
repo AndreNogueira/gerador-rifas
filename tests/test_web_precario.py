@@ -38,7 +38,7 @@ def test_o_catalogo_vem_na_lingua_do_pedido_com_desenhos_moedas_e_a_sugestao_do_
     ids = {a["id"] for cat in d["categorias"] for a in cat["artigos"]}
     assert "coxinha" in ids and "bifana" not in ids and d["sugerida"] == "festa_junina" and d["pais"] == "BR" and d["moeda"] == "BRL"
     assert len(d["desenhos"]) == 25 and d["desenhos"][-1] == {"id": "quadro", "nome": "Quadro negro"} and {"codigo": "BRL", "simbolo": "R$", "decimais": 2} in d["moedas"] and d["paises"]["PT"] == "EUR" and d["limites"]["linhas"] == 80
-    assert d["formatos"] == ["A5", "A4", "A3"] and all(a["emoji"] for cat in d["categorias"] for a in cat["artigos"])
+    assert d["formatos"] == ["A5", "A4", "A3", "A6x4"] and all(a["emoji"] for cat in d["categorias"] for a in cat["artigos"])
     pt = c.get("/api/precario/catalogo", headers={"X-Lingua": "pt"}).json()
     assert "bifana" in {a["id"] for cat in pt["categorias"] for a in cat["artigos"]} and pt["moeda"] == "EUR" and pt["sugerida"] == ""
     assert c.get("/api/precario/catalogo", params={"mes": 13}).status_code == 422
@@ -102,3 +102,12 @@ def test_o_limite_de_pedidos_por_minuto_protege_o_descarregar(tmp_path, motor, m
     with TestClient(criar_app(frontend=dist, armazenamento=tmp_path / "dados2", motor=motor)) as cliente:
         codigos = [cliente.post("/api/precario/pdf", json=PEDIDO).status_code for _ in range(4)]
     assert codigos[:2] == [200, 200] and 429 in codigos[2:]
+
+
+def test_os_cartoes_de_mesa_pelo_pdf_e_pela_previa(c):
+    pedido = {"linhas": [{"artigo": "agua", "preco": "1,5"}, {"artigo": "cerveja"}], "titulo": "Festa", "formato": "A6x4"}
+    r = c.post("/api/precario/pdf", json=pedido)
+    assert r.status_code == 200 and r.content.startswith(b"%PDF")
+    assert c.post("/api/precario/previa.png", json=pedido).status_code == 200
+    muitos = {**pedido, "linhas": [{"nome": f"Artigo {i}"} for i in range(13)]}
+    assert c.post("/api/precario/pdf", json=muitos, headers={"X-Lingua": "en"}).status_code == 422

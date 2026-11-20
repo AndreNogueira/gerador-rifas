@@ -416,4 +416,5 @@ T = {
     "err_vale_quantidade": "Jumlah pada tiap kupon harus antara {min} dan {max}.",
     "tut_f_vales_t": "Kupon koin bernomor",
     "tut_f_vales_b": "Jika daftar harga memakai mata uang rekaan (koin, token…), buat juga kuponnya: pilih desain, judul, dan berapa koin nilai tiap kupon, lalu buat modelnya. Berlanjut di layar utama, tempat pembuat menomori kupon dengan seri («A-», «B-»), QR verifikasi, dan lembar siap cetak. {onde}",
+    "web_precario_cartoes": "Kartu meja (4 per lembar A4)",
 }
