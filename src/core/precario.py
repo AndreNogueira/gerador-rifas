@@ -25,6 +25,7 @@ MAX_FOTO_BYTES = 8_000_000       # o ficheiro que se aceita (a app Windows lê-o
 LOGO_LADO = 480                  # pixéis do lado maior do logótipo depois de reduzido (chega para 4 cm a 300 dpi)
 MAX_LOGO_BYTES = 2_000_000       # o ficheiro do logótipo que se aceita (como o das rifas, `core.marca`)
 LOGO_LUGARES = ("esquerda", "direita", "rodape")      # onde vai o logótipo: no cabeçalho (no lugar de um dos emblemas) ou no rodapé
+MIN_COMBO, MAX_COMBO = 2, 4      # artigos de um combo (um «menu»: bifana + bebida, de secções diferentes)
 MAX_ROTULO = 10                 # letras de cada rótulo dos tamanhos
 MAX_CARTOES = 12                 # artigos que cabem num cartão A6 com letra legível
 FORMATOS = {"A5": (419.53, 595.28), "A4": (595.28, 841.89), "A3": (841.89, 1190.55), "A6x4": (297.64, 419.53)}      # pt, vertical (o A6x4 é o tamanho de UM cartão)
@@ -45,6 +46,7 @@ class Linha:
     emoji: str = ""                 # a imagem (um código de `core/icones_precario/`): num texto livre, qualquer uma; num artigo do catálogo, uma das suas `icones` (vazio = a de omissão)
     preco2: int | None = None       # o segundo preço (o tamanho grande, o «menu»…) quando `Precario.tamanhos` está ligado; em milésimos
     foto: bytes = b""                # a foto própria do artigo (PNG ou JPG já reduzidos por `foto_de_bytes`); nunca vai para o ficheiro `.precario` nem para a ligação partilhada
+    combo: tuple = ()               # um combo: 2 a 4 ids de artigos do catálogo (de qualquer secção) com um só preço; o nome é o de `nome` ou os dos artigos unidos por « + »; vai sempre para «Menus e combos»
 
 
 @dataclass(frozen=True)
@@ -76,9 +78,16 @@ def _texto_ok(texto: str, maximo: int) -> None:
         raise ErroRifas("err_precario_texto", car=falta)
 
 
+def nome_do_combo(combo: tuple, lingua: str) -> str:
+    """O nome de um combo sem nome próprio: os dos artigos unidos por « + » («Bifana + Cerveja»)."""
+    return " + ".join(cat.nome_imprimivel(cat.ARTIGOS[a], lingua) for a in combo)
+
+
 def _nome_da_linha(ln: Linha, lingua: str) -> str:
     if ln.nome.strip():
         return " ".join(ln.nome.split())
+    if ln.combo:
+        return nome_do_combo(ln.combo, lingua)
     return cat.nome_imprimivel(cat.ARTIGOS[ln.artigo], lingua)
 
 
@@ -106,7 +115,10 @@ def validar(p: Precario) -> None:
     for ln in p.linhas:
         if ln.artigo and ln.artigo not in cat.ARTIGOS:
             raise ErroRifas("err_precario_texto", car="?")
-        if not ln.artigo and not ln.nome.strip():
+        if ln.combo and (ln.artigo or not isinstance(ln.combo, tuple) or not MIN_COMBO <= len(ln.combo) <= MAX_COMBO or len(set(ln.combo)) != len(ln.combo)
+                         or any(a not in cat.ARTIGOS for a in ln.combo)):
+            raise ErroRifas("err_precario_combo", min=MIN_COMBO, max=MAX_COMBO)
+        if not ln.artigo and not ln.combo and not ln.nome.strip():
             raise ErroRifas("err_precario_linhas", max=MAX_LINHAS)
         _texto_ok(ln.nome, MAX_NOME)
         if ln.categoria and ln.categoria not in cat.CATEGORIAS:
@@ -294,7 +306,7 @@ def _agrupar(p: Precario) -> list[tuple[str, list[Linha]]]:
     """As linhas por categoria, pela ordem do catálogo (dentro de cada uma, a ordem em que vieram); texto livre sem categoria vai para «Outros»."""
     por_cat: dict[str, list[Linha]] = {c: [] for c in cat.CATEGORIAS}
     for ln in p.linhas:
-        c = cat.ARTIGOS[ln.artigo].categoria if ln.artigo else (ln.categoria or "extras")
+        c = "menus" if ln.combo else cat.ARTIGOS[ln.artigo].categoria if ln.artigo else (ln.categoria or "extras")
         por_cat[c].append(ln)
     return [(c, ls) for c, ls in por_cat.items() if ls]
 
@@ -437,6 +449,12 @@ def _item(c, p: Precario, d, ln: Linha, x: float, y_topo: float, largura: float,
         lado = linha_h * 0.92
         c.drawImage(_foto(ln.foto), x, y_topo - linha_h / 2 - lado / 2, lado, lado, preserveAspectRatio=True, anchor="c", mask="auto")
         x_texto = x + lado + 8 * f * sf
+    elif p.imagens and ln.combo:                                           # as imagens dos artigos do combo, lado a lado e a sobrepor-se um pouco
+        lado = linha_h * 0.92 * 0.75
+        passo = min(lado * 0.72, (linha_h * 0.92 * 2.1 - lado) / (len(ln.combo) - 1))
+        for i, a in enumerate(ln.combo):
+            c.drawImage(_imagem(cat.ARTIGOS[a].emoji), x + i * passo, y_topo - linha_h / 2 - lado / 2, lado, lado, mask="auto")
+        x_texto = x + lado + (len(ln.combo) - 1) * passo + 8 * f * sf
     elif p.imagens and emoji:
         lado = linha_h * 0.92
         c.drawImage(_imagem(emoji), x, y_topo - linha_h / 2 - lado / 2, lado, lado, mask="auto")
@@ -720,6 +738,15 @@ def _rotulos(valor) -> tuple:
     return (valor[0], valor[1])
 
 
+def _combo(valor) -> tuple:
+    """Os ids dos artigos de um combo de um dicionário (lista de textos); sem eles, não é um combo."""
+    if valor is None or valor == []:
+        return ()
+    if not isinstance(valor, (list, tuple)) or any(not isinstance(a, str) for a in valor):
+        raise ErroRifas("err_precario_combo", min=MIN_COMBO, max=MAX_COMBO)
+    return tuple(valor)
+
+
 def _cores(valor) -> tuple:
     """As três cores de um dicionário (lista de 3 textos `#RRGGBB` ou vazios); sem elas, as do desenho."""
     if valor is None:
@@ -732,7 +759,7 @@ def _cores(valor) -> tuple:
 def de_dict(d: dict, lingua: str | None = None) -> Precario:
     """O `Precario` de um dicionário (JSON): `titulo`, `subtitulo`, `rodape`, `desenho`, `formato`, `orientacao`, `colunas`, `imagens`, `lingua`,
     `moeda` (`{"codigo": "EUR"}` ou `{"nome": "fichas", "antes": false, "decimais": 0}`; sem ela, a do país da língua), `cores` (3 `#RRGGBB`), `logotipo` (um `data:image/…`) com `logo_lugar`,
-    e `linhas` (`artigo`, `nome`, `preco`, `categoria`, `emoji`).
+    e `linhas` (`artigo`, `nome`, `preco`, `categoria`, `emoji`, `combo`).
     Tipos errados e valores impossíveis dão `ErroRifas` (a validação completa é a de `validar`, que `criar_pdf` chama)."""
     if not isinstance(d, dict):
         raise ErroRifas("err_precario_texto", car="?")
@@ -759,7 +786,7 @@ def de_dict(d: dict, lingua: str | None = None) -> Precario:
     if isinstance(colunas, bool) or not isinstance(colunas, int):
         raise ErroRifas("err_precario_texto", car="?")
     return Precario(
-        linhas=tuple(Linha(_texto(x.get("artigo")), _texto(x.get("nome")), _preco(x.get("preco"), lg), _texto(x.get("categoria")), _texto(x.get("emoji")), _preco(x.get("preco2"), lg), foto_de_dados(x["foto"]) if x.get("foto") else b"") for x in linhas),
+        linhas=tuple(Linha(_texto(x.get("artigo")), _texto(x.get("nome")), _preco(x.get("preco"), lg), _texto(x.get("categoria")), _texto(x.get("emoji")), _preco(x.get("preco2"), lg), foto_de_dados(x["foto"]) if x.get("foto") else b"", _combo(x.get("combo"))) for x in linhas),
         titulo=_texto(d.get("titulo")), subtitulo=_texto(d.get("subtitulo")), rodape=_texto(d.get("rodape")), desenho=_texto(d.get("desenho"), "quermesse"),
         formato=_texto(d.get("formato"), "A4"), orientacao=_texto(d.get("orientacao"), "vertical"), colunas=colunas, imagens=bool(d.get("imagens", True)), tamanhos=bool(d.get("tamanhos", False)), rotulos=_rotulos(d.get("rotulos")), moeda=moeda_, lingua=lg,
         cores=_cores(d.get("cores")), logo=logo_de_dados(d["logotipo"]) if d.get("logotipo") else b"", logo_lugar=_texto(d.get("logo_lugar"), "esquerda"))
@@ -770,7 +797,7 @@ def para_dict(p: Precario) -> dict:
     m = ({"nome": p.moeda.nome, "antes": p.moeda.antes, "decimais": p.moeda.decimais} if isinstance(p.moeda, mod_moeda.MoedaInventada) else {"codigo": p.moeda.codigo})
     return {"titulo": p.titulo, "subtitulo": p.subtitulo, "rodape": p.rodape, "desenho": p.desenho, "formato": p.formato, "orientacao": p.orientacao, "colunas": p.colunas,
             "imagens": p.imagens, "tamanhos": p.tamanhos, "rotulos": list(p.rotulos), "cores": list(p.cores), "logo_lugar": p.logo_lugar, "lingua": p.lingua, "moeda": m,
-            "linhas": [{"artigo": ln.artigo, "nome": ln.nome, "preco": ln.preco, "preco2": ln.preco2, "categoria": ln.categoria, "emoji": ln.emoji} for ln in p.linhas]}
+            "linhas": [{"artigo": ln.artigo, "nome": ln.nome, "preco": ln.preco, "preco2": ln.preco2, "categoria": ln.categoria, "emoji": ln.emoji, "combo": list(ln.combo)} for ln in p.linhas]}
 
 
 # ------------------------------------------------------------------ o ficheiro `.precario` (app Windows): só os campos, nunca o logotipo nem nada do computador

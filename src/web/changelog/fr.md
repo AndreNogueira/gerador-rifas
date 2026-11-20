@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.80.0 — 2026-11-20
+
+### Nouveautés
+- **Formules entre rubriques dans la liste de prix** : réunissez 2 à 4 articles du catalogue, même de rubriques différentes (par exemple un sandwich et une boisson), à un seul prix. La formule apparaît dans une nouvelle rubrique, «Formules et menus», avec les images des articles côte à côte, et peut avoir son propre nom (site et appli Windows).
+
 ## 3.79.0 — 2026-11-20
 
 ### Nouveautés

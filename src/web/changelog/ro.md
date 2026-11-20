@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.80.0 — 2026-11-20
+
+### Noutăți
+- **Combo-uri între secțiuni în lista de prețuri**: reunește 2 până la 4 articole din catalog, chiar din secțiuni diferite (de exemplu un sandviș și o băutură), la un singur preț. Combo-ul apare într-o secțiune nouă, «Combo-uri și meniuri», cu imaginile articolelor alăturate, și poate avea un nume propriu (site și aplicația Windows).
+
 ## 3.79.0 — 2026-11-20
 
 ### Noutăți

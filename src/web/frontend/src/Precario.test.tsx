@@ -374,3 +374,64 @@ describe("as cores e o logótipo", () => {
     ]);
   });
 });
+
+describe("os combos", () => {
+  it("junta 2 a 4 artigos de secções diferentes numa linha de «Menus e combos» e o pedido leva-os", async () => {
+    abrir();
+    expect(await screen.findByTestId("precario-combo-juntar")).toBeDisabled();
+    await userEvent.selectOptions(screen.getByTestId("precario-combo-artigo-1"), "agua");
+    expect(screen.getByTestId("precario-combo-juntar")).toBeDisabled(); // só um artigo
+    await userEvent.selectOptions(screen.getByTestId("precario-combo-artigo-2"), "bolo");
+    await userEvent.click(screen.getByTestId("precario-combo-juntar"));
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      const l = p.linhas.at(-1);
+      expect(l?.combo).toEqual(["agua", "bolo"]);
+      expect(l?.artigo).toBe("");
+    });
+    expect(screen.getByText("Água + Bolo")).toBeInTheDocument();
+    expect(screen.getByTestId("precario-combo-artigo-1")).toHaveValue(""); // o formulário limpa-se
+  });
+
+  it("um artigo repetido não deixa juntar; um combo guardado com um artigo que já não existe sai do rascunho", async () => {
+    abrir();
+    await userEvent.selectOptions(await screen.findByTestId("precario-combo-artigo-1"), "agua");
+    await userEvent.selectOptions(screen.getByTestId("precario-combo-artigo-2"), "agua");
+    expect(screen.getByTestId("precario-combo-juntar")).toBeDisabled();
+    const linha = (combo: string[]) => ({
+      chave: "m1",
+      artigo: "",
+      nome: "",
+      categoria: "menus",
+      emoji: "",
+      preco: "",
+      combo,
+    });
+    const bom = estadoInicial(CAT, 12, {
+      titulo: "M",
+      linhas: [
+        linha(["agua", "agua"]),
+        { chave: "agua", artigo: "agua", nome: "", categoria: "", emoji: "", preco: "" },
+      ],
+    });
+    expect(bom.linhas.map((l) => l.chave)).toEqual(["agua"]); // 2 iguais não é um combo
+    const comOutro = estadoInicial(
+      {
+        ...CAT,
+        categorias: [
+          {
+            id: "bebidas",
+            nome: "Bebidas",
+            artigos: [
+              { id: "agua", nome: "Água", emoji: "1f4a7", icones: ["1f4a7"] },
+              { id: "bolo", nome: "Bolo", emoji: "1f370", icones: ["1f370"] },
+            ],
+          },
+        ],
+      },
+      12,
+      { titulo: "M", linhas: [linha(["agua", "bolo"])] },
+    );
+    expect(comOutro.linhas[0]?.combo).toEqual(["agua", "bolo"]);
+  });
+});

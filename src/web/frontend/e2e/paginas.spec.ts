@@ -46,6 +46,12 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.getByTestId("precario-icone-agua-4")).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByTestId("precario-previa-img")).toBeVisible();
     await expect(page.getByTestId("precario-erro")).toHaveCount(0);
+    // um combo de dois artigos de secções diferentes: entra em «Menus e combos» e a pré-visualização continua a desenhar-se
+    await page.getByTestId("precario-combo-artigo-1").selectOption("agua");
+    await page.getByTestId("precario-combo-artigo-2").selectOption("bolo");
+    await page.getByTestId("precario-combo-juntar").click();
+    await expect(page.getByTestId("precario-previa-img")).toBeVisible();
+    await expect(page.getByTestId("precario-erro")).toHaveCount(0);
     // cores à escolha e logótipo (um PNG de 8 x 8 px): vão no pedido e a pré-visualização continua a desenhar-se
     await page.getByTestId("precario-cor-0").fill("#0a3d62");
     await page.getByTestId("precario-logo").setInputFiles({

@@ -442,4 +442,11 @@ T = {
     "web_precario_logo_direita": "У шапці, праворуч",
     "web_precario_logo_rodape": "У нижній частині",
     "web_precario_logo_dica": "Логотип залишається лише у вашому браузері та в PDF: він не зберігається ні на сервері, ні у файлі прайс-листа, ні у спільному посиланні.",
+    "err_precario_combo": "Комбо поєднує від {min} до {max} різних позицій із каталогу.",
+    "web_precario_combos": "Комбо та меню",
+    "web_precario_combos_dica": "Поєднайте 2–4 позиції, навіть із різних розділів, в одну ціну (наприклад, бутерброд і напій). Комбо з'явиться в розділі «Комбо та меню».",
+    "web_precario_combo_artigo": "Позиція {n}",
+    "web_precario_combo_nenhum": "— немає —",
+    "web_precario_combo_nome": "Назва комбо (необов'язково)",
+    "web_precario_combo_juntar": "Додати комбо",
 }

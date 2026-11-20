@@ -808,6 +808,23 @@ class Precario(Janela):
             ctk.CTkLabel(self.f_artigos, text=precario_catalogo.nome(c, self.lingua), anchor="w", text_color=C["texto"], font=ctk.CTkFont(FONTE, 13, "bold")).pack(fill="x", pady=(8, 2))
             for a in itens:
                 self.caixa(self.f_artigos, precario_catalogo.nome(a, self.lingua), self.v_artigo[a.id], command=lambda i=a.id: self._alternar(i)).pack(anchor="w", pady=1)
+        self.etiqueta(esq, t("web_precario_combos")).pack(fill="x", pady=(10, 0))                  # combos: 2 a 4 artigos de qualquer secção, num só preço
+        self.etiqueta(esq, t("web_precario_combos_dica"), wraplength=400).pack(fill="x")
+        self._nomes_combo = {}
+        for a in self.artigos.values():
+            n = precario_catalogo.nome(a, self.lingua)
+            self._nomes_combo[n if n not in self._nomes_combo else f"{n} ({a.id})"] = a.id
+        self.v_combo = [tk.StringVar(value="") for _ in range(precario.MAX_COMBO)]
+        self.m_combo = []
+        for i, v in enumerate(self.v_combo):
+            m = self._menu(esq, ["", *self._nomes_combo], lambda _: None, variavel=v)
+            m.pack(fill="x", pady=1)
+            self.m_combo.append(m)
+        self.v_combo_nome = tk.StringVar()
+        linha_combo = ctk.CTkFrame(esq, fg_color="transparent")
+        linha_combo.pack(fill="x", pady=(4, 0))
+        app._entrada(linha_combo, self.v_combo_nome, placeholder_text=t("web_precario_combo_nome")).pack(side="left", fill="x", expand=True)
+        app._botao(linha_combo, t("web_precario_combo_juntar"), self._juntar_combo, width=120).pack(side="left", padx=(6, 0))
         meu = ctk.CTkFrame(esq, fg_color="transparent")
         meu.pack(fill="x", pady=(10, 0))
         self.e_meu = app._entrada(meu, self.v_meu, placeholder_text=t("web_precario_nome_artigo"))
@@ -1000,6 +1017,22 @@ class Precario(Janela):
         self.v_meu.set("")
         self._precos()
 
+    def _juntar_combo(self, artigos: list[str] | None = None, nome: str | None = None) -> bool:
+        """Junta um combo (2 a 4 artigos diferentes, de qualquer secção) com um nome opcional; sem argumentos lê o que está nas listas (os argumentos só servem aos testes)."""
+        if artigos is None:
+            artigos = [self._nomes_combo[v.get()] for v in self.v_combo if v.get() in self._nomes_combo]
+        nome = (self.v_combo_nome.get() if nome is None else nome).strip()[:precario.MAX_NOME]
+        if not precario.MIN_COMBO <= len(artigos) <= precario.MAX_COMBO or len(set(artigos)) != len(artigos) or len(self.linhas) >= precario.MAX_LINHAS:
+            self.l_erro.configure(text=t("err_precario_combo", min=precario.MIN_COMBO, max=precario.MAX_COMBO))
+            return False
+        self.l_erro.configure(text="")
+        self.linhas.append({"chave": f"m{len(self.linhas)}-{'+'.join(artigos)}", "artigo": "", "nome": nome, "categoria": "menus", "emoji": "", "combo": tuple(artigos)})
+        for v in self.v_combo:
+            v.set("")
+        self.v_combo_nome.set("")
+        self._precos()
+        return True
+
     def _escolher_foto(self, chave: str, ficheiro: str | None = None) -> bool:
         """Põe a foto própria do artigo (PNG ou JPG, reduzida) ou, se já tem uma, tira-a. `ficheiro` só serve aos testes."""
         if chave in self.fotos and ficheiro is None:
@@ -1052,6 +1085,8 @@ class Precario(Janela):
         self._precos()
 
     def _nome_da_linha(self, ln: dict) -> str:
+        if ln.get("combo"):
+            return ln["nome"] or " + ".join(precario_catalogo.nome(precario_catalogo.ARTIGOS[a], self.lingua) for a in ln["combo"])
         return ln["nome"] or precario_catalogo.nome(self.artigos[ln["artigo"]], self.lingua)
 
     def _precos(self) -> None:
@@ -1118,7 +1153,7 @@ class Precario(Janela):
                 preco2 = moeda.valor_de_texto(texto2, self.lingua)
                 if preco2 is None:
                     raise core.ErroRifas("err_precario_texto", car=texto2[:14])
-            linhas.append(precario.Linha(ln["artigo"], ln["nome"], preco, ln["categoria"], ln["emoji"], preco2, self.fotos.get(ln["chave"], b"")))
+            linhas.append(precario.Linha(ln["artigo"], ln["nome"], preco, ln["categoria"], ln["emoji"], preco2, self.fotos.get(ln["chave"], b""), tuple(ln.get("combo", ()))))
         nome = " ".join(self.v_inv_nome.get().split())
         if self.v_inventada.get() and nome:
             m = moeda.MoedaInventada(nome, self.v_inv_antes.get(), int(self.v_inv_casas.get() or 0))
@@ -1268,7 +1303,10 @@ class Precario(Janela):
             self.linhas, self.v_preco, self.v_preco2, self.fotos = [], {}, {}, {}
             for i, ln in enumerate(p.linhas):
                 original = precario_catalogo.ARTIGOS.get(ln.artigo)
-                if ln.artigo in self.artigos:
+                if ln.combo:
+                    chave = f"m{i}-{'+'.join(ln.combo)}"
+                    self.linhas.append({"chave": chave, "artigo": "", "nome": ln.nome, "categoria": "menus", "emoji": "", "combo": tuple(ln.combo)})
+                elif ln.artigo in self.artigos:
                     chave = ln.artigo
                     self.v_artigo[ln.artigo].set(True)
                     self.linhas.append({"chave": chave, "artigo": ln.artigo, "nome": ln.nome, "categoria": "",

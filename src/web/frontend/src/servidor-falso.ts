@@ -399,6 +399,7 @@ export class ServidorFalso {
     if (url.startsWith("/api/precario/catalogo")) {
       return this.responder({
         categorias: [
+          { id: "menus", nome: "Menus e combos", artigos: [] },
           {
             id: "bebidas",
             nome: "Bebidas",

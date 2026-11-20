@@ -29,6 +29,7 @@ class LinhaEntrada(BaseModel):
     foto: str = Field("", max_length=200_000)                # a foto própria (`data:image/png|jpeg;base64,…`, já reduzida pelo browser): só se desenha, nunca se guarda
     categoria: str = Field("", max_length=20)
     emoji: str = Field("", max_length=8)
+    combo: list[Annotated[str, StringConstraints(max_length=40)]] = Field(default_factory=list, max_length=precario.MAX_COMBO)    # os ids dos artigos de um combo (2 a 4)
 
 
 class MoedaEntrada(BaseModel):

@@ -11,6 +11,7 @@ As traduções não tiveram revisão por falantes nativos.
 LINGUAS = ("pt", "en", "es", "fr", "de", "it", "nl", "pl", "sv", "cs", "ro", "el", "ru", "tr", "zh", "ja", "ko", "hi", "ca", "uk", "id", "vi")
 
 CATEGORIAS = """
+menus|Menus e combos|Menus and combos|Menús y combos|Menus et formules|Menüs und Kombis|Menu e combo|Menu's en combo's|Zestawy i menu|Menyer och kombos|Menu a kombinace|Meniuri și combo-uri|Μενού και συνδυασμοί|Меню и комбо|Menüler ve kombolar|套餐与组合|セットメニュー|세트 메뉴|मेन्यू और कॉम्बो|Menús i combos|Меню та комбо|Menu dan paket|Thực đơn và combo
 bebidas|Bebidas|Drinks|Bebidas|Boissons|Getränke|Bevande|Drankjes|Napoje|Drycker|Nápoje|Băuturi|Ποτά|Напитки|İçecekler|饮品|ドリンク|음료|पेय|Begudes|Напої|Minuman|Đồ uống
 alcool|Bebidas alcoólicas|Alcoholic drinks|Bebidas alcohólicas|Boissons alcoolisées|Alkoholische Getränke|Bevande alcoliche|Alcoholische dranken|Napoje alkoholowe|Alkoholhaltiga drycker|Alkoholické nápoje|Băuturi alcoolice|Αλκοολούχα ποτά|Алкогольные напитки|Alkollü içecekler|酒类|アルコール|주류|मदिरा|Begudes alcohòliques|Алкогольні напої|Minuman beralkohol|Đồ uống có cồn
 quentes|Café e bebidas quentes|Coffee and hot drinks|Café y bebidas calientes|Café et boissons chaudes|Kaffee und Heißgetränke|Caffè e bevande calde|Koffie en warme dranken|Kawa i napoje gorące|Kaffe och varma drycker|Káva a teplé nápoje|Cafea și băuturi calde|Καφές και ζεστά ροφήματα|Кофе и горячие напитки|Kahve ve sıcak içecekler|咖啡与热饮|コーヒー・温かい飲み物|커피와 따뜻한 음료|कॉफ़ी और गर्म पेय|Cafè i begudes calentes|Кава та гарячі напої|Kopi dan minuman panas|Cà phê và đồ uống nóng

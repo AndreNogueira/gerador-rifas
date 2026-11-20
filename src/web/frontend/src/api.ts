@@ -193,6 +193,7 @@ export interface PedidoPrecario {
     preco: string;
     preco2?: string;
     foto?: string;
+    combo?: string[];
     categoria: string;
     emoji: string;
   }[];

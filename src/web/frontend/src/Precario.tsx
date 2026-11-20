@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api, ErroApi, type PedidoPrecario, type PrecarioCatalogo } from "./api";
 import { CoresELogo } from "./CoresELogo";
+import { CriarCombo } from "./CriarCombo";
 import { useDialogos } from "./dialogos";
 import { prepararFoto } from "./foto";
 import { guardarBlob } from "./Gerador";
@@ -22,6 +23,8 @@ interface Linha {
   preco2?: string;
   /** A foto própria (`data:image/…`, já reduzida): só vive nesta página (nem no rascunho nem na ligação partilhada). */
   foto?: string;
+  /** Os artigos de um combo (2 a 4 ids do catálogo); a linha não tem `artigo`. */
+  combo?: string[];
 }
 
 interface Estado {
@@ -86,6 +89,17 @@ function iconeValido(icones: Map<string, string[]>, artigo: string, emoji: strin
   return artigo && emoji && icones.get(artigo)?.includes(emoji) ? emoji : artigo ? "" : emoji;
 }
 
+/** Um combo guardado que ainda serve: 2 a 4 artigos diferentes que o catálogo (desta língua) conhece. */
+function comboValido(c: unknown, ids: Set<string>): boolean {
+  return (
+    Array.isArray(c) &&
+    c.length >= 2 &&
+    c.length <= 4 &&
+    new Set(c).size === c.length &&
+    c.every((a) => typeof a === "string" && ids.has(a))
+  );
+}
+
 /** O estado de partida: o rascunho do browser se existir e servir, senão a ocasião sugerida para o mês (ou a festa popular). */
 export function estadoInicial(cat: PrecarioCatalogo, mes: number, guardado: unknown): Estado {
   const ids = new Set(cat.categorias.flatMap((c) => c.artigos.map((a) => a.id)));
@@ -98,7 +112,8 @@ export function estadoInicial(cat: PrecarioCatalogo, mes: number, guardado: unkn
         typeof l.chave === "string" &&
         typeof l.preco === "string" &&
         typeof l.nome === "string" &&
-        (!l.artigo || ids.has(l.artigo)),
+        (!l.artigo || ids.has(l.artigo)) &&
+        (!l.combo || comboValido(l.combo, ids)),
     );
     if (linhas.length > 0)
       return {
@@ -135,8 +150,11 @@ export function estadoDePartilha(
     const l = (x ?? {}) as Record<string, unknown>;
     const artigo = texto(l.artigo);
     if (artigo && !ids.has(artigo)) return;
+    const combo = Array.isArray(l.combo) && l.combo.length > 0 ? (l.combo as string[]) : undefined;
+    if (combo && !comboValido(combo, ids)) return;
     linhas.push({
-      chave: artigo || `c${i}`,
+      ...(combo ? { combo } : {}),
+      chave: artigo || (combo ? `m${i}` : `c${i}`),
       artigo,
       nome: texto(l.nome),
       categoria: texto(l.categoria),
@@ -238,6 +256,7 @@ export function pedidoDoEstado(e: Estado, padroes: [string, string] = ["P", "G"]
       preco: l.preco.trim(),
       preco2: e.tamanhos ? (l.preco2 ?? "").trim() : "",
       ...(l.foto ? { foto: l.foto } : {}),
+      ...(l.combo?.length ? { combo: l.combo } : {}),
       categoria: l.artigo ? "" : l.categoria,
       emoji: l.emoji,
     })),
@@ -466,9 +485,31 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
         (l.artigo ? artigos.get(l.artigo)?.categoria : l.categoria) === id ? { ...l, preco } : l,
       ),
     });
-  const nomeDe = (l: Linha) => l.nome || artigos.get(l.artigo)?.nome || l.artigo;
-  const emojiDe = (l: Linha) => l.emoji || artigos.get(l.artigo)?.emoji || "";
-  const categoriaDe = (l: Linha) => (l.artigo ? artigos.get(l.artigo)?.categoria : l.categoria) || "extras";
+  const nomeDe = (l: Linha) =>
+    l.nome ||
+    (l.combo ? l.combo.map((a) => artigos.get(a)?.nome ?? a).join(" + ") : artigos.get(l.artigo)?.nome) ||
+    l.artigo;
+  const emojiDe = (l: Linha) =>
+    l.emoji || artigos.get(l.artigo)?.emoji || (l.combo?.[0] ? (artigos.get(l.combo[0])?.emoji ?? "") : "");
+  const categoriaDe = (l: Linha) =>
+    (l.combo ? "menus" : l.artigo ? artigos.get(l.artigo)?.categoria : l.categoria) || "extras";
+  const juntarCombo = (ids: string[], nome: string) => {
+    if (e.linhas.length >= cat.limites.linhas) return;
+    mudar({
+      linhas: [
+        ...e.linhas,
+        {
+          chave: `m${Date.now()}`,
+          artigo: "",
+          nome: nome.slice(0, cat.limites.nome),
+          categoria: "menus",
+          emoji: "",
+          preco: "",
+          combo: ids,
+        },
+      ],
+    });
+  };
   const filtro = semAcentos(pesquisa.trim());
   const sugerida = cat.ocasioes.find((o) => o.id === cat.sugerida);
   const moedaAtual = cat.moedas.find((m) => m.codigo === e.moeda);
@@ -587,6 +628,12 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
                 </fieldset>
               );
             })}
+            <CriarCombo
+              cat={cat}
+              limiteNome={cat.limites.nome}
+              cheio={e.linhas.length >= cat.limites.linhas}
+              aoJuntar={juntarCombo}
+            />
             <div className="precario-meu">
               <input
                 data-testid="precario-meu-nome"

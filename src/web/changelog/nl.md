@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.80.0 — 2026-11-20
+
+### Nieuw
+- **Combo's over rubrieken heen in de prijslijst**: bundel 2 tot 4 catalogusartikelen, ook uit verschillende rubrieken (bijvoorbeeld een broodje en een drankje), tegen één prijs. De combo staat in een nieuwe rubriek, «Combo's en menu's», met de afbeeldingen van de artikelen naast elkaar, en kan een eigen naam krijgen (site en Windows-app).
+
 ## 3.79.0 — 2026-11-20
 
 ### Nieuw

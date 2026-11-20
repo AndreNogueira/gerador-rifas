@@ -442,4 +442,11 @@ T = {
     "web_precario_logo_direita": "Di kepala, sebelah kanan",
     "web_precario_logo_rodape": "Di kaki halaman",
     "web_precario_logo_dica": "Logo hanya tetap di browser Anda dan di PDF: tidak disimpan di server, di file daftar harga, maupun di tautan yang dibagikan.",
+    "err_precario_combo": "Satu paket menggabungkan {min} sampai {max} barang berbeda dari katalog.",
+    "web_precario_combos": "Paket dan menu",
+    "web_precario_combos_dica": "Gabungkan 2 sampai 4 barang, bahkan dari bagian berbeda, dalam satu harga (misalnya roti lapis dan minuman). Paket muncul di «Paket dan menu».",
+    "web_precario_combo_artigo": "Barang {n}",
+    "web_precario_combo_nenhum": "— tidak ada —",
+    "web_precario_combo_nome": "Nama paket (opsional)",
+    "web_precario_combo_juntar": "Tambahkan paket",
 }

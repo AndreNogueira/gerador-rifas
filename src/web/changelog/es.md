@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.80.0 — 2026-11-20
+
+### Novedades
+- **Combos entre secciones en la lista de precios**: una de 2 a 4 artículos del catálogo, incluso de secciones distintas (por ejemplo, un bocadillo y una bebida), en un solo precio. El combo aparece en una sección nueva, «Menús y combos», con las imágenes de los artículos una junto a otra, y puede tener un nombre propio (sitio y app de Windows).
+
 ## 3.79.0 — 2026-11-20
 
 ### Novedades

@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.80.0 — 2026-11-20
+
+### Novetats
+- **Combos entre seccions a la llista de preus**: uniu de 2 a 4 articles del catàleg, fins i tot de seccions diferents (per exemple, un entrepà i una beguda), en un sol preu. El combo apareix en una secció nova, «Combos i menús», amb les imatges dels articles una al costat de l'altra, i pot tenir un nom propi (web i app de Windows).
+
 ## 3.79.0 — 2026-11-20
 
 ### Novetats

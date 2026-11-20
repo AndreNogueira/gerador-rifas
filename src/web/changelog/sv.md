@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.80.0 — 2026-11-20
+
+### Nytt
+- **Kombos över avdelningar i prislistan**: slå ihop 2 till 4 katalogartiklar, även från olika avdelningar (till exempel en macka och en dryck), till ett pris. Kombon visas i en ny avdelning, «Kombos och menyer», med artiklarnas bilder bredvid varandra, och kan få ett eget namn (webbplatsen och Windows-appen).
+
 ## 3.79.0 — 2026-11-20
 
 ### Nytt
