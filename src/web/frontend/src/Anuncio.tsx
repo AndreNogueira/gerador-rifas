@@ -12,6 +12,13 @@ declare global {
 export const PAGINAS_COM_ANUNCIO: readonly string[] = ["/", "/tutorial", "/sobre", "/sorteio", "/changelog"];
 
 /**
+ * As páginas de ferramenta que só levam os anúncios **laterais** (ecrãs largos), nunca o bloco do fim da página: o preçário tem os botões de descarregar
+ * logo ao fim (a Google proíbe anúncios junto deles), por isso em ecrãs estreitos não há anúncio nenhum. Os laterais são fixos e ficam fora do conteúdo:
+ * **nunca dentro da pré-visualização** (nem do PDF, que é gerado no servidor sem nada de publicidade).
+ */
+export const PAGINAS_SO_LATERAIS: readonly string[] = ["/precario"];
+
+/**
  * Há espaço para os anúncios laterais? O conteúdo tem no mínimo 1280 px (`--largura-max`) e cada lateral pede 160 px + 16 px de folga:
  * a partir de 1640 px de largura sobra essa margem de cada lado. Em altura, o anúncio vertical tem 600 px e começa a 290 px do topo (por baixo da faixa do cabeçalho).
  */
@@ -74,9 +81,12 @@ function Bloco({
  */
 export function Anuncio({ publico, caminho }: { publico: Publico; caminho: string }) {
   const laterais = useLaterais();
+  const soLaterais = PAGINAS_SO_LATERAIS.includes(caminho);
   const ativo =
-    !!publico.anuncios_cliente && !!publico.anuncios_slot && PAGINAS_COM_ANUNCIO.includes(caminho);
-  if (!ativo) return null;
+    !!publico.anuncios_cliente &&
+    !!publico.anuncios_slot &&
+    (PAGINAS_COM_ANUNCIO.includes(caminho) || soLaterais);
+  if (!ativo || (soLaterais && !laterais)) return null;
   if (laterais) {
     return (
       <>

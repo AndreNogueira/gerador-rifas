@@ -106,4 +106,46 @@ describe("anúncios (AdSense)", () => {
       unmount();
     }
   });
+
+  describe("o preçário (/precario)", () => {
+    const configurar = () => {
+      servidor.anunciosCliente = "ca-pub-1234567890123456";
+      servidor.anunciosSlot = "1234567890";
+    };
+
+    it("em ecrã largo leva os dois laterais, fora do conteúdo e nunca dentro da pré-visualização", async () => {
+      configurar();
+      ecra(true);
+      abrir("/precario");
+      await waitFor(() => expect(screen.getAllByTestId("anuncio")).toHaveLength(2));
+      await screen.findByTestId("precario-ocasiao");
+      for (const lado of screen.getAllByTestId("anuncio")) {
+        expect(lado).toHaveClass("anuncio-lateral");
+        expect(lado.closest(".precario-previa")).toBeNull();
+        expect(lado.closest(".precario")).toBeNull();
+        expect(document.querySelector(".precario-previa")?.contains(lado)).toBe(false);
+      }
+    });
+
+    it("em ecrã estreito não leva nenhum (os botões de descarregar ficam no fim da página)", async () => {
+      configurar();
+      ecra(false);
+      abrir("/precario");
+      await screen.findByTestId("precario-ocasiao");
+      await new Promise((r) => setTimeout(r, 50));
+      expect(screen.queryByTestId("anuncio")).toBeNull();
+      expect(window.adsbygoogle).toBeUndefined();
+    });
+
+    it("sem configuração não há nada, e o guia do preçário continua sem anúncios", async () => {
+      ecra(true);
+      abrir("/precario");
+      await screen.findByTestId("precario-ocasiao");
+      expect(screen.queryByTestId("anuncio")).toBeNull();
+      configurar();
+      abrir("/como-fazer-o-precario-de-uma-festa");
+      await new Promise((r) => setTimeout(r, 50));
+      expect(screen.queryByTestId("anuncio")).toBeNull();
+    });
+  });
 });

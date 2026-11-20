@@ -49,12 +49,13 @@ As laterais ficam sempre a 16 px do conteúdo (`--largura-max`), por isso nunca 
 |---|---|---|
 | `/` (o gerador) | **sim**, nas laterais (ou no fim da página, em ecrãs estreitos) | é a página com mais visitas; fica longe de «Gerar» e «Descarregar» (a Google proíbe anúncios junto de botões, para não haver cliques por engano) |
 | `/tutorial`, `/sobre`, `/sorteio`, `/changelog` | **sim**, nas laterais (ou no fim) | páginas de leitura, com texto à volta |
+| `/precario` | **só os laterais**, em ecrãs largos; **nenhum** em ecrãs estreitos | o preçário acaba nos botões de descarregar: o bloco do fim da página ficaria colado a eles (a Google proíbe). Os laterais são fixos e ficam fora do conteúdo: **nunca dentro da pré-visualização** (nem do PDF, gerado no servidor sem publicidade). `PAGINAS_SO_LATERAIS` em `Anuncio.tsx` |
 | `/editor` | não | é uma ferramenta de arrastar: um anúncio ao lado da tela provocava cliques por engano |
 | `/video`, `/termos`, `/privacidade`, `/contacto` | não | pouco conteúdo ou páginas legais |
 | `/admin`, a página do QR (`/v/…`), o 404 | **nunca** | o painel é privado; a verificação e o 404 não têm conteúdo (a Google recusa anúncios assim); o script nem é carregado |
 | PDFs/ZIP gerados, app Windows | **nunca** | os anúncios só existem no site |
 
-As páginas estão em `PAGINAS_COM_ANUNCIO` (`Anuncio.tsx`); o script no `<head>` vem de `seo.cabecalho` (só páginas indexáveis, por isso nunca no painel nem no 404).
+As páginas estão em `PAGINAS_COM_ANUNCIO` e `PAGINAS_SO_LATERAIS` (`Anuncio.tsx`; o guia `/como-fazer-o-precario-de-uma-festa` e os outros guias não levam anúncio); o script no `<head>` vem de `seo.cabecalho` (só páginas indexáveis, por isso nunca no painel nem no 404).
 
 ## Como preparar tudo com a Google (por esta ordem)
 
