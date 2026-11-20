@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.81.0 — 2026-11-20
+
+### Nouveautés
+- **Étiquettes de retrait** : on paie à un endroit et on retire ailleurs ? Sur la page de la liste de prix, chaque article devient une étiquette avec l'image, le nom, le prix (si vous voulez) et la zone de retrait (le bar, la cuisine…), avec les exemplaires de votre choix, 24 par feuille A4 avec guides de découpe et une couleur par zone. Une formule donne une étiquette par article, chacune dans la zone de sa rubrique (site et appli Windows ; tutoriel et vidéos inclus).
+
 ## 3.80.0 — 2026-11-20
 
 ### Nouveautés

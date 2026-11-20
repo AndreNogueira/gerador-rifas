@@ -553,6 +553,64 @@ const CENAS: Cena[] = [
     },
   },
   {
+    id: "etiquetas",
+    rodar: async (page, T) => {
+      await page.goto("/precario");
+      await expect(page.getByTestId("precario-previa-img")).toBeVisible();
+      await legenda(
+        page,
+        T(
+          "Paga-se num sítio e levanta-se noutro? Faça etiquetas por artigo",
+          "Pay in one place and pick up in another? Make a ticket per item",
+        ),
+        2800,
+      );
+      await page.getByTestId("precario-combo").scrollIntoViewIfNeeded();
+      await page.getByTestId("precario-combo-artigo-1").selectOption("agua");
+      await page.getByTestId("precario-combo-artigo-2").selectOption("bolo");
+      await legenda(
+        page,
+        T("Um combo junta artigos de secções diferentes", "A combo joins items from different sections"),
+        2600,
+      );
+      await clicar(page, page.getByTestId("precario-combo-juntar"));
+      await page.getByTestId("precario-etiquetas").scrollIntoViewIfNeeded();
+      await legenda(
+        page,
+        T(
+          "Diga onde se levanta cada secção: o bar, a cozinha…",
+          "Say where each section is picked up: the bar, the kitchen…",
+        ),
+        2800,
+      );
+      const zonas = page.locator('[data-testid^="etiquetas-zona-"]');
+      const nomes = [T("Bar", "Bar"), T("Cozinha", "Kitchen"), T("Doces", "Sweets"), T("Jogos", "Games")];
+      for (let i = 0; i < Math.min(await zonas.count(), nomes.length); i++) {
+        await escrever(page, zonas.nth(i), nomes[i] ?? "");
+      }
+      await escrever(page, page.getByTestId("etiquetas-copias"), "10");
+      await legenda(
+        page,
+        T(
+          "Escolha quantas etiquetas de cada artigo imprimir",
+          "Choose how many tickets of each item to print",
+        ),
+        2800,
+      );
+      await clicar(page, page.getByTestId("etiquetas-ver"));
+      await expect(page.getByTestId("etiquetas-previa")).toBeVisible();
+      await page.getByTestId("etiquetas-previa").scrollIntoViewIfNeeded();
+      await legenda(
+        page,
+        T(
+          "24 por folha A4, com guias de corte e uma cor por zona",
+          "24 per A4 sheet, with cutting guides and one color per zone",
+        ),
+        3200,
+      );
+    },
+  },
+  {
     id: "sorteio",
     rodar: async (page, T) => {
       await page.goto("/sorteio");

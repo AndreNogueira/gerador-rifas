@@ -52,6 +52,16 @@ test.describe("páginas, sorteio e PWA", () => {
     await page.getByTestId("precario-combo-juntar").click();
     await expect(page.getByTestId("precario-previa-img")).toBeVisible();
     await expect(page.getByTestId("precario-erro")).toHaveCount(0);
+    // etiquetas de levantamento: a zona de cada secção, as cópias e a 1.ª folha desenhada pelo servidor
+    await page.getByTestId("etiquetas-zona-bebidas").fill("Bar");
+    await page.getByTestId("etiquetas-copias").fill("3");
+    await page.getByTestId("etiquetas-ver").click();
+    await expect(page.getByTestId("etiquetas-previa")).toBeVisible();
+    const [etiquetas] = await Promise.all([
+      page.waitForEvent("download"),
+      page.getByTestId("etiquetas-pdf").click(),
+    ]);
+    expect(etiquetas.suggestedFilename()).toBe("etiquetas.pdf");
     // cores à escolha e logótipo (um PNG de 8 x 8 px): vão no pedido e a pré-visualização continua a desenhar-se
     await page.getByTestId("precario-cor-0").fill("#0a3d62");
     await page.getByTestId("precario-logo").setInputFiles({

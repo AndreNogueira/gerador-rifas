@@ -282,6 +282,29 @@ for ln in [x for x in pr.linhas if x.get("combo")]:
     pr._tirar(ln["chave"])
 ok(not any(ln.combo for ln in pr.precario().linhas), "um combo tira-se como qualquer linha")
 
+# --- etiquetas de levantamento: abrem com as secções do preçário (e as dos combos), levam as zonas e as cópias, desenham no worker e guardam o PDF
+pr._juntar_combo(["agua", "bolo"], "Lanche")
+pr._etiquetas()
+et = a.w_extras["etiquetas"]
+secs = et.secoes()
+ok("doces" in secs and "bebidas" in secs and "menus" not in secs, "as secções das etiquetas são as dos artigos, também as dos artigos dos combos")
+et.v_zona["bebidas"].set("Bar")
+et.v_zona["doces"].set("Mesa dos bolos")
+et.v_copias.set("3")
+pump(8, lambda: et._foto is not None and not et._espera)
+foto(et, "etiquetas.png")
+n_artigos = sum(len(ln.combo) if ln.combo else 1 for ln in pr.precario().linhas)
+ok(et._foto is not None and et.l_erro.cget("text") == "" and str(n_artigos * 3) in et.l_total.cget("text"), "a pré-visualização desenha-se e o total conta uma etiqueta por artigo (um combo dá uma por artigo)")
+pdf_et = et._guardar_pdf(str(SAIDA / "etiquetas.pdf"))
+from pypdf import PdfReader as _Leitor
+texto_et = "\n".join(p.extract_text() or "" for p in _Leitor(str(pdf_et)).pages)
+ok(pdf_et and "Mesa dos bolos" in texto_et and "Bar" in texto_et and texto_et.count(pr.v_titulo.get()) >= n_artigos * 3, "o PDF leva as zonas e uma etiqueta por cópia")
+et.v_copias.set("0")
+ok(et._guardar_pdf(str(SAIDA / "mau.pdf")) is None and et.l_erro.cget("text") != "", "cópias a zero são recusadas com aviso")
+et.destroy()
+for ln in [x for x in pr.linhas if x.get("combo")]:
+    pr._tirar(ln["chave"])
+
 # --- vales de fichas numerados: só com moeda inventada com nome; pre-visualiza no worker; «Criar» passa o template e os algarismos à janela principal
 pr.v_inventada.set(False)
 pr._vales()

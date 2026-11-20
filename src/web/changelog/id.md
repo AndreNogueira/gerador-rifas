@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.81.0 — 2026-11-20
+
+### Baru
+- **Label pengambilan**: bayar di satu tempat dan ambil di tempat lain? Di halaman daftar harga, tiap barang menjadi label dengan gambar, nama, harga (jika mau), dan zona pengambilan (bar, dapur…), dengan jumlah salinan pilihan Anda, 24 per lembar A4 dengan garis potong dan satu warna per zona. Satu paket menghasilkan satu label per barang, masing-masing di zona bagiannya (situs dan aplikasi Windows; lengkap dengan tutorial dan video).
+
 ## 3.80.0 — 2026-11-20
 
 ### Baru

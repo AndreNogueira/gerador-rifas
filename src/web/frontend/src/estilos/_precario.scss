@@ -373,3 +373,26 @@
     margin-bottom: 10px;
   }
 }
+
+// Etiquetas de levantamento: o nome da secção e a zona (um campo mais largo do que o dos preços) e a folha de pré-visualização
+.precario {
+  .precario-etiquetas {
+    .precario-linha-categoria {
+      grid-template-columns: minmax(0, 1fr) minmax(9rem, 15rem);
+      padding-right: 0;
+      @media (max-width: 36rem) {
+        grid-template-columns: minmax(0, 1fr) minmax(8rem, 1.2fr);
+      }
+    }
+    .etiquetas-previa {
+      display: block;
+      width: 100%; // sem isto o PNG (≈ 900 px) alargava a coluna do editor e tapava a pré-visualização do preçário
+      max-width: 100%;
+      height: auto;
+      margin-top: 12px;
+      border: var(--borda) solid var(--linha);
+      border-radius: var(--raio-c);
+      background: #fff;
+    }
+  }
+}

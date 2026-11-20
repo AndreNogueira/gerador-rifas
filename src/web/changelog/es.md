@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.81.0 — 2026-11-20
+
+### Novedades
+- **Etiquetas de recogida**: ¿se paga en un sitio y se recoge en otro? En la página de la lista de precios, cada artículo se convierte en una etiqueta con la imagen, el nombre, el precio (si quiere) y la zona donde se recoge (la barra, la cocina…), con las copias que elija, 24 por hoja A4 con guías de corte y un color por zona. Un combo da una etiqueta por artículo, cada una en la zona de su sección (sitio y app de Windows; con tutorial y vídeos).
+
 ## 3.80.0 — 2026-11-20
 
 ### Novedades

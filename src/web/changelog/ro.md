@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.81.0 — 2026-11-20
+
+### Noutăți
+- **Etichete de ridicare**: se plătește într-un loc și se ridică din altul? Pe pagina listei de prețuri, fiecare articol devine o etichetă cu imaginea, numele, prețul (dacă vrei) și zona de ridicare (barul, bucătăria…), cu copiile pe care le alegi, 24 pe foaie A4 cu ghidaje de tăiere și o culoare pe zonă. Un combo dă o etichetă pe articol, fiecare în zona secțiunii sale (site și aplicația Windows; cu tutorial și videoclipuri).
+
 ## 3.80.0 — 2026-11-20
 
 ### Noutăți

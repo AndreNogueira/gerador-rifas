@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.81.0 — 2026-11-20
+
+### Novetats
+- **Etiquetes de recollida**: es paga en un lloc i es recull en un altre? A la pàgina de la llista de preus, cada article esdevé una etiqueta amb la imatge, el nom, el preu (si voleu) i la zona de recollida (la barra, la cuina…), amb les còpies que trieu, 24 per full A4 amb guies de tall i un color per zona. Un combo dona una etiqueta per article, cadascuna a la zona de la seva secció (web i app de Windows; amb tutorial i vídeos).
+
 ## 3.80.0 — 2026-11-20
 
 ### Novetats

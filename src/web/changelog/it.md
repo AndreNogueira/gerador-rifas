@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.81.0 — 2026-11-20
+
+### Novità
+- **Etichette di ritiro**: si paga in un posto e si ritira in un altro? Nella pagina del listino, ogni articolo diventa un'etichetta con l'immagine, il nome, il prezzo (se vuoi) e la zona di ritiro (il bar, la cucina…), con le copie che scegli, 24 per foglio A4 con guide di taglio e un colore per zona. Un combo dà un'etichetta per articolo, ciascuna nella zona della sua sezione (sito e app Windows; tutorial e video inclusi).
+
 ## 3.80.0 — 2026-11-20
 
 ### Novità

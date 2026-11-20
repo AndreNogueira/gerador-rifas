@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.81.0 — 2026-11-20
+
+### Mới
+- **Nhãn nhận hàng**: trả tiền ở một chỗ, nhận ở chỗ khác? Ở trang bảng giá, mỗi món thành một nhãn có hình, tên, giá (nếu muốn) và khu vực nhận (quầy bar, bếp…), với số bản bạn chọn, 24 nhãn mỗi tờ A4 kèm đường cắt và một màu cho mỗi khu vực. Một combo cho ra một nhãn cho mỗi món, mỗi nhãn ở khu vực của mục tương ứng (trang web và ứng dụng Windows; kèm hướng dẫn và video).
+
 ## 3.80.0 — 2026-11-20
 
 ### Mới

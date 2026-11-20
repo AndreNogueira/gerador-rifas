@@ -3,6 +3,7 @@ import { api, ErroApi, type PedidoPrecario, type PrecarioCatalogo } from "./api"
 import { CoresELogo } from "./CoresELogo";
 import { CriarCombo } from "./CriarCombo";
 import { useDialogos } from "./dialogos";
+import { Etiquetas } from "./Etiquetas";
 import { prepararFoto } from "./foto";
 import { guardarBlob } from "./Gerador";
 import { IconesArtigo, Miniatura } from "./IconesArtigo";
@@ -493,6 +494,16 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
     l.emoji || artigos.get(l.artigo)?.emoji || (l.combo?.[0] ? (artigos.get(l.combo[0])?.emoji ?? "") : "");
   const categoriaDe = (l: Linha) =>
     (l.combo ? "menus" : l.artigo ? artigos.get(l.artigo)?.categoria : l.categoria) || "extras";
+  // as secções que as etiquetas levam (as dos artigos escolhidos e as dos artigos dos combos) e quantos artigos dão etiqueta
+  const usadas = new Set<string>();
+  let totalSenhas = 0;
+  for (const l of e.linhas) {
+    for (const a of l.combo ?? [l.artigo]) {
+      usadas.add(l.combo ? (artigos.get(a)?.categoria ?? "extras") : categoriaDe(l));
+      totalSenhas++;
+    }
+  }
+  const secoes = cat.categorias.filter((c) => usadas.has(c.id)).map(({ id, nome }) => ({ id, nome }));
   const juntarCombo = (ids: string[], nome: string) => {
     if (e.linhas.length >= cat.limites.linhas) return;
     mudar({
@@ -983,6 +994,8 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
               </fieldset>
             )}
           </section>
+
+          <Etiquetas pedido={pedido} secoes={secoes} total={totalSenhas} />
         </div>
 
         <aside className="precario-previa cartao texto-pagina" aria-live="polite">

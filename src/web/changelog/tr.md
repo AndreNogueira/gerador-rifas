@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.81.0 — 2026-11-20
+
+### Yeni
+- **Teslim etiketleri**: bir yerde ödeyip başka yerde mi teslim alınıyor? Fiyat listesi sayfasında her ürün; resmi, adı, fiyatı (isterseniz) ve teslim bölgesi (bar, mutfak…) olan bir etikete dönüşür; seçtiğiniz kopya sayısıyla, A4 sayfada 24 adet, kesim çizgileri ve bölge başına bir renkle. Bir kombo ürün başına bir etiket verir, her biri kendi bölümünün bölgesinde (site ve Windows uygulaması; rehber ve videolarla).
+
 ## 3.80.0 — 2026-11-20
 
 ### Yeni

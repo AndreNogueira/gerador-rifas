@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
-import type { PedidoPrecario } from "./api";
+import type { PedidoEtiquetas, PedidoPrecario } from "./api";
 import { ProvedorI18n } from "./i18n";
 import { estadoInicial, paisDoBrowser, pedidoDoEstado } from "./Precario";
 import { ServidorFalso } from "./servidor-falso";
@@ -433,5 +433,41 @@ describe("os combos", () => {
       { titulo: "M", linhas: [linha(["agua", "bolo"])] },
     );
     expect(comOutro.linhas[0]?.combo).toEqual(["agua", "bolo"]);
+  });
+});
+
+describe("as etiquetas de levantamento", () => {
+  it("as secções dos artigos (e as dos artigos dos combos) pedem uma zona; o pedido leva as zonas preenchidas, as cópias e o preço", async () => {
+    abrir();
+    await userEvent.selectOptions(await screen.findByTestId("precario-combo-artigo-1"), "agua");
+    await userEvent.selectOptions(screen.getByTestId("precario-combo-artigo-2"), "bolo");
+    await userEvent.click(screen.getByTestId("precario-combo-juntar"));
+    expect(screen.getByTestId("etiquetas-zona-doces")).toBeInTheDocument(); // o bolo do combo pede a zona da sua secção
+    expect(screen.queryByTestId("etiquetas-zona-menus")).not.toBeInTheDocument();
+    await userEvent.type(screen.getByTestId("etiquetas-zona-bebidas"), " Bar ");
+    await userEvent.clear(screen.getByTestId("etiquetas-copias"));
+    await userEvent.type(screen.getByTestId("etiquetas-copias"), "7");
+    await userEvent.click(screen.getByTestId("etiquetas-preco"));
+    await userEvent.click(screen.getByTestId("etiquetas-ver"));
+    await waitFor(() => expect(pedidosA("/api/precario/etiquetas-previa.png")).toHaveLength(1));
+    const p = pedidosA("/api/precario/etiquetas-previa.png")[0]?.corpo as PedidoEtiquetas;
+    expect(p.zonas).toEqual({ bebidas: "Bar" }); // as zonas vazias não vão; as cheias levam-se sem espaços
+    expect(p.copias).toBe(7);
+    expect(p.preco).toBe(false);
+    expect(p.precario.linhas.at(-1)?.combo).toEqual(["agua", "bolo"]);
+    expect(await screen.findByTestId("etiquetas-previa")).toBeInTheDocument();
+    await userEvent.click(screen.getByTestId("etiquetas-pdf"));
+    await waitFor(() => expect(pedidosA("/api/precario/etiquetas.pdf")).toHaveLength(1));
+  });
+
+  it("o total conta uma etiqueta por artigo (um combo dá uma por artigo) vezes as cópias, 24 por folha; as zonas ficam no browser", async () => {
+    abrir();
+    const total = await screen.findByTestId("etiquetas-total");
+    expect(total).toHaveTextContent("etiquetas"); // o texto vem do servidor falso: só confirma que mostra o número
+    await userEvent.type(screen.getByTestId("etiquetas-zona-bebidas"), "Bar");
+    expect(localStorage.getItem("rifas.etiquetas")).toContain("Bar");
+    cleanup();
+    abrir();
+    expect(await screen.findByTestId("etiquetas-zona-bebidas")).toHaveValue("Bar");
   });
 });

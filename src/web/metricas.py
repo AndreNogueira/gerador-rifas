@@ -657,7 +657,7 @@ class Metricas:
         def painel(*args, **kwargs) -> None:
             paineis.append(novo_painel(*args, **kwargs))
 
-        eventos = agrupado(("sessao", "previa", "template", "algarismos", "geracao", "descarga", "logotipo", "galeria", "editor", "verificacao", "precario", "precario_moeda", "vales", "precario_partilha",
+        eventos = agrupado(("sessao", "previa", "template", "algarismos", "geracao", "descarga", "logotipo", "galeria", "editor", "verificacao", "precario", "precario_moeda", "vales", "precario_partilha", "precario_etiquetas",
                             "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra", "comentario", "problema", "origem", "desempenho"), "a")
         humanos = agrupado(("pagina",), "CASE WHEN c = 'robo' THEN 'Robôs' ELSE 'Pessoas' END")
         rotas = agrupado(("pagina",), "a", "AND c <> 'robo'")
@@ -708,6 +708,7 @@ class Metricas:
         painel(f, "precario_moeda", "Moeda dos preçários", por_chave(eventos, "precario_moeda", topo=6), "A moeda dos preçários descarregados («inventada» se foi uma moeda criada pela pessoa; o nome dela nunca se guarda).")
         painel(f, "vales", "Vales de fichas", por_chave(eventos, "vales", topo=6), "Vales numerados criados («Criar vales numerados»), por desenho. Só o desenho e a quantidade de cada vale: nunca títulos, nomes de moeda nem organizações.")
         painel(f, "precario_partilha", "Preçários partilhados por ligação", por_chave(eventos, "precario_partilha", topo=3), "Ligações de preçário criadas («Partilhar por ligação»). Só a contagem: nunca o conteúdo nem quem partilha.")
+        painel(f, "precario_etiquetas", "Etiquetas de levantamento", por_chave(eventos, "precario_etiquetas", topo=4), "Etiquetas de levantamento descarregadas, por total de senhas (1-24, 25-120…). Só a classe do total: nunca zonas, nomes de artigos nem preços.")
         nomes_editor = {"usar": "Usado", "partilhar": "Partilhado"}
         painel(f, "editor", "Editor de templates", por_chave(eventos, "editor", topo=5, nome=lambda k: nomes_editor.get(k, k or "?")), "Desenhos do editor usados para gerar e desenhos partilhados por ligação.")
         painel(f, "logotipo", "Logótipo", ok_erro("logotipo"), "Logótipos enviados e quantos foram recusados (tipo ou tamanho).")

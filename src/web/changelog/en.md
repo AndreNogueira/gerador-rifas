@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.81.0 — 2026-11-20
+
+### New
+- **Pick-up tickets**: pay in one place and pick up in another? On the price list page, each item becomes a ticket with the picture, the name, the price (if you want it) and the zone where it is picked up (the bar, the kitchen…), with the copies you choose, 24 per A4 sheet with cutting guides and one color per zone. A combo gives one ticket per item, each in its own section's zone (site and Windows app; tutorial and videos included).
+
 ## 3.80.0 — 2026-11-20
 
 ### New
