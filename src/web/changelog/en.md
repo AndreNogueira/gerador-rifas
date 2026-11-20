@@ -5,7 +5,7 @@ Translated summary of `../CHANGELOG.md`: same versions, sections and items, shor
 ## 3.74.0 — 2026-11-20
 
 ### New
-- **Two sizes in the price list**: turn on “Two sizes (two prices per item)” (site and Windows app) to write two prices for each item (for example small and large, or the item and the meal deal). The two columns come out aligned, with the names you choose above them (“Small” and “Large” by default), and are saved in the price-list file.
+- **Two sizes in your price list**: turn on “Two sizes (two prices per item)” (site and Windows app) to write two prices for each item (for example small and large, or the item and the meal deal). The two columns come out aligned, with the names you choose above them (“Small” and “Large” by default), and are saved in the price-list file.
 
 ## 3.73.0 — 2026-11-20
 
