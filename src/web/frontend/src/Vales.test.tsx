@@ -64,7 +64,7 @@ describe("os vales de fichas no preçário", () => {
     await userEvent.click(screen.getByTestId("vales-criar"));
     await waitFor(() => expect(window.location.pathname).toBe("/"));
     const pedido = servidor.pedidos.find((p) => /\/sessoes\/[^/]+\/vales$/.test(p.url));
-    expect((pedido?.corpo as PedidoVale).quantidade).toBe(3);
+    expect((pedido?.corpo as PedidoVale | undefined)?.quantidade).toBe(3);
   });
 
   it("a quantidade só aceita algarismos e um erro do servidor aparece e trava o botão", async () => {
