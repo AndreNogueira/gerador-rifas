@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.82.0 — 2026-11-20
+
+### Đã sửa
+- **Lề không đều khi lấp đầy tờ giấy với ít vé hơn mức tối đa**: yêu cầu ít vé mỗi tờ hơn mức tối đa khiến chúng dồn lên góc trên trái, toàn bộ khoảng trống dồn xuống dưới phải — đường cắt thẳng bằng máy cắt giấy không còn thẳng hàng. Giờ chúng luôn được căn giữa, với lề bằng nhau ở cả bốn phía.
+
 ## 3.81.0 — 2026-11-20
 
 ### Mới

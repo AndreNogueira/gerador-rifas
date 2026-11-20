@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.82.0 — 2026-11-20
+
+### Behoben
+- **Ungleiche Ränder beim Füllen des Bogens mit weniger Losen als möglich**: Wurden weniger Lose pro Bogen als das Maximum angefordert, saßen sie oben links und der gesamte Spielraum lag unten rechts — der gerade Schnitt passte nicht mehr. Jetzt sind sie immer zentriert, mit gleichem Rand auf allen vier Seiten.
+
 ## 3.81.0 — 2026-11-20
 
 ### Neu

@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.82.0 — 2026-11-20
+
+### Corrigido
+- **Margens desiguais ao encher a folha com menos rifas do que cabiam**: quando se pedia menos rifas por folha do que o máximo, ficavam encostadas ao topo/esquerda e toda a folga ia para o fundo/direita — a guilhotina a direito já não separava bem cada rifa. Agora ficam sempre centradas, com a mesma margem nos quatro lados.
+
 ## 3.81.0 — 2026-11-20
 
 ### Novo

@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.82.0 — 2026-11-20
+
+### Åtgärdat
+- **Ojämna marginaler vid fyllning av arket med färre lotter än det rymde**: att be om färre lotter per ark än maximum lämnade dem uppe till vänster, med allt utrymme nere till höger — ett rakt skär med pappersskäraren passade inte längre. Nu centreras de alltid, med samma marginal på alla fyra sidor.
+
 ## 3.81.0 — 2026-11-20
 
 ### Nytt

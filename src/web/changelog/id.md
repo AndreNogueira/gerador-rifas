@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.82.0 — 2026-11-20
+
+### Diperbaiki
+- **Margin tidak rata saat mengisi lembar dengan tiket lebih sedikit dari yang muat**: meminta tiket per lembar lebih sedikit dari maksimum membuatnya menempel di kiri atas, dengan semua ruang kosong di kanan bawah — potongan guillotine lurus jadi tidak pas lagi. Sekarang selalu berada di tengah, dengan margin yang sama di keempat sisi.
+
 ## 3.81.0 — 2026-11-20
 
 ### Baru

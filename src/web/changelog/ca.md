@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.82.0 — 2026-11-20
+
+### Corregit
+- **Marges desiguals en omplir el full amb menys rifes de les que hi cabien**: demanar menys rifes per full que el màxim les deixava enganxades a dalt a l'esquerra, amb tot l'espai lliure a baix a la dreta — el tall recte de la guillotina ja no les separava bé. Ara queden sempre centrades, amb el mateix marge als quatre costats.
+
 ## 3.81.0 — 2026-11-20
 
 ### Novetats

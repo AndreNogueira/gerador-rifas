@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.82.0 — 2026-11-20
+
+### Corectat
+- **Margini neuniforme la umplerea foii cu mai puține bilete decât încăpeau**: a cere mai puține bilete pe foaie decât maximul le lăsa lipite în stânga sus, cu tot spațiul liber în dreapta jos — o tăietură dreaptă nu mai separa bine fiecare bilet. Acum sunt mereu centrate, cu aceeași margine pe toate cele patru laturi.
+
 ## 3.81.0 — 2026-11-20
 
 ### Noutăți

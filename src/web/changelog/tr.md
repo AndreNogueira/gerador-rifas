@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.82.0 — 2026-11-20
+
+### Düzeltildi
+- **Sığandan az bilet ile sayfayı doldururken eşit olmayan kenar boşlukları**: sayfa başına maksimumdan daha az bilet istemek onları sol üste yapıştırıyor, tüm boşluk sağ altta kalıyordu — düz bir giyotin kesimi artık doğru ayırmıyordu. Şimdi her zaman ortalanıyorlar, dört kenarda da aynı boşlukla.
+
 ## 3.81.0 — 2026-11-20
 
 ### Yeni

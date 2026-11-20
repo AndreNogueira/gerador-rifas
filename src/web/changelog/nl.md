@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.82.0 — 2026-11-20
+
+### Opgelost
+- **Ongelijke marges bij het vullen van het vel met minder loten dan er pasten**: minder loten per vel aanvragen dan het maximum liet ze linksboven staan, met alle ruimte rechtsonder — een rechte snede sneed niet meer goed tussen elk lot. Nu staan ze altijd gecentreerd, met dezelfde marge aan alle vier de zijden.
+
 ## 3.81.0 — 2026-11-20
 
 ### Nieuw
