@@ -378,13 +378,8 @@ def cena_visual(a, g, T):
     a._definir_visual("auto")
 
 
-CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria), "editor": (None, cena_editor),
+CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria), "precario": (None, cena_precario), "editor": (None, cena_editor),
          "marca": (UMA_RIFA, cena_marca), "sorteio": (VARIAS, cena_sorteio), "visual": (VARIAS, cena_visual), "pedido": (None, cena_pedido)}
-
-
-# Cenas escritas mas ainda por gravar (o video precisa do ecra livre: um jogo ou outra janela por cima estraga a captura). Quando se gravar:
-# `python testesazer_videos_windows.py precario`, mover a cena para CENAS e registar a plataforma «windows» em `core.tutorial.FUNCIONALIDADES`.
-PENDENTES = {"precario": cena_precario}
 
 
 def main() -> int:
@@ -399,7 +394,7 @@ def main() -> int:
         esperar(app, lambda: False, 0.6)
         app.geometry(POS_APP)
         for id_ in ids:
-            ficheiros, cena = CENAS[id_] if id_ in CENAS else (None, PENDENTES[id_])
+            ficheiros, cena = CENAS[id_]
             preparar(app, ficheiros)
             g = Gravador(app, SAIDA / f"windows_{id_}_{lg}.mp4")
             try:
