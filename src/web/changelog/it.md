@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.80.0 — 2026-11-20
+
+### Novità
+- **Combo tra sezioni nel listino**: riunisci da 2 a 4 articoli del catalogo, anche di sezioni diverse (per esempio un panino e una bibita), a un solo prezzo. Il combo compare in una nuova sezione, «Combo e menu», con le immagini degli articoli affiancate, e può avere un nome proprio (sito e app Windows).
+
 ## 3.79.0 — 2026-11-20
 
 ### Novità

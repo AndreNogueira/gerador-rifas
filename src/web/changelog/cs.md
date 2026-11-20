@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.80.0 — 2026-11-20
+
+### Novinky
+- **Kombinace napříč oddíly v ceníku**: spojte 2 až 4 položky z katalogu, i z různých oddílů (například bagetu a nápoj), do jedné ceny. Kombinace se objeví v novém oddílu «Kombinace a menu», s obrázky položek vedle sebe, a může mít vlastní název (web i aplikace pro Windows).
+
 ## 3.79.0 — 2026-11-20
 
 ### Novinky

@@ -442,4 +442,11 @@ T = {
     "web_precario_logo_direita": "Ở đầu trang, bên phải",
     "web_precario_logo_rodape": "Ở chân trang",
     "web_precario_logo_dica": "Logo chỉ nằm trong trình duyệt và trong PDF: không được lưu trên máy chủ, trong tệp bảng giá hay trong liên kết chia sẻ.",
+    "err_precario_combo": "Một combo gộp từ {min} đến {max} món khác nhau trong danh mục.",
+    "web_precario_combos": "Combo và thực đơn",
+    "web_precario_combos_dica": "Gộp 2 đến 4 món, kể cả từ các mục khác nhau, thành một giá (ví dụ một bánh mì kẹp và một đồ uống). Combo hiện trong «Combo và thực đơn».",
+    "web_precario_combo_artigo": "Món {n}",
+    "web_precario_combo_nenhum": "— không —",
+    "web_precario_combo_nome": "Tên combo (không bắt buộc)",
+    "web_precario_combo_juntar": "Thêm combo",
 }

@@ -170,3 +170,14 @@ def test_cores_e_logotipo_pelo_pdf_e_pela_previa_e_o_catalogo_traz_as_cores_dos_
     serv = c.app.state.servico
     serv.metricas.descarregar(tudo=True)
     assert "base64" not in str(serv.metricas._consultar("SELECT * FROM eventos")) and "112233" not in str(serv.metricas._consultar("SELECT * FROM eventos"))
+
+
+def test_combos_pelo_pdf_e_pela_previa_e_o_catalogo_tem_os_menus(c):
+    categorias = c.get("/api/precario/catalogo").json()["categorias"]
+    assert categorias[0]["id"] == "menus" and categorias[0]["artigos"] == []
+    pedido = {"linhas": [{"combo": ["agua", "bolo"], "preco": "2,5"}, {"combo": ["cafe", "bolo"], "nome": "Café com bolo"}], "titulo": "Festa"}
+    assert c.post("/api/precario/pdf", json=pedido).status_code == 200
+    assert c.post("/api/precario/previa.png", json=pedido).status_code == 200
+    r = c.post("/api/precario/pdf", json={"linhas": [{"combo": ["agua"]}]}, headers={"X-Lingua": "en"})
+    assert r.status_code == 422 and r.json()["tipo"] == "aviso" and "combo" in r.json()["detail"].lower()
+    assert c.post("/api/precario/pdf", json={"linhas": [{"combo": ["agua", "bolo", "cafe", "sumo", "cha"]}]}).status_code == 422

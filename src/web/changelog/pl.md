@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.80.0 — 2026-11-20
+
+### Nowości
+- **Zestawy z różnych działów w cenniku**: połącz od 2 do 4 pozycji z katalogu, także z różnych działów (na przykład kanapkę i napój), w jednej cenie. Zestaw pojawia się w nowym dziale «Zestawy i menu», z obrazkami pozycji obok siebie, i może mieć własną nazwę (strona i aplikacja na Windows).
+
 ## 3.79.0 — 2026-11-20
 
 ### Nowości

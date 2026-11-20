@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.80.0 — 2026-11-20
+
+### Mới
+- **Combo giữa các mục trong bảng giá**: gộp 2 đến 4 món trong danh mục, kể cả từ các mục khác nhau (ví dụ một bánh mì kẹp và một đồ uống), thành một giá. Combo hiện trong mục mới «Combo và thực đơn», với hình các món cạnh nhau, và có thể đặt tên riêng (trang web và ứng dụng Windows).
+
 ## 3.79.0 — 2026-11-20
 
 ### Mới

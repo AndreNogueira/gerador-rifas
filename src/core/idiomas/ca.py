@@ -442,4 +442,11 @@ T = {
     "web_precario_logo_direita": "A la capçalera, a la dreta",
     "web_precario_logo_rodape": "Al peu",
     "web_precario_logo_dica": "El logotip queda només al vostre navegador i al PDF: no es desa al servidor, ni al fitxer de la llista, ni a l'enllaç compartit.",
+    "err_precario_combo": "Un combo uneix de {min} a {max} articles diferents del catàleg.",
+    "web_precario_combos": "Combos i menús",
+    "web_precario_combos_dica": "Uniu de 2 a 4 articles, fins i tot de seccions diferents, en un sol preu (per exemple, un entrepà i una beguda). El combo apareix a «Combos i menús».",
+    "web_precario_combo_artigo": "Article {n}",
+    "web_precario_combo_nenhum": "— cap —",
+    "web_precario_combo_nome": "Nom del combo (opcional)",
+    "web_precario_combo_juntar": "Afegeix el combo",
 }

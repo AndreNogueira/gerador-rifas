@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.80.0 — 2026-11-20
+
+### Yeni
+- **Fiyat listesinde bölümler arası kombolar**: katalogdan 2 ile 4 ürünü, farklı bölümlerden olsalar bile (örneğin bir sandviç ve bir içecek), tek bir fiyatta birleştirin. Kombo, ürünlerin resimleri yan yana olacak şekilde yeni «Kombolar ve menüler» bölümünde görünür ve kendi adı olabilir (site ve Windows uygulaması).
+
 ## 3.79.0 — 2026-11-20
 
 ### Yeni

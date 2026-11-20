@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.80.0 — 2026-11-20
+
+### Novo
+- **Combos entre secções no preçário**: junte 2 a 4 artigos do catálogo, mesmo de secções diferentes (por exemplo, uma bifana e uma bebida), num só preço. O combo aparece numa secção nova, «Menus e combos», com as imagens dos artigos lado a lado, e pode ter um nome próprio (site e app Windows).
+
 ## 3.79.0 — 2026-11-20
 
 ### Novo

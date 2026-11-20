@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.80.0 — 2026-11-20
+
+### Baru
+- **Paket lintas bagian di daftar harga**: gabungkan 2 sampai 4 barang katalog, bahkan dari bagian berbeda (misalnya roti lapis dan minuman), dalam satu harga. Paket muncul di bagian baru, «Paket dan menu», dengan gambar barang berdampingan, dan boleh diberi nama sendiri (situs dan aplikasi Windows).
+
 ## 3.79.0 — 2026-11-20
 
 ### Baru

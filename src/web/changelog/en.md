@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.80.0 — 2026-11-20
+
+### New
+- **Combos across sections in the price list**: join 2 to 4 catalog items, even from different sections (for example, a sandwich and a drink), at a single price. The combo appears in a new section, “Menus and combos”, with the items' pictures side by side, and can have a name of its own (site and Windows app).
+
 ## 3.79.0 — 2026-11-20
 
 ### New

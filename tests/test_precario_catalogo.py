@@ -13,8 +13,8 @@ def test_os_dados_cobrem_todas_as_linguas_do_site():
 
 
 def test_o_tamanho_do_catalogo():
-    assert len(cat.ARTIGOS) >= 90 and len(cat.OCASIOES) >= 12 and len(cat.CATEGORIAS) == 7
-    assert {a.categoria for a in cat.ARTIGOS.values()} == set(cat.CATEGORIAS)               # nenhuma categoria vazia
+    assert len(cat.ARTIGOS) >= 90 and len(cat.OCASIOES) >= 12 and len(cat.CATEGORIAS) == 8
+    assert {a.categoria for a in cat.ARTIGOS.values()} == set(cat.CATEGORIAS) - {"menus"}      # nenhuma categoria vazia (os «Menus e combos» só têm os combos que a pessoa junta)
 
 
 def test_as_ocasioes_usam_desenhos_da_galeria_artigos_que_existem_e_meses_validos():

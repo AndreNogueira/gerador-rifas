@@ -407,3 +407,34 @@ def test_o_logotipo_nunca_vai_para_o_dicionario_nem_para_o_ficheiro_mas_as_cores
         precario.de_dict({"linhas": [{"artigo": "agua"}], "logotipo": "data:image/gif;base64,R0lGOD"}, "pt")
     with pytest.raises(ErroRifas):
         precario.de_dict({"linhas": [{"artigo": "agua"}], "cores": ["#fff"]}, "pt")
+
+
+# ------------------------------------------------------------------ combos entre secções
+def test_um_combo_junta_artigos_de_secoes_diferentes_numa_so_linha_em_menus_e_combos():
+    linhas = (Linha(artigo="bifana", preco=2000), Linha(combo=("bifana", "cerveja"), preco=3000))
+    p = Precario(linhas=linhas, lingua="pt")
+    assert [c for c, _ in precario._agrupar(p)] == ["menus", "comida"]                      # os menus vêm primeiro
+    texto = texto_do_pdf(precario.criar_pdf(p))
+    assert "Menus e combos" in texto and "Bifana + Cerveja" in texto and "3,00 €" in texto
+    assert precario.criar_pdf(Precario(linhas=(Linha(combo=("bifana", "cerveja", "bolo", "cafe"), nome="Menu da festa", preco=5000),))).startswith(b"%PDF")
+    assert "Menu da festa" in texto_do_pdf(precario.criar_pdf(Precario(linhas=(Linha(combo=("bifana", "cerveja"), nome="Menu da festa", preco=5000),))))
+    assert precario.criar_pdf(Precario(linhas=(Linha(combo=("agua", "bolo"), preco=1),), imagens=False)).startswith(b"%PDF")
+
+
+@pytest.mark.parametrize("combo", [("bifana",), ("agua", "agua"), ("agua", "nao_existe"), ("agua", "bolo", "cafe", "sumo", "cha")])
+def test_um_combo_com_artigos_a_menos_a_mais_repetidos_ou_desconhecidos_e_recusado(combo):
+    with pytest.raises(ErroRifas) as e:
+        precario.criar_pdf(Precario(linhas=(Linha(combo=combo),)))
+    assert e.value.chave == "err_precario_combo"
+
+
+def test_um_combo_nao_e_um_artigo_e_vai_e_volta_pelo_dicionario_e_pelo_ficheiro_em_todas_as_linguas():
+    with pytest.raises(ErroRifas):
+        precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", combo=("agua", "bolo")),)))
+    p = Precario(linhas=(Linha(combo=("agua", "bolo"), nome="Lanche", preco=1500), Linha(artigo="agua", preco=500)))
+    assert precario.de_dict(precario.para_dict(p)) == p and precario.de_bytes(precario.para_bytes(p)).linhas[0].combo == ("agua", "bolo")
+    for lg in LINGUAS:
+        assert precario.criar_pdf(Precario(linhas=(Linha(combo=("agua", "bolo"), preco=1500),), lingua=lg, moeda=moeda.moeda_por_omissao(lg))).startswith(b"%PDF")
+    for mau in ("agua", [1, 2], ["agua", 3]):
+        with pytest.raises(ErroRifas):
+            precario.de_dict({"linhas": [{"combo": mau}]})

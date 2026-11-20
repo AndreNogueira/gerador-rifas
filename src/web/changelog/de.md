@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.80.0 — 2026-11-20
+
+### Neu
+- **Kombis über Bereiche hinweg in der Preisliste**: Fassen Sie 2 bis 4 Katalogartikel, auch aus verschiedenen Bereichen (zum Beispiel ein Brötchen und ein Getränk), zu einem Preis zusammen. Die Kombi erscheint in einem neuen Bereich, «Kombis und Menüs», mit den Bildern der Artikel nebeneinander und kann einen eigenen Namen haben (Website und Windows-App).
+
 ## 3.79.0 — 2026-11-20
 
 ### Neu

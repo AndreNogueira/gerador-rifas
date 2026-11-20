@@ -363,3 +363,13 @@
     margin-top: 10px;
   }
 }
+
+// Combos: quatro listas de artigos (de qualquer secção) e o nome
+.precario {
+  .precario-combo-artigos {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    margin-bottom: 10px;
+  }
+}

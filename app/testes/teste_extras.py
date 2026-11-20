@@ -266,6 +266,22 @@ pr.l_erro.configure(text="")
 pr._repor_cores()
 pr.v_logo_lugar.set(pr._logo_lugares["esquerda"])
 
+# --- combos: 2 a 4 artigos de secções diferentes, num só preço, em «Menus e combos»; vão e voltam pelo ficheiro .precario
+ok(not pr._juntar_combo(["agua"]) and pr.l_erro.cget("text") != "", "um combo com um só artigo é recusado com aviso")
+ok(not pr._juntar_combo(["agua", "agua"]), "um combo com artigos repetidos é recusado")
+antes_combo = len(pr.linhas)
+ok(pr._juntar_combo(["agua", "bolo"], "Lanche") and len(pr.linhas) == antes_combo + 1 and pr.l_erro.cget("text") == "", "um combo de dois artigos junta-se")
+pr.v_combo[0].set(next(n for n, i in pr._nomes_combo.items() if i == "cerveja"))
+pr.v_combo[1].set(next(n for n, i in pr._nomes_combo.items() if i == "bolo"))
+ok(pr._juntar_combo() and pr.linhas[-1]["combo"] == ("cerveja", "bolo") and pr._nome_da_linha(pr.linhas[-1]).count(" + ") == 1, "as listas dão um combo sem nome próprio: chama-se pelos artigos")
+pc = pr.precario()
+ok([ln.combo for ln in pc.linhas if ln.combo] == [("agua", "bolo"), ("cerveja", "bolo")], "o preçário leva os combos")
+fich_m = pr._guardar_ficheiro(str(SAIDA / "m.precario"))
+ok(pr._abrir_ficheiro(str(fich_m)) and [ln.combo for ln in pr.precario().linhas if ln.combo] == [("agua", "bolo"), ("cerveja", "bolo")] and pr.precario() == pc, "os combos voltam pelo ficheiro .precario")
+for ln in [x for x in pr.linhas if x.get("combo")]:
+    pr._tirar(ln["chave"])
+ok(not any(ln.combo for ln in pr.precario().linhas), "um combo tira-se como qualquer linha")
+
 # --- vales de fichas numerados: só com moeda inventada com nome; pre-visualiza no worker; «Criar» passa o template e os algarismos à janela principal
 pr.v_inventada.set(False)
 pr._vales()
