@@ -47,7 +47,7 @@ FUNCIONALIDADES = (
     Funcionalidade("lista", PLATAFORMAS, "web_exportar_csv", ("win_m_extras", "web_exportar_csv")),
     Funcionalidade("marcas", PLATAFORMAS, "web_marcas", ("win_m_extras", "win_opcoes")),
     Funcionalidade("galeria", PLATAFORMAS, "web_galeria", ("win_m_extras", "win_galeria")),
-    Funcionalidade("precario", ("web",), "web_precario"),         # a janela da app Windows existe (menu Extras); falta gravar o video dela: ver PENDENTES em app/testes/fazer_videos_windows.py
+    Funcionalidade("precario", PLATAFORMAS, "web_precario", ("win_m_extras", "web_precario")),
     Funcionalidade("marca", PLATAFORMAS, "web_logotipo", ("win_m_extras", "win_opcoes")),
     Funcionalidade("qr", ("web",), "web_qr"),
     Funcionalidade("editor", PLATAFORMAS, "web_editor", ("win_m_extras", "web_editor")),
