@@ -1,6 +1,7 @@
 // O gerador de preçários: o editor à esquerda (cartões), a pré-visualização à direita (fixa em ecrãs largos) e uma só coluna em telemóvel.
 .precario {
   select {
+    background: var(--campo); // sem isto o fundo é o nativo do browser, que no Linux (CI) varia e fez o contraste do Jornal escuro cair a 4,3
     color: var(--texto); // o cinzento global dos <select> não chega a 4,5:1 em todos os temas (medido no Arcade escuro)
   }
   .precario-grelha {
