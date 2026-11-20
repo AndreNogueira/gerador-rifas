@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.78.0 — 2026-11-20
+
+### Mới
+- **Tối đa 5 hình để chọn cho mỗi món**: trong bảng giá, bấm vào hình của một món trong danh mục và chọn hình bạn thích nhất trong tối đa 5 hình (nước có thể là giọt nước, vòi nước, đá hoặc ly…). Lựa chọn hiện trong PDF và được giữ trong tệp bảng giá và liên kết chia sẻ (trang web và ứng dụng Windows).
+
 ## 3.77.0 — 2026-11-20
 
 ### Cải thiện

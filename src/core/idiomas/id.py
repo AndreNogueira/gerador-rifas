@@ -426,4 +426,7 @@ T = {
     "web_precario_foto": "Foto",
     "web_precario_foto_tirar": "Hapus foto",
     "web_precario_fotos_dica": "Anda dapat menaruh foto sendiri pada tiap barang (PNG atau JPG). Foto hanya tetap di browser Anda dan di PDF: tidak disimpan di server maupun di tautan yang dibagikan.",
+    "web_precario_icone": "Ganti ikon",
+    "web_precario_icone_n": "Ikon {n}",
+    "web_precario_icones_dica": "Tekan gambar barang untuk memilih ikon lain (hingga 5 per barang).",
 }

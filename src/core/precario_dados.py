@@ -3,6 +3,7 @@
 Formato de uma linha de artigo: `id|emoji|categoria|região|nome pt|en|es|fr|de|it|nl|pl|sv|cs|ro|el|ru|tr|zh|ja|ko|hi|ca|uk|id|vi[|nome pt-br]` (a ordem das línguas é `LINGUAS`
 abaixo). `emoji` é o código hexadecimal do emoji (a imagem do artigo, fase 3: `core/icones_precario/`). `região` é vazio (qualquer língua), `pt` (só com a língua de Portugal) ou `br` (só com o
 português do Brasil). Um nome que é igual em todas as línguas (pratos locais, nomes próprios) escreve-se `=Nome`. Sem o 23.º campo o nome em pt-br deriva-se do pt (`core/ptbr.py`).
+Formato de `ICONES`: `id do artigo|emojis alternativos (até 4, separados por vírgulas)`: com o `emoji` do artigo são até 5 imagens à escolha (a primeira é a de omissão).
 Formato de uma ocasião: `id|desenho da galeria|região|meses em que é a sugerida (1-12, separados por vírgulas)|artigos (ids por vírgulas)|nome pt|…|nome vi`.
 As traduções não tiveram revisão por falantes nativos.
 """
@@ -113,6 +114,102 @@ livro|1f4d6|extras||Livro|Book|Libro|Livre|Buch|Libro|Boek|Książka|Bok|Kniha|C
 planta|1f331|extras||Planta|Plant|Planta|Plante|Pflanze|Pianta|Plant|Roślina|Växt|Rostlina|Plantă|Φυτό|Растение|Bitki|植物|植物|식물|पौधा|Planta|Рослина|Tanaman|Cây
 saco|1f6cd|extras||Saco|Bag|Bolsa|Sac|Tasche|Borsa|Tas|Torba|Väska|Taška|Geantă|Τσάντα|Сумка|Çanta|袋子|バッグ|가방|बैग|Bossa|Сумка|Tas|Túi|Sacola
 caixa_surpresa|1f381|extras||Caixa surpresa|Surprise box|Caja sorpresa|Boîte surprise|Überraschungsbox|Scatola a sorpresa|Verrassingsdoos|Pudełko-niespodzianka|Överraskningslåda|Krabice překvapení|Cutie surpriză|Κουτί έκπληξη|Коробка-сюрприз|Sürpriz kutu|惊喜盒|サプライズボックス|서프라이즈 박스|सरप्राइज़ बॉक्स|Caixa sorpresa|Коробка-сюрприз|Kotak kejutan|Hộp bất ngờ
+"""
+
+ICONES = """
+agua|1f6b0,1f9ca,1f964,1f95b
+agua_gas|1f4a7,1f964,1f9c3,1f6b0
+refrigerante|1f9c3,1f95b,1f9ca,1f9cb
+sumo|1f34a,1f34e,1f347,1f964
+sumo_laranja|1f9c3,1f964,1f34b,1f379
+limonada|1f964,1f9c3,1f379,1f9ca
+cha_gelado|1f964,1f375,1f9ca,1f9c3
+leite_chocolate|1f36b,1f964,1f9c3,2615
+agua_coco|1f334,1f964,1f9c3,1f4a7
+cerveja|1f37b,1f943,1f378,1f379
+imperial|1f37a,1f943,1f378,1f9ca
+chopp|1f37b,1f943,1f9ca,1f964
+vinho_tinto|1f942,1f347,1f37e,1f943
+vinho_branco|1f377,1f37e,1f347,1f378
+sangria|1f377,1f378,1f34a,1f353
+cocktail|1f379,1f943,1f942,1f37e
+caipirinha|1f34b,1f378,1f943,1f9ca
+vinho_quente|2615,1f375,1f942,1f943
+quentao|1f375,1f377,1f943,1f525
+espumante|1f942,1f377,1f389,1f378
+agua_pe|1f377,1f37e,1f943,1f9c3
+jeropiga|1f377,1f943,1f37e,1f9c3
+cafe|1f375,1f950,1f36a,1f95b
+bica|1f375,1f95b,1f950,1f36a
+cha|2615,1f34b,1f33f,1f36a
+chocolate_quente|1f36b,1f375,1f95b,1f36a
+hamburguer|1f96a,1f35f,1f32d,1f355
+cachorro_quente|1f354,1f96a,1f35f,1f356
+pizza|1f9c0,1f354,1f96a,1f35d
+sandes|1f354,1f956,1f32f,1f9c0
+bifana|1f96a,1f969,1f354,1f32d
+prego|1f96a,1f956,1f354,1f356
+sardinha|1f420,1f364,1f363,1f990
+caldo_verde|1f372,1f957,1f96c,1f33f
+pao_chourico|1f96a,1f32d,1f356,1f969
+frango_assado|1f356,1f414,1f969,1f35f
+salsicha|1f32d,1f357,1f969,1f354
+batatas_fritas|1f954,1f354,1f9c0,1f32d
+salada|1f96c,1f345,1f952,1f955
+sopa|1f963,1f35c,1f958,1f957
+pipocas|1f33d,1f3ac,1f39f,1f35f
+castanhas_assadas|1f95c,1f525,1f342,1f36f
+tremocos|1f330,1f33d,1f33f,1f963
+coxinha|1f95f,1f356,1f414,1f35f
+pastel|1f950,1f9c0,1f95e,1f96e
+pao_de_queijo|1f35e,1f950,1f96f,1f956
+espetinho|1f356,1f361,1f969,1f364
+milho_cozido|1f37f,1f33e,1f955,1f952
+pamonha|1f33e,1f37f,1f95f,1f36e
+canjica|1f33d,1f372,1f963,1f36e
+tapioca|1f32f,1f95f,1f950,1f9c0
+bolo|1f382,1f9c1,1f36e,1f369
+cupcake|1f370,1f382,1f369,1f36a
+brownie|1f36a,1f370,1f9c1,1f36e
+bolacha|1f36b,1f950,1f370,1f9c1
+donut|1f36a,1f9c1,1f370,1f36d
+crepe|1f32f,1f353,1f36b,1f370
+waffle|1f95e,1f353,1f366,1f36b
+gelado|1f368,1f367,1f9ca,1f36d
+algodao_doce|1f36c,2601,1f369,1f9c1
+maca_amor|1f34f,1f36d,1f353,1f352
+rebucados|1f36d,1f36b,1f361,1f381
+chocolate|1f36a,1f370,1f36e,1f95c
+mousse|1f36b,1f366,1f370,1f353
+fruta|1f34e,1f34a,1f347,1f349
+pastel_de_nata|1f370,1f950,1f95a,2615
+bola_de_berlim|1f950,1f36a,1f9c1,1f36e
+arroz_doce|1f35a,1f963,1f370,1f36f
+farturas|1f369,1f950,1f36a,1f95f
+brigadeiro|1f36c,1f36a,1f36d,1f370
+pacoca|1f330,1f36b,1f36a,1f36c
+quindim|1f36f,1f95a,1f370,1f36d
+pe_de_moleque|1f330,1f36b,1f36a,1f36c
+tiro_ao_alvo|1f3f9,1f3c6,1f3b1,1f3ae
+pesca|1f41f,1f420,1f421,1f433
+pintura_facial|1f921,1f58c,1f98b,1f984
+insuflavel|1f3aa,1f388,1f3a0,1f3e0
+carrossel|1f3a1,1f3a2,1f434,1f3aa
+jogo_dos_pinos|1f3af,1f3b2,1f3c6,1f3ae
+bilhete_rifa|1f3ab,1f381,1f340,1f3c6
+karaoke|1f3b6,1f3b8,1f3b5,1f3a7
+poni|1f40e,1f984,1f3a0,1f955
+bingo|1f3b2,1f3b0,1f340,1f3c6
+entrada|1f3ab,1f6aa,1f3a1,1f3aa
+estacionamento|1f697,1f68c,1f6b2,1f3cd
+tshirt|1f456,1f45a,1f9e5,1f9e2
+bone|1f452,1f3a9,1f393,1f455
+copo_reutilizavel|267b,2615,1f95b,1f9c3
+donativo|1f49d,1f91d,1f381,1f31f
+livro|1f4da,1f4d5,1f4d8,1f4d3
+planta|1f33f,1f337,1f33b,1f335
+saco|1f45c,1f392,1f6d2,1f381
+caixa_surpresa|1f389,1f388,1f380,2753
 """
 
 OCASIOES = """

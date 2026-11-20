@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.78.0 — 2026-11-20
+
+### Baru
+- **Hingga 5 gambar pilihan per barang**: di daftar harga, tekan gambar barang dari katalog dan pilih yang paling Anda suka di antara maksimal 5 (air bisa berupa tetes, keran, es, atau gelas…). Pilihan terlihat di PDF dan tersimpan di file daftar harga serta tautan yang dibagikan (situs dan aplikasi Windows).
+
 ## 3.77.0 — 2026-11-20
 
 ### Ditingkatkan

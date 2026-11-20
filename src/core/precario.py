@@ -39,7 +39,7 @@ class Linha:
     nome: str = ""                  # texto livre; num artigo do catálogo, se vier preenchido, ganha ao nome do catálogo (a pessoa corrigiu-o)
     preco: int | None = None
     categoria: str = ""             # só nos textos livres (uma categoria do catálogo); vazio = «Outros»
-    emoji: str = ""                 # só nos textos livres: a imagem (um código de `core/icones_precario/`)
+    emoji: str = ""                 # a imagem (um código de `core/icones_precario/`): num texto livre, qualquer uma; num artigo do catálogo, uma das suas `icones` (vazio = a de omissão)
     preco2: int | None = None       # o segundo preço (o tamanho grande, o «menu»…) quando `Precario.tamanhos` está ligado; em milésimos
     foto: bytes = b""                # a foto própria do artigo (PNG ou JPG já reduzidos por `foto_de_bytes`); nunca vai para o ficheiro `.precario` nem para a ligação partilhada
 
@@ -102,6 +102,8 @@ def validar(p: Precario) -> None:
         if ln.categoria and ln.categoria not in cat.CATEGORIAS:
             raise ErroRifas("err_precario_texto", car="?")
         if ln.emoji and not (PASTA_ICONES / f"{ln.emoji}.png").is_file():
+            raise ErroRifas("err_precario_texto", car="?")
+        if ln.artigo and ln.emoji and ln.emoji not in cat.ARTIGOS[ln.artigo].icones:       # um artigo só aceita as imagens que o catálogo lhe oferece
             raise ErroRifas("err_precario_texto", car="?")
         if ln.preco is not None and not 0 <= ln.preco <= mod_moeda.MAX_VALOR:
             raise ErroRifas("err_precario_texto", car="?")
@@ -369,7 +371,7 @@ def _item(c, p: Precario, d, ln: Linha, x: float, y_topo: float, largura: float,
     nome = _nome_da_linha(ln, p.lingua)
     negro = _cor_texto(d)
     x_texto = x
-    emoji = cat.ARTIGOS[ln.artigo].emoji if ln.artigo else ln.emoji
+    emoji = ln.emoji or (cat.ARTIGOS[ln.artigo].emoji if ln.artigo else "")
     if p.imagens and ln.foto:                                              # a foto própria ganha ao ícone do catálogo
         lado = linha_h * 0.92
         c.drawImage(_foto(ln.foto), x, y_topo - linha_h / 2 - lado / 2, lado, lado, preserveAspectRatio=True, anchor="c", mask="auto")

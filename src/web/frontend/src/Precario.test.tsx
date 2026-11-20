@@ -29,7 +29,13 @@ beforeEach(() => {
 });
 
 const CAT = {
-  categorias: [{ id: "bebidas", nome: "Bebidas", artigos: [{ id: "agua", nome: "Água", emoji: "1f4a7" }] }],
+  categorias: [
+    {
+      id: "bebidas",
+      nome: "Bebidas",
+      artigos: [{ id: "agua", nome: "Água", emoji: "1f4a7", icones: ["1f4a7", "1f6b0", "1f9ca"] }],
+    },
+  ],
   ocasioes: [{ id: "natal", nome: "Natal", desenho: "natal", artigos: ["agua"], meses: [12] }],
   sugerida: "",
   desenhos: [{ id: "natal", nome: "Natal" }],
@@ -270,5 +276,39 @@ describe("fotos próprias", () => {
       expect(p.linhas[0]?.foto).toBeUndefined();
     });
     vi.unstubAllGlobals();
+  });
+});
+
+describe("as imagens à escolha de cada artigo", () => {
+  it("a miniatura abre as imagens (até 5), a escolhida vai no pedido e a de omissão volta ao vazio", async () => {
+    abrir();
+    await userEvent.click(await screen.findByTestId("precario-icone-agua"));
+    expect(screen.getByTestId("precario-icone-agua-1")).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(screen.getByTestId("precario-icone-agua-3"));
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.linhas[0]?.emoji).toBe("1f9ca");
+    });
+    expect(screen.getByTestId("precario-icone-agua-3")).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(screen.getByTestId("precario-icone-agua-1"));
+    await waitFor(() => {
+      const p = pedidosA("/api/precario/previa.png").at(-1)?.corpo as PedidoPrecario;
+      expect(p.linhas[0]?.emoji).toBe("");
+    });
+    await userEvent.click(screen.getByTestId("precario-icone-agua"));
+    expect(screen.queryByTestId("precario-icone-agua-2")).not.toBeInTheDocument();
+  });
+
+  it("um rascunho com uma imagem que o catálogo não oferece volta à de omissão; uma oferecida fica", () => {
+    const linha = (emoji: string) => ({
+      chave: "agua",
+      artigo: "agua",
+      nome: "",
+      categoria: "",
+      emoji,
+      preco: "",
+    });
+    expect(estadoInicial(CAT, 12, { titulo: "M", linhas: [linha("1f370")] }).linhas[0]?.emoji).toBe("");
+    expect(estadoInicial(CAT, 12, { titulo: "M", linhas: [linha("1f6b0")] }).linhas[0]?.emoji).toBe("1f6b0");
   });
 });

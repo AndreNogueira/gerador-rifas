@@ -1,6 +1,6 @@
 """Gera as imagens dos artigos do preçário a partir do Noto Emoji (Google; imagens sob a Apache 2.0 / OFL 1.1, que permitem redistribuir: ver `src/core/icones_precario/LICENSE.txt`).
 
-Para cada emoji do catálogo (`core/precario_catalogo.py`): descarrega o PNG de 512 px do repositório `googlefonts/noto-emoji`, e grava
+Para cada emoji do catálogo, o de omissão e as alternativas de cada artigo (`core/precario_catalogo.py`): descarrega o PNG de 512 px do repositório `googlefonts/noto-emoji`, e grava
 - `src/core/icones_precario/<codigo>.png` (256 px, paleta de 256 cores: o que se desenha no PDF; ~10 KB) e
 - `src/web/frontend/public/precario/<codigo>.webp` (96 px: as miniaturas da página).
 
@@ -37,7 +37,7 @@ def main(cache: Path) -> int:
     PASTA_PDF.mkdir(parents=True, exist_ok=True)
     PASTA_WEB.mkdir(parents=True, exist_ok=True)
     cache.mkdir(parents=True, exist_ok=True)
-    codigos = sorted({a.emoji for a in precario_catalogo.ARTIGOS.values()})
+    codigos = sorted({e for a in precario_catalogo.ARTIGOS.values() for e in a.icones})    # a de omissão e as alternativas de cada artigo
     faltam = []
     for codigo in codigos:
         bruto = cache / f"{codigo}.png"

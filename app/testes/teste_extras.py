@@ -232,6 +232,19 @@ pr._escolher_foto("agua")
 ok("agua" not in pr.fotos, "voltar a carregar no botão tira a foto")
 pr.l_erro.configure(text="")
 
+# --- imagens à escolha: a miniatura abre até 5; a escolhida entra no preçário e no ficheiro .precario; a de omissão volta ao catálogo
+icones_agua = extras.precario_catalogo.ARTIGOS["agua"].icones
+ok(len(icones_agua) == 5 and pr._escolher_icone("agua") and pr._icones_abertos == "agua", "o botão da imagem abre as 5 imagens do artigo")
+ok(pr._escolher_icone("agua", icones_agua[2]) and next(ln for ln in pr.precario().linhas if ln.artigo == "agua").emoji == icones_agua[2], "a imagem escolhida entra no preçário")
+foto(pr, "precario_icones.png")
+fich_i = pr._guardar_ficheiro(str(SAIDA / "i.precario"))
+pr._escolher_icone("agua", icones_agua[0])
+ok(next(ln for ln in pr.precario().linhas if ln.artigo == "agua").emoji == "" and pr._abrir_ficheiro(str(fich_i)) and next(ln for ln in pr.precario().linhas if ln.artigo == "agua").emoji == icones_agua[2], "a imagem escolhida vai e volta pelo ficheiro .precario")
+ok(not pr._escolher_icone("agua", "1f370"), "uma imagem que não é do artigo é recusada")
+pr._escolher_icone("agua", icones_agua[0])
+pr._escolher_icone("agua")
+ok(pr._icones_abertos == "", "voltar a carregar no botão fecha as imagens")
+
 # --- vales de fichas numerados: só com moeda inventada com nome; pre-visualiza no worker; «Criar» passa o template e os algarismos à janela principal
 pr.v_inventada.set(False)
 pr._vales()

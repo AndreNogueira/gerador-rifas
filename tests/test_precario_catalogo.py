@@ -76,3 +76,12 @@ def test_cada_lingua_tem_o_catalogo_completo_com_nomes_diferentes_do_id(lg):
     c = cat.catalogo(lg)
     assert len(c["ocasioes"]) >= 12 and sum(len(x["artigos"]) for x in c["categorias"]) >= 60
     assert all(x["nome"].strip() for x in c["categorias"])
+
+
+def test_cada_artigo_oferece_ate_5_imagens_sem_repetir_e_a_primeira_e_a_de_omissao():
+    for a in cat.ARTIGOS.values():
+        assert 1 <= len(a.icones) <= cat.MAX_ICONES and len(set(a.icones)) == len(a.icones) and a.icones[0] == a.emoji, a.id
+    assert sum(len(a.icones) > 1 for a in cat.ARTIGOS.values()) == len(cat.ARTIGOS)              # todos têm alternativas
+    c = cat.catalogo("pt")
+    assert all(x["icones"][0] == x["emoji"] for k in c["categorias"] for x in k["artigos"])
+

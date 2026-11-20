@@ -41,6 +41,11 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.getByTestId("precario-previa-img")).toBeVisible();
     await expect(page.getByTestId("precario-erro")).toHaveCount(0);
     await page.getByTestId("precario-tamanhos").uncheck();
+    await page.getByTestId("precario-icone-agua").click(); // as imagens à escolha do artigo: troca-se a imagem e o PDF continua a desenhar-se
+    await page.getByTestId("precario-icone-agua-4").click();
+    await expect(page.getByTestId("precario-icone-agua-4")).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByTestId("precario-previa-img")).toBeVisible();
+    await expect(page.getByTestId("precario-erro")).toHaveCount(0);
     // uma foto própria (um PNG de 8 x 8 px): reduz-se no browser, vai no pedido e a pré-visualização continua a desenhar-se
     const png = Buffer.from(
       "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAFElEQVR4nGM8YWPDgA0wYRUdtBIA/xQBUEfB7b0AAAAASUVORK5CYII=",

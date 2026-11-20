@@ -319,3 +319,24 @@ def test_ha_um_maximo_de_fotos():
         precario.criar_pdf(muitas)
     assert e.value.chave == "err_editor_limite"
     assert precario.criar_pdf(Precario(linhas=muitas.linhas[:precario.MAX_FOTOS])).startswith(b"%PDF")
+
+
+# ------------------------------------------------------------------ imagens alternativas dos artigos
+def test_um_artigo_aceita_as_suas_imagens_alternativas_e_o_pdf_muda():
+    alternativas = cat.ARTIGOS["agua"].icones
+    assert len(alternativas) == 5
+    pdfs = {precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", preco=1000, emoji=e),))) for e in ("", *alternativas[1:])}
+    assert len(pdfs) == 5                                                  # a de omissão e as 4 outras desenham-se diferentes
+    assert precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", preco=1000, emoji=alternativas[0]),))) == precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", preco=1000),)))
+
+
+def test_um_artigo_recusa_uma_imagem_que_nao_e_sua():
+    with pytest.raises(ErroRifas) as e:
+        precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", preco=1000, emoji="1f370"),)))       # o bolo existe, mas não é uma imagem da água
+    assert e.value.chave == "err_precario_texto"
+    assert precario.criar_pdf(Precario(linhas=(Linha(nome="Bolo", categoria="doces", emoji="1f370"),))).startswith(b"%PDF")   # num texto livre qualquer imagem serve
+
+
+def test_a_imagem_escolhida_vai_e_volta_pelo_dicionario_e_pelo_ficheiro():
+    p = Precario(linhas=(Linha(artigo="agua", preco=1000, emoji=cat.ARTIGOS["agua"].icones[2]),))
+    assert precario.de_dict(precario.para_dict(p)) == p and precario.de_bytes(precario.para_bytes(p)).linhas[0].emoji == p.linhas[0].emoji

@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.78.0 — 2026-11-20
+
+### Novinky
+- **Až 5 obrázků na výběr u každé položky**: v ceníku klikněte na obrázek položky z katalogu a vyberte ten, který se vám líbí nejvíc, z nejvýše 5 (voda může být kapka, kohoutek, led nebo sklenice…). Volba je vidět v PDF a zůstane v souboru ceníku i ve sdíleném odkazu (web i aplikace pro Windows).
+
 ## 3.77.0 — 2026-11-20
 
 ### Vylepšeno

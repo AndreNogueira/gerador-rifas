@@ -3,6 +3,7 @@ import { api, ErroApi, type PedidoPrecario, type PrecarioCatalogo } from "./api"
 import { useDialogos } from "./dialogos";
 import { prepararFoto } from "./foto";
 import { guardarBlob } from "./Gerador";
+import { IconesArtigo, Miniatura } from "./IconesArtigo";
 import { useI18n } from "./i18n";
 import { Icone } from "./icones";
 import { Voltar } from "./paginas";
@@ -69,9 +70,20 @@ function nomeDoPais(codigo: string, lingua: string): string {
   }
 }
 
+/** As imagens que o catálogo oferece a cada artigo (a 1.ª é a de omissão). */
+function iconesDosArtigos(cat: PrecarioCatalogo): Map<string, string[]> {
+  return new Map(cat.categorias.flatMap((c) => c.artigos.map((a) => [a.id, a.icones] as const)));
+}
+
+/** A imagem escolhida para um artigo, só se o catálogo a oferece (um rascunho ou uma ligação antigos podem trazer outra): senão fica a de omissão (vazio). */
+function iconeValido(icones: Map<string, string[]>, artigo: string, emoji: string): string {
+  return artigo && emoji && icones.get(artigo)?.includes(emoji) ? emoji : artigo ? "" : emoji;
+}
+
 /** O estado de partida: o rascunho do browser se existir e servir, senão a ocasião sugerida para o mês (ou a festa popular). */
 export function estadoInicial(cat: PrecarioCatalogo, mes: number, guardado: unknown): Estado {
   const ids = new Set(cat.categorias.flatMap((c) => c.artigos.map((a) => a.id)));
+  const icones = iconesDosArtigos(cat);
   const g = (guardado ?? {}) as Partial<Estado>;
   if (g && Array.isArray(g.linhas) && g.linhas.length > 0 && typeof g.titulo === "string") {
     const linhas = g.linhas.filter(
@@ -82,7 +94,12 @@ export function estadoInicial(cat: PrecarioCatalogo, mes: number, guardado: unkn
         typeof l.nome === "string" &&
         (!l.artigo || ids.has(l.artigo)),
     );
-    if (linhas.length > 0) return { ...base(cat, mes), ...g, linhas } as Estado;
+    if (linhas.length > 0)
+      return {
+        ...base(cat, mes),
+        ...g,
+        linhas: linhas.map((l) => ({ ...l, emoji: iconeValido(icones, l.artigo, l.emoji) })),
+      } as Estado;
   }
   return base(cat, mes);
 }
@@ -103,6 +120,7 @@ export function estadoDePartilha(
   const p = d as Record<string, unknown> | null;
   if (!p || typeof p !== "object" || !Array.isArray(p.linhas) || p.linhas.length === 0) return null;
   const ids = new Set(cat.categorias.flatMap((c) => c.artigos.map((a) => a.id)));
+  const icones = iconesDosArtigos(cat);
   const texto = (v: unknown) => (typeof v === "string" ? v : "");
   const linhas: Linha[] = [];
   p.linhas.forEach((x: unknown, i: number) => {
@@ -114,7 +132,7 @@ export function estadoDePartilha(
       artigo,
       nome: texto(l.nome),
       categoria: texto(l.categoria),
-      emoji: texto(l.emoji),
+      emoji: iconeValido(icones, artigo, texto(l.emoji)),
       preco: textoDoPreco(l.preco, lingua),
       preco2: textoDoPreco(l.preco2, lingua),
     });
@@ -199,7 +217,7 @@ export function pedidoDoEstado(e: Estado, padroes: [string, string] = ["P", "G"]
       preco2: e.tamanhos ? (l.preco2 ?? "").trim() : "",
       ...(l.foto ? { foto: l.foto } : {}),
       categoria: l.artigo ? "" : l.categoria,
-      emoji: l.artigo ? "" : l.emoji,
+      emoji: l.emoji,
     })),
     titulo: e.titulo.trim(),
     subtitulo: e.subtitulo.trim(),
@@ -218,21 +236,6 @@ export function pedidoDoEstado(e: Estado, padroes: [string, string] = ["P", "G"]
   };
 }
 
-function Miniatura({ emoji, className = "" }: { emoji: string; className?: string }) {
-  if (!emoji) return <span className={`precario-sem-imagem ${className}`} aria-hidden="true" />;
-  return (
-    <img
-      className={className}
-      src={`/precario/${emoji}.webp`}
-      alt=""
-      width={28}
-      height={28}
-      loading="lazy"
-      decoding="async"
-    />
-  );
-}
-
 /**
  * O gerador de preçários: escolhe-se a ocasião (e o tema), os artigos, os preços (na moeda do país ou numa inventada) e o aspeto; a pré-visualização
  * desenha-se no servidor a cada alteração e o PDF (ou a imagem) descarrega-se. Nada se guarda no servidor; o rascunho fica só neste browser.
@@ -249,6 +252,7 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
   const [erro, setErro] = useState("");
   const [aDesenhar, setADesenhar] = useState(false);
   const [ligacao, setLigacao] = useState("");
+  const [iconesAbertos, setIconesAbertos] = useState(""); // a chave da linha cujas imagens estão à vista
   const contador = useRef(0);
 
   // o catálogo na língua do site (muda quando a língua muda)
@@ -300,9 +304,10 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
   }, [cat, e]);
 
   const artigos = useMemo(() => {
-    const m = new Map<string, { nome: string; emoji: string; categoria: string }>();
+    const m = new Map<string, { nome: string; emoji: string; categoria: string; icones: string[] }>();
     for (const c of cat?.categorias ?? [])
-      for (const a of c.artigos) m.set(a.id, { nome: a.nome, emoji: a.emoji, categoria: c.id });
+      for (const a of c.artigos)
+        m.set(a.id, { nome: a.nome, emoji: a.emoji, categoria: c.id, icones: a.icones });
     return m;
   }, [cat]);
 
@@ -371,7 +376,7 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
   const ocasiaoAtual = (id: string) => {
     const o = cat.ocasioes.find((x) => x.id === id);
     if (!o) return;
-    const anteriores = new Map(e.linhas.map((l) => [l.artigo || l.chave, l.preco]));
+    const anteriores = new Map(e.linhas.map((l) => [l.artigo || l.chave, l]));
     const nomeAntigo = cat.ocasioes.find((x) => x.id === e.ocasiao)?.nome ?? "";
     mudar({
       ocasiao: id,
@@ -382,8 +387,8 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
           artigo: a,
           nome: "",
           categoria: "",
-          emoji: "",
-          preco: anteriores.get(a) ?? "",
+          emoji: anteriores.get(a)?.emoji ?? "",
+          preco: anteriores.get(a)?.preco ?? "",
         })),
         ...e.linhas.filter((l) => !l.artigo),
       ],
@@ -411,6 +416,8 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
   };
   const mudarPreco = (chave: string, preco: string) =>
     mudar({ linhas: e.linhas.map((l) => (l.chave === chave ? { ...l, preco } : l)) });
+  const mudarIcone = (chave: string, emoji: string) =>
+    mudar({ linhas: e.linhas.map((l) => (l.chave === chave ? { ...l, emoji } : l)) });
   const mudarFoto = (chave: string, foto: string) =>
     mudar({ linhas: e.linhas.map((l) => (l.chave === chave ? { ...l, foto } : l)) });
   const escolherFoto = async (chave: string, ficheiro: File | undefined) => {
@@ -575,6 +582,7 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
           <section className="cartao texto-pagina">
             <h2>{t("web_precario_escolhidos", { n: e.linhas.length })}</h2>
             <p className="suave">{t("web_precario_dica_preco")}</p>
+            <p className="suave">{t("web_precario_icones_dica")}</p>
             <p className="suave">{t("web_precario_fotos_dica")}</p>
             {cat.categorias.map((c) => {
               const dela = e.linhas.filter((l) => categoriaDe(l) === c.id);
@@ -592,71 +600,99 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
                       onChange={(ev) => precoDaCategoria(c.id, ev.target.value)}
                     />
                   </label>
-                  {dela.map((l) => (
-                    <div className={`precario-linha${e.tamanhos ? " com-dois" : ""}`} key={l.chave}>
-                      <Miniatura emoji={emojiDe(l)} className="precario-mini" />
-                      <span className="precario-nome">{nomeDe(l)}</span>
-                      {l.foto ? (
-                        <button
-                          type="button"
-                          className="precario-foto"
-                          data-testid={`precario-foto-tirar-${l.chave}`}
-                          title={t("web_precario_foto_tirar")}
-                          aria-label={`${t("web_precario_foto_tirar")}: ${nomeDe(l)}`}
-                          onClick={() => mudarFoto(l.chave, "")}
-                        >
-                          <img src={l.foto} alt="" />
-                        </button>
-                      ) : (
-                        <label className="precario-foto botao secundario" title={t("web_precario_foto")}>
-                          <Icone nome="camara" tamanho={18} />
-                          <span className="so-leitores">{t("web_precario_foto")}</span>
+                  {dela.map((l) => {
+                    const oferta = l.artigo ? (artigos.get(l.artigo)?.icones ?? []) : [];
+                    return (
+                      <div className="precario-item" key={l.chave}>
+                        <div className={`precario-linha${e.tamanhos ? " com-dois" : ""}`}>
+                          {oferta.length > 1 ? (
+                            <button
+                              type="button"
+                              className="precario-mini precario-mini-botao"
+                              data-testid={`precario-icone-${l.chave}`}
+                              title={t("web_precario_icone")}
+                              aria-label={`${t("web_precario_icone")}: ${nomeDe(l)}`}
+                              aria-expanded={iconesAbertos === l.chave}
+                              onClick={() => setIconesAbertos(iconesAbertos === l.chave ? "" : l.chave)}
+                            >
+                              <Miniatura emoji={emojiDe(l)} />
+                            </button>
+                          ) : (
+                            <Miniatura emoji={emojiDe(l)} className="precario-mini" />
+                          )}
+                          <span className="precario-nome">{nomeDe(l)}</span>
+                          {l.foto ? (
+                            <button
+                              type="button"
+                              className="precario-foto"
+                              data-testid={`precario-foto-tirar-${l.chave}`}
+                              title={t("web_precario_foto_tirar")}
+                              aria-label={`${t("web_precario_foto_tirar")}: ${nomeDe(l)}`}
+                              onClick={() => mudarFoto(l.chave, "")}
+                            >
+                              <img src={l.foto} alt="" />
+                            </button>
+                          ) : (
+                            <label className="precario-foto botao secundario" title={t("web_precario_foto")}>
+                              <Icone nome="camara" tamanho={18} />
+                              <span className="so-leitores">{t("web_precario_foto")}</span>
+                              <input
+                                type="file"
+                                accept="image/png,image/jpeg"
+                                hidden
+                                data-testid={`precario-foto-${l.chave}`}
+                                aria-label={`${t("web_precario_foto")}: ${nomeDe(l)}`}
+                                onChange={(ev) => {
+                                  void escolherFoto(l.chave, ev.target.files?.[0]);
+                                  ev.target.value = "";
+                                }}
+                              />
+                            </label>
+                          )}
                           <input
-                            type="file"
-                            accept="image/png,image/jpeg"
-                            hidden
-                            data-testid={`precario-foto-${l.chave}`}
-                            aria-label={`${t("web_precario_foto")}: ${nomeDe(l)}`}
-                            onChange={(ev) => {
-                              void escolherFoto(l.chave, ev.target.files?.[0]);
-                              ev.target.value = "";
-                            }}
+                            className="precario-p1"
+                            inputMode="decimal"
+                            data-testid={`precario-preco-${l.chave}`}
+                            aria-label={`${t("web_precario_preco")}: ${nomeDe(l)}`}
+                            placeholder={t("web_precario_preco")}
+                            maxLength={24}
+                            value={l.preco}
+                            onChange={(ev) => mudarPreco(l.chave, ev.target.value)}
                           />
-                        </label>
-                      )}
-                      <input
-                        className="precario-p1"
-                        inputMode="decimal"
-                        data-testid={`precario-preco-${l.chave}`}
-                        aria-label={`${t("web_precario_preco")}: ${nomeDe(l)}`}
-                        placeholder={t("web_precario_preco")}
-                        maxLength={24}
-                        value={l.preco}
-                        onChange={(ev) => mudarPreco(l.chave, ev.target.value)}
-                      />
-                      {e.tamanhos && (
-                        <input
-                          className="precario-p2"
-                          inputMode="decimal"
-                          data-testid={`precario-preco2-${l.chave}`}
-                          aria-label={`${e.rotulo2.trim() || padroes[1]}: ${nomeDe(l)}`}
-                          placeholder={e.rotulo2.trim() || padroes[1]}
-                          maxLength={24}
-                          value={l.preco2 ?? ""}
-                          onChange={(ev) => mudarPreco2(l.chave, ev.target.value)}
-                        />
-                      )}
-                      <button
-                        type="button"
-                        className="precario-tirar"
-                        title={t("web_precario_tirar")}
-                        aria-label={`${t("web_precario_tirar")}: ${nomeDe(l)}`}
-                        onClick={() => mudar({ linhas: e.linhas.filter((x) => x.chave !== l.chave) })}
-                      >
-                        <Icone nome="fechar" tamanho={16} />
-                      </button>
-                    </div>
-                  ))}
+                          {e.tamanhos && (
+                            <input
+                              className="precario-p2"
+                              inputMode="decimal"
+                              data-testid={`precario-preco2-${l.chave}`}
+                              aria-label={`${e.rotulo2.trim() || padroes[1]}: ${nomeDe(l)}`}
+                              placeholder={e.rotulo2.trim() || padroes[1]}
+                              maxLength={24}
+                              value={l.preco2 ?? ""}
+                              onChange={(ev) => mudarPreco2(l.chave, ev.target.value)}
+                            />
+                          )}
+                          <button
+                            type="button"
+                            className="precario-tirar"
+                            title={t("web_precario_tirar")}
+                            aria-label={`${t("web_precario_tirar")}: ${nomeDe(l)}`}
+                            onClick={() => mudar({ linhas: e.linhas.filter((x) => x.chave !== l.chave) })}
+                          >
+                            <Icone nome="fechar" tamanho={16} />
+                          </button>
+                        </div>
+                        {iconesAbertos === l.chave && oferta.length > 1 && (
+                          <IconesArtigo
+                            chave={l.chave}
+                            nome={nomeDe(l)}
+                            icones={oferta}
+                            atual={emojiDe(l)}
+                            aoEscolher={(codigo) => mudarIcone(l.chave, codigo === oferta[0] ? "" : codigo)}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
                 </fieldset>
               );
             })}

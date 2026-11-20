@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.78.0 — 2026-11-20
+
+### Nieuw
+- **Tot 5 afbeeldingen om uit te kiezen per artikel**: klik in de prijslijst op de afbeelding van een catalogusartikel en kies de afbeelding die u het mooiste vindt uit maximaal 5 (water kan een druppel, een kraan, ijs of een glas zijn…). Uw keuze staat in de pdf en blijft bewaard in het prijslijstbestand en in de gedeelde link (site en Windows-app).
+
 ## 3.77.0 — 2026-11-20
 
 ### Verbeterd

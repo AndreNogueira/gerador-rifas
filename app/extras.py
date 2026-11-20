@@ -760,6 +760,8 @@ class Precario(Janela):
         self.sugerida = precario_catalogo.ocasiao_da_epoca(_hoje(), self.lingua)
         self.linhas: list[dict] = []                   # {chave, artigo, nome, categoria, emoji}
         self.v_preco: dict[str, tk.StringVar] = {}
+        self._icones_abertos = ""                            # a chave da linha cujas imagens (até 5) estão à vista
+        self._imagens: dict[tuple[str, int], ctk.CTkImage] = {}
         self.fotos: dict[str, bytes] = {}                    # as fotos próprias (já reduzidas): só vivem nesta janela, nunca no ficheiro .precario
         self.v_preco2: dict[str, tk.StringVar] = {}           # o segundo preço (só com «dois tamanhos»)
         self.v_tamanhos = tk.BooleanVar()
@@ -932,6 +934,30 @@ class Precario(Janela):
         self._precos()
         return True
 
+    def _imagem(self, codigo: str, lado: int) -> ctk.CTkImage:
+        """A imagem de um artigo (a do PDF, `core/icones_precario/`) para um botão."""
+        chave = (codigo, lado)
+        if chave not in self._imagens:
+            with Image.open(precario.PASTA_ICONES / f"{codigo}.png") as im:
+                im = im.convert("RGBA")
+                self._imagens[chave] = ctk.CTkImage(light_image=im, dark_image=im, size=(lado, lado))
+        return self._imagens[chave]
+
+    def _escolher_icone(self, chave: str, codigo: str | None = None) -> bool:
+        """Sem `codigo`, abre ou fecha as imagens à escolha do artigo; com `codigo` (uma delas), põe-na (a de omissão volta a ser a do catálogo)."""
+        ln = next((x for x in self.linhas if x["chave"] == chave), None)
+        if ln is None or not ln["artigo"]:
+            return False
+        icones = self.artigos[ln["artigo"]].icones
+        if codigo is None:
+            self._icones_abertos = "" if self._icones_abertos == chave else chave
+        elif codigo in icones:
+            ln["emoji"] = "" if codigo == icones[0] else codigo
+        else:
+            return False
+        self._precos()
+        return True
+
     def _tirar(self, chave: str) -> None:
         ln = next((x for x in self.linhas if x["chave"] == chave), None)
         if ln is None:
@@ -954,9 +980,15 @@ class Precario(Janela):
             if v is None:
                 v = self.v_preco[ln["chave"]] = tk.StringVar()
                 v.trace_add("write", lambda *_: self._agendar())
-            linha = ctk.CTkFrame(self.f_precos, fg_color="transparent")
-            linha.pack(fill="x", pady=1)
-            ctk.CTkLabel(linha, text=self._nome_da_linha(ln), anchor="w", text_color=C["texto"], font=ctk.CTkFont(FONTE, 12), width=190).pack(side="left")
+            caixa = ctk.CTkFrame(self.f_precos, fg_color="transparent")
+            caixa.pack(fill="x", pady=1)
+            linha = ctk.CTkFrame(caixa, fg_color="transparent")
+            linha.pack(fill="x")
+            atual = ln["emoji"] or (self.artigos[ln["artigo"]].emoji if ln["artigo"] else "")
+            if atual and ln["artigo"] and len(self.artigos[ln["artigo"]].icones) > 1:         # a imagem do artigo: um botão que abre as outras (até 5)
+                ctk.CTkButton(linha, text="", image=self._imagem(atual, 22), width=30, height=28, corner_radius=8, fg_color=C["acento_suave"] if self._icones_abertos == ln["chave"] else "transparent",
+                              hover_color=C["borda"], command=lambda c=ln["chave"]: self._escolher_icone(c)).pack(side="left", padx=(0, 4))
+            ctk.CTkLabel(linha, text=self._nome_da_linha(ln), anchor="w", text_color=C["texto"], font=ctk.CTkFont(FONTE, 12), width=156).pack(side="left")
             ctk.CTkEntry(linha, textvariable=v, width=100 if not self.v_tamanhos.get() else 70, height=28, corner_radius=8, fg_color=C["campo"], border_color=C["borda"], text_color=C["texto"],
                          font=ctk.CTkFont(FONTE, 12), placeholder_text=self.v_rotulo1.get().strip() or t("web_precario_tamanho_1") if self.v_tamanhos.get() else t("web_precario_preco"),
                          placeholder_text_color=C["suave"]).pack(side="left", padx=4)
@@ -972,6 +1004,13 @@ class Precario(Janela):
                           border_color=C["borda"], font=ctk.CTkFont(FONTE, 11), command=lambda c=ln["chave"]: self._escolher_foto(c)).pack(side="left", padx=(0, 4))
             ctk.CTkButton(linha, text="×", width=28, height=28, corner_radius=8, fg_color=C["campo"], hover_color=C["borda"], text_color=C["texto"], border_width=1,
                           border_color=C["borda"], command=lambda c=ln["chave"]: self._tirar(c)).pack(side="left")
+            if self._icones_abertos == ln["chave"] and ln["artigo"]:                           # as imagens à escolha, por baixo da linha
+                opcoes = ctk.CTkFrame(caixa, fg_color="transparent")
+                opcoes.pack(fill="x", padx=(34, 0), pady=(2, 4))
+                for codigo in self.artigos[ln["artigo"]].icones:
+                    ctk.CTkButton(opcoes, text="", image=self._imagem(codigo, 30), width=40, height=40, corner_radius=8, border_width=2,
+                                  border_color=C["acento"] if codigo == atual else C["borda"], fg_color=C["acento_suave"] if codigo == atual else C["campo"], hover_color=C["borda"],
+                                  command=lambda c=ln["chave"], k=codigo: self._escolher_icone(c, k)).pack(side="left", padx=(0, 4))
         if self.v_tamanhos.get():
             self.f_rotulos.pack(fill="x", before=self.b_pdf)
         else:
@@ -1143,7 +1182,8 @@ class Precario(Janela):
                 if ln.artigo in self.artigos:
                     chave = ln.artigo
                     self.v_artigo[ln.artigo].set(True)
-                    self.linhas.append({"chave": chave, "artigo": ln.artigo, "nome": ln.nome, "categoria": "", "emoji": ""})
+                    self.linhas.append({"chave": chave, "artigo": ln.artigo, "nome": ln.nome, "categoria": "",
+                                        "emoji": ln.emoji if ln.emoji in self.artigos[ln.artigo].icones[1:] else ""})
                 else:
                     nome = ln.nome or (precario_catalogo.nome(original, self.lingua) if original else "?")
                     chave = f"c{i}-{nome}"

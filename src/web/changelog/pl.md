@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.78.0 — 2026-11-20
+
+### Nowości
+- **Do 5 obrazków do wyboru przy każdej pozycji**: w cenniku kliknij obraz pozycji z katalogu i wybierz ten, który najbardziej ci się podoba, spośród maksymalnie 5 (woda może być kroplą, kranem, lodem, szklanką…). Wybór widać w PDF, a zostaje też w pliku cennika i w udostępnionym linku (strona i aplikacja na Windows).
+
 ## 3.77.0 — 2026-11-20
 
 ### Ulepszono

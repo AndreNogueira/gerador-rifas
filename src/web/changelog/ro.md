@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.78.0 — 2026-11-20
+
+### Noutăți
+- **Până la 5 imagini la alegere pentru fiecare articol**: în lista de prețuri, apasă pe imaginea unui articol din catalog și alege-o pe cea care îți place cel mai mult dintre cel mult 5 (apa poate fi o picătură, un robinet, gheață, un pahar…). Alegerea se vede în PDF și rămâne în fișierul listei și în linkul partajat (site și aplicația Windows).
+
 ## 3.77.0 — 2026-11-20
 
 ### Îmbunătățit
