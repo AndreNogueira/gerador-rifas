@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.71.0 — 2026-11-20
+
+### Baru
+- **Kupon koin bernomor** (di daftar harga, dengan mata uang rekaan; dan «Extras → Daftar harga… → Kupon bernomor…» di aplikasi Windows): pilih berapa koin nilai tiap kupon, judul, dan catatan, lihat kupon dengan desain daftar harga, lalu buat. Berlanjut di pembuat undian, yang menomori kupon dengan seri, QR verifikasi, dan lembar siap cetak.
+
 ## 3.70.0 — 2026-11-20
 
 ### Baru

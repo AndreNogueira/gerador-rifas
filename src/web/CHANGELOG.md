@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.71.0 — 2026-11-20
+
+### Novo
+- **Vales de fichas numerados** (no preçário, com uma moeda inventada; e «Extras → Preçário… → Vales numerados…» na app Windows): escolha quantas fichas vale cada vale, o título e uma nota, veja o vale com o desenho do preçário e crie-os. Continua no gerador de rifas, que numera os vales com séries, QR de verificação e folhas prontas a imprimir.
+
 ## 3.70.0 — 2026-11-20
 
 ### Novo

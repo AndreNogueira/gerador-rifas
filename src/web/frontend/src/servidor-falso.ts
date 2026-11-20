@@ -74,6 +74,15 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_precario_pais: "País",
     web_precario_moeda_inventada: "Moeda inventada",
     web_precario_inventada_nome: "Nome da moeda",
+    web_vales_titulo: "Vales numerados",
+    web_vales_intro: "Com uma moeda inventada, faça também os vales.",
+    web_vales_singular: "Nome no singular",
+    web_vales_quantidade: "Unidades em cada vale (1 a 99)",
+    web_vales_cabecalho: "Título do vale",
+    web_vales_cabecalho_padrao: "VALE",
+    web_vales_nota: "Nota (opcional)",
+    web_vales_criar: "Criar vales numerados",
+    web_vales_previa: "Pré-visualização do vale",
     web_precario_inventada_antes: "Escrever antes do número",
     web_precario_inventada_casas: "Casas decimais",
     web_precario_aspeto: "Aspeto",
@@ -310,6 +319,7 @@ export class ServidorFalso {
   galeriaErro = "";
   /** Se preenchido, o preçário responde 422 com este texto (pré-visualização e descarregar). */
   precarioErro = "";
+  valesErro = "";
   /** Se preenchido, a pré-visualização responde 422 com este texto. */
   previaErro = "";
   anunciosCliente = "";
@@ -432,6 +442,10 @@ export class ServidorFalso {
     ) {
       if (this.precarioErro) return this.responder({ detail: this.precarioErro, tipo: "aviso" }, 422);
       return Promise.resolve(new Response(new Blob([url.endsWith("pdf") ? "%PDF" : "png"]), { status: 200 }));
+    }
+    if (url === "/api/vales/previa.png") {
+      if (this.valesErro) return this.responder({ detail: this.valesErro, tipo: "aviso" }, 422);
+      return Promise.resolve(new Response(new Blob(["png"]), { status: 200 }));
     }
     if (url.startsWith("/api/galeria/previa.png")) {
       if (this.galeriaErro) return this.responder({ detail: this.galeriaErro, tipo: "aviso" }, 422);
@@ -630,6 +644,25 @@ export class ServidorFalso {
           detalhe: "",
         },
         algarismos: { nome: "galeria.pdf", estado: "ok", texto: "✔ letra Vera", detalhe: "" },
+        info: { n_campos: 1, primeiro: "0001", ultimo: "0001", digitos: 4, tem_folha: true },
+      };
+      this.sessoes.set(id, novo);
+      return this.responder(novo);
+    }
+    if (acao === "vales" && metodo === "POST") {
+      if (this.valesErro) return this.responder({ detail: this.valesErro, tipo: "aviso" }, 422);
+      const novo: Sessao = {
+        ...s,
+        pronto: true,
+        tem_modelo: true,
+        modelo_url: `/api/sessoes/${id}/modelo.pdf`,
+        template: { nome: "vales-arraial.pdf", estado: "ok", texto: "✔ 1 bilhete (vale)", detalhe: "" },
+        algarismos: {
+          nome: "vales-arraial-algarismos.pdf",
+          estado: "ok",
+          texto: "✔ letra Vera",
+          detalhe: "",
+        },
         info: { n_campos: 1, primeiro: "0001", ultimo: "0001", digitos: 4, tem_folha: true },
       };
       this.sessoes.set(id, novo);

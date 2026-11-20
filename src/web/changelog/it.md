@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.71.0 — 2026-11-20
+
+### Novità
+- **Buoni di gettoni numerati** (nel listino, con una valuta inventata; e «Extras → Listino prezzi… → Buoni numerati…» nell'app Windows): scegli quanti gettoni vale ogni buono, il titolo e una nota, guarda il buono con il disegno del listino e crealo. Si continua nel generatore di lotterie, che numera i buoni con serie, QR di verifica e fogli pronti da stampare.
+
 ## 3.70.0 — 2026-11-20
 
 ### Novità

@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.71.0 — 2026-11-20
+
+### Novedades
+- **Vales de fichas numerados** (en la lista de precios, con una moneda inventada; y «Extras → Lista de precios… → Vales numerados…» en la app de Windows): elija cuántas fichas vale cada vale, el título y una nota, vea el vale con el diseño de la lista y créelos. Continúa en el generador de rifas, que numera los vales con series, QR de verificación y hojas listas para imprimir.
+
 ## 3.70.0 — 2026-11-20
 
 ### Novedades

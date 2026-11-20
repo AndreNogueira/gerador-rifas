@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.71.0 — 2026-11-20
+
+### Novetats
+- **Vals de fitxes numerats** (a la llista de preus, amb una moneda inventada; i «Extras → Llista de preus… → Vals numerats…» a l'app de Windows): trieu quantes fitxes val cada val, el títol i una nota, vegeu el val amb el disseny de la llista i creeu-los. Continua al generador de rifes, que numera els vals amb sèries, QR de verificació i fulls a punt per imprimir.
+
 ## 3.70.0 — 2026-11-20
 
 ### Novetats

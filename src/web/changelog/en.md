@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.71.0 — 2026-11-20
+
+### New
+- **Numbered token vouchers** (in the price list, with a made-up currency; and “Extras → Price list… → Numbered vouchers…” in the Windows app): choose how many tokens each voucher is worth, the title and a note, see the voucher in the price list's design and create them. It continues in the raffle generator, which numbers the vouchers with series, verification QR codes and sheets ready to print.
+
 ## 3.70.0 — 2026-11-20
 
 ### New

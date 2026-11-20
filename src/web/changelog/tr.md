@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.71.0 — 2026-11-20
+
+### Yeni
+- **Numaralı jeton kuponları** (fiyat listesinde, uydurma para birimiyle; ve Windows uygulamasında «Extras → Fiyat listesi… → Numaralı kuponlar…»): her kuponun kaç jeton değerinde olduğunu, başlığı ve bir notu seçin, kuponu fiyat listesinin tasarımıyla görün ve oluşturun. Çekiliş oluşturucuda devam eder; kuponları serilerle, doğrulama QR kodlarıyla ve yazdırmaya hazır sayfalarla numaralandırır.
+
 ## 3.70.0 — 2026-11-20
 
 ### Yeni

@@ -274,6 +274,31 @@ def cena_precario(a, g, T):
     g.segundos(2.4, T("«Guardar PDF»: pronto a imprimir", "“Save PDF”: ready to print"))
 
 
+def cena_vales(a, g, T):
+    g.segundos(2.0, T("Com uma moeda inventada, faça também os vales", "With a made-up currency, make the vouchers too"))
+    j = abrir(a, "precario", extras.Precario, "+90+40")
+    esperar(a, lambda: j._foto is not None, 10)
+    j._escolher_ocasiao(j._nome_ocasiao(extras.precario_catalogo.OCASIOES["festa_popular"]))
+    j.v_inventada.set(True)
+    g.escrever(j.v_inv_nome, T("fichas", "tokens"), 1)
+    esperar(a, lambda: False, 1.2)
+    g.segundos(2.0, T("«Vales numerados…» abre o vale com o desenho do preçário", "“Numbered vouchers…” opens the voucher in the price list's design"))
+    j._vales()
+    va = a.w_extras["vales"]
+    va.geometry("+160+70")
+    va.attributes("-topmost", True)
+    esperar(a, lambda: va._foto is not None, 10)
+    g.segundos(2.6)
+    g.legenda = T("Escolha quantas fichas vale cada vale", "Choose how many tokens each voucher is worth")
+    g.escrever(va.v["quantidade"], "2", 1)
+    g.escrever(va.v["nota"], T("Válido só na festa", "Valid only at the party"), 2)
+    esperar(a, lambda: not va._espera, 4)
+    g.segundos(2.8)
+    va._usar()
+    esperar(a, lambda: a.info is not None, 10)
+    g.segundos(3.4, T("O gerador numera os vales: séries, QR de verificação e folhas", "The generator numbers the vouchers: series, verification QR and sheets"))
+
+
 def cena_editor(a, g, T):
     g.segundos(2.0, T("Sem Canva? Desenhe a sua rifa no editor", "No Canva? Design your ticket in the editor"))
     g.segundos(1.2, T("Menu «Extras» → «Editor de templates…»", "Menu “Extras” → “Template editor…”"))
@@ -378,7 +403,7 @@ def cena_visual(a, g, T):
     a._definir_visual("auto")
 
 
-CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria), "precario": (None, cena_precario), "editor": (None, cena_editor),
+CENAS = {"series": (VARIAS, cena_series), "lista": (None, cena_lista), "marcas": (UMA_RIFA, cena_marcas), "galeria": (None, cena_galeria), "precario": (None, cena_precario), "vales": (None, cena_vales), "editor": (None, cena_editor),
          "marca": (UMA_RIFA, cena_marca), "sorteio": (VARIAS, cena_sorteio), "visual": (VARIAS, cena_visual), "pedido": (None, cena_pedido)}
 
 

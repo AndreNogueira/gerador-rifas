@@ -145,6 +145,16 @@ def precario_png(pedido: dict, lingua: str, dpi: int = 110) -> tuple:
         return _erro(e)
 
 
+def vale_png(vale: dict, lingua: str, dpi: int = 110) -> tuple:
+    """O PNG de um vale de fichas (o dicionario de `core.vales.de_dict`): ("ok", bytes) | erro (letras que a Vera nao tem, quantidade fora dos limites, algarismos que o motor confundiria)."""
+    try:
+        with core.i18n.com_lingua(lingua):
+            pdf = core.vales.criar_template(core.vales.de_dict(vale))
+        return ("ok", core.png_de_pagina(pdf, dpi))
+    except Exception as e:  # noqa: BLE001
+        return _erro(e)
+
+
 def editor_png(desenho: dict, dpi: int = 110) -> tuple:
     """O PNG de um desenho do editor de templates: (\"ok\", bytes) | erro (letras que a Vera nao tem, algarismos que o motor confundiria, limites)."""
     try:

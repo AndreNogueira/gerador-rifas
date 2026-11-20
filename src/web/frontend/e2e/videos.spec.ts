@@ -511,6 +511,48 @@ const CENAS: Cena[] = [
     },
   },
   {
+    id: "vales",
+    rodar: async (page, T) => {
+      await page.goto("/precario");
+      await expect(page.getByTestId("precario-previa-img")).toBeVisible();
+      await legenda(
+        page,
+        T("Com uma moeda inventada, faça também os vales", "With a made-up currency, make the vouchers too"),
+        2600,
+      );
+      await clicar(page, page.getByTestId("precario-inventada"));
+      await escrever(page, page.getByTestId("precario-inv-nome"), T("fichas", "tokens"));
+      await expect(page.getByTestId("vales-previa")).toBeVisible();
+      await page.getByTestId("vales").scrollIntoViewIfNeeded();
+      await legenda(
+        page,
+        T("O vale sai com o desenho do preçário", "The voucher comes out in the price list's design"),
+        2800,
+      );
+      await escrever(page, page.getByTestId("vales-quantidade"), "2");
+      await escrever(
+        page,
+        page.getByTestId("vales-nota"),
+        T("Válido só na festa", "Valid only at the party"),
+      );
+      await legenda(
+        page,
+        T("Escolha quantas fichas vale cada vale", "Choose how many tokens each voucher is worth"),
+        2800,
+      );
+      await clicar(page, page.getByTestId("vales-criar"));
+      await expect(page.getByTestId("estado-template")).toContainText("✔");
+      await legenda(
+        page,
+        T(
+          "O gerador numera os vales: séries, QR de verificação e folhas",
+          "The generator numbers the vouchers: series, verification QR and sheets",
+        ),
+        3200,
+      );
+    },
+  },
+  {
     id: "sorteio",
     rodar: async (page, T) => {
       await page.goto("/sorteio");

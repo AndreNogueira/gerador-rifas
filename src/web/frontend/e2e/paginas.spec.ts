@@ -35,6 +35,24 @@ test.describe("páginas, sorteio e PWA", () => {
     await expect(page.getByTestId("precario-erro")).toHaveCount(0);
   });
 
+  test("os vales de fichas: com uma moeda inventada, criar os vales leva ao gerador com o template do vale", async ({
+    page,
+  }) => {
+    await page.goto("/precario");
+    await expect(page.getByTestId("vales")).toHaveCount(0); // sem moeda inventada não há vales
+    await page.getByTestId("precario-inventada").check();
+    await page.getByTestId("precario-inv-nome").fill("fichas");
+    await expect(page.getByTestId("vales-previa")).toBeVisible(); // o vale desenhado pelo servidor (PNG a sério)
+    await page.getByTestId("vales-quantidade").fill("2");
+    await page.getByTestId("vales-nota").fill("Só na festa");
+    await expect(page.getByTestId("vales-erro")).toHaveCount(0);
+    await page.getByTestId("vales-criar").click();
+    await expect(page).toHaveURL(/\/$/);
+    await expect(page.getByTestId("estado-template")).toContainText("✔"); // o template do vale ficou na sessão, com 1 rifa (o vale)
+    await expect(page.getByTestId("estado-algarismos")).toContainText("✔");
+    await expect(page.getByTestId("papel")).toBeVisible(); // um só vale: aparece o painel da folha (o QR e as séries são os de sempre)
+  });
+
   test("o sorteio dá os números de referência e a ligação repete-o", async ({ page }) => {
     await page.goto("/sorteio");
     await page.getByTestId("sorteio-n").fill("3");

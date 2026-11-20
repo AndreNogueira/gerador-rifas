@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.71.0 — 2026-11-20
+
+### Nieuw
+- **Genummerde fiche-bonnen** (in de prijslijst, met een verzonnen munt; en «Extras → Prijslijst… → Genummerde bonnen…» in de Windows-app): kies hoeveel fiches elke bon waard is, de titel en een opmerking, bekijk de bon in het ontwerp van de prijslijst en maak ze. Het gaat verder in de loterijgenerator, die de bonnen nummert met series, controle-QR-codes en printklare vellen.
+
 ## 3.70.0 — 2026-11-20
 
 ### Nieuw

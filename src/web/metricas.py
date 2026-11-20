@@ -657,7 +657,7 @@ class Metricas:
         def painel(*args, **kwargs) -> None:
             paineis.append(novo_painel(*args, **kwargs))
 
-        eventos = agrupado(("sessao", "previa", "template", "algarismos", "geracao", "descarga", "logotipo", "galeria", "editor", "verificacao", "precario", "precario_moeda",
+        eventos = agrupado(("sessao", "previa", "template", "algarismos", "geracao", "descarga", "logotipo", "galeria", "editor", "verificacao", "precario", "precario_moeda", "vales",
                             "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra", "comentario", "problema", "origem", "desempenho"), "a")
         humanos = agrupado(("pagina",), "CASE WHEN c = 'robo' THEN 'Robôs' ELSE 'Pessoas' END")
         rotas = agrupado(("pagina",), "a", "AND c <> 'robo'")
@@ -706,6 +706,7 @@ class Metricas:
         painel(f, "galeria", "Galeria de desenhos", por_chave(eventos, "galeria"), "Desenhos da galeria usados («Usar este template»), por desenho.")
         painel(f, "precario", "Preçários descarregados", por_chave(eventos, "precario", topo=6), "Preçários descarregados (PDF ou imagem), por desenho. Só o desenho, o formato e o tamanho da lista: nunca títulos, artigos nem preços.")
         painel(f, "precario_moeda", "Moeda dos preçários", por_chave(eventos, "precario_moeda", topo=6), "A moeda dos preçários descarregados («inventada» se foi uma moeda criada pela pessoa; o nome dela nunca se guarda).")
+        painel(f, "vales", "Vales de fichas", por_chave(eventos, "vales", topo=6), "Vales numerados criados («Criar vales numerados»), por desenho. Só o desenho e a quantidade de cada vale: nunca títulos, nomes de moeda nem organizações.")
         nomes_editor = {"usar": "Usado", "partilhar": "Partilhado"}
         painel(f, "editor", "Editor de templates", por_chave(eventos, "editor", topo=5, nome=lambda k: nomes_editor.get(k, k or "?")), "Desenhos do editor usados para gerar e desenhos partilhados por ligação.")
         painel(f, "logotipo", "Logótipo", ok_erro("logotipo"), "Logótipos enviados e quantos foram recusados (tipo ou tamanho).")

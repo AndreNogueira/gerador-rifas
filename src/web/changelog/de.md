@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.71.0 — 2026-11-20
+
+### Neu
+- **Nummerierte Chip-Gutscheine** (in der Preisliste, mit eigener Währung; und «Extras → Preisliste… → Nummerierte Gutscheine…» in der Windows-App): Wert in Chips, Titel und Hinweis wählen, den Gutschein im Motiv der Preisliste ansehen und erstellen. Es geht im Tombola-Generator weiter, der die Gutscheine mit Serien, Prüf-QR-Codes und druckfertigen Bögen nummeriert.
+
 ## 3.70.0 — 2026-11-20
 
 ### Neu

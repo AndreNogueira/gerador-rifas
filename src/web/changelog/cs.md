@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.71.0 — 2026-11-20
+
+### Novinky
+- **Číslované poukázky na žetony** (v ceníku, s vymyšlenou měnou; a «Extras → Ceník… → Číslované poukázky…» v aplikaci pro Windows): zvolte, kolik žetonů poukázka stojí, nadpis a poznámku, prohlédněte si poukázku v motivu ceníku a vytvořte je. Pokračuje v generátoru tombol, který poukázky očísluje se sériemi, ověřovacími QR kódy a listy připravenými k tisku.
+
 ## 3.70.0 — 2026-11-20
 
 ### Novinky

@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.71.0 — 2026-11-20
+
+### Nytt
+- **Numrerade markbiljetter** (i prislistan, med en påhittad valuta; och «Extras → Prislista… → Numrerade biljetter…» i Windows-appen): välj hur många marker varje biljett är värd, rubrik och anmärkning, se biljetten i prislistans motiv och skapa dem. Det fortsätter i lotterigeneratorn, som numrerar biljetterna med serier, QR-koder för kontroll och ark klara för utskrift.
+
 ## 3.70.0 — 2026-11-20
 
 ### Nytt

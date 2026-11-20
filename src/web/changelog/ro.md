@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.71.0 — 2026-11-20
+
+### Noutăți
+- **Bonuri de jetoane numerotate** (în lista de prețuri, cu o monedă inventată; și «Extras → Listă de prețuri… → Bonuri numerotate…» în aplicația Windows): alege câte jetoane valorează fiecare bon, titlul și o notă, vezi bonul în desenul listei și creează-le. Se continuă în generatorul de tombole, care numerotează bonurile cu serii, coduri QR de verificare și coli gata de tipărit.
+
 ## 3.70.0 — 2026-11-20
 
 ### Noutăți

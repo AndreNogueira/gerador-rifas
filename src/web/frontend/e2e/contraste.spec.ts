@@ -63,6 +63,12 @@ for (const tema of TEMAS) {
           await page.getByTestId("galeria").locator("summary").click();
           await expect(page.getByTestId("galeria-previa")).toBeVisible(); // a imagem desloca o resto da página: só se mede depois de chegar
         }
+        if (caminho === "/precario") {
+          // a moeda inventada abre o cartão dos vales: a imagem desloca o resto da página, só se mede depois de chegar
+          await page.getByTestId("precario-inventada").check();
+          await page.getByTestId("precario-inv-nome").fill("fichas");
+          await expect(page.getByTestId("vales-previa")).toBeVisible();
+        }
         const m = await medirContraste(page);
         medidos += m.medidos;
         for (const f of m.falhas)

@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { api, type Campos, type DadosGaleria, ErroApi, ErroRede, type Sessao } from "./api";
+import { api, type Campos, type DadosGaleria, ErroApi, ErroRede, type PedidoVale, type Sessao } from "./api";
 import { useDialogos } from "./dialogos";
 import { useI18n } from "./i18n";
 import { esquecerAlgarismos, guardarAlgarismos, lerAlgarismos } from "./memoria";
@@ -38,6 +38,8 @@ interface Contexto {
   usarGaleria: (dados: DadosGaleria) => Promise<void>;
   /** «Usar este template» do editor: `depois` corre quando o template ficou na sessão (sem erro). */
   usarEditor: (desenho: unknown, depois?: () => void) => Promise<void>;
+  /** «Criar vales numerados» do preçário: `depois` corre quando o template do vale ficou na sessão (sem erro). */
+  usarVales: (vale: PedidoVale, depois?: () => void) => Promise<void>;
   /**
    * Pede a pré-visualização com números reais. `automatico` = foi o próprio ecrã a pedir (a pessoa mexeu em algo): não abre janelas de erro,
    * o motivo fica em `erroPrevia` e aparece junto ao visor.
@@ -271,6 +273,18 @@ export function ProvedorSessao({ children }: { children: ReactNode }) {
           ? executar(
               "template",
               () => api.usarEditor(id.current as string, desenho),
+              (s) => {
+                mostrarErrosDeFicheiros(s);
+                setLembrado(null);
+                if (s.template.estado !== "erro") depois?.();
+              },
+            )
+          : Promise.resolve(),
+      usarVales: (vale, depois) =>
+        id.current
+          ? executar(
+              "template",
+              () => api.usarVales(id.current as string, vale),
               (s) => {
                 mostrarErrosDeFicheiros(s);
                 setLembrado(null);
