@@ -14,6 +14,8 @@ interface Linha {
   categoria: string;
   emoji: string;
   preco: string;
+  /** O segundo preço (só com «dois tamanhos»); os rascunhos antigos não o têm. */
+  preco2?: string;
 }
 
 interface Estado {
@@ -33,6 +35,10 @@ interface Estado {
   orientacao: string;
   colunas: number;
   imagens: boolean;
+  /** Dois preços por artigo e os nomes das duas colunas (vazios = os da língua). */
+  tamanhos: boolean;
+  rotulo1: string;
+  rotulo2: string;
 }
 
 const CHAVE = "rifas.precario";
@@ -107,15 +113,19 @@ function base(cat: PrecarioCatalogo, mes: number): Estado {
     orientacao: "vertical",
     colunas: 0,
     imagens: true,
+    tamanhos: false,
+    rotulo1: "",
+    rotulo2: "",
   };
 }
 
-export function pedidoDoEstado(e: Estado): PedidoPrecario {
+export function pedidoDoEstado(e: Estado, padroes: [string, string] = ["P", "G"]): PedidoPrecario {
   return {
     linhas: e.linhas.map((l) => ({
       artigo: l.artigo,
       nome: l.artigo ? "" : l.nome,
       preco: l.preco.trim(),
+      preco2: e.tamanhos ? (l.preco2 ?? "").trim() : "",
       categoria: l.artigo ? "" : l.categoria,
       emoji: l.artigo ? "" : l.emoji,
     })),
@@ -127,6 +137,8 @@ export function pedidoDoEstado(e: Estado): PedidoPrecario {
     orientacao: e.orientacao,
     colunas: e.colunas,
     imagens: e.imagens,
+    tamanhos: e.tamanhos,
+    rotulos: [e.rotulo1.trim() || padroes[0], e.rotulo2.trim() || padroes[1]],
     moeda:
       e.inventada && e.invNome.trim()
         ? { nome: e.invNome.trim(), antes: e.invAntes, decimais: e.invCasas }
@@ -192,7 +204,11 @@ export function Precario() {
     return m;
   }, [cat]);
 
-  const pedido = useMemo(() => (e ? pedidoDoEstado(e) : null), [e]);
+  const padroes = useMemo<[string, string]>(
+    () => [t("web_precario_tamanho_1"), t("web_precario_tamanho_2")],
+    [t],
+  );
+  const pedido = useMemo(() => (e ? pedidoDoEstado(e, padroes) : null), [e, padroes]);
   const chavePedido = pedido ? JSON.stringify(pedido) : "";
 
   // o rascunho: só neste browser
@@ -290,6 +306,8 @@ export function Precario() {
   };
   const mudarPreco = (chave: string, preco: string) =>
     mudar({ linhas: e.linhas.map((l) => (l.chave === chave ? { ...l, preco } : l)) });
+  const mudarPreco2 = (chave: string, preco2: string) =>
+    mudar({ linhas: e.linhas.map((l) => (l.chave === chave ? { ...l, preco2 } : l)) });
   const precoDaCategoria = (id: string, preco: string) =>
     mudar({
       linhas: e.linhas.map((l) =>
@@ -458,6 +476,17 @@ export function Precario() {
                         value={l.preco}
                         onChange={(ev) => mudarPreco(l.chave, ev.target.value)}
                       />
+                      {e.tamanhos && (
+                        <input
+                          inputMode="decimal"
+                          data-testid={`precario-preco2-${l.chave}`}
+                          aria-label={`${e.rotulo2.trim() || padroes[1]}: ${nomeDe(l)}`}
+                          placeholder={e.rotulo2.trim() || padroes[1]}
+                          maxLength={24}
+                          value={l.preco2 ?? ""}
+                          onChange={(ev) => mudarPreco2(l.chave, ev.target.value)}
+                        />
+                      )}
                       <button
                         type="button"
                         className="botao secundario"
@@ -638,6 +667,36 @@ export function Precario() {
               />
               {t("web_precario_imagens")}
             </label>
+            <label className="precario-caixa">
+              <input
+                type="checkbox"
+                data-testid="precario-tamanhos"
+                checked={e.tamanhos}
+                onChange={(ev) => mudar({ tamanhos: ev.target.checked })}
+              />
+              {t("web_precario_tamanhos")}
+            </label>
+            {e.tamanhos && (
+              <fieldset className="precario-rotulos">
+                <legend>{t("web_precario_rotulos")}</legend>
+                <input
+                  data-testid="precario-rotulo-1"
+                  aria-label={`${t("web_precario_rotulos")} 1`}
+                  placeholder={padroes[0]}
+                  maxLength={10}
+                  value={e.rotulo1}
+                  onChange={(ev) => mudar({ rotulo1: ev.target.value })}
+                />
+                <input
+                  data-testid="precario-rotulo-2"
+                  aria-label={`${t("web_precario_rotulos")} 2`}
+                  placeholder={padroes[1]}
+                  maxLength={10}
+                  value={e.rotulo2}
+                  onChange={(ev) => mudar({ rotulo2: ev.target.value })}
+                />
+              </fieldset>
+            )}
           </section>
         </div>
 

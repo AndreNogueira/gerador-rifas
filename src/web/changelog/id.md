@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.74.0 — 2026-11-20
+
+### Baru
+- **Dua ukuran di daftar harga**: aktifkan «Dua ukuran (dua harga per barang)» (situs dan aplikasi Windows) untuk menulis dua harga pada tiap barang (misalnya kecil dan besar, atau barang dan paket). Kedua kolom keluar rata, dengan nama pilihan Anda di atasnya («Kecil» dan «Besar» secara bawaan), dan tersimpan di file daftar harga.
+
 ## 3.73.0 — 2026-11-20
 
 ### Baru

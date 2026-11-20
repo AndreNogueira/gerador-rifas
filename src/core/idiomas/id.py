@@ -417,4 +417,8 @@ T = {
     "tut_f_vales_t": "Kupon koin bernomor",
     "tut_f_vales_b": "Jika daftar harga memakai mata uang rekaan (koin, token…), buat juga kuponnya: pilih desain, judul, dan berapa koin nilai tiap kupon, lalu buat modelnya. Berlanjut di layar utama, tempat pembuat menomori kupon dengan seri («A-», «B-»), QR verifikasi, dan lembar siap cetak. {onde}",
     "web_precario_cartoes": "Kartu meja (4 per lembar A4)",
+    "web_precario_tamanhos": "Dua ukuran (dua harga per barang)",
+    "web_precario_rotulos": "Nama kedua ukuran",
+    "web_precario_tamanho_1": "Kecil",
+    "web_precario_tamanho_2": "Besar",
 }

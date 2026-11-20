@@ -760,6 +760,9 @@ class Precario(Janela):
         self.sugerida = precario_catalogo.ocasiao_da_epoca(_hoje(), self.lingua)
         self.linhas: list[dict] = []                   # {chave, artigo, nome, categoria, emoji}
         self.v_preco: dict[str, tk.StringVar] = {}
+        self.v_preco2: dict[str, tk.StringVar] = {}           # o segundo preço (só com «dois tamanhos»)
+        self.v_tamanhos = tk.BooleanVar()
+        self.v_rotulo1, self.v_rotulo2 = tk.StringVar(), tk.StringVar()
         self.v_artigo = {a: tk.BooleanVar() for a in self.artigos}
         self.v_titulo, self.v_subtitulo, self.v_rodape, self.v_meu = (tk.StringVar() for _ in range(4))
         self.v_moeda = tk.StringVar()
@@ -831,6 +834,14 @@ class Precario(Janela):
             self.etiqueta(col, rotulo, wraplength=120).pack(fill="x")
             self._menu(col, valores, lambda _: self._agendar(0), variavel=var).pack(fill="x")
         self.caixa(esq, t("web_precario_imagens"), self.v_imagens, command=lambda: self._agendar(0)).pack(anchor="w", pady=(8, 4))
+        self.caixa(esq, t("web_precario_tamanhos"), self.v_tamanhos, command=self._precos).pack(anchor="w", pady=(0, 2))
+        self.f_rotulos = ctk.CTkFrame(esq, fg_color="transparent")                # os nomes das duas colunas: só com «dois tamanhos»
+        self.etiqueta(self.f_rotulos, t("web_precario_rotulos")).pack(fill="x")
+        linha_r = ctk.CTkFrame(self.f_rotulos, fg_color="transparent")
+        linha_r.pack(fill="x")
+        for var, padrao in ((self.v_rotulo1, t("web_precario_tamanho_1")), (self.v_rotulo2, t("web_precario_tamanho_2"))):
+            app._entrada(linha_r, var, width=120, placeholder_text=padrao).pack(side="left", padx=(0, 6))
+            var.trace_add("write", lambda *_: self._agendar())
         self.b_pdf = app._botao(esq, t("win_precario_pdf"), self._guardar_pdf, True, icone="gerar", height=40)
         self.b_pdf.pack(fill="x", pady=(8, 4))
         app._botao(esq, t("win_precario_imagem"), self._guardar_imagem, height=34).pack(fill="x", pady=2)
@@ -927,10 +938,22 @@ class Precario(Janela):
             linha = ctk.CTkFrame(self.f_precos, fg_color="transparent")
             linha.pack(fill="x", pady=1)
             ctk.CTkLabel(linha, text=self._nome_da_linha(ln), anchor="w", text_color=C["texto"], font=ctk.CTkFont(FONTE, 12), width=190).pack(side="left")
-            ctk.CTkEntry(linha, textvariable=v, width=100, height=28, corner_radius=8, fg_color=C["campo"], border_color=C["borda"], text_color=C["texto"],
-                         font=ctk.CTkFont(FONTE, 12), placeholder_text=t("web_precario_preco"), placeholder_text_color=C["suave"]).pack(side="left", padx=4)
+            ctk.CTkEntry(linha, textvariable=v, width=100 if not self.v_tamanhos.get() else 70, height=28, corner_radius=8, fg_color=C["campo"], border_color=C["borda"], text_color=C["texto"],
+                         font=ctk.CTkFont(FONTE, 12), placeholder_text=self.v_rotulo1.get().strip() or t("web_precario_tamanho_1") if self.v_tamanhos.get() else t("web_precario_preco"),
+                         placeholder_text_color=C["suave"]).pack(side="left", padx=4)
+            if self.v_tamanhos.get():
+                v2 = self.v_preco2.get(ln["chave"])
+                if v2 is None:
+                    v2 = self.v_preco2[ln["chave"]] = tk.StringVar()
+                    v2.trace_add("write", lambda *_: self._agendar())
+                ctk.CTkEntry(linha, textvariable=v2, width=70, height=28, corner_radius=8, fg_color=C["campo"], border_color=C["borda"], text_color=C["texto"],
+                             font=ctk.CTkFont(FONTE, 12), placeholder_text=self.v_rotulo2.get().strip() or t("web_precario_tamanho_2"), placeholder_text_color=C["suave"]).pack(side="left", padx=(0, 4))
             ctk.CTkButton(linha, text="×", width=28, height=28, corner_radius=8, fg_color=C["campo"], hover_color=C["borda"], text_color=C["texto"], border_width=1,
                           border_color=C["borda"], command=lambda c=ln["chave"]: self._tirar(c)).pack(side="left")
+        if self.v_tamanhos.get():
+            self.f_rotulos.pack(fill="x", before=self.b_pdf)
+        else:
+            self.f_rotulos.pack_forget()
         self._agendar(0)
 
     # -- o preçário e a pré-visualização
@@ -944,7 +967,13 @@ class Precario(Janela):
                 preco = moeda.valor_de_texto(texto, self.lingua)
                 if preco is None:
                     raise core.ErroRifas("err_precario_texto", car=texto[:14])
-            linhas.append(precario.Linha(ln["artigo"], ln["nome"], preco, ln["categoria"], ln["emoji"]))
+            texto2 = self.v_preco2[ln["chave"]].get().strip() if self.v_tamanhos.get() and ln["chave"] in self.v_preco2 else ""
+            preco2 = None
+            if texto2:
+                preco2 = moeda.valor_de_texto(texto2, self.lingua)
+                if preco2 is None:
+                    raise core.ErroRifas("err_precario_texto", car=texto2[:14])
+            linhas.append(precario.Linha(ln["artigo"], ln["nome"], preco, ln["categoria"], ln["emoji"], preco2))
         nome = " ".join(self.v_inv_nome.get().split())
         if self.v_inventada.get() and nome:
             m = moeda.MoedaInventada(nome, self.v_inv_antes.get(), int(self.v_inv_casas.get() or 0))
@@ -955,7 +984,8 @@ class Precario(Janela):
         formato = next((k for k, v in self._formatos.items() if v == self.v_formato.get()), "A4")
         return precario.Precario(linhas=tuple(linhas), titulo=self.v_titulo.get().strip()[:precario.MAX_TITULO], subtitulo=self.v_subtitulo.get().strip()[:precario.MAX_SUBTITULO],
                                  rodape=self.v_rodape.get().strip()[:precario.MAX_RODAPE], desenho=self.v_desenho.get() or "quermesse", formato=formato,
-                                 orientacao=orientacao, colunas=colunas, imagens=self.v_imagens.get(), moeda=m, lingua=self.lingua)
+                                 orientacao=orientacao, colunas=colunas, imagens=self.v_imagens.get(), moeda=m, lingua=self.lingua,
+                                 tamanhos=self.v_tamanhos.get(), rotulos=(self.v_rotulo1.get().strip() or t("web_precario_tamanho_1"), self.v_rotulo2.get().strip() or t("web_precario_tamanho_2")))
 
     def _agendar(self, atraso: int = 350) -> None:
         if self._a_aplicar or not self.winfo_exists():
@@ -1072,6 +1102,9 @@ class Precario(Janela):
             self.v_orientacao.set(self._orientacoes[p.orientacao])
             self.v_colunas.set(self._colunas[p.colunas])
             self.v_imagens.set(p.imagens)
+            self.v_tamanhos.set(p.tamanhos)
+            self.v_rotulo1.set(p.rotulos[0])
+            self.v_rotulo2.set(p.rotulos[1])
             if isinstance(p.moeda, moeda.MoedaInventada):
                 self.v_inventada.set(True)
                 self.v_inv_nome.set(p.moeda.nome)
@@ -1082,7 +1115,7 @@ class Precario(Janela):
                 self.v_moeda.set(f"{p.moeda.codigo} ({p.moeda.simbolo})")
             for v in self.v_artigo.values():
                 v.set(False)
-            self.linhas, self.v_preco = [], {}
+            self.linhas, self.v_preco, self.v_preco2 = [], {}, {}
             for i, ln in enumerate(p.linhas):
                 original = precario_catalogo.ARTIGOS.get(ln.artigo)
                 if ln.artigo in self.artigos:
@@ -1096,6 +1129,9 @@ class Precario(Janela):
                 texto = moeda.numero(ln.preco, p.moeda.decimais, self.lingua) if ln.preco is not None else ""
                 var = self.v_preco[chave] = tk.StringVar(value=texto)
                 var.trace_add("write", lambda *_: self._agendar())
+                if ln.preco2 is not None:
+                    var2 = self.v_preco2[chave] = tk.StringVar(value=moeda.numero(ln.preco2, p.moeda.decimais, self.lingua))
+                    var2.trace_add("write", lambda *_: self._agendar())
         finally:
             self._a_aplicar = False
         self._precos()

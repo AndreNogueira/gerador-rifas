@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.74.0 — 2026-11-20
+
+### Novedades
+- **Dos tamaños en la lista de precios**: active «Dos tamaños (dos precios por artículo)» (sitio y app de Windows) para escribir dos precios en cada artículo (por ejemplo, pequeño y grande, o el artículo y el menú). Las dos columnas salen alineadas, con los nombres que elija encima («Pequeño» y «Grande» por defecto), y se guardan en el archivo de la lista.
+
 ## 3.73.0 — 2026-11-20
 
 ### Novedades

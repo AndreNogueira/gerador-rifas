@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.74.0 — 2026-11-20
+
+### Novità
+- **Due misure nel listino**: attiva «Due misure (due prezzi per articolo)» (sito e app Windows) per scrivere due prezzi per ogni articolo (per esempio piccolo e grande, o l'articolo e il menu). Le due colonne escono allineate, con i nomi che scegli sopra («Piccolo» e «Grande» per impostazione predefinita), e si salvano nel file del listino.
+
 ## 3.73.0 — 2026-11-20
 
 ### Novità

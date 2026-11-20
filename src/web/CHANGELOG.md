@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.74.0 — 2026-11-20
+
+### Novo
+- **Dois tamanhos no preçário**: ligue «Dois tamanhos (dois preços por artigo)» (site e app Windows) para escrever dois preços em cada artigo (por exemplo, o pequeno e o grande, ou o artigo e o menu). As duas colunas saem alinhadas, com os nomes que escolher por cima (por omissão «Pequeno» e «Grande»), e ficam guardadas no ficheiro do preçário.
+
 ## 3.73.0 — 2026-11-20
 
 ### Novo

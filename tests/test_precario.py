@@ -221,3 +221,44 @@ def test_o_formato_dos_cartoes_viaja_na_api_e_no_ficheiro():
     assert precario.de_dict(precario.para_dict(p)).formato == precario.CARTOES
     assert precario.de_bytes(precario.para_bytes(p)).formato == precario.CARTOES
     assert precario.CARTOES in precario.FORMATOS and list(precario.FORMATOS)[-1] == precario.CARTOES      # no fim da lista: A5, A4, A3 primeiro
+
+
+# ------------------------------------------------------------------ dois tamanhos (dois preços por artigo)
+def _tamanhos(**kw) -> Precario:
+    linhas = (Linha("agua", preco=1000, preco2=1800), Linha("cerveja", preco=1500), Linha("", "Bolo da avó", preco2=2500))
+    return Precario(linhas=linhas, titulo="Festa", tamanhos=True, rotulos=("Pequena", "Grande"), **kw)
+
+
+def test_com_dois_tamanhos_saem_os_rotulos_e_os_dois_precos():
+    texto = texto_do_pdf(precario.criar_pdf(_tamanhos())).replace("\xa0", " ")
+    assert "Pequena" in texto and "Grande" in texto
+    for esperado in ("1,00", "1,80", "1,50", "2,50"):
+        assert esperado in texto, esperado
+    sem = texto_do_pdf(precario.criar_pdf(Precario(linhas=_tamanhos().linhas, titulo="Festa")))
+    assert "Pequena" not in sem and "Grande" not in sem and "1,80" not in sem.replace("\xa0", " ")     # sem `tamanhos` o segundo preço nem aparece
+
+
+@pytest.mark.parametrize("formato", ["A5", "A4", "A3", "A6x4"])
+def test_os_dois_tamanhos_cabem_em_todos_os_formatos_e_com_a_moeda_inventada(formato):
+    p = _tamanhos(formato=formato, moeda=moeda.MoedaInventada("fichas", False, 0))
+    assert len(PdfReader(io.BytesIO(precario.criar_pdf(p))).pages) >= 1
+
+
+def test_os_tamanhos_viajam_no_dicionario_e_no_ficheiro():
+    p = _tamanhos()
+    assert precario.de_dict(precario.para_dict(p)) == p
+    assert precario.de_bytes(precario.para_bytes(p)) == p
+    assert precario.de_dict({"linhas": [{"artigo": "agua", "preco": "1,5", "preco2": "2,5"}], "tamanhos": True}, "pt").linhas[0].preco2 == 2500
+    assert precario.de_dict({"linhas": []}, "pt").rotulos == ("P", "G") and precario.de_dict({"linhas": []}, "pt").tamanhos is False
+
+
+@pytest.mark.parametrize("rotulos", [("", "G"), ("P", "   "), ("x" * 11, "G"), ("P",), ("P", "G", "M")])
+def test_rotulos_invalidos_so_importam_com_tamanhos(rotulos):
+    base = {"linhas": [{"artigo": "agua"}], "rotulos": list(rotulos)}
+    if len(rotulos) != 2 or len(rotulos[0]) > 10:
+        with pytest.raises(ErroRifas):
+            precario.criar_pdf(precario.de_dict({**base, "tamanhos": True}, "pt"))
+        return
+    with pytest.raises(ErroRifas):
+        precario.criar_pdf(precario.de_dict({**base, "tamanhos": True}, "pt"))                 # vazio com tamanhos: recusado
+    assert precario.criar_pdf(precario.de_dict({**base, "tamanhos": False}, "pt")).startswith(b"%PDF")    # sem tamanhos os rótulos nem se usam

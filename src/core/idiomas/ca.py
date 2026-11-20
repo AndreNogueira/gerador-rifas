@@ -417,4 +417,8 @@ T = {
     "tut_f_vales_t": "Vals de fitxes numerats",
     "tut_f_vales_b": "Si la llista de preus fa servir una moneda inventada (fitxes, monedes…), feu també els vals: trieu el disseny, el títol i quantes fitxes val cada val, i creeu el model. Continua a la pantalla principal, on el generador numera els vals amb sèries («A-», «B-»), QR de verificació i fulls a punt per imprimir. {onde}",
     "web_precario_cartoes": "Targetes de taula (4 per full A4)",
+    "web_precario_tamanhos": "Dues mides (dos preus per article)",
+    "web_precario_rotulos": "Noms de les dues mides",
+    "web_precario_tamanho_1": "Petit",
+    "web_precario_tamanho_2": "Gran",
 }

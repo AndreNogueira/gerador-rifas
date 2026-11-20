@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.74.0 — 2026-11-20
+
+### Nowości
+- **Dwa rozmiary w cenniku**: włącz «Dwa rozmiary (dwie ceny przy pozycji)» (strona i aplikacja na Windows), aby wpisać dwie ceny przy każdej pozycji (na przykład mały i duży albo pozycja i zestaw). Obie kolumny wychodzą wyrównane, z nazwami, które wybierzesz, nad nimi (domyślnie «Mały» i «Duży»), i zapisują się w pliku cennika.
+
 ## 3.73.0 — 2026-11-20
 
 ### Nowości
