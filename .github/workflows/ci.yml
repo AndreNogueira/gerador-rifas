@@ -1,8 +1,8 @@
-# Integracao continua. Em PULL REQUEST corre o essencial e barato: ruff, pytest em Linux (Python 3.15, a da webapp E a da app Windows desde a 2.5)
-# e o frontend React (Biome, tsc, Vitest, build). Em PUSH para main (e num PR com a etiqueta «completo») corre tudo: tambem pytest em Windows,
-# as metricas em Postgres, o e2e (Playwright) e a imagem Docker (cujo alvo `testes` repete o pytest e o Vitest dentro do contentor).
-# Porque: o plano gratuito do GitHub (2000 min/mes em repositorios privados; os minutos de Windows contam o dobro) acabou-se com 9 trabalhos por
-# push. Um PR so de documentacao nao corre CI (paths-ignore). O que o CI economiza num PR corre-se localmente: `scripts/verificar.ps1 -Docker -E2e`.
+# Integracao continua. **Em cada PULL REQUEST e em cada push para main corre a suite toda** (decisao de 2026-11-20, a pedido do dono: um problema
+# que so aparecia em main — e2e, Windows, Docker — fazia falhar o deploy depois de fundido): ruff, pytest em Linux E em Windows (Python 3.15, a da
+# webapp e a da app Windows), as metricas em Postgres 17, o frontend React (Biome, tsc, Vitest, build), o e2e (Playwright) e a imagem Docker (cujo
+# alvo `testes` repete o pytest e o Vitest dentro do contentor). Custa minutos do plano do GitHub (os de Windows contam o dobro); um PR so de
+# documentacao nao corre CI (paths-ignore). `scripts/verificar.ps1 -Docker -E2e` faz o mesmo localmente.
 # O deploy (deploy.yml) so corre depois de este CI passar em main.
 # Nota: `astral-sh/setup-uv` ja nao publica a tag flutuante `v10` (so versoes exatas); as outras Actions usam a tag major.
 name: CI
@@ -11,7 +11,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    types: [opened, synchronize, reopened, labeled]       # `labeled`: a etiqueta «completo» corre tudo
+    types: [opened, synchronize, reopened]
     paths-ignore:
       - "docs/**"
       - "**/*.md"
@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ${{ (github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'completo')) && fromJSON('["ubuntu-latest", "windows-latest"]') || fromJSON('["ubuntu-latest"]') }}
+        os: ["ubuntu-latest", "windows-latest"]
         python: ["3.15"]
     steps:
       - uses: actions/checkout@v7
@@ -63,7 +63,6 @@ jobs:
   # Num trabalho a parte porque os contentores de servico so existem em runners Linux.
   postgres:
     name: metricas em Postgres 17
-    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'completo')
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -109,7 +108,6 @@ jobs:
 
   e2e:
     name: e2e (Playwright, Chromium)
-    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'completo')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -146,7 +144,6 @@ jobs:
 
   docker:
     name: imagem Docker (testes dentro do build)
-    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'completo')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
