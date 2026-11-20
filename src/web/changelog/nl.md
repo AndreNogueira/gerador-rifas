@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.77.0 — 2026-11-20
+
+### Verbeterd
+- **Nettere lijsten en regels in de prijslijst**: alle keuzelijsten op de site zien er nu uit als de andere velden, met een pijltje dat het thema volgt (licht en donker). In de prijslijst nemen de × om een artikel te verwijderen en de fotoknop veel minder ruimte in, springen de prijzen niet meer naar een tweede regel en staat op een telefoon de naam bovenaan met de velden eronder.
+
 ## 3.76.0 — 2026-11-20
 
 ### Nieuw

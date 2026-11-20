@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.77.0 — 2026-11-20
+
+### Migliorato
+- **Liste e righe del listino più ordinate**: tutti gli elenchi a discesa del sito hanno ora l'aspetto degli altri campi, con una freccia che segue il tema (chiaro e scuro). Nel listino, la × per togliere un articolo e il pulsante della foto occupano molto meno spazio, i prezzi non vanno più a una seconda riga e, sul telefono, il nome sta sopra e i campi sotto.
+
 ## 3.76.0 — 2026-11-20
 
 ### Novità

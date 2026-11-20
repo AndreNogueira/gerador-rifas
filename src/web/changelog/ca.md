@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.77.0 — 2026-11-20
+
+### Millores
+- **Llistes i files de la llista de preus més ordenades**: totes les llistes desplegables del web tenen ara l'aspecte dels altres camps, amb una fletxa que segueix el tema (clar i fosc). A la llista de preus, la × per treure un article i el botó de la foto ocupen molt menys espai, els preus ja no salten a una segona línia i, al mòbil, el nom queda a dalt i els camps a sota.
+
 ## 3.76.0 — 2026-11-20
 
 ### Novetats

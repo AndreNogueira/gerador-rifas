@@ -4,6 +4,7 @@ import { useDialogos } from "./dialogos";
 import { prepararFoto } from "./foto";
 import { guardarBlob } from "./Gerador";
 import { useI18n } from "./i18n";
+import { Icone } from "./icones";
 import { Voltar } from "./paginas";
 import { Vales } from "./Vales";
 
@@ -217,10 +218,18 @@ export function pedidoDoEstado(e: Estado, padroes: [string, string] = ["P", "G"]
   };
 }
 
-function Miniatura({ emoji }: { emoji: string }) {
-  if (!emoji) return <span className="precario-sem-imagem" aria-hidden="true" />;
+function Miniatura({ emoji, className = "" }: { emoji: string; className?: string }) {
+  if (!emoji) return <span className={`precario-sem-imagem ${className}`} aria-hidden="true" />;
   return (
-    <img src={`/precario/${emoji}.webp`} alt="" width={28} height={28} loading="lazy" decoding="async" />
+    <img
+      className={className}
+      src={`/precario/${emoji}.webp`}
+      alt=""
+      width={28}
+      height={28}
+      loading="lazy"
+      decoding="async"
+    />
   );
 }
 
@@ -584,8 +593,8 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
                     />
                   </label>
                   {dela.map((l) => (
-                    <div className="precario-linha" key={l.chave}>
-                      <Miniatura emoji={emojiDe(l)} />
+                    <div className={`precario-linha${e.tamanhos ? " com-dois" : ""}`} key={l.chave}>
+                      <Miniatura emoji={emojiDe(l)} className="precario-mini" />
                       <span className="precario-nome">{nomeDe(l)}</span>
                       {l.foto ? (
                         <button
@@ -600,7 +609,8 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
                         </button>
                       ) : (
                         <label className="precario-foto botao secundario" title={t("web_precario_foto")}>
-                          {t("web_precario_foto")}
+                          <Icone nome="camara" tamanho={18} />
+                          <span className="so-leitores">{t("web_precario_foto")}</span>
                           <input
                             type="file"
                             accept="image/png,image/jpeg"
@@ -615,6 +625,7 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
                         </label>
                       )}
                       <input
+                        className="precario-p1"
                         inputMode="decimal"
                         data-testid={`precario-preco-${l.chave}`}
                         aria-label={`${t("web_precario_preco")}: ${nomeDe(l)}`}
@@ -625,6 +636,7 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
                       />
                       {e.tamanhos && (
                         <input
+                          className="precario-p2"
                           inputMode="decimal"
                           data-testid={`precario-preco2-${l.chave}`}
                           aria-label={`${e.rotulo2.trim() || padroes[1]}: ${nomeDe(l)}`}
@@ -636,11 +648,12 @@ export function Precario({ partilha = false }: { partilha?: boolean }) {
                       )}
                       <button
                         type="button"
-                        className="botao secundario"
+                        className="precario-tirar"
+                        title={t("web_precario_tirar")}
                         aria-label={`${t("web_precario_tirar")}: ${nomeDe(l)}`}
                         onClick={() => mudar({ linhas: e.linhas.filter((x) => x.chave !== l.chave) })}
                       >
-                        ×
+                        <Icone nome="fechar" tamanho={16} />
                       </button>
                     </div>
                   ))}

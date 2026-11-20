@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.77.0 — 2026-11-20
+
+### Îmbunătățit
+- **Liste și rânduri mai ordonate în lista de prețuri**: toate listele derulante de pe site arată acum ca restul câmpurilor, cu o săgeată care urmează tema (deschisă și închisă). În lista de prețuri, × pentru a scoate un articol și butonul pentru poză ocupă mult mai puțin loc, prețurile nu mai sar pe al doilea rând, iar pe telefon numele stă sus și câmpurile dedesubt.
+
 ## 3.76.0 — 2026-11-20
 
 ### Noutăți

@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.77.0 — 2026-11-20
+
+### İyileştirildi
+- **Daha derli toplu listeler ve fiyat listesi satırları**: sitedeki tüm açılır listeler artık diğer alanlar gibi görünüyor; oku temaya uyuyor (açık ve koyu). Fiyat listesinde bir ürünü çıkaran × ve fotoğraf düğmesi çok daha az yer kaplıyor, fiyatlar artık ikinci satıra kaymıyor ve telefonda ad üstte, alanlar altta duruyor.
+
 ## 3.76.0 — 2026-11-20
 
 ### Yeni

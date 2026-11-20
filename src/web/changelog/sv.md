@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.77.0 — 2026-11-20
+
+### Förbättrat
+- **Snyggare listor och rader i prislistan**: alla rullgardinslistor på webbplatsen ser nu ut som de andra fälten, med en pil som följer motivet (ljust och mörkt). I prislistan tar × för att ta bort en artikel och fotoknappen mycket mindre plats, priserna hoppar inte längre till en andra rad och på mobilen står namnet överst med fälten under.
+
 ## 3.76.0 — 2026-11-20
 
 ### Nytt

@@ -52,6 +52,8 @@ const DESENHOS = {
   bug: "M9 8a3 3 0 0 1 6 0M8 9h8v6a4 4 0 0 1-8 0V9zM4 7l3 2M20 7l-3 2M3 13h5M16 13h5M5 20l3-2.5M19 20l-3-2.5M12 9v10",
   lista: "M10 6h10M10 12h10M10 18h10M4 5.5l1.2 1.2L7.5 4.5M4 11.5l1.2 1.2 2.3-2.2M4 17.5l1.2 1.2 2.3-2.2",
   baixo: "M6 9l6 6 6-6",
+  camara:
+    "M4 8h3l1.5-2.5h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1zM12 10.5a3.2 3.2 0 1 0 0 6.4 3.2 3.2 0 0 0 0-6.4z",
 } as const;
 
 export type NomeIcone = keyof typeof DESENHOS;

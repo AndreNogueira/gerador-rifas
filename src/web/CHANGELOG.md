@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.77.0 — 2026-11-20
+
+### Melhorado
+- **Listas e linhas do preçário mais arrumadas**: todas as listas de escolha do site têm agora o aspeto dos restantes campos, com uma seta que acompanha o tema (claro e escuro). No preçário, o × de tirar um artigo e o botão da foto ocupam muito menos espaço, os preços já não saltam para uma segunda linha e, no telemóvel, o nome fica em cima e os campos por baixo.
+
 ## 3.76.0 — 2026-11-20
 
 ### Novo

@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.77.0 — 2026-11-20
+
+### Improved
+- **Tidier lists and price-list rows**: all the drop-down lists on the site now look like the other fields, with an arrow that follows the theme (light and dark). In the price list, the × that removes an item and the photo button take far less room, the prices no longer jump to a second line and, on a phone, the name sits on top with the fields below.
+
 ## 3.76.0 — 2026-11-20
 
 ### New

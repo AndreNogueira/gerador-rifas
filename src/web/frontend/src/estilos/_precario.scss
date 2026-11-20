@@ -1,9 +1,5 @@
 // O gerador de preçários: o editor à esquerda (cartões), a pré-visualização à direita (fixa em ecrãs largos) e uma só coluna em telemóvel.
 .precario {
-  select {
-    background: var(--campo); // sem isto o fundo é o nativo do browser, que no Linux (CI) varia e fez o contraste do Jornal escuro cair a 4,3
-    color: var(--texto); // o cinzento global dos <select> não chega a 4,5:1 em todos os temas (medido no Arcade escuro)
-  }
   .precario-grelha {
     display: grid;
     gap: 18px;
@@ -89,22 +85,80 @@
       grid-template-columns: 1fr;
     }
   }
+  // uma linha do preçário: miniatura | nome | foto | preço (| 2.º preço) | ×. Cada filho tem a sua área, por isso nada «quebra» para uma linha de baixo
+  // (antes a grelha tinha 4 colunas para 5 ou 6 filhos e o × ia parar a uma 2.ª linha); em ecrãs estreitos o nome ocupa a 1.ª linha e os campos a 2.ª
   .precario-linha {
     display: grid;
-    grid-template-columns: 28px minmax(0, 1fr) minmax(6rem, 8rem) auto;
-    gap: 8px;
+    grid-template-areas: "mini nome foto p1 tirar";
+    grid-template-columns: 28px minmax(0, 1fr) auto minmax(5rem, 7rem) auto;
+    gap: 6px 8px;
     align-items: center;
     margin-top: 8px;
+    &.com-dois {
+      grid-template-areas: "mini nome foto p1 p2 tirar";
+      grid-template-columns: 28px minmax(0, 1fr) auto minmax(4.5rem, 6rem) minmax(4.5rem, 6rem) auto;
+    }
+    .precario-mini {
+      grid-area: mini;
+    }
     .precario-nome {
+      grid-area: nome;
       overflow-wrap: anywhere;
+    }
+    .precario-foto {
+      grid-area: foto;
+    }
+    .precario-p1 {
+      grid-area: p1;
+    }
+    .precario-p2 {
+      grid-area: p2;
+    }
+    .precario-tirar {
+      grid-area: tirar;
+    }
+    @media (max-width: 36rem) {
+      grid-template-areas:
+        "mini nome nome tirar"
+        ". foto p1 p1";
+      grid-template-columns: 28px auto minmax(0, 1fr) auto;
+      &.com-dois {
+        grid-template-areas:
+          "mini nome nome nome tirar"
+          ". foto p1 p2 p2";
+        grid-template-columns: 28px auto minmax(0, 1fr) minmax(0, 1fr) auto;
+      }
+    }
+  }
+  // o × de tirar um artigo: um quadrado pequeno sem o aspeto de botão de ação (era um botão inteiro e roubava largura aos preços)
+  button.precario-tirar {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    min-width: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--suave);
+    border: var(--borda) solid transparent;
+    box-shadow: none;
+    text-shadow: none;
+    cursor: pointer;
+    &:hover {
+      color: var(--texto);
+      border-color: var(--linha);
     }
   }
   .precario-linha-categoria {
-    grid-template-columns: minmax(0, 1fr) minmax(6rem, 8rem);
+    grid-template-columns: minmax(0, 1fr) minmax(5rem, 7rem);
+    padding-right: 40px; // alinha o preço da categoria com os preços das linhas (a largura do × e do intervalo)
     font-weight: 600;
+    @media (max-width: 36rem) {
+      padding-right: 0;
+    }
   }
-  .precario-caixa {
-    display: flex;
+  .precario-caixa,
+  .cartao > label.precario-caixa {
+    display: flex; // sem isto o `.cartao > label` (grelha) punha o texto por baixo da caixa
     align-items: center;
     gap: 8px;
     margin: 8px 0;
@@ -155,10 +209,6 @@
     border-radius: var(--raio-c);
     box-shadow: 0 1px 6px rgb(0 0 0 / 18%);
   }
-  select,
-  input {
-    background: var(--campo);
-  }
 }
 
 // Dois tamanhos: os dois nomes das colunas lado a lado e o segundo preço ao lado do primeiro
@@ -174,8 +224,9 @@
       margin-bottom: 4px;
     }
   }
-  .precario-linha input {
+  .precario-linha input:not([type="file"]) {
     min-width: 0;
+    padding-inline: 8px; // a linha é apertada: com 12 px o «Preço» cortava-se no telemóvel
   }
 }
 
@@ -183,6 +234,9 @@
 .precario {
   .precario-foto {
     flex: none;
+    display: inline-grid;
+    place-items: center;
+    min-width: 36px;
     padding: 4px 8px;
     font-size: 0.8rem;
     cursor: pointer;

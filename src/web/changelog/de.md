@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.77.0 — 2026-11-20
+
+### Verbessert
+- **Aufgeräumtere Listen und Zeilen der Preisliste**: Alle Auswahllisten der Website sehen jetzt wie die übrigen Felder aus, mit einem Pfeil, der dem Motiv folgt (hell und dunkel). In der Preisliste brauchen das × zum Entfernen eines Artikels und die Foto-Schaltfläche viel weniger Platz, die Preise springen nicht mehr in eine zweite Zeile und auf dem Handy steht der Name oben und die Felder darunter.
+
 ## 3.76.0 — 2026-11-20
 
 ### Neu
