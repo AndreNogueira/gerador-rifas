@@ -71,7 +71,7 @@ Funcionalidade de utilizador = **tópico no tutorial** (`FUNCIONALIDADES`, 22 l�
 | **6b** ✅ | SEO e **guia do preçário**: `/precario` em `seo.ROTAS` + `d_precario` ×23, texto estático, **1 guia** (como preparar um preçário para a festa e definir os preços) com ligações cruzadas a `/como-fazer` e aos guias de rifas | M | Larguras de `test_web_seo_linguas`; sitemap atualizado; sem promessas de lei |
 | **7** ✅ | **Vales de fichas numerados**: quando a «moeda inventada» são fichas, gerar os próprios vales com o motor das rifas (séries, QR de verificação): um vale por ficha, numerado, pronto a imprimir | M | Mesmo motor e mesmos limites das rifas; teste com séries e QR; validado na app Windows |
 | **8** | **Extras**: fotos próprias dos artigos; 2 tamanhos e combos mais ricos; cartões de mesa (menus pequenos, 4 por folha); preçário em formato «quadro negro»; partilha por ligação (precisa de BD) | L | Cada extra é um PR pequeno, com os seus testes |
-| **9** | **Anúncios** na página `/precario` **só onde `docs/ADSENSE.md` já os permite**; **nunca dentro da pré-visualização** do preçário nem do PDF | S | O mapa de anúncios de `docs/ADSENSE.md` atualizado; teste de que a pré-visualização não tem anúncios |
+| **9** ✅ | **Anúncios** na página `/precario` **só onde `docs/ADSENSE.md` já os permite**; **nunca dentro da pré-visualização** do preçário nem do PDF | S | O mapa de anúncios de `docs/ADSENSE.md` atualizado; teste de que a pré-visualização não tem anúncios |
 
 **Ordem de valor:** as fases 1–6 dão já o preçário na web e na app Windows; a 6b traz as visitas; 7–9 são os extras que o dono pediu. Posso entregar 1–3 antes de ver nada de visual, mas **a 4 pede-lhe um olhar** (o aspeto dos cartazes é o que decide se agrada).
 
