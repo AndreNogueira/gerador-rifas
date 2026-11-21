@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.88.0 — 2026-11-21
+
+### Vylepšeno
+- **Další dvě knihovny obrázků v ceníku: Twemoji a OpenMoji**: přidávají se k Noto Emoji a Fluent Emoji 3D, aniž by nahradily jakýkoli existující obrázek — výběr teď řadí obrázky podle knihovny, s názvem každé z nich. Twemoji (CC BY 4.0) a OpenMoji (CC BY-SA 4.0) vyžadují uvedení autorů, které se zobrazuje v Zásadách ochrany osobních údajů a, jen když se skutečně použije jeden z těchto obrázků, v zápatí vygenerovaného PDF a výdejních štítků.
+
 ## 3.87.0 — 2026-11-21
 
 ### Vylepšeno

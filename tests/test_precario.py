@@ -356,6 +356,24 @@ def test_caminho_icone_aceita_noto_e_fluent():
     assert precario.caminho_icone("fluent:1f382") == precario.PASTA_ICONES / "fluent" / "1f382.png"
 
 
+def test_emojis_desenhados_ignora_combos_e_respeita_imagens():
+    agua, bolo = cat.ARTIGOS["agua"].icones[2], cat.ARTIGOS["bolo"].icones[0]
+    linhas = (Linha(artigo="agua", emoji=agua), Linha(artigo="bolo"), Linha(nome="Combo", combo=("agua", "bolo")))
+    assert sorted(precario.emojis_desenhados(linhas, True)) == sorted([agua, bolo])      # o combo nunca entra (usa sempre a de omissão)
+    assert precario.emojis_desenhados(linhas, False) == []                               # sem imagens, nada
+
+
+def test_o_pdf_credita_uma_biblioteca_so_quando_a_usa_de_verdade():
+    sem_credito = next(i for i in cat.ARTIGOS["agua"].icones if ":" not in i or i.startswith("fluent:"))
+    com_credito = next(i for i in cat.ARTIGOS["agua"].icones if i.startswith("openmoji:"))
+    texto_sem = PdfReader(io.BytesIO(precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", emoji=sem_credito),))))).pages[0].extract_text()
+    texto_com = PdfReader(io.BytesIO(precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", emoji=com_credito),))))).pages[0].extract_text()
+    assert "OpenMoji" not in texto_sem and "CC BY-SA" not in texto_sem
+    assert "OpenMoji" in texto_com and "CC BY-SA 4.0" in texto_com
+    sem_imagens = PdfReader(io.BytesIO(precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", emoji=com_credito),), imagens=False)))).pages[0].extract_text()
+    assert "OpenMoji" not in sem_imagens                                                 # sem imagens, sem crédito (não se desenha nada)
+
+
 def test_a_imagem_escolhida_vai_e_volta_pelo_dicionario_e_pelo_ficheiro():
     p = Precario(linhas=(Linha(artigo="agua", preco=1000, emoji=cat.ARTIGOS["agua"].icones[2]),))
     assert precario.de_dict(precario.para_dict(p)) == p and precario.de_bytes(precario.para_bytes(p)).linhas[0].emoji == p.linhas[0].emoji

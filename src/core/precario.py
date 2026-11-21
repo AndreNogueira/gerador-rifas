@@ -583,11 +583,22 @@ def _categoria(c, p: Precario, d, categoria: str, x: float, y_topo: float, largu
     c.line(x, y_topo - 20.5 * f * s, x + largura, y_topo - 20.5 * f * s)
 
 
+def emojis_desenhados(linhas, imagens: bool) -> list:
+    """Os ids de ícone que `_item` desenha a sério para estas linhas (sem imagens, nenhum; um combo usa sempre a
+    imagem de omissão do catálogo — nunca precisa de crédito, por isso nem entra). Usado para saber que bibliotecas
+    creditar (`cat.fontes_usadas`/`cat.texto_creditos`): o preçário e as etiquetas chamam-no cada um com as suas linhas."""
+    if not imagens:
+        return []
+    return [e for ln in linhas if not ln.combo
+            for e in [ln.emoji or (cat.ARTIGOS[ln.artigo].emoji if ln.artigo else "")] if e]
+
+
 def criar_pdf(p: Precario) -> bytes:
     """O PDF do preçário (1 a 5 páginas). Levanta `ErroRifas` se algo não serve (ver `validar`)."""
     validar(p)
     from reportlab.pdfgen import canvas
     d = _desenho(p)
+    creditos = cat.texto_creditos(cat.fontes_usadas(emojis_desenhados(p.linhas, p.imagens)), p.lingua)
     cartoes = p.formato == CARTOES
     larg, alt = FORMATOS[p.formato]
     if p.orientacao == "horizontal" and not cartoes:                       # o cartão de mesa é sempre de pé
@@ -681,6 +692,10 @@ def criar_pdf(p: Precario) -> bytes:
             c.setFillColorRGB(*_cor_rodape(d))
             c.setFont("Vera", 9 * f)
             c.drawRightString(qx + qw - 14 * f, qy + 14 * f, f"{n + 1}/{len(paginas)}")
+        if creditos:
+            c.setFillColorRGB(*_cor_rodape(d))
+            c.setFont("Vera", 6.5 * f)
+            c.drawString(qx + 14 * f, qy + 14 * f, creditos)
         c.showPage()
     c.save()
     return _em_folha_a4(saida.getvalue()) if cartoes else saida.getvalue()

@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.88.0 — 2026-11-21
+
+### İyileştirildi
+- **Fiyat listesinde iki görsel kitaplığı daha: Twemoji ve OpenMoji**: Noto Emoji ve Fluent Emoji 3D'ye katılıyorlar, mevcut hiçbir görseli değiştirmeden — seçici artık görselleri kitaplığa göre gruplandırıyor, her birinin adıyla birlikte. Twemoji (CC BY 4.0) ve OpenMoji (CC BY-SA 4.0) yazarlara atıf gerektirir; bu atıf Gizlilik Politikası'nda ve bu görsellerden biri gerçekten kullanıldığında oluşturulan PDF ile teslim alma etiketlerinin alt bilgisinde görünür.
+
 ## 3.87.0 — 2026-11-21
 
 ### İyileştirildi

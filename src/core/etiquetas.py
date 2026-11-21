@@ -199,6 +199,7 @@ def criar_pdf(e: Etiquetas) -> bytes:
     larg, alt = precario.FORMATOS["A4"]
     w, h = (larg - 2 * MARGEM) / COLUNAS, (alt - 2 * MARGEM) / LINHAS
     por_folha = COLUNAS * LINHAS
+    creditos = cat.texto_creditos(cat.fontes_usadas(s.emoji for s in todas if s.emoji), e.precario.lingua)
     saida = io.BytesIO()
     c = canvas.Canvas(saida, pagesize=(larg, alt), pageCompression=1, invariant=1)
     c.setTitle((e.precario.titulo.strip() or "Etiquetas") + " (etiquetas)")
@@ -215,6 +216,10 @@ def criar_pdf(e: Etiquetas) -> bytes:
         for j in range(LINHAS + 1):
             c.line(MARGEM - 6, MARGEM + j * h, larg - MARGEM + 6, MARGEM + j * h)
         c.setDash()
+        if creditos:
+            c.setFillColorRGB(*CINZA)
+            c.setFont("Vera", 5.5)
+            c.drawString(MARGEM - 6, 4, creditos)
         c.showPage()
     c.save()
     return saida.getvalue()

@@ -87,3 +87,21 @@ def test_cada_artigo_oferece_ate_5_imagens_sem_repetir_e_a_primeira_e_a_de_omiss
     c = cat.catalogo("pt")
     assert all(x["icones"][0] == x["emoji"] for k in c["categorias"] for x in k["artigos"])
 
+
+def test_fontes_usadas_so_conta_as_que_pedem_credito():
+    assert cat.fontes_usadas(["1f382", "fluent:1f382"]) == set()                       # Noto e Fluent nunca pedem
+    assert cat.fontes_usadas(["twemoji:1f382"]) == {"twemoji"}
+    assert cat.fontes_usadas(["openmoji:1f382", "twemoji:1f382", "1f382"]) == {"openmoji", "twemoji"}
+    assert cat.fontes_usadas([]) == set()
+    assert cat.fontes_usadas(["naoexiste:1f382"]) == set()                             # fonte desconhecida: ignora, não rebenta
+
+
+def test_texto_creditos_vazio_sem_fontes_a_creditar_e_filtra_outra_vez_por_seguranca():
+    assert cat.texto_creditos(set(), "pt") == ""
+    assert cat.texto_creditos({"fluent"}, "pt") == ""                                   # mesmo passando por fora de fontes_usadas
+    assert cat.texto_creditos({"naoexiste"}, "pt") == ""
+    t = cat.texto_creditos({"openmoji"}, "pt")
+    assert t == "Ícones: OpenMoji (CC BY-SA 4.0)"
+    t2 = cat.texto_creditos({"openmoji", "twemoji"}, "en")
+    assert t2 == "Icons: OpenMoji (CC BY-SA 4.0), Twemoji (CC BY 4.0)"                   # ordem alfabética da fonte, estável
+
