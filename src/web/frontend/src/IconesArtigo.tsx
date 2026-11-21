@@ -1,12 +1,19 @@
 import { useI18n } from "./i18n";
 
+/** O ficheiro de um ícone, pelo seu id: um código Noto Emoji sozinho ("1f382") ou "<fonte>:<código>" de outra
+ * biblioteca ("fluent:1f382", numa subpasta — o mesmo que `core.precario.caminho_icone` no servidor). */
+function caminhoIcone(id: string): string {
+  const i = id.indexOf(":");
+  return i === -1 ? `/precario/${id}.webp` : `/precario/${id.slice(0, i)}/${id.slice(i + 1)}.webp`;
+}
+
 /** A imagem (o ícone) de um artigo do preçário: o emoji do catálogo em miniatura, ou um espaço em branco se não há. */
 export function Miniatura({ emoji, className = "" }: { emoji: string; className?: string }) {
   if (!emoji) return <span className={`precario-sem-imagem ${className}`} aria-hidden="true" />;
   return (
     <img
       className={className}
-      src={`/precario/${emoji}.webp`}
+      src={caminhoIcone(emoji)}
       alt=""
       width={28}
       height={28}
@@ -16,7 +23,7 @@ export function Miniatura({ emoji, className = "" }: { emoji: string; className?
   );
 }
 
-/** As imagens que o catálogo oferece a um artigo (até 8): a pessoa escolhe a que mais gosta; a de omissão é a primeira. */
+/** As imagens que o catálogo oferece a um artigo (até 16, entre o Noto Emoji curado e outras bibliotecas): a pessoa escolhe a que mais gosta; a de omissão é a primeira. */
 export function IconesArtigo({
   chave,
   nome,

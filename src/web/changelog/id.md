@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.87.0 — 2026-11-21
+
+### Ditingkatkan
+- **Lebih banyak pilihan gambar di daftar harga, dari Fluent Emoji 3D milik Microsoft (lisensi MIT, tanpa perlu mencantumkan kredit)**: ke-93 item katalog mendapat, selain gambar Noto Emoji seperti biasa, alternatif bergaya 3D di mana pun tersedia untuk kode tersebut — tidak ada gambar yang sudah ada yang diganti.
+
 ## 3.86.0 — 2026-11-21
 
 ### Ditingkatkan

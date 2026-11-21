@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.87.0 — 2026-11-21
+
+### Cải thiện
+- **Thêm hình ảnh để chọn trong bảng giá, từ Fluent Emoji 3D của Microsoft (giấy phép MIT, không yêu cầu ghi công)**: cả 93 mặt hàng trong danh mục đều có thêm, bên cạnh hình Noto Emoji như trước, một lựa chọn kiểu 3D ở bất cứ đâu có sẵn cho mã đó — không có hình nào trong số hình hiện có bị thay thế.
+
 ## 3.86.0 — 2026-11-21
 
 ### Cải thiện

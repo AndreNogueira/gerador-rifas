@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.87.0 — 2026-11-21
+
+### Förbättrat
+- **Fler bilder att välja mellan i prislistan, från Microsofts Fluent Emoji 3D (MIT-licens, inget krav på kreditering)**: alla 93 katalogartiklar fick, utöver de vanliga Noto Emoji-bilderna, ett alternativ i 3D-stil där det finns för den koden — ingen av de befintliga bilderna byttes ut.
+
 ## 3.86.0 — 2026-11-21
 
 ### Förbättrat

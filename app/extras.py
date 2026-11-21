@@ -1056,7 +1056,7 @@ class Precario(Janela):
         """A imagem de um artigo (a do PDF, `core/icones_precario/`) para um botão."""
         chave = (codigo, lado)
         if chave not in self._imagens:
-            with Image.open(precario.PASTA_ICONES / f"{codigo}.png") as im:
+            with Image.open(precario.caminho_icone(codigo)) as im:
                 im = im.convert("RGBA")
                 self._imagens[chave] = ctk.CTkImage(light_image=im, dark_image=im, size=(lado, lado))
         return self._imagens[chave]
@@ -1124,13 +1124,15 @@ class Precario(Janela):
                           border_color=C["borda"], font=ctk.CTkFont(FONTE, 11), command=lambda c=ln["chave"]: self._escolher_foto(c)).pack(side="left", padx=(0, 4))
             ctk.CTkButton(linha, text="×", width=28, height=28, corner_radius=8, fg_color=C["campo"], hover_color=C["borda"], text_color=C["texto"], border_width=1,
                           border_color=C["borda"], command=lambda c=ln["chave"]: self._tirar(c)).pack(side="left")
-            if self._icones_abertos == ln["chave"] and ln["artigo"]:                           # as imagens à escolha, por baixo da linha
-                opcoes = ctk.CTkFrame(caixa, fg_color="transparent")
-                opcoes.pack(fill="x", padx=(34, 0), pady=(2, 4))
-                for codigo in self.artigos[ln["artigo"]].icones:
-                    ctk.CTkButton(opcoes, text="", image=self._imagem(codigo, 30), width=40, height=40, corner_radius=8, border_width=2,
-                                  border_color=C["acento"] if codigo == atual else C["borda"], fg_color=C["acento_suave"] if codigo == atual else C["campo"], hover_color=C["borda"],
-                                  command=lambda c=ln["chave"], k=codigo: self._escolher_icone(c, k)).pack(side="left", padx=(0, 4))
+            if self._icones_abertos == ln["chave"] and ln["artigo"]:                           # as imagens à escolha, por baixo da linha (8 por fila: o pack() do Tk não as quebra sozinho)
+                icones = self.artigos[ln["artigo"]].icones
+                for i in range(0, len(icones), 8):
+                    opcoes = ctk.CTkFrame(caixa, fg_color="transparent")
+                    opcoes.pack(fill="x", padx=(34, 0), pady=(2, 0 if i + 8 < len(icones) else 4))
+                    for codigo in icones[i:i + 8]:
+                        ctk.CTkButton(opcoes, text="", image=self._imagem(codigo, 30), width=40, height=40, corner_radius=8, border_width=2,
+                                      border_color=C["acento"] if codigo == atual else C["borda"], fg_color=C["acento_suave"] if codigo == atual else C["campo"], hover_color=C["borda"],
+                                      command=lambda c=ln["chave"], k=codigo: self._escolher_icone(c, k)).pack(side="left", padx=(0, 4))
         if self.v_tamanhos.get():
             self.f_rotulos.pack(fill="x", before=self.b_pdf)
         else:

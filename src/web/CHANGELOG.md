@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.87.0 — 2026-11-21
+
+### Melhorado
+- **Mais imagens à escolha no preçário, do Fluent Emoji 3D da Microsoft (licença MIT, sem exigir crédito)**: os 93 artigos do catálogo ganharam, além das imagens Noto Emoji de sempre, uma alternativa no estilo 3D — sempre que exista para esse código — sem trocar nenhuma das imagens já lá estavam.
+
 ## 3.86.0 — 2026-11-21
 
 ### Melhorado

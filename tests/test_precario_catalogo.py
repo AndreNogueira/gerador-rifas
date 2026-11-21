@@ -80,7 +80,9 @@ def test_cada_lingua_tem_o_catalogo_completo_com_nomes_diferentes_do_id(lg):
 
 def test_cada_artigo_oferece_ate_5_imagens_sem_repetir_e_a_primeira_e_a_de_omissao():
     for a in cat.ARTIGOS.values():
-        assert 1 <= len(a.icones) <= cat.MAX_ICONES and len(set(a.icones)) == len(a.icones) and a.icones[0] == a.emoji, a.id
+        noto = tuple(i for i in a.icones if ":" not in i)                 # as curadas em precario_dados.ICONES (o Noto Emoji)
+        assert (1 <= len(noto) <= cat.MAX_ICONES and 1 <= len(a.icones) <= cat.MAX_ICONES_TOTAL
+                and len(set(a.icones)) == len(a.icones) and a.icones[0] == a.emoji), a.id
     assert sum(len(a.icones) > 1 for a in cat.ARTIGOS.values()) == len(cat.ARTIGOS)              # todos têm alternativas
     c = cat.catalogo("pt")
     assert all(x["icones"][0] == x["emoji"] for k in c["categorias"] for x in k["artigos"])

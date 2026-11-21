@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.87.0 — 2026-11-21
+
+### İyileştirildi
+- **Fiyat listesinde seçilecek daha fazla görsel, Microsoft'un Fluent Emoji 3D'sinden (MIT lisansı, atıf gerektirmez)**: kataloğun 93 ürününün tümü, her zamanki Noto Emoji görsellerine ek olarak, o kod için varsa 3D tarzı bir alternatif kazandı — mevcut görsellerden hiçbiri değiştirilmedi.
+
 ## 3.86.0 — 2026-11-21
 
 ### İyileştirildi

@@ -234,7 +234,7 @@ pr.l_erro.configure(text="")
 
 # --- imagens à escolha: a miniatura abre até 8; a escolhida entra no preçário e no ficheiro .precario; a de omissão volta ao catálogo
 icones_agua = extras.precario_catalogo.ARTIGOS["agua"].icones
-ok(len(icones_agua) == 6 and pr._escolher_icone("agua") and pr._icones_abertos == "agua", "o botão da imagem abre as 6 imagens do artigo")
+ok(len(icones_agua) >= 6 and pr._escolher_icone("agua") and pr._icones_abertos == "agua", "o botão da imagem abre as imagens do artigo")
 ok(pr._escolher_icone("agua", icones_agua[2]) and next(ln for ln in pr.precario().linhas if ln.artigo == "agua").emoji == icones_agua[2], "a imagem escolhida entra no preçário")
 foto(pr, "precario_icones.png")
 fich_i = pr._guardar_ficheiro(str(SAIDA / "i.precario"))

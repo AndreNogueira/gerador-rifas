@@ -33,6 +33,15 @@ ORIENTACOES = ("vertical", "horizontal")
 MAX_LINHAS, MAX_TITULO, MAX_SUBTITULO, MAX_RODAPE, MAX_NOME = 80, 40, 70, 120, 40
 ESCALA_MAX, ESCALA_MIN, PASSO_ESCALA, MAX_PAGINAS = 1.5, 0.55, 0.05, 5
 PASTA_ICONES = Path(__file__).resolve().parent / "icones_precario"
+
+
+def caminho_icone(id_icone: str) -> Path:
+    """O PNG local de um ícone, pelo seu id: um código Noto Emoji sozinho ('1f382') ou `<fonte>:<código>` de outra
+    biblioteca ('fluent:1f382', numa subpasta: o ':' não é válido num nome de ficheiro do Windows)."""
+    if ":" in id_icone:
+        fonte, hexa = id_icone.split(":", 1)
+        return PASTA_ICONES / fonte / f"{hexa}.png"
+    return PASTA_ICONES / f"{id_icone}.png"
 CINZA, CINZA_ESCURO = (0.62, 0.62, 0.62), (0.28, 0.28, 0.28)
 
 
@@ -123,7 +132,7 @@ def validar(p: Precario) -> None:
         _texto_ok(ln.nome, MAX_NOME)
         if ln.categoria and ln.categoria not in cat.CATEGORIAS:
             raise ErroRifas("err_precario_texto", car="?")
-        if ln.emoji and not (PASTA_ICONES / f"{ln.emoji}.png").is_file():
+        if ln.emoji and not caminho_icone(ln.emoji).is_file():
             raise ErroRifas("err_precario_texto", car="?")
         if ln.artigo and ln.emoji and ln.emoji not in cat.ARTIGOS[ln.artigo].icones:       # um artigo só aceita as imagens que o catálogo lhe oferece
             raise ErroRifas("err_precario_texto", car="?")
@@ -273,7 +282,7 @@ def logo_de_dados(dados) -> bytes:
 def _imagem(emoji: str):
     from PIL import Image
     from reportlab.lib.utils import ImageReader
-    with Image.open(PASTA_ICONES / f"{emoji}.png") as im:
+    with Image.open(caminho_icone(emoji)) as im:
         return ImageReader(im.convert("RGBA"))
 
 

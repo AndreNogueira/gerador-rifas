@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.87.0 — 2026-11-21
+
+### Migliorato
+- **Più immagini tra cui scegliere nel listino prezzi, dal Fluent Emoji 3D di Microsoft (licenza MIT, senza obbligo di credito)**: tutti i 93 articoli del catalogo hanno guadagnato, oltre alle solite immagini Noto Emoji, un'alternativa in stile 3D ovunque esista per quel codice — nessuna delle immagini esistenti è stata sostituita.
+
 ## 3.86.0 — 2026-11-21
 
 ### Migliorato
