@@ -38,8 +38,21 @@ const TITULOS_PT: Record<string, string> = {
 /** Os caminhos que têm página própria (fora dos guias, em `GUIAS`): o mesmo conjunto do `switch` abaixo. Um caminho
  * fora daqui (e que não seja "/") é um 404 a sério, nunca o gerador silenciosamente. */
 const PATHS_CONHECIDOS = [
-  "/tutorial", "/video", "/sobre", "/sorteio", "/precario", "/editor", "/como-fazer",
-  "/comentarios", "/opiniao", "/reportar-problema", "/changelog", "/termos", "/privacidade", "/contacto", "/admin",
+  "/tutorial",
+  "/video",
+  "/sobre",
+  "/sorteio",
+  "/precario",
+  "/editor",
+  "/como-fazer",
+  "/comentarios",
+  "/opiniao",
+  "/reportar-problema",
+  "/changelog",
+  "/termos",
+  "/privacidade",
+  "/contacto",
+  "/admin",
 ];
 
 function Aplicacao() {
@@ -78,7 +91,11 @@ function Aplicacao() {
     };
     const pagina = traduzidas[caminho] ?? TITULOS_PT[caminho] ?? "";
     const conhecido = caminho === "/" || PATHS_CONHECIDOS.includes(caminho) || !!GUIAS[caminho];
-    document.title = pagina ? `${pagina.replace(/…$/, "")} | ${nome}` : conhecido ? nome : `${t("web_404_titulo")} | ${nome}`;
+    document.title = pagina
+      ? `${pagina.replace(/…$/, "")} | ${nome}`
+      : conhecido
+        ? nome
+        : `${t("web_404_titulo")} | ${nome}`;
   }, [caminho, t]);
 
   // o tipo de ecra, para as estatisticas (uma vez por separador; o painel do dono nao conta)
