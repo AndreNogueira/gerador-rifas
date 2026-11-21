@@ -160,7 +160,7 @@ O servidor limita pedidos por IP. Atrás do Render, o IP real chega no cabeçalh
 
 A secção «Proxy e limite por IP» olha para a última hora e diz: **«ok»** (vários IPs, públicos), **«problema»** (quase todos os pedidos de 1 ou 2 endereços internos com `X-Forwarded-For`: define `FORWARDED_ALLOW_IPS=*` no serviço) ou **«sem proxy»** (desenvolvimento local). Precisa de uns 20 pedidos para concluir.
 
-**Espreitado em produção em 2026-11-20** (`/api/admin/estado`): ainda deu `"poucos_pedidos"` (só 1 pedido na última hora nessa instância — o serviço tinha reiniciado há pouco, ver `docs/MEDICOES.md`), mas esse único pedido já veio com `privados_pct: 0` e `xff_pct: 100`: o IP real chegou, não o do proxy. Boa pista de que `FORWARDED_ALLOW_IPS` está bem configurado, mas só um «ok» a sério (20+ pedidos numa hora) confirma por inteiro — voltar a olhar numa hora com tráfego normal.
+**Espreitado em produção em 2026-11-20** (`/api/admin/estado`): ainda deu `"poucos_pedidos"` (só 1 pedido na última hora nessa instância — confirmado nos eventos do Render que o serviço tinha reiniciado pouco antes, depois de um dos muitos deploys desse dia), mas esse único pedido já veio com `privados_pct: 0` e `xff_pct: 100`: o IP real chegou, não o do proxy. Boa pista de que `FORWARDED_ALLOW_IPS` está bem configurado, mas só um «ok» a sério (20+ pedidos numa hora) confirma por inteiro — voltar a olhar numa hora com tráfego normal.
 
 ## Para quem mexe no código
 
