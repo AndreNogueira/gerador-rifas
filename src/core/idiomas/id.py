@@ -464,4 +464,6 @@ T = {
     "web_etiquetas_total": "{n} label di {folhas} lembar A4, dipotong mengikuti garis panduan.",
     "tut_f_etiquetas_t": "Label pengambilan",
     "tut_f_etiquetas_b": "Bayar di satu tempat dan ambil di tempat lain? Buat satu label per barang di daftar harga, dengan gambar, nama, dan zona pengambilan (bar, dapur…): cetak salinan sebanyak yang Anda mau, 24 per lembar A4 dengan garis potong, dikelompokkan per zona untuk dibagikan ke tim. Satu paket menghasilkan satu label per barang, masing-masing di zonanya. {onde}",
+    "web_404_titulo": "Halaman tidak ditemukan",
+    "web_404_texto": "Halaman ini tidak ada, atau tautannya salah.",
 }

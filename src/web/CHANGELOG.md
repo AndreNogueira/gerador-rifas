@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.85.0 — 2026-11-21
+
+### Corrigido
+- **Página 404 a sério**: uma ligação errada mostrava o gerador escondido por baixo do estado 404 (certo no servidor, mas o React tapava-o). Agora aparece mesmo uma página «Página não encontrada», nas 22 línguas, com a ligação para voltar.
+- **Ícone de reserva (`favicon.ico`)**: browsers e ferramentas antigas que só olham para `/favicon.ico`, ignorando o ícone SVG, já têm um.
+
 ## 3.84.0 — 2026-11-21
 
 ### Novo

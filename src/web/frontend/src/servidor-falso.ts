@@ -241,6 +241,8 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_ficheiros_gerados: "PDFs gerados",
     web_nova_janela: "Abrir noutra janela",
     web_voltar: "Voltar",
+    web_404_titulo: "Página não encontrada",
+    web_404_texto: "Esta página não existe, ou a ligação está errada.",
     web_sessao_expirada: "A sessão expirou.",
     web_erro_rede: "Sem ligação ao servidor.",
     tut_ant: "Anterior",

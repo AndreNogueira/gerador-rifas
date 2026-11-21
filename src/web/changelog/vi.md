@@ -2,6 +2,12 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.85.0 — 2026-11-21
+
+### Đã sửa
+- **Trang 404 thật**: liên kết sai hiển thị trình tạo bị ẩn dưới trạng thái 404. Giờ đây trang «Không tìm thấy trang» thật, đã dịch, xuất hiện kèm liên kết quay lại.
+- **Biểu tượng dự phòng (favicon.ico)**: cho các công cụ cũ chỉ kiểm tra đường dẫn đó.
+
 ## 3.84.0 — 2026-11-21
 
 ### Mới

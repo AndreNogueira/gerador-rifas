@@ -2,6 +2,12 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.85.0 — 2026-11-21
+
+### Åtgärdat
+- **Riktig 404-sida**: en felaktig länk visade generatorn dold under 404-statusen. Nu visas en riktig, översatt sida "Sidan hittades inte" med en länk tillbaka.
+- **Reservikon (favicon.ico)**: för gamla verktyg som bara kollar den sökvägen.
+
 ## 3.84.0 — 2026-11-21
 
 ### Nytt

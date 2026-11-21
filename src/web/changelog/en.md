@@ -2,6 +2,12 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.85.0 — 2026-11-21
+
+### Fixed
+- **Real 404 page**: a wrong link silently showed the generator hidden under the 404 status. Now a real, translated “Page not found” page appears, with a link back.
+- **Fallback icon (favicon.ico)**: for old tools that only check that path.
+
 ## 3.84.0 — 2026-11-21
 
 ### New

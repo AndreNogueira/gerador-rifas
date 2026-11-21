@@ -464,4 +464,6 @@ T = {
     "web_etiquetas_total": "{n} nhãn trên {folhas} tờ A4, cắt theo đường kẻ.",
     "tut_f_etiquetas_t": "Nhãn nhận hàng",
     "tut_f_etiquetas_b": "Trả tiền ở một chỗ, nhận ở chỗ khác? Hãy làm một nhãn cho mỗi món trong bảng giá, có hình, tên và khu vực nhận (quầy bar, bếp…): in bao nhiêu bản tùy ý, 24 nhãn mỗi tờ A4 kèm đường cắt, gom theo khu vực để giao cho các đội. Một combo cho ra một nhãn cho mỗi món, mỗi nhãn ở khu vực của nó. {onde}",
+    "web_404_titulo": "Không tìm thấy trang",
+    "web_404_texto": "Trang này không tồn tại, hoặc liên kết bị sai.",
 }

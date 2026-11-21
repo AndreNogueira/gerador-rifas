@@ -4395,6 +4395,24 @@ CHAVES: dict[str, dict[str, str]] = {
         "ko": "라벨 {n}장, A4 {folhas}장 분량이며 안내선을 따라 자릅니다.",
         "hi": "{n} लेबल, {folhas} A4 शीट पर, गाइड रेखाओं पर काटने के लिए।",
     },
+    "web_404_titulo": {
+        "pt": "Página não encontrada", "en": "Page not found", "es": "Página no encontrada", "fr": "Page introuvable",
+        "de": "Seite nicht gefunden", "it": "Pagina non trovata", "nl": "Pagina niet gevonden", "pl": "Nie znaleziono strony",
+        "sv": "Sidan hittades inte", "cs": "Stránka nenalezena", "ro": "Pagina nu a fost găsită", "el": "Η σελίδα δεν βρέθηκε",
+        "ru": "Страница не найдена", "tr": "Sayfa bulunamadı", "zh": "找不到页面", "ja": "ページが見つかりません",
+        "ko": "페이지를 찾을 수 없습니다", "hi": "पेज नहीं मिला",
+    },
+    "web_404_texto": {
+        "pt": "Esta página não existe, ou a ligação está errada.", "en": "This page does not exist, or the link is wrong.",
+        "es": "Esta página no existe, o el enlace está equivocado.", "fr": "Cette page n'existe pas, ou le lien est erroné.",
+        "de": "Diese Seite gibt es nicht, oder der Link ist falsch.", "it": "Questa pagina non esiste, o il link è sbagliato.",
+        "nl": "Deze pagina bestaat niet, of de link klopt niet.", "pl": "Ta strona nie istnieje albo odnośnik jest błędny.",
+        "sv": "Den här sidan finns inte, eller så är länken fel.", "cs": "Tato stránka neexistuje, nebo je odkaz chybný.",
+        "ro": "Această pagină nu există, sau legătura este greșită.", "el": "Αυτή η σελίδα δεν υπάρχει, ή ο σύνδεσμος είναι λανθασμένος.",
+        "ru": "Этой страницы не существует, либо ссылка неверна.", "tr": "Bu sayfa yok, ya da bağlantı hatalı.",
+        "zh": "此页面不存在，或者链接有误。", "ja": "このページは存在しないか、リンクが間違っています。",
+        "ko": "이 페이지는 존재하지 않거나 링크가 잘못되었습니다.", "hi": "यह पेज मौजूद नहीं है, या लिंक गलत है।",
+    },
 }
 
 

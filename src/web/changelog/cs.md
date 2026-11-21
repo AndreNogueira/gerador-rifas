@@ -2,6 +2,12 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.85.0 — 2026-11-21
+
+### Opraveno
+- **Skutečná stránka 404**: špatný odkaz skrytě zobrazoval generátor pod stavem 404. Nyní se zobrazí skutečná přeložená stránka „Stránka nenalezena“ s odkazem zpět.
+- **Záložní ikona (favicon.ico)**: pro staré nástroje, které kontrolují jen tuto cestu.
+
 ## 3.84.0 — 2026-11-21
 
 ### Novinky

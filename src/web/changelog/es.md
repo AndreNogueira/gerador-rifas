@@ -2,6 +2,12 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.85.0 — 2026-11-21
+
+### Corregido
+- **Página 404 de verdad**: un enlace erróneo mostraba el generador escondido bajo el estado 404. Ahora aparece una página real de «Página no encontrada», traducida, con el enlace para volver.
+- **Icono de reserva (favicon.ico)**: para herramientas antiguas que solo miran esa ruta.
+
 ## 3.84.0 — 2026-11-21
 
 ### Novedades

@@ -146,6 +146,12 @@ CHAVES: dict[str, dict[str, str]] = {
         "id": "Semua yang berubah di Pembuat Undian, versi demi versi: fitur baru, peningkatan dan perbaikan.",
         "vi": "Mọi thay đổi của Trình tạo vé số, từng phiên bản: tính năng mới, cải tiến và sửa lỗi.",
     },
+    "d_404": {
+        "ca": "Aquesta pàgina no existeix, o l'enllaç és incorrecte. Torneu al Generador de Rifes.",
+        "uk": "Ця сторінка не існує, або посилання неправильне. Поверніться до Генератора лотерей.",
+        "id": "Halaman ini tidak ada, atau tautannya salah. Kembali ke Pembuat Undian.",
+        "vi": "Trang này không tồn tại, hoặc liên kết bị sai. Quay lại Trình tạo vé số.",
+    },
     "intro": {
         "ca": "Creeu rifes numerades en PDF a partir d'una plantilla de Canva: trieu els números, mireu la previsualització i baixeu PDF llestos per imprimir. És gratuït, no cal registre i funciona en 22 llengües.",
         "uk": "Створюйте пронумеровані лотерейні квитки в PDF із шаблону Canva: виберіть номери, перегляньте та завантажте PDF, готові до друку. Безкоштовно, без реєстрації, 22 мовами.",

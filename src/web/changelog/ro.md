@@ -2,6 +2,12 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.85.0 — 2026-11-21
+
+### Corectat
+- **Pagină 404 reală**: o legătură greșită arăta generatorul ascuns sub starea 404. Acum apare o pagină reală, tradusă, „Pagina nu a fost găsită”, cu legătură de revenire.
+- **Pictogramă de rezervă (favicon.ico)**: pentru instrumentele vechi care verifică doar acea cale.
+
 ## 3.84.0 — 2026-11-21
 
 ### Noutăți

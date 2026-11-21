@@ -2,6 +2,12 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.85.0 — 2026-11-21
+
+### Corrigé
+- **Vraie page 404** : un lien erroné affichait le générateur caché sous le statut 404. Une vraie page « Page introuvable » traduite apparaît désormais, avec un lien de retour.
+- **Icône de secours (favicon.ico)** : pour les anciens outils qui ne vérifient que ce chemin.
+
 ## 3.84.0 — 2026-11-21
 
 ### Nouveautés
