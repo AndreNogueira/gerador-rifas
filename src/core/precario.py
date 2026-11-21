@@ -11,6 +11,7 @@ Nada se guarda: os textos só entram no PDF.
 from __future__ import annotations
 
 import io
+import re
 from dataclasses import dataclass, field, replace
 from functools import lru_cache
 from pathlib import Path
@@ -35,9 +36,17 @@ ESCALA_MAX, ESCALA_MIN, PASSO_ESCALA, MAX_PAGINAS = 1.5, 0.55, 0.05, 5
 PASTA_ICONES = Path(__file__).resolve().parent / "icones_precario"
 
 
+_FONTES = "|".join(re.escape(f) for f in cat.FONTES_EXTRA)
+_ID_ICONE = re.compile(rf"(?:(?:{_FONTES}):)?[0-9a-f]{{4,6}}") if _FONTES else re.compile(r"[0-9a-f]{4,6}")
+
+
 def caminho_icone(id_icone: str) -> Path:
     """O PNG local de um ícone, pelo seu id: um código Noto Emoji sozinho ('1f382') ou `<fonte>:<código>` de outra
-    biblioteca ('fluent:1f382', numa subpasta: o ':' não é válido num nome de ficheiro do Windows)."""
+    biblioteca ('fluent:1f382', numa subpasta: o ':' não é válido num nome de ficheiro do Windows). Um id que não
+    bata certo com este formato (nunca deveria acontecer: tudo o que chega aqui já passou por `_EMOJI`/`_alternativas_extra`
+    ou por `validar`) devolve um caminho que nunca existe, em vez de arriscar escapar de `PASTA_ICONES`."""
+    if not _ID_ICONE.fullmatch(id_icone):
+        return PASTA_ICONES / "_id_invalido_nao_existe"
     if ":" in id_icone:
         fonte, hexa = id_icone.split(":", 1)
         return PASTA_ICONES / fonte / f"{hexa}.png"
