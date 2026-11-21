@@ -78,6 +78,14 @@ def test_video_e_servido_com_suporte_a_range(cliente):
     assert r.headers["content-range"].startswith("bytes 0-99/")
 
 
+def test_ajuda_e_videos_ficam_em_cache_um_dia_nunca_para_sempre(cliente):
+    # nome fixo (nao tem hash como /assets): pode ser substituido noutro deploy (captura nova, video regravado), por isso
+    # nunca "immutable" - so um dia, para poupar o pedido a quem volta a ver o tutorial no mesmo dia
+    for caminho in ("/videos/tutorial_pt.mp4", "/ajuda/digitos.png"):
+        cc = cliente.get(caminho).headers.get("cache-control", "")
+        assert cc == "public, max-age=86400", caminho
+
+
 def test_video_inexistente_nas_linguas_sem_ficheiro(cliente, monkeypatch):
     monkeypatch.setattr(tutorial, "ficheiro_video", lambda pasta, lingua: None)
     assert cliente.get("/api/tutorial", headers={"X-Lingua": "pt"}).json()["video"] == ""

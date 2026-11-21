@@ -59,6 +59,12 @@ def test_ficheiro_sem_versao_comprimida_vai_normal(cliente):
     assert "content-encoding" not in r.headers and r.text == "a{color:red}" and "vary" not in r.headers
 
 
+def test_ficheiro_fora_de_assets_fica_em_cache_um_dia_nunca_para_sempre(dist, cliente):
+    # nome fixo (sem hash), por isso nunca "immutable": pode ser substituido noutro deploy (p.ex. gerar_miniaturas_galeria.py)
+    (dist / "icone.svg").write_text("<svg></svg>", encoding="utf-8")
+    assert cliente.get("/icone.svg").headers["cache-control"] == "public, max-age=86400"
+
+
 def test_o_index_tambem_se_entrega_e_nao_fica_em_cache(cliente):
     r = cliente.get("/", headers={"Accept-Encoding": "identity"})
     assert r.status_code == 200 and r.headers["cache-control"] == "no-cache" and "<title>x</title>" in r.text
