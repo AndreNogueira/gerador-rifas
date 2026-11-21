@@ -343,7 +343,7 @@ T = {
     "tut_f_lista_t": "Llista de butlletes i full de control",
     "tut_f_lista_b": "Exporteu un fitxer CSV amb una butlleta per fila (s'obre a Excel o Calc, amb les columnes Nom, Contacte i Pagat buides) i un full de control en PDF per imprimir i marcar qui ha pagat. Tots dos fan servir l'interval, els prefixos i els números omesos de la vostra sol·licitud i no necessiten la plantilla. {onde}",
     "tut_f_marcas_t": "Marques de tall",
-    "tut_f_marcas_b": "Activeu les marques de tall i el programa dibuixa petites línies als marges del full, allargant cada línia de tall per ajudar-vos a retallar recte. Només valen per a plantilles amb una sola butlleta repetida al full i necessiten un marge d'almenys 3 mm. El taló (el número dues vegades a cada butlleta) i el sagnat ja funcionen sense fer res. {onde}",
+    "tut_f_marcas_b": "Activeu les marques de tall i el programa separa les butlletes entre si i dibuixa petites línies als marges del full i entre cada butlleta, allargant cada línia de tall per ajudar-vos a retallar recte. Només valen per a plantilles amb una sola butlleta repetida al full i necessiten un marge d'almenys 3 mm. El taló (el número dues vegades a cada butlleta) i el sagnat ja funcionen sense fer res. {onde}",
     "tut_f_galeria_t": "Galeria de plantilles",
     "tut_f_galeria_b": "Sense plantilla de Canva? Trieu un dels 25 dissenys (Bosque, Natal, Páscoa, Praia, Futebol, Cinema…), escriviu el títol, l'organització, de 3 a 10 premis i la data, mireu la previsualització i premeu «Fes servir aquesta plantilla»: la plantilla i les xifres ja són a punt i només us queda triar els números. La lletra només té l'alfabet llatí; les altres lletres mostren un avís. {onde}",
     "tut_f_marca_t": "La vostra marca: color i logotip",

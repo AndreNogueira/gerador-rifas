@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.86.0 — 2026-11-21
+
+### Förbättrat
+- **Mellanrum mellan lotterna och skärmärken mellan varje**: när skärmärken slås på blir utrymmet som förut bara gjorde marginalen större nu mellanrum mellan lotterna, och märkena (förut bara i arkets marginaler) visas nu även mellan varje lott.
+
 ## 3.85.0 — 2026-11-21
 
 ### Åtgärdat

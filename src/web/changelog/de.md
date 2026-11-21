@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.86.0 — 2026-11-21
+
+### Verbessert
+- **Abstand zwischen den Losen und Schnittmarken zwischen jedem Los**: beim Aktivieren der Schnittmarken wird der Spielraum, der vorher nur den Rand vergrößerte, jetzt zum Abstand zwischen den Losen, und die Marken (vorher nur an den Blatträndern) erscheinen jetzt auch zwischen jedem Los.
+
 ## 3.85.0 — 2026-11-21
 
 ### Behoben

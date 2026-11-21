@@ -343,7 +343,7 @@ T = {
     "tut_f_lista_t": "Danh sách vé và phiếu kiểm soát",
     "tut_f_lista_b": "Xuất tệp CSV với mỗi vé một dòng (mở được trong Excel hoặc Calc, với các cột Tên, Liên hệ và Đã thanh toán để trống) và phiếu kiểm soát PDF để in ra và đánh dấu ai đã trả tiền. Cả hai dùng khoảng số, tiền tố và các số bị bỏ qua trong yêu cầu của bạn và không cần mẫu. {onde}",
     "tut_f_marcas_t": "Dấu cắt",
-    "tut_f_marcas_b": "Bật dấu cắt và chương trình vẽ các đường ngắn ở lề tờ giấy, kéo dài từng đường cắt để giúp bạn cắt thẳng. Chỉ áp dụng cho mẫu có một vé bốc thăm lặp lại trên tờ giấy và cần lề ít nhất 3 mm. Cuống vé (số hai lần trên mỗi vé) và phần tràn lề (bleed) đã hoạt động mà không cần làm gì. {onde}",
+    "tut_f_marcas_b": "Bật dấu cắt và chương trình giãn cách các vé với nhau, vẽ các đường ngắn ở lề tờ giấy và giữa mỗi vé, kéo dài từng đường cắt để giúp bạn cắt thẳng. Chỉ áp dụng cho mẫu có một vé bốc thăm lặp lại trên tờ giấy và cần lề ít nhất 3 mm. Cuống vé (số hai lần trên mỗi vé) và phần tràn lề (bleed) đã hoạt động mà không cần làm gì. {onde}",
     "tut_f_galeria_t": "Thư viện mẫu",
     "tut_f_galeria_b": "Chưa có mẫu Canva? Chọn một trong 25 thiết kế (Bosque, Natal, Páscoa, Praia, Futebol, Cinema…), nhập tiêu đề, tổ chức, từ 3 đến 10 giải thưởng và ngày, xem trước rồi bấm “Dùng mẫu này”: mẫu và chữ số đã sẵn sàng, bạn chỉ cần chọn các số. Phông chỉ có bảng chữ cái Latin; các chữ khác sẽ hiện cảnh báo. {onde}",
     "tut_f_marca_t": "Thương hiệu của bạn: màu và logo",

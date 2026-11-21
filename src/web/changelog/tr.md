@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.86.0 — 2026-11-21
+
+### İyileştirildi
+- **Biletler arasında boşluk ve her biri arasında kesim işaretleri**: kesim işaretlerini açmak, önceden yalnızca kenar boşluğunu büyüten boşluğu artık biletler arasındaki boşluğa çeviriyor; işaretler de (önceden yalnızca sayfa kenarlarında) artık her bilet arasında da görünüyor.
+
 ## 3.85.0 — 2026-11-21
 
 ### Düzeltildi

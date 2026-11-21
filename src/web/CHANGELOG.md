@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.86.0 — 2026-11-21
+
+### Melhorado
+- **Espaço entre as rifas e marcas de corte entre cada uma**: ao ativar as marcas de corte (opções da folha), a folga que antes virava só margem extra passa a espaço entre cada rifa — a margem fica mesmo pequena, como pedida — e as marcas de corte (antes só nas margens da folha) aparecem agora também entre cada rifa, dos dois lados de cada corte.
+
 ## 3.85.0 — 2026-11-21
 
 ### Corrigido

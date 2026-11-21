@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.86.0 — 2026-11-21
+
+### Cải thiện
+- **Khoảng cách giữa các vé và dấu cắt giữa mỗi vé**: bật dấu cắt giờ đây biến khoảng trống trước kia chỉ làm lề to ra thành khoảng cách giữa các vé, và dấu cắt (trước kia chỉ ở lề tờ giấy) giờ cũng xuất hiện giữa mỗi vé.
+
 ## 3.85.0 — 2026-11-21
 
 ### Đã sửa

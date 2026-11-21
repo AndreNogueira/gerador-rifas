@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.86.0 — 2026-11-21
+
+### Improved
+- **Spacing between tickets and crop marks between each one**: turning on crop marks now turns the slack that used to just enlarge the margin into spacing between tickets, and the marks (before only in the sheet margins) now also appear between each ticket.
+
 ## 3.85.0 — 2026-11-21
 
 ### Fixed

@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.86.0 — 2026-11-21
+
+### Ulepszono
+- **Odstęp między losami i znaczniki cięcia między każdym z nich**: po włączeniu znaczników cięcia luz, który wcześniej tylko powiększał margines, zamienia się w odstęp między losami, a znaczniki (wcześniej tylko na marginesach arkusza) pojawiają się teraz też między każdym losem.
+
 ## 3.85.0 — 2026-11-21
 
 ### Naprawione

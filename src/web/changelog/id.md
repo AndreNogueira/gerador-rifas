@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.86.0 — 2026-11-21
+
+### Ditingkatkan
+- **Jarak antar-tiket dan tanda potong di antara setiap tiket**: mengaktifkan tanda potong kini mengubah ruang kosong yang dulu hanya memperbesar margin menjadi jarak antar-tiket, dan tandanya (dulu hanya di margin lembar) kini juga muncul di antara setiap tiket.
+
 ## 3.85.0 — 2026-11-21
 
 ### Diperbaiki

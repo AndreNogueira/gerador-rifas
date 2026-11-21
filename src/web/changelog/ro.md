@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.86.0 — 2026-11-21
+
+### Îmbunătățit
+- **Spațiu între bilete și semne de tăiere între fiecare**: activând semnele de tăiere, spațiul liber care înainte doar mărea marginea devine spațiu între bilete, iar semnele (înainte doar în marginile foii) apar acum și între fiecare bilet.
+
 ## 3.85.0 — 2026-11-21
 
 ### Corectat
