@@ -72,7 +72,7 @@ test.describe("o gerador, de ponta a ponta", () => {
     await expect(page.getByTestId("galeria")).toBeAttached();
     await page.getByTestId("galeria").locator("summary").click();
     await page.getByTestId("galeria-desenho").click();
-    await expect(page.getByRole("listbox").getByRole("option")).toHaveCount(24);
+    await expect(page.getByRole("listbox").getByRole("option")).toHaveCount(25);
     await page.getByRole("listbox").getByRole("option", { name: "Natal", exact: true }).click();
     await page.getByTestId("galeria-titulo").fill("Rifa de Natal");
     await expect(page.getByTestId("galeria-previa")).toBeVisible();
