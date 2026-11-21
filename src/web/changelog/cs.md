@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.87.0 — 2026-11-21
+
+### Vylepšeno
+- **Více obrázků na výběr v ceníku, z Fluent Emoji 3D od Microsoftu (licence MIT, bez nutnosti uvádět autora)**: všech 93 položek katalogu získalo, kromě dosavadních obrázků Noto Emoji, alternativu ve stylu 3D, kdykoli pro daný kód existuje — žádný dosavadní obrázek se přitom neztratil.
+
 ## 3.86.0 — 2026-11-21
 
 ### Vylepšeno

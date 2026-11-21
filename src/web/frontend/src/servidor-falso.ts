@@ -406,7 +406,12 @@ export class ServidorFalso {
             id: "bebidas",
             nome: "Bebidas",
             artigos: [
-              { id: "agua", nome: "Água", emoji: "1f4a7", icones: ["1f4a7", "1f6b0", "1f9ca"] },
+              {
+                id: "agua",
+                nome: "Água",
+                emoji: "1f4a7",
+                icones: ["1f4a7", "1f6b0", "1f9ca", "fluent:1f4a7"],
+              },
               { id: "sumo", nome: "Sumo", emoji: "1f9c3", icones: ["1f9c3", "1f34a"] },
             ],
           },

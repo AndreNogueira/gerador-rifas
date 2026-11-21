@@ -9,14 +9,18 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, replace
+from pathlib import Path
 
 from . import precario_dados as dados
 from . import ptbr
 
 LINGUAS = dados.LINGUAS + ("pt-br",)
 MAX_NOME = 48
-MAX_ICONES = 8                   # imagens à escolha por artigo (a de omissão e mais até 7; nem todo o artigo chega lá)
+MAX_ICONES = 8                   # imagens Noto Emoji à escolha por artigo (a de omissão e mais até 7; nem todo o artigo chega lá)
+MAX_ICONES_TOTAL = 16            # tecto com as alternativas de outras bibliotecas incluídas (ver _alternativas_extra)
 _EMOJI = re.compile(r"[0-9a-f]{4,6}")
+_PASTA_ICONES = Path(__file__).resolve().parent / "icones_precario"
+FONTES_EXTRA = ("fluent",)        # bibliotecas de ícones extra (além do Noto Emoji curado): cada uma numa subpasta própria
 
 
 @dataclass(frozen=True)
@@ -79,9 +83,15 @@ for _l in _linhas(dados.ICONES):
     if _l[0] not in ARTIGOS or len(_extra) > MAX_ICONES - 1 or not all(_EMOJI.fullmatch(e) for e in _extra) or ARTIGOS[_l[0]].emoji in _extra or len(set(_extra)) != len(_extra):
         raise ValueError(f"imagens inválidas: {_l[0]}")
     ARTIGOS[_l[0]] = replace(ARTIGOS[_l[0]], icones=(ARTIGOS[_l[0]].emoji, *_extra))
+def _alternativas_extra(codigos: tuple) -> tuple:
+    """Para cada código Noto Emoji que o artigo já tem, acrescenta "<fonte>:<código>" de cada biblioteca extra que
+    tenha essa mesma imagem vendida (`_PASTA_ICONES/<fonte>/<código>.png`): nunca troca nada, só junta mais à escolha."""
+    return tuple(f"{fonte}:{c}" for fonte in FONTES_EXTRA for c in codigos if (_PASTA_ICONES / fonte / f"{c}.png").is_file())
+
+
 for _id, _a in ARTIGOS.items():
-    if not _a.icones:
-        ARTIGOS[_id] = replace(_a, icones=(_a.emoji,))
+    _icones = _a.icones or (_a.emoji,)
+    ARTIGOS[_id] = replace(_a, icones=(_icones + _alternativas_extra(_icones))[:MAX_ICONES_TOTAL])
 
 OCASIOES: dict[str, Ocasiao] = {}
 for _l in _linhas(dados.OCASIOES):

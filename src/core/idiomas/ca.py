@@ -428,7 +428,7 @@ T = {
     "web_precario_fotos_dica": "Podeu posar la vostra foto a cada article (PNG o JPG). Les fotos queden només al vostre navegador i al PDF: no es desen al servidor ni a l'enllaç compartit.",
     "web_precario_icone": "Canvia la icona",
     "web_precario_icone_n": "Icona {n}",
-    "web_precario_icones_dica": "Premeu la imatge d'un article per triar una altra icona (fins a 8 per article).",
+    "web_precario_icones_dica": "Premeu la imatge d'un article per triar una altra icona (fins a 16 per article).",
     "web_precario_cores": "Colors",
     "web_precario_cor_principal": "Principal (títol i línies)",
     "web_precario_cor_destaque": "Destacat (adorns)",

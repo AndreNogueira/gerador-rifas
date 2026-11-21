@@ -145,11 +145,21 @@ def test_fotos_proprias_pelo_pdf_e_pela_previa_e_nada_fica_guardado(c):
 def test_as_imagens_alternativas_vem_no_catalogo_e_escolhem_se_no_pedido(c):
     artigos = {a["id"]: a for k in c.get("/api/precario/catalogo").json()["categorias"] for a in k["artigos"]}
     icones = artigos["agua"]["icones"]
-    assert len(icones) == 6 and icones[0] == artigos["agua"]["emoji"]
+    assert len(icones) >= 6 and icones[0] == artigos["agua"]["emoji"]
     assert c.post("/api/precario/pdf", json={"linhas": [{"artigo": "agua", "preco": "1", "emoji": icones[3]}]}).status_code == 200
     assert c.post("/api/precario/previa.png", json={"linhas": [{"artigo": "agua", "emoji": icones[1]}]}).status_code == 200
     r = c.post("/api/precario/pdf", json={"linhas": [{"artigo": "agua", "emoji": "1f370"}]}, headers={"X-Lingua": "en"})
     assert r.status_code == 422 and r.json()["tipo"] == "aviso"
+
+
+def test_uma_imagem_de_outra_biblioteca_tambem_funciona_pelo_pdf_e_pela_previa(c):
+    """Um ícone 'fluent:<código>' (automático, de outra biblioteca além do Noto) é só mais uma alternativa: PDF e pré-visualização têm de o aceitar na mesma."""
+    artigos = {a["id"]: a for k in c.get("/api/precario/catalogo").json()["categorias"] for a in k["artigos"]}
+    icones = artigos["agua"]["icones"]
+    fluent = next((i for i in icones if i.startswith("fluent:")), None)
+    assert fluent, "nenhuma alternativa Fluent em 'agua': corre scripts/gerar_icones_precario.py"
+    assert c.post("/api/precario/pdf", json={"linhas": [{"artigo": "agua", "preco": "1", "emoji": fluent}]}).status_code == 200
+    assert c.post("/api/precario/previa.png", json={"linhas": [{"artigo": "agua", "emoji": fluent}]}).status_code == 200
 
 
 def test_cores_e_logotipo_pelo_pdf_e_pela_previa_e_o_catalogo_traz_as_cores_dos_desenhos(c):

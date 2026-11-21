@@ -300,6 +300,14 @@ describe("as imagens à escolha de cada artigo", () => {
     expect(screen.queryByTestId("precario-icone-agua-2")).not.toBeInTheDocument();
   });
 
+  it('uma imagem de outra biblioteca ("fluent:<código>") vem de uma subpasta própria', async () => {
+    abrir();
+    await userEvent.click(await screen.findByTestId("precario-icone-agua"));
+    const botao = screen.getByTestId("precario-icone-agua-4"); // a 4.ª (fluent:1f4a7)
+    const img = botao.querySelector("img");
+    expect(img).toHaveAttribute("src", "/precario/fluent/1f4a7.webp");
+  });
+
   it("um rascunho com uma imagem que o catálogo não oferece volta à de omissão; uma oferecida fica", () => {
     const linha = (emoji: string) => ({
       chave: "agua",
