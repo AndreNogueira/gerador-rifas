@@ -171,7 +171,7 @@ class Galeria(Janela):
         esq = ctk.CTkScrollableFrame(self, fg_color="transparent", width=340)          # com 10 premios a coluna nao cabe no ecra: rola
         esq.grid(row=0, column=0, sticky="ns", padx=(14, 0), pady=12)
         self.etiqueta(esq, t("web_galeria"), wraplength=330).pack(fill="x", pady=(0, 6))
-        self.seg = ctk.CTkOptionMenu(                       # 24 desenhos: uma lista suspensa (um botão segmentado não os comporta)
+        self.seg = ctk.CTkOptionMenu(                       # 25 desenhos: uma lista suspensa (um botão segmentado não os comporta)
             esq, values=[d.nome for d in galeria.DESENHOS], corner_radius=8, height=34, fg_color=C["campo"], button_color=C["borda"],
             button_hover_color=C["acento_suave"], text_color=C["texto"], dropdown_fg_color=C["cartao"], dropdown_text_color=C["texto"],
             dropdown_hover_color=C["acento_suave"], font=ctk.CTkFont(FONTE, 13), command=self._desenho)
@@ -765,7 +765,7 @@ class Precario(Janela):
         self.v_logo_lugar = tk.StringVar()
         self._logo_lugares = {l: t(f"web_precario_logo_{l}") for l in precario.LOGO_LUGARES}
         self.v_logo_lugar.set(self._logo_lugares["esquerda"])
-        self._icones_abertos = ""                            # a chave da linha cujas imagens (até 5) estão à vista
+        self._icones_abertos = ""                            # a chave da linha cujas imagens (até 8) estão à vista
         self._imagens: dict[tuple[str, int], ctk.CTkImage] = {}
         self.fotos: dict[str, bytes] = {}                    # as fotos próprias (já reduzidas): só vivem nesta janela, nunca no ficheiro .precario
         self.v_preco2: dict[str, tk.StringVar] = {}           # o segundo preço (só com «dois tamanhos»)
@@ -1105,7 +1105,7 @@ class Precario(Janela):
             linha = ctk.CTkFrame(caixa, fg_color="transparent")
             linha.pack(fill="x")
             atual = ln["emoji"] or (self.artigos[ln["artigo"]].emoji if ln["artigo"] else "")
-            if atual and ln["artigo"] and len(self.artigos[ln["artigo"]].icones) > 1:         # a imagem do artigo: um botão que abre as outras (até 5)
+            if atual and ln["artigo"] and len(self.artigos[ln["artigo"]].icones) > 1:         # a imagem do artigo: um botão que abre as outras (até 8)
                 ctk.CTkButton(linha, text="", image=self._imagem(atual, 22), width=30, height=28, corner_radius=8, fg_color=C["acento_suave"] if self._icones_abertos == ln["chave"] else "transparent",
                               hover_color=C["borda"], command=lambda c=ln["chave"]: self._escolher_icone(c)).pack(side="left", padx=(0, 4))
             ctk.CTkLabel(linha, text=self._nome_da_linha(ln), anchor="w", text_color=C["texto"], font=ctk.CTkFont(FONTE, 12), width=156).pack(side="left")

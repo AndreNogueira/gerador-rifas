@@ -2,6 +2,16 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.84.0 — 2026-11-21
+
+### Mới
+- **Mẫu "Sinh nhật" trong thư viện mẫu và bảng giá**: bóng bay, dây cờ và confetti màu hồng, ngọc lam và vàng — mẫu thứ 25 góp mặt cùng các mẫu hiện có, để tiệc sinh nhật có phong cách riêng trên vé số, bảng giá và phiếu.
+
+## 3.83.0 — 2026-11-21
+
+### Cải thiện
+- **Thêm nhiều hình để chọn cho mỗi món trong bảng giá**: mỗi món trong danh mục giờ có thể có tới 8 hình (trước là 5) — cả 93 món đều có thêm ít nhất một lựa chọn mới phù hợp (nước có thêm sóng biển, cà phê có thêm mate, bánh có thêm giấy confetti…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Đã sửa

@@ -4,6 +4,16 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.84.0 — 2026-11-21
+
+### Novo
+- **Desenho «Aniversário» na galeria e no preçário**: balões, bandeirinhas e confetis em rosa, turquesa e amarelo — o 25.º desenho a juntar-se aos já existentes, para a festa de aniversário ter o seu próprio estilo nas rifas, no preçário e nos vales.
+
+## 3.83.0 — 2026-11-21
+
+### Melhorado
+- **Mais imagens à escolha por artigo do preçário**: cada artigo do catálogo pode agora ter até 8 imagens (antes 5) — todos os 93 ganharam pelo menos uma alternativa nova, escolhida a condizer (a água ganhou uma onda, o café um mate, o bolo confetis…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Corrigido

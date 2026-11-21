@@ -2,6 +2,16 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.84.0 — 2026-11-21
+
+### Novità
+- **Disegno «Compleanno» nella galleria e nel listino**: palloncini, bandierine e coriandoli in rosa, turchese e giallo — il 25° disegno che si aggiunge a quelli già esistenti, perché la festa di compleanno abbia il suo stile su biglietti, listino e gettoni.
+
+## 3.83.0 — 2026-11-21
+
+### Migliorato
+- **Più immagini a scelta per articolo del listino**: ogni articolo del catalogo può avere ora fino a 8 immagini (prima 5) — tutti i 93 hanno ricevuto almeno un'alternativa nuova, scelta in tema (l'acqua un'onda, il caffè un mate, la torta coriandoli…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Risolto

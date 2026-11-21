@@ -2,6 +2,16 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.84.0 — 2026-11-21
+
+### Nouveautés
+- **Dessin « Anniversaire » dans la galerie et la liste de prix** : ballons, fanions et confettis en rose, turquoise et jaune — le 25e dessin qui vient s'ajouter aux précédents, pour que la fête d'anniversaire ait son propre style sur les tickets, la liste de prix et les jetons.
+
+## 3.83.0 — 2026-11-21
+
+### Amélioré
+- **Plus d'images au choix par article de la liste de prix** : chaque article du catalogue peut désormais avoir jusqu'à 8 images (au lieu de 5) — les 93 ont gagné au moins une nouvelle alternative, choisie en rapport (l'eau a gagné une vague, le café un maté, le gâteau des confettis…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Corrigé

@@ -10,7 +10,7 @@ export interface OpcaoDesenho {
 
 const LARGURA_LISTA = 360; // px
 
-/** A miniatura estática de um desenho (`scripts/gerar_miniaturas_galeria.py`): o seletor mostra as 24 de uma vez sem pedir nada ao motor. */
+/** A miniatura estática de um desenho (`scripts/gerar_miniaturas_galeria.py`): o seletor mostra-as todas de uma vez sem pedir nada ao motor. */
 export const miniaturaDoDesenho = (id: string) => `/galeria/${id}.webp`;
 
 /**

@@ -2,6 +2,16 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.84.0 — 2026-11-21
+
+### Yeni
+- **Galeride ve fiyat listesinde «Doğum Günü» tasarımı**: pembe, turkuaz ve sarı renkte balonlar, flamalar ve konfetiler — mevcutlara katılan 25. tasarım, böylece doğum günü partisi biletlerde, fiyat listesinde ve jetonlarda kendi stiline kavuşuyor.
+
+## 3.83.0 — 2026-11-21
+
+### İyileştirildi
+- **Fiyat listesi ürünü için daha fazla resim seçeneği**: kataloğun her ürünü artık en fazla 8 resme sahip olabilir (önceden 5) — 93 ürünün hepsi uygun yeni bir alternatif kazandı (su bir dalga, kahve bir mate, pasta konfeti…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Düzeltildi

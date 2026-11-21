@@ -238,9 +238,9 @@ def test_python_m_core_corre_o_autoteste(tmp_path):
     assert r.returncode == 0, r.stderr
     linhas = r.stdout.strip().splitlines()
     assert linhas[0] == f"traducoes ({len(i18n.LINGUAS)} linguas): ok" and linhas[-1] == "RESULTADO: OK"
-    assert len(linhas) == 10 + 24         # traducoes + RESULTADO + 8 exemplos + os 24 desenhos da galeria
-    assert [l.split(":")[0] for l in linhas[-25:-21]] == ["galeria bosque", "galeria quermesse", "galeria natal", "galeria gala"]
-    assert [l.split(":")[0] for l in linhas[-25:-1]] == [f"galeria {d.id}" for d in galeria.DESENHOS]
+    assert len(linhas) == 10 + 25         # traducoes + RESULTADO + 8 exemplos + os 25 desenhos da galeria
+    assert [l.split(":")[0] for l in linhas[-26:-22]] == ["galeria bosque", "galeria quermesse", "galeria natal", "galeria gala"]
+    assert [l.split(":")[0] for l in linhas[-26:-1]] == [f"galeria {d.id}" for d in galeria.DESENHOS]
 
 
 def test_python_m_core_sem_argumentos():

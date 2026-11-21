@@ -2,6 +2,16 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.84.0 — 2026-11-21
+
+### Baru
+- **Desain "Ulang Tahun" di galeri dan daftar harga**: balon, bendera hias, dan konfeti berwarna merah muda, pirus, dan kuning — desain ke-25 yang bergabung dengan yang sudah ada, agar pesta ulang tahun punya gaya sendiri pada tiket, daftar harga, dan token.
+
+## 3.83.0 — 2026-11-21
+
+### Ditingkatkan
+- **Lebih banyak pilihan gambar untuk setiap barang di daftar harga**: setiap barang di katalog kini bisa punya hingga 8 gambar (sebelumnya 5) — semua 93 barang mendapat setidaknya satu alternatif baru yang sesuai (air mendapat ombak, kopi mendapat mate, kue mendapat confetti…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Diperbaiki

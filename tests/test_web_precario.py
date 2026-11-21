@@ -37,7 +37,7 @@ def test_o_catalogo_vem_na_lingua_do_pedido_com_desenhos_moedas_e_a_sugestao_do_
     assert r.status_code == 200 and "X-Lingua" in r.headers["vary"] and "max-age" in r.headers["cache-control"]
     ids = {a["id"] for cat in d["categorias"] for a in cat["artigos"]}
     assert "coxinha" in ids and "bifana" not in ids and d["sugerida"] == "festa_junina" and d["pais"] == "BR" and d["moeda"] == "BRL"
-    assert len(d["desenhos"]) == 25 and d["desenhos"][-1] == {"id": "quadro", "nome": "Quadro negro", "cores": ["#6b4726", "#fcdb61", "#1a3029"]} and {"codigo": "BRL", "simbolo": "R$", "decimais": 2} in d["moedas"] and d["paises"]["PT"] == "EUR" and d["limites"]["linhas"] == 80
+    assert len(d["desenhos"]) == 26 and d["desenhos"][-1] == {"id": "quadro", "nome": "Quadro negro", "cores": ["#6b4726", "#fcdb61", "#1a3029"]} and {"codigo": "BRL", "simbolo": "R$", "decimais": 2} in d["moedas"] and d["paises"]["PT"] == "EUR" and d["limites"]["linhas"] == 80
     assert d["formatos"] == ["A5", "A4", "A3", "A6x4"] and all(a["emoji"] for cat in d["categorias"] for a in cat["artigos"])
     pt = c.get("/api/precario/catalogo", headers={"X-Lingua": "pt"}).json()
     assert "bifana" in {a["id"] for cat in pt["categorias"] for a in cat["artigos"]} and pt["moeda"] == "EUR" and pt["sugerida"] == ""
@@ -145,7 +145,7 @@ def test_fotos_proprias_pelo_pdf_e_pela_previa_e_nada_fica_guardado(c):
 def test_as_imagens_alternativas_vem_no_catalogo_e_escolhem_se_no_pedido(c):
     artigos = {a["id"]: a for k in c.get("/api/precario/catalogo").json()["categorias"] for a in k["artigos"]}
     icones = artigos["agua"]["icones"]
-    assert len(icones) == 5 and icones[0] == artigos["agua"]["emoji"]
+    assert len(icones) == 6 and icones[0] == artigos["agua"]["emoji"]
     assert c.post("/api/precario/pdf", json={"linhas": [{"artigo": "agua", "preco": "1", "emoji": icones[3]}]}).status_code == 200
     assert c.post("/api/precario/previa.png", json={"linhas": [{"artigo": "agua", "emoji": icones[1]}]}).status_code == 200
     r = c.post("/api/precario/pdf", json={"linhas": [{"artigo": "agua", "emoji": "1f370"}]}, headers={"X-Lingua": "en"})

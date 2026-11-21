@@ -324,9 +324,9 @@ def test_ha_um_maximo_de_fotos():
 # ------------------------------------------------------------------ imagens alternativas dos artigos
 def test_um_artigo_aceita_as_suas_imagens_alternativas_e_o_pdf_muda():
     alternativas = cat.ARTIGOS["agua"].icones
-    assert len(alternativas) == 5
+    assert len(alternativas) == 6
     pdfs = {precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", preco=1000, emoji=e),))) for e in ("", *alternativas[1:])}
-    assert len(pdfs) == 5                                                  # a de omissão e as 4 outras desenham-se diferentes
+    assert len(pdfs) == 6                                                  # a de omissão e as 5 outras desenham-se diferentes
     assert precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", preco=1000, emoji=alternativas[0]),))) == precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", preco=1000),)))
 
 

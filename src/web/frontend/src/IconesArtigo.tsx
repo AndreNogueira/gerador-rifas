@@ -16,7 +16,7 @@ export function Miniatura({ emoji, className = "" }: { emoji: string; className?
   );
 }
 
-/** As imagens que o catálogo oferece a um artigo (até 5): a pessoa escolhe a que mais gosta; a de omissão é a primeira. */
+/** As imagens que o catálogo oferece a um artigo (até 8): a pessoa escolhe a que mais gosta; a de omissão é a primeira. */
 export function IconesArtigo({
   chave,
   nome,

@@ -2,6 +2,16 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.84.0 — 2026-11-21
+
+### New
+- **“Birthday” design in the gallery and the price list**: balloons, bunting and confetti in pink, teal and yellow — the 25th design joining the existing ones, so a birthday party gets its own look on the tickets, the price list and the tokens.
+
+## 3.83.0 — 2026-11-21
+
+### Improved
+- **More icon choices per price-list item**: every catalog item can now have up to 8 pictures to choose from (was 5) — all 93 items gained at least one new alternative, picked to fit (water got a wave, coffee a mate drink, cake some confetti…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Fixed

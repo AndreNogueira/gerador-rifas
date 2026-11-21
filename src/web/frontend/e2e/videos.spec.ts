@@ -249,7 +249,7 @@ const CENAS: Cena[] = [
       );
       await clicar(page, page.getByTestId("galeria").locator("summary"));
       await clicar(page, page.getByTestId("galeria-desenho"));
-      await legenda(page, T("Escolha um dos 24 desenhos", "Pick one of the 24 designs"), 2200);
+      await legenda(page, T("Escolha um dos 25 desenhos", "Pick one of the 25 designs"), 2200);
       await clicarNoPainel(
         page,
         page.getByRole("listbox").getByRole("option", { name: "Natal", exact: true }),

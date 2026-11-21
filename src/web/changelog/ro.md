@@ -2,6 +2,16 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.84.0 — 2026-11-21
+
+### Noutăți
+- **Desenul „Aniversare” în galerie și în lista de prețuri**: baloane, ghirlande și confetti în roz, turcoaz și galben — al 25-lea desen care se alătură celor existente, ca o petrecere de aniversare să aibă propriul stil pe bilete, lista de prețuri și jetoane.
+
+## 3.83.0 — 2026-11-21
+
+### Îmbunătățit
+- **Mai multe imagini la alegere pentru un articol din lista de prețuri**: fiecare articol din catalog poate avea acum până la 8 imagini (înainte 5) — toate cele 93 au primit cel puțin o alternativă nouă, aleasă pe potriva lor (apa un val, cafeaua un mate, prăjitura confetti…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Corectat
