@@ -281,7 +281,7 @@ describe("fotos próprias", () => {
 });
 
 describe("as imagens à escolha de cada artigo", () => {
-  it("a miniatura abre as imagens (até 5), a escolhida vai no pedido e a de omissão volta ao vazio", async () => {
+  it("a miniatura abre as imagens (até 8), a escolhida vai no pedido e a de omissão volta ao vazio", async () => {
     abrir();
     await userEvent.click(await screen.findByTestId("precario-icone-agua"));
     expect(screen.getByTestId("precario-icone-agua-1")).toHaveAttribute("aria-pressed", "true");

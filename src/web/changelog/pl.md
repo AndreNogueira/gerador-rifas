@@ -2,6 +2,16 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.84.0 — 2026-11-21
+
+### Nowości
+- **Wzór „Urodziny” w galerii i w cenniku**: balony, girlandy flagowe i konfetti w różu, turkusie i żółci — 25. wzór dołączający do istniejących, żeby urodziny miały swój własny styl na losach, w cenniku i na żetonach.
+
+## 3.83.0 — 2026-11-21
+
+### Ulepszono
+- **Więcej obrazków do wyboru dla pozycji cennika**: każda pozycja katalogu może mieć teraz do 8 obrazków (wcześniej 5) — wszystkie 93 zyskały co najmniej jedną nową, dopasowaną alternatywę (woda falę, kawa mate, tort konfetti…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Naprawione

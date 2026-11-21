@@ -2,6 +2,16 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.84.0 — 2026-11-21
+
+### Nieuw
+- **Ontwerp «Verjaardag» in de galerij en de prijslijst**: ballonnen, vlaggenlijnen en confetti in roze, turkoois en geel — het 25e ontwerp naast de bestaande, zodat een verjaardagsfeest zijn eigen stijl krijgt op de loten, de prijslijst en de munten.
+
+## 3.83.0 — 2026-11-21
+
+### Verbeterd
+- **Meer afbeeldingen om uit te kiezen per artikel op de prijslijst**: elk catalogusartikel kan nu tot 8 afbeeldingen hebben (was 5) — alle 93 kregen minstens één nieuw, passend alternatief (water een golf, koffie een mate, taart confetti…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Opgelost

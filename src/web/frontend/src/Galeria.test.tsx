@@ -72,7 +72,7 @@ describe("galeria de templates (M4)", () => {
     expect(await screen.findByTestId("papel")).toBeInTheDocument(); // uma rifa: aparece o painel da folha
   });
 
-  it("o desenho escolhe-se numa caixa de uma linha, com um mini desenho em cada uma das 24 opções", async () => {
+  it("o desenho escolhe-se numa caixa de uma linha, com um mini desenho em cada opção", async () => {
     abrir();
     await userEvent.click((await screen.findByTestId("galeria")).querySelector("summary") as Element);
     const botao = t("galeria-desenho");

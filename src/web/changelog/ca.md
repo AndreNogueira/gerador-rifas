@@ -2,6 +2,16 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.84.0 — 2026-11-21
+
+### Novetats
+- **Disseny «Aniversari» a la galeria i al preçari**: globus, banderetes i confeti en rosa, turquesa i groc — el 25è disseny que s'afegeix als existents, perquè la festa d'aniversari tingui el seu propi estil a les rifes, al preçari i als vals.
+
+## 3.83.0 — 2026-11-21
+
+### Millores
+- **Més imatges a triar per article de la llista de preus**: cada article del catàleg pot tenir ara fins a 8 imatges (abans 5) — els 93 van guanyar almenys una alternativa nova, triada a joc (l'aigua una onada, el cafè un mate, el pastís confeti…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Corregit

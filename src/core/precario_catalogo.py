@@ -15,7 +15,7 @@ from . import ptbr
 
 LINGUAS = dados.LINGUAS + ("pt-br",)
 MAX_NOME = 48
-MAX_ICONES = 5                   # imagens à escolha por artigo (a de omissão e mais 4)
+MAX_ICONES = 8                   # imagens à escolha por artigo (a de omissão e mais até 7; nem todo o artigo chega lá)
 _EMOJI = re.compile(r"[0-9a-f]{4,6}")
 
 

@@ -2,6 +2,16 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.84.0 — 2026-11-21
+
+### Nytt
+- **Design «Födelsedag» i galleriet och i prislistan**: ballonger, vimplar och konfetti i rosa, turkos och gult — den 25:e designen som sällar sig till de befintliga, så att ett födelsedagskalas får sin egen stil på lotterna, prislistan och polletterna.
+
+## 3.83.0 — 2026-11-21
+
+### Förbättrat
+- **Fler bilder att välja mellan per artikel i prislistan**: varje artikel i katalogen kan nu ha upp till 8 bilder (tidigare 5) — alla 93 fick minst ett nytt, passande alternativ (vatten en våg, kaffe en mate, tårta konfetti…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Åtgärdat

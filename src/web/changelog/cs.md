@@ -2,6 +2,16 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.84.0 — 2026-11-21
+
+### Novinky
+- **Motiv „Narozeniny“ v galerii a v ceníku**: balónky, girlandy a konfety v růžové, tyrkysové a žluté — 25. motiv, který se přidává k těm stávajícím, aby narozeninová oslava měla svůj vlastní styl na losech, v ceníku i na žetonech.
+
+## 3.83.0 — 2026-11-21
+
+### Vylepšeno
+- **Více obrázků na výběr pro položku ceníku**: každá položka katalogu může mít nyní až 8 obrázků (dříve 5) — všech 93 získalo alespoň jednu novou, vhodnou alternativu (voda vlnu, káva maté, dort konfety…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Opraveno

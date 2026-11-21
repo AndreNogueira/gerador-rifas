@@ -39,6 +39,7 @@ export const DESENHOS = [
   { id: "primavera", nome: "Primavera" },
   { id: "inverno", nome: "Inverno" },
   { id: "cinema", nome: "Cinema" },
+  { id: "aniversario", nome: "Aniversário" },
 ] as const;
 
 /** Quantos prémios a pessoa pode escolher (`core/galeria.py`: `MIN_PREMIOS`, `MAX_PREMIOS`); a rifa passa a duas colunas a partir de 6. */

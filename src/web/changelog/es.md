@@ -2,6 +2,16 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.84.0 — 2026-11-21
+
+### Novedades
+- **Diseño «Cumpleaños» en la galería y en el preçario**: globos, banderines y confeti en rosa, turquesa y amarillo — el 25.º diseño que se suma a los ya existentes, para que la fiesta de cumpleaños tenga su propio estilo en las rifas, el preçario y los vales.
+
+## 3.83.0 — 2026-11-21
+
+### Mejorado
+- **Más imágenes a elegir por artículo del preçario**: cada artículo del catálogo puede tener ahora hasta 8 imágenes (antes 5) — los 93 ganaron al menos una alternativa nueva, elegida a juego (el agua ganó una ola, el café un mate, la tarta confeti…).
+
 ## 3.82.0 — 2026-11-20
 
 ### Corregido

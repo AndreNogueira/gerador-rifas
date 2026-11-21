@@ -523,5 +523,13 @@ def cinema(c, d, x, yb, w, h, bx):
     _filete(c, a, b, y0 + 4, d.destaque, 1.4)
 
 
+def aniversario(c, d, x, yb, w, h, bx):
+    _balao(c, bx + 18, yb + h - 33, d)
+    x0, x1, y = _topo(x, yb, w, h)
+    _bandeirinhas(c, x0, x1, y + 6, 6, (d.destaque, d.principal, AMARELO), 12)
+    a, b, y0 = _base(x, yb, w, h)
+    _pontos(c, a, b, y0 + 3, 2, (d.principal, d.destaque, AMARELO), 10)
+
+
 MOTIVOS = {f.__name__: f for f in (pascoa, carnaval, santos, coracao, praia, halloween, magusto, futebol, escola, festival, solidaria, bombeiros,
-                                   retro, minimal, vindima, arraial, tesouro, primavera, inverno, cinema)}
+                                   retro, minimal, vindima, arraial, tesouro, primavera, inverno, cinema, aniversario)}
