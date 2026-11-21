@@ -352,9 +352,13 @@ ADMIN = Pagina("/admin", "", lambda lg: "<h1>Painel</h1>", indexavel=False, no_m
                titulo_fixo=f"Painel | {NOME}", descricao_fixa="Painel de administração.")
 
 
+def _corpo_404(lg: str) -> str:
+    return f"<h1>{html.escape(i18n.traduzir('web_404_titulo', lg))}</h1><p>{html.escape(i18n.traduzir('web_404_texto', lg))}</p>{_voltar(lg)}"
+
+
 def pagina_nao_encontrada() -> Pagina:
-    return Pagina("/404", "", lambda lg: f'<h1>Página não encontrada</h1><p><a href="/">Ir para o {NOME}</a></p>', indexavel=False, no_mapa=False,
-                  titulo_fixo=f"Página não encontrada | {NOME}", descricao_fixa="Esta página não existe.")
+    """A página de 404 a sério, traduzida nas 23 línguas (como as outras): não é a única pt-only (essa é o painel)."""
+    return Pagina("/404", "d_404", _corpo_404, lambda lg: i18n.traduzir("web_404_titulo", lg), indexavel=False, no_mapa=False)
 
 
 def robots(base: str) -> str:

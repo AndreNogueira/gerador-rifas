@@ -2,6 +2,12 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.85.0 — 2026-11-21
+
+### Corregit
+- **Pàgina 404 de debò**: un enllaç erroni mostrava el generador amagat sota el 404. Ara apareix una pàgina real de «Pàgina no trobada», traduïda, amb l'enllaç per tornar.
+- **Icona de reserva (favicon.ico)**: per a eines antigues que només miren aquesta ruta.
+
 ## 3.84.0 — 2026-11-21
 
 ### Novetats

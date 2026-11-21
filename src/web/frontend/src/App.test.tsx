@@ -372,6 +372,17 @@ describe("páginas", () => {
     window.history.pushState(null, "", "/");
   });
 
+  it("uma rota desconhecida mostra um 404 a sério, nunca o gerador escondido", async () => {
+    window.history.pushState(null, "", "/isto-nao-existe");
+    abrir();
+    await screen.findByTestId("pagina-404");
+    expect(screen.queryByTestId("nome")).not.toBeInTheDocument(); // o campo do gerador nao esta la
+    expect(document.title).toBe("Página não encontrada | Gerador de Rifas");
+    await userEvent.click(within(document.body).getByRole("link", { name: /Voltar/ }));
+    await waitFor(() => expect(window.location.pathname).toBe("/"));
+    window.history.pushState(null, "", "/");
+  });
+
   it("navega entre o ecrã principal e as outras páginas sem perder o que está escrito", async () => {
     window.history.pushState(null, "", "/");
     abrir();

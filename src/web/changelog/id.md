@@ -2,6 +2,12 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.85.0 — 2026-11-21
+
+### Diperbaiki
+- **Halaman 404 sungguhan**: tautan yang salah menampilkan generator tersembunyi di balik status 404. Sekarang halaman «Halaman tidak ditemukan» yang diterjemahkan benar-benar muncul, dengan tautan untuk kembali.
+- **Ikon cadangan (favicon.ico)**: untuk alat lama yang hanya memeriksa jalur itu.
+
 ## 3.84.0 — 2026-11-21
 
 ### Baru

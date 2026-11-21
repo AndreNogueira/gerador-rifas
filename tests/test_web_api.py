@@ -68,7 +68,7 @@ def test_lingua_por_defeito(cliente, cabecalho, esperado):
 
 def test_textos_de_cada_lingua_tem_as_mesmas_chaves_que_o_portugues(cliente):
     pt = cliente.get("/api/textos/pt").json()
-    assert pt["lingua"] == "pt" and len(pt["textos"]) == 459 and pt["textos"]["app_nome"] == "Gerador de Rifas"
+    assert pt["lingua"] == "pt" and len(pt["textos"]) == 461 and pt["textos"]["app_nome"] == "Gerador de Rifas"
     for lg in i18n.LINGUAS:
         d = cliente.get(f"/api/textos/{lg}").json()
         assert d["lingua"] == lg and d["textos"].keys() == pt["textos"].keys(), lg
@@ -104,6 +104,19 @@ def test_o_frontend_so_usa_chaves_que_existem_em_todas_as_linguas():
     assert {"app_nome", "m_idioma", "c1_titulo", "c4_titulo", "previa", "gerar"} <= usadas
     for lg, textos in i18n.TEXTOS.items():
         assert not usadas - textos.keys(), (lg, usadas - textos.keys())
+
+
+def test_toda_a_rota_que_o_servidor_serve_tem_pagina_no_react():
+    """Cada rota de `seo.ROTAS`/`seo.SEM_INDICE` (200 a serio) tem de aparecer em PATHS_CONHECIDOS ou GUIAS no App.tsx/Guia.tsx:
+    senao o React mostra o NaoEncontrada por cima de uma pagina que o servidor serve bem (ver App.tsx: PATHS_CONHECIDOS)."""
+    from web import seo
+    rotas_servidor = set(seo.ROTAS) | set(seo.SEM_INDICE) | {"/admin"}
+    app_tsx = (FRONTEND_SRC / "App.tsx").read_text(encoding="utf-8")
+    paths_conhecidos = set(re.findall(r'"(/[a-z0-9-]*)"', re.search(r"PATHS_CONHECIDOS = \[(.*?)\]", app_tsx, re.S).group(1)))
+    guia_tsx = (FRONTEND_SRC / "Guia.tsx").read_text(encoding="utf-8")
+    guias_react = set(re.findall(r'"(/[a-z0-9-]+)":', re.search(r"GUIAS: Record<string, string> = \{(.*?)\}", guia_tsx, re.S).group(1)))
+    conhecidas_react = paths_conhecidos | guias_react | {"/"}
+    assert rotas_servidor == conhecidas_react, rotas_servidor ^ conhecidas_react
 
 
 # ------------------------------------------------------------------ API desconhecida

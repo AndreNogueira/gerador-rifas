@@ -2,6 +2,12 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.85.0 — 2026-11-21
+
+### Naprawione
+- **Prawdziwa strona 404**: błędny odnośnik pokazywał generator skryty pod stanem 404. Teraz pojawia się prawdziwa, przetłumaczona strona „Nie znaleziono strony” z odnośnikiem powrotu.
+- **Ikona zapasowa (favicon.ico)**: dla starych narzędzi sprawdzających tylko tę ścieżkę.
+
 ## 3.84.0 — 2026-11-21
 
 ### Nowości

@@ -2,6 +2,12 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.85.0 — 2026-11-21
+
+### Opgelost
+- **Echte 404-pagina**: een verkeerde link toonde de generator verborgen onder de 404-status. Nu verschijnt een echte, vertaalde pagina «Pagina niet gevonden» met een link terug.
+- **Reserve-icoon (favicon.ico)**: voor oude tools die alleen dat pad controleren.
+
 ## 3.84.0 — 2026-11-21
 
 ### Nieuw

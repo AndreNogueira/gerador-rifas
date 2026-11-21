@@ -464,4 +464,6 @@ T = {
     "web_etiquetas_total": "{n} etiquetes en {folhas} full(s) A4, per tallar per les guies.",
     "tut_f_etiquetas_t": "Etiquetes de recollida",
     "tut_f_etiquetas_b": "Es paga en un lloc i es recull en un altre? Feu una etiqueta per article de la llista, amb la imatge, el nom i la zona de recollida (la barra, la cuina…): imprimiu les còpies que vulgueu, 24 per full A4 amb guies de tall, agrupades per zona per lliurar als equips. Un combo dona una etiqueta per article, cadascuna a la seva zona. {onde}",
+    "web_404_titulo": "Pàgina no trobada",
+    "web_404_texto": "Aquesta pàgina no existeix, o l'enllaç és incorrecte.",
 }

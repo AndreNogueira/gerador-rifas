@@ -227,10 +227,17 @@ test.describe("páginas, sorteio e PWA", () => {
 
   test("uma página que não existe é um 404 a sério e o painel sem token não revela nada", async ({
     request,
+    page,
   }) => {
     expect((await request.get("/nao-existe")).status()).toBe(404);
     expect((await request.get("/api/admin/estado")).status()).toBe(404);
     expect((await request.get("/api/sessoes/xxx")).status()).toBe(404);
+    const resposta = await page.goto("/isto-nao-existe");
+    expect(resposta?.status()).toBe(404); // o próprio pedido da página, não só a API
+    await expect(page.getByTestId("pagina-404")).toBeVisible();
+    await expect(page.getByTestId("nome")).toHaveCount(0); // o gerador não aparece escondido por baixo
+    await page.getByRole("link", { name: /Voltar/ }).click();
+    await expect(page).toHaveURL("/");
   });
 
   test("o service worker instala-se e guarda só a casca da versão atual", async ({ page }) => {

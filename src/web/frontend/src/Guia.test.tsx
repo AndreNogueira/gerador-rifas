@@ -43,6 +43,14 @@ describe("guias «como fazer»", () => {
     expect(guia.querySelectorAll("ol > li")).toHaveLength(5);
   });
 
+  it("o guia do preçário (por tema, não por público) também tem a sua página", async () => {
+    abrir("/como-fazer-o-precario-de-uma-festa");
+    expect(await screen.findByTestId("guia-precario")).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { level: 1, name: "Como fazer o preçário de uma festa" }),
+    ).toBeInTheDocument();
+  });
+
   it("a das associações é outra página, com o seu próprio guia", async () => {
     abrir("/rifas-para-associacoes");
     expect(await screen.findByTestId("guia-associacoes")).toBeInTheDocument();

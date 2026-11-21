@@ -2,6 +2,12 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.85.0 — 2026-11-21
+
+### Behoben
+- **Echte 404-Seite**: ein falscher Link zeigte den Generator versteckt unter dem 404-Status. Jetzt erscheint eine echte, übersetzte „Seite nicht gefunden“ mit Link zurück.
+- **Reserve-Icon (favicon.ico)**: für alte Tools, die nur diesen Pfad prüfen.
+
 ## 3.84.0 — 2026-11-21
 
 ### Neu

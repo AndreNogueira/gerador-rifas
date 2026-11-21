@@ -241,6 +241,8 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     web_ficheiros_gerados: "PDFs gerados",
     web_nova_janela: "Abrir noutra janela",
     web_voltar: "Voltar",
+    web_404_titulo: "Página não encontrada",
+    web_404_texto: "Esta página não existe, ou a ligação está errada.",
     web_sessao_expirada: "A sessão expirou.",
     web_erro_rede: "Sem ligação ao servidor.",
     tut_ant: "Anterior",
@@ -593,7 +595,9 @@ export class ServidorFalso {
             ? "Como fazer uma rifa para a escola"
             : nome === "numerar"
               ? "Como numerar os bilhetes de uma rifa"
-              : "Como fazer uma rifa para a associação",
+              : nome === "precario"
+                ? "Como fazer o preçário de uma festa"
+                : "Como fazer uma rifa para a associação",
         intro: "Uma introdução de teste.",
         passos: [1, 2, 3, 4, 5].map((n) => ({ titulo: `Passo ${n}`, texto: `O texto do passo ${n}.` })),
         dicas: ["Dica 1", "Dica 2", "Dica 3"],

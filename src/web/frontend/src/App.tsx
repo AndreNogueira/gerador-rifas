@@ -12,6 +12,7 @@ import { Gerador } from "./Gerador";
 import { GUIAS, Guia } from "./Guia";
 import { IndiceGuias } from "./IndiceGuias";
 import { useI18n } from "./i18n";
+import { NaoEncontrada } from "./NaoEncontrada";
 import { PaginaTexto } from "./PaginaTexto";
 import { ReportarProblema } from "./Problema";
 import { Sobre, Tutorial, Video } from "./paginas";
@@ -33,6 +34,26 @@ const TITULOS_PT: Record<string, string> = {
   "/changelog": "Changelog",
   "/admin": "Painel",
 };
+
+/** Os caminhos que têm página própria (fora dos guias, em `GUIAS`): o mesmo conjunto do `switch` abaixo. Um caminho
+ * fora daqui (e que não seja "/") é um 404 a sério, nunca o gerador silenciosamente. */
+const PATHS_CONHECIDOS = [
+  "/tutorial",
+  "/video",
+  "/sobre",
+  "/sorteio",
+  "/precario",
+  "/editor",
+  "/como-fazer",
+  "/comentarios",
+  "/opiniao",
+  "/reportar-problema",
+  "/changelog",
+  "/termos",
+  "/privacidade",
+  "/contacto",
+  "/admin",
+];
 
 function Aplicacao() {
   const [tema, mudarTema] = useTema();
@@ -69,7 +90,12 @@ function Aplicacao() {
       "/reportar-problema": t("web_bug_titulo"),
     };
     const pagina = traduzidas[caminho] ?? TITULOS_PT[caminho] ?? "";
-    document.title = pagina ? `${pagina.replace(/…$/, "")} | ${nome}` : nome;
+    const conhecido = caminho === "/" || PATHS_CONHECIDOS.includes(caminho) || !!GUIAS[caminho];
+    document.title = pagina
+      ? `${pagina.replace(/…$/, "")} | ${nome}`
+      : conhecido
+        ? nome
+        : `${t("web_404_titulo")} | ${nome}`;
   }, [caminho, t]);
 
   // o tipo de ecra, para as estatisticas (uma vez por separador; o painel do dono nao conta)
@@ -132,8 +158,10 @@ function Aplicacao() {
             <PaginaTexto nome={caminho.slice(1)} />
           ) : caminho === "/admin" ? (
             <Admin />
-          ) : (
+          ) : caminho === "/" ? (
             <Gerador {...formulario} donativoUrl={publico.donativo_url} />
+          ) : (
+            <NaoEncontrada />
           )}
         </Suspense>
       </main>

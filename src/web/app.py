@@ -481,11 +481,13 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         html_base = index.read_text(encoding="utf-8")
         if rota == "/admin" and lg == "pt":                                         # o painel: sem ADMIN_TOKEN nao existe (e so em portugues, sem prefixo)
             if not admin.ativo():
-                return HTMLResponse(seo.renderizar(html_base, seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
+                return HTMLResponse(seo.renderizar(html_base, seo.pagina_nao_encontrada(), base, lg), status_code=404,
+                                     headers={**cab, "Content-Language": i18n.bcp47(lg)})
             return HTMLResponse(seo.renderizar(html_base, seo.ADMIN, base), headers={"Cache-Control": "no-store", "X-Robots-Tag": "noindex, nofollow"})
         pagina = seo.ROTAS.get(rota) or seo.SEM_INDICE.get(rota)
         if pagina is None:
-            return HTMLResponse(seo.renderizar(html_base, seo.pagina_nao_encontrada(), base), status_code=404, headers=cab)
+            return HTMLResponse(seo.renderizar(html_base, seo.pagina_nao_encontrada(), base, lg), status_code=404,
+                                 headers={**cab, "Content-Language": i18n.bcp47(lg)})
         if not request.scope.get("rifas_head"):                                     # um HEAD (verificadores de ligacoes, pre-visualizacoes) nao e uma visita
             servico.metricas.evento("pagina", rota, c=dispositivo(request.headers.get("user-agent", "")))
         return HTMLResponse(seo.renderizar(html_base, pagina, base, lg), headers={**cab, "Content-Language": i18n.bcp47(lg)})

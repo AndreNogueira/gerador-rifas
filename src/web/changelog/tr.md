@@ -2,6 +2,12 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.85.0 — 2026-11-21
+
+### Düzeltildi
+- **Gerçek 404 sayfası**: hatalı bir bağlantı, 404 durumunun altında gizlenmiş oluşturucuyu gösteriyordu. Şimdi çevrilmiş gerçek bir "Sayfa bulunamadı" sayfası, geri dönüş bağlantısıyla görünüyor.
+- **Yedek simge (favicon.ico)**: yalnızca o yolu kontrol eden eski araçlar için.
+
 ## 3.84.0 — 2026-11-21
 
 ### Yeni
