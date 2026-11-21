@@ -105,6 +105,8 @@ def test_o_mesmo_precario_da_os_mesmos_bytes():
     (dict(linhas=()), "err_precario_linhas"), (dict(linhas=(Linha(nome="  "),)), "err_precario_linhas"), (dict(linhas=tuple(Linha(nome=f"a{i}") for i in range(81))), "err_precario_linhas"),
     (dict(linhas=(Linha(artigo="nao_existe"),)), "err_precario_texto"), (dict(linhas=(Linha(nome="ok", preco=-1),)), "err_precario_texto"),
     (dict(linhas=(Linha(nome="ok", preco=moeda.MAX_VALOR + 1),)), "err_precario_texto"), (dict(linhas=(Linha(nome="ok", emoji="zzzz"),)), "err_precario_texto"),
+    (dict(linhas=(Linha(nome="ok", emoji="../../pyproject"),)), "err_precario_texto"), (dict(linhas=(Linha(nome="ok", emoji="..:1f382"),)), "err_precario_texto"),
+    (dict(linhas=(Linha(nome="ok", emoji="fluent:../../pyproject"),)), "err_precario_texto"), (dict(linhas=(Linha(nome="ok", emoji="outra:1f382"),)), "err_precario_texto"),
     (dict(linhas=(Linha(nome="ok", categoria="nada"),)), "err_precario_texto"), (dict(linhas=(Linha(nome="चाय"),)), "err_precario_texto"),
     (dict(moeda=moeda.MoedaInventada("fichas2")), "err_precario_texto"),
 ])
@@ -335,6 +337,23 @@ def test_um_artigo_recusa_uma_imagem_que_nao_e_sua():
         precario.criar_pdf(Precario(linhas=(Linha(artigo="agua", preco=1000, emoji="1f370"),)))       # o bolo existe, mas não é uma imagem da água
     assert e.value.chave == "err_precario_texto"
     assert precario.criar_pdf(Precario(linhas=(Linha(nome="Bolo", categoria="doces", emoji="1f370"),))).startswith(b"%PDF")   # num texto livre qualquer imagem serve
+
+
+@pytest.mark.parametrize("id_icone", [
+    "../../pyproject", "..:1f382", "fluent:../../pyproject", "fluent:1f382/../../pyproject",
+    "outra:1f382", "FLUENT:1f382", "1F382", "1f382.png", "1f382/../x", "",
+])
+def test_caminho_icone_recusa_tudo_o_que_nao_e_um_id_valido(id_icone):
+    """Um id que não seja <fonte conhecida>:<4-6 hex> nunca pode apontar para fora de PASTA_ICONES (CVE interno: antes de
+    validar aqui, max_length subiu de 8 para 20 em rotas_precario.py sem apertar o formato do id)."""
+    caminho = precario.caminho_icone(id_icone)
+    assert precario.PASTA_ICONES in caminho.resolve().parents
+    assert not caminho.is_file()
+
+
+def test_caminho_icone_aceita_noto_e_fluent():
+    assert precario.caminho_icone("1f382") == precario.PASTA_ICONES / "1f382.png"
+    assert precario.caminho_icone("fluent:1f382") == precario.PASTA_ICONES / "fluent" / "1f382.png"
 
 
 def test_a_imagem_escolhida_vai_e_volta_pelo_dicionario_e_pelo_ficheiro():
