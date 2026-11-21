@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.88.0 — 2026-11-21
+
+### Millores
+- **Dues biblioteques més d'imatges al preçari: Twemoji i OpenMoji**: s'afegeixen al Noto Emoji i al Fluent Emoji 3D, sense treure cap imatge que ja hi era — el selector ara agrupa les imatges per biblioteca, amb el nom de cada una. El Twemoji (CC BY 4.0) i l'OpenMoji (CC BY-SA 4.0) demanen crèdit als autors, que apareix a la Política de privacitat i, només quan s'usa de debò una d'aquestes imatges, al peu del PDF i de les etiquetes de recollida generats.
+
 ## 3.87.0 — 2026-11-21
 
 ### Millores

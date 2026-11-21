@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.88.0 — 2026-11-21
+
+### Cải thiện
+- **Thêm hai thư viện hình ảnh trong bảng giá: Twemoji và OpenMoji**: chúng gia nhập cùng Noto Emoji và Fluent Emoji 3D, không thay thế bất kỳ hình ảnh nào đã có — bộ chọn giờ đây nhóm các hình ảnh theo thư viện, kèm tên của từng thư viện. Twemoji (CC BY 4.0) và OpenMoji (CC BY-SA 4.0) yêu cầu ghi công tác giả, xuất hiện trong Chính sách quyền riêng tư và, chỉ khi thực sự dùng một trong các hình đó, ở chân trang của PDF và nhãn lấy hàng được tạo ra.
+
 ## 3.87.0 — 2026-11-21
 
 ### Cải thiện

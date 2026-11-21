@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.88.0 — 2026-11-21
+
+### Förbättrat
+- **Två bibliotek till med bilder i prislistan: Twemoji och OpenMoji**: de ansluter till Noto Emoji och Fluent Emoji 3D, utan att byta ut någon befintlig bild — väljaren grupperar nu bilderna efter bibliotek, med namnet på varje. Twemoji (CC BY 4.0) och OpenMoji (CC BY-SA 4.0) kräver kreditering av upphovsmännen, vilket visas i Integritetspolicyn och, bara när en av dessa bilder verkligen används, i sidfoten på den genererade PDF-filen och på upphämtningsetiketterna.
+
 ## 3.87.0 — 2026-11-21
 
 ### Förbättrat

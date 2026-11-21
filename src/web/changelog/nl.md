@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.88.0 — 2026-11-21
+
+### Verbeterd
+- **Nog twee afbeeldingenverzamelingen in de prijslijst: Twemoji en OpenMoji**: ze voegen zich bij Noto Emoji en Fluent Emoji 3D, zonder enige bestaande afbeelding te vervangen — de kiezer groepeert de afbeeldingen nu per verzameling, met de naam van elke verzameling. Twemoji (CC BY 4.0) en OpenMoji (CC BY-SA 4.0) vereisen vermelding van de makers, die in het Privacybeleid staat en, alleen wanneer zo'n afbeelding echt wordt gebruikt, in de voettekst van de gegenereerde PDF en afhaaletiketten.
+
 ## 3.87.0 — 2026-11-21
 
 ### Verbeterd

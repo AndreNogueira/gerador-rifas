@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.88.0 — 2026-11-21
+
+### Improved
+- **Two more picture libraries in the price list: Twemoji and OpenMoji**: they join Noto Emoji and Fluent Emoji 3D, without replacing any existing picture — the picker now groups the pictures by library, with each one's name. Twemoji (CC BY 4.0) and OpenMoji (CC BY-SA 4.0) require crediting their authors, which appears in the Privacy policy and, only when one of those pictures is actually used, in the footer of the generated PDF and pickup labels.
+
 ## 3.87.0 — 2026-11-21
 
 ### Improved

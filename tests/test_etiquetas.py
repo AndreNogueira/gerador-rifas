@@ -2,7 +2,7 @@
 import io
 
 import pytest
-from core import etiquetas, i18n, moeda
+from core import etiquetas, i18n, moeda, precario_catalogo as cat
 from core.etiquetas import Etiquetas
 from core.motor import ErroRifas
 from core.precario import Linha, Precario
@@ -92,3 +92,12 @@ def test_de_dict_valida_tipos_ignora_o_formato_do_precario_e_tira_zonas_vazias()
     for mau in (None, {}, {"precario": 3}, {"precario": {"linhas": []}, "copias": "5"}, {"precario": {"linhas": []}, "zonas": {"bebidas": 3}}, {"precario": {"linhas": []}, "copias": True}):
         with pytest.raises(ErroRifas):
             etiquetas.criar_pdf(etiquetas.de_dict(mau, "pt"))
+
+
+def test_as_etiquetas_creditam_uma_biblioteca_so_quando_a_usa_de_verdade():
+    com_credito = next(i for i in cat.ARTIGOS["agua"].icones if i.startswith("twemoji:"))
+    sem = base(precario=Precario(linhas=(Linha(artigo="agua", preco=1000),), lingua="pt"))
+    com = base(precario=Precario(linhas=(Linha(artigo="agua", preco=1000, emoji=com_credito),), lingua="pt"))
+    assert "Twemoji" not in texto_do_pdf(etiquetas.criar_pdf(sem))
+    t = texto_do_pdf(etiquetas.criar_pdf(com))
+    assert "Twemoji" in t and "CC BY 4.0" in t

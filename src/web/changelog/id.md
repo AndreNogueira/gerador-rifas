@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.88.0 — 2026-11-21
+
+### Ditingkatkan
+- **Dua pustaka gambar lagi di daftar harga: Twemoji dan OpenMoji**: bergabung dengan Noto Emoji dan Fluent Emoji 3D, tanpa mengganti gambar yang sudah ada — pemilih kini mengelompokkan gambar menurut pustaka, dengan nama masing-masing. Twemoji (CC BY 4.0) dan OpenMoji (CC BY-SA 4.0) mewajibkan pencantuman kredit untuk penulisnya, yang muncul di Kebijakan privasi dan, hanya saat salah satu gambar itu benar-benar dipakai, di footer PDF dan label pengambilan yang dihasilkan.
+
 ## 3.87.0 — 2026-11-21
 
 ### Ditingkatkan

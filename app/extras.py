@@ -7,6 +7,7 @@ e a pré-visualização os usam sem saber destas janelas. A lógica (ler prefixo
 from __future__ import annotations
 
 import gc
+import itertools
 import json
 import threading
 import urllib.request
@@ -1124,12 +1125,16 @@ class Precario(Janela):
                           border_color=C["borda"], font=ctk.CTkFont(FONTE, 11), command=lambda c=ln["chave"]: self._escolher_foto(c)).pack(side="left", padx=(0, 4))
             ctk.CTkButton(linha, text="×", width=28, height=28, corner_radius=8, fg_color=C["campo"], hover_color=C["borda"], text_color=C["texto"], border_width=1,
                           border_color=C["borda"], command=lambda c=ln["chave"]: self._tirar(c)).pack(side="left")
-            if self._icones_abertos == ln["chave"] and ln["artigo"]:                           # as imagens à escolha, por baixo da linha (8 por fila: o pack() do Tk não as quebra sozinho)
-                icones = self.artigos[ln["artigo"]].icones
-                for i in range(0, len(icones), 8):
+            if self._icones_abertos == ln["chave"] and ln["artigo"]:                           # as imagens à escolha, agrupadas por biblioteca (uma fila por grupo: o
+                icones = self.artigos[ln["artigo"]].icones                                     # pack() do Tk não as quebra sozinho; o catálogo já as dá nesta ordem)
+                grupos = [(f, list(g)) for f, g in itertools.groupby(icones, key=lambda c: c.split(":", 1)[0] if ":" in c else "")]
+                for fonte, grupo in grupos:
+                    if len(grupos) > 1:
+                        nome_fonte = precario_catalogo.FONTES_EXTRA[fonte].nome if fonte else "Noto Emoji"
+                        ctk.CTkLabel(caixa, text=nome_fonte, text_color=C["suave"], font=ctk.CTkFont(FONTE, 10), anchor="w").pack(fill="x", padx=(34, 0), pady=(2, 0))
                     opcoes = ctk.CTkFrame(caixa, fg_color="transparent")
-                    opcoes.pack(fill="x", padx=(34, 0), pady=(2, 0 if i + 8 < len(icones) else 4))
-                    for codigo in icones[i:i + 8]:
+                    opcoes.pack(fill="x", padx=(34, 0), pady=(0, 4))
+                    for codigo in grupo:
                         ctk.CTkButton(opcoes, text="", image=self._imagem(codigo, 30), width=40, height=40, corner_radius=8, border_width=2,
                                       border_color=C["acento"] if codigo == atual else C["borda"], fg_color=C["acento_suave"] if codigo == atual else C["campo"], hover_color=C["borda"],
                                       command=lambda c=ln["chave"], k=codigo: self._escolher_icone(c, k)).pack(side="left", padx=(0, 4))

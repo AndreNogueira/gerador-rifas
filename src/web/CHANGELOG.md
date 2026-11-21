@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.88.0 — 2026-11-21
+
+### Melhorado
+- **Mais duas bibliotecas de imagens no preçário: Twemoji e OpenMoji**: juntam-se ao Noto Emoji e ao Fluent Emoji 3D, sem trocar nenhuma imagem já existente — o seletor agrupa agora as imagens por biblioteca, com o nome de cada uma. O Twemoji (CC BY 4.0) e o OpenMoji (CC BY-SA 4.0) pedem crédito aos autores, que aparece na Política de privacidade e, só quando se usa mesmo uma dessas imagens, no rodapé do PDF e das etiquetas de levantamento gerados.
+
 ## 3.87.0 — 2026-11-21
 
 ### Melhorado

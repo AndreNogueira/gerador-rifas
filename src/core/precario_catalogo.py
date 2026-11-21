@@ -17,10 +17,25 @@ from . import ptbr
 LINGUAS = dados.LINGUAS + ("pt-br",)
 MAX_NOME = 48
 MAX_ICONES = 8                   # imagens Noto Emoji à escolha por artigo (a de omissão e mais até 7; nem todo o artigo chega lá)
-MAX_ICONES_TOTAL = 16            # tecto com as alternativas de outras bibliotecas incluídas (ver _alternativas_extra)
 _EMOJI = re.compile(r"[0-9a-f]{4,6}")
 _PASTA_ICONES = Path(__file__).resolve().parent / "icones_precario"
-FONTES_EXTRA = ("fluent",)        # bibliotecas de ícones extra (além do Noto Emoji curado): cada uma numa subpasta própria
+
+
+@dataclass(frozen=True)
+class Fonte:
+    nome: str            # nome próprio da biblioteca (não se traduz, como os nomes dos temas)
+    licenca: str         # identificador curto (SPDX ou parecido) a mostrar ao lado do nome
+    credito: bool        # True = tem de aparecer um crédito visível (site e PDF) sempre que uma imagem sua é usada
+
+
+# bibliotecas de ícones extra (além do Noto Emoji curado), cada uma numa subpasta própria de core/icones_precario/
+# e public/precario/; a ordem é a da escolha (Noto primeiro, sempre) e a que o seletor agrupa
+FONTES_EXTRA: dict[str, Fonte] = {
+    "fluent": Fonte("Fluent Emoji", "MIT", credito=False),
+    "twemoji": Fonte("Twemoji", "CC BY 4.0", credito=True),
+    "openmoji": Fonte("OpenMoji", "CC BY-SA 4.0", credito=True),
+}
+MAX_ICONES_TOTAL = MAX_ICONES * (1 + len(FONTES_EXTRA))   # tecto com as alternativas de todas as bibliotecas incluídas
 
 
 @dataclass(frozen=True)
@@ -121,6 +136,31 @@ def nome_imprimivel(item, lingua: str) -> str:
         if n and not letras.em_falta(n):
             return n
     return item.nomes["pt"]
+
+
+def fontes_usadas(ids_icones) -> set:
+    """As bibliotecas (de FONTES_EXTRA) que pedem crédito e que estão entre os ícones desta lista de ids (ignora os
+    que não pedem — Fluent — e os que são só Noto Emoji, que nunca pedem)."""
+    fontes = set()
+    for i in ids_icones:
+        if ":" in i:
+            fonte, _ = i.split(":", 1)
+            info = FONTES_EXTRA.get(fonte)
+            if info is not None and info.credito:
+                fontes.add(fonte)
+    return fontes
+
+
+def texto_creditos(fontes: set, lingua: str) -> str:
+    """O crédito a mostrar (rodapé do PDF, «Acerca»): vazio se nenhuma das `fontes` pedir crédito (filtra outra vez
+    por `credito`, mesmo que quem chamou já tenha passado por `fontes_usadas`: nunca credita a mais). Os nomes das
+    bibliotecas e das licenças são nomes próprios e não se traduzem (como os dos temas); só a frase à volta muda de língua."""
+    a_creditar = sorted(f for f in fontes if f in FONTES_EXTRA and FONTES_EXTRA[f].credito)
+    if not a_creditar:
+        return ""
+    from . import i18n
+    nomes = ", ".join(f"{FONTES_EXTRA[f].nome} ({FONTES_EXTRA[f].licenca})" for f in a_creditar)
+    return i18n.traduzir("web_precario_creditos", lingua, fontes=nomes)
 
 
 def artigos_da_lingua(lingua: str) -> list[Artigo]:

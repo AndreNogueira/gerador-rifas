@@ -150,15 +150,25 @@
   }
   .precario-icones {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 6px;
     min-width: 0;
     margin: 6px 0 0;
     padding: 0 0 0 36px;
     border: 0;
     @media (max-width: 36rem) {
-      padding-left: 0; // em telemóvel as 5 imagens têm de caber numa só fila
+      padding-left: 0; // em telemóvel as imagens têm de caber numa só fila
     }
+  }
+  .precario-icones-fonte-nome {
+    margin: 2px 0 0;
+    font-size: 0.8em;
+    color: var(--suave);
+  }
+  .precario-icones-linha {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
   }
   button.precario-icone {
     display: grid;

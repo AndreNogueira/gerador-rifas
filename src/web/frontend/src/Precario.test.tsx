@@ -308,6 +308,15 @@ describe("as imagens à escolha de cada artigo", () => {
     expect(img).toHaveAttribute("src", "/precario/fluent/1f4a7.webp");
   });
 
+  it("as imagens de bibliotecas diferentes aparecem agrupadas, cada grupo com o nome da biblioteca", async () => {
+    abrir();
+    await userEvent.click(await screen.findByTestId("precario-icone-agua"));
+    const grupos = Array.from(document.querySelectorAll(".precario-icones-fonte-nome")).map(
+      (e) => e.textContent,
+    );
+    expect(grupos).toEqual(["Noto Emoji", "Fluent Emoji"]); // 3 Noto (1f4a7, 1f6b0, 1f9ca) + 1 Fluent (fluent:1f4a7)
+  });
+
   it("um rascunho com uma imagem que o catálogo não oferece volta à de omissão; uma oferecida fica", () => {
     const linha = (emoji: string) => ({
       chave: "agua",
