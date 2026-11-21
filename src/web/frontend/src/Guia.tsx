@@ -16,6 +16,7 @@ export const GUIAS: Record<string, string> = {
   "/como-numerar-bilhetes-de-rifa": "numerar",
   "/sorteio-de-rifa-verificavel": "sorteio",
   "/quantos-bilhetes-de-rifa-fazer": "quantos",
+  "/como-fazer-o-precario-de-uma-festa": "precario",
 };
 
 /**
