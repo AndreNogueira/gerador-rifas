@@ -790,6 +790,7 @@ PAPEIS = {"A4": (595.276, 841.89), "A3": (841.89, 1190.551), "A5": (419.528, 595
 MM = 72 / 25.4
 MARGEM_MM = 5                  # margem por defeito (as impressoras nao imprimem junto ao bordo)
 AVISO_POR_PAGINA = 24          # acima disto as rifas ficam muito pequenas: avisa-se o utilizador
+ESPACO_MAX_MM = 15             # tecto do espaco entre rifas quando ha marcas de corte (o resto da folga fica so na margem)
 _EPS = 0.01
 
 
@@ -837,9 +838,48 @@ def _arrumar(aw: float, ah: float, cw: float, ch: float) -> list:
     return melhor
 
 
-def disposicao_da_folha(info: InfoTemplate, papel: str, margem_mm: float, n: int | None = None) -> Disposicao:
+def _espacar(pos: list, aw: float, ah: float, cw: float, ch: float) -> list:
+    """Afasta as rifas de `pos` (saida de `_arrumar`, ainda sem margem nem centragem: a area e aw x ah) para a folga
+    que sobra deixar de virar so margem extra (centragem) e passar a espaco ENTRE elas. Nunca muda quantas rifas ha
+    nem a ordem; com encaixe perfeito (sem folga nenhuma) devolve `pos` sem alteracoes. Um corte entre dois blocos
+    de orientacoes diferentes conta como uma so cadeia nesse eixo; no outro eixo cada bloco tem a sua folga."""
+    tam = {0: (cw, ch), 90: (ch, cw)}
+
+    def deslocamentos(bloco: list, eixo: int, livre: float) -> dict:
+        valores = sorted(set(p[eixo] for p in bloco))
+        k = len(valores)
+        if k == 0:
+            return {}
+        fim = max(p[eixo] + tam[p[2]][eixo] for p in bloco)
+        folga = max(0.0, livre - (fim - valores[0]))
+        if k == 1:
+            return {valores[0]: folga / 2}
+        gap = min(folga / (k - 1), ESPACO_MAX_MM * MM)
+        return {v: i * gap for i, v in enumerate(valores)}
+
+    rots = sorted(set(r for _, _, r in pos))
+    if len(rots) < 2:
+        dx, dy = deslocamentos(pos, 0, aw), deslocamentos(pos, 1, ah)
+        return [(x + dx[x], y + dy[y], r) for x, y, r in pos]
+    a = [p for p in pos if p[2] == rots[0]]
+    b = [p for p in pos if p[2] == rots[1]]
+    fim_a_x = max(p[0] + tam[p[2]][0] for p in a)
+    fim_b_x = max(p[0] + tam[p[2]][0] for p in b)
+    inicio_a_x, inicio_b_x = min(p[0] for p in a), min(p[0] for p in b)
+    divisao_x = fim_a_x <= inicio_b_x + _EPS or fim_b_x <= inicio_a_x + _EPS       # blocos lado a lado (corte vertical)
+    if divisao_x:
+        dx = deslocamentos(a + b, 0, aw)
+        dy_a, dy_b = deslocamentos(a, 1, ah), deslocamentos(b, 1, ah)
+        return [(x + dx[x], y + (dy_a if r == rots[0] else dy_b)[y], r) for x, y, r in a + b]
+    dy = deslocamentos(a + b, 1, ah)
+    dx_a, dx_b = deslocamentos(a, 0, aw), deslocamentos(b, 0, aw)
+    return [(x + (dx_a if r == rots[0] else dx_b)[x], y + dy[y], r) for x, y, r in a + b]
+
+
+def disposicao_da_folha(info: InfoTemplate, papel: str, margem_mm: float, n: int | None = None, espacos: bool = False) -> Disposicao:
     """Como encher uma folha `papel` com a rifa do template (so `info.n_campos == 1`). `n` = quantas por folha
-    (None = o maximo que couber)."""
+    (None = o maximo que couber). `espacos`: afasta as rifas entre si (ver `_espacar`), para a margem poder ficar
+    pequena e as marcas de corte (`Documento._ops_marcas`) terem onde desenhar entre cada rifa."""
     if info.n_campos != 1 or info.celula is None:
         raise ErroRifas("err_folha_varias")
     cel = info.celula
@@ -858,6 +898,8 @@ def disposicao_da_folha(info: InfoTemplate, papel: str, margem_mm: float, n: int
     if melhor is None or not melhor[3]:
         raise ErroRifas("err_rifa_grande", w=f"{cw / MM:.0f}", h=f"{ch / MM:.0f}", papel=papel, margem=f"{margem_mm:g}")
     _, W, H, pos = melhor      # ja vem por blocos, cada um em ordem de leitura: os numeros crescem bloco a bloco
+    if espacos:
+        pos = _espacar(pos, W - 2 * margem, H - 2 * margem, cw, ch)
     tam = {0: (cw, ch), 90: (ch, cw)}
     x0, y0 = min(p[0] for p in pos), min(p[1] for p in pos)
     x1, y1 = max(p[0] + tam[p[2]][0] for p in pos), max(p[1] + tam[p[2]][1] for p in pos)
@@ -1004,28 +1046,35 @@ class Documento:
         return modulo_qr.ops_pdf(modulo_qr.modulos(modulo_qr.url(q, prefixo.strip(), num)), x, y, lado)
 
     def _ops_marcas(self) -> str:
-        """Marcas de corte (tracos curtos pretos) NAS MARGENS da folha, a prolongar cada linha de corte da grelha: em cima e em
-        baixo para os cortes verticais, e à esquerda e à direita para os horizontais. Só onde a rifa toca no bordo da grelha (os
-        cortes interiores continuam-se pelas rifas vizinhas). Vazio se não há folha ou as marcas estão desligadas."""
+        """Marcas de corte (tracos curtos pretos) a prolongar cada linha de corte: nas margens da folha (como sempre)
+        e tambem ENTRE cada rifa, quando ha espaco para isso (ver `disposicao_da_folha(..., espacos=True)`). Cada
+        lado de cada rifa recebe a sua propria marca, a apontar para o espaco livre mais proximo nessa direcao (a
+        folha, ou a rifa vizinha): sem espaco (encostadas, como antes de haver `espacos`) nao ha marca nenhuma nesse
+        lado, e o resultado fica identico ao de antes. Vazio se não há folha ou as marcas estão desligadas."""
         d = self.disp
         if d is None or not d.marcas or not d.posicoes:
             return ""
         cw, ch = d.celula.width, d.celula.height
         caixas = [(x, y, x + (cw if rot == 0 else ch), y + (ch if rot == 0 else cw)) for x, y, rot in d.posicoes]
-        x0, y0 = min(c[0] for c in caixas), min(c[1] for c in caixas)
-        x1, y1 = max(c[2] for c in caixas), max(c[3] for c in caixas)
         folga = 1.0 * MM                                     # a marca nao toca na zona de corte
         comp = lambda livre: min(3.5 * MM, livre - folga)    # noqa: E731
+        sobrepoe = lambda a0, a1, b0, b1: min(a1, b1) - max(a0, b0) > _EPS    # noqa: E731
+
         tracos: set = set()
         for ax, ay, bx, by in caixas:
-            if abs(ay - y0) < 0.01 and (c := comp(y0)) >= 1:
-                tracos |= {(round(v, 2), round(y0 - folga, 2), round(v, 2), round(y0 - folga - c, 2)) for v in (ax, bx)}
-            if abs(by - y1) < 0.01 and (c := comp(d.altura - y1)) >= 1:
-                tracos |= {(round(v, 2), round(y1 + folga, 2), round(v, 2), round(y1 + folga + c, 2)) for v in (ax, bx)}
-            if abs(ax - x0) < 0.01 and (c := comp(x0)) >= 1:
-                tracos |= {(round(x0 - folga, 2), round(v, 2), round(x0 - folga - c, 2), round(v, 2)) for v in (ay, by)}
-            if abs(bx - x1) < 0.01 and (c := comp(d.largura - x1)) >= 1:
-                tracos |= {(round(x1 + folga, 2), round(v, 2), round(x1 + folga + c, 2), round(v, 2)) for v in (ay, by)}
+            outras = [o for o in caixas if o != (ax, ay, bx, by)]
+            acima = [o[3] for o in outras if o[3] <= ay + _EPS and sobrepoe(o[0], o[2], ax, bx)]
+            if (c := comp(ay - (max(acima) if acima else 0.0))) >= 1:
+                tracos |= {(round(v, 2), round(ay - folga, 2), round(v, 2), round(ay - folga - c, 2)) for v in (ax, bx)}
+            abaixo = [o[1] for o in outras if o[1] >= by - _EPS and sobrepoe(o[0], o[2], ax, bx)]
+            if (c := comp((min(abaixo) if abaixo else d.altura) - by)) >= 1:
+                tracos |= {(round(v, 2), round(by + folga, 2), round(v, 2), round(by + folga + c, 2)) for v in (ax, bx)}
+            esquerda = [o[2] for o in outras if o[2] <= ax + _EPS and sobrepoe(o[1], o[3], ay, by)]
+            if (c := comp(ax - (max(esquerda) if esquerda else 0.0))) >= 1:
+                tracos |= {(round(ax - folga, 2), round(v, 2), round(ax - folga - c, 2), round(v, 2)) for v in (ay, by)}
+            direita = [o[0] for o in outras if o[0] >= bx - _EPS and sobrepoe(o[1], o[3], ay, by)]
+            if (c := comp((min(direita) if direita else d.largura) - bx)) >= 1:
+                tracos |= {(round(bx + folga, 2), round(v, 2), round(bx + folga + c, 2), round(v, 2)) for v in (ay, by)}
         linhas = [f"{_f(a)} {_f(d.altura - b)} m {_f(c)} {_f(d.altura - e)} l S" for a, b, c, e in sorted(tracos)]
         return "q 0 G 0.4 w\n" + "\n".join(linhas) + "\nQ\n" if linhas else ""
 

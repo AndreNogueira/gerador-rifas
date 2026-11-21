@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.86.0 — 2026-11-21
+
+### Mejorado
+- **Espacio entre las rifas y marcas de corte entre cada una**: al activar las marcas de corte, el hueco que antes solo agrandaba el margen pasa a ser espacio entre cada rifa, y las marcas (antes solo en los márgenes de la hoja) aparecen ahora también entre cada rifa.
+
 ## 3.85.0 — 2026-11-21
 
 ### Corregido

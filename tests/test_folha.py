@@ -119,6 +119,54 @@ def test_arrumar_dois_blocos():
     assert core._arrumar(60, 40, 60, 40) == [(0, 0, 0)]
 
 
+def test_espacar_sem_folga_nao_muda_nada():
+    # 2x2 a encaixar perfeitamente em 20x20 (encaixe perfeito): nada para redistribuir
+    pos = [(0, 0, 0), (10, 0, 0), (0, 10, 0), (10, 10, 0)]
+    assert core._espacar(pos, 20, 20, 10, 10) == pos
+
+
+def test_espacar_duas_colunas_poe_a_folga_entre_elas():
+    pos = [(0, 0, 0), (10, 0, 0)]
+    assert core._espacar(pos, 25, 10, 10, 10) == [(0.0, 0.0, 0), (15.0, 0.0, 0)]    # 10 (celula) + 5 (folga) = 15
+
+
+def test_espacar_uma_so_linha_fica_centrada_sem_espaco_interior():
+    pos = [(0, 0, 0)]
+    assert core._espacar(pos, 20, 20, 10, 10) == [(5.0, 5.0, 0)]
+
+
+def test_espacar_tem_tecto_e_o_resto_fica_de_fora():
+    pos = [(0, 0, 0), (10, 0, 0)]
+    novo = core._espacar(pos, 10 + 10 + 1000, 10, 10, 10)                           # folga enorme (1000)
+    assert novo[0] == (0.0, 0.0, 0)
+    assert novo[1][0] - 10 == pytest.approx(core.ESPACO_MAX_MM * MM)                # o espaco fica no tecto
+
+
+def test_espacar_dois_blocos_rodados_corte_e_uma_cadeia_outro_eixo_cada_um_a_sua_folga():
+    # o mesmo caso de test_arrumar_dois_blocos: corte vertical em x=60 (sem folga em x); em y cada bloco e independente
+    pos = core._arrumar(100, 100, 60, 40)
+    assert core._espacar(pos, 100, 100, 60, 40) == [(0, 0, 0), (0, 60, 0), (60, 20, 90)]
+
+
+def test_espacos_true_afasta_as_rifas_e_a_margem_fica_so_a_pedida():
+    sem = _disp(95, 95)                                        # 6 rifas em A4, margem 5: ha folga nos dois eixos
+    com = core.disposicao_da_folha(_info(95, 95), "A4", 5, espacos=True)
+    assert com.maximo == sem.maximo and com.n == sem.n         # mesmo numero de rifas
+    cw, ch = com.celula.width, com.celula.height
+    xs = sorted(set(round(x, 2) for x, _, _ in com.posicoes))
+    ys = sorted(set(round(y, 2) for _, y, _ in com.posicoes))
+    assert xs[1] - xs[0] > cw + 0.01                            # ha espaco entre as colunas
+    assert ys[1] - ys[0] > ch + 0.01                            # e entre as linhas
+    assert xs != sorted(set(round(x, 2) for x, _, _ in sem.posicoes))        # mudou mesmo (sem espacos nao mudaria)
+    # a margem real fica a pedida (5 mm): a folga toda foi para os espacos, nao para a margem extra
+    x0, y0 = min(x for x, _, _ in com.posicoes), min(y for _, y, _ in com.posicoes)
+    assert x0 == pytest.approx(5 * MM, abs=0.01) and y0 == pytest.approx(5 * MM, abs=0.01)
+
+
+def test_espacos_false_e_o_comportamento_de_sempre():
+    assert core.disposicao_da_folha(_info(100, 100), "A4", 5).posicoes == core.disposicao_da_folha(_info(100, 100), "A4", 5, espacos=False).posicoes
+
+
 def test_disposicao_com_o_template_de_exemplo(fx):
     info = core.analisar_template(fx("template_exemplo_1_rifa.pdf"))
     resultado = {}

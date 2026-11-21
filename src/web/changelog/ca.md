@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.86.0 — 2026-11-21
+
+### Millores
+- **Espai entre les rifes i marques de tall entre cada una**: en activar les marques de tall, l'espai sobrant que abans només engrandia el marge passa a ser espai entre cada rifa, i les marques (abans només als marges del full) apareixen també entre cada rifa.
+
 ## 3.85.0 — 2026-11-21
 
 ### Corregit

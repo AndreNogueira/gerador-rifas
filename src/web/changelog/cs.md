@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.86.0 — 2026-11-21
+
+### Vylepšeno
+- **Mezera mezi losy a ořezové značky mezi každým z nich**: po zapnutí ořezových značek se volné místo, které dřív jen zvětšovalo okraj, mění na mezeru mezi losy, a značky (dřív jen na okrajích listu) se objevují i mezi každým losem.
+
 ## 3.85.0 — 2026-11-21
 
 ### Opraveno

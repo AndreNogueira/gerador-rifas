@@ -17,8 +17,8 @@ def prep1(fx):
     return core.preparar(fx("template_exemplo_1_rifa.pdf"), fx("digitos_exemplo.pdf"))
 
 
-def _folha(prep, marcas: bool, margem=5):
-    p = prep.com_folha("A4", margem)
+def _folha(prep, marcas: bool, margem=5, espacos=False):
+    p = replace(prep, disp=core.disposicao_da_folha(prep.info, "A4", margem, espacos=espacos))
     return replace(p, disp=replace(p.disp, marcas=marcas))
 
 
@@ -51,6 +51,27 @@ def test_com_marcas_ha_tracos_so_nas_margens_a_prolongar_os_cortes(tmp_path, pre
         else:                                                             # horizontal: a esquerda ou a direita
             assert max(ax, bx) <= x0 - 0.99 * MM or min(ax, bx) >= x1 + 0.99 * MM
         assert 0 <= min(ax, bx) and max(ax, bx) <= d.largura and 0 <= min(ay, by) and max(ay, by) <= d.altura     # dentro da folha
+
+
+def test_com_espacos_ha_tambem_tracos_entre_as_rifas(tmp_path, prep1):
+    # prep1 (template_exemplo_1_rifa.pdf) em A4 margem 5 da 5 rifas, 1 coluna: ha 4 cortes horizontais interiores (entre cada par)
+    p = _folha(prep1, True, espacos=True)
+    d = p.disp
+    assert d.n == 5                                                           # continuam a ser 5 (espacos nao reduz)
+    tracos = _tracos(_gerar(tmp_path, p))
+    ys = sorted({round(y, 2) for _, y, _ in d.posicoes})
+    assert len(ys) == 5 and all(b - a > 0.01 for a, b in zip(ys, ys[1:]))     # ha espaco real entre cada linha
+    # sem espacos (teste acima) nao ha tracos nenhuns entre as rifas: com espacos ha mais tracos no total
+    assert len(tracos) > len(_tracos(_gerar(tmp_path / "sem", _folha(prep1, True, espacos=False))))
+    # cada rifa (menos a 1.a e a ultima) tem agora tracos por cima E por baixo (antes so a 1.a e a ultima tinham)
+    ch = d.celula.height
+    meio = d.posicoes[2]                                                      # a rifa do meio (3.a de 5): so tinha vizinhas, nunca a margem
+    topo_meio, fundo_meio = d.altura - meio[1], d.altura - (meio[1] + ch)
+    perto = lambda v, alvo: abs(v - alvo) <= 5 * MM    # noqa: E731 (a marca fica a 1-4,5 mm da rifa, nao exatamente na borda)
+    assert any(perto(ay, topo_meio) or perto(by, topo_meio) for _, ay, _, by in tracos)
+    assert any(perto(ay, fundo_meio) or perto(by, fundo_meio) for _, ay, _, by in tracos)
+    for ax, ay, bx, by in tracos:
+        assert abs(bx - ax) + abs(by - ay) <= 3.5 * MM + 0.01                  # nenhum traco toca a rifa vizinha
 
 
 def test_sem_marcas_o_pdf_e_igual_ao_de_sempre(tmp_path, prep1):

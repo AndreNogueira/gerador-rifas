@@ -343,7 +343,7 @@ T = {
     "tut_f_lista_t": "Daftar tiket dan lembar kontrol",
     "tut_f_lista_b": "Ekspor berkas CSV dengan satu tiket per baris (dibuka di Excel atau Calc, dengan kolom Nama, Kontak dan Lunas yang kosong) dan lembar kontrol PDF untuk dicetak dan dicentang siapa yang sudah membayar. Keduanya memakai rentang, awalan dan nomor yang dilewati dari permintaan Anda dan tidak memerlukan templat. {onde}",
     "tut_f_marcas_t": "Tanda potong",
-    "tut_f_marcas_b": "Aktifkan tanda potong dan program menggambar garis pendek di margin lembar, memperpanjang setiap garis potong agar Anda memotong dengan lurus. Hanya berlaku untuk templat dengan satu tiket undian yang diulang pada lembar dan membutuhkan margin minimal 3 mm. Kupon (nomor dua kali di setiap tiket) dan bleed sudah berfungsi tanpa melakukan apa-apa. {onde}",
+    "tut_f_marcas_b": "Aktifkan tanda potong dan program merenggangkan tiket satu sama lain serta menggambar garis pendek di margin lembar dan di antara setiap tiket, memperpanjang setiap garis potong agar Anda memotong dengan lurus. Hanya berlaku untuk templat dengan satu tiket undian yang diulang pada lembar dan membutuhkan margin minimal 3 mm. Kupon (nomor dua kali di setiap tiket) dan bleed sudah berfungsi tanpa melakukan apa-apa. {onde}",
     "tut_f_galeria_t": "Galeri templat",
     "tut_f_galeria_b": "Tidak punya templat Canva? Pilih salah satu dari 25 desain (Bosque, Natal, Páscoa, Praia, Futebol, Cinema…), tulis judul, organisasi, 3 hingga 10 hadiah dan tanggal, periksa pratinjau lalu tekan “Gunakan templat ini”: templat dan angka sudah siap dan Anda tinggal memilih nomor. Font hanya memiliki alfabet Latin; huruf lain menampilkan peringatan. {onde}",
     "tut_f_marca_t": "Merek Anda: warna dan logo",

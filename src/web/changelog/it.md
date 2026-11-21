@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.86.0 — 2026-11-21
+
+### Migliorato
+- **Spazio tra i biglietti e segni di taglio tra ciascuno**: attivando i segni di taglio, lo spazio che prima ingrandiva solo il margine diventa spazio tra i biglietti, e i segni (prima solo nei margini del foglio) appaiono ora anche tra ogni biglietto.
+
 ## 3.85.0 — 2026-11-21
 
 ### Risolto

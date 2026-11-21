@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.86.0 — 2026-11-21
+
+### Amélioré
+- **Espace entre les tickets et traits de coupe entre chacun**: en activant les traits de coupe, le jeu qui n'agrandissait avant que la marge devient de l'espace entre les tickets, et les traits (avant seulement dans les marges de la feuille) apparaissent désormais aussi entre chaque ticket.
+
 ## 3.85.0 — 2026-11-21
 
 ### Corrigé

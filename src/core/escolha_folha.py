@@ -39,7 +39,8 @@ def ler_margem(txt: str) -> int:
 
 def escolher_folha(info: InfoTemplate, papel: str, margem_txt: str, porfolha_txt: str, marcas: bool = False) -> EscolhaFolha:
     """Disposicao da folha para os valores escritos. `porfolha_txt` vazio = o maximo que couber; um valor acima do maximo
-    fica no maximo (e `acima` = True). `marcas`: marcas de corte nas margens (pedem pelo menos 3 mm de margem).
+    fica no maximo (e `acima` = True). `marcas`: marcas de corte (pedem pelo menos 3 mm de margem) nas margens da folha
+    e, quando ha folga para isso, tambem entre cada rifa (a folga que sobraria para a margem vira espaco entre elas).
     Levanta ErroRifas (int_invalido, err_rifa_grande, err_folha_varias, err_marcas)."""
     m = ler_margem(margem_txt)
     if marcas and m < MARGEM_MIN_MARCAS_MM:
@@ -52,7 +53,8 @@ def escolher_folha(info: InfoTemplate, papel: str, margem_txt: str, porfolha_txt
             raise ValueError
     except ValueError:
         raise ErroRifas("int_invalido", campo=t("lay_por_folha"))
-    return EscolhaFolha(replace(disposicao_da_folha(info, papel, m, pedido), marcas=marcas), pedido > base.maximo)
+    disp = disposicao_da_folha(info, papel, m, pedido, espacos=marcas)
+    return EscolhaFolha(replace(disp, marcas=marcas), pedido > base.maximo)
 
 
 def texto_da_folha(disp: Disposicao, acima: bool) -> tuple:

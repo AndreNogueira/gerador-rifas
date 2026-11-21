@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.86.0 — 2026-11-21
+
+### Verbeterd
+- **Ruimte tussen de loten en snijmarkeringen tussen elk lot**: door de snijmarkeringen aan te zetten wordt de speling die vroeger alleen de marge vergrootte nu ruimte tussen de loten, en de markeringen (vroeger alleen in de marges van het vel) verschijnen nu ook tussen elk lot.
+
 ## 3.85.0 — 2026-11-21
 
 ### Opgelost
