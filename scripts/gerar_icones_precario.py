@@ -47,6 +47,7 @@ FLUENT_LICENCA = "https://raw.githubusercontent.com/microsoft/fluentui-emoji/mai
 
 TWEMOJI_SVG = "https://raw.githubusercontent.com/jdecked/twemoji/main/assets/svg/{codigo}.svg"
 TWEMOJI_LICENCA = "https://raw.githubusercontent.com/jdecked/twemoji/main/LICENSE-GRAPHICS"
+TWEMOJI_COPYRIGHT = "https://raw.githubusercontent.com/jdecked/twemoji/main/LICENSE"      # so tem os nomes dos autores (o LICENSE-GRAPHICS e so o texto legal da CC BY, sem nomes)
 
 OPENMOJI_PNG = "https://raw.githubusercontent.com/hfg-gmuend/openmoji/master/color/618x618/{codigo}.png"
 OPENMOJI_LICENCA = "https://raw.githubusercontent.com/hfg-gmuend/openmoji/master/LICENSE.txt"
@@ -153,11 +154,14 @@ def gerar_twemoji(cache: Path, codigos: set) -> int:
         pequena.save(pasta_web / f"{codigo}.webp", quality=82, method=6)
         feitos += 1
     descarregar(TWEMOJI_LICENCA, cache / "LICENSE-GRAPHICS")
+    descarregar(TWEMOJI_COPYRIGHT, cache / "LICENSE")
+    autores = "\n".join(li for li in (cache / "LICENSE").read_text(encoding="utf-8").splitlines() if li.startswith("Copyright"))
     (pasta_pdf / "LICENSE.txt").write_text(
-        "As imagens desta pasta são do projeto Twemoji (https://github.com/jdecked/twemoji), Copyright 2020 Twitter, Inc e colaboradores, "
-        "rasterizadas a partir do SVG e com paleta reduzida.\nOs gráficos estão sob a licença CC BY 4.0 (copiada abaixo; o código do repositório, que não "
-        "se usa aqui, é MIT): exige atribuição, que o site e o PDF dão (ver `core.precario._creditos`).\n\n"
-        + (cache / "LICENSE-GRAPHICS").read_text(encoding="utf-8"), encoding="utf-8")
+        "As imagens desta pasta são do projeto Twemoji (https://github.com/jdecked/twemoji), rasterizadas a partir do SVG e com paleta reduzida.\n"
+        f"{autores}\n"
+        "Os gráficos estão sob a licença CC BY 4.0 (copiada abaixo; o ficheiro LICENSE-GRAPHICS do repositório não tem os nomes dos autores, só o texto "
+        "legal — vêm do ficheiro LICENSE, que é do código, mas é onde o projeto os regista): exige atribuição, que o site e o PDF dão (ver "
+        "`core.precario_catalogo.texto_creditos`).\n\n" + (cache / "LICENSE-GRAPHICS").read_text(encoding="utf-8"), encoding="utf-8")
     print(f"{feitos} de {len(codigos)} códigos têm Twemoji (os outros ficam só com o Noto)")
     for c, e in faltam:
         print("FALTA (twemoji)", c, e)

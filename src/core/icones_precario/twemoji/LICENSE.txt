@@ -1,5 +1,7 @@
-As imagens desta pasta são do projeto Twemoji (https://github.com/jdecked/twemoji), Copyright 2020 Twitter, Inc e colaboradores, rasterizadas a partir do SVG e com paleta reduzida.
-Os gráficos estão sob a licença CC BY 4.0 (copiada abaixo; o código do repositório, que não se usa aqui, é MIT): exige atribuição, que o site e o PDF dão (ver `core.precario._creditos`).
+As imagens desta pasta são do projeto Twemoji (https://github.com/jdecked/twemoji), rasterizadas a partir do SVG e com paleta reduzida.
+Copyright (c) 2022–present Jason Sofonia & Justine De Caires
+Copyright (c) 2014–2021 Twitter
+Os gráficos estão sob a licença CC BY 4.0 (copiada abaixo; o ficheiro LICENSE-GRAPHICS do repositório não tem os nomes dos autores, só o texto legal — vêm do ficheiro LICENSE, que é do código, mas é onde o projeto os regista): exige atribuição, que o site e o PDF dão (ver `core.precario_catalogo.texto_creditos`).
 
 Attribution 4.0 International
 
