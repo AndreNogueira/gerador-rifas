@@ -70,8 +70,15 @@ def test_com_espacos_ha_tambem_tracos_entre_as_rifas(tmp_path, prep1):
     perto = lambda v, alvo: abs(v - alvo) <= 5 * MM    # noqa: E731 (a marca fica a 1-4,5 mm da rifa, nao exatamente na borda)
     assert any(perto(ay, topo_meio) or perto(by, topo_meio) for _, ay, _, by in tracos)
     assert any(perto(ay, fundo_meio) or perto(by, fundo_meio) for _, ay, _, by in tracos)
+    cw = d.celula.width
+    caixas = [(x, y, x + cw, y + ch) for x, y, _ in d.posicoes]                # (x, y para baixo); tracos estao em y para cima
     for ax, ay, bx, by in tracos:
-        assert abs(bx - ax) + abs(by - ay) <= 3.5 * MM + 0.01                  # nenhum traco toca a rifa vizinha
+        assert abs(bx - ax) + abs(by - ay) <= 3.5 * MM + 0.01
+        for cx0, cy0, cx1, cy1 in caixas:
+            topo, fundo = d.altura - cy0, d.altura - cy1                      # a caixa em y para cima
+            fora_de_x = max(ax, bx) <= cx0 - 0.99 * MM or min(ax, bx) >= cx1 + 0.99 * MM
+            fora_de_y = min(ay, by) >= topo + 0.99 * MM or max(ay, by) <= fundo - 0.99 * MM
+            assert fora_de_x or fora_de_y, f"traco {(ax, ay, bx, by)} toca a rifa {(cx0, cy0, cx1, cy1)}"
 
 
 def test_sem_marcas_o_pdf_e_igual_ao_de_sempre(tmp_path, prep1):

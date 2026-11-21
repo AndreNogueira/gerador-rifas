@@ -1056,23 +1056,30 @@ class Documento:
             return ""
         cw, ch = d.celula.width, d.celula.height
         caixas = [(x, y, x + (cw if rot == 0 else ch), y + (ch if rot == 0 else cw)) for x, y, rot in d.posicoes]
-        folga = 1.0 * MM                                     # a marca nao toca na zona de corte
-        comp = lambda livre: min(3.5 * MM, livre - folga)    # noqa: E731
+        folga = 1.0 * MM                                     # a marca nao toca na zona de corte (nem, havendo vizinha, nela)
+        # junto a folha so precisa de 1 folga (do lado da rifa); junto a outra rifa precisa de 2 (uma de cada lado,
+        # para a marca nao tocar em nenhuma das duas): comp_pagina/comp_vizinha
+        comp_pagina = lambda livre: min(3.5 * MM, livre - folga)          # noqa: E731
+        comp_vizinha = lambda livre: min(3.5 * MM, livre - 2 * folga)     # noqa: E731
         sobrepoe = lambda a0, a1, b0, b1: min(a1, b1) - max(a0, b0) > _EPS    # noqa: E731
 
         tracos: set = set()
         for ax, ay, bx, by in caixas:
             outras = [o for o in caixas if o != (ax, ay, bx, by)]
             acima = [o[3] for o in outras if o[3] <= ay + _EPS and sobrepoe(o[0], o[2], ax, bx)]
+            comp = comp_vizinha if acima else comp_pagina
             if (c := comp(ay - (max(acima) if acima else 0.0))) >= 1:
                 tracos |= {(round(v, 2), round(ay - folga, 2), round(v, 2), round(ay - folga - c, 2)) for v in (ax, bx)}
             abaixo = [o[1] for o in outras if o[1] >= by - _EPS and sobrepoe(o[0], o[2], ax, bx)]
+            comp = comp_vizinha if abaixo else comp_pagina
             if (c := comp((min(abaixo) if abaixo else d.altura) - by)) >= 1:
                 tracos |= {(round(v, 2), round(by + folga, 2), round(v, 2), round(by + folga + c, 2)) for v in (ax, bx)}
             esquerda = [o[2] for o in outras if o[2] <= ax + _EPS and sobrepoe(o[1], o[3], ay, by)]
+            comp = comp_vizinha if esquerda else comp_pagina
             if (c := comp(ax - (max(esquerda) if esquerda else 0.0))) >= 1:
                 tracos |= {(round(ax - folga, 2), round(v, 2), round(ax - folga - c, 2), round(v, 2)) for v in (ay, by)}
             direita = [o[0] for o in outras if o[0] >= bx - _EPS and sobrepoe(o[1], o[3], ay, by)]
+            comp = comp_vizinha if direita else comp_pagina
             if (c := comp((min(direita) if direita else d.largura) - bx)) >= 1:
                 tracos |= {(round(bx + folga, 2), round(v, 2), round(bx + folga + c, 2), round(v, 2)) for v in (ay, by)}
         linhas = [f"{_f(a)} {_f(d.altura - b)} m {_f(c)} {_f(d.altura - e)} l S" for a, b, c, e in sorted(tracos)]
