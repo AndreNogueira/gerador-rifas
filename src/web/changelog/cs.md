@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.92.0 — 2026-11-26
+
+### Opraveno
+- **Text kroku 4 („Cíl“) na webu**: návod a úvodní stránka říkaly „vyberte složku, kam se PDF uloží“, což platí jen pro aplikaci Windows — na webu se soubory stahují automaticky přes prohlížeč. Text webu už o žádné složce nemluví.
+
 ## 3.91.0 — 2026-11-26
 
 ### Vylepšeno

@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.92.0 — 2026-11-26
+
+### Fixed
+- **Step 4 (“Destination”) wording on the site**: the tutorial and the homepage said “choose the folder to save the PDFs”, true only for the Windows app — on the site, files download automatically through the browser. The site's wording no longer mentions a folder.
+
 ## 3.91.0 — 2026-11-26
 
 ### Improved

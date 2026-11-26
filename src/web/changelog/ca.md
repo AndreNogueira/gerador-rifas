@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.92.0 — 2026-11-26
+
+### Corregit
+- **Text del pas 4 («Destinació») al lloc**: el tutorial i la pàgina d'inici deien «trieu la carpeta on es desaran els PDF», cert només a l'app Windows — al lloc, els fitxers es baixen automàticament pel navegador. El text del lloc ja no parla de cap carpeta.
+
 ## 3.91.0 — 2026-11-26
 
 ### Millores

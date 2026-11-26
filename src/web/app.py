@@ -446,6 +446,11 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     def sitemap_xml(request: Request) -> RespostaSimples:
         return RespostaSimples(seo.sitemap(seo.url_publica(request)), media_type="application/xml", headers={"Cache-Control": "public, max-age=3600"})
 
+    @app.get("/llms.txt", include_in_schema=False)
+    def llms_txt(request: Request) -> PlainTextResponse:
+        """Descoberta por agentes de IA (convencao nao oficial; o Google nao a le): resumo curto em ingles, sem localizar (ver docs/SEO.md)."""
+        return PlainTextResponse(seo.llms(seo.url_publica(request)), headers={"Cache-Control": "public, max-age=3600"})
+
     @app.get("/{caminho:path}", include_in_schema=False)
     def frontend_estatico(caminho: str, request: Request):
         """Ficheiros do frontend e as paginas da SPA. `/api...` nunca cai aqui.
@@ -469,6 +474,8 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             cabecalhos = {"Cache-Control": "public, max-age=31536000, immutable"} if alvo.parent.name == "assets" else {"Cache-Control": "public, max-age=86400"}
             if alvo.name == "sw.js":                                                  # o browser tem de ver sempre a versao nova do service worker
                 cabecalhos = {"Cache-Control": "no-cache"}
+            elif alvo.name == "og-imagem.png":                                        # pesada e sem nome com hash: 1 semana (o `ETag` valida o resto se mudar entretanto)
+                cabecalhos = {"Cache-Control": "public, max-age=604800"}
             return _enviar(alvo, request, cabecalhos)
         lg, sem_prefixo = seo.separar_lingua(caminho)
         if lg == "pt-prefixado":                                                    # /pt/tutorial -> /tutorial (um so URL por pagina)

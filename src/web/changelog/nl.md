@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.92.0 — 2026-11-26
+
+### Opgelost
+- **Tekst van stap 4 („Bestemming”) op de site**: de tutorial en de homepage zeiden „kies de map waarin de PDF's worden opgeslagen”, wat alleen klopt voor de Windows-app — op de site worden de bestanden automatisch via de browser gedownload. De tekst van de site noemt nu geen map meer.
+
 ## 3.91.0 — 2026-11-26
 
 ### Verbeterd

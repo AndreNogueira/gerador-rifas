@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.92.0 — 2026-11-26
+
+### Naprawione
+- **Tekst kroku 4 („Cel”) na stronie**: samouczek i strona główna mówiły „wybierz folder, w którym zapisać pliki PDF”, co jest prawdą tylko w aplikacji Windows — na stronie pliki pobierają się automatycznie przez przeglądarkę. Tekst strony nie mówi już o żadnym folderze.
+
 ## 3.91.0 — 2026-11-26
 
 ### Ulepszono

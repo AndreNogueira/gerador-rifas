@@ -458,7 +458,7 @@
   nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 4px;
+    gap: 8px 16px; // espaço confortável entre as ligações (WCAG 2.5.8): antes 4px, quase sem separação visual
   }
   // alvos de toque confortaveis (44 px de altura) em ecras de toque
   nav a {

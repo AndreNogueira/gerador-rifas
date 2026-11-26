@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.92.0 — 2026-11-26
+
+### Đã sửa
+- **Văn bản bước 4 («Nơi lưu») trên trang web**: hướng dẫn và trang chủ ghi «chọn thư mục lưu các tệp PDF», điều này chỉ đúng với ứng dụng Windows — trên trang web, các tệp được trình duyệt tự động tải xuống. Văn bản của trang web không còn nhắc đến thư mục nào nữa.
+
 ## 3.91.0 — 2026-11-26
 
 ### Cải thiện

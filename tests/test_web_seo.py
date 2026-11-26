@@ -10,7 +10,7 @@ pytest.importorskip("fastapi", reason="a webapp precisa do grupo `web` (uv sync)
 from fastapi.testclient import TestClient
 from web import app as modulo_app
 from core import i18n, tutorial
-from web import guias, seo
+from web import changelog, guias, seo
 from web.app import criar_app
 
 INDEX = (
@@ -130,6 +130,24 @@ def test_sitemap_so_tem_as_paginas_publicas(publico):
     paginas = ["/", "/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/como-fazer", "/rifas-para-escolas", "/rifas-para-associacoes", "/rifas-para-clubes", "/rifas-para-bombeiros", "/rifas-para-festas", "/rifas-para-igrejas", "/precario", "/como-fazer-o-precario-de-uma-festa", "/como-numerar-bilhetes-de-rifa", "/sorteio-de-rifa-verificavel", "/quantos-bilhetes-de-rifa-fazer", "/termos", "/privacidade", "/contacto", "/changelog"]
     assert urls[::len(i18n.LINGUAS)] == [f"{URL}{c}" for c in paginas]                    # por pagina: primeiro o portugues (sem prefixo), depois as outras com prefixo (ver test_web_seo_linguas.py)
     assert len(urls) == 22 * len(i18n.LINGUAS) and len(set(urls)) == len(urls)
+
+
+def test_sitemap_tem_lastmod_da_versao_atual(publico):
+    r = publico.get("/sitemap.xml")
+    ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    raiz = ElementTree.fromstring(r.text)
+    datas = {e.text for e in raiz.findall("s:url/s:lastmod", ns)}
+    assert datas == {changelog.entradas("pt")[0].data}                # a data da versao atual (CHANGELOG.md), igual em todas as paginas
+    assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", datas.pop())
+    for url in raiz.findall("s:url", ns):                             # <lastmod> logo depois de <loc>, antes das alternativas de lingua
+        filhos = [e.tag.split("}")[-1] for e in url]
+        assert filhos[:2] == ["loc", "lastmod"]
+
+
+def test_llms_txt(publico):
+    r = publico.get("/llms.txt")
+    assert r.status_code == 200 and r.headers["content-type"].startswith("text/plain")
+    assert f"{URL}/como-fazer" in r.text and f"{URL}/api/v1/docs" in r.text
 
 
 def test_rotas_desconhecidas_sao_404_a_serio_e_nao_se_indexam(publico):

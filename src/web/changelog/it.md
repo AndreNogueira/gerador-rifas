@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.92.0 — 2026-11-26
+
+### Risolto
+- **Testo del passo 4 («Destinazione») sul sito**: il tutorial e la home page dicevano «scegli la cartella dove salvare i PDF», vero solo nell'app Windows — sul sito i file si scaricano automaticamente dal browser. Il testo del sito non parla più di alcuna cartella.
+
 ## 3.91.0 — 2026-11-26
 
 ### Migliorato

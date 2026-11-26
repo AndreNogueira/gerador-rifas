@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.92.0 — 2026-11-26
+
+### Düzeltildi
+- **Sitede 4. adımın («Hedef») metni**: eğitim ve ana sayfa «PDF'lerin kaydedileceği klasörü seçin» diyordu, bu yalnızca Windows uygulaması için doğru — sitede dosyalar tarayıcı tarafından otomatik olarak indirilir. Sitenin metni artık hiçbir klasörden söz etmiyor.
+
 ## 3.91.0 — 2026-11-26
 
 ### İyileştirildi

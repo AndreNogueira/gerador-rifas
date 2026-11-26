@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.92.0 — 2026-11-26
+
+### Corrigido
+- **Texto do passo «4 Destino», no site**: o tutorial e a página inicial diziam «escolha a pasta onde guardar os PDFs», que só é verdade na app Windows — no site os ficheiros descarregam-se automaticamente pelo browser. O texto do site já não fala em pasta nenhuma.
+
 ## 3.91.0 — 2026-11-26
 
 ### Melhorado

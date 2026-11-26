@@ -13,6 +13,7 @@ def c(tmp_path):
     (dist / "index.html").write_text('<html><head><!--seo:cabecalho--></head><body><div id="raiz"><!--seo:corpo--></div></body></html>', encoding="utf-8")
     (dist / "sw.js").write_text("// sw", encoding="utf-8")
     (dist / "assets" / "a.js").write_text("1", encoding="utf-8")
+    (dist / "og-imagem.png").write_bytes(b"\x89PNG\r\n\x1a\n")
     with TestClient(criar_app(frontend=dist, armazenamento=tmp_path / "dados")) as cliente:
         yield cliente
 
@@ -25,3 +26,8 @@ def test_o_service_worker_nunca_fica_em_cache_no_browser(c):
 
 def test_os_ficheiros_com_hash_ficam_em_cache_para_sempre(c):
     assert "immutable" in c.get("/assets/a.js").headers["cache-control"]
+
+
+def test_a_imagem_og_fica_uma_semana_em_cache_sem_nome_com_hash(c):
+    r = c.get("/og-imagem.png")
+    assert r.status_code == 200 and r.headers["cache-control"] == "public, max-age=604800"

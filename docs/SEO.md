@@ -14,10 +14,11 @@ Cada língua tem o seu URL (`seo.caminho_na_lingua`): o **português sem prefixo
 
 `src/web/seo.py` + `src/web/app.py`. Para cada página conhecida (`/`, `/tutorial`, `/video`, `/sobre`) o servidor monta o `index.html` compilado com:
 
-- **`<head>` próprio**: `<title>` (≤ 65 caracteres) e `description` (60–160) distintos por página, `robots`, **canónico**, **Open Graph** e **Twitter Card** (imagem 1200×630, `public/og-imagem.png`) e, na página inicial, **JSON-LD** `WebApplication` (grátis, 18 línguas, categoria utilitários).
+- **`<head>` próprio**: `<title>` (≤ 65 caracteres) e `description` (60–160) distintos por página, `robots`, **canónico**, **Open Graph** e **Twitter Card** (imagem 1200×630, `public/og-imagem.png`, ~115 KB; sem nome com hash, por isso `Cache-Control: public, max-age=604800` — 1 semana, não 1 ano — para não ficar presa a uma versão antiga se a imagem mudar) e, na página inicial, **JSON-LD** `WebApplication` (grátis, 18 línguas, categoria utilitários).
 - **Texto real no corpo** (`<div class="seo-estatico">` dentro de `#raiz`): um `h1` por página, os passos, e no `/tutorial` os 8 tópicos completos. O React substitui-o ao arrancar e o CSS esconde-o até lá (não se vê, mas redes sociais e robôs sem JS leem-no). Há também um `<noscript>`.
 - **`/robots.txt`**: tudo aberto (incluindo o JS e o CSS, de que o Google precisa para desenhar a página), menos `/api/` e `/admin`, e a linha `Sitemap:`.
-- **`/sitemap.xml`**: só as páginas públicas.
+- **`/llms.txt`**: convenção (não oficial; o Google não a lê) para agentes de IA — resumo curto em inglês (sem localizar, é só para máquinas) com ligação ao índice de guias e à documentação pública da API (`seo.llms`).
+- **`/sitemap.xml`**: só as páginas públicas, cada uma com `<lastmod>` — a data da versão atual (`CHANGELOG.md`, a mesma para o site inteiro: não há, por agora, uma data por página a sério, e os textos de SEO podem mudar no painel sem deploy nenhum, ver `seo_bd.py` abaixo).
 - **404 a sério**: qualquer rota que não exista devolve **404** (com `noindex` e sem canónico), em vez de uma página inicial com 200 («soft 404»). `/tutorial/` redireciona (301) para `/tutorial`, `/index.html` é a página inicial, e a query (`?p=3`) não conta.
 - **`X-Robots-Tag: noindex`** na API e no `/health`.
 

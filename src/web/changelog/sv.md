@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.92.0 — 2026-11-26
+
+### Åtgärdat
+- **Text för steg 4 (”Mål”) på webbplatsen**: handledningen och startsidan sa ”välj mappen där PDF-filerna sparas”, vilket bara stämmer i Windows-appen — på webbplatsen laddas filerna ner automatiskt via webbläsaren. Webbplatsens text nämner nu ingen mapp.
+
 ## 3.91.0 — 2026-11-26
 
 ### Förbättrat

@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.92.0 — 2026-11-26
+
+### Corregido
+- **Texto del paso 4 («Destino») en el sitio**: el tutorial y la página de inicio decían «elija la carpeta donde guardar los PDF», cierto solo en la app de Windows — en el sitio, los archivos se descargan automáticamente por el navegador. El texto del sitio ya no habla de ninguna carpeta.
+
 ## 3.91.0 — 2026-11-26
 
 ### Mejorado
