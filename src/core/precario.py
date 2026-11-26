@@ -288,11 +288,22 @@ def logo_de_dados(dados) -> bytes:
 
 
 @lru_cache(maxsize=128)
-def _imagem(emoji: str):
+def _imagem(emoji: str, cor: tuple = ()):
+    """A imagem de um ícone, pronta para `drawImage`. As bibliotecas de contorno (`cat.FONTES_EXTRA[fonte].monocromatica`)
+    são pretas sobre transparente (ver scripts/gerar_icones_precario.py): pintam-se da `cor` do texto do momento,
+    copiando o alfa (a forma) para uma imagem sólida dessa cor — nunca se desenham a preto a sério. As outras bibliotecas
+    (coloridas) ignoram `cor` e desenham-se tal e qual."""
     from PIL import Image
     from reportlab.lib.utils import ImageReader
+    fonte = emoji.split(":", 1)[0] if ":" in emoji else ""
+    info = cat.FONTES_EXTRA.get(fonte)
     with Image.open(caminho_icone(emoji)) as im:
-        return ImageReader(im.convert("RGBA"))
+        im = im.convert("RGBA")
+        if cor and info and info.monocromatica:
+            tingida = Image.new("RGBA", im.size, tuple(round(v * 255) for v in cor) + (255,))
+            tingida.putalpha(im.getchannel("A"))
+            im = tingida
+        return ImageReader(im)
 
 
 def _ajustado(texto: str, negrito: bool, tamanho: float, maximo: float, minimo: float) -> tuple[str, float]:
@@ -471,11 +482,11 @@ def _item(c, p: Precario, d, ln: Linha, x: float, y_topo: float, largura: float,
         lado = linha_h * 0.92 * 0.75
         passo = min(lado * 0.72, (linha_h * 0.92 * 2.1 - lado) / (len(ln.combo) - 1))
         for i, a in enumerate(ln.combo):
-            c.drawImage(_imagem(cat.ARTIGOS[a].emoji), x + i * passo, y_topo - linha_h / 2 - lado / 2, lado, lado, mask="auto")
+            c.drawImage(_imagem(cat.ARTIGOS[a].emoji, negro), x + i * passo, y_topo - linha_h / 2 - lado / 2, lado, lado, mask="auto")
         x_texto = x + lado + (len(ln.combo) - 1) * passo + 8 * f * sf
     elif p.imagens and emoji:
         lado = linha_h * 0.92
-        c.drawImage(_imagem(emoji), x, y_topo - linha_h / 2 - lado / 2, lado, lado, mask="auto")
+        c.drawImage(_imagem(emoji, negro), x, y_topo - linha_h / 2 - lado / 2, lado, lado, mask="auto")
         x_texto = x + lado + 8 * f * sf
     elif p.imagens:
         x_texto = x + linha_h * 0.92 + 8 * f * sf

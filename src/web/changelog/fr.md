@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.89.0 — 2026-11-26
+
+### Amélioré
+- **Trois bibliothèques d'images de contour de plus dans le tarif : Tabler Icons, Lucide et Material Symbols** (sans exiger de crédit) : plus de 100 articles ont gagné des alternatives de ces bibliothèques, choisies une à une pour bien représenter l'article (contrairement aux précédentes, il n'y a pas de moyen automatique de les trouver). Contrairement aux images en couleur, celles-ci se peignent de la couleur du texte du moment — du site, de l'appli Windows ou du papier choisi dans le PDF — pour ne jamais devenir invisibles sur un thème sombre ou un papier sombre.
+
 ## 3.88.0 — 2026-11-21
 
 ### Amélioré

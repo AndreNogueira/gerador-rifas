@@ -12,6 +12,7 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 
 from . import precario_dados as dados
+from . import precario_icones_linha as icones_linha
 from . import ptbr
 
 LINGUAS = dados.LINGUAS + ("pt-br",)
@@ -26,14 +27,20 @@ class Fonte:
     nome: str            # nome próprio da biblioteca (não se traduz, como os nomes dos temas)
     licenca: str         # identificador curto (SPDX ou parecido) a mostrar ao lado do nome
     credito: bool        # True = tem de aparecer um crédito visível (site e PDF) sempre que uma imagem sua é usada
+    monocromatica: bool = False   # True = ícone de contorno (preto sobre transparente) que se pinta da cor do texto em vez de se desenhar tal e qual
 
 
 # bibliotecas de ícones extra (além do Noto Emoji curado), cada uma numa subpasta própria de core/icones_precario/
-# e public/precario/; a ordem é a da escolha (Noto primeiro, sempre) e a que o seletor agrupa
+# e public/precario/; a ordem é a da escolha (Noto primeiro, sempre) e a que o seletor agrupa. As três últimas são
+# de contorno (core.precario_icones_linha diz qual o ícone de cada código: não são nomeadas pelo código Unicode
+# como as outras, por isso a escolha foi manual) e pintam-se da cor do texto onde quer que apareçam (ver `monocromatica`).
 FONTES_EXTRA: dict[str, Fonte] = {
     "fluent": Fonte("Fluent Emoji", "MIT", credito=False),
     "twemoji": Fonte("Twemoji", "CC BY 4.0", credito=True),
     "openmoji": Fonte("OpenMoji", "CC BY-SA 4.0", credito=True),
+    "tabler": Fonte("Tabler Icons", "MIT", credito=False, monocromatica=True),
+    "lucide": Fonte("Lucide", "ISC", credito=False, monocromatica=True),
+    "material": Fonte("Material Symbols", "Apache 2.0", credito=False, monocromatica=True),
 }
 MAX_ICONES_TOTAL = MAX_ICONES * (1 + len(FONTES_EXTRA))   # tecto com as alternativas de todas as bibliotecas incluídas
 
@@ -100,8 +107,22 @@ for _l in _linhas(dados.ICONES):
     ARTIGOS[_l[0]] = replace(ARTIGOS[_l[0]], icones=(ARTIGOS[_l[0]].emoji, *_extra))
 def _alternativas_extra(codigos: tuple) -> tuple:
     """Para cada código Noto Emoji que o artigo já tem, acrescenta "<fonte>:<código>" de cada biblioteca extra que
-    tenha essa mesma imagem vendida (`_PASTA_ICONES/<fonte>/<código>.png`): nunca troca nada, só junta mais à escolha."""
-    return tuple(f"{fonte}:{c}" for fonte in FONTES_EXTRA for c in codigos if (_PASTA_ICONES / fonte / f"{c}.png").is_file())
+    tenha essa mesma imagem vendida (`_PASTA_ICONES/<fonte>/<código>.png`): nunca troca nada, só junta mais à escolha.
+    Nas bibliotecas de contorno (`monocromatica`), vários códigos do mesmo artigo podem usar o mesmo ícone (ex.:
+    "livro" tem 5 cores de capa, todas com o mesmo ícone genérico de livro) — só a 1.ª aparece, as repetidas seriam
+    a mesma imagem outra vez."""
+    extra = []
+    vistos = set()
+    for fonte, info in FONTES_EXTRA.items():
+        for c in codigos:
+            if not (_PASTA_ICONES / fonte / f"{c}.png").is_file():
+                continue
+            chave = (fonte, icones_linha.MAPAS[fonte][c]) if info.monocromatica else (fonte, c)
+            if chave in vistos:
+                continue
+            vistos.add(chave)
+            extra.append(f"{fonte}:{c}")
+    return tuple(extra)
 
 
 for _id, _a in ARTIGOS.items():

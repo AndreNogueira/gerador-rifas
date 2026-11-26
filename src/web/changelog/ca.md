@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.89.0 — 2026-11-26
+
+### Millores
+- **Tres biblioteques més d'imatges de contorn al preçari: Tabler Icons, Lucide i Material Symbols** (sense exigir crèdit): més de 100 articles han guanyat alternatives d'aquestes biblioteques, triades una a una per representar de debò l'article (a diferència de les anteriors, no hi ha manera automàtica de trobar-les). A diferència de les imatges en color, aquestes es pinten del color del text del moment — del lloc, de l'app Windows o del paper triat al PDF — perquè mai quedin invisibles en un tema fosc o un paper fosc.
+
 ## 3.88.0 — 2026-11-21
 
 ### Millores

@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.89.0 — 2026-11-26
+
+### Verbeterd
+- **Drie contourafbeeldingenbibliotheken meer in de prijslijst: Tabler Icons, Lucide en Material Symbols** (zonder vermelding te vereisen): meer dan 100 artikelen kregen alternatieven uit deze bibliotheken, één voor één gekozen om het artikel echt weer te geven (in tegenstelling tot de vorige is er geen automatische manier om ze te vinden). In tegenstelling tot de kleurenafbeeldingen krijgen deze de kleur van de tekst op dat moment — van de site, de Windows-app of het gekozen PDF-papier — zodat ze nooit onzichtbaar worden op een donker thema of donker papier.
+
 ## 3.88.0 — 2026-11-21
 
 ### Verbeterd

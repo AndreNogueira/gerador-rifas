@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.89.0 — 2026-11-26
+
+### Förbättrat
+- **Tre bildbibliotek till med konturikoner i prislistan: Tabler Icons, Lucide och Material Symbols** (utan krav på kreditering): över 100 artiklar fick alternativ från dessa bibliotek, valda en och en för att verkligen representera artikeln (till skillnad från de tidigare finns det inget automatiskt sätt att hitta dem). Till skillnad från färgbilderna målas dessa i textens aktuella färg — på webbplatsen, i Windows-appen eller på det valda PDF-papperet — så att de aldrig blir osynliga i ett mörkt tema eller på mörkt papper.
+
 ## 3.88.0 — 2026-11-21
 
 ### Förbättrat

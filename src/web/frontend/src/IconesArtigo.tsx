@@ -15,7 +15,15 @@ export const NOME_FONTE: Record<string, string> = {
   fluent: "Fluent Emoji",
   twemoji: "Twemoji",
   openmoji: "OpenMoji",
+  tabler: "Tabler Icons",
+  lucide: "Lucide",
+  material: "Material Symbols",
 };
+
+/** Bibliotecas de contorno (preto sobre transparente, ver scripts/gerar_icones_precario.py): pintam-se da cor do
+ * texto do momento (`mask-image`, não `<img>`), em vez de aparecerem sempre a preto — invisíveis no tema escuro.
+ * Espelho de `core.precario_catalogo.FONTES_EXTRA[fonte].monocromatica`. */
+const MONOCROMATICAS = new Set(["tabler", "lucide", "material"]);
 
 function fonteDoId(id: string): string {
   const i = id.indexOf(":");
@@ -25,6 +33,15 @@ function fonteDoId(id: string): string {
 /** A imagem (o ícone) de um artigo do preçário: o emoji do catálogo em miniatura, ou um espaço em branco se não há. */
 export function Miniatura({ emoji, className = "" }: { emoji: string; className?: string }) {
   if (!emoji) return <span className={`precario-sem-imagem ${className}`} aria-hidden="true" />;
+  if (MONOCROMATICAS.has(fonteDoId(emoji))) {
+    return (
+      <span
+        className={`precario-icone-linha ${className}`}
+        style={{ maskImage: `url(${caminhoIcone(emoji)})`, WebkitMaskImage: `url(${caminhoIcone(emoji)})` }}
+        aria-hidden="true"
+      />
+    );
+  }
   return (
     <img
       className={className}
@@ -38,7 +55,7 @@ export function Miniatura({ emoji, className = "" }: { emoji: string; className?
   );
 }
 
-/** As imagens que o catálogo oferece a um artigo (até 16, entre o Noto Emoji curado e outras bibliotecas): a pessoa escolhe a que mais gosta; a de omissão é a primeira. */
+/** As imagens que o catálogo oferece a um artigo (até 56, entre o Noto Emoji curado e outras bibliotecas): a pessoa escolhe a que mais gosta; a de omissão é a primeira. */
 export function IconesArtigo({
   chave,
   nome,

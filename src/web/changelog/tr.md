@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.89.0 — 2026-11-26
+
+### İyileştirildi
+- **Fiyat listesinde üç kontur görsel kütüphanesi daha: Tabler Icons, Lucide ve Material Symbols** (atıf gerektirmez): 100'den fazla ürün bu kütüphanelerden, ürünü gerçekten temsil etsin diye tek tek seçilmiş alternatifler kazandı (öncekilerin aksine bunları otomatik bulmanın bir yolu yok). Renkli görsellerin aksine bunlar anlık metin rengiyle boyanır — sitenin, Windows uygulamasının ya da PDF'de seçilen kağıdın rengiyle — böylece koyu bir temada ya da koyu bir kağıtta asla görünmez olmazlar.
+
 ## 3.88.0 — 2026-11-21
 
 ### İyileştirildi

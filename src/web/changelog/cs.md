@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.89.0 — 2026-11-26
+
+### Vylepšeno
+- **Další tři knihovny obrysových obrázků v ceníku: Tabler Icons, Lucide a Material Symbols** (bez nutnosti uvedení autora): více než 100 položek získalo alternativy z těchto knihoven, vybrané jednotlivě tak, aby skutečně odpovídaly dané položce (na rozdíl od předchozích je nelze najít automaticky). Na rozdíl od barevných obrázků se tyto vykreslují barvou aktuálního textu — webu, aplikace pro Windows nebo zvoleného papíru v PDF — aby nikdy nezmizely na tmavém motivu nebo tmavém papíru.
+
 ## 3.88.0 — 2026-11-21
 
 ### Vylepšeno

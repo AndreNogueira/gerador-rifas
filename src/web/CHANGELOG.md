@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.89.0 — 2026-11-26
+
+### Melhorado
+- **Mais três bibliotecas de imagens no preçário, de contorno: Tabler Icons, Lucide e Material Symbols** (todas sem exigir crédito): mais de 100 artigos ganharam alternativas destas bibliotecas, escolhidas uma a uma para representarem mesmo o artigo (não há forma automática de as encontrar, ao contrário das anteriores). Ao contrário das imagens coloridas, estas pintam-se da cor do texto do momento — do site, da app Windows ou do papel escolhido no PDF — para nunca ficarem invisíveis num tema escuro ou num papel escuro.
+
 ## 3.88.0 — 2026-11-21
 
 ### Melhorado

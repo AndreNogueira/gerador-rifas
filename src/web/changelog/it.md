@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.89.0 — 2026-11-26
+
+### Migliorato
+- **Altre tre raccolte di immagini di contorno nel listino: Tabler Icons, Lucide e Material Symbols** (senza richiedere credito): oltre 100 articoli hanno guadagnato alternative da queste raccolte, scelte una per una per rappresentare davvero l'articolo (a differenza delle precedenti, non c'è un modo automatico per trovarle). A differenza delle immagini a colori, queste si colorano del colore del testo del momento — del sito, dell'app Windows o della carta scelta nel PDF — per non diventare mai invisibili su un tema scuro o una carta scura.
+
 ## 3.88.0 — 2026-11-21
 
 ### Migliorato

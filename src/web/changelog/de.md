@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.89.0 — 2026-11-26
+
+### Verbessert
+- **Drei weitere Konturbild-Bibliotheken in der Preisliste: Tabler Icons, Lucide und Material Symbols** (ohne Namensnennung): über 100 Artikel erhielten Alternativen aus diesen Bibliotheken, einzeln ausgewählt, um den Artikel wirklich darzustellen (anders als bei den vorherigen gibt es keine automatische Methode, sie zu finden). Anders als die Farbbilder werden diese in der aktuellen Textfarbe gezeichnet — der Seite, der Windows-App oder des gewählten PDF-Papiers — damit sie in einem dunklen Thema oder auf dunklem Papier nie unsichtbar werden.
+
 ## 3.88.0 — 2026-11-21
 
 ### Verbessert

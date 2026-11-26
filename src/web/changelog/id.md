@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.89.0 — 2026-11-26
+
+### Ditingkatkan
+- **Tiga pustaka gambar garis besar lagi di daftar harga: Tabler Icons, Lucide, dan Material Symbols** (tanpa mewajibkan kredit): lebih dari 100 item mendapat alternatif dari pustaka ini, dipilih satu per satu agar benar-benar mewakili item tersebut (berbeda dari yang sebelumnya, tidak ada cara otomatis untuk menemukannya). Berbeda dari gambar berwarna, gambar ini diwarnai sesuai warna teks saat itu — situs, aplikasi Windows, atau kertas yang dipilih di PDF — sehingga tidak pernah menjadi tak terlihat pada tema gelap atau kertas gelap.
+
 ## 3.88.0 — 2026-11-21
 
 ### Ditingkatkan

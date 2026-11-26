@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.89.0 — 2026-11-26
+
+### Improved
+- **Three more outline picture libraries in the price list: Tabler Icons, Lucide and Material Symbols** (no credit required): over 100 items gained alternatives from these libraries, picked one by one to truly represent the item (unlike the earlier ones, these can't be matched automatically). Unlike the colour pictures, these take the colour of the current text — on the site, in the Windows app, or on the chosen PDF paper — so they never become invisible on a dark theme or a dark paper.
+
 ## 3.88.0 — 2026-11-21
 
 ### Improved

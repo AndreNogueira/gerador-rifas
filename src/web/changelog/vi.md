@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.89.0 — 2026-11-26
+
+### Cải thiện
+- **Thêm ba thư viện hình viền nữa trong bảng giá: Tabler Icons, Lucide và Material Symbols** (không yêu cầu ghi công): hơn 100 mặt hàng có thêm lựa chọn thay thế từ các thư viện này, được chọn từng cái một để thể hiện đúng mặt hàng (khác với các thư viện trước, không có cách nào tự động tìm ra chúng). Khác với hình ảnh màu, các hình này được tô theo màu chữ hiện tại — của trang web, ứng dụng Windows, hoặc giấy đã chọn trong PDF — để không bao giờ trở nên vô hình trên giao diện tối hoặc giấy tối màu.
+
 ## 3.88.0 — 2026-11-21
 
 ### Cải thiện
