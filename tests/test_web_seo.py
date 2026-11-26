@@ -304,7 +304,7 @@ def test_os_guias_sem_article_fora_das_paginas_de_guia(publico):
 
 
 def test_todos_os_guias_tem_data_de_criacao_honesta_no_ficheiro():
-    assert set(guias.DATAS_CRIACAO) == set(guias.CAMINHOS)
+    assert set(guias.DATAS_CRIACAO) == set(guias.CAMINHOS), "guia novo: acrescenta a data do commit que o cria a guias.DATAS_CRIACAO"
     for nome, data in guias.DATAS_CRIACAO.items():
         assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", data), (nome, data)
 

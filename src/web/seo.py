@@ -130,8 +130,10 @@ def _texto_funcionalidade(id_: str, lg: str) -> str:
 
 
 def _corpo_sorteio(lg: str) -> str:
+    guia = guias.CAMINHOS["sorteio"]
     return (f"<h1>{html.escape(_nome_pagina('web_sorteio')(lg))}</h1><p>{html.escape(texto('d_sorteio', lg))}</p>"
-            f"<p>{html.escape(_texto_funcionalidade('sorteio', lg))}</p>{_voltar(lg)}")
+            f"<p>{html.escape(_texto_funcionalidade('sorteio', lg))}</p>"
+            f"<p><a href=\"{_l(lg, guia)}\">{html.escape(guias.guia('sorteio', lg)['titulo'])}</a></p>{_voltar(lg)}")
 
 
 def _corpo_opiniao(chave: str) -> Callable[[str], str]:
