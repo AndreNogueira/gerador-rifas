@@ -25,6 +25,16 @@ for _nome in DADOS:
 N_PASSOS, N_DICAS = 5, 3
 INDICE = "/como-fazer"                                # a pagina que lista todos os guias e liga a cada um (e cada guia liga de volta)
 
+# `datePublished` do `Article` de cada guia (ver `seo.py`): a data do commit que criou o ficheiro `<nome>.py` (`git log --follow --format=%ad
+# --date=short -- src/web/guias/<nome>.py`), tirada uma vez e fixada aqui — a imagem Docker não leva `.git` e cada guia só tem, até agora, esse
+# único commit (nunca uma data inventada nem a mesma para todas as paginas: ver docs/SEO.md). SEM `dateModified`: o painel pode reescrever o
+# texto de um guia sem deploy nenhum (`seo_bd.py`), por isso nao ha maneira honesta de saber quando foi a ultima mudanca a serio.
+DATAS_CRIACAO: dict[str, str] = {
+    "escolas": "2026-11-14", "associacoes": "2026-11-14", "clubes": "2026-11-14", "bombeiros": "2026-11-14",
+    "festas": "2026-11-14", "igrejas": "2026-11-14", "numerar": "2026-11-19", "sorteio": "2026-11-19",
+    "quantos": "2026-11-19", "precario": "2026-11-20",
+}
+
 
 def resumo(intro: str, maximo: int = 170) -> str:
     """A primeira frase da introducao (ate ao primeiro ponto final), cortada em `maximo` letras: o que se mostra ao lado de cada guia no indice."""

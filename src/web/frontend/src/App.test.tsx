@@ -82,6 +82,10 @@ describe("carregar ficheiros", () => {
     abrir();
     await screen.findByRole("heading", { name: "Gerador de Rifas" });
     await waitFor(() => expect(t("upload-template")).toBeInTheDocument());
+    // os <input type="file"> escondidos têm o mesmo rótulo do botão visível que lhes dá o clique, não só este
+    // (o atributo "hidden" tira-os da árvore de acessibilidade do browser, mas algumas ferramentas leem o atributo direto do DOM)
+    expect(t("upload-template")).toHaveAttribute("aria-label", expect.stringContaining("Canva"));
+    expect(t("upload-algarismos")).toHaveAttribute("aria-label", expect.stringContaining("PNG"));
     await carregarTemplateEAlgarismos();
     expect(servidor.chamadas("PUT", /template$/)[0]?.nome).toBe("Rifa Natal.pdf");
     expect(t("titulo-visor")).toHaveTextContent("Template");
