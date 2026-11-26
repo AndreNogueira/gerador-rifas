@@ -437,6 +437,15 @@
     background: #fff;
   }
 }
+// o seletor de língua mostra o nome nativo de cada uma (p.ex. «Tiếng Việt», «Čeština»): usa a letra do sistema em vez
+// da `--fonte-controlos` (a Bricolage Grotesque da marca) para não obrigar o browser a ir buscar os subconjuntos de
+// glifos latin-ext/vietnamese só para os mostrar nesta lista — um atraso no LCP e, por vezes, um salto de layout
+// (CLS) quando esses subconjuntos chegam tarde, apontado por uma auditoria externa de desempenho (não medido nos
+// testes deste repositório). Só este seletor: os outros (visual, tema) e os botões ficam com a letra da marca.
+.seletor select[data-testid="lingua"],
+.menu-burger .seletor-menu select[data-testid="burger-lingua"] {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
 .rodape {
   color: var(--rodape-texto);
   font-size: 0.85rem;

@@ -2,6 +2,14 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.90.0 — 2026-11-26
+
+### Opgelost
+- **De Portugese pagina wisselt niet meer zelf van taal**: het bezoeken van een adres zonder voorvoegsel (`/`, `/tutorial`, …) zonder dat de browser Portugees als taal doorgeeft — het geval bij veel zoekmachine-crawlers en sommige browsers — liet de site zelf de URL en alle inhoud naar Engels herschrijven. Zonder voorvoegsel betekent nu altijd Portugees, zoals bedoeld; de 21 talen met voorvoegsel werken gewoon door. `robots.txt` blokkeert ook niet langer volledig `/api/linguas`, `/api/textos`, `/api/guia(s)` en de documentatie van de publieke API (`/api/v1/docs`), zodat zoekmachines de site goed kunnen renderen en indexeren.
+
+### Verbeterd
+- **Snellere taalkiezer**: de eigen namen van de talen in de kiezer (zoals «Tiếng Việt» of «Čeština») gebruiken nu het systeemlettertype in plaats van het merklettertype, waardoor de pagina geen extra glyphs meer moet downloaden om ze te tonen — dat vertraagde eerder de hoofdtekst en verschoof die soms.
+
 ## 3.89.0 — 2026-11-26
 
 ### Verbeterd

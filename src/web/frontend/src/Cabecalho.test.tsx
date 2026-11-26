@@ -1,5 +1,7 @@
+import { join } from "node:path";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import * as sass from "sass";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 import { calcularOcultos, type ItemId, SAI_PRIMEIRO } from "./Cabecalho";
@@ -144,5 +146,19 @@ describe("o menu «hambúrguer» no cabeçalho", () => {
     expect(menu.getByTestId("burger-reportar")).toHaveAttribute("href", "/reportar-problema");
     expect(screen.queryByTestId("nav-ajuda")).toBeNull();
     expect(screen.queryByTestId("partilhar-abrir-topo")).toBeNull();
+  });
+});
+
+describe("letra do seletor de língua", () => {
+  it("usa a letra do sistema, não a da marca (evita descarregar glifos extra só para os nomes nativos)", () => {
+    const css = sass.compile(join(__dirname, "estilos/_cabecalho.scss"), { style: "expanded" }).css;
+    const bloco = css.match(/([^{}]+)\{\s*font-family:\s*system-ui[^}]*\}/);
+    expect(bloco, "falta a regra do seletor de língua com a letra do sistema").toBeTruthy();
+    const seletor = bloco?.[1] ?? "";
+    for (const testid of ["lingua", "burger-lingua"]) {
+      expect(seletor, `falta select[data-testid="${testid}"] nessa regra`).toContain(
+        `[data-testid=${testid}]`,
+      );
+    }
   });
 });

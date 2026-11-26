@@ -4,6 +4,14 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.90.0 — 2026-11-26
+
+### Corrigido
+- **Página em português já não troca de língua sozinha**: ao visitar um endereço sem prefixo (`/`, `/tutorial`, as páginas «Como fazer», …) sem dizer ao browser que a língua preferida é português — o caso de muitos motores de busca e de alguns browsers — o site reescrevia sozinho o URL e todo o conteúdo para inglês. O português sem prefixo passa a ser sempre português, como sempre esteve definido (`rota.tsx`); as 21 línguas com prefixo no URL continuam a funcionar como antes. O `robots.txt` deixa também de bloquear por completo os pedidos que o site faz a si mesmo para montar a página (`/api/linguas`, `/api/textos`, `/api/guia(s)`) e a documentação da API pública (`/api/v1/docs`), para os motores de busca conseguirem desenhar e indexar bem o site.
+
+### Melhorado
+- **Seletor de língua mais rápido**: os nomes nativos das línguas no seletor (como «Tiếng Việt» ou «Čeština») passam a usar a letra do sistema em vez da letra da marca — a página deixa de ter de ir buscar glifos extra só para os mostrar, o que atrasava a letra principal e por vezes empurrava o texto por baixo.
+
 ## 3.89.0 — 2026-11-26
 
 ### Melhorado

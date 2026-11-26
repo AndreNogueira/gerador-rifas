@@ -2,6 +2,14 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.90.0 — 2026-11-26
+
+### Diperbaiki
+- **Halaman berbahasa Portugis tidak lagi berganti bahasa sendiri**: membuka alamat tanpa prefiks (`/`, `/tutorial`, …) tanpa browser menyatakan bahasa Portugis — yang umum pada banyak crawler mesin pencari dan beberapa browser — membuat situs menulis ulang URL dan semua konten ke bahasa Inggris. Tanpa prefiks kini selalu berarti bahasa Portugis, sesuai rancangan; 21 bahasa berprefiks tetap bekerja seperti sebelumnya. `robots.txt` juga berhenti memblokir penuh `/api/linguas`, `/api/textos`, `/api/guia(s)` dan dokumentasi API publik (`/api/v1/docs`), agar mesin pencari bisa merender dan mengindeks situs dengan baik.
+
+### Ditingkatkan
+- **Pemilih bahasa lebih cepat**: nama asli bahasa pada pemilih (seperti «Tiếng Việt» atau «Čeština») kini memakai fon sistem, bukan fon merek, sehingga halaman tidak perlu lagi mengambil glyph tambahan hanya untuk menampilkannya — yang sebelumnya menunda teks utama dan kadang menggesernya.
+
 ## 3.89.0 — 2026-11-26
 
 ### Ditingkatkan

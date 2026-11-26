@@ -99,9 +99,11 @@ test.describe("capturas do tutorial do site", () => {
         }
       });
       const page = await contexto.newPage();
+      // a língua vem do URL, não do browser (sem prefixo é sempre português: ver `src/web/frontend/src/rota.tsx`)
+      const base = lg === "pt" ? "/" : `/${lg}`;
 
       // c: um template de uma só rifa (painel da folha)
-      await page.goto("/");
+      await page.goto(base);
       await page.waitForLoadState("networkidle"); // as 18 línguas vêm da API: só se carrega depois de o texto estar na página
       await carregar(page, "upload-template", "estado-template", fixture("template_exemplo_1_rifa.pdf"));
       await expect(page.getByTestId("papel")).toBeVisible();

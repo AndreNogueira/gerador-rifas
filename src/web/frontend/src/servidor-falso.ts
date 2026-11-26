@@ -327,6 +327,8 @@ export class ServidorFalso {
   /** o estado do trabalho a devolver enquanto "gera": uma lista que se vai gastando */
   passos: Trabalho[] = [];
   falhaSessaoPerdida = false;
+  /** O `por_defeito` de `/api/linguas` (um teste pode pôr uma língua diferente de "pt" para confirmar que o URL sem prefixo nunca a usa). */
+  porDefeito = "pt";
   donativoUrl = "";
   exportarErro = "";
   galeriaErro = "";
@@ -626,7 +628,7 @@ export class ServidorFalso {
       });
     if (url === "/api/linguas")
       return this.responder({
-        por_defeito: "pt",
+        por_defeito: this.porDefeito,
         linguas: [
           { codigo: "pt", nome: "Português" },
           { codigo: "en", nome: "English" },

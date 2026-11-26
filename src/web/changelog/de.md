@@ -2,6 +2,14 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.90.0 — 2026-11-26
+
+### Behoben
+- **Die portugiesische Seite wechselt nicht mehr von selbst die Sprache**: Beim Aufruf einer Adresse ohne Präfix (`/`, `/tutorial`, …), ohne dass der Browser Portugiesisch als Sprache meldet — der Fall bei vielen Suchmaschinen-Crawlern und manchen Browsern — schrieb die Seite URL und Inhalt heimlich auf Englisch um. Ohne Präfix bedeutet jetzt immer Portugiesisch, wie vorgesehen; die 21 Sprachen mit Präfix funktionieren weiter wie bisher. Die `robots.txt` blockiert außerdem `/api/linguas`, `/api/textos`, `/api/guia(s)` und die Dokumentation der öffentlichen API (`/api/v1/docs`) nicht mehr vollständig, damit Suchmaschinen die Seite richtig rendern und indexieren können.
+
+### Verbessert
+- **Schnellerer Sprachwähler**: Die einheimischen Sprachnamen im Wähler (wie „Tiếng Việt“ oder „Čeština“) nutzen jetzt die Systemschrift statt der Markenschrift, sodass die Seite keine zusätzlichen Glyphen mehr laden muss — das verzögerte bisher den Haupttext und verschob ihn manchmal.
+
 ## 3.89.0 — 2026-11-26
 
 ### Verbessert
