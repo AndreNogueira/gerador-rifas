@@ -44,7 +44,7 @@ jobs:
             exit 1
           }
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.3.3
+      - uses: astral-sh/setup-uv@v10.4.0
       - name: Compilar (app/construir.bat)
         shell: cmd
         run: app\construir.bat
