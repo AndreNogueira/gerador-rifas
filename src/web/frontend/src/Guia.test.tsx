@@ -58,4 +58,18 @@ describe("guias «como fazer»", () => {
       await screen.findByRole("heading", { level: 1, name: "Como fazer uma rifa para a associação" }),
     ).toBeInTheDocument();
   });
+
+  it("o guia do sorteio liga à sua própria ferramenta (/sorteio), não ao gerador", async () => {
+    abrir("/sorteio-de-rifa-verificavel");
+    const guia = await screen.findByTestId("guia-sorteio");
+    expect(await within(guia).findByTestId("guia-ferramenta")).toHaveAttribute("href", "/sorteio");
+    expect(within(guia).queryByTestId("guia-gerador")).not.toBeInTheDocument();
+  });
+
+  it("o guia do preçário liga à sua própria ferramenta (/precario), não ao gerador", async () => {
+    abrir("/como-fazer-o-precario-de-uma-festa");
+    const guia = await screen.findByTestId("guia-precario");
+    expect(await within(guia).findByTestId("guia-ferramenta")).toHaveAttribute("href", "/precario");
+    expect(within(guia).queryByTestId("guia-gerador")).not.toBeInTheDocument();
+  });
 });

@@ -319,7 +319,8 @@ progress {
   button,
   .botao,
   .navegacao a,
-  .seletor {
+  .seletor,
+  .galeria > summary {
     min-height: 44px;
   }
   .seletor select {

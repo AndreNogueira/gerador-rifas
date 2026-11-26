@@ -9,6 +9,7 @@ import {
   textoDaData,
 } from "./dataSorteio";
 import { useI18n } from "./i18n";
+import { Icone } from "./icones";
 import { SeletorData } from "./SeletorData";
 import { SeletorDesenho } from "./SeletorDesenho";
 import { useSessao } from "./sessao";
@@ -136,7 +137,10 @@ export function Galeria({ desativado }: { desativado: boolean }) {
 
   return (
     <details className="galeria" data-testid="galeria" onToggle={(e) => setAberto(e.currentTarget.open)}>
-      <summary>{t("web_galeria")}</summary>
+      <summary>
+        <Icone nome="paleta" />
+        {t("web_galeria")}
+      </summary>
       <SeletorDesenho
         opcoes={DESENHOS}
         valor={desenho}

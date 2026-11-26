@@ -2,6 +2,12 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.91.0 — 2026-11-26
+
+### Ditingkatkan
+- **Galeri desain kini memiliki bobot visual yang sama dengan mengunggah templat**: di halaman utama, memilih desain yang sudah jadi (tanpa Canva) tidak lagi menjadi tautan sekunder yang tersembunyi di bawah unggahan PDF — kini punya kotak dengan penonjolan yang sama.
+- **Lebih banyak tautan antar halaman**: panduan pengundian dan daftar harga kini menautkan ke alat mereka sendiri (`/sorteio`, `/precario`) daripada ke pembuat kupon undian, dan halaman utama kini juga menautkan ke indeks panduan "Cara melakukannya" (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Diperbaiki

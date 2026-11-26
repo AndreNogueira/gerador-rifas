@@ -2,6 +2,12 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.91.0 — 2026-11-26
+
+### Mejorado
+- **La galería de diseños gana el mismo peso visual que subir la plantilla**: en la página de inicio, elegir un diseño ya hecho (sin necesitar Canva) deja de ser un enlace secundario escondido debajo de la subida del PDF — ahora tiene una caja con el mismo protagonismo.
+- **Más enlaces entre páginas**: las guías del sorteo y del preçario pasan a enlazar con su propia herramienta (`/sorteio`, `/precario`) en lugar del generador de rifas, y la página de inicio también enlaza ahora con el índice de guías «Cómo hacerlo» (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Corregido

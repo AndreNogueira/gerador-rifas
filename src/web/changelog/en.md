@@ -2,6 +2,12 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.91.0 — 2026-11-26
+
+### Improved
+- **The design gallery now has the same visual weight as uploading the template**: on the homepage, picking an existing design (no Canva needed) is no longer a secondary link tucked below the PDF upload — it now sits in a box with equal prominence.
+- **More links between pages**: the draw and price-list guides now link to their own tool (`/sorteio`, `/precario`) instead of the raffle generator, and the homepage now also links to the "How to" guide index (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Fixed

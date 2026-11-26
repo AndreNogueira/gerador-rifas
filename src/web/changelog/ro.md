@@ -2,6 +2,12 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.91.0 — 2026-11-26
+
+### Îmbunătățit
+- **Galeria de modele are acum aceeași importanță vizuală ca încărcarea modelului**: pe pagina principală, alegerea unui model deja făcut (fără Canva) nu mai este un link secundar ascuns sub încărcarea PDF-ului — are acum o casetă la fel de evidențiată.
+- **Mai multe legături între pagini**: ghidurile pentru tragere și pentru lista de prețuri trimit acum către propriul instrument (`/sorteio`, `/precario`) în loc de generatorul de tombole, iar pagina principală trimite acum și către indexul de ghiduri „Cum se face” (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Corectat

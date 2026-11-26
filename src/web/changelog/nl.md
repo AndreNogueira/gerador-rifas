@@ -2,6 +2,12 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.91.0 — 2026-11-26
+
+### Verbeterd
+- **De sjablonengalerij heeft nu hetzelfde visuele gewicht als het uploaden van het sjabloon**: op de startpagina is het kiezen van een al gemaakt ontwerp (zonder Canva) niet langer een secundaire link onder de pdf-upload — het heeft nu een even opvallend vak.
+- **Meer koppelingen tussen pagina's**: de stappenplannen voor de trekking en de prijslijst verwijzen nu naar hun eigen tool (`/sorteio`, `/precario`) in plaats van naar de tombolagenerator, en de startpagina verwijst nu ook naar het overzicht van stappenplannen "Hoe werkt het" (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Opgelost

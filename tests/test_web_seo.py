@@ -199,6 +199,22 @@ def test_a_pagina_inicial_liga_aos_guias_em_todas_as_linguas(cliente):
             assert f'href="{esperado}"' in html, (lg, destino)
 
 
+def test_a_pagina_inicial_liga_tambem_ao_indice_dos_guias(cliente):
+    """`/como-fazer` (o índice) não é só um guia: sem esta ligação não tinha nenhuma entrada a partir da página inicial."""
+    assert 'href="/como-fazer"' in cliente.get("/").text
+    assert 'href="/en/como-fazer"' in cliente.get("/en/").text
+
+
+def test_os_guias_de_sorteio_e_precario_ligam_a_sua_propria_ferramenta(cliente):
+    """Ao contrário dos outros guias (por público, que ligam ao gerador «/»), estes dois guias são por TEMA e têm a sua própria página."""
+    sorteio = cliente.get(guias.CAMINHOS["sorteio"]).text
+    assert 'href="/sorteio"' in sorteio
+    precario = cliente.get(guias.CAMINHOS["precario"]).text
+    assert 'href="/precario"' in precario
+    escolas = cliente.get(guias.CAMINHOS["escolas"]).text
+    assert 'href="/"' in escolas
+
+
 # ------------------------------------------------------------------ o índice de guias, as ligações entre guias e as migalhas de pão
 def test_o_indice_lista_todos_os_guias_e_cada_guia_liga_aos_outros_e_ao_indice(cliente, publico):
     from web import guias
