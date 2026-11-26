@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.92.0 — 2026-11-26
+
+### Corectat
+- **Textul pasului 4 („Destinație”) pe site**: tutorialul și pagina principală spuneau „alege folderul în care se salvează PDF-urile”, adevărat doar în aplicația Windows — pe site, fișierele se descarcă automat prin browser. Textul site-ului nu mai menționează niciun folder.
+
 ## 3.91.0 — 2026-11-26
 
 ### Îmbunătățit

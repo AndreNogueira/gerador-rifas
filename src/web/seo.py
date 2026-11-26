@@ -391,14 +391,41 @@ def robots(base: str) -> str:
             f"Disallow: /admin\nDisallow: /v/\nDisallow: /V/\n\nSitemap: {base}/sitemap.xml\n")
 
 
+_DATA_ISO = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def _ultima_modificacao() -> str:
+    """A data da versao atual («YYYY-MM-DD», a 1.a entrada do CHANGELOG.md, que um teste garante ser a `VERSAO`): serve de `lastmod` ao
+    sitemap inteiro (nao ha, por agora, uma data por pagina a serio: os textos de SEO podem mudar no painel sem deploy nenhum, ver `seo_bd.py`)."""
+    try:
+        data = changelog.entradas("pt")[0].data
+    except IndexError:
+        return ""
+    return data if _DATA_ISO.fullmatch(data) else ""
+
+
+def llms(base: str) -> str:
+    """`llms.txt`: convencao (nao oficial, nao e lida pelo Google) para agentes de IA descobrirem o site; em ingles, sem localizar
+    (ficheiro so de maquina, como o robots.txt)."""
+    return (
+        f"# {NOME}\n\n"
+        "> Free web tool that generates numbered raffle ticket PDFs from a Canva template: pick a number range, "
+        "preview with real numbers and download (PDF or ZIP). No sign-up, 22 languages.\n\n"
+        f"- [How-to guides]({base}{guias.INDICE}): step-by-step raffle guides for schools, associations, clubs, "
+        "fire brigades, parties and churches.\n"
+        f"- [Public API docs]({base}/api/v1/docs): batch-generate numbered tickets from one template through a documented REST API.\n"
+    )
+
+
 def sitemap(base: str) -> str:
     """Uma `<url>` por pagina e lingua, cada uma com as alternativas (`xhtml:link`, o formato que o Google pede para varias linguas)."""
     urls = []
+    lastmod = f"<lastmod>{_ultima_modificacao()}</lastmod>" if _ultima_modificacao() else ""
     for p in ROTAS.values():
         if not (p.indexavel and p.no_mapa):
             continue
         alternativas = "".join(f'<xhtml:link rel="alternate" hreflang="{i18n.bcp47(lg)}" href="{_e(_url(base, p.caminho, lg))}"/>' for lg in i18n.LINGUAS)
         alternativas += f'<xhtml:link rel="alternate" hreflang="x-default" href="{_e(_url(base, p.caminho, "pt"))}"/>'
-        urls += [f"<url><loc>{_e(_url(base, p.caminho, lg))}</loc>{alternativas}</url>" for lg in i18n.LINGUAS]
+        urls += [f"<url><loc>{_e(_url(base, p.caminho, lg))}</loc>{lastmod}{alternativas}</url>" for lg in i18n.LINGUAS]
     return ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
             f'xmlns:xhtml="http://www.w3.org/1999/xhtml">{"".join(urls)}</urlset>\n')

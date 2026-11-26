@@ -148,7 +148,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "Canva के बिना टिकट डिज़ाइन करें: टेक्स्ट, आयत, रेखाएँ और नंबर 0001, और उसे क्रमांकित टिकट बनाने के टेम्पलेट के रूप में उपयोग करें।",
     },
     "d_guia_escolas": {
-        "pt": "Como fazer uma rifa para a escola: desenhe os bilhetes, uma série por turma, imprima, controle as vendas e faça um sorteio que as famílias verifiquem.",
+        "pt": "Guia da rifa da escola: desenhe os bilhetes, uma série por turma, imprima, controle as vendas e feche com um sorteio que as famílias verificam.",
         "en": "How to run a school raffle: design the tickets, one series per class, print and cut, track sales and hold a draw that families can verify.",
         "es": "Cómo hacer una rifa para el colegio: diseñe los boletos, una serie por clase, imprima, controle las ventas y haga un sorteo que las familias comprueben.",
         "fr": "Comment organiser une tombola pour l'école : billets, une série par classe, impression, suivi des ventes et un tirage que les familles peuvent vérifier.",
@@ -168,7 +168,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "स्कूल रैफ़ल कैसे करें: टिकट डिज़ाइन करें, हर कक्षा की एक सीरीज़, प्रिंट करके काटें, बिक्री पर नज़र रखें और ऐसा ड्रॉ करें जिसे परिवार जाँच सकें।",
     },
     "d_guia_associacoes": {
-        "pt": "Como fazer uma rifa para a associação: bilhetes com a sua imagem e talão, série por vendedor, marcas de corte, controlo de vendas e sorteio verificável.",
+        "pt": "Monte a rifa da associação: bilhetes com a sua imagem e talão, série por vendedor, marcas de corte, controlo de vendas e sorteio que os sócios confirmam.",
         "en": "How to run a raffle for your association: tickets with your look and a stub, one series per seller, cut marks, sales control and a verifiable draw.",
         "es": "Cómo hacer una rifa para la asociación: boletos con su imagen y talón, una serie por vendedor, marcas de corte, control de ventas y un sorteo verificable.",
         "fr": "Comment organiser une tombola pour l'association : billets à votre image avec talon, série par vendeur, repères de coupe, suivi des ventes, tirage vérifiable.",
@@ -188,7 +188,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "संस्था के लिए रैफ़ल कैसे करें: संस्था की पहचान और पर्ची वाले टिकट, हर विक्रेता की सीरीज़, कटाई के निशान, बिक्री नियंत्रण और जाँचने योग्य ड्रॉ।",
     },
     "d_guia_clubes": {
-        "pt": "Como fazer uma rifa para o clube: bilhetes com o emblema e talão, série por equipa ou vendedor, marcas de corte, controlo de vendas e sorteio verificável.",
+        "pt": "Organize a rifa do clube: bilhetes com o emblema e talão, série por equipa, marcas de corte, controlo de vendas e sorteio que os sócios acompanham.",
         "en": "How to run a raffle for your club: tickets with your crest and a stub, a series per team or seller, cut marks, sales control and a verifiable draw.",
         "es": "Cómo hacer una rifa para el club: boletos con el escudo y talón, una serie por equipo o vendedor, marcas de corte, control de ventas y sorteo verificable.",
         "fr": "Comment organiser une tombola pour le club : billets à l'écusson, série par équipe ou vendeur, traits de coupe, suivi des ventes, tirage vérifiable.",
@@ -208,7 +208,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "क्लब के लिए रैफ़ल कैसे करें: प्रतीक और स्टब वाले टिकट, हर टीम या विक्रेता की सीरीज़, कटाई के निशान, बिक्री नियंत्रण और जाँचने योग्य ड्रॉ।",
     },
     "d_guia_bombeiros": {
-        "pt": "Como fazer uma rifa para os bombeiros: bilhetes com o emblema e talão, série por vendedor, marcas de corte, controlo de vendas e sorteio verificável.",
+        "pt": "Prepare a rifa dos bombeiros: bilhetes com o emblema e talão, série por vendedor, marcas de corte, controlo de vendas e um sorteio aberto à comunidade.",
         "en": "How to run a raffle for your fire brigade: tickets with the crest and a stub, a series per seller, cut marks, sales control and a verifiable draw.",
         "es": "Cómo hacer una rifa para los bomberos: boletos con el escudo y talón, una serie por vendedor, marcas de corte, control de ventas y sorteo verificable.",
         "fr": "Comment organiser une tombola pour les pompiers : billets à l'écusson avec talon, série par vendeur, traits de coupe, suivi des ventes, tirage vérifiable.",
@@ -228,7 +228,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "दमकल दल के लिए रैफ़ल कैसे करें: प्रतीक और स्टब वाले टिकट, हर विक्रेता की सीरीज़, कटाई के निशान, बिक्री नियंत्रण और जाँचने योग्य ड्रॉ।",
     },
     "d_guia_festas": {
-        "pt": "Como fazer uma rifa para a festa de bairro: bilhetes com talão, série por dia ou vendedor, marcas de corte, controlo de vendas e sorteio verificável.",
+        "pt": "Organize a rifa da festa de bairro: bilhetes com talão, série por dia ou vendedor, marcas de corte, controlo de vendas e sorteio que os vizinhos conferem.",
         "en": "How to run a raffle for a neighbourhood party: tickets with a stub, a series per day or seller, cut marks, sales control and a verifiable draw.",
         "es": "Cómo hacer una rifa para la fiesta del barrio: boletos con talón, una serie por día o vendedor, marcas de corte, control de ventas y sorteo verificable.",
         "fr": "Comment organiser une tombola pour la fête de quartier : billets avec talon, série par jour ou vendeur, traits de coupe, suivi des ventes, tirage vérifiable.",
@@ -248,7 +248,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "मोहल्ले के उत्सव के लिए रैफ़ल कैसे करें: स्टब वाले टिकट, हर दिन या विक्रेता की सीरीज़, कटाई के निशान, बिक्री नियंत्रण और जाँचने योग्य ड्रॉ।",
     },
     "d_guia_igrejas": {
-        "pt": "Como fazer uma rifa para a paróquia: bilhetes com o emblema e talão, série por grupo, marcas de corte, controlo de vendas e sorteio verificável.",
+        "pt": "Monte a rifa da paróquia: bilhetes com o emblema e talão, série por grupo, marcas de corte, controlo de vendas e um sorteio que a paróquia pode comprovar.",
         "en": "How to run a raffle for your parish: tickets with your crest and a stub, a series per group, cut marks, sales control and a verifiable draw.",
         "es": "Cómo hacer una rifa para la parroquia: boletos con el escudo y talón, una serie por grupo, marcas de corte, control de ventas y sorteo verificable.",
         "fr": "Comment organiser une tombola pour la paroisse : billets à l'écusson, série par groupe, traits de coupe, suivi des ventes, tirage vérifiable.",
@@ -268,7 +268,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "चर्च के लिए रैफ़ल कैसे करें: प्रतीक और स्टब वाले टिकट, हर समूह की सीरीज़, कटाई के निशान, बिक्री नियंत्रण और जाँचने योग्य ड्रॉ।",
     },
     "d_guia_numerar": {
-        "pt": "Como numerar os bilhetes de uma rifa: algarismos certos, blocos por vendedor, talão igual ao bilhete, números a saltar e a lista para guardar.",
+        "pt": "Guia de numeração de bilhetes de rifa: quantos algarismos usar, blocos por vendedor, talão igual ao bilhete, números a saltar e a lista para guardar.",
         "en": "How to number raffle tickets: the right number of digits, a block per seller, matching stub and ticket, numbers to skip and a list to keep.",
         "es": "Cómo numerar los boletos de una rifa: cifras correctas, un bloque por vendedor, talón igual al boleto, números a saltar y la lista que guardar.",
         "fr": "Comment numéroter les billets d'une tombola : bon nombre de chiffres, un bloc par vendeur, talon identique au billet, numéros à ignorer, liste à garder.",
@@ -288,7 +288,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "रैफ़ल टिकटों पर नंबर कैसे डालें: सही अंक, हर विक्रेता का अपना ब्लॉक, पर्ची और टिकट पर एक नंबर, नंबर छोड़ना और सहेजने की सूची।",
     },
     "d_guia_sorteio": {
-        "pt": "Como fazer um sorteio de rifa verificável: regras antes de vender, semente pública, intervalo de números e um resultado que qualquer pessoa pode repetir.",
+        "pt": "Guia do sorteio verificável de uma rifa: regras definidas antes de vender, semente pública, intervalo de números e um resultado que qualquer pessoa repete.",
         "en": "How to run a verifiable raffle draw: rules before selling, a public seed, the number range and a result anyone can repeat and check.",
         "es": "Cómo hacer un sorteo de rifa verificable: reglas antes de vender, semilla pública, intervalo de números y un resultado que cualquiera puede repetir.",
         "fr": "Comment faire un tirage de tombola vérifiable : règles avant la vente, graine publique, plage de numéros et un résultat que chacun peut refaire.",
@@ -308,7 +308,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "जाँचा जा सकने वाला रैफ़ल ड्रॉ कैसे करें: बेचने से पहले नियम, सार्वजनिक सीड, नंबरों का दायरा और ऐसा नतीजा जिसे कोई भी दोहरा सके।",
     },
     "d_guia_quantos": {
-        "pt": "Quantos bilhetes de rifa fazer e a que preço: meta de angariação, preço do bilhete, tiragem com folga, folhas por vendedor e prémios contra receita.",
+        "pt": "Guia para calcular bilhetes e preço de uma rifa: meta de angariação, preço do bilhete, tiragem com folga, folhas por vendedor e prémios contra receita.",
         "en": "How many raffle tickets to make and at what price: fundraising goal, ticket price, a print run with margin, sheets per seller and prizes against income.",
         "es": "Cuántos boletos de rifa hacer y a qué precio: meta de recaudación, precio del boleto, tirada con margen, hojas por vendedor y premios frente a ingresos.",
         "fr": "Combien de billets de tombola et à quel prix : objectif de collecte, prix du billet, tirage avec marge, feuilles par vendeur et lots face aux recettes.",
@@ -328,7 +328,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "कितने रैफ़ल टिकट बनाएँ और किस दाम पर: जुटाने का लक्ष्य, टिकट का दाम, गुंजाइश के साथ छपाई, हर विक्रेता के पन्ने और इनाम बनाम आमदनी।",
     },
     "d_precario": {
-        "pt": "Gerador de preçários para festas: escolha os artigos de um catálogo com imagens, escreva os preços na moeda do seu país e imprima. Grátis.",
+        "pt": "Monte o preçário da sua festa: escolha artigos de um catálogo com imagens, escreva os preços na moeda do seu país e imprima. Grátis, sem registo.",
         "en": "Price list generator for events: pick items from a catalogue with pictures, type the prices in your country's currency and print. Free, no sign-up.",
         "es": "Generador de listas de precios para fiestas: elija artículos de un catálogo con imágenes, escriba los precios en su moneda e imprima. Gratis y sin registro.",
         "fr": "Générateur de listes de prix pour fêtes : choisissez des articles dans un catalogue illustré, saisissez les prix dans votre monnaie et imprimez. Gratuit.",
@@ -348,7 +348,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "आयोजनों के लिए मूल्य-सूची जनरेटर: चित्रों वाली सूची से वस्तुएँ चुनें, अपनी मुद्रा में दाम लिखें और छापें। मुफ़्त, पंजीकरण नहीं।",
     },
     "d_guia_precario": {
-        "pt": "Como fazer o preçário de uma festa: a lista de artigos, os preços, uma moeda própria com fichas, o tema, o formato e a impressão.",
+        "pt": "Guia do preçário de festa: lista de artigos, preços, uma moeda própria com fichas, o tema, o formato e a impressão a escolher.",
         "en": "How to make a price list for an event: the item list, the prices, a made-up currency with tokens, the theme, the format and printing.",
         "es": "Cómo hacer la lista de precios de una fiesta: los artículos, los precios, una moneda propia con fichas, el tema, el formato y la impresión.",
         "fr": "Comment faire la liste de prix d'une fête : les articles, les prix, une monnaie à jetons, le thème, le format et l'impression.",

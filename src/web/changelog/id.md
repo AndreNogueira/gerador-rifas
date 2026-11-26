@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.92.0 — 2026-11-26
+
+### Diperbaiki
+- **Teks langkah 4 («Tujuan») di situs**: tutorial dan halaman beranda menyebutkan «pilih folder tempat PDF disimpan», yang hanya benar untuk aplikasi Windows — di situs, berkas diunduh secara otomatis oleh browser. Teks situs kini tidak lagi menyebut folder apa pun.
+
 ## 3.91.0 — 2026-11-26
 
 ### Ditingkatkan

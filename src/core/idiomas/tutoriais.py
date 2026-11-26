@@ -27,6 +27,65 @@ CHAVES: dict[str, dict[str, str]] = {
         "tr": "Bu konunun videosunu izle", "zh": "观看本主题视频", "ja": "このトピックの動画を見る", "ko": "이 주제의 동영상 보기",
         "hi": "इस विषय का वीडियो देखें",
     },
+    # no site não há pasta a escolher (o browser descarrega): só o 1.º parágrafo do tópico «4 Destino» muda (`tut_b4` é o da app Windows)
+    "tut_b4_web": {
+        "pt": ("Escreva o nome dos ficheiros (obrigatório; o programa nunca sugere um). Os ficheiros ficam «NOME - 0001 - 0300.pdf», "
+               "«NOME - 0301 - 0600.pdf», … ou só «NOME - 0001 - 1000.pdf» se escolher um único PDF.\n\n"
+               "O browser descarrega os ficheiros automaticamente."),
+        "en": ("Type the name of the files (required; the program never suggests one). The files are saved as “NAME - 0001 - 0300.pdf”, "
+               "“NAME - 0301 - 0600.pdf”, … or just “NAME - 0001 - 1000.pdf” with a single PDF.\n\n"
+               "The browser downloads the files automatically."),
+        "es": ("Escriba el nombre de los archivos (obligatorio; el programa nunca sugiere uno). Los archivos quedan «NOMBRE - 0001 - 0300.pdf», "
+               "«NOMBRE - 0301 - 0600.pdf», … o solo «NOMBRE - 0001 - 1000.pdf» si elige un único PDF.\n\n"
+               "El navegador descarga los archivos automáticamente."),
+        "fr": ("Saisissez le nom des fichiers (obligatoire ; le programme n’en propose jamais). Les fichiers s’appellent « NOM - 0001 - 0300.pdf », "
+               "« NOM - 0301 - 0600.pdf », … ou seulement « NOM - 0001 - 1000.pdf » avec un seul PDF.\n\n"
+               "Le navigateur télécharge les fichiers automatiquement."),
+        "de": ("Geben Sie den Dateinamen ein (Pflicht; das Programm schlägt nie einen vor). Die Dateien heißen „NAME - 0001 - 0300.pdf“, "
+               "„NAME - 0301 - 0600.pdf“, … oder nur „NAME - 0001 - 1000.pdf“ bei einem einzigen PDF.\n\n"
+               "Der Browser lädt die Dateien automatisch herunter."),
+        "it": ("Scrivi il nome dei file (obbligatorio; il programma non ne suggerisce mai uno). I file diventano «NOME - 0001 - 0300.pdf», "
+               "«NOME - 0301 - 0600.pdf», … oppure solo «NOME - 0001 - 1000.pdf» con un unico PDF.\n\n"
+               "Il browser scarica i file automaticamente."),
+        "nl": ("Typ de naam van de bestanden (verplicht; het programma stelt nooit een naam voor). De bestanden heten “NAAM - 0001 - 0300.pdf”, "
+               "“NAAM - 0301 - 0600.pdf”, … of alleen “NAAM - 0001 - 1000.pdf” bij één PDF.\n\n"
+               "De browser downloadt de bestanden automatisch."),
+        "pl": ("Wpisz nazwę plików (wymagane; program nigdy jej nie podpowiada). Pliki nazywają się „NAZWA - 0001 - 0300.pdf”, "
+               "„NAZWA - 0301 - 0600.pdf”, … lub tylko „NAZWA - 0001 - 1000.pdf” przy jednym PDF.\n\n"
+               "Przeglądarka pobiera pliki automatycznie."),
+        "sv": ("Skriv filnamnet (obligatoriskt; programmet föreslår aldrig något). Filerna heter ”NAMN - 0001 - 0300.pdf”, "
+               "”NAMN - 0301 - 0600.pdf”, … eller bara ”NAMN - 0001 - 1000.pdf” med en enda PDF.\n\n"
+               "Webbläsaren laddar ner filerna automatiskt."),
+        "cs": ("Napište název souborů (povinné; program žádný nenavrhuje). Soubory se jmenují „NÁZEV - 0001 - 0300.pdf“, "
+               "„NÁZEV - 0301 - 0600.pdf“, … nebo jen „NÁZEV - 0001 - 1000.pdf“ u jediného PDF.\n\n"
+               "Prohlížeč soubory stáhne automaticky."),
+        "ro": ("Scrie numele fișierelor (obligatoriu; programul nu propune niciodată unul). Fișierele se numesc „NUME - 0001 - 0300.pdf”, "
+               "„NUME - 0301 - 0600.pdf”, … sau doar „NUME - 0001 - 1000.pdf” la un singur PDF.\n\n"
+               "Browserul descarcă fișierele automat."),
+        "el": ("Γράψτε το όνομα των αρχείων (υποχρεωτικό· το πρόγραμμα δεν προτείνει ποτέ κάποιο). Τα αρχεία ονομάζονται «ΟΝΟΜΑ - 0001 - 0300.pdf», "
+               "«ΟΝΟΜΑ - 0301 - 0600.pdf», … ή απλώς «ΟΝΟΜΑ - 0001 - 1000.pdf» με ένα μόνο PDF.\n\n"
+               "Ο browser κατεβάζει τα αρχεία αυτόματα."),
+        "ru": ("Введите имя файлов (обязательно; программа никогда его не подставляет). Файлы получат имена «ИМЯ - 0001 - 0300.pdf», "
+               "«ИМЯ - 0301 - 0600.pdf», … или просто «ИМЯ - 0001 - 1000.pdf», если выбран один PDF.\n\n"
+               "Браузер скачивает файлы автоматически."),
+        "tr": ("Dosya adını yazın (zorunlu; program asla ad önermez). Dosyalar “AD - 0001 - 0300.pdf”, “AD - 0301 - 0600.pdf”, … ya da tek "
+               "PDF’de yalnızca “AD - 0001 - 1000.pdf” olarak kaydedilir.\n\n"
+               "Tarayıcı dosyaları otomatik olarak indirir."),
+        "zh": ("输入文件名（必填；程序不会给出默认名称）。文件将保存为"
+               "“名称 - 0001 - 0300.pdf”、“名称 - 0301 - 0600.pdf”……；若选择单个 PDF，则为“名称 - 0001 - 1000.pdf”。\n\n"
+               "浏览器会自动下载文件。"),
+        "ja": ("ファイル名を入力します(必須。プログラムが名前を提案することはありません)。"
+               "ファイルは「名前 - 0001 - 0300.pdf」「名前 - 0301 - 0600.pdf」…、"
+               "1 つの PDF の場合は「名前 - 0001 - 1000.pdf」になります。\n\n"
+               "ブラウザが自動的にファイルをダウンロードします。"),
+        "ko": ("파일 이름을 입력합니다(필수이며 프로그램이 이름을 제안하지 않습니다). "
+               "파일은 “이름 - 0001 - 0300.pdf”, “이름 - 0301 - 0600.pdf”, … 로 저장되고, "
+               "PDF 하나로 만들면 “이름 - 0001 - 1000.pdf”가 됩니다.\n\n"
+               "브라우저가 파일을 자동으로 다운로드합니다."),
+        "hi": ("फ़ाइलों का नाम लिखें (ज़रूरी; प्रोग्राम कभी कोई नाम सुझाता नहीं)। फ़ाइलें “नाम - 0001 - 0300.pdf”, "
+               "“नाम - 0301 - 0600.pdf”, … के रूप में सहेजी जाती हैं, या एक ही PDF होने पर सिर्फ़ “नाम - 0001 - 1000.pdf”।\n\n"
+               "ब्राउज़र फ़ाइलें अपने आप डाउनलोड करता है।"),
+    },
     # ---------------------------------------------------------------- séries, prefixos e números a saltar (M1)
     "tut_f_series_t": {
         "pt": "Séries, prefixos e números a saltar", "en": "Series, prefixes and skipped numbers", "es": "Series, prefijos y números omitidos",

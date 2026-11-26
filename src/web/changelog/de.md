@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.92.0 — 2026-11-26
+
+### Behoben
+- **Text von Schritt 4 („Ziel“) auf der Website**: Tutorial und Startseite sagten „Wählen Sie den Ordner, in dem die PDFs gespeichert werden“, was nur für die Windows-App stimmt — auf der Website werden die Dateien automatisch über den Browser heruntergeladen. Der Text der Website spricht nun von keinem Ordner mehr.
+
 ## 3.91.0 — 2026-11-26
 
 ### Verbessert

@@ -122,7 +122,8 @@ def _base(plataforma: str = "windows") -> list:
          [("fixa", "modelo1.jpg"), ("rec", "c", "c1"), ("fixa", "folha.png")]),
         ("2   " + curto(t("c2_titulo")), t("ajuda_titulo"), t("ajuda_texto"), [("fixa", "digitos.png"), ("rec", "a", "c2")]),
         ("3   " + curto(t("c3_titulo")), t("c3_titulo"), t("tut_b3", **ps), [("rec", "a", "c3")]),
-        ("4   " + curto(t("c4_titulo")), t("c4_titulo"), t("tut_b4"), [("rec", "a", "c4")]),
+        # no site nao ha pasta a escolher: o browser descarrega o(s) ficheiro(s) (`tut_b4_web`, so o 1.º paragrafo muda)
+        ("4   " + curto(t("c4_titulo")), t("c4_titulo"), t("tut_b4_web") if plataforma == "web" else t("tut_b4"), [("rec", "a", "c4")]),
         ("5   " + t("tut_t5"), t("tut_t5"), t("tut_b5", **ps) + "\n\n" + t("tut_limpar", **ps),
          [("rec", "a", "barra"), ("rec", "b", "acoes")]),
         (t("tut_t6"), t("tut_t6"), t("tut_b6"), []),

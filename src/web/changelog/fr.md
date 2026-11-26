@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.92.0 — 2026-11-26
+
+### Corrigé
+- **Texte de l'étape 4 (« Destination ») sur le site** : le tutoriel et la page d'accueil disaient « choisissez le dossier où enregistrer les PDF », vrai seulement dans l'application Windows — sur le site, les fichiers se téléchargent automatiquement via le navigateur. Le texte du site ne parle plus d'aucun dossier.
+
 ## 3.91.0 — 2026-11-26
 
 ### Amélioré
