@@ -2,6 +2,12 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.91.0 — 2026-11-26
+
+### Amélioré
+- **La galerie de modèles a désormais le même poids visuel que l'envoi du modèle** : sur la page d'accueil, choisir un modèle déjà fait (sans Canva) n'est plus un lien secondaire caché sous l'envoi du PDF — il a maintenant un encadré avec la même importance.
+- **Plus de liens entre les pages** : les guides du tirage et du tarif renvoient désormais vers leur propre outil (`/sorteio`, `/precario`) au lieu du générateur de tombolas, et la page d'accueil renvoie aussi désormais vers l'index des guides « Comment faire » (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Corrigé

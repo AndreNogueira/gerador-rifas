@@ -2,6 +2,12 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.91.0 — 2026-11-26
+
+### Migliorato
+- **La galleria dei modelli ha ora lo stesso peso visivo del caricamento del modello**: nella pagina iniziale, scegliere un modello già pronto (senza Canva) non è più un link secondario nascosto sotto il caricamento del PDF — ha ora un riquadro con lo stesso rilievo.
+- **Più collegamenti tra le pagine**: le guide dell'estrazione e del listino ora collegano al proprio strumento (`/sorteio`, `/precario`) invece che al generatore di tombole, e la pagina iniziale ora collega anche all'indice delle guide «Come fare» (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Risolto

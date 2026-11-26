@@ -2,6 +2,12 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.91.0 — 2026-11-26
+
+### Ulepszono
+- **Galeria szablonów ma teraz taką samą wagę wizualną jak wgrywanie szablonu**: na stronie głównej wybranie już gotowego wzoru (bez Canvy) nie jest już pomniejszym linkiem pod przesyłaniem PDF — ma teraz równie wyróżnione pole.
+- **Więcej odnośników między stronami**: poradniki o losowaniu i o cenniku odsyłają teraz do swojego własnego narzędzia (`/sorteio`, `/precario`) zamiast do generatora losów, a strona główna odsyła teraz też do spisu poradników „Jak to zrobić” (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Naprawione

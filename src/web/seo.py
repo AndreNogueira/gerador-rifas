@@ -75,8 +75,10 @@ def _corpo_inicio(lg: str) -> str:
         topicos = tutorial.lista_de_topicos("web")
     passos = "".join(f"<li><strong>{html.escape(topicos[i][1])}.</strong> {html.escape(topicos[i][2].split(chr(10) * 2)[0])}</li>" for i in (1, 3, 4, 5))
     # os guias «como fazer» já não estão no rodapé (vivem num menu do cabeçalho, que só põe as ligações no DOM aberto): são páginas de
-    # entrada para os motores de pesquisa, por isso a página inicial liga-as sempre aqui
-    guias_html = "".join(f'<li><a href="{_l(lg, caminho)}">{html.escape(guias.guia(nome, lg)["titulo"])}</a></li>' for nome, caminho in guias.CAMINHOS.items())
+    # entrada para os motores de pesquisa, por isso a página inicial liga-as sempre aqui — incluindo o seu próprio índice (`/como-fazer`),
+    # que sem isto não tinha nenhuma ligação de entrada a partir da página inicial
+    indice_html = f'<li><a href="{_l(lg, guias.INDICE)}">{html.escape(_nome_pagina("web_comofazer_titulo")(lg))}</a></li>'
+    guias_html = indice_html + "".join(f'<li><a href="{_l(lg, caminho)}">{html.escape(guias.guia(nome, lg)["titulo"])}</a></li>' for nome, caminho in guias.CAMINHOS.items())
     return (
         f"<h1>{html.escape(_app(lg))}</h1><p>{html.escape(texto('intro', lg))}</p>"
         f"<h2>{html.escape(texto('como', lg))}</h2><ol>{passos}</ol>"
@@ -142,6 +144,19 @@ def _lista_de_guias(lg: str, menos: str = "") -> str:
     return f"<ul>{itens}</ul>"
 
 
+# o guia de um TEMA liga à sua própria ferramenta (não ao gerador): `sorteio` -> `/sorteio`, `precario` -> `/precario`
+# (o mesmo mapa de `Guia.tsx`); os outros guias (por público) continuam a ligar ao gerador (`/`), que é a ferramenta deles.
+_FERRAMENTA_DO_GUIA: dict[str, tuple[str, str]] = {
+    "sorteio": ("/sorteio", "web_sorteio"),
+    "precario": ("/precario", "web_precario_titulo"),
+}
+
+
+def _ligacao_ferramenta(nome: str, lg: str) -> str:
+    caminho, chave = _FERRAMENTA_DO_GUIA.get(nome, ("/", "app_nome"))
+    return f'<p><a href="{_l(lg, caminho)}">{html.escape(i18n.traduzir(chave, lg))}</a></p>'
+
+
 def _corpo_guia(nome: str) -> Callable[[str], str]:
     def corpo(lg: str) -> str:
         g = guias.guia(nome, lg)
@@ -150,7 +165,7 @@ def _corpo_guia(nome: str) -> Callable[[str], str]:
         outros = (f'<h2>{html.escape(i18n.traduzir("web_guias_outros", lg))}</h2>{_lista_de_guias(lg, nome)}'
                   f'<p><a href="{_l(lg, guias.INDICE)}">{html.escape(i18n.traduzir("web_guia_todos", lg))}</a></p>')
         return (f"<h1>{html.escape(g['titulo'])}</h1><p>{html.escape(g['intro'])}</p><ol>{passos}</ol><ul>{dicas}</ul>"
-                f"<p>{html.escape(g['fim'])}</p>{outros}{_voltar(lg)}")
+                f"<p>{html.escape(g['fim'])}</p>{_ligacao_ferramenta(nome, lg)}{outros}{_voltar(lg)}")
     return corpo
 
 

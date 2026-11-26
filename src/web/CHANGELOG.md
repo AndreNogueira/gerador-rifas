@@ -4,6 +4,12 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.91.0 — 2026-11-26
+
+### Melhorado
+- **A galeria de desenhos ganha o mesmo destaque do envio do template**: na página inicial, escolher um desenho já feito (sem precisar do Canva) deixa de ser um link secundário escondido por baixo do envio do PDF — fica agora numa caixa com o mesmo peso visual.
+- **Mais ligações entre as páginas**: os guias do sorteio e do preçário passam a ligar à sua própria ferramenta (`/sorteio`, `/precario`) em vez de ao gerador de rifas, e a página inicial passa a ligar também ao índice de guias «Como fazer» (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Corrigido

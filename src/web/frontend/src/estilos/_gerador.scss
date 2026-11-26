@@ -131,15 +131,47 @@
   }
 }
 .galeria {
+  // a mesma caixa (traço, raio, fundo) de «.carregar»: a galeria é uma alternativa com o MESMO peso visual ao PDF do Canva,
+  // não um link secundário por baixo dele (ver `CartaoTemplate` em cartoes.tsx)
   display: grid;
   gap: 10px;
-  border-top: 2px dashed var(--linha);
-  padding-top: 12px;
+  border: 2px var(--zona-estilo) color-mix(in srgb, var(--cor) 55%, var(--linha));
+  border-radius: calc(var(--raio-c) + 2px);
+  padding: 10px;
+  background: color-mix(in srgb, var(--cor) 6%, transparent);
+
+  // aberta, a caixa volta a ficar transparente: o conteúdo (campos, texto suave) é o mesmo de sempre e não deve ler-se
+  // sobre a tinta de --cor (o teste de contraste dos 14 temas mede o texto desta caixa aberta, em claro e escuro)
+  &[open] {
+    border-color: transparent;
+    background: transparent;
+    padding: 10px 0 0;
+  }
 
   > summary {
     cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 8px 12px;
     font-weight: 700;
-    color: var(--destaque);
+    text-align: left;
+    color: var(--cor);
+    background: var(--cartao);
+    border: var(--borda) solid color-mix(in srgb, var(--cor) 50%, transparent);
+    border-radius: var(--raio-c);
+    box-shadow: var(--botao-anel), var(--botao-sec-sombra);
+    transition: background 0.15s;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+    &:hover {
+      background: color-mix(in srgb, var(--cor) 12%, var(--cartao));
+    }
   }
   &[open] > summary {
     margin-bottom: 4px;

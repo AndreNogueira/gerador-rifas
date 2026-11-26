@@ -20,6 +20,15 @@ export const GUIAS: Record<string, string> = {
 };
 
 /**
+ * O guia de um TEMA liga à sua própria ferramenta (não ao gerador de rifas): `sorteio` → `/sorteio`, `precario` → `/precario`.
+ * Os outros guias (por público) continuam a ligar ao gerador (`/`), que é a ferramenta deles.
+ */
+const FERRAMENTA_DO_GUIA: Record<string, { caminho: string; chave: string }> = {
+  sorteio: { caminho: "/sorteio", chave: "web_sorteio" },
+  precario: { caminho: "/precario", chave: "web_precario_titulo" },
+};
+
+/**
  * «Como fazer uma rifa para a escola / a associação»: texto escrito (título, introdução, 5 passos e 3 dicas) na língua escolhida, que o servidor
  * também põe no HTML estático para os motores de pesquisa, e ligações para o gerador, o editor e o tutorial.
  */
@@ -67,9 +76,18 @@ export function Guia({ nome }: { nome: string }) {
             </ul>
             <p>{guia.fim}</p>
             <p className="guia-ligacoes">
-              <Ligacao para="/" className="botao" data-testid="guia-gerador">
-                {t("app_nome")}
-              </Ligacao>
+              {(() => {
+                const ferramenta = FERRAMENTA_DO_GUIA[nome];
+                return ferramenta ? (
+                  <Ligacao para={ferramenta.caminho} className="botao" data-testid="guia-ferramenta">
+                    {t(ferramenta.chave)}
+                  </Ligacao>
+                ) : (
+                  <Ligacao para="/" className="botao" data-testid="guia-gerador">
+                    {t("app_nome")}
+                  </Ligacao>
+                );
+              })()}
               <Ligacao para="/editor" className="botao secundario">
                 {t("web_editor")}
               </Ligacao>

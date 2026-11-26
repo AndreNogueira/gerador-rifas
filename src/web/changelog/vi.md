@@ -2,6 +2,12 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.91.0 — 2026-11-26
+
+### Cải thiện
+- **Thư viện mẫu giờ có cùng mức độ nổi bật như việc tải lên mẫu**: trên trang chủ, việc chọn một mẫu đã có sẵn (không cần Canva) không còn là liên kết phụ ẩn dưới phần tải PDF lên — giờ đây nó có một khung nổi bật tương đương.
+- **Nhiều liên kết hơn giữa các trang**: hướng dẫn về bốc thăm và bảng giá giờ liên kết đến công cụ riêng của chúng (`/sorteio`, `/precario`) thay vì đến trình tạo vé số, và trang chủ giờ cũng liên kết đến mục lục hướng dẫn "Cách làm" (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Đã sửa

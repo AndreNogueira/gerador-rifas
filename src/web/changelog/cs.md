@@ -2,6 +2,12 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.91.0 — 2026-11-26
+
+### Vylepšeno
+- **Galerie šablon má nyní stejnou vizuální váhu jako nahrání šablony**: na hlavní stránce už výběr hotového návrhu (bez Canvy) není druhořadý odkaz schovaný pod nahráváním PDF — má nyní stejně zvýrazněné pole.
+- **Více odkazů mezi stránkami**: návody na losování a na ceník nyní odkazují na svůj vlastní nástroj (`/sorteio`, `/precario`) místo na generátor tombol, a hlavní stránka nově odkazuje i na rozpis návodů „Jak na to“ (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Opraveno

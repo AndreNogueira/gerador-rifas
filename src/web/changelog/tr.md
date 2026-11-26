@@ -2,6 +2,12 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.91.0 — 2026-11-26
+
+### İyileştirildi
+- **Şablon galerisi artık şablon yüklemeyle aynı görsel ağırlığa sahip**: ana sayfada, hazır bir tasarım seçmek (Canva'ya gerek kalmadan) artık PDF yüklemesinin altına gizlenmiş ikincil bir bağlantı değil — şimdi eşit ölçüde öne çıkan bir kutuda yer alıyor.
+- **Sayfalar arasında daha fazla bağlantı**: çekiliş ve fiyat listesi kılavuzları artık bilet üretecine değil kendi aracına (`/sorteio`, `/precario`) bağlanıyor, ana sayfa da artık "Nasıl yapılır" kılavuz dizinine (`/como-fazer`) bağlanıyor.
+
 ## 3.90.0 — 2026-11-26
 
 ### Düzeltildi

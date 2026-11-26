@@ -2,6 +2,12 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.91.0 — 2026-11-26
+
+### Förbättrat
+- **Mallgalleriet har nu samma visuella vikt som att ladda upp mallen**: på startsidan är det att välja en redan klar design (utan Canva) inte längre en sekundär länk gömd under pdf-uppladdningen — den har nu en lika framhävd ruta.
+- **Fler länkar mellan sidorna**: guiderna för dragningen och prislistan länkar nu till sitt eget verktyg (`/sorteio`, `/precario`) istället för till lottgeneratorn, och startsidan länkar nu också till guideindexet "Så gör du" (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Åtgärdat

@@ -2,6 +2,12 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.91.0 — 2026-11-26
+
+### Verbessert
+- **Die Vorlagengalerie hat jetzt das gleiche visuelle Gewicht wie der Vorlagen-Upload**: Auf der Startseite ist die Wahl eines fertigen Designs (ohne Canva) nicht mehr ein unauffälliger Link unter dem PDF-Upload — sie hat jetzt eine gleichwertig hervorgehobene Box.
+- **Mehr Verlinkungen zwischen den Seiten**: Die Anleitungen zur Ziehung und zur Preisliste verlinken jetzt auf ihr eigenes Werkzeug (`/sorteio`, `/precario`) statt auf den Tombola-Generator, und die Startseite verlinkt jetzt auch auf das Anleitungsverzeichnis „Anleitungen“ (`/como-fazer`).
+
 ## 3.90.0 — 2026-11-26
 
 ### Behoben
