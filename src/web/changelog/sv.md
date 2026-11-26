@@ -2,6 +2,14 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.93.0 — 2026-11-26
+
+### Åtgärdat
+- **Liten text i tre fält på mobilen**: fälten för max antal per fil, sifferfärg och filnamn visade text under 16 px, vilket gör att iOS Safari zoomar automatiskt vid fokus. Nu har de samma storlek som fälten bredvid.
+
+### Förbättrat
+- **"Om" säger nu vem som gör Lottgeneratorn**: när tjänstens ansvarige är angiven (samma inställning som för Villkor och Integritet) säger sidan "Om" nu vem som skapat och underhåller den, och att Windows-appen kom först.
+
 ## 3.92.0 — 2026-11-26
 
 ### Åtgärdat

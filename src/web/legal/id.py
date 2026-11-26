@@ -6,7 +6,7 @@ FRASES = {
     "contacto_sem": "Saat ini belum ada kontak publik.",
     "contacto_pagina_com": "Untuk pertanyaan, kesalahan atau saran, tulis ke {email}.",
     "contacto_pagina_sem": "Saat ini belum ada kontak publik. Silakan kembali ke halaman ini nanti.",
-    "atualizado": "8 November 2026",
+    "atualizado": "21 November 2026",
 }
 
 AVISO = ("Versi sementara, yang masih perlu ditinjau dengan dukungan hukum. Jika ada yang di sini berbeda dari yang dilakukan layanan, mohon beri tahu kami agar kami perbaiki. "

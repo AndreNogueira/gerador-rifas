@@ -2,6 +2,14 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.93.0 — 2026-11-26
+
+### Corrigé
+- **Petit texte dans trois champs sur mobile** : les champs du maximum par fichier, de la couleur des numéros et du nom des fichiers affichaient un texte de moins de 16 px, ce qui fait zoomer automatiquement iOS Safari au focus. Ils ont désormais la même taille que les champs voisins.
+
+### Amélioré
+- **« À propos » dit qui fait le Générateur de Tombolas** : lorsque le responsable du service s'identifie (le même réglage que pour les Conditions et la Confidentialité), la page « À propos » indique désormais qui l'a créé et le maintient, et que l'application Windows est arrivée en premier.
+
 ## 3.92.0 — 2026-11-26
 
 ### Corrigé

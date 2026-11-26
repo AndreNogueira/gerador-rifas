@@ -2,6 +2,14 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.93.0 — 2026-11-26
+
+### Behoben
+- **Kleine Schrift in drei Feldern auf dem Handy**: Die Felder für die Höchstzahl pro Datei, die Zahlenfarbe und den Dateinamen zeigten Text unter 16 px, was in iOS Safari beim Fokussieren einen automatischen Zoom auslöst. Jetzt haben sie dieselbe Größe wie die Felder daneben.
+
+### Verbessert
+- **„Über uns“ sagt jetzt, wer den Lose-Generator macht**: Wenn sich der Betreiber des Dienstes zu erkennen gibt (dieselbe Einstellung wie bei Nutzungsbedingungen und Datenschutz), nennt die Seite „Über uns“ nun, wer sie erstellt hat und betreut, und dass die Windows-App zuerst da war.
+
 ## 3.92.0 — 2026-11-26
 
 ### Behoben

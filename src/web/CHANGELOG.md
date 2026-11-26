@@ -4,6 +4,14 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.93.0 — 2026-11-26
+
+### Corrigido
+- **Letra pequena em três campos no telemóvel**: o número máximo por ficheiro, a cor dos números e o nome dos ficheiros apareciam a 14 px — menos que os 16 px que evitam o zoom automático do iOS Safari ao focar um campo de texto. Agora têm o mesmo tamanho dos campos vizinhos.
+
+### Melhorado
+- **«Acerca de» diz quem faz o Gerador de Rifas**: quando o dono do serviço se identifica (a mesma configuração dos Termos e da Privacidade), a página «Acerca de» passa a dizer quem o criou e mantém, e que a app para Windows nasceu primeiro.
+
 ## 3.92.0 — 2026-11-26
 
 ### Corrigido

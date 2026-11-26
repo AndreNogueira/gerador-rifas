@@ -2,6 +2,14 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.93.0 — 2026-11-26
+
+### Đã sửa
+- **Chữ nhỏ ở ba ô trên điện thoại**: các ô số tối đa mỗi tệp, màu số và tên tệp hiển thị chữ nhỏ hơn 16 px, khiến iOS Safari tự động phóng to khi lấy nét. Giờ chúng có cùng kích thước với các ô bên cạnh.
+
+### Cải thiện
+- **"Giới thiệu" nay cho biết ai làm ra Trình tạo vé số**: khi người điều hành dịch vụ được xác định (cùng cài đặt với Điều khoản và Quyền riêng tư), trang "Giới thiệu" nay cho biết ai đã tạo và duy trì nó, và ứng dụng Windows ra đời trước.
+
 ## 3.92.0 — 2026-11-26
 
 ### Đã sửa

@@ -130,6 +130,12 @@
     font-variant-numeric: tabular-nums;
   }
 }
+// «máximo por ficheiro» (passo 3) e «nome dos ficheiros» (passo 4): o `input` é filho direto do cartão, fora de `.linha`, por isso ficava
+// a 0.88rem (14,08 px) herdado do `label` — no iOS Safari isso amplia o ecrã ao focar o campo; 1rem chega aos 16 px mínimos
+.passo-3 > label > input,
+.passo-4 > label > input {
+  font-size: 1rem;
+}
 .galeria {
   // a mesma caixa (traço, raio, fundo) de «.carregar»: a galeria é uma alternativa com o MESMO peso visual ao PDF do Canva,
   // não um link secundário por baixo dele (ver `CartaoTemplate` em cartoes.tsx)
@@ -348,6 +354,7 @@
     height: 2.2rem;
     padding: 2px;
     cursor: pointer;
+    font-size: 1rem; // sem letra visível (é só a amostra de cor), mas herdava os 0.88rem do `label`: 1rem evita o zoom automático do iOS Safari
   }
   input[type="file"] {
     font-size: 0.9rem;

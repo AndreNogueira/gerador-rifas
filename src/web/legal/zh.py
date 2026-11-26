@@ -6,7 +6,7 @@ FRASES = {
     "contacto_sem": "目前没有公开的联系方式。",
     "contacto_pagina_com": "如有疑问、错误或建议，请写信至 {email}。",
     "contacto_pagina_sem": "目前没有公开的联系方式。请稍后再来看看。",
-    "atualizado": "2026年11月8日",
+    "atualizado": "2026年11月21日",
 }
 
 AVISO = ("临时版本，需在法律支持下审阅。如果这里的内容与服务实际所做不同，请告诉我们更正。"

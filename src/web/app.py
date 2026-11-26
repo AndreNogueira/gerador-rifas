@@ -65,13 +65,27 @@ for _tipo, _extensao in (("text/javascript", ".js"), ("text/javascript", ".mjs")
 
 # Cabecalhos de seguranca em TODA a resposta. `nosniff`: o browser respeita o Content-Type (um ficheiro com o tipo errado deixa de se executar: `tests/test_web_cabecalhos.py`
 # verifica o de cada ficheiro do `dist`); `SAMEORIGIN`: so este site se desenha dentro de uma `<iframe>` (a pre-visualizacao do PDF); a `Permissions-Policy` fecha o que o site
-# nunca usa (nao lista o que os anuncios precisam); o HSTS so com HTTPS e sem `includeSubDomains`/`preload` (o dominio `onrender.com` nao e nosso). Sem CSP por agora:
-# os anuncios (AdSense), o PDF.js e os estilos «inline» pedem uma politica medida com cuidado, e uma so de relatorio, sem para onde enviar os relatorios, nao faz nada.
+# nunca usa (nao lista o que os anuncios precisam); o HSTS so com HTTPS e sem `includeSubDomains`/`preload` (o dominio `onrender.com` nao e nosso).
+# `Content-Security-Policy-Report-Only` (NUNCA a versao que bloqueia: so relata, nao impede nada) descreve o que o site carrega hoje — scripts/estilos
+# proprios, estilos «inline» (o tema aplica-se com `style=`), o AdSense/FundingChoices da Google (anuncios e o aviso de consentimento do EEE) e o
+# PDF.js self-hosted; serve para medir, antes de alguma vez se pensar numa politica a serio. Sem `report-to`/`report-uri`: nao ha para onde enviar os relatorios.
+CSP_RELATORIO = (
+    "default-src 'self'; "
+    "script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com "
+    "https://*.doubleclick.net https://fundingchoicesmessages.google.com; "
+    "style-src 'self' 'unsafe-inline'; "
+    "img-src 'self' data: https://*.googlesyndication.com https://*.google.com https://*.gstatic.com https://*.doubleclick.net; "
+    "font-src 'self'; "
+    "connect-src 'self' https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net; "
+    "frame-src 'self' https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net; "
+    "object-src 'none'; base-uri 'self'; form-action 'self'"
+)
 CABECALHOS_SEGURANCA = {
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Frame-Options": "SAMEORIGIN",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+    "Content-Security-Policy-Report-Only": CSP_RELATORIO,
 }
 HSTS = "max-age=31536000"
 
@@ -168,6 +182,7 @@ class Publico(BaseModel):
     anuncios_slot: str = ""     # bloco de anuncios: vazio = o script carrega-se mas nao se mostra nenhum bloco (ADSENSE_SLOT)
     partilha_editor: bool = False   # o editor pode partilhar desenhos por ligacao (so com DATABASE_URL)
     problemas: bool = False         # «Reportar problema» esta ligado (GITHUB_ISSUES_TOKEN e GITHUB_REPO)
+    responsavel: str = ""           # nome de quem gere o servico (RESPONSAVEL): vazio = nao mostrar quem o faz em «Acerca de» (o mesmo nome dos Termos/Privacidade)
 
 
 async def _limpeza_periodica(servico: Servico, cada_s: float) -> None:
@@ -319,7 +334,8 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
         resposta.headers["Cache-Control"] = "public, max-age=300"
         return Publico(donativo_url=config.donativo_url(), contacto=bool(config.contacto_email()), qr=bool(config.verificacao_chave()),
                        anuncios_cliente=config.adsense_cliente(), anuncios_slot=config.adsense_slot(),
-                       partilha_editor=servico.partilhas is not None, problemas=bool(config.github_token() and config.github_repo()))
+                       partilha_editor=servico.partilhas is not None, problemas=bool(config.github_token() and config.github_repo()),
+                       responsavel=config.responsavel())
 
     @app.get("/api/pagina/{nome}", response_model=PaginaTexto, tags=["sistema"])
     def pagina_de_texto(nome: str, resposta: Response, lg: str = Depends(rotas.lingua)) -> PaginaTexto:

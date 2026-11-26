@@ -2,6 +2,14 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.93.0 — 2026-11-26
+
+### Opraveno
+- **Malé písmo ve třech polích na mobilu**: pole pro maximální počet na soubor, barvu čísel a název souborů zobrazovala text menší než 16 px, což v iOS Safari spouští automatické přiblížení při zaměření. Nyní mají stejnou velikost jako okolní pole.
+
+### Vylepšeno
+- **„O aplikaci“ nyní říká, kdo Generátor losů vytváří**: pokud se provozovatel služby identifikuje (stejné nastavení jako u Podmínek a Soukromí), stránka „O aplikaci“ nyní uvádí, kdo ji vytvořil a udržuje, a že aplikace pro Windows vznikla první.
+
 ## 3.92.0 — 2026-11-26
 
 ### Opraveno

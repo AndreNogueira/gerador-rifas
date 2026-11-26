@@ -67,6 +67,7 @@ function Aplicacao() {
     anuncios_slot: "",
     partilha_editor: false,
     problemas: false,
+    responsavel: "",
   });
   const caminho = useLocalizacao().split("?")[0] ?? "/";
   const { sessao } = useSessao();
@@ -135,7 +136,7 @@ function Aplicacao() {
           ) : caminho === "/video" ? (
             <Video />
           ) : caminho === "/sobre" ? (
-            <Sobre versao={versao} />
+            <Sobre versao={versao} responsavel={publico.responsavel} />
           ) : caminho === "/sorteio" ? (
             <Sorteio />
           ) : caminho === "/precario" ? (

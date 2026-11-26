@@ -2,6 +2,14 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.93.0 — 2026-11-26
+
+### Opgelost
+- **Kleine letters in drie velden op de telefoon**: de velden voor het maximum per bestand, de kleur van de nummers en de bestandsnaam toonden tekst onder 16 px, waardoor iOS Safari automatisch inzoomt bij focus. Ze hebben nu dezelfde grootte als de velden ernaast.
+
+### Verbeterd
+- **"Over" zegt nu wie de Lotenmaker maakt**: als de beheerder van de dienst zich identificeert (dezelfde instelling als bij Voorwaarden en Privacy), vermeldt de pagina "Over" nu wie hem gemaakt heeft en onderhoudt, en dat de Windows-app er eerst was.
+
 ## 3.92.0 — 2026-11-26
 
 ### Opgelost

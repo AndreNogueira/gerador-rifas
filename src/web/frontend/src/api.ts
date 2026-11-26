@@ -252,6 +252,8 @@ export interface Publico {
   partilha_editor: boolean;
   /** «Reportar problema» está ligado ao GitHub do projeto. */
   problemas: boolean;
+  /** Nome de quem gere o serviço (o mesmo dos Termos/Privacidade); vazio = não mostrar quem o faz em «Acerca de». */
+  responsavel: string;
 }
 
 export interface Imagem {
