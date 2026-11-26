@@ -1,6 +1,6 @@
 """Gera as imagens dos artigos do preçário: o Noto Emoji (Google, curado em `precario_dados.ICONES`) e, para quem já tem Noto, mais alternativas de outras
-bibliotecas (Fluent Emoji 3D, Twemoji, OpenMoji — `precario_catalogo.FONTES_EXTRA`), sem trocar nenhuma imagem: `core.precario_catalogo._alternativas_extra`
-acrescenta-as sozinho a quem tiver o ficheiro gerado aqui.
+bibliotecas (Fluent Emoji 3D, Twemoji, OpenMoji, e os ícones de contorno Tabler/Lucide/Material Symbols — `precario_catalogo.FONTES_EXTRA`), sem trocar
+nenhuma imagem: `core.precario_catalogo._alternativas_extra` acrescenta-as sozinho a quem tiver o ficheiro gerado aqui.
 
 Para cada emoji do catálogo (`core/precario_catalogo.py`): descarrega o PNG de 512 px do repositório `googlefonts/noto-emoji`, e grava
 - `src/core/icones_precario/<codigo>.png` (256 px, paleta de 256 cores: o que se desenha no PDF; ~10 KB) e
@@ -13,6 +13,10 @@ Depois, para os mesmos códigos, tenta cada biblioteca extra (nem todos os códi
 - **Twemoji** (`jdecked/twemoji`, gráficos CC BY 4.0): os ficheiros já são nomeados pelo código Unicode (como o Noto), mas só há SVG (ou PNG de 72 px,
   pequeno de mais para o PDF): rasteriza-se a 256/96 px com `resvg_py`.
 - **OpenMoji** (`hfg-gmuend/openmoji`, CC BY-SA 4.0): nomeados pelo código Unicode em MAIÚSCULAS, já em PNG de 618 px (não precisa de rasterizar).
+- **Tabler Icons, Lucide, Material Symbols** (`LINHA`, todas sem exigir atribuição): ícones de contorno, não nomeados pelo código Unicode — não há forma
+  automática de os encontrar, por isso `core/precario_icones_linha.py` diz à mão qual o ícone de cada código (escolhido de uma folha de contacto revista
+  visualmente). O SVG de cada ícone vem do pacote `@iconify-json/<nome>` (versão fixada), com `currentColor` trocado por preto antes de rasterizar: ficam
+  pretos sobre transparente, para se pintarem da cor do texto do momento onde quer que apareçam (`core.precario._imagem`, o seletor do site, a app Windows).
 
 Corre-se à mão quando se acrescenta um artigo com um emoji novo: `uv run --with pillow --with resvg-py python scripts/gerar_icones_precario.py [pasta_de_cache]`
 (precisa de rede e `git`; as imagens ficam no repositório).
@@ -51,6 +55,34 @@ TWEMOJI_COPYRIGHT = "https://raw.githubusercontent.com/jdecked/twemoji/main/LICE
 
 OPENMOJI_PNG = "https://raw.githubusercontent.com/hfg-gmuend/openmoji/master/color/618x618/{codigo}.png"
 OPENMOJI_LICENCA = "https://raw.githubusercontent.com/hfg-gmuend/openmoji/master/LICENSE.txt"
+
+# bibliotecas de contorno (monocromáticas): o SVG + os nomes de todos os ícones vêm do pacote @iconify-json/<pacote>
+# (uma só descarga por biblioteca, sem limite de pedidos; versão fixada, como manda a regra das versões do projeto),
+# e core.precario_icones_linha diz qual o ícone de cada código (escolhido à mão, não há forma automática de o achar:
+# ver o docstring desse ficheiro). A licença vem do repositório de origem (não do Iconify, que só reempacota).
+LINHA = {
+    "tabler": {
+        "pacote": "@iconify-json/tabler@1.2.46",
+        "licenca_url": "https://raw.githubusercontent.com/tabler/tabler-icons/master/LICENSE",
+        "licenca_nome": "MIT",
+        "nome": "Tabler Icons",
+        "origem": "https://github.com/tabler/tabler-icons",
+    },
+    "lucide": {
+        "pacote": "@iconify-json/lucide@1.2.158",
+        "licenca_url": "https://raw.githubusercontent.com/lucide-icons/lucide/main/LICENSE",
+        "licenca_nome": "ISC (com alguns ícones herdados do Feather, MIT — ver o ficheiro)",
+        "nome": "Lucide",
+        "origem": "https://github.com/lucide-icons/lucide",
+    },
+    "material": {
+        "pacote": "@iconify-json/material-symbols@1.2.101",
+        "licenca_url": "https://raw.githubusercontent.com/google/material-design-icons/master/LICENSE",
+        "licenca_nome": "Apache 2.0",
+        "nome": "Material Symbols",
+        "origem": "https://github.com/google/material-design-icons",
+    },
+}
 
 
 def descarregar(url: str, destino: Path) -> None:
@@ -201,6 +233,46 @@ def gerar_openmoji(cache: Path, codigos: set) -> int:
     return 0
 
 
+def gerar_linha(cache: Path, fonte: str) -> int:
+    """Uma biblioteca de contorno (`LINHA[fonte]`): o mapa de precario_icones_linha diz, por código Unicode, qual o
+    nome do ícone (escolhido à mão); o SVG de cada um vem do pacote @iconify-json (uma só descarga, com `currentColor`
+    trocado por preto antes de rasterizar: fica preto-sobre-transparente, para se pintar da cor do texto em core.precario._imagem)."""
+    from core import precario_icones_linha as mapas
+    info = LINHA[fonte]
+    pasta_pdf, pasta_web = PASTA_PDF / fonte, PASTA_WEB / fonte
+    pasta_pdf.mkdir(parents=True, exist_ok=True)
+    pasta_web.mkdir(parents=True, exist_ok=True)
+    pacote_dir = cache / fonte
+    icons_json = pacote_dir / "icons.json"
+    if not icons_json.is_file():
+        pacote_dir.mkdir(parents=True, exist_ok=True)
+        descarregar(f"https://cdn.jsdelivr.net/npm/{info['pacote']}/icons.json", icons_json)
+    d = json.loads(icons_json.read_text(encoding="utf-8"))
+    largura_pad, altura_pad = d.get("width", 24), d.get("height", 24)
+    mapa = mapas.MAPAS[fonte]
+    feitos, faltam = 0, []
+    for codigo, nome in sorted(mapa.items()):
+        icone = d["icons"].get(nome)
+        if icone is None:
+            faltam.append((codigo, f"'{nome}' não existe no pacote"))
+            continue
+        w, h = icone.get("width", largura_pad), icone.get("height", altura_pad)
+        svg = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" color="#000" fill="#000">{icone["body"]}</svg>'
+        _rasterizar_centrado(svg, 256).save(pasta_pdf / f"{codigo}.png", optimize=True)
+        _rasterizar_centrado(svg, 96).save(pasta_web / f"{codigo}.webp", quality=82, method=6)
+        feitos += 1
+    descarregar(info["licenca_url"], pacote_dir / "LICENSE")
+    (pasta_pdf / "LICENSE.txt").write_text(
+        f"As imagens desta pasta são ícones de contorno do projeto {info['nome']} ({info['origem']}), "
+        "rasterizadas a partir do SVG (preto sobre transparente: o site e o PDF pintam-nas da cor do texto do momento, não têm cor própria).\n"
+        f"Licença: {info['licenca_nome']} (copiada abaixo); não exige atribuição (dá-se o crédito à mesma, por cortesia: core.precario_catalogo.FONTES_EXTRA).\n\n"
+        + (pacote_dir / "LICENSE").read_text(encoding="utf-8"), encoding="utf-8")
+    print(f"{feitos} de {len(mapa)} ícones de {fonte} gerados")
+    for c, e in faltam:
+        print(f"FALTA ({fonte})", c, e)
+    return 1 if faltam else 0
+
+
 def main(cache: Path) -> int:
     PASTA_PDF.mkdir(parents=True, exist_ok=True)
     PASTA_WEB.mkdir(parents=True, exist_ok=True)
@@ -232,7 +304,10 @@ def main(cache: Path) -> int:
     erro_fluent = gerar_fluent(cache.parent / "fluent_emoji_3d", set(codigos))
     erro_twemoji = gerar_twemoji(cache.parent / "twemoji", set(codigos))
     erro_openmoji = gerar_openmoji(cache.parent / "openmoji", set(codigos))
-    return (1 if faltam else 0) or erro_fluent or erro_twemoji or erro_openmoji
+    erro_linha = 0
+    for fonte in LINHA:
+        erro_linha = gerar_linha(cache.parent / "icones_linha", fonte) or erro_linha
+    return (1 if faltam else 0) or erro_fluent or erro_twemoji or erro_openmoji or erro_linha
 
 
 if __name__ == "__main__":

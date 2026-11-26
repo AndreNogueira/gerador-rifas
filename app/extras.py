@@ -22,6 +22,7 @@ import ambiente          # noqa: F401  (poe ..\src no sys.path)
 import core
 from core import editor, editor_modelo, etiquetas, galeria, i18n, marca, moeda, precario, precario_catalogo, sorteio, vales
 from core.i18n import t
+from core.tema import hex_para_rgb
 from tema import C, FONTE
 
 BASE = Path(__file__).resolve().parent
@@ -743,6 +744,14 @@ def _hoje() -> int:
     return datetime.date.today().month
 
 
+def _tingida(im: Image.Image, cor_hex: str) -> Image.Image:
+    """`im` (preto sobre transparente) pintada de `cor_hex`, copiando o alfa (a forma): ver Precario._imagem."""
+    r, g, b = hex_para_rgb(cor_hex)
+    t = Image.new("RGBA", im.size, (r, g, b, 255))
+    t.putalpha(im.getchannel("A"))
+    return t
+
+
 class Precario(Janela):
     """O preçário na app Windows: a mesma lógica do site (`core.precario`, `core.precario_catalogo`, `core.moeda`) numa janela: ocasião e tema, artigos (caixas por categoria), preços,
     moeda (a do país da língua ou uma inventada) e aspeto, com a pré-visualização desenhada no worker da app (o PDFium só corre lá; chega por `App._ev_precario`) e «Guardar PDF»,
@@ -1054,12 +1063,20 @@ class Precario(Janela):
         return True
 
     def _imagem(self, codigo: str, lado: int) -> ctk.CTkImage:
-        """A imagem de um artigo (a do PDF, `core/icones_precario/`) para um botão."""
+        """A imagem de um artigo (a do PDF, `core/icones_precario/`) para um botão. As bibliotecas de contorno
+        (`precario_catalogo.FONTES_EXTRA[fonte].monocromatica`) são pretas sobre transparente: pintam-se da cor
+        do texto de cada modo (`C["texto"]`, claro/escuro), em vez de aparecerem sempre a preto."""
         chave = (codigo, lado)
         if chave not in self._imagens:
+            fonte = codigo.split(":", 1)[0] if ":" in codigo else ""
+            info = precario_catalogo.FONTES_EXTRA.get(fonte)
             with Image.open(precario.caminho_icone(codigo)) as im:
                 im = im.convert("RGBA")
-                self._imagens[chave] = ctk.CTkImage(light_image=im, dark_image=im, size=(lado, lado))
+                if info and info.monocromatica:
+                    claro, escuro = (_tingida(im, cor) for cor in C["texto"])
+                    self._imagens[chave] = ctk.CTkImage(light_image=claro, dark_image=escuro, size=(lado, lado))
+                else:
+                    self._imagens[chave] = ctk.CTkImage(light_image=im, dark_image=im, size=(lado, lado))
         return self._imagens[chave]
 
     def _escolher_icone(self, chave: str, codigo: str | None = None) -> bool:

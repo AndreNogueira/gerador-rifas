@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.89.0 — 2026-11-26
+
+### Îmbunătățit
+- **Încă trei biblioteci de imagini de contur în lista de prețuri: Tabler Icons, Lucide și Material Symbols** (fără a cere mențiune): peste 100 de articole au câștigat alternative din aceste biblioteci, alese una câte una ca să reprezinte chiar articolul (spre deosebire de cele anterioare, nu există o metodă automată de a le găsi). Spre deosebire de imaginile color, acestea se colorează cu culoarea textului din acel moment — a site-ului, a aplicației Windows sau a hârtiei alese în PDF — ca să nu devină niciodată invizibile pe o temă întunecată sau o hârtie întunecată.
+
 ## 3.88.0 — 2026-11-21
 
 ### Îmbunătățit

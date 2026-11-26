@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.89.0 — 2026-11-26
+
+### Ulepszono
+- **Trzy kolejne biblioteki obrazków konturowych w cenniku: Tabler Icons, Lucide i Material Symbols** (bez wymogu podania autora): ponad 100 artykułów zyskało alternatywy z tych bibliotek, dobrane pojedynczo, by naprawdę przedstawiały dany artykuł (w odróżnieniu od poprzednich nie ma automatycznego sposobu ich znalezienia). W odróżnieniu od kolorowych obrazków, te przyjmują kolor aktualnego tekstu — strony, aplikacji Windows albo wybranego papieru w PDF — dzięki czemu nigdy nie stają się niewidoczne w ciemnym motywie ani na ciemnym papierze.
+
 ## 3.88.0 — 2026-11-21
 
 ### Ulepszono

@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pytest
 from core import precario_catalogo as cat
+from core import precario_icones_linha as linha
 from PIL import Image
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -57,7 +58,11 @@ def test_cada_codigo_da_biblioteca_tem_imagem_e_nenhuma_a_mais(fonte):
     assert codigos, f"nenhum artigo ganhou uma alternativa {fonte}: corre scripts/gerar_icones_precario.py"
     assert not [c for c in codigos if not (PDF / fonte / f"{c}.png").is_file()]
     assert not [c for c in codigos if not (WEB / fonte / f"{c}.webp").is_file()]
-    assert not [f.name for f in (PDF / fonte).glob("*.png") if f.stem not in codigos]
+    # nas de contorno, um código mapeado pode não ser oferecido por nenhum artigo sozinho (dois códigos do mesmo
+    # artigo com o mesmo ícone: _alternativas_extra só oferece o 1.º, para não repetir a mesma miniatura — ver
+    # test_nenhum_artigo_oferece_duas_imagens_iguais); o que não pode haver é um ficheiro fora do mapa escolhido à mão.
+    esperados = set(linha.MAPAS[fonte]) if cat.FONTES_EXTRA[fonte].monocromatica else set(codigos)
+    assert not [f.name for f in (PDF / fonte).glob("*.png") if f.stem not in esperados]
 
 
 @pytest.mark.parametrize("fonte", list(cat.FONTES_EXTRA))
@@ -85,3 +90,33 @@ def test_o_nome_das_fontes_no_frontend_bate_certo_com_o_catalogo():
     assert chaves[""] == "Noto Emoji"
     for fonte, info in cat.FONTES_EXTRA.items():
         assert chaves.get(fonte) == info.nome, fonte
+
+
+def test_as_fontes_monocromaticas_no_frontend_batem_certo_com_o_catalogo():
+    """IconesArtigo.tsx mantém um espelho (MONOCROMATICAS) de quais são de contorno, para as pintar com `mask-image`."""
+    texto = ICONES_ARTIGO_TSX.read_text(encoding="utf-8")
+    bloco = texto[texto.index("MONOCROMATICAS = new Set(["):texto.index("])", texto.index("MONOCROMATICAS = new Set(["))]
+    chaves = set(re.findall(r'"([a-z]+)"', bloco))
+    assert chaves == {f for f, info in cat.FONTES_EXTRA.items() if info.monocromatica}
+
+
+@pytest.mark.parametrize("fonte", [f for f, info in cat.FONTES_EXTRA.items() if info.monocromatica])
+def test_o_mapeamento_dos_icones_de_linha_bate_certo_com_os_ficheiros(fonte):
+    """core/precario_icones_linha.py (a escolha manual) e as imagens geradas (scripts/gerar_icones_precario.py) têm
+    de ter exatamente os mesmos códigos: um sem o outro é sinal de o gerador não ter corrido depois de mudar o mapa."""
+    mapeados = set(linha.MAPAS[fonte])
+    gerados = {f.stem for f in (PDF / fonte).glob("*.png")}
+    assert mapeados == gerados
+
+
+def test_nenhum_artigo_oferece_duas_imagens_iguais():
+    """Vários códigos podem resolver para o mesmo ícone de contorno (ex.: os 4 livros de cores diferentes usam o
+    mesmo ícone genérico de livro): `_alternativas_extra` tem de filtrar as repetidas, para o mesmo artigo nunca
+    mostrar duas miniaturas byte a byte iguais no seletor."""
+    for a in cat.ARTIGOS.values():
+        vistos = set()
+        for codigo in a.icones:
+            caminho = (PDF / codigo.replace(":", "/")) if ":" in codigo else (PDF / codigo)
+            dados = (caminho.with_suffix(".png")).read_bytes()
+            assert dados not in vistos, (a.id, codigo)
+            vistos.add(dados)

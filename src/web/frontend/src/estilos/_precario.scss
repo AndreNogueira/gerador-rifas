@@ -76,6 +76,21 @@
     width: 28px;
     height: 28px;
   }
+  // os ícones de contorno (Tabler/Lucide/Material Symbols) são pretos sobre transparente: pintam-se da cor do
+  // texto à volta (currentColor), em vez de aparecerem sempre a preto e desaparecerem no tema escuro
+  .precario-icone-linha {
+    display: inline-block;
+    flex: none;
+    width: 28px;
+    height: 28px;
+    background-color: currentColor;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+  }
   .precario-meu {
     display: grid;
     gap: 8px;

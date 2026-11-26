@@ -160,7 +160,7 @@ def _senha(c, e: Etiquetas, d, s: Senha, x: float, y: float, w: float, h: float,
         c.drawImage(precario._foto(s.foto), x0, centro_y - lado / 2, lado, lado, preserveAspectRatio=True, anchor="c", mask="auto")
         x0 += lado + 8
     elif p.imagens and s.emoji:
-        c.drawImage(precario._imagem(s.emoji), x0, centro_y - lado / 2, lado, lado, mask="auto")
+        c.drawImage(precario._imagem(s.emoji, precario._cor_texto(d)), x0, centro_y - lado / 2, lado, lado, mask="auto")
         x0 += lado + 8
     larg_texto = x + w - 9 - x0
     cor_texto = precario._cor_texto(d)

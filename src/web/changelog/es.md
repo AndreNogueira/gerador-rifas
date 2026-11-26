@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.89.0 — 2026-11-26
+
+### Mejorado
+- **Tres bibliotecas de imágenes de contorno más en el preçario: Tabler Icons, Lucide y Material Symbols** (sin exigir crédito): más de 100 artículos ganaron alternativas de estas bibliotecas, elegidas una a una para representar de verdad el artículo (a diferencia de las anteriores, no hay forma automática de encontrarlas). A diferencia de las imágenes en color, estas se pintan del color del texto del momento — del sitio, de la app Windows o del papel elegido en el PDF — para no quedar nunca invisibles en un tema oscuro o un papel oscuro.
+
 ## 3.88.0 — 2026-11-21
 
 ### Mejorado
