@@ -159,7 +159,9 @@
     padding: 8px 12px;
     font-weight: 700;
     text-align: left;
-    color: var(--cor);
+    // texto na cor base (--texto), não --cor: o acento (--cor) fica só na borda — o texto em negrito a 16px precisa de
+    // 4.5:1 a sério (não conta como "texto grande" da WCAG), e --texto-sobre---cartao é o par já garantido em todos os temas
+    color: var(--texto);
     background: var(--cartao);
     border: var(--borda) solid color-mix(in srgb, var(--cor) 50%, transparent);
     border-radius: var(--raio-c);
