@@ -6,7 +6,7 @@ FRASES = {
     "contacto_sem": "Zatím není k dispozici veřejný kontakt.",
     "contacto_pagina_com": "S dotazy, chybami nebo návrhy pište na {email}.",
     "contacto_pagina_sem": "Zatím není k dispozici veřejný kontakt. Vraťte se na tuto stránku později.",
-    "atualizado": "8. listopadu 2026",
+    "atualizado": "21. listopadu 2026",
 }
 
 AVISO = ("Předběžná verze, kterou je třeba zkontrolovat s právní pomocí. Pokud se zde něco liší od toho, co služba dělá, požádejte nás o opravu. "

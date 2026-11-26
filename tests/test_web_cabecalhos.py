@@ -8,7 +8,7 @@ import pytest
 pytest.importorskip("fastapi", reason="a webapp precisa do grupo `web` (uv sync)")
 from fastapi.testclient import TestClient
 from web import app as modulo_app
-from web.app import CABECALHOS_SEGURANCA, HSTS, criar_app
+from web.app import CABECALHOS_SEGURANCA, CSP_RELATORIO, HSTS, criar_app
 
 INDEX = '<!doctype html><html lang="pt"><head><!--seo:cabecalho--></head><body><div id="raiz"><!--seo:corpo--></div></body></html>'
 FICHEIROS = {                                    # nome -> tipo esperado (o que o browser tem de ver para executar/mostrar o ficheiro)
@@ -42,6 +42,15 @@ def test_toda_a_resposta_leva_os_cabecalhos_de_seguranca(c):
             assert r.headers.get(nome) == valor, (caminho, nome)
     assert CABECALHOS_SEGURANCA["X-Frame-Options"] == "SAMEORIGIN" and "geolocation=()" in CABECALHOS_SEGURANCA["Permissions-Policy"]
     assert "autoplay" not in CABECALHOS_SEGURANCA["Permissions-Policy"] and "ads" not in CABECALHOS_SEGURANCA["Permissions-Policy"]          # não se fecha nada que os anúncios usem
+
+
+def test_a_csp_e_so_de_relatorio_e_cobre_o_que_o_site_carrega(c):
+    r = c.get("/")
+    assert r.headers["content-security-policy-report-only"] == CSP_RELATORIO
+    assert "content-security-policy" not in r.headers                                  # NUNCA a versão que bloqueia (report-only não impede nada)
+    for trecho in ("default-src 'self'", "'unsafe-inline'", "googlesyndication.com", "object-src 'none'"):
+        assert trecho in CSP_RELATORIO
+    assert "report-to" not in CSP_RELATORIO and "report-uri" not in CSP_RELATORIO        # sem destino: não há para onde enviar os relatórios
 
 
 def test_o_hsts_so_vai_com_https_e_sem_subdominios_nem_preload(c):

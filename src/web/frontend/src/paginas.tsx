@@ -148,14 +148,16 @@ export function Video() {
 }
 
 /** «Acerca de»: o texto da app Windows, sem a linha das bibliotecas dela (aqui são outras). */
-export function Sobre({ versao }: { versao: string }) {
+export function Sobre({ versao, responsavel }: { versao: string; responsavel: string }) {
   const { t } = useI18n();
   const app = t("app_nome");
   // a 1.ª linha do texto da app («Nome» e «Versão x.y.z») é o subtítulo; o texto comprido de «Acerca de» é só do site (a app Windows usa o curto)
   const subtitulo = t("sobre_texto", { app, versao }).split("\n\n")[0] ?? "";
-  const paragrafos = t("web_sobre_corpo", { app })
+  const base = t("web_sobre_corpo", { app })
     .split("\n\n")
     .filter((p) => p.trim());
+  // «Quem o faz» só aparece com RESPONSAVEL configurado no servidor (o mesmo nome dos Termos/Privacidade: nunca inventado nem vindo do código)
+  const paragrafos = responsavel ? [...base, t("web_sobre_quem", { app, nome: responsavel })] : base;
   return (
     <div className="pagina">
       <section className="cartao sobre">

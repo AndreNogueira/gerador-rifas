@@ -372,6 +372,16 @@ describe("páginas", () => {
     window.history.pushState(null, "", "/");
   });
 
+  it("o «Acerca de» só diz quem o faz com RESPONSAVEL configurado no servidor", async () => {
+    servidor.responsavel = "Nome de Teste";
+    window.history.pushState(null, "", "/sobre");
+    abrir();
+    const corpo = await screen.findByTestId("sobre-corpo");
+    await waitFor(() => expect(corpo).toHaveTextContent("Nome de Teste"));
+    expect(corpo.querySelectorAll("p")).toHaveLength(4); // os 3 de sempre + «quem o faz»
+    window.history.pushState(null, "", "/");
+  });
+
   it("uma rota desconhecida mostra um 404 a sério, nunca o gerador escondido", async () => {
     window.history.pushState(null, "", "/isto-nao-existe");
     abrir();

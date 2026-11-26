@@ -2,6 +2,14 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.93.0 — 2026-11-26
+
+### Diperbaiki
+- **Teks kecil di tiga kolom pada ponsel**: kolom jumlah maksimum per berkas, warna nomor, dan nama berkas menampilkan teks di bawah 16 px, yang membuat iOS Safari memperbesar otomatis saat difokuskan. Sekarang ukurannya sama dengan kolom di sebelahnya.
+
+### Ditingkatkan
+- **"Tentang" sekarang menyebutkan siapa pembuat Generator Undian**: saat pemilik layanan mengidentifikasi diri (pengaturan yang sama dengan Ketentuan dan Privasi), halaman "Tentang" kini menyebutkan siapa yang membuat dan mengelolanya, serta bahwa aplikasi Windows muncul lebih dulu.
+
 ## 3.92.0 — 2026-11-26
 
 ### Diperbaiki

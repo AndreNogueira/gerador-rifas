@@ -6,7 +6,7 @@ FRASES = {
     "contacto_sem": "Momentan nu există un contact public.",
     "contacto_pagina_com": "Pentru întrebări, erori sau sugestii, scrieți la {email}.",
     "contacto_pagina_sem": "Momentan nu există un contact public. Reveniți pe această pagină mai târziu.",
-    "atualizado": "8 noiembrie 2026",
+    "atualizado": "21 noiembrie 2026",
 }
 
 AVISO = ("Versiune provizorie, de revizuit cu sprijin juridic. Dacă ceva de aici diferă de ceea ce face serviciul, cereți-ne să corectăm. "

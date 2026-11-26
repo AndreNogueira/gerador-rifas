@@ -2,6 +2,14 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.93.0 — 2026-11-26
+
+### Fixed
+- **Small text in three fields on mobile**: the maximum-per-file, number colour and file name fields showed text under 16 px, which makes iOS Safari zoom in on focus. They now match the size of nearby fields.
+
+### Improved
+- **"About" now says who makes it**: when the service owner is identified (the same setting used on Terms and Privacy), the "About" page says who created and maintains it, and that the Windows app came first.
+
 ## 3.92.0 — 2026-11-26
 
 ### Fixed

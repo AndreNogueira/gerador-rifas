@@ -6,7 +6,7 @@ FRASES = {
     "contacto_sem": "Şu anda herkese açık bir iletişim yok.",
     "contacto_pagina_com": "Sorular, hatalar ya da öneriler için {email} adresine yazın.",
     "contacto_pagina_sem": "Şu anda herkese açık bir iletişim yok. Bu sayfaya daha sonra tekrar bakın.",
-    "atualizado": "8 Kasım 2026",
+    "atualizado": "21 Kasım 2026",
 }
 
 AVISO = ("Geçici sürüm; hukuki destekle gözden geçirilmelidir. Burada bir şey hizmetin yaptığından farklıysa düzeltmemizi isteyin. "

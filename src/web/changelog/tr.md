@@ -2,6 +2,14 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.93.0 — 2026-11-26
+
+### Düzeltildi
+- **Mobilde üç alanda küçük yazı**: dosya başına azami sayı, numara rengi ve dosya adı alanları 16 px'den küçük metin gösteriyordu; bu da iOS Safari'nin odaklanınca otomatik yakınlaştırmasına yol açıyordu. Artık yan alanlarla aynı boyuttalar.
+
+### İyileştirildi
+- **"Hakkında" artık Çekiliş Bileti Oluşturucu'yu kimin yaptığını söylüyor**: hizmet sorumlusu tanımlandığında (Şartlar ve Gizlilik ile aynı ayar), "Hakkında" sayfası artık onu kimin oluşturduğunu ve sürdürdüğünü, Windows uygulamasının önce geldiğini söylüyor.
+
 ## 3.92.0 — 2026-11-26
 
 ### Düzeltildi

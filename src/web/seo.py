@@ -108,9 +108,13 @@ def _corpo_video(lg: str) -> str:
 def _corpo_sobre(lg: str) -> str:
     # a 1.ª linha do texto da app («Nome» e «Versão x.y.z») e o texto comprido do site, com o título de cada parágrafo a negrito
     subtitulo = i18n.traduzir("sobre_texto", lg, app=_app(lg), versao=VERSAO).split("\n\n")[0].replace("\n", " · ")
+    paragrafos = i18n.traduzir("web_sobre_corpo", lg, app=_app(lg)).split("\n\n")
+    nome = config.responsavel()
+    if nome:                                            # «quem o faz» só aparece com RESPONSAVEL configurado (o mesmo nome dos Termos/Privacidade)
+        paragrafos.append(i18n.traduzir("web_sobre_quem", lg, app=_app(lg), nome=nome))
     corpo = "".join(
         "<p>" + re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", html.escape(p, quote=False)) + "</p>"
-        for p in i18n.traduzir("web_sobre_corpo", lg, app=_app(lg)).split("\n\n")
+        for p in paragrafos
         if p.strip()
     )
     return f"<h1>{html.escape(_nome_pagina('mi_sobre')(lg))}</h1><p>{html.escape(subtitulo)}</p>{corpo}{_voltar(lg)}"
@@ -260,19 +264,38 @@ def _json_ld(dados: dict) -> str:
     return json.dumps(dados, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 
 
+def _organizacao(base: str) -> dict:
+    """`Organization`: quem publica o site (o Google usa-a para o painel de conhecimento e para ligar o logótipo à marca)."""
+    return {"@type": "Organization", "name": NOME, "url": f"{base}/", "logo": f"{base}/icone-512.png"}
+
+
+def _website(base: str, lg: str) -> dict:
+    """`WebSite` minimo (nome + url). Sem `potentialAction`/`SearchAction`: o site nao tem pesquisa interna e a Google retirou
+    a caixa de pesquisa dos resultados em novembro de 2024."""
+    return {"@type": "WebSite", "name": _app(lg), "url": f"{base}{caminho_na_lingua('/', lg)}"}
+
+
 def _dados_estruturados(base: str, lg: str) -> dict:
+    """So na pagina inicial: `WebApplication` (a app), `Organization` (quem a publica) e `WebSite`, num so `@graph`.
+    Sem `aggregateRating`/`review` (nao ha sistema de avaliacoes a serio: inventa-los violaria a politica da Google sobre avaliacoes falsas)."""
     return {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": _app(lg),
-        "url": f"{base}{caminho_na_lingua('/', lg)}",
-        "description": ROTAS["/"].descricao(lg),
-        "applicationCategory": "UtilitiesApplication",
-        "operatingSystem": "Any (browser)",
-        "browserRequirements": "Requires JavaScript",
-        "inLanguage": [i18n.bcp47(x) for x in i18n.LINGUAS],
-        "image": f"{base}{IMAGEM}",
-        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": _app(lg),
+                "url": f"{base}{caminho_na_lingua('/', lg)}",
+                "description": ROTAS["/"].descricao(lg),
+                "applicationCategory": "UtilitiesApplication",
+                "operatingSystem": "Any (browser)",
+                "browserRequirements": "Requires JavaScript",
+                "inLanguage": [i18n.bcp47(x) for x in i18n.LINGUAS],
+                "image": f"{base}{IMAGEM}",
+                "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+            },
+            _organizacao(base),
+            _website(base, lg),
+        ],
     }
 
 

@@ -94,8 +94,17 @@ def test_a_pagina_inicial_tem_dados_estruturados_validos(publico):
     blocos = re.findall(r'<script type="application/ld\+json">(.*?)</script>', h)
     assert len(blocos) == 1
     d = json.loads(blocos[0])
-    assert d["@type"] == "WebApplication" and d["url"] == f"{URL}/" and d["offers"]["price"] == "0"
-    assert len(d["inLanguage"]) == len(i18n.LINGUAS) and d["image"] == f"{URL}/og-imagem.png"
+    assert d["@context"] == "https://schema.org"
+    grafo = {bloco["@type"]: bloco for bloco in d["@graph"]}
+    assert set(grafo) == {"WebApplication", "Organization", "WebSite"}
+    app_ = grafo["WebApplication"]
+    assert app_["url"] == f"{URL}/" and app_["offers"]["price"] == "0"
+    assert len(app_["inLanguage"]) == len(i18n.LINGUAS) and app_["image"] == f"{URL}/og-imagem.png"
+    org = grafo["Organization"]
+    assert org["name"] == "Gerador de Rifas" and org["url"] == f"{URL}/" and org["logo"] == f"{URL}/icone-512.png"
+    assert "aggregateRating" not in app_ and "review" not in app_
+    site = grafo["WebSite"]
+    assert site["url"] == f"{URL}/" and "potentialAction" not in site
     for caminho in ("/tutorial", "/video", "/sobre", "/sorteio", "/editor", "/termos", "/privacidade", "/contacto", "/changelog"):
         assert "ld+json" not in publico.get(caminho).text
 

@@ -2,6 +2,14 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.93.0 — 2026-11-26
+
+### Corectat
+- **Text mic în trei câmpuri pe mobil**: câmpurile pentru numărul maxim per fișier, culoarea numerelor și numele fișierelor arătau text sub 16 px, ceea ce face ca iOS Safari să mărească automat la focalizare. Acum au aceeași dimensiune ca câmpurile vecine.
+
+### Îmbunătățit
+- **„Despre” spune acum cine face Generatorul de Tombole**: când operatorul serviciului se identifică (aceeași configurare ca la Termeni și Confidențialitate), pagina „Despre” spune acum cine l-a creat și îl întreține, și că aplicația Windows a apărut prima.
+
 ## 3.92.0 — 2026-11-26
 
 ### Corectat

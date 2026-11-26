@@ -2,6 +2,14 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.93.0 — 2026-11-26
+
+### Corregido
+- **Letra pequeña en tres campos en el móvil**: los campos del máximo por archivo, el color de los números y el nombre de los archivos mostraban el texto por debajo de 16 px, lo que hace que iOS Safari amplíe automáticamente al enfocar. Ahora tienen el mismo tamaño que los campos vecinos.
+
+### Mejorado
+- **«Acerca de» dice quién hace el Generador de Rifas**: cuando el responsable del servicio se identifica (la misma configuración de los Términos y la Privacidad), la página «Acerca de» dice ahora quién lo creó y lo mantiene, y que la app para Windows llegó primero.
+
 ## 3.92.0 — 2026-11-26
 
 ### Corregido

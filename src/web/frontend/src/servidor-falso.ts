@@ -251,6 +251,7 @@ export const TEXTOS: Record<string, Record<string, string>> = {
     sobre_texto: "{app}\nVersão {versao}\n\nGera PDFs.\n\nUsa X.",
     web_sobre_corpo:
       "**Para quem é.** {app} é para escolas e associações.\n\n**O que faz.** Numera bilhetes e arruma-os na folha.\n\n**Gratuito e privado.** Sem conta nem registo.",
+    web_sobre_quem: "**Quem o faz.** {app} é feito por {nome}.",
     web_data_escolher: "Escolher a data",
     web_data_anterior: "Mês anterior",
     web_data_seguinte: "Mês seguinte",
@@ -341,6 +342,7 @@ export class ServidorFalso {
   anunciosSlot = "";
   partilhaEditor = false;
   problemasAtivos = true;
+  responsavel = "";
   comentarios: {
     id: string;
     criado: number;
@@ -518,6 +520,7 @@ export class ServidorFalso {
         anuncios_slot: this.anunciosSlot,
         partilha_editor: this.partilhaEditor,
         problemas: this.problemasAtivos,
+        responsavel: this.responsavel,
       });
     const pg = /^\/api\/pagina\/(\w+)$/.exec(url);
     if (pg?.[1])

@@ -2,6 +2,14 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.93.0 — 2026-11-26
+
+### Risolto
+- **Testo piccolo in tre campi su telefono**: i campi del massimo per file, del colore dei numeri e del nome dei file mostravano testo sotto i 16 px, il che fa zoomare automaticamente iOS Safari quando si seleziona il campo. Ora hanno la stessa dimensione dei campi vicini.
+
+### Migliorato
+- **«Chi siamo» dice ora chi fa il Generatore di Lotterie**: quando il responsabile del servizio si identifica (la stessa configurazione di Termini e Privacy), la pagina «Chi siamo» indica ora chi l'ha creato e lo mantiene, e che l'app per Windows è nata prima.
+
 ## 3.92.0 — 2026-11-26
 
 ### Risolto

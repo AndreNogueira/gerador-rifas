@@ -6,7 +6,7 @@ FRASES = {
     "contacto_sem": "Hiện chưa có thông tin liên hệ công khai.",
     "contacto_pagina_com": "Nếu có câu hỏi, lỗi hoặc góp ý, hãy viết đến {email}.",
     "contacto_pagina_sem": "Hiện chưa có thông tin liên hệ công khai. Vui lòng quay lại trang này sau.",
-    "atualizado": "8 tháng 11 năm 2026",
+    "atualizado": "21 tháng 11 năm 2026",
 }
 
 AVISO = ("Phiên bản tạm thời, cần được xem xét lại với sự hỗ trợ pháp lý. Nếu có điều gì ở đây khác với những gì dịch vụ làm, xin hãy báo để chúng tôi sửa. "

@@ -2,6 +2,14 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.93.0 — 2026-11-26
+
+### Corregit
+- **Lletra petita en tres camps al mòbil**: els camps del màxim per fitxer, la color dels números i el nom dels fitxers mostraven la lletra per sota de 16 px, el que fa que l'iOS Safari amplia en enfocar. Ara tenen la mateixa mida que els camps del costat.
+
+### Millores
+- **«Quant a» diu qui fa el Generador de Rifes**: quan el responsable del servei s'identifica (la mateixa configuració dels Termes i la Privacitat), la pàgina «Quant a» diu ara qui l'ha creat i el manté, i que l'app per a Windows va néixer primer.
+
 ## 3.92.0 — 2026-11-26
 
 ### Corregit

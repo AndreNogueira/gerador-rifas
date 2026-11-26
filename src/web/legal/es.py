@@ -6,7 +6,7 @@ FRASES = {
     "contacto_sem": "De momento no hay un contacto público.",
     "contacto_pagina_com": "Para dudas, errores o sugerencias, escriba a {email}.",
     "contacto_pagina_sem": "De momento no hay un contacto público. Vuelva a esta página más tarde.",
-    "atualizado": "8 de noviembre de 2026",
+    "atualizado": "21 de noviembre de 2026",
 }
 
 AVISO = ("Versión provisional, pendiente de revisión con apoyo jurídico. Si algo de aquí difiere de lo que hace el servicio, pídanos que lo corrijamos. "

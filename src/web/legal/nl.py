@@ -6,7 +6,7 @@ FRASES = {
     "contacto_sem": "Er is op dit moment geen openbaar contact.",
     "contacto_pagina_com": "Voor vragen, fouten of suggesties kunt u mailen naar {email}.",
     "contacto_pagina_sem": "Er is op dit moment geen openbaar contact. Kom later nog eens terug.",
-    "atualizado": "8 november 2026",
+    "atualizado": "21 november 2026",
 }
 
 AVISO = ("Voorlopige versie, nog na te kijken met juridische hulp. Wijkt iets hier af van wat de dienst doet, vraag ons dan het te corrigeren. "

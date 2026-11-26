@@ -2,6 +2,14 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.93.0 — 2026-11-26
+
+### Naprawione
+- **Mała czcionka w trzech polach na telefonie**: pola maksymalnej liczby na plik, koloru numerów i nazwy plików wyświetlały tekst mniejszy niż 16 px, co powoduje automatyczne przybliżenie w iOS Safari po kliknięciu. Teraz mają taki sam rozmiar jak pola sąsiednie.
+
+### Ulepszono
+- **„O aplikacji” mówi teraz, kto tworzy Generator Loterii**: gdy operator usługi się identyfikuje (to samo ustawienie co w Regulaminie i Prywatności), strona „O aplikacji” podaje teraz, kto ją stworzył i utrzymuje, oraz że aplikacja na Windows powstała najpierw.
+
 ## 3.92.0 — 2026-11-26
 
 ### Naprawione
