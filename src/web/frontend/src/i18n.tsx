@@ -23,15 +23,6 @@ interface Contexto {
 }
 
 const I18n = createContext<Contexto | null>(null);
-const CHAVE = "rifas.lingua";
-
-function lerGuardada(): string | null {
-  try {
-    return localStorage.getItem(CHAVE);
-  } catch {
-    return null; // modo privado ou armazenamento bloqueado
-  }
-}
 
 export function ProvedorI18n({ children }: { children: ReactNode }) {
   const [linguas, setLinguas] = useState<Lingua[]>([]);
@@ -46,11 +37,12 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
       .linguas()
       .then((l) => {
         setLinguas(l.linguas);
-        // a língua do URL (`/en/tutorial`) ganha à guardada, que ganha à do browser
+        // a língua do URL (`/en/tutorial`) manda; sem prefixo é sempre português (`rota.tsx`): nunca a guardada
+        // nem a do browser/servidor, senão um robô ou um browser sem Accept-Language em português acabava a
+        // ver a página em inglês e o URL era reescrito sozinho (ver `docs/SEO.md`)
         const doUrl = linguaDoCaminho();
-        const guardada = lerGuardada();
         const existe = (c: string | null) => l.linguas.some((x) => x.codigo === c);
-        setEscolhida(existe(doUrl) ? doUrl : existe(guardada) ? guardada : l.por_defeito);
+        setEscolhida(existe(doUrl) ? doUrl : "pt");
       })
       .catch((e: Error) => setErro(e.message));
   }, []);
@@ -69,11 +61,6 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
         ); // pt-br → pt-BR
         definirLinguaDaRota(r.lingua); // o URL passa a ter o prefixo desta língua
         setCarregados({ lingua: r.lingua, textos: r.textos });
-        try {
-          localStorage.setItem(CHAVE, r.lingua);
-        } catch {
-          /* sem armazenamento */
-        }
       })
       .catch((e: Error) => {
         if (atual) setErro(e.message);

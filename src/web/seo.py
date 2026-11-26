@@ -362,8 +362,18 @@ def pagina_nao_encontrada() -> Pagina:
 
 
 def robots(base: str) -> str:
-    """`robots.txt`: tudo aberto (incluindo o JS e o CSS, que os robos precisam para desenhar a pagina), menos a API e o painel."""
-    return f"User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /admin\nDisallow: /v/\nDisallow: /V/\n\nSitemap: {base}/sitemap.xml\n"
+    """`robots.txt`: tudo aberto (incluindo o JS e o CSS, que os robos precisam para desenhar a pagina), menos a API e o painel.
+
+    Dentro da API, algumas rotas ficam explicitamente permitidas (RFC 9309: a regra mais longa ganha): são as que o
+    proprio React pede para montar a pagina depois de o JS a reescrever (`/api/linguas`, `/api/textos/`, `/api/guia/`,
+    `/api/guias`) e a documentacao da API publica v1 (`/api/v1/docs`, `/api/v1/openapi.json`). O Googlebot e o Bingbot
+    respeitam o robots.txt mesmo nos pedidos que o JS faz ao renderizar: sem isto, viam so o "a carregar"/erro que o
+    `i18n.tsx` mostra enquanto esses pedidos nao respondem. Continuam todas com `X-Robots-Tag: noindex, nofollow`
+    (permitir o rastreio para desenhar/descobrir a pagina nao e o mesmo que permitir indexar a resposta da API)."""
+    return ("User-agent: *\nAllow: /\nDisallow: /api/\n"
+            "Allow: /api/linguas\nAllow: /api/textos/\nAllow: /api/guia/\nAllow: /api/guias\n"
+            "Allow: /api/v1/docs\nAllow: /api/v1/openapi.json\n"
+            f"Disallow: /admin\nDisallow: /v/\nDisallow: /V/\n\nSitemap: {base}/sitemap.xml\n")
 
 
 def sitemap(base: str) -> str:

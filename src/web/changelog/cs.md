@@ -2,6 +2,14 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.90.0 — 2026-11-26
+
+### Opraveno
+- **Stránka v portugalštině se už sama nepřepíná do jiného jazyka**: při návštěvě adresy bez předpony (`/`, `/tutorial`, …), aniž by prohlížeč řekl, že jazyk je portugalština — což platí pro mnoho vyhledávacích robotů a některé prohlížeče — se celý obsah a URL přepsaly na angličtinu. Adresa bez předpony nyní vždy znamená portugalštinu, jak bylo zamýšleno; 21 jazyků s předponou funguje jako dřív. `robots.txt` navíc už neblokuje úplně `/api/linguas`, `/api/textos`, `/api/guia(s)` a dokumentaci veřejného API (`/api/v1/docs`), aby je vyhledávače mohly správně vykreslit a zaindexovat.
+
+### Vylepšeno
+- **Rychlejší výběr jazyka**: nativní názvy jazyků ve výběru (jako „Tiếng Việt“ nebo „Čeština“) nyní používají systémové písmo místo písma značky, takže stránka už nemusí stahovat další glyfy jen pro jejich zobrazení — což zpomalovalo hlavní text a občas ho posouvalo.
+
 ## 3.89.0 — 2026-11-26
 
 ### Vylepšeno

@@ -114,6 +114,14 @@ def test_robots_txt(publico):
     assert not any(l.strip() == "Disallow: /" or "/assets" in l for l in linhas)   # os robos precisam do JS e do CSS
 
 
+def test_robots_txt_deixa_entrar_nas_rotas_que_o_react_precisa_e_na_doc_da_api_publica(publico):
+    # dentro de /api/ (que fica bloqueado): o que o proprio site pede ao reescrever a pagina com JS, e a doc da API v1
+    # (RFC 9309: a regra Allow mais longa ganha a Disallow: /api/, por isso continuam acessiveis a quem respeita o robots.txt)
+    linhas = publico.get("/robots.txt").text.splitlines()
+    for rota in ("/api/linguas", "/api/textos/", "/api/guia/", "/api/guias", "/api/v1/docs", "/api/v1/openapi.json"):
+        assert f"Allow: {rota}" in linhas, rota
+
+
 def test_sitemap_so_tem_as_paginas_publicas(publico):
     r = publico.get("/sitemap.xml")
     assert r.status_code == 200 and r.headers["content-type"].startswith("application/xml")

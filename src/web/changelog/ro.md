@@ -2,6 +2,14 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.90.0 — 2026-11-26
+
+### Corectat
+- **Pagina în portugheză nu mai schimbă singură limba**: vizitarea unei adrese fără prefix (`/`, `/tutorial`, …) fără ca browserul să indice portugheza — cazul multor roboți de căutare și al unor browsere — făcea ca site-ul să rescrie singur URL-ul și tot conținutul în engleză. Fără prefix înseamnă acum mereu portugheză, așa cum era planul; cele 21 de limbi cu prefix merg la fel ca înainte. `robots.txt` nu mai blochează complet nici `/api/linguas`, `/api/textos`, `/api/guia(s)` și documentația API-ului public (`/api/v1/docs`), ca motoarele de căutare să poată randa și indexa bine site-ul.
+
+### Îmbunătățit
+- **Selector de limbă mai rapid**: numele native ale limbilor din selector (precum «Tiếng Việt» sau «Čeština») folosesc acum fontul sistemului în loc de cel al mărcii, așa că pagina nu mai trebuie să descarce glife suplimentare doar pentru a le arăta — lucru care întârzia textul principal și îl deplasa uneori.
+
 ## 3.89.0 — 2026-11-26
 
 ### Îmbunătățit

@@ -2,6 +2,14 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.90.0 — 2026-11-26
+
+### Düzeltildi
+- **Portekizce sayfa artık kendi kendine dil değiştirmiyor**: önekli olmayan bir adresi (`/`, `/tutorial`, …) tarayıcı Portekizce olduğunu bildirmeden ziyaret etmek — birçok arama motoru tarayıcısında ve bazı tarayıcılarda görülen durum — sitenin URL'yi ve tüm içeriği kendiliğinden İngilizceye çevirmesine yol açıyordu. Önek olmaması artık hep Portekizce anlamına geliyor, tasarlandığı gibi; önekli 21 dil eskisi gibi çalışıyor. `robots.txt` da artık `/api/linguas`, `/api/textos`, `/api/guia(s)` ve genel API belgelerini (`/api/v1/docs`) tamamen engellemiyor, böylece arama motorları siteyi doğru işleyip dizine ekleyebiliyor.
+
+### İyileştirildi
+- **Daha hızlı dil seçici**: seçicideki dillerin kendi adları (örneğin «Tiếng Việt» veya «Čeština») artık marka yazı tipi yerine sistem yazı tipini kullanıyor, böylece sayfanın bunları göstermek için ek karakter yüklemesi gerekmiyor — bu daha önce ana metni geciktiriyor ve bazen yerini kaydırıyordu.
+
 ## 3.89.0 — 2026-11-26
 
 ### İyileştirildi

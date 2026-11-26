@@ -2,6 +2,14 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.90.0 — 2026-11-26
+
+### Åtgärdat
+- **Den portugisiska sidan byter inte längre språk själv**: att besöka en adress utan prefix (`/`, `/tutorial`, …) utan att webbläsaren anger portugisiska som språk — vanligt hos många sökmotorrobotar och vissa webbläsare — fick sidan att själv skriva om URL:en och allt innehåll till engelska. Utan prefix betyder nu alltid portugisiska, som avsett; de 21 språken med prefix fungerar som förut. `robots.txt` slutar också blockera `/api/linguas`, `/api/textos`, `/api/guia(s)` och dokumentationen för det publika API:et (`/api/v1/docs`) helt, så sökmotorer kan rendera och indexera sidan ordentligt.
+
+### Förbättrat
+- **Snabbare språkväljare**: språkens egna namn i väljaren (som «Tiếng Việt» eller «Čeština») använder nu systemets typsnitt istället för varumärkets, så sidan behöver inte längre hämta extra glyfer bara för att visa dem — det brukade försena huvudtexten och ibland flytta den.
+
 ## 3.89.0 — 2026-11-26
 
 ### Förbättrat

@@ -2,6 +2,14 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.90.0 — 2026-11-26
+
+### Risolto
+- **La pagina in portoghese non cambia più lingua da sola**: visitare un indirizzo senza prefisso (`/`, `/tutorial`, …) senza che il browser indichi il portoghese — il caso di molti crawler dei motori di ricerca e di alcuni browser — faceva riscrivere da solo l'URL e tutto il contenuto in inglese. Senza prefisso significa ora sempre portoghese, come previsto; le 21 lingue con prefisso continuano a funzionare come prima. Il `robots.txt` smette anche di bloccare del tutto `/api/linguas`, `/api/textos`, `/api/guia(s)` e la documentazione dell'API pubblica (`/api/v1/docs`), così i motori di ricerca possono renderizzare e indicizzare bene il sito.
+
+### Migliorato
+- **Selettore di lingua più veloce**: i nomi nativi delle lingue nel selettore (come «Tiếng Việt» o «Čeština») usano ora il carattere di sistema invece di quello del marchio, così la pagina non deve più scaricare glifi extra solo per mostrarli — cosa che ritardava il testo principale e a volte lo spostava.
+
 ## 3.89.0 — 2026-11-26
 
 ### Migliorato

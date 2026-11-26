@@ -87,8 +87,9 @@ async function carregar(page: Page, input: Locator, ficheiro: string) {
 }
 
 /** Abre a página e carrega o template e os algarismos (a parte que se corta do vídeo). */
-async function preparar(page: Page, template: string, algarismos: string) {
-  await page.goto("/");
+async function preparar(page: Page, template: string, algarismos: string, lg: Lg) {
+  // a língua vem do URL, não do browser (sem prefixo é sempre português: ver `src/web/frontend/src/rota.tsx`)
+  await page.goto(lg === "pt" ? "/" : `/${lg}`);
   await expect(page.getByTestId("upload-template")).toBeAttached();
   await page.getByTestId("upload-template").setInputFiles(fixture(template));
   await expect(page.getByTestId("estado-template")).toContainText("✔");
@@ -103,7 +104,7 @@ const VARIAS = ["template_exemplo.pdf", "digitos_exemplo.pdf"] as const;
 interface Cena {
   id: string;
   template?: readonly [string, string];
-  rodar: (page: Page, T: Texto) => Promise<void>;
+  rodar: (page: Page, T: Texto, lg: Lg) => Promise<void>;
 }
 
 const CENAS: Cena[] = [
@@ -159,8 +160,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "lista",
-    rodar: async (page, T) => {
-      await page.goto("/");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/" : `/${lg}`);
       await legenda(page, T("Lista de bilhetes e folha de controlo", "Ticket list and control sheet"), 2000);
       await escrever(page, page.getByTestId("ate"), "120");
       await escrever(page, page.getByTestId("nome"), T("Rifa de Natal", "Christmas raffle"));
@@ -240,8 +241,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "galeria",
-    rodar: async (page, T) => {
-      await page.goto("/");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/" : `/${lg}`);
       await legenda(
         page,
         T("Sem template do Canva? Use a galeria", "No Canva template? Use the gallery"),
@@ -308,8 +309,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "editor",
-    rodar: async (page, T) => {
-      await page.goto("/");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/" : `/${lg}`);
       await legenda(
         page,
         T("Sem Canva? Desenhe a sua rifa no editor", "No Canva? Design your ticket in the editor"),
@@ -457,8 +458,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "precario",
-    rodar: async (page, T) => {
-      await page.goto("/precario");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/precario" : `/${lg}/precario`);
       await expect(page.getByTestId("precario-previa-img")).toBeVisible();
       await legenda(
         page,
@@ -512,8 +513,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "vales",
-    rodar: async (page, T) => {
-      await page.goto("/precario");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/precario" : `/${lg}/precario`);
       await expect(page.getByTestId("precario-previa-img")).toBeVisible();
       await legenda(
         page,
@@ -554,8 +555,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "etiquetas",
-    rodar: async (page, T) => {
-      await page.goto("/precario");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/precario" : `/${lg}/precario`);
       await expect(page.getByTestId("precario-previa-img")).toBeVisible();
       await legenda(
         page,
@@ -612,8 +613,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "sorteio",
-    rodar: async (page, T) => {
-      await page.goto("/sorteio");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/sorteio" : `/${lg}/sorteio`);
       await expect(page.getByTestId("sorteio-sortear")).toBeVisible();
       await legenda(page, T("Sorteio verificável", "Verifiable draw"), 1800);
       await escrever(page, page.getByTestId("sorteio-de"), "1");
@@ -713,8 +714,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "partilhar",
-    rodar: async (page, T) => {
-      await page.goto("/");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/" : `/${lg}`);
       await legenda(page, T("Partilhar o gerador", "Share the generator"), 1800);
       const abrir = page.getByTestId("partilhar-abrir-topo");
       await abrir.scrollIntoViewIfNeeded();
@@ -766,8 +767,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "comentarios",
-    rodar: async (page, T) => {
-      await page.goto("/");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/" : `/${lg}`);
       await legenda(page, T("Diga o que acha do gerador", "Tell us what you think of the generator"), 2200);
       await clicar(page, page.getByTestId("nav-comentarios"));
       await expect(page.getByTestId("pagina-comentarios")).toBeVisible();
@@ -817,7 +818,7 @@ const CENAS: Cena[] = [
   },
   {
     id: "problema",
-    rodar: async (page, T) => {
+    rodar: async (page, T, lg) => {
       // no servidor de teste não há token do GitHub: finge-se que está ligado e que o GitHub criou o problema n.º 42 (nada vai a sério para o GitHub)
       await page.route("**/api/publico", async (route) => {
         const resposta = await route.fetch();
@@ -826,7 +827,7 @@ const CENAS: Cena[] = [
       await page.route("**/api/problemas", (route) =>
         route.fulfill({ status: 201, contentType: "application/json", body: JSON.stringify({ numero: 42 }) }),
       );
-      await page.goto("/");
+      await page.goto(lg === "pt" ? "/" : `/${lg}`);
       await legenda(page, T("Encontrou um erro?", "Found a bug?"), 2000);
       await clicar(page, page.getByTestId("nav-reportar-problema"));
       await expect(page.getByTestId("pagina-problema")).toBeVisible();
@@ -868,8 +869,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "instalar",
-    rodar: async (page, T) => {
-      await page.goto("/");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/" : `/${lg}`);
       await legenda(page, T("Instalar como app", "Install as an app"), 1800);
       await page.evaluate(() => {
         const b = document.getElementById("__barra");
@@ -904,8 +905,8 @@ const CENAS: Cena[] = [
   },
   {
     id: "visual",
-    rodar: async (page, T) => {
-      await page.goto("/");
+    rodar: async (page, T, lg) => {
+      await page.goto(lg === "pt" ? "/" : `/${lg}`);
       await legenda(
         page,
         T("Temas visuais e Natal automático", "Visual themes and automatic Christmas"),
@@ -958,11 +959,13 @@ async function gravar(browser: Browser, baseURL: string, cena: Cena, lg: Lg) {
   await contexto.addInitScript(PALCO);
   const page = await contexto.newPage();
   const t0 = Date.now();
-  if (cena.template) await preparar(page, cena.template[0], cena.template[1]);
-  else await page.goto("/");
+  // a língua vem do URL, não do browser (sem prefixo é sempre português: ver `src/web/frontend/src/rota.tsx`)
+  const base = lg === "pt" ? "/" : `/${lg}`;
+  if (cena.template) await preparar(page, cena.template[0], cena.template[1], lg);
+  else await page.goto(base);
   await page.evaluate(() => document.fonts.ready);
   const corte = (Date.now() - t0) / 1000; // o vídeo começa aqui: tudo o que está antes era preparação
-  await cena.rodar(page, (pt, en) => (lg === "pt" ? pt : en));
+  await cena.rodar(page, (pt, en) => (lg === "pt" ? pt : en), lg);
   await legenda(page, "", 700);
   const video = page.video();
   await contexto.close();

@@ -2,6 +2,14 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.90.0 — 2026-11-26
+
+### Đã sửa
+- **Trang tiếng Bồ Đào Nha không còn tự đổi ngôn ngữ**: khi vào một địa chỉ không có tiền tố (`/`, `/tutorial`, …) mà trình duyệt không báo ngôn ngữ là tiếng Bồ Đào Nha — trường hợp của nhiều trình thu thập dữ liệu tìm kiếm và một số trình duyệt — trang web sẽ tự viết lại URL và toàn bộ nội dung sang tiếng Anh. Địa chỉ không tiền tố giờ luôn có nghĩa là tiếng Bồ Đào Nha, đúng như thiết kế; 21 ngôn ngữ có tiền tố vẫn hoạt động như trước. `robots.txt` cũng không còn chặn hoàn toàn `/api/linguas`, `/api/textos`, `/api/guia(s)` và tài liệu API công khai (`/api/v1/docs`), để các công cụ tìm kiếm có thể hiển thị và lập chỉ mục trang đúng cách.
+
+### Cải thiện
+- **Bộ chọn ngôn ngữ nhanh hơn**: tên gốc của các ngôn ngữ trong bộ chọn (như «Tiếng Việt» hay «Čeština») giờ dùng phông chữ hệ thống thay vì phông chữ thương hiệu, nên trang không còn phải tải thêm glyph chỉ để hiển thị chúng — điều trước đây làm chậm văn bản chính và đôi khi làm nó xô lệch.
+
 ## 3.89.0 — 2026-11-26
 
 ### Cải thiện
