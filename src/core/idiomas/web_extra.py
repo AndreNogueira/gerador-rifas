@@ -4455,6 +4455,14 @@ CHAVES: dict[str, dict[str, str]] = {
         "zh": "此页面不存在，或者链接有误。", "ja": "このページは存在しないか、リンクが間違っています。",
         "ko": "이 페이지는 존재하지 않거나 링크가 잘못되었습니다.", "hi": "यह पेज मौजूद नहीं है, या लिंक गलत है।",
     },
+    # «Algarismos 0–9» sem o «(obrigatório)»: o passo 2 usa esta versao quando o campo ja esta preenchido (upload manual ou a galeria,
+    # que o faz sozinha) — o aviso de obrigatoriedade deixa de fazer sentido (cartoes.tsx, CartaoAlgarismos).
+    "c2_titulo_sem_obrigatorio": {
+        "pt": "Algarismos 0–9", "en": "Digits 0–9", "es": "Dígitos 0–9", "fr": "Chiffres 0–9", "de": "Ziffern 0–9",
+        "it": "Cifre 0–9", "nl": "Cijfers 0–9", "pl": "Cyfry 0–9", "sv": "Siffror 0–9", "cs": "Číslice 0–9",
+        "ro": "Cifre 0–9", "el": "Ψηφία 0–9", "ru": "Цифры 0–9", "tr": "Rakamlar 0–9", "zh": "数字 0–9",
+        "ja": "数字 0–9", "ko": "숫자 0–9", "hi": "अंक 0–9",
+    },
 }
 
 

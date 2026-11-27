@@ -2,6 +2,15 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.94.0 — 2026-11-26
+
+### Corregit
+- **Lletra petita a la galeria de dissenys, al mòbil**: dins el panell «Sense plantilla? Trieu-ne una de la galeria», la llista «Quants premis», el format de la data i el camp «text abans de la data» es mostraven a 14 px, com els tres camps ja corregits a la versió anterior. Ara tenen almenys 16 px.
+- **El pas 2 només diu «(obligatori)» quan realment falta**: en triar un disseny de la galeria (que ja porta les xifres a punt), el títol del pas 2 deixa de dir «(obligatori)» mentre el camp estigui emplenat.
+
+### Millores
+- **La descripció de la pàgina d'inici ja no exigeix Canva**: la descripció que apareix als cercadors només parlava de la plantilla de Canva; ara diu també que es pot triar un disseny ja fet de la galeria, sense necessitar-lo.
+
 ## 3.93.0 — 2026-11-26
 
 ### Corregit

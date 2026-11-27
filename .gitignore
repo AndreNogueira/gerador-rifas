@@ -38,3 +38,6 @@ app/testes/teste - *.pdf
 test-results/
 videos-gravados/
 playwright-report/
+
+# gerado só pelo deploy.yml (git log de cada guia, para o <lastmod> do sitemap): nunca se comita, ver seo.py/_datas_guias
+/src/web/guia_datas.json

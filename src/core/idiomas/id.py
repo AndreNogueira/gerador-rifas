@@ -53,6 +53,7 @@ T = {
     "c1_ok": "✔ {n} tiket per halaman · nomor contoh {primeiro}–{ultimo}",
     "escolher": "Telusuri…",
     "c2_titulo": "Angka 0–9 (wajib)",
+    "c2_titulo_sem_obrigatorio": "Angka 0–9",
     "c2_placeholder": "PDF, PNG atau JPG berisi 0123456789",
     "c2_precisa": "✖ Pilih berkas dengan angka 0–9, dalam font yang sama dengan nomor templat.",
     "c2_analisar": "Membaca angka…",

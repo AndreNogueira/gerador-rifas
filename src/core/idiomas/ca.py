@@ -53,6 +53,7 @@ T = {
     "c1_ok": "✔ {n} butlletes per pàgina · números d'exemple {primeiro}–{ultimo}",
     "escolher": "Cerca…",
     "c2_titulo": "Xifres 0–9 (obligatori)",
+    "c2_titulo_sem_obrigatorio": "Xifres 0–9",
     "c2_placeholder": "PDF, PNG o JPG amb 0123456789",
     "c2_precisa": "✖ Trieu un fitxer amb les xifres 0–9, amb la mateixa lletra dels números de la plantilla.",
     "c2_analisar": "Llegint les xifres…",

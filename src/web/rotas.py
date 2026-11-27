@@ -100,6 +100,7 @@ def _limite(categoria: str, maximo):
 
 pesado = _limite("pesado", config.pedidos_pesados_por_min)       # uploads, pre-visualizar, gerar
 leve = _limite("leve", config.pedidos_leves_por_min)             # calculos do formulario, cancelar...
+csp = _limite("csp", lambda: 60)                                 # balde proprio: uma pagina com muitas violacoes nao gasta o «leve» do formulario
 
 
 def _ocupado(lg: str) -> ErroApi:
@@ -535,6 +536,16 @@ def descarregar(id_: str, serv: Servico = Depends(servico), lg: str = Depends(li
 # ------------------------------------------------------------------ o tipo de ecra (so para as metricas: nunca muda nada)
 router_ecra = APIRouter(prefix="/api/ecra", tags=["metricas"])
 router_desempenho = APIRouter(prefix="/api/desempenho", tags=["metricas"])
+router_csp = APIRouter(prefix="/api/csp-relatorio", tags=["metricas"])
+
+
+@router_csp.post("", status_code=204, dependencies=[Depends(csp)])
+def registar_violacao_csp(serv: Servico = Depends(servico)) -> Response:
+    """O destino do `report-uri` da `Content-Security-Policy-Report-Only` (`app.CSP_RELATORIO`): o browser avisa aqui de uma violacao.
+    O relatorio tem o URI bloqueado e outros dados da pagina — nunca se le nem se guarda, so se conta o evento (`csp_violacao`),
+    como as outras metricas sem dados pessoais (`docs/OBSERVABILIDADE.md`)."""
+    serv.metricas.evento("csp_violacao")
+    return Response(status_code=204)
 
 
 @router_desempenho.post("", status_code=204, dependencies=[Depends(leve)])

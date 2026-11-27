@@ -53,6 +53,7 @@ T = {
     "c1_ok": "✔ {n} vé mỗi trang · số mẫu {primeiro}–{ultimo}",
     "escolher": "Duyệt…",
     "c2_titulo": "Chữ số 0–9 (bắt buộc)",
+    "c2_titulo_sem_obrigatorio": "Chữ số 0–9",
     "c2_placeholder": "PDF, PNG hoặc JPG chứa 0123456789",
     "c2_precisa": "✖ Hãy chọn tệp chứa chữ số 0–9, cùng phông với các số của mẫu.",
     "c2_analisar": "Đang đọc chữ số…",

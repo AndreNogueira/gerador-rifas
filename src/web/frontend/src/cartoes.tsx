@@ -234,8 +234,10 @@ export function CartaoAlgarismos({
 }: PropsComuns & { aoEscolher: (f: File) => void; aoPedirAjuda: ReactNode; lembrado?: string }) {
   const { t } = useI18n();
   const ficheiro = sessao?.algarismos;
+  // já preenchido (upload manual ou a galeria, que o faz sozinha): o «(obrigatório)» deixa de fazer sentido
+  const titulo = ficheiro?.estado === "ok" ? t("c2_titulo_sem_obrigatorio") : t("c2_titulo");
   return (
-    <Cartao passo={2} titulo={t("c2_titulo")}>
+    <Cartao passo={2} titulo={titulo}>
       <Carregar
         rotulo={`${t("escolher")}  (${t("c2_placeholder")})`}
         aceita=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg"

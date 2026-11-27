@@ -4,6 +4,15 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.94.0 — 2026-11-26
+
+### Corrigido
+- **Letra pequena na galeria de desenhos, no telemóvel**: dentro do painel «Sem template? Escolha um da galeria», a lista «Quantos prémios», o formato da data e o campo «texto antes da data» apareciam a 14 px, como os três campos já corrigidos na versão anterior. Agora têm pelo menos 16 px.
+- **O passo 2 só diz «(obrigatório)» quando falta mesmo**: ao escolher um desenho da galeria (que já traz os algarismos prontos), o título do passo 2 deixa de dizer «(obrigatório)» enquanto o campo estiver preenchido.
+
+### Melhorado
+- **Descrição da página inicial já não exige o Canva**: a descrição que aparece nos motores de busca falava só do template do Canva; agora diz também que se pode escolher um desenho já feito da galeria, sem precisar dele.
+
 ## 3.93.0 — 2026-11-26
 
 ### Corrigido

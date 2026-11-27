@@ -94,6 +94,16 @@ describe("carregar ficheiros", () => {
     expect(t("gerar")).toBeEnabled();
   });
 
+  it("o título do passo 2 só diz «(obrigatório)» enquanto o campo está vazio", async () => {
+    abrir();
+    await screen.findByRole("heading", { name: "Gerador de Rifas" });
+    await waitFor(() => expect(t("upload-template")).toBeInTheDocument());
+    expect(screen.getByRole("region", { name: "Algarismos (obrigatório)" })).toBeInTheDocument();
+    await carregarTemplateEAlgarismos();
+    expect(screen.queryByRole("region", { name: "Algarismos (obrigatório)" })).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Algarismos" })).toBeInTheDocument();
+  });
+
   it("sem template os botões de pré-visualizar e gerar estão desativados", async () => {
     abrir();
     await screen.findByRole("heading", { name: "Gerador de Rifas" });

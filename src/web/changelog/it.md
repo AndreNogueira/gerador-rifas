@@ -2,6 +2,15 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.94.0 — 2026-11-26
+
+### Corretto
+- **Carattere piccolo nella galleria dei modelli, su cellulare**: nel pannello «Senza modello? Scegline uno dalla galleria», l'elenco «Quanti premi», il formato della data e il campo «testo prima della data» mostravano un carattere a 14 px, come i tre campi già corretti nella versione precedente. Ora hanno almeno 16 px.
+- **Il passo 2 dice «(obbligatorio)» solo quando manca davvero**: scegliendo un modello dalla galleria (che fornisce già le cifre), il titolo del passo 2 non dice più «(obbligatorio)» mentre il campo è compilato.
+
+### Migliorato
+- **La descrizione della home page non richiede più Canva**: la descrizione mostrata nei motori di ricerca parlava solo del modello Canva; ora dice anche che si può scegliere un modello già pronto dalla galleria, senza bisogno di Canva.
+
 ## 3.93.0 — 2026-11-26
 
 ### Risolto

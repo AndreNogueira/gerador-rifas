@@ -2,6 +2,15 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.94.0 — 2026-11-26
+
+### Corrigé
+- **Petit texte dans la galerie de modèles, sur mobile** : dans le panneau « Pas de modèle ? Choisissez-en un dans la galerie », la liste « Combien de lots », le format de la date et le champ « texte avant la date » s'affichaient à 14 px, comme les trois champs déjà corrigés dans la version précédente. Ils affichent désormais au moins 16 px.
+- **L'étape 2 n'indique « (obligatoire) » que lorsque c'est vraiment le cas** : en choisissant un modèle de la galerie (qui fournit déjà les chiffres), le titre de l'étape 2 n'affiche plus « (obligatoire) » tant que le champ est rempli.
+
+### Amélioré
+- **La description de la page d'accueil n'exige plus Canva** : la description affichée dans les moteurs de recherche ne parlait que du modèle Canva ; elle indique maintenant aussi qu'on peut choisir un modèle déjà prêt dans la galerie, sans en avoir besoin.
+
 ## 3.93.0 — 2026-11-26
 
 ### Corrigé

@@ -2,6 +2,15 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.94.0 — 2026-11-26
+
+### Åtgärdat
+- **Liten text i mallgalleriet, på mobilen**: i panelen ”Ingen mall? Välj en från galleriet” visade listan ”Hur många vinster”, datumformatet och fältet ”text före datumet” text på 14 px, precis som de tre fält som redan åtgärdades i föregående version. Nu minst 16 px.
+- **Steg 2 säger ”(krävs)” bara när det verkligen saknas**: när en mall väljs från galleriet (som redan har siffrorna klara) slutar steg 2:s rubrik att säga ”(krävs)” medan fältet är ifyllt.
+
+### Förbättrat
+- **Startsidans beskrivning kräver inte längre Canva**: beskrivningen som visas i sökmotorer nämnde bara Canva-mallen; nu säger den också att man kan välja en färdig mall från galleriet i stället.
+
 ## 3.93.0 — 2026-11-26
 
 ### Åtgärdat
