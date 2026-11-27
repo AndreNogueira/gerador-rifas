@@ -120,8 +120,20 @@ def _corpo_sobre(lg: str) -> str:
     return f"<h1>{html.escape(_nome_pagina('mi_sobre')(lg))}</h1><p>{html.escape(subtitulo)}</p>{corpo}{_voltar(lg)}"
 
 
+def _texto_funcionalidade(id_: str, lg: str) -> str:
+    """O corpo do tópico do tutorial desta funcionalidade, já traduzido nas 22 línguas (com o «{onde}» preenchido): reaproveitado nas
+    páginas das ferramentas (`/sorteio`, `/editor`, `/precario`) para lhes dar texto real sem traduzir nada de novo — é a mesma frase
+    que `Tutorial.tsx` mostra, nunca um texto que o utilizador não veja (`seo-estatico` é para texto real da página, não para encher)."""
+    f = next(x for x in tutorial.FUNCIONALIDADES if x.id == id_)
+    with i18n.com_lingua(lg):
+        return tutorial.topico_da_funcionalidade(f, "web")[2]
+
+
 def _corpo_sorteio(lg: str) -> str:
-    return f"<h1>{html.escape(_nome_pagina('web_sorteio')(lg))}</h1><p>{html.escape(texto('d_sorteio', lg))}</p>{_voltar(lg)}"
+    guia = guias.CAMINHOS["sorteio"]
+    return (f"<h1>{html.escape(_nome_pagina('web_sorteio')(lg))}</h1><p>{html.escape(texto('d_sorteio', lg))}</p>"
+            f"<p>{html.escape(_texto_funcionalidade('sorteio', lg))}</p>"
+            f"<p><a href=\"{_l(lg, guia)}\">{html.escape(guias.guia('sorteio', lg)['titulo'])}</a></p>{_voltar(lg)}")
 
 
 def _corpo_opiniao(chave: str) -> Callable[[str], str]:
@@ -132,14 +144,16 @@ def _corpo_opiniao(chave: str) -> Callable[[str], str]:
 
 
 def _corpo_precario(lg: str) -> str:
-    """A ferramenta `/precario`: o titulo, a introducao, a descricao e a ligacao ao guia (o resto desenha-o o React)."""
+    """A ferramenta `/precario`: o titulo, a introducao, a descricao, o texto do tutorial e a ligacao ao guia (o resto desenha-o o React)."""
     guia = guias.CAMINHOS["precario"]
     return (f"<h1>{html.escape(i18n.traduzir('web_precario_titulo', lg))}</h1><p>{html.escape(i18n.traduzir('web_precario_intro', lg))}</p>"
-            f"<p>{html.escape(texto('d_precario', lg))}</p><p><a href=\"{_l(lg, guia)}\">{html.escape(guias.guia('precario', lg)['titulo'])}</a></p>{_voltar(lg)}")
+            f"<p>{html.escape(texto('d_precario', lg))}</p><p>{html.escape(_texto_funcionalidade('precario', lg))}</p>"
+            f"<p><a href=\"{_l(lg, guia)}\">{html.escape(guias.guia('precario', lg)['titulo'])}</a></p>{_voltar(lg)}")
 
 
 def _corpo_editor(lg: str) -> str:
-    return f"<h1>{html.escape(_nome_pagina('web_editor')(lg))}</h1><p>{html.escape(texto('d_editor', lg))}</p>{_voltar(lg)}"
+    return (f"<h1>{html.escape(_nome_pagina('web_editor')(lg))}</h1><p>{html.escape(texto('d_editor', lg))}</p>"
+            f"<p>{html.escape(_texto_funcionalidade('editor', lg))}</p>{_voltar(lg)}")
 
 
 def _lista_de_guias(lg: str, menos: str = "") -> str:
@@ -264,9 +278,25 @@ def _json_ld(dados: dict) -> str:
     return json.dumps(dados, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 
 
+# o repositorio PUBLICO da app Windows (so o .exe nas releases, sem codigo-fonte: ver CLAUDE.md e Changelog.tsx, que já o liga como
+# descarga); é a unica presenca publica do projeto fora deste site, por isso é o unico candidato honesto a `sameAs` (nunca um perfil
+# pessoal ou de rede social que ninguem pediu para aqui ligar)
+SAME_AS = ("https://github.com/AndreNogueira/gerador-rifas-windows",)
+
+
 def _organizacao(base: str) -> dict:
-    """`Organization`: quem publica o site (o Google usa-a para o painel de conhecimento e para ligar o logótipo à marca)."""
-    return {"@type": "Organization", "name": NOME, "url": f"{base}/", "logo": f"{base}/icone-512.png"}
+    """`Organization`: quem publica o site (o Google usa-a para o painel de conhecimento e para ligar o logótipo à marca). `@id` fixo para os
+    `Article` dos guias (`_artigo`) a poderem referenciar na mesma `@graph`. `founder`/`contactPoint` só com as variáveis configuradas
+    (o mesmo nome e e-mail dos Termos/Privacidade/Contacto: `config.responsavel`/`config.contacto_email`); nunca se inventa nada."""
+    org: dict = {"@type": "Organization", "@id": f"{base}/#organizacao", "name": NOME, "url": f"{base}/", "logo": f"{base}/icone-512.png",
+                 "sameAs": list(SAME_AS)}
+    nome = config.responsavel()
+    if nome:
+        org["founder"] = {"@type": "Person", "name": nome}
+    email = config.contacto_email()
+    if email:
+        org["contactPoint"] = {"@type": "ContactPoint", "email": email, "contactType": "customer support"}
+    return org
 
 
 def _website(base: str, lg: str) -> dict:
@@ -315,6 +345,36 @@ def _url(base: str, caminho: str, lg: str) -> str:
     return f"{base}/" if c == "/" else f"{base}{c}"
 
 
+_NOME_DO_CAMINHO: dict[str, str] = {caminho: nome for nome, caminho in guias.CAMINHOS.items()}
+
+
+def _artigo(pagina: Pagina, base: str, lg: str) -> dict | None:
+    """`Article` dos guias «como fazer» (NUNCA `HowTo`: tipo descontinuado pela Google em setembro de 2023). `author`/`publisher` seguem o
+    mesmo padrão do resto do site (`config.responsavel`, nunca inventado); `publisher` referencia a `Organization` pelo `@id` (mesma
+    `@graph`). `datePublished` só quando há uma data honesta em `guias.DATAS_CRIACAO` (o commit que criou o ficheiro do guia); sem
+    `dateModified` — o painel pode reescrever o texto sem deploy (`seo_bd.py`), por isso não há uma data de alteração fiável."""
+    nome = _NOME_DO_CAMINHO.get(pagina.caminho)
+    if nome is None:
+        return None
+    artigo: dict = {
+        "@type": "Article",
+        "headline": pagina.titulo(lg).rsplit(" | ", 1)[0],
+        "description": pagina.descricao(lg),
+        "url": _url(base, pagina.caminho, lg),
+        "mainEntityOfPage": _url(base, pagina.caminho, lg),
+        "inLanguage": i18n.bcp47(lg),
+        "image": f"{base}{IMAGEM}",
+        "publisher": {"@id": f"{base}/#organizacao"},
+    }
+    data = guias.DATAS_CRIACAO.get(nome)
+    if data:
+        artigo["datePublished"] = data
+    responsavel = config.responsavel()
+    if responsavel:
+        artigo["author"] = {"@type": "Person", "name": responsavel}
+    return artigo
+
+
 ADSENSE_JS = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
 
 
@@ -354,6 +414,9 @@ def cabecalho(pagina: Pagina, base: str, lg: str = "pt") -> str:
     migalhas = _migalhas(pagina, base, lg) if pagina.indexavel else None
     if migalhas:
         linhas.append(f'<script type="application/ld+json">{_json_ld(migalhas)}</script>')
+    artigo = _artigo(pagina, base, lg) if pagina.indexavel else None
+    if artigo:                                                # Article + Organization (pela mesma @graph, @id) só nos guias «como fazer»
+        linhas.append(f'<script type="application/ld+json">{_json_ld({"@context": "https://schema.org", "@graph": [artigo, _organizacao(base)]})}</script>')
     cliente = config.adsense_cliente()
     if cliente and pagina.indexavel:                         # AdSense (so com ADSENSE_CLIENTE): o script traz tambem a mensagem de consentimento do EEE
         linhas.append(f'<script async src="{ADSENSE_JS}?client={_e(cliente)}" crossorigin="anonymous"></script>')

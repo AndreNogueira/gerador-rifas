@@ -277,6 +277,64 @@ def test_as_migalhas_de_pao_dos_guias_e_do_indice():
     assert not re.findall(r"BreadcrumbList", seo.renderizar(html_base, seo.ROTAS["/tutorial"], base, "pt"))                              # só nos guias e no índice
 
 
+# ------------------------------------------------------------------ Article (D1) e Organization (D2)
+def _grafo(html):
+    blocos = [json.loads(x) for x in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)]
+    return next(b for b in blocos if "@graph" in b and any(n.get("@type") == "Article" for n in b["@graph"]))
+
+
+def test_os_guias_tem_article_nunca_howto(publico):
+    base = URL
+    h = publico.get("/rifas-para-escolas").text
+    grafo = _grafo(h)
+    artigo = next(n for n in grafo["@graph"] if n["@type"] == "Article")
+    org = next(n for n in grafo["@graph"] if n["@type"] == "Organization")
+    assert artigo["headline"] == "Como fazer uma rifa para a escola"
+    assert artigo["url"] == f"{base}/rifas-para-escolas" and artigo["mainEntityOfPage"] == artigo["url"]
+    assert artigo["inLanguage"] == "pt" and artigo["image"] == f"{base}/og-imagem.png"
+    assert artigo["publisher"] == {"@id": f"{base}/#organizacao"} and org["@id"] == f"{base}/#organizacao"
+    assert artigo["datePublished"] == guias.DATAS_CRIACAO["escolas"]
+    for caminho in seo.ROTAS:
+        assert "HowTo" not in publico.get(caminho).text, caminho               # tipo descontinuado: nunca usar
+
+
+def test_os_guias_sem_article_fora_das_paginas_de_guia(publico):
+    assert '"@type":"Article"' not in publico.get("/tutorial").text
+    assert '"@type":"Article"' not in publico.get("/").text
+
+
+def test_todos_os_guias_tem_data_de_criacao_honesta_no_ficheiro():
+    assert set(guias.DATAS_CRIACAO) == set(guias.CAMINHOS), "guia novo: acrescenta a data do commit que o cria a guias.DATAS_CRIACAO"
+    for nome, data in guias.DATAS_CRIACAO.items():
+        assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", data), (nome, data)
+
+
+def test_o_autor_do_artigo_so_aparece_com_responsavel_configurado(publico, monkeypatch):
+    monkeypatch.delenv("RESPONSAVEL", raising=False)
+    artigo = next(n for n in _grafo(publico.get("/rifas-para-escolas").text)["@graph"] if n["@type"] == "Article")
+    assert "author" not in artigo
+    monkeypatch.setenv("RESPONSAVEL", "Ana Silva")
+    artigo = next(n for n in _grafo(publico.get("/rifas-para-escolas").text)["@graph"] if n["@type"] == "Article")
+    assert artigo["author"] == {"@type": "Person", "name": "Ana Silva"}
+
+
+def test_a_organizacao_tem_sameas_e_so_tem_founder_e_contactpoint_configurados(publico, monkeypatch):
+    monkeypatch.delenv("RESPONSAVEL", raising=False)
+    monkeypatch.delenv("CONTACTO_EMAIL", raising=False)
+    h = publico.get("/").text
+    blocos = re.findall(r'<script type="application/ld\+json">(.*?)</script>', h)
+    org = next(json.loads(x)["@graph"] for x in blocos if '"@type":"WebApplication"' in x)
+    org = next(n for n in org if n["@type"] == "Organization")
+    assert org["sameAs"] == ["https://github.com/AndreNogueira/gerador-rifas-windows"]
+    assert "founder" not in org and "contactPoint" not in org
+    monkeypatch.setenv("RESPONSAVEL", "Ana Silva")
+    monkeypatch.setenv("CONTACTO_EMAIL", "ola@exemplo.pt")
+    org = next(json.loads(x)["@graph"] for x in re.findall(r'<script type="application/ld\+json">(.*?)</script>', publico.get("/").text) if '"@type":"WebApplication"' in x)
+    org = next(n for n in org if n["@type"] == "Organization")
+    assert org["founder"] == {"@type": "Person", "name": "Ana Silva"}
+    assert org["contactPoint"] == {"@type": "ContactPoint", "email": "ola@exemplo.pt", "contactType": "customer support"}
+
+
 def test_a_api_dos_guias_devolve_titulo_e_resumo_na_lingua(cliente):
     pt = cliente.get("/api/guias", headers={"X-Lingua": "pt"}).json()["guias"]
     assert [g["nome"] for g in pt] == ["escolas", "associacoes", "clubes", "bombeiros", "festas", "igrejas", "numerar", "sorteio", "quantos", "precario"] and pt[0]["caminho"] == "/rifas-para-escolas"

@@ -107,6 +107,7 @@ function Carregar({
         type="file"
         accept={aceita}
         hidden
+        aria-label={rotulo}
         data-testid={testid}
         onChange={(e) => {
           const f = e.target.files?.[0];
