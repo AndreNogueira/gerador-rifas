@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.96.0 — 2026-11-27
+
+### Förbättrat
+- **Guiderna för klubben och grannskapsfesten har nu eget innehåll**: `/rifas-para-clubes` och `/rifas-para-festas` upprepar inte längre nästan samma text som de andra målgruppsguiderna; de handlar nu om vad som är specifikt för var och en — klubbens styrelse och färger, sponsorer; grannkommittén (eller bara en grupp grannar, utan formell förening) och vem som ansvarar för pengarna till dragningen.
+
 ## 3.95.0 — 2026-11-27
 
 ### Åtgärdat

@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.96.0 — 2026-11-27
+
+### Migliorato
+- **Le guide del club e della festa di quartiere hanno ora contenuti propri**: `/rifas-para-clubes` e `/rifas-para-festas` non ripetono più quasi lo stesso testo delle altre guide per pubblico; ora parlano della realtà di ciascuno — il direttivo e i colori del club, gli sponsor; il comitato di vicini (o solo un gruppo di vicini, senza associazione formale) e chi è responsabile dei soldi fino all'estrazione.
+
 ## 3.95.0 — 2026-11-27
 
 ### Corretto

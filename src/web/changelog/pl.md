@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.96.0 — 2026-11-27
+
+### Poprawione
+- **Przewodniki dla klubu i festynu osiedlowego mają teraz własną treść**: `/rifas-para-clubes` i `/rifas-para-festas` nie powtarzają już prawie tego samego tekstu co inne przewodniki dla odbiorców; teraz mówią o tym, co jest specyficzne dla każdego — zarząd i barwy klubu, sponsorzy; komitet mieszkańców (albo po prostu grupa sąsiadów, bez formalnego stowarzyszenia) i kto odpowiada za pieniądze do losowania.
+
 ## 3.95.0 — 2026-11-27
 
 ### Naprawione

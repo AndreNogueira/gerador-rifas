@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.96.0 — 2026-11-27
+
+### Mejorado
+- **Las guías del club y de la fiesta de barrio tienen ahora contenido propio**: `/rifas-para-clubes` y `/rifas-para-festas` dejan de repetir casi el mismo texto de las demás guías por público; ahora hablan de la realidad de cada una: la junta y los colores del club, los patrocinadores; la comisión de vecinos (o solo un grupo de vecinos, sin asociación formal) y quién se responsabiliza del dinero hasta el sorteo.
+
 ## 3.95.0 — 2026-11-27
 
 ### Corregido
