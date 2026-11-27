@@ -2,6 +2,15 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.94.0 — 2026-11-26
+
+### Fixed
+- **Small text in the design gallery, on mobile**: inside the "No template? Pick one from the gallery" panel, the "How many prizes" list, the date format and the "text before the date" field showed text under 16 px, like the three fields fixed in the previous version. They now show at least 16 px.
+- **Step 2 only says "(required)" when it actually is**: when picking a gallery design (which already supplies the digits), step 2's title stops saying "(required)" while the field is filled.
+
+### Improved
+- **Homepage description no longer requires Canva**: the description shown in search engines only mentioned the Canva template; it now also says you can pick an existing gallery design instead.
+
 ## 3.93.0 — 2026-11-26
 
 ### Fixed

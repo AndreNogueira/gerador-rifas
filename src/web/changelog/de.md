@@ -2,6 +2,15 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.94.0 — 2026-11-26
+
+### Korrigiert
+- **Kleine Schrift in der Vorlagengalerie, auf dem Handy**: Im Bereich „Keine Vorlage? Wählen Sie eine aus der Galerie“ erschienen die Liste „Wie viele Preise“, das Datumsformat und das Feld „Text vor dem Datum“ mit 14 px, wie die drei Felder, die in der vorherigen Version bereits korrigiert wurden. Jetzt sind es mindestens 16 px.
+- **Schritt 2 zeigt „(erforderlich)“ nur, wenn es wirklich fehlt**: Wird eine Vorlage aus der Galerie gewählt (die die Ziffern schon mitbringt), zeigt der Titel von Schritt 2 „(erforderlich)“ nicht mehr an, solange das Feld ausgefüllt ist.
+
+### Verbessert
+- **Beschreibung der Startseite verlangt nicht mehr Canva**: Die in Suchmaschinen angezeigte Beschreibung erwähnte nur die Canva-Vorlage; jetzt steht auch dort, dass man stattdessen eine vorgefertigte Vorlage aus der Galerie wählen kann.
+
 ## 3.93.0 — 2026-11-26
 
 ### Behoben

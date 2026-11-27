@@ -2,6 +2,15 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.94.0 — 2026-11-26
+
+### Corectat
+- **Text mic în galeria de modele, pe telefon**: în panoul „Fără șablon? Alegeți unul din galerie”, lista „Câte premii”, formatul datei și câmpul „text înainte de dată” apăreau cu 14 px, la fel ca cele trei câmpuri deja corectate în versiunea anterioară. Acum au cel puțin 16 px.
+- **Pasul 2 spune „(obligatoriu)” doar când lipsește cu adevărat**: la alegerea unui model din galerie (care aduce deja cifrele), titlul pasului 2 nu mai spune „(obligatoriu)” cât timp câmpul este completat.
+
+### Îmbunătățit
+- **Descrierea paginii principale nu mai cere Canva**: descrierea afișată în motoarele de căutare vorbea doar despre șablonul Canva; acum spune și că se poate alege un model deja făcut din galerie, fără a avea nevoie de el.
+
 ## 3.93.0 — 2026-11-26
 
 ### Corectat

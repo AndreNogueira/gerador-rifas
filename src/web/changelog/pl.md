@@ -2,6 +2,15 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.94.0 — 2026-11-26
+
+### Naprawione
+- **Mała czcionka w galerii wzorów, na telefonie**: w panelu „Brak szablonu? Wybierz jeden z galerii” lista „Ile nagród”, format daty i pole „tekst przed datą” miały czcionkę 14 px, podobnie jak trzy pola naprawione w poprzedniej wersji. Teraz mają co najmniej 16 px.
+- **Krok 2 pokazuje „(wymagane)” tylko wtedy, gdy naprawdę brakuje**: po wybraniu wzoru z galerii (który już ma gotowe cyfry) tytuł kroku 2 nie pokazuje już „(wymagane)”, gdy pole jest wypełnione.
+
+### Ulepszono
+- **Opis strony głównej nie wymaga już Canvy**: opis widoczny w wyszukiwarkach mówił tylko o szablonie z Canvy; teraz mówi też, że można wybrać gotowy wzór z galerii, bez Canvy.
+
 ## 3.93.0 — 2026-11-26
 
 ### Naprawione

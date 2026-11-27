@@ -153,10 +153,31 @@ def test_sitemap_tem_lastmod_da_versao_atual(publico):
         assert filhos[:2] == ["loc", "lastmod"]
 
 
+def test_sitemap_usa_a_data_do_guia_quando_o_deploy_a_gerou(publico, tmp_path, monkeypatch):
+    """`deploy.yml` escreve `guia_datas.json` (ultimo commit de cada ficheiro em `web/guias/`) antes do `docker build`; sem ele
+    (como aqui, por omissao) todas as paginas usam a data global, ver `test_sitemap_tem_lastmod_da_versao_atual`."""
+    alvo = tmp_path / "guia_datas.json"
+    alvo.write_text(json.dumps({"escolas": "2026-01-15", "numerar": "nao-e-uma-data"}), encoding="utf-8")
+    monkeypatch.setattr(seo, "CAMINHO_DATAS_GUIAS", alvo)
+    r = publico.get("/sitemap.xml")
+    ns = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+    raiz = ElementTree.fromstring(r.text)
+    por_loc = {e.find("s:loc", ns).text: e.find("s:lastmod", ns).text for e in raiz.findall("s:url", ns)}
+    global_ = changelog.entradas("pt")[0].data
+    assert por_loc[f"{URL}{guias.CAMINHOS['escolas']}"] == "2026-01-15"                 # data valida do ficheiro: usa-se
+    assert por_loc[f"{URL}{guias.CAMINHOS['numerar']}"] == global_                      # data invalida no ficheiro: cai para a global
+    assert por_loc[f"{URL}{guias.CAMINHOS['associacoes']}"] == global_                  # sem entrada no ficheiro: cai para a global
+    assert por_loc[f"{URL}/"] == global_                                                # pagina sem ficheiro proprio: sempre a global
+
+
 def test_llms_txt(publico):
     r = publico.get("/llms.txt")
     assert r.status_code == 200 and r.headers["content-type"].startswith("text/plain")
     assert f"{URL}/como-fazer" in r.text and f"{URL}/api/v1/docs" in r.text
+    for caminho in ("/sorteio", "/editor", "/precario"):
+        assert f"{URL}{caminho}" in r.text
+    for nome in ("numerar", "sorteio", "quantos", "precario"):
+        assert f"{URL}{guias.CAMINHOS[nome]}" in r.text
 
 
 def test_rotas_desconhecidas_sao_404_a_serio_e_nao_se_indexam(publico):

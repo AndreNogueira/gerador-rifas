@@ -308,6 +308,7 @@
       select {
         width: auto;
         min-width: 5rem;
+        font-size: 1rem; // herdava os 0.88rem (14,08 px) do `label`: 1rem evita o zoom automático do iOS Safari (como o passo 3/4)
       }
     }
   }
@@ -316,6 +317,15 @@
     display: grid;
     gap: 6px;
 
+    // o <select> do formato («longo», «curto»…) herdava os 0.88rem do `label`: mesma correção do iOS Safari
+    select {
+      font-size: 1rem;
+    }
+    // o «texto antes da data» (formato ≠ "livre") é um <label> filho direto do fieldset, sem o `.linha` que protege título/organização:
+    // o input herdava os 0.88rem (14,08 px) do `label`, amplia o ecrã ao focar no iOS Safari
+    > label input {
+      font-size: 1rem;
+    }
     legend {
       font-size: 0.88rem;
       font-weight: 600;

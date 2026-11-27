@@ -50,7 +50,7 @@ def test_a_csp_e_so_de_relatorio_e_cobre_o_que_o_site_carrega(c):
     assert "content-security-policy" not in r.headers                                  # NUNCA a versão que bloqueia (report-only não impede nada)
     for trecho in ("default-src 'self'", "'unsafe-inline'", "googlesyndication.com", "object-src 'none'"):
         assert trecho in CSP_RELATORIO
-    assert "report-to" not in CSP_RELATORIO and "report-uri" not in CSP_RELATORIO        # sem destino: não há para onde enviar os relatórios
+    assert "report-uri /api/csp-relatorio" in CSP_RELATORIO                              # destino same-origin (rotas.registar_violacao_csp)
 
 
 def test_o_hsts_so_vai_com_https_e_sem_subdominios_nem_preload(c):

@@ -68,7 +68,9 @@ for _tipo, _extensao in (("text/javascript", ".js"), ("text/javascript", ".mjs")
 # nunca usa (nao lista o que os anuncios precisam); o HSTS so com HTTPS e sem `includeSubDomains`/`preload` (o dominio `onrender.com` nao e nosso).
 # `Content-Security-Policy-Report-Only` (NUNCA a versao que bloqueia: so relata, nao impede nada) descreve o que o site carrega hoje — scripts/estilos
 # proprios, estilos «inline» (o tema aplica-se com `style=`), o AdSense/FundingChoices da Google (anuncios e o aviso de consentimento do EEE) e o
-# PDF.js self-hosted; serve para medir, antes de alguma vez se pensar numa politica a serio. Sem `report-to`/`report-uri`: nao ha para onde enviar os relatorios.
+# PDF.js self-hosted; serve para medir, antes de alguma vez se pensar numa politica a serio. `report-uri` manda os relatorios para
+# `POST /api/csp-relatorio` (`rotas.registar_violacao_csp`): so se conta o evento, nunca se guarda o relatorio (tem o URI bloqueado e outros
+# dados da pagina). URI relativo (resolve-se contra o proprio site): sem precisar do URL publico aqui.
 CSP_RELATORIO = (
     "default-src 'self'; "
     "script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.google.com "
@@ -78,7 +80,7 @@ CSP_RELATORIO = (
     "font-src 'self'; "
     "connect-src 'self' https://*.google.com https://*.googlesyndication.com https://*.doubleclick.net; "
     "frame-src 'self' https://*.googlesyndication.com https://*.google.com https://*.doubleclick.net; "
-    "object-src 'none'; base-uri 'self'; form-action 'self'"
+    "object-src 'none'; base-uri 'self'; form-action 'self'; report-uri /api/csp-relatorio"
 )
 CABECALHOS_SEGURANCA = {
     "X-Content-Type-Options": "nosniff",
@@ -380,6 +382,7 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
     app.include_router(rotas_ajuda.router)
     app.include_router(rotas.router_ecra)
     app.include_router(rotas.router_desempenho)
+    app.include_router(rotas.router_csp)
     app.include_router(rotas_listas.router)
     app.include_router(rotas_galeria.router)
     app.include_router(rotas_precario.router)

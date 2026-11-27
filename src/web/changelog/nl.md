@@ -2,6 +2,15 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.94.0 — 2026-11-26
+
+### Opgelost
+- **Kleine letters in de ontwerpgalerij, op de telefoon**: in het paneel «Geen sjabloon? Kies een uit de galerij» toonden de lijst «Hoeveel prijzen», de datumindeling en het veld «tekst voor de datum» tekst van 14 px, net als de drie velden die in de vorige versie al zijn verbeterd. Nu minstens 16 px.
+- **Stap 2 zegt alleen «(verplicht)» als het echt nog moet**: bij het kiezen van een galerijontwerp (dat de cijfers al meelevert) toont de titel van stap 2 geen «(verplicht)» meer zolang het veld is ingevuld.
+
+### Verbeterd
+- **Beschrijving van de startpagina vereist geen Canva meer**: de beschrijving in zoekmachines noemde alleen de Canva-sjabloon; nu staat er ook dat je in plaats daarvan een kant-en-klaar ontwerp uit de galerij kunt kiezen.
+
 ## 3.93.0 — 2026-11-26
 
 ### Opgelost

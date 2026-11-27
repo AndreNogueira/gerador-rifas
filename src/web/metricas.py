@@ -658,7 +658,7 @@ class Metricas:
             paineis.append(novo_painel(*args, **kwargs))
 
         eventos = agrupado(("sessao", "previa", "template", "algarismos", "geracao", "descarga", "logotipo", "galeria", "editor", "verificacao", "precario", "precario_moeda", "vales", "precario_partilha", "precario_etiquetas",
-                            "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra", "comentario", "problema", "origem", "desempenho"), "a")
+                            "limite", "api_geracao", "erro_http", "motor_reiniciado", "arranque", "admin", "pais", "ecra", "comentario", "problema", "origem", "desempenho", "csp_violacao"), "a")
         humanos = agrupado(("pagina",), "CASE WHEN c = 'robo' THEN 'Robôs' ELSE 'Pessoas' END")
         rotas = agrupado(("pagina",), "a", "AND c <> 'robo'")
         por_tema = agrupado(("sessao",), "b")
@@ -777,6 +777,8 @@ class Metricas:
         painel(sa, "motor", "Arranques e reinícios", {"Arranques do serviço": conta(eventos, "arranque"), "Reinícios do motor": conta(eventos, "motor_reiniciado")},
                "Quantas vezes o serviço arrancou (atualizações, adormecer/acordar) e o processo do motor foi reiniciado (memória, tempo ou cancelamento).")
         painel(sa, "admin", "Acessos ao painel", por_chave(eventos, "admin", topo=6), "Entradas, tentativas falhadas e bloqueios no painel, e alterações feitas nele.")
+        painel(sa, "csp", "Violações da CSP (relatório)", {"Violações": conta(eventos, "csp_violacao")},
+               "Quantas vezes o browser avisou de algo que a política de segurança de conteúdo bloquearia (hoje só em modo de relatório: nada é bloqueado a sério).")
 
         si = "Sistema"
         amostras: dict[int, tuple] = {}

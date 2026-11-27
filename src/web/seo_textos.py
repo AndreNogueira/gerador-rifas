@@ -28,7 +28,7 @@ CHAVES: dict[str, dict[str, str]] = {
         "hi": "{app}: Canva से क्रमांकित रैफ़ल टिकट PDF में",
     },
     "d_inicio": {
-        "pt": "Rifas numeradas em PDF a partir de um template do Canva: escolha os números, veja a pré-visualização e descarregue. Grátis e sem registo.",
+        "pt": "Rifas numeradas em PDF: use um template do Canva ou escolha um da galeria, veja a pré-visualização e descarregue. Grátis e sem registo.",
         "en": "Numbered raffle tickets as PDF from a Canva template: pick the numbers, preview them and download. Free, no sign-up.",
         "es": "Rifas numeradas en PDF a partir de una plantilla de Canva: elija los números, vea la vista previa y descargue. Gratis y sin registro.",
         "fr": "Tickets de tombola numérotés en PDF à partir d'un modèle Canva : choisissez les numéros, prévisualisez et téléchargez. Gratuit, sans inscription.",

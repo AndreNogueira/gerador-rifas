@@ -17,6 +17,7 @@ import json
 import re
 from collections.abc import Callable
 from dataclasses import dataclass
+from pathlib import Path
 
 from core import i18n, tutorial
 from fastapi import Request
@@ -418,8 +419,8 @@ _DATA_ISO = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def _ultima_modificacao() -> str:
-    """A data da versao atual («YYYY-MM-DD», a 1.a entrada do CHANGELOG.md, que um teste garante ser a `VERSAO`): serve de `lastmod` ao
-    sitemap inteiro (nao ha, por agora, uma data por pagina a serio: os textos de SEO podem mudar no painel sem deploy nenhum, ver `seo_bd.py`)."""
+    """A data da versao atual («YYYY-MM-DD», a 1.a entrada do CHANGELOG.md, que um teste garante ser a `VERSAO`): serve de `lastmod` as
+    paginas sem ficheiro proprio (inicio, tutorial, textos legais…) e de reserva para os guias (ver `_datas_guias`)."""
     try:
         data = changelog.entradas("pt")[0].data
     except IndexError:
@@ -427,26 +428,66 @@ def _ultima_modificacao() -> str:
     return data if _DATA_ISO.fullmatch(data) else ""
 
 
+CAMINHO_DATAS_GUIAS = Path(__file__).parent / "guia_datas.json"
+_CAMINHO_PARA_GUIA = {caminho: nome for nome, caminho in guias.CAMINHOS.items()}
+
+
+def _datas_guias() -> dict[str, str]:
+    """{nome do guia: lastmod «YYYY-MM-DD»}, gerado no deploy (`deploy.yml`, passo antes do `docker build`) a partir do ultimo commit de
+    cada ficheiro em `web/guias/` (`git log`): corre so no runner do GitHub Actions, que tem o historico completo — a imagem nao leva o
+    `.git` (`.dockerignore`) nem o `python:slim` tem git. Sem o ficheiro (desenvolvimento local, os testes sem o gerar): {}, e cada guia
+    usa a data global (`_ultima_modificacao`), como as outras paginas."""
+    try:
+        dados = json.loads(CAMINHO_DATAS_GUIAS.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return dados if isinstance(dados, dict) else {}
+
+
+def _lastmod(pagina: Pagina, global_: str, datas_guias: dict[str, str]) -> str:
+    nome_guia = _CAMINHO_PARA_GUIA.get(pagina.caminho)
+    data = datas_guias.get(nome_guia, "") if nome_guia else ""
+    return data if _DATA_ISO.fullmatch(data) else global_
+
+
 def llms(base: str) -> str:
     """`llms.txt`: convencao (nao oficial, nao e lida pelo Google) para agentes de IA descobrirem o site; em ingles, sem localizar
-    (ficheiro so de maquina, como o robots.txt)."""
+    (ficheiro so de maquina, como o robots.txt). Links principais, nao o sitemap inteiro (esse fica em `/sitemap.xml`)."""
     return (
         f"# {NOME}\n\n"
-        "> Free web tool that generates numbered raffle ticket PDFs from a Canva template: pick a number range, "
-        "preview with real numbers and download (PDF or ZIP). No sign-up, 22 languages.\n\n"
-        f"- [How-to guides]({base}{guias.INDICE}): step-by-step raffle guides for schools, associations, clubs, "
-        "fire brigades, parties and churches.\n"
+        "> Free web tool that generates numbered raffle ticket PDFs from a Canva template or a built-in gallery design: pick a "
+        "number range, preview with real numbers and download (PDF or ZIP). No sign-up, 22 languages.\n\n"
+        "## Guides\n\n"
+        f"- [How-to guides index]({base}{guias.INDICE}): all step-by-step raffle guides, for schools, associations, clubs, "
+        "fire brigades, parties and churches, plus the topical guides below.\n"
+        f"- [How to number raffle tickets]({base}{guias.CAMINHOS['numerar']}): numbers tickets automatically from 0001 upwards, "
+        "the same number on the stub and the ticket, to avoid duplicates and arguments on draw day.\n"
+        f"- [How many raffle tickets to make]({base}{guias.CAMINHOS['quantos']}): sizing how many tickets to print and what "
+        "price to charge, before opening the generator.\n"
+        f"- [Verifiable raffle draw]({base}{guias.CAMINHOS['sorteio']}): a draw method anyone can repeat and get the same "
+        "result, from a number range and a public seed.\n"
+        f"- [How to make a price list]({base}{guias.CAMINHOS['precario']}): pick items, type prices and print a priced menu "
+        "in a few minutes.\n\n"
+        "## Tools\n\n"
+        f"- [Verifiable draw tool]({base}/sorteio): run the public, reproducible raffle draw in the browser.\n"
+        f"- [Template editor]({base}/editor): design a raffle ticket template from scratch, no Canva account needed.\n"
+        f"- [Price list generator]({base}/precario): make a priced menu/price sheet PDF for a fair or fundraiser.\n\n"
+        "## API\n\n"
         f"- [Public API docs]({base}/api/v1/docs): batch-generate numbered tickets from one template through a documented REST API.\n"
     )
 
 
 def sitemap(base: str) -> str:
-    """Uma `<url>` por pagina e lingua, cada uma com as alternativas (`xhtml:link`, o formato que o Google pede para varias linguas)."""
+    """Uma `<url>` por pagina e lingua, cada uma com as alternativas (`xhtml:link`, o formato que o Google pede para varias linguas).
+    `lastmod`: por ficheiro nos guias (`_datas_guias`), a data da versao atual nas outras paginas (`_ultima_modificacao`)."""
     urls = []
-    lastmod = f"<lastmod>{_ultima_modificacao()}</lastmod>" if _ultima_modificacao() else ""
+    global_ = _ultima_modificacao()
+    datas_guias = _datas_guias()
     for p in ROTAS.values():
         if not (p.indexavel and p.no_mapa):
             continue
+        data = _lastmod(p, global_, datas_guias)
+        lastmod = f"<lastmod>{data}</lastmod>" if data else ""
         alternativas = "".join(f'<xhtml:link rel="alternate" hreflang="{i18n.bcp47(lg)}" href="{_e(_url(base, p.caminho, lg))}"/>' for lg in i18n.LINGUAS)
         alternativas += f'<xhtml:link rel="alternate" hreflang="x-default" href="{_e(_url(base, p.caminho, "pt"))}"/>'
         urls += [f"<url><loc>{_e(_url(base, p.caminho, lg))}</loc>{lastmod}{alternativas}</url>" for lg in i18n.LINGUAS]

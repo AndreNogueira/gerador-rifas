@@ -2,6 +2,15 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.94.0 — 2026-11-26
+
+### Corregido
+- **Letra pequeña en la galería de diseños, en el móvil**: dentro del panel «¿Sin plantilla? Elija uno de la galería», la lista «Cuántos premios», el formato de la fecha y el campo «texto antes de la fecha» aparecían a 14 px, como los tres campos ya corregidos en la versión anterior. Ahora tienen al menos 16 px.
+- **El paso 2 solo dice «(obligatorio)» cuando realmente falta**: al elegir un diseño de la galería (que ya trae los dígitos listos), el título del paso 2 deja de decir «(obligatorio)» mientras el campo esté relleno.
+
+### Mejorado
+- **La descripción de la página de inicio ya no exige Canva**: la descripción que aparece en los buscadores solo hablaba de la plantilla de Canva; ahora también dice que se puede elegir un diseño ya hecho de la galería, sin necesitarlo.
+
 ## 3.93.0 — 2026-11-26
 
 ### Corregido

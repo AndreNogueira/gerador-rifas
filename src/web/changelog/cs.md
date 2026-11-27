@@ -2,6 +2,15 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.94.0 — 2026-11-26
+
+### Opraveno
+- **Malé písmo v galerii šablon, na mobilu**: v panelu „Bez šablony? Vyberte si z galerie“ se seznam „Kolik výher“, formát data a pole „text před datem“ zobrazovaly písmem 14 px, stejně jako tři pole opravená už v předchozí verzi. Nyní mají alespoň 16 px.
+- **Krok 2 říká „(povinné)” jen když skutečně chybí**: při výběru šablony z galerie (která už obsahuje číslice) název kroku 2 už neříká „(povinné)“, dokud je pole vyplněné.
+
+### Vylepšeno
+- **Popis úvodní stránky už nevyžaduje Canvu**: popis zobrazovaný ve vyhledávačích zmiňoval jen šablonu z Canvy; nyní také říká, že lze místo toho vybrat hotovou šablonu z galerie.
+
 ## 3.93.0 — 2026-11-26
 
 ### Opraveno

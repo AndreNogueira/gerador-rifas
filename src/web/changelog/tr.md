@@ -2,6 +2,15 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.94.0 — 2026-11-26
+
+### Düzeltildi
+- **Galeri panelinde telefonda küçük yazı**: "Şablonunuz yok mu? Galeriden birini seçin" panelinde "Kaç ödül" listesi, tarih biçimi ve "tarihten önceki metin" alanı, önceki sürümde düzeltilen üç alan gibi 14 px olarak görünüyordu. Artık en az 16 px.
+- **2. adım yalnızca gerçekten boşsa "(gerekli)" diyor**: galeriden bir şablon seçildiğinde (ki zaten rakamları hazır getirir), alan doluyken 2. adımın başlığı artık "(gerekli)" demiyor.
+
+### İyileştirildi
+- **Ana sayfa açıklaması artık Canva gerektirmiyor**: arama motorlarında görünen açıklama yalnızca Canva şablonundan bahsediyordu; artık Canva'ya gerek kalmadan galeriden hazır bir şablon da seçilebileceğini söylüyor.
+
 ## 3.93.0 — 2026-11-26
 
 ### Düzeltildi

@@ -2,6 +2,15 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.94.0 — 2026-11-26
+
+### Diperbaiki
+- **Font kecil di panel galeri, di ponsel**: di dalam panel "Tidak punya template? Pilih dari galeri", daftar "Berapa hadiah", format tanggal, dan kolom "teks sebelum tanggal" tampil dengan ukuran 14 px, seperti tiga kolom yang sudah diperbaiki di versi sebelumnya. Sekarang setidaknya 16 px.
+- **Langkah 2 hanya menampilkan "(wajib)" saat benar-benar belum diisi**: setelah memilih desain dari galeri (yang sudah menyertakan angka), judul langkah 2 tidak lagi menampilkan "(wajib)" selama kolom tersebut terisi.
+
+### Ditingkatkan
+- **Deskripsi halaman utama tidak lagi mengharuskan Canva**: deskripsi yang tampil di mesin pencari hanya menyebutkan template Canva; sekarang juga menyebutkan bisa memilih desain siap pakai dari galeri, tanpa perlu Canva.
+
 ## 3.93.0 — 2026-11-26
 
 ### Diperbaiki

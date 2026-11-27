@@ -2,6 +2,15 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.94.0 — 2026-11-26
+
+### Đã sửa
+- **Chữ nhỏ trong bảng thư viện mẫu, trên điện thoại**: trong bảng "Không có mẫu? Chọn một mẫu từ thư viện", danh sách "Bao nhiêu giải thưởng", định dạng ngày và ô "văn bản trước ngày" hiển thị cỡ chữ 14 px, như ba ô đã được sửa ở phiên bản trước. Giờ đã đạt tối thiểu 16 px.
+- **Bước 2 chỉ ghi "(bắt buộc)" khi thực sự còn thiếu**: khi chọn một mẫu từ thư viện (đã có sẵn các chữ số), tiêu đề bước 2 không còn ghi "(bắt buộc)" khi ô đó đã được điền.
+
+### Cải thiện
+- **Mô tả trang chủ không còn yêu cầu Canva**: mô tả hiển thị trên công cụ tìm kiếm trước đây chỉ nói về mẫu Canva; giờ cũng nói rằng có thể chọn một mẫu có sẵn từ thư viện mà không cần Canva.
+
 ## 3.93.0 — 2026-11-26
 
 ### Đã sửa
