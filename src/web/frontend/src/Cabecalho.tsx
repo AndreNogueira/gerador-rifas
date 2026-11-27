@@ -489,7 +489,7 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual, donativoUrl = 
           quebrar para 2 linhas por um instante e empurrar o resto da página (um CLS medido em produção, ~0.14, que
           não era dos anúncios). Sem `data-testid` nem `onChange` a sério, de propósito: nunca pode duplicar o que os
           testes (e os leitores de ecrã) veem no `.cluster` real. */}
-      <div className="cluster cluster-medidor" ref={medidorRef} aria-hidden="true">
+      <div className="cluster-medidor" ref={medidorRef} aria-hidden="true">
         {(existentes.includes("ajuda") || PAGINAS.some((p) => existentes.includes(p.id))) && (
           <nav className="navegacao">
             {existentes.includes("ajuda") && (

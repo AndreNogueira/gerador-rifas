@@ -357,9 +357,20 @@
 // do fluxo e invisível — nunca o `.cluster` visível, que só mostra o que já se decidiu. Antes o próprio `.cluster`
 // visível é que se mostrava por completo para se medir a si mesmo, o que podia quebrá-lo para 2 linhas por um
 // instante e empurrar o resto da página — a causa real de um CLS medido em produção, não os anúncios (que já
-// reservam o espaço deles, ver `.anuncio` mais abaixo).
+// reservam o espaço deles, ver `.anuncio` mais abaixo). É um `display: flex` à parte (nunca `.cluster`: isso fazia
+// `.cluster [data-item]` apanhar também os itens do medidor, contando-os a dobrar nos testes). `width/height: 0` e
+// `overflow: hidden` impedem que a largura real de todos os itens (muitos, lado a lado) alargue a página — o
+// `visibility: hidden` por si só NÃO chega: um elemento escondido assim continua a ocupar o seu espaço de layout
+// (ao contrário de `display: none`), e isso chegou a criar uma barra de deslize horizontal na página inteira.
+// `.item-cab` tem `flex: none` (não encolhe), por isso cada item mede-se à largura certa mesmo dentro de um
+// contentor de largura zero.
 .cluster-medidor {
   position: absolute;
+  display: flex;
+  gap: 8px;
+  width: 0;
+  height: 0;
+  overflow: hidden;
   visibility: hidden;
   pointer-events: none;
 }
