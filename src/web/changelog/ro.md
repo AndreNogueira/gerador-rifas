@@ -2,6 +2,17 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.95.0 — 2026-11-27
+
+### Corectat
+- **Titlul paginii inițiale după încărcare**: arăta doar „Gerador de Rifas” în loc de titlul complet pe care serverul îl trimite deja celor fără JavaScript; React repune acum titlul corect.
+- **Salt vizual în antet**: măsurarea a ce încape lângă numele aplicației putea, pentru o clipă, face antetul să treacă pe două linii și să împingă restul paginii mai jos; s-a găsit cauza reală (nu reclamele) și s-a corectat.
+
+### Îmbunătățit
+- **Pagina inițială nu mai pierde explicația și ghidurile după montare**: „Cum funcționează”, tutorialul, videoclipul, „Despre noi” și ghidurile „Cum se face” trăiesc acum și în corpul paginii, nu doar în meniul „Ajutor”.
+- **Limbile se încarcă în paralel**: cererea textelor interfeței nu mai așteaptă lista de limbi doar pentru a decide limba paginii, ceea ce grăbește primul conținut pe telefoane și conexiuni lente.
+- **Ghidul „Cum faci o tombolă pentru parohie” cu voce mai proprie**: decizie alături de consiliul parohial, tragerea verificabilă ca răspuns la încrederea cumpărătorilor, și nu mai numește o autoritate locală precisă (variază pe regiuni).
+
 ## 3.94.0 — 2026-11-26
 
 ### Corectat

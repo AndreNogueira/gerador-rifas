@@ -2,6 +2,17 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.95.0 — 2026-11-27
+
+### Đã sửa
+- **Tiêu đề trang chủ sau khi tải xong**: chỉ hiện «Gerador de Rifas» thay vì tiêu đề đầy đủ mà máy chủ đã gửi cho người không chạy JavaScript; React giờ đặt lại tiêu đề đúng.
+- **Lệch hình ảnh ở phần đầu trang**: việc tính xem vừa được gì bên cạnh tên ứng dụng có thể, trong một khoảnh khắc, làm phần đầu trang chuyển sang hai dòng và đẩy phần còn lại của trang xuống; đã tìm ra nguyên nhân thật (không phải quảng cáo) và sửa xong.
+
+### Đã cải thiện
+- **Trang chủ không còn mất phần giải thích và các hướng dẫn sau khi tải xong**: «Cách hoạt động», hướng dẫn sử dụng, video, «Giới thiệu» và các hướng dẫn «Cách làm» giờ cũng có trong nội dung trang, không chỉ trong menu «Trợ giúp».
+- **Các ngôn ngữ tải song song**: việc lấy văn bản giao diện không còn phải chờ danh sách ngôn ngữ chỉ để quyết định ngôn ngữ của trang, giúp hiển thị nội dung đầu tiên nhanh hơn trên điện thoại và kết nối chậm.
+- **Hướng dẫn «Cách tổ chức bốc thăm cho giáo xứ» có tiếng nói riêng hơn**: quyết định cùng hội đồng giáo xứ, lần bốc thăm có thể kiểm chứng như câu trả lời cho niềm tin của người mua, và không còn nêu tên một cơ quan địa phương cụ thể (tùy theo khu vực).
+
 ## 3.94.0 — 2026-11-26
 
 ### Đã sửa

@@ -2,6 +2,17 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.95.0 — 2026-11-27
+
+### Åtgärdat
+- **Startsidans titel efter inläsning**: visade bara ”Gerador de Rifas” istället för den fullständiga titeln servern redan skickar till den som inte kör JavaScript; React återställer nu den rätta titeln.
+- **Visuell förskjutning i sidhuvudet**: att mäta vad som får plats bredvid appens namn kunde för ett ögonblick få sidhuvudet att gå till två rader och trycka ner resten av sidan; den verkliga orsaken hittades (inte annonserna) och åtgärdades.
+
+### Förbättrat
+- **Startsidan tappar inte förklaringen eller guiderna efter montering**: ”Så fungerar det”, handledningen, videon, ”Om oss” och ”Så gör du”-guiderna finns nu också i själva sidan, inte bara i menyn ”Hjälp”.
+- **Språk läses in parallellt**: att hämta gränssnittstexterna väntar inte längre på språklistan bara för att avgöra sidans språk, vilket snabbar upp det första innehållet på mobiler och långsamma uppkopplingar.
+- **Guiden ”Så ordnar du ett lotteri för församlingen” med egnare röst**: beslut tillsammans med kyrkorådet, den verifierbara dragningen som svar på köparnas förtroende, och nämner inte längre en bestämd lokal myndighet (det varierar per region).
+
 ## 3.94.0 — 2026-11-26
 
 ### Åtgärdat

@@ -119,6 +119,34 @@ describe("ProvedorI18n", () => {
     await waitFor(() => expect(window.location.pathname).toBe("/admin"));
   });
 
+  it("pede /api/textos em paralelo com /api/linguas (não em série, para não perder tempo no LCP)", async () => {
+    const servidor = new ServidorFalso();
+    let resolverLinguas: () => void = () => {};
+    const atrasoLinguas = new Promise<void>((r) => {
+      resolverLinguas = r;
+    });
+    const original = servidor.manejar;
+    servidor.manejar = async (entrada, init) => {
+      const url = typeof entrada === "string" ? entrada : entrada.toString();
+      if (url === "/api/linguas") await atrasoLinguas;
+      return original(entrada, init);
+    };
+    servidor.instalar();
+    render(
+      <ProvedorI18n>
+        <Amostra />
+      </ProvedorI18n>,
+    );
+    // os textos já chegaram (o título aparece) mesmo com /api/linguas ainda pendurado: se fosse em série, isto
+    // nunca resolvia (o pedido dos textos só partia depois de /api/linguas responder)
+    expect(await screen.findByRole("heading", { name: "Gerador de Rifas" })).toBeInTheDocument();
+    expect(screen.getByLabelText("lingua").querySelectorAll("option")).toHaveLength(0);
+    resolverLinguas();
+    await waitFor(() =>
+      expect(screen.getByLabelText("lingua").querySelectorAll("option").length).toBeGreaterThan(0),
+    );
+  });
+
   it("mostra o erro se a API falhar", async () => {
     vi.stubGlobal(
       "fetch",

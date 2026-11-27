@@ -2,6 +2,17 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.95.0 — 2026-11-27
+
+### Düzeltildi
+- **Sayfa yüklendikten sonra ana sayfa başlığı**: JavaScript çalıştırmayanlara sunucunun zaten gönderdiği tam başlık yerine sadece “Gerador de Rifas” gösteriyordu; React artık doğru başlığı geri koyuyor.
+- **Üst bilgide görsel kayma**: uygulama adının yanına ne sığdığını ölçmek, bir an için üst bilgiyi iki satıra geçirip sayfanın kalanını aşağı itebiliyordu; gerçek neden bulundu (reklamlar değildi) ve düzeltildi.
+
+### İyileştirildi
+- **Ana sayfa yüklendikten sonra açıklamayı ve kılavuzları kaybetmiyor**: “Nasıl çalışır”, öğretici, video, “Hakkımızda” ve “Nasıl yapılır” kılavuzları artık sadece “Yardım” menüsünde değil, sayfanın kendisinde de yer alıyor.
+- **Diller paralel olarak yükleniyor**: arayüz metinlerini istemek, sadece sayfanın dilini belirlemek için dil listesini artık beklemiyor; bu, telefonlarda ve yavaş bağlantılarda ilk içeriği hızlandırıyor.
+- **“Cemaat için çekiliş nasıl yapılır” kılavuzu kendi sesiyle**: cemaat konseyiyle karar, alıcıların güvenine yanıt olarak doğrulanabilir çekiliş ve artık belirli bir yerel makamdan bahsetmiyor (bölgeye göre değişir).
+
 ## 3.94.0 — 2026-11-26
 
 ### Düzeltildi

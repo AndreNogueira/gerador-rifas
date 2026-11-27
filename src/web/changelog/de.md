@@ -2,6 +2,17 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.95.0 — 2026-11-27
+
+### Behoben
+- **Titel der Startseite nach dem Laden**: zeigte nur „Gerador de Rifas“ statt des vollständigen Titels, den der Server schon ohne JavaScript sendet; React setzt jetzt den richtigen Titel wieder.
+- **Sichtbarer Sprung in der Kopfzeile**: das Messen, was neben dem App-Namen Platz hat, konnte die Kopfzeile kurz auf zwei Zeilen umbrechen lassen und den Rest der Seite nach unten schieben; die wirkliche Ursache wurde gefunden (nicht die Werbung) und behoben.
+
+### Verbessert
+- **Startseite verliert Erklärung und Anleitungen nach dem Laden nicht mehr**: „So funktioniert es“, das Tutorial, das Video, „Über uns“ und die „So geht's“-Anleitungen stehen jetzt auch im Seiteninhalt, nicht nur im Menü „Hilfe“.
+- **Sprachen laden parallel**: das Abrufen der Oberflächentexte wartet nicht mehr auf die Sprachliste, nur um die Seitensprache festzulegen – das beschleunigt den ersten Inhalt auf Handys und bei langsamer Verbindung.
+- **Anleitung „Eine Tombola für die Pfarrgemeinde“ mit eigenerer Stimme**: Entscheidung mit dem Pfarrgemeinderat, die überprüfbare Ziehung als Antwort auf das Vertrauen der Käufer, und keine bestimmte örtliche Behörde mehr genannt (das ist je nach Region anders).
+
 ## 3.94.0 — 2026-11-26
 
 ### Korrigiert

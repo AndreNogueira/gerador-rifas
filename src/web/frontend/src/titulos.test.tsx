@@ -24,7 +24,10 @@ function abrir() {
 describe("título do separador", () => {
   it("acompanha a página (SEO e acessibilidade)", async () => {
     abrir();
-    await waitFor(() => expect(document.title).toBe("Gerador de Rifas"));
+    // a página inicial tem o título rico de SEO (o mesmo que o servidor já põe no HTML estático), não só o nome da app
+    await waitFor(() =>
+      expect(document.title).toBe("Gerador de Rifas: rifas numeradas em PDF a partir do Canva"),
+    );
     await userEvent.click(await screen.findByTestId("nav-ajuda"));
     await userEvent.click(screen.getByTestId("nav-tutorial"));
     await waitFor(() => expect(document.title).toMatch(/^Tutorial.* \| Gerador de Rifas$/));

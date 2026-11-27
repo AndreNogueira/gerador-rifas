@@ -4,7 +4,7 @@ import { useI18n } from "./i18n";
 import { Ligacao } from "./rota";
 
 /** Os guias «como fazer» na língua escolhida (o servidor devolve o título e o resumo de cada um; o mesmo que põe no HTML estático). */
-function useGuias(): { guias: GuiaNaLista[] | null; erro: string } {
+export function useGuias(): { guias: GuiaNaLista[] | null; erro: string } {
   const { lingua } = useI18n();
   const [guias, setGuias] = useState<GuiaNaLista[] | null>(null);
   const [erro, setErro] = useState("");
@@ -24,7 +24,7 @@ function useGuias(): { guias: GuiaNaLista[] | null; erro: string } {
   return { guias, erro };
 }
 
-function ListaDeGuias({ guias }: { guias: GuiaNaLista[] }) {
+export function ListaDeGuias({ guias }: { guias: GuiaNaLista[] }) {
   return (
     <ul className="lista-guias">
       {guias.map((g) => (
@@ -64,14 +64,19 @@ export function IndiceGuias() {
   );
 }
 
-/** No fim de cada guia: as ligações para os outros guias e para o índice (ligações internas que ajudam quem lê e quem indexa). */
-export function OutrosGuias({ menos }: { menos: string }) {
+/**
+ * No fim de cada guia: as ligações para os outros guias e para o índice (ligações internas que ajudam quem lê e quem indexa).
+ * A página inicial reutiliza-o sem excluir nenhum (`menos=""`) e com o título do índice (`titulo`), para os seus próprios
+ * guias e a sua ligação de entrada sobreviverem à montagem do React (ver `Gerador.tsx`): sem isto, a página inicial perdia
+ * TODAS estas ligações depois de montar (só existiam no HTML estático do servidor, que o React substitui).
+ */
+export function OutrosGuias({ menos, titulo }: { menos: string; titulo?: string }) {
   const { t } = useI18n();
   const { guias } = useGuias();
   if (!guias) return null;
   return (
     <section className="outros-guias" data-testid="outros-guias">
-      <h2>{t("web_guias_outros")}</h2>
+      <h2>{titulo ?? t("web_guias_outros")}</h2>
       <ListaDeGuias guias={guias.filter((g) => g.nome !== menos)} />
       <p>
         <Ligacao para="/como-fazer" data-testid="outros-guias-todos">

@@ -353,7 +353,10 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual, donativoUrl = 
           <p className="nome">{t("app_nome")}</p>
         )}
       </Ligacao>
-      <div className="cluster">
+      {/* Enquanto `medir` é true mostra-se tudo (sem menu) para ler as larguras reais (ver o `useLayoutEffect` acima); isso pode fazer o
+          `.cluster` quebrar para 2 linhas por um instante. `.cluster-a-medir` tira-o do fluxo nessa medição (CSS: `_cabecalho.scss`) para
+          esse instante nunca empurrar o `main.conteudo` — foi a causa real de um CLS medido em produção (~0.14), não os anúncios. */}
+      <div className={`cluster${medir ? " cluster-a-medir" : ""}`}>
         {(visivel("ajuda") || paginasVisiveis.length > 0) && (
           <nav className="navegacao" aria-label={t("app_nome")}>
             {item("ajuda", <MenuAjuda caminho={caminho} />)}

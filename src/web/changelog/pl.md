@@ -2,6 +2,17 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.95.0 — 2026-11-27
+
+### Naprawione
+- **Tytuł strony głównej po wczytaniu**: pokazywał tylko „Gerador de Rifas” zamiast pełnego tytułu, który serwer już wysyła osobom bez JavaScriptu; React teraz przywraca właściwy tytuł.
+- **Wizualne przesunięcie w nagłówku**: mierzenie, co zmieści się przy nazwie aplikacji, mogło na chwilę sprawić, że nagłówek przeszedł na dwie linie i przesunął resztę strony niżej; znaleziono prawdziwą przyczynę (nie reklamy) i naprawiono.
+
+### Poprawione
+- **Strona główna nie gubi wyjaśnienia ani przewodników po zamontowaniu**: „Jak to działa”, tutorial, wideo, „O nas” i przewodniki „Jak to zrobić” są teraz też w treści strony, nie tylko w menu „Pomoc”.
+- **Języki wczytują się równolegle**: pobieranie tekstów interfejsu nie czeka już na listę języków tylko po to, by ustalić język strony, co przyspiesza pierwszą treść na telefonach i wolnych połączeniach.
+- **Przewodnik „Jak zorganizować loterię dla parafii” z własniejszym głosem**: decyzja z radą parafialną, sprawdzalne losowanie jako odpowiedź na zaufanie kupujących, i już bez wskazania konkretnego urzędu (to zależy od regionu).
+
 ## 3.94.0 — 2026-11-26
 
 ### Naprawione

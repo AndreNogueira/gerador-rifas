@@ -412,6 +412,7 @@ export const api = {
   }) => pedir<{ numero: number }>("POST", "/api/problemas", { json: p }),
   guia: (nome: string) => pedir<GuiaDeTexto>("GET", `/api/guia/${encodeURIComponent(nome)}`),
   guias: () => pedir<{ guias: GuiaNaLista[] }>("GET", "/api/guias"),
+  tituloInicial: () => pedir<{ titulo: string }>("GET", "/api/titulo-inicial"),
   pagina: (nome: string) => pedir<PaginaDeTexto>("GET", `/api/pagina/${encodeURIComponent(nome)}`),
   changelog: () => pedir<{ entradas: EntradaChangelog[] }>("GET", "/api/changelog"),
   criarSessao: () => pedir<Sessao>("POST", "/api/sessoes"),

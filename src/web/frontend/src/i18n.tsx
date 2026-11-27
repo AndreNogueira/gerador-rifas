@@ -26,7 +26,13 @@ const I18n = createContext<Contexto | null>(null);
 
 export function ProvedorI18n({ children }: { children: ReactNode }) {
   const [linguas, setLinguas] = useState<Lingua[]>([]);
-  const [escolhida, setEscolhida] = useState<string | null>(null);
+  // a língua do URL (`/en/tutorial`) manda; sem prefixo é sempre português (`rota.tsx`): nunca a guardada nem a do
+  // browser/servidor, senão um robô ou um browser sem Accept-Language em português acabava a ver a página em inglês
+  // e o URL era reescrito sozinho (ver `docs/SEO.md`). `linguaDoCaminho()` lê uma lista fixa no próprio ficheiro
+  // (`LINGUAS_COM_PREFIXO`, testada contra a do servidor), por isso decide-se já aqui, sem esperar por `/api/linguas`:
+  // isso deixa pedir `/api/textos/<lingua>` em paralelo com `/api/linguas` (antes era em série, ~0.6 s perdidos
+  // no LCP). Só o seletor de línguas (a lista completa) e um prefixo desconhecido precisam de `/api/linguas`.
+  const [escolhida, setEscolhida] = useState<string>(() => linguaDoCaminho() ?? "pt");
   const [carregados, setCarregados] = useState<{ lingua: string; textos: Record<string, string> } | null>(
     null,
   );
@@ -35,15 +41,7 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
   useEffect(() => {
     api
       .linguas()
-      .then((l) => {
-        setLinguas(l.linguas);
-        // a língua do URL (`/en/tutorial`) manda; sem prefixo é sempre português (`rota.tsx`): nunca a guardada
-        // nem a do browser/servidor, senão um robô ou um browser sem Accept-Language em português acabava a
-        // ver a página em inglês e o URL era reescrito sozinho (ver `docs/SEO.md`)
-        const doUrl = linguaDoCaminho();
-        const existe = (c: string | null) => l.linguas.some((x) => x.codigo === c);
-        setEscolhida(existe(doUrl) ? doUrl : "pt");
-      })
+      .then((l) => setLinguas(l.linguas))
       .catch((e: Error) => setErro(e.message));
   }, []);
 

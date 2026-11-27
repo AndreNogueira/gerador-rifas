@@ -6,6 +6,7 @@ import { CartaoAlgarismos, CartaoDestino, CartaoNumeros, CartaoTemplate } from "
 import { Donativo } from "./Donativo";
 import { useDialogos } from "./dialogos";
 import { ligacaoDosCampos } from "./formulario";
+import { OutrosGuias } from "./IndiceGuias";
 import { useI18n } from "./i18n";
 import { Icone } from "./icones";
 import { Partilhar } from "./Partilhar";
@@ -81,50 +82,74 @@ export function Gerador({ campos, calculo, mudar, reiniciar, donativoUrl = "" }:
   }, [livre, precisa, tentativa, pedirPrevia]);
 
   return (
-    <div className={`gerador${expandido ? " expandido" : ""}`}>
+    <>
+      <div className={`gerador${expandido ? " expandido" : ""}`}>
+        {!expandido && (
+          <div className="coluna">
+            <CartaoTemplate
+              sessao={s.sessao}
+              ocupado={s.ocupado}
+              bloqueado={a_gerar}
+              campos={campos}
+              calculo={calculo}
+              mudar={mudar}
+              aoEscolher={(f) => void s.carregarTemplate(f)}
+            />
+            <CartaoAlgarismos
+              sessao={s.sessao}
+              ocupado={s.ocupado}
+              bloqueado={a_gerar}
+              lembrado={s.algarismosLembrados}
+              aoEscolher={(f) => void s.carregarAlgarismos(f)}
+              aoPedirAjuda={
+                <Ligacao para={`/tutorial?p=${TOPICO_ALGARISMOS}`} className="ajuda">
+                  {t("c2_ajuda")}
+                </Ligacao>
+              }
+            />
+            <CartaoNumeros campos={campos} calculo={calculo} mudar={mudar} />
+            <CartaoDestino campos={campos} mudar={mudar} />
+            <Acoes
+              campos={campos}
+              calculo={calculo}
+              donativoUrl={donativoUrl}
+              aoLimpar={async () => {
+                await s.limpar();
+                reiniciar();
+              }}
+            />
+          </div>
+        )}
+        <Visor
+          sessao={s.sessao}
+          erro={s.erroPrevia}
+          expandido={expandido}
+          aoAlternar={() => setExpandido((e) => !e)}
+        />
+      </div>
+      {/* Depois do `.gerador` (nunca antes: o botão «Escolher…» é o elemento do LCP e não se pode empurrar). O servidor já
+          manda este texto e estas ligações no HTML estático para quem não corre JavaScript (`seo._corpo_inicio`); sem isto,
+          o React substituía-os só pelo formulário e a página inicial perdia, depois de montar, a explicação e TODAS as
+          ligações aos guias «como fazer» (achado de SEO: ficavam só dentro do menu «Ajuda», que um motor de busca não abre). */}
       {!expandido && (
-        <div className="coluna">
-          <CartaoTemplate
-            sessao={s.sessao}
-            ocupado={s.ocupado}
-            bloqueado={a_gerar}
-            campos={campos}
-            calculo={calculo}
-            mudar={mudar}
-            aoEscolher={(f) => void s.carregarTemplate(f)}
-          />
-          <CartaoAlgarismos
-            sessao={s.sessao}
-            ocupado={s.ocupado}
-            bloqueado={a_gerar}
-            lembrado={s.algarismosLembrados}
-            aoEscolher={(f) => void s.carregarAlgarismos(f)}
-            aoPedirAjuda={
-              <Ligacao para={`/tutorial?p=${TOPICO_ALGARISMOS}`} className="ajuda">
-                {t("c2_ajuda")}
+        <div className="pagina inicio-mais" data-testid="inicio-mais">
+          <article className="cartao texto-pagina guia">
+            <p className="guia-ligacoes">
+              <Ligacao para="/tutorial" className="botao">
+                {t("tut_titulo")}
               </Ligacao>
-            }
-          />
-          <CartaoNumeros campos={campos} calculo={calculo} mudar={mudar} />
-          <CartaoDestino campos={campos} mudar={mudar} />
-          <Acoes
-            campos={campos}
-            calculo={calculo}
-            donativoUrl={donativoUrl}
-            aoLimpar={async () => {
-              await s.limpar();
-              reiniciar();
-            }}
-          />
+              <Ligacao para="/video" className="botao">
+                {t("mi_video")}
+              </Ligacao>
+              <Ligacao para="/sobre" className="botao">
+                {t("mi_sobre")}
+              </Ligacao>
+            </p>
+            <OutrosGuias menos="" titulo={t("web_comofazer_titulo")} />
+          </article>
         </div>
       )}
-      <Visor
-        sessao={s.sessao}
-        erro={s.erroPrevia}
-        expandido={expandido}
-        aoAlternar={() => setExpandido((e) => !e)}
-      />
-    </div>
+    </>
   );
 }
 

@@ -2,6 +2,17 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.95.0 — 2026-11-27
+
+### Diperbaiki
+- **Judul halaman beranda setelah dimuat**: hanya menunjukkan «Gerador de Rifas» bukan judul lengkap yang sudah dikirim server kepada pengunjung tanpa JavaScript; React sekarang memulihkan judul yang benar.
+- **Pergeseran visual di header**: menghitung apa yang pas di samping nama aplikasi bisa, sesaat, membuat header pindah ke dua baris dan mendorong sisa halaman ke bawah; penyebab sebenarnya ditemukan (bukan iklan) dan diperbaiki.
+
+### Ditingkatkan
+- **Halaman beranda tidak lagi kehilangan penjelasan maupun panduan setelah dimuat**: «Cara kerja», tutorial, video, «Tentang kami», dan panduan «Cara membuat» sekarang juga ada di badan halaman, bukan hanya di menu «Bantuan».
+- **Bahasa dimuat secara paralel**: mengambil teks antarmuka tidak lagi menunggu daftar bahasa hanya untuk menentukan bahasa halaman, yang mempercepat tampilan konten pertama di ponsel dan koneksi lambat.
+- **Panduan «Cara membuat undian untuk gereja» dengan suara lebih khasnya sendiri**: keputusan bersama dewan gereja, pengundian yang dapat diverifikasi sebagai jawaban atas kepercayaan pembeli, dan tidak lagi menyebut satu instansi daerah tertentu (berbeda menurut daerah).
+
 ## 3.94.0 — 2026-11-26
 
 ### Diperbaiki

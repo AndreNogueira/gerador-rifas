@@ -2,6 +2,17 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.95.0 — 2026-11-27
+
+### Opgelost
+- **Titel van de startpagina na het laden**: toonde alleen «Gerador de Rifas» in plaats van de volledige titel die de server al stuurt naar wie geen JavaScript uitvoert; React herstelt nu de juiste titel.
+- **Visuele sprong in de koptekst**: meten wat naast de appnaam past, kon de koptekst even naar twee regels laten omslaan en de rest van de pagina omlaag duwen; de echte oorzaak is gevonden (niet de advertenties) en opgelost.
+
+### Verbeterd
+- **Startpagina verliest de uitleg en de gidsen niet meer na het monteren**: «Hoe het werkt», de tutorial, de video, «Over ons» en de «Zo doe je het»-gidsen staan nu ook in de pagina zelf, niet alleen in het menu «Hulp».
+- **Talen laden parallel**: de interfaceteksten ophalen wacht niet meer op de talenlijst alleen om de paginataal te bepalen, wat de eerste inhoud versnelt op telefoons en trage verbindingen.
+- **Gids «Zo organiseert u een parochieloterij» met eigener stem**: beslissen met de parochieraad, de controleerbare trekking als antwoord op het vertrouwen van kopers, en geen specifieke lokale instantie meer genoemd (dat verschilt per regio).
+
 ## 3.94.0 — 2026-11-26
 
 ### Opgelost

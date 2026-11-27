@@ -2,6 +2,17 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.95.0 — 2026-11-27
+
+### Corretto
+- **Titolo della pagina iniziale dopo il caricamento**: mostrava solo «Gerador de Rifas» invece del titolo completo che il server già manda a chi non esegue JavaScript; React ora ripristina il titolo giusto.
+- **Scatto visivo nell'intestazione**: misurare cosa entra accanto al nome dell'app poteva, per un istante, far andare l'intestazione su due righe e spingere il resto della pagina in basso; si è trovata la vera causa (non la pubblicità) e si è corretta.
+
+### Migliorato
+- **La pagina iniziale non perde la spiegazione né le guide dopo il montaggio**: «Come funziona», il tutorial, il video, «Chi siamo» e le guide «Come fare» vivono ora anche nel corpo della pagina, non solo nel menu «Aiuto».
+- **Le lingue si caricano in parallelo**: chiedere i testi dell'interfaccia non aspetta più l'elenco delle lingue solo per decidere la lingua della pagina, il che anticipa il primo contenuto su cellulari e connessioni lente.
+- **Guida «Come fare una lotteria per la parrocchia» con voce più propria**: decidere con il consiglio pastorale, l'estrazione verificabile come risposta alla fiducia di chi compra, e non nomina più un'autorità locale precisa (varia per zona).
+
 ## 3.94.0 — 2026-11-26
 
 ### Corretto

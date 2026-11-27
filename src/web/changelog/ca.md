@@ -2,6 +2,17 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.95.0 — 2026-11-27
+
+### Corregit
+- **Títol de la pàgina inicial després de carregar**: només mostrava «Gerador de Rifas» en lloc del títol complet que el servidor ja envia a qui no executa JavaScript; el React ara reposa el títol correcte.
+- **Salt visual a la capçalera**: mesurar què cap al costat del nom de l'app podia, per un instant, fer que la capçalera passés a dues línies i empenyés la resta de la pàgina cap avall; es va trobar la causa real (no els anuncis) i es va corregir.
+
+### Millorat
+- **La pàgina inicial no perd l'explicació ni les guies després de muntar-se**: «Com funciona», el tutorial, el vídeo, «Sobre nosaltres» i les guies «Com fer-ho» també viuen ara al cos de la pàgina, no només al menú «Ajuda».
+- **Les llengües es carreguen en paral·lel**: demanar els textos de la interfície ja no espera la llista de llengües només per decidir la llengua de la pàgina, cosa que avança el primer contingut en mòbils i connexions lentes.
+- **Guia «Com fer una rifa per a la parròquia» amb veu més pròpia**: decisió amb el consell parroquial, el sorteig verificable com a resposta a la confiança de qui compra, i ja no esmenta una autoritat local concreta (varia segons la zona).
+
 ## 3.94.0 — 2026-11-26
 
 ### Corregit

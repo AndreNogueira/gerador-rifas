@@ -353,6 +353,14 @@
   margin-left: auto;
   flex: none;
 }
+// a medição mostra tudo (sem menu) para ler as larguras reais (`Cabecalho.tsx`, `calcularOcultos`): tirado do fluxo e invisível
+// nesse instante para nunca empurrar o resto da página (quebrar para 2 linhas) — essa quebra era a causa real de um CLS medido
+// em produção, não os anúncios (que já reservam o espaço deles, ver `.anuncio` mais abaixo).
+.cluster-a-medir {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+}
 .item-cab {
   display: flex;
   flex: none;
