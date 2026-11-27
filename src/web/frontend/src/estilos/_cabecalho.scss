@@ -353,10 +353,12 @@
   margin-left: auto;
   flex: none;
 }
-// a medição mostra tudo (sem menu) para ler as larguras reais (`Cabecalho.tsx`, `calcularOcultos`): tirado do fluxo e invisível
-// nesse instante para nunca empurrar o resto da página (quebrar para 2 linhas) — essa quebra era a causa real de um CLS medido
-// em produção, não os anúncios (que já reservam o espaço deles, ver `.anuncio` mais abaixo).
-.cluster-a-medir {
+// o medidor (`Cabecalho.tsx`, `calcularOcultos`): lê as larguras de TODOS os itens, mesmo os que não cabem, sempre fora
+// do fluxo e invisível — nunca o `.cluster` visível, que só mostra o que já se decidiu. Antes o próprio `.cluster`
+// visível é que se mostrava por completo para se medir a si mesmo, o que podia quebrá-lo para 2 linhas por um
+// instante e empurrar o resto da página — a causa real de um CLS medido em produção, não os anúncios (que já
+// reservam o espaço deles, ver `.anuncio` mais abaixo).
+.cluster-medidor {
   position: absolute;
   visibility: hidden;
   pointer-events: none;

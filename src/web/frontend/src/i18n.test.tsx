@@ -137,14 +137,15 @@ describe("ProvedorI18n", () => {
         <Amostra />
       </ProvedorI18n>,
     );
-    // os textos já chegaram (o título aparece) mesmo com /api/linguas ainda pendurado: se fosse em série, isto
-    // nunca resolvia (o pedido dos textos só partia depois de /api/linguas responder)
-    expect(await screen.findByRole("heading", { name: "Gerador de Rifas" })).toBeInTheDocument();
-    expect(screen.getByLabelText("lingua").querySelectorAll("option")).toHaveLength(0);
+    // o pedido dos textos já partiu, mesmo com /api/linguas ainda pendurado: se fosse em série, isto nunca
+    // acontecia (o pedido dos textos só partia depois de /api/linguas responder). Mas a app só se mostra quando
+    // as duas já tiverem respondido: o seletor de línguas nunca pode aparecer montado e vazio (zero <option>),
+    // nem que seja por um instante — foi exatamente isso que um teste de contraste e2e apanhou em produção.
+    await waitFor(() => expect(servidor.chamadas("GET", /\/api\/textos\//)).toHaveLength(1));
+    expect(screen.queryByRole("heading", { name: "Gerador de Rifas" })).toBeNull();
     resolverLinguas();
-    await waitFor(() =>
-      expect(screen.getByLabelText("lingua").querySelectorAll("option").length).toBeGreaterThan(0),
-    );
+    expect(await screen.findByRole("heading", { name: "Gerador de Rifas" })).toBeInTheDocument();
+    expect(screen.getByLabelText("lingua").querySelectorAll("option").length).toBeGreaterThan(0);
   });
 
   it("mostra o erro se a API falhar", async () => {

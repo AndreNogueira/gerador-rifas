@@ -26,12 +26,15 @@ const I18n = createContext<Contexto | null>(null);
 
 export function ProvedorI18n({ children }: { children: ReactNode }) {
   const [linguas, setLinguas] = useState<Lingua[]>([]);
+  const [linguasProntas, setLinguasProntas] = useState(false);
   // a língua do URL (`/en/tutorial`) manda; sem prefixo é sempre português (`rota.tsx`): nunca a guardada nem a do
   // browser/servidor, senão um robô ou um browser sem Accept-Language em português acabava a ver a página em inglês
   // e o URL era reescrito sozinho (ver `docs/SEO.md`). `linguaDoCaminho()` lê uma lista fixa no próprio ficheiro
   // (`LINGUAS_COM_PREFIXO`, testada contra a do servidor), por isso decide-se já aqui, sem esperar por `/api/linguas`:
-  // isso deixa pedir `/api/textos/<lingua>` em paralelo com `/api/linguas` (antes era em série, ~0.6 s perdidos
-  // no LCP). Só o seletor de línguas (a lista completa) e um prefixo desconhecido precisam de `/api/linguas`.
+  // isso deixa pedir `/api/textos/<lingua>` em paralelo com `/api/linguas`, em vez de só a seguir a ela resolver
+  // (antes era em série, ~0.6 s perdidos no LCP). A app só se mostra quando as duas tiverem respondido (abaixo,
+  // `linguasProntas && carregados`): sem isso o cabeçalho chegou a montar-se com o seletor de línguas ainda vazio
+  // (zero <option>), por um instante, sempre que `/api/textos` respondia primeiro — um teste de contraste apanhou-o.
   const [escolhida, setEscolhida] = useState<string>(() => linguaDoCaminho() ?? "pt");
   const [carregados, setCarregados] = useState<{ lingua: string; textos: Record<string, string> } | null>(
     null,
@@ -42,11 +45,11 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
     api
       .linguas()
       .then((l) => setLinguas(l.linguas))
-      .catch((e: Error) => setErro(e.message));
+      .catch((e: Error) => setErro(e.message))
+      .finally(() => setLinguasProntas(true));
   }, []);
 
   useEffect(() => {
-    if (!escolhida) return;
     let atual = true;
     api
       .textos(escolhida)
@@ -70,7 +73,7 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
 
   const valor = useMemo<Contexto | null>(
     () =>
-      carregados
+      carregados && linguasProntas
         ? {
             t: (c, p) => traduzir(carregados.textos, c, p),
             lingua: carregados.lingua,
@@ -78,7 +81,7 @@ export function ProvedorI18n({ children }: { children: ReactNode }) {
             mudarLingua: setEscolhida,
           }
         : null,
-    [carregados, linguas],
+    [carregados, linguasProntas, linguas],
   );
 
   if (erro) return <p role="alert">Erro / Error: {erro}</p>;

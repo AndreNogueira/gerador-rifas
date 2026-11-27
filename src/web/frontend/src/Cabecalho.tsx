@@ -82,7 +82,7 @@ const FOLGA_ENTRE_ITENS = 8; // px: o `gap` do `.cluster`
 const LARGURA_DO_BURGER = 44; // px
 
 /**
- * Quais dos itens não cabem ao lado do nome da app. Usa as larguras reais (todos desenhados, ver `medir` em `Cabecalho`) e vai tirando por
+ * Quais dos itens não cabem ao lado do nome da app. Usa as larguras reais (todos desenhados no medidor invisível, ver `Cabecalho`) e vai tirando por
  * `SAI_PRIMEIRO` até o resto, mais o botão do menu, caber. Em testes (sem layout) nem se chama.
  */
 export function calcularOcultos(
@@ -223,37 +223,33 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual, donativoUrl = 
   const { t, lingua, linguas, mudarLingua } = useI18n();
   const caminho = useLocalizacao().split("?")[0] ?? "";
   const topo = useRef<HTMLElement>(null);
-  // `medir`: desenha-se TUDO (sem menu) para ler as larguras reais; logo a seguir, ainda antes de pintar, decide-se o que sai para o menu
-  const [medir, setMedir] = useState(true);
+  // as larguras reais vêm de um medidor sempre invisível e fora do fluxo (`medidorRef`, no fim do JSX), nunca do `.cluster`
+  // visível: assim o cabeçalho que se vê nunca precisa de mostrar-se por completo só para se medir a si próprio (era a
+  // causa real de um CLS medido em produção, ~0.14, não os anúncios — ver `_cabecalho.scss`, `.cluster-medidor`).
+  const medidorRef = useRef<HTMLDivElement>(null);
   const [ocultos, setOcultos] = useState<ItemId[]>([]);
-  const [pedidos, setPedidos] = useState(0); // um contador: pedir de novo com `medir` já a true também tem de repetir a medição
-  const remedir = useCallback(() => {
-    setMedir(true);
-    setPedidos((n) => n + 1);
-  }, []);
-  const escondidos: readonly ItemId[] = medir ? [] : ocultos;
+  const [pedidos, setPedidos] = useState(0); // um contador: pedir uma nova medição (o medidor já está sempre lá, só se lê de novo)
+  const remedir = useCallback(() => setPedidos((n) => n + 1), []);
   const existentes = ORDEM.filter((id) => id !== "donativo" || donativoUrl);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: `existentes` só muda com o donativo, que já faz medir de novo
   useLayoutEffect(() => {
-    if (!medir) return;
     const el = topo.current;
+    const medidor = medidorRef.current;
     const marca = el?.querySelector<HTMLElement>(".marca");
-    if (el && marca) {
-      const css = getComputedStyle(el);
-      const disponivel =
-        el.clientWidth -
-        (Number.parseFloat(css.paddingLeft) || 0) -
-        (Number.parseFloat(css.paddingRight) || 0) -
-        marca.offsetWidth -
-        (Number.parseFloat(css.columnGap) || 0);
-      const larguras = new Map<ItemId, number>();
-      for (const item of el.querySelectorAll<HTMLElement>("[data-item]"))
-        larguras.set(item.dataset.item as ItemId, item.offsetWidth);
-      setOcultos(el.clientWidth ? calcularOcultos(disponivel, larguras, existentes) : []);
-    }
-    setMedir(false);
-  }, [medir, pedidos]);
+    if (!el || !medidor || !marca) return;
+    const css = getComputedStyle(el);
+    const disponivel =
+      el.clientWidth -
+      (Number.parseFloat(css.paddingLeft) || 0) -
+      (Number.parseFloat(css.paddingRight) || 0) -
+      marca.offsetWidth -
+      (Number.parseFloat(css.columnGap) || 0);
+    const larguras = new Map<ItemId, number>();
+    for (const item of medidor.querySelectorAll<HTMLElement>("[data-item]"))
+      larguras.set(item.dataset.item as ItemId, item.offsetWidth);
+    setOcultos(el.clientWidth ? calcularOcultos(disponivel, larguras, existentes) : []);
+  }, [pedidos]);
 
   // volta a medir quando o espaço muda (largura da janela) ou o que se desenha muda (textos de outra língua, donativo, letras a carregar)
   // biome-ignore lint/correctness/useExhaustiveDependencies: estes valores só servem para disparar a nova medição
@@ -278,8 +274,8 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual, donativoUrl = 
   // biome-ignore lint/correctness/useExhaustiveDependencies: fecha-se quando a página muda
   useEffect(() => fecharBurger(), [caminho, fecharBurger]);
 
-  const visivel = (id: ItemId) => existentes.includes(id) && !escondidos.includes(id);
-  const escondido = (id: ItemId) => existentes.includes(id) && escondidos.includes(id);
+  const visivel = (id: ItemId) => existentes.includes(id) && !ocultos.includes(id);
+  const escondido = (id: ItemId) => existentes.includes(id) && ocultos.includes(id);
   const item = (id: ItemId, filho: ReactNode) =>
     visivel(id) ? (
       <div className="item-cab" data-item={id} key={id}>
@@ -341,7 +337,7 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual, donativoUrl = 
   );
 
   const paginasVisiveis = PAGINAS.filter((p) => visivel(p.id));
-  const algumEscondido = !medir && ocultos.length > 0;
+  const algumEscondido = ocultos.length > 0;
 
   return (
     <header className="topo" ref={topo}>
@@ -353,10 +349,7 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual, donativoUrl = 
           <p className="nome">{t("app_nome")}</p>
         )}
       </Ligacao>
-      {/* Enquanto `medir` é true mostra-se tudo (sem menu) para ler as larguras reais (ver o `useLayoutEffect` acima); isso pode fazer o
-          `.cluster` quebrar para 2 linhas por um instante. `.cluster-a-medir` tira-o do fluxo nessa medição (CSS: `_cabecalho.scss`) para
-          esse instante nunca empurrar o `main.conteudo` — foi a causa real de um CLS medido em produção (~0.14), não os anúncios. */}
-      <div className={`cluster${medir ? " cluster-a-medir" : ""}`}>
+      <div className="cluster">
         {(visivel("ajuda") || paginasVisiveis.length > 0) && (
           <nav className="navegacao" aria-label={t("app_nome")}>
             {item("ajuda", <MenuAjuda caminho={caminho} />)}
@@ -489,6 +482,90 @@ export function Cabecalho({ tema, mudarTema, visual, mudarVisual, donativoUrl = 
             )}
           </div>
         )}
+      </div>
+      {/* Mede as larguras reais de TODOS os itens (mesmo os que não cabem) para o `useLayoutEffect` acima decidir o que
+          sai para o menu. Fica sempre invisível e fora do fluxo (`.cluster-medidor`, CSS em `_cabecalho.scss`): o
+          `.cluster` visível NUNCA precisa de se mostrar por completo só para se medir a si próprio — isso já chegou a
+          quebrar para 2 linhas por um instante e empurrar o resto da página (um CLS medido em produção, ~0.14, que
+          não era dos anúncios). Sem `data-testid` nem `onChange` a sério, de propósito: nunca pode duplicar o que os
+          testes (e os leitores de ecrã) veem no `.cluster` real. */}
+      <div className="cluster cluster-medidor" ref={medidorRef} aria-hidden="true">
+        {(existentes.includes("ajuda") || PAGINAS.some((p) => existentes.includes(p.id))) && (
+          <nav className="navegacao">
+            {existentes.includes("ajuda") && (
+              <div className="item-cab" data-item="ajuda">
+                <button type="button" className="nav-botao" tabIndex={-1}>
+                  <Icone nome="livro" tamanho={18} />
+                  {t("m_ajuda")}
+                  <Icone nome="baixo" tamanho={14} />
+                </button>
+              </div>
+            )}
+            {PAGINAS.filter((p) => existentes.includes(p.id)).map((p) => (
+              <div className="item-cab" data-item={p.id} key={p.id}>
+                <span className="nav-botao" tabIndex={-1}>
+                  <Icone nome={p.icone} tamanho={18} />
+                  {t(p.chave).replace(/…$/, "")}
+                </span>
+              </div>
+            ))}
+          </nav>
+        )}
+        {existentes.includes("donativo") && (
+          <div className="item-cab" data-item="donativo">
+            <div className="donativo donativo-topo">
+              <span className="donativo-botao" tabIndex={-1}>
+                <Icone nome="coracao" />
+                <span className="donativo-texto">{t("web_donativo")}</span>
+              </span>
+            </div>
+          </div>
+        )}
+        <div className="item-cab" data-item="partilhar">
+          <div className="partilhar partilhar-topo">
+            <button type="button" className="partilhar-botao" tabIndex={-1}>
+              <Icone nome="partilhar" />
+              <span className="partilhar-texto">{t("web_partilhar")}</span>
+            </button>
+          </div>
+        </div>
+        <div className="item-cab" data-item="lingua">
+          <label className="seletor">
+            <Icone nome="globo" tamanho={18} />
+            <span className="so-leitores">{t("m_idioma")}</span>
+            <select value={lingua} onChange={() => undefined} tabIndex={-1}>
+              {linguas.map((l) => (
+                <option key={l.codigo} value={l.codigo}>
+                  {l.nome}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="item-cab" data-item="visual">
+          <label className="seletor">
+            <Icone nome="paleta" tamanho={18} />
+            <span className="so-leitores">{t("web_visual")}</span>
+            <select value={visual} onChange={() => undefined} tabIndex={-1}>
+              {VISUAIS.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.nome}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <div className="item-cab" data-item="tema">
+          <label className="seletor modo-tema">
+            <Icone nome={ICONE_DO_TEMA[tema]} tamanho={18} />
+            <span className="so-leitores">{t("mi_tema")}</span>
+            <select value={tema} onChange={() => undefined} tabIndex={-1}>
+              <option value="auto">{t("web_tema_auto")}</option>
+              <option value="claro">{t("mi_tema_claro")}</option>
+              <option value="escuro">{t("mi_tema_escuro")}</option>
+            </select>
+          </label>
+        </div>
       </div>
     </header>
   );
