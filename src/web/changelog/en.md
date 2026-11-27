@@ -2,6 +2,17 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.95.0 — 2026-11-27
+
+### Fixed
+- **Homepage title after the page loads**: it showed just "Raffle Generator" instead of the full title the server already sends to visitors without JavaScript; React now restores the right title.
+- **Visual shift in the header**: measuring what fits beside the app name could, for an instant, make the header wrap to two lines and push the rest of the page down; the real cause was found (not the ads) and fixed.
+
+### Improved
+- **Homepage keeps its explanation and guides after mounting**: "How it works", the tutorial, the video, "About" and the "How to" guides now also live in the page body, not only in the "Help" menu.
+- **Languages load in parallel**: fetching the interface texts no longer waits for the language list just to decide the page's language, which speeds up first paint with content on phones and slow connections.
+- **"How to run a raffle for your parish" guide with more of its own voice**: deciding with the parish council, the verifiable draw as the answer to buyers' trust, and no more mention of one specific local authority (it varies by region).
+
 ## 3.94.0 — 2026-11-26
 
 ### Fixed

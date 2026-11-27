@@ -71,6 +71,8 @@ _GENERO = [
     ("ecrã", "tela", "telas", "f"), ("ecrãs", "tela", "telas", "f"),
     ("separador", "aba", "abas", "f"), ("separadores", "aba", "abas", "f"),
     ("preçário", "lista de preços", "listas de preços", "f"), ("preçários", "lista de preços", "listas de preços", "f"),
+    # «cabaz» (m) -> «cesta» (f): sem isto o artigo ficava por trocar («os cestas de Natal», errado; tem de ser «as cestas de Natal»)
+    ("cabaz", "cesta", "cestas", "f"), ("cabazes", "cesta", "cestas", "f"),
 ]
 
 
@@ -132,7 +134,7 @@ PALAVRAS = {
     "aspeto": "aspecto", "aspetos": "aspectos", "deteta": "detecta", "detetar": "detectar", "detetado": "detectado", "facto": "fato", "factos": "fatos",
     "prémio": "prêmio", "prémios": "prêmios", "económico": "econômico", "económica": "econômica", "secção": "seção", "secções": "seções",
     "polaco": "polonês", "checo": "tcheco", "perspetiva": "perspectiva", "gerir": "administrar", "gerido": "administrado", "largar": "soltar",
-    "acerca": "sobre", "angariar": "arrecadar", "angariação": "arrecadação", "angariado": "arrecadado", "angaria": "arrecada", "cabaz": "cesta", "cabazes": "cestas", "aldeia": "comunidade", "rgpd": "LGPD", "cnpd": "ANPD", "depressa": "rápido", "browser": "navegador", "browsers": "navegadores", "logótipo": "logotipo", "logótipos": "logotipos", "partilhar": "compartilhar", "partilhe": "compartilhe", "partilhado": "compartilhado", "partilhados": "compartilhados", "partilha": "compartilha", "partilham": "compartilham", "partilhamos": "compartilhamos", "partilhas": "compartilhamentos", "agradeça": "agradeça", "em baixo": "embaixo", "autocarro": "ônibus", "bué": "muito",
+    "acerca": "sobre", "angariar": "arrecadar", "angariação": "arrecadação", "angariado": "arrecadado", "angaria": "arrecada", "aldeia": "comunidade", "rgpd": "LGPD", "cnpd": "ANPD", "depressa": "rápido", "browser": "navegador", "browsers": "navegadores", "logótipo": "logotipo", "logótipos": "logotipos", "partilhar": "compartilhar", "partilhe": "compartilhe", "partilhado": "compartilhado", "partilhados": "compartilhados", "partilha": "compartilha", "partilham": "compartilham", "partilhamos": "compartilhamos", "partilhas": "compartilhamentos", "agradeça": "agradeça", "em baixo": "embaixo", "autocarro": "ônibus", "bué": "muito",
     "rapariga": "garota", "miúdos": "crianças", "casa de banho": "banheiro", "cartão de crédito": "cartão de crédito",
     "pré-visualizar": "pré-visualizar", "ecrã": "tela", "ecrãs": "telas",
 }

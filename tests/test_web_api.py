@@ -92,6 +92,16 @@ def test_textos_de_lingua_desconhecida_dao_404(cliente, lg):
     assert cliente.get(f"/api/textos/{lg}").status_code == 404
 
 
+def test_titulo_inicial_e_o_mesmo_que_o_servidor_poe_no_html_estatico(cliente):
+    from web import seo
+
+    r = cliente.get("/api/titulo-inicial", headers={"X-Lingua": "pt"})
+    assert r.status_code == 200 and r.headers["vary"].startswith("X-Lingua")
+    assert r.json()["titulo"] == seo.ROTAS["/"].titulo("pt")
+    en = cliente.get("/api/titulo-inicial", headers={"X-Lingua": "en"}).json()["titulo"]
+    assert en == seo.ROTAS["/"].titulo("en") and en != r.json()["titulo"]
+
+
 def test_o_frontend_so_usa_chaves_que_existem_em_todas_as_linguas():
     """Cada t("chave") e cada chave de PASSOS no React tem de existir nas 18 linguas (senao o utilizador ve o nome da chave)."""
     usadas = set()

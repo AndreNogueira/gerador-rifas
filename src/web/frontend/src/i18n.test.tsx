@@ -119,6 +119,35 @@ describe("ProvedorI18n", () => {
     await waitFor(() => expect(window.location.pathname).toBe("/admin"));
   });
 
+  it("pede /api/textos em paralelo com /api/linguas (não em série, para não perder tempo no LCP)", async () => {
+    const servidor = new ServidorFalso();
+    let resolverLinguas: () => void = () => {};
+    const atrasoLinguas = new Promise<void>((r) => {
+      resolverLinguas = r;
+    });
+    const original = servidor.manejar;
+    servidor.manejar = async (entrada, init) => {
+      const url = typeof entrada === "string" ? entrada : entrada.toString();
+      if (url === "/api/linguas") await atrasoLinguas;
+      return original(entrada, init);
+    };
+    servidor.instalar();
+    render(
+      <ProvedorI18n>
+        <Amostra />
+      </ProvedorI18n>,
+    );
+    // o pedido dos textos já partiu, mesmo com /api/linguas ainda pendurado: se fosse em série, isto nunca
+    // acontecia (o pedido dos textos só partia depois de /api/linguas responder). Mas a app só se mostra quando
+    // as duas já tiverem respondido: o seletor de línguas nunca pode aparecer montado e vazio (zero <option>),
+    // nem que seja por um instante — foi exatamente isso que um teste de contraste e2e apanhou em produção.
+    await waitFor(() => expect(servidor.chamadas("GET", /\/api\/textos\//)).toHaveLength(1));
+    expect(screen.queryByRole("heading", { name: "Gerador de Rifas" })).toBeNull();
+    resolverLinguas();
+    expect(await screen.findByRole("heading", { name: "Gerador de Rifas" })).toBeInTheDocument();
+    expect(screen.getByLabelText("lingua").querySelectorAll("option").length).toBeGreaterThan(0);
+  });
+
   it("mostra o erro se a API falhar", async () => {
     vi.stubGlobal(
       "fetch",

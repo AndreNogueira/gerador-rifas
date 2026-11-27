@@ -55,7 +55,12 @@ def test_o_primeiro_passo_manda_confirmar_a_licenca_porque_as_regras_variam(nome
     for lg in LINGUAS:
         passos = guias.guia(nome, lg)["passos"]
         assert len({p["texto"] for p in passos}) == guias.N_PASSOS
-    assert "câmara municipal" in guias.guia(nome, "pt")["passos"][0]["texto"]
+    texto = guias.guia(nome, "pt")["passos"][0]["texto"]
+    if nome == "igrejas":
+        # neutralizado de proposito: a autoridade competente nao e sempre a câmara municipal (varia entre Portugal e o Brasil)
+        assert "autoridade competente" in texto and "câmara municipal" not in texto
+    else:
+        assert "câmara municipal" in texto
 
 
 def test_as_linguas_nao_traduzidas_caem_no_portugues():

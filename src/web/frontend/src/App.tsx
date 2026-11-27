@@ -71,12 +71,36 @@ function Aplicacao() {
   });
   const caminho = useLocalizacao().split("?")[0] ?? "/";
   const { sessao } = useSessao();
-  const { t } = useI18n();
+  const { t, lingua } = useI18n();
   // o formulário vive aqui para não se perder ao ir ao tutorial e voltar
   const formulario = useFormulario(sessao);
 
-  // o título do separador acompanha a página e a língua (o servidor já entrega o certo em português para quem não corre JS)
+  // o título da página inicial («Gerador de Rifas: rifas numeradas em PDF a partir do Canva») não vem de `/api/textos`
+  // (vive em `seo_textos`, de propósito fora dali: ver `app.py`); pede-se à parte na língua escolhida, o mesmo que o
+  // servidor já põe no HTML estático (sem isto o <title> ficava só «Gerador de Rifas» depois de montar — regressão
+  // de SEO: `App.tsx` não tinha entrada para "/" no mapa de títulos).
+  const [tituloInicial, setTituloInicial] = useState("");
+  // biome-ignore lint/correctness/useExhaustiveDependencies: pede-se de novo quando a língua muda
   useEffect(() => {
+    let ativo = true;
+    api
+      .tituloInicial()
+      .then((r) => ativo && setTituloInicial(r.titulo))
+      .catch(() => undefined); // sem isto o separador só fica com o nome da app, nunca em branco
+    return () => {
+      ativo = false;
+    };
+  }, [lingua]);
+
+  // a página inicial tem o seu próprio efeito (precisa de `tituloInicial`, que chega à parte, async); um efeito SÓ
+  // seu para as outras páginas nunca lhe tocarem o título quando `tituloInicial` chega (nem sequer corre nessa altura).
+  useEffect(() => {
+    if (caminho === "/") document.title = tituloInicial || t("app_nome"); // enquanto não chega, o nome (nunca em branco)
+  }, [caminho, tituloInicial, t]);
+
+  // o título do separador das outras páginas (o servidor já entrega o certo em português para quem não corre JS)
+  useEffect(() => {
+    if (caminho === "/") return; // o efeito acima trata-a
     const nome = t("app_nome");
     const traduzidas: Record<string, string> = {
       "/tutorial": t("tut_titulo"),
@@ -91,7 +115,7 @@ function Aplicacao() {
       "/reportar-problema": t("web_bug_titulo"),
     };
     const pagina = traduzidas[caminho] ?? TITULOS_PT[caminho] ?? "";
-    const conhecido = caminho === "/" || PATHS_CONHECIDOS.includes(caminho) || !!GUIAS[caminho];
+    const conhecido = PATHS_CONHECIDOS.includes(caminho) || !!GUIAS[caminho];
     document.title = pagina
       ? `${pagina.replace(/…$/, "")} | ${nome}`
       : conhecido

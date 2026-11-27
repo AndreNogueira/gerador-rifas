@@ -2,6 +2,17 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.95.0 — 2026-11-27
+
+### Corrigé
+- **Titre de la page d'accueil après le chargement** : il ne montrait que « Gerador de Rifas » au lieu du titre complet déjà envoyé par le serveur à qui n'exécute pas JavaScript ; React rétablit maintenant le bon titre.
+- **Décalage visuel dans l'en-tête** : mesurer ce qui tient à côté du nom de l'appli pouvait, un instant, faire passer l'en-tête sur deux lignes et repousser le reste de la page vers le bas ; la vraie cause a été trouvée (pas les publicités) et corrigée.
+
+### Amélioré
+- **La page d'accueil garde son explication et ses guides après le montage** : « Comment ça marche », le tutoriel, la vidéo, « À propos » et les guides « Comment faire » vivent désormais aussi dans le corps de la page, pas seulement dans le menu « Aide ».
+- **Les langues se chargent en parallèle** : demander les textes de l'interface n'attend plus la liste des langues juste pour décider la langue de la page, ce qui accélère le premier affichage avec contenu sur mobile et connexion lente.
+- **Guide « Organiser une tombola pour la paroisse » avec plus de voix propre** : décider avec le conseil paroissial, le tirage vérifiable comme réponse à la confiance des acheteurs, et plus de mention d'une autorité locale précise (elle varie selon la région).
+
 ## 3.94.0 — 2026-11-26
 
 ### Corrigé

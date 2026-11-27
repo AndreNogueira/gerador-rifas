@@ -2,6 +2,17 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.95.0 — 2026-11-27
+
+### Opraveno
+- **Titulek úvodní stránky po načtení**: zobrazoval jen „Gerador de Rifas“ místo úplného titulku, který server už posílá tomu, kdo nespouští JavaScript; React nyní obnoví správný titulek.
+- **Vizuální posun v záhlaví**: měření, co se vejde vedle názvu aplikace, mohlo na okamžik způsobit, že záhlaví přešlo na dva řádky a posunulo zbytek stránky níž; našla se skutečná příčina (ne reklamy) a opravila se.
+
+### Vylepšeno
+- **Úvodní stránka po sestavení neztrácí vysvětlení ani návody**: „Jak to funguje“, tutoriál, video, „O nás“ a návody „Jak na to“ jsou nyní také přímo na stránce, nejen v nabídce „Nápověda“.
+- **Jazyky se načítají souběžně**: načítání textů rozhraní už nečeká na seznam jazyků jen proto, aby se určil jazyk stránky, což zrychluje první obsah na mobilech a pomalých připojeních.
+- **Návod „Jak uspořádat tombolu pro farnost“ s vlastnějším hlasem**: rozhodnutí s farní radou, ověřitelné losování jako odpověď na důvěru kupujících, a už bez jmenování konkrétního úřadu (ten se liší podle regionu).
+
 ## 3.94.0 — 2026-11-26
 
 ### Opraveno

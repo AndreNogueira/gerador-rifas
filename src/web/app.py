@@ -121,6 +121,10 @@ class Textos(BaseModel):
     textos: dict[str, str]    # chave -> texto, com {parametros} por substituir no browser
 
 
+class TituloInicial(BaseModel):
+    titulo: str
+
+
 class Saude(BaseModel):
     estado: str
     versao: str
@@ -377,6 +381,15 @@ def criar_app(frontend: Path | None = None, armazenamento: Path | None = None, m
             raise HTTPException(404, f"Língua desconhecida: {lingua}")
         resposta.headers["Cache-Control"] = "public, max-age=300"
         return Textos(lingua=lingua, textos={**i18n.TEXTOS["pt"], **i18n.TEXTOS[lingua]})      # o que faltar cai no portugues
+
+    @app.get("/api/titulo-inicial", response_model=TituloInicial, tags=["textos"])
+    def titulo_inicial(resposta: Response, lg: str = Depends(rotas.lingua)) -> TituloInicial:
+        """O `<title>` da pagina inicial na lingua do pedido (X-Lingua): o mesmo que o servidor ja poe no HTML estatico
+        (`seo.ROTAS["/"].titulo`, que inclui o editado no painel) — o React repoe-o depois de montar (ver `App.tsx`),
+        porque esse titulo vem de `seo_textos` (fora de `/api/textos` de proposito: nao e para o resto da interface)."""
+        resposta.headers["Cache-Control"] = "public, max-age=300"
+        resposta.headers["Vary"] = "X-Lingua, Accept-Language"
+        return TituloInicial(titulo=seo.ROTAS["/"].titulo(lg))
 
     app.include_router(rotas.router)
     app.include_router(rotas_ajuda.router)

@@ -4,6 +4,17 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.95.0 — 2026-11-27
+
+### Corrigido
+- **Título da página inicial, depois de carregar**: ficava só «Gerador de Rifas» em vez do título completo que o servidor já manda para quem não corre JavaScript; o React passa a repor o título certo.
+- **Deslocamento visual no cabeçalho**: a medição do que cabe ao lado do nome da app podia, por um instante, fazer o cabeçalho quebrar para duas linhas e empurrar o resto da página para baixo; mediu-se a causa real (não eram os anúncios) e corrigiu-se.
+
+### Melhorado
+- **Página inicial não perde a explicação nem os guias depois de montar**: o «Como funciona», o tutorial, o vídeo, «Acerca de» e os guias «Como fazer» passam a estar também no corpo da página, não só no menu «Ajuda».
+- **Línguas carregam em paralelo**: o pedido dos textos da interface já não espera pela lista de línguas só para decidir a língua da página, o que adianta a 1.ª pintura com conteúdo em telemóveis e ligações lentas.
+- **Guias «Como fazer uma rifa para a paróquia» com texto mais próprio**: decisão com o conselho paroquial, o sorteio verificável como resposta à confiança de quem compra, e já não fala em «câmara municipal» (a autoridade competente varia por região).
+
 ## 3.94.0 — 2026-11-26
 
 ### Corrigido

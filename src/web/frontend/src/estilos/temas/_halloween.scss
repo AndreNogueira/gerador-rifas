@@ -38,7 +38,9 @@
   --banda-forma: ellipse(130% 100% at 50% 0%);
   --topo-sombra: 0 2px 16px rgb(20 0 40 / 55%);
   --marca-anel: 0 0 0 2px #ff9a3d, 0 8px 20px rgb(20 0 40 / 55%);
-  --pilula: rgb(20 4 40 / 40%);
+  // 40% dava um rácio ~2,8-3,0 contra o fundo claro (--pilula-texto é branco, #fff, herdado): falhava o WCAG AA (4,5) de forma real,
+  // não por acaso de um sistema — confirmado a calcular a luminância a sério (não só a olho). 70% garante ≥ 7,7:1 nos piores casos.
+  --pilula: rgb(20 4 40 / 70%);
   --nav-ativo: #ff9a3d;
   --nav-ativo-texto: #2a0f45;
 

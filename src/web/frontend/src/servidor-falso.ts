@@ -2,6 +2,13 @@
 import { vi } from "vitest";
 import type { Campos, Sessao, Trabalho } from "./api";
 
+/** O `<title>` da página inicial (`/api/titulo-inicial`): o mesmo texto rico que o servidor já põe no HTML estático (`seo.ROTAS["/"]`,
+ * fora de `TEXTOS`/`/api/textos` de propósito — ver `seo_textos.py`). */
+export const TITULO_INICIAL: Record<string, string> = {
+  pt: "Gerador de Rifas: rifas numeradas em PDF a partir do Canva",
+  en: "Raffle Generator: numbered raffle tickets as PDF from Canva",
+};
+
 export const TEXTOS: Record<string, Record<string, string>> = {
   pt: {
     app_nome: "Gerador de Rifas",
@@ -639,6 +646,8 @@ export class ServidorFalso {
           { codigo: "en", nome: "English" },
         ],
       });
+    if (url === "/api/titulo-inicial")
+      return this.responder({ titulo: TITULO_INICIAL[cab["X-Lingua"] ?? "pt"] ?? TITULO_INICIAL.pt });
     const t = /^\/api\/textos\/(\w+)$/.exec(url);
     if (t?.[1])
       return TEXTOS[t[1]]
