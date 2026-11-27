@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.96.0 — 2026-11-27
+
+### Verbeterd
+- **De gidsen voor de club en het buurtfeest hebben nu eigen inhoud**: `/rifas-para-clubes` en `/rifas-para-festas` herhalen niet langer bijna dezelfde tekst als de andere gidsen per doelgroep; ze gaan nu over wat voor elk specifiek is — het bestuur en de kleuren van de club, sponsors; het buurtcomité (of gewoon een groep buren, zonder formele vereniging) en wie verantwoordelijk is voor het geld tot de trekking.
+
 ## 3.95.0 — 2026-11-27
 
 ### Opgelost

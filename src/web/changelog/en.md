@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.96.0 — 2026-11-27
+
+### Improved
+- **Club and neighbourhood-party guides now have real content**: `/rifas-para-clubes` and `/rifas-para-festas` no longer repeat almost the same text as the other audience guides; they now cover what's specific to each — the club's board and colours, sponsors; the residents' committee or just a group of neighbours, and who holds the money until the draw.
+
 ## 3.95.0 — 2026-11-27
 
 ### Fixed

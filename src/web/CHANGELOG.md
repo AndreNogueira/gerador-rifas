@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.96.0 — 2026-11-27
+
+### Melhorado
+- **Guias «Como fazer» do clube e da festa de bairro, com conteúdo próprio**: os guias `/rifas-para-clubes` e `/rifas-para-festas` deixavam de repetir quase o mesmo texto dos outros guias por público; passam a falar da realidade de cada um — a direção e as cores do clube, os sócios e os números reservados a patrocinadores; a comissão de moradores (ou só um grupo de vizinhos, sem associação formal por trás) e quem fica responsável pelo dinheiro e pelos prémios até ao sorteio.
+
 ## 3.95.0 — 2026-11-27
 
 ### Corrigido

@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.96.0 — 2026-11-27
+
+### Vylepšeno
+- **Průvodci pro klub a sousedskou slavnost mají nyní vlastní obsah**: `/rifas-para-clubes` a `/rifas-para-festas` už neopakují téměř stejný text jako ostatní průvodci podle publika; nyní popisují, co je pro každého specifické — výbor a barvy klubu, sponzoři; sousedský výbor (nebo jen skupina sousedů, bez formálního spolku) a kdo odpovídá za peníze až do losování.
+
 ## 3.95.0 — 2026-11-27
 
 ### Opraveno

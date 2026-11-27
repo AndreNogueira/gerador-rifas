@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.96.0 — 2026-11-27
+
+### Îmbunătățit
+- **Ghidurile pentru club și sărbătoarea de cartier au acum conținut propriu**: `/rifas-para-clubes` și `/rifas-para-festas` nu mai repetă aproape același text ca celelalte ghiduri pe public; acum vorbesc despre realitatea fiecăruia — conducerea și culorile clubului, sponsorii; comitetul de vecini (sau doar un grup de vecini, fără asociație formală) și cine răspunde de bani până la tragere.
+
 ## 3.95.0 — 2026-11-27
 
 ### Corectat

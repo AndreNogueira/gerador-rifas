@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.96.0 — 2026-11-27
+
+### Verbessert
+- **Die Vereins- und Straßenfest-Anleitungen haben jetzt eigenen Inhalt**: `/rifas-para-clubes` und `/rifas-para-festas` wiederholen nicht mehr fast denselben Text wie die anderen zielgruppenspezifischen Anleitungen; sie behandeln jetzt, was für jede Gruppe wirklich zählt – Vorstand und Vereinsfarben, Sponsoren; das Nachbarschaftskomitee (oder einfach eine Gruppe von Nachbarn, ohne formellen Verein) und wer bis zur Ziehung für das Geld verantwortlich ist.
+
 ## 3.95.0 — 2026-11-27
 
 ### Behoben

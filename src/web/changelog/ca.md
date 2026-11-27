@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.96.0 — 2026-11-27
+
+### Millorat
+- **Les guies del club i de la festa del barri tenen ara contingut propi**: `/rifas-para-clubes` i `/rifas-para-festas` deixen de repetir gairebé el mateix text que les altres guies per públic; ara parlen de la realitat de cadascuna — la junta i els colors del club, els patrocinadors; el comitè de veïns (o només un grup de veïns, sense associació formal) i qui es responsabilitza dels diners fins al sorteig.
+
 ## 3.95.0 — 2026-11-27
 
 ### Corregit

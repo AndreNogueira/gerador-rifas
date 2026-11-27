@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.96.0 — 2026-11-27
+
+### İyileştirildi
+- **Kulüp ve mahalle şenliği kılavuzları artık kendine özgü içeriğe sahip**: `/rifas-para-clubes` ve `/rifas-para-festas`, diğer hedef kitle kılavuzlarıyla neredeyse aynı metni tekrar etmiyor; şimdi her birine özgü olanı anlatıyor — kulübün yönetim kurulu ve renkleri, sponsorlar; sakinler komitesi (veya sadece resmi bir dernek olmadan bir grup komşu) ve çekilişe kadar paradan kimin sorumlu olduğu.
+
 ## 3.95.0 — 2026-11-27
 
 ### Düzeltildi

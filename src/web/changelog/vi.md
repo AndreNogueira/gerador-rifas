@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.96.0 — 2026-11-27
+
+### Đã cải thiện
+- **Hướng dẫn cho câu lạc bộ và lễ hội khu phố nay có nội dung riêng**: `/rifas-para-clubes` và `/rifas-para-festas` không còn lặp lại gần như cùng một đoạn văn như các hướng dẫn khác theo đối tượng; giờ đây nói về thực tế riêng của từng nơi — ban chấp hành và màu sắc của câu lạc bộ, nhà tài trợ; ban đại diện cư dân (hay chỉ một nhóm hàng xóm, không có hội đoàn chính thức) và ai chịu trách nhiệm về tiền cho đến lúc bốc thăm.
+
 ## 3.95.0 — 2026-11-27
 
 ### Đã sửa

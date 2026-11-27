@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.96.0 — 2026-11-27
+
+### Ditingkatkan
+- **Panduan klub dan pesta warga kini punya konten sendiri**: `/rifas-para-clubes` dan `/rifas-para-festas` tidak lagi mengulang hampir teks yang sama seperti panduan lain per audiens; sekarang membahas kenyataan masing-masing — pengurus dan warna klub, sponsor; panitia warga (atau hanya sekelompok tetangga, tanpa organisasi resmi) dan siapa yang bertanggung jawab atas uang sampai pengundian.
+
 ## 3.95.0 — 2026-11-27
 
 ### Diperbaiki
