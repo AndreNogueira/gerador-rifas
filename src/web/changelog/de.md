@@ -2,6 +2,11 @@
 
 Übersetzte Zusammenfassung von `../CHANGELOG.md`: gleiche Versionen, Abschnitte und Punkte, kürzer. Der vollständige Text ist auf Portugiesisch.
 
+## 3.97.0 — 2026-11-27
+
+### Verbessert
+- **Ratgeber „Eine Tombola für die Schule organisieren" und „…für die Feuerwehr" neu geschrieben**: Sie teilen sich nicht mehr Aufbau und Sätze mit den anderen Zielgruppen-Ratgebern. Der für die Schule beschreibt jetzt, wer entscheidet (der Elternverein oder das Schulgremium), den Schulkalender (Elternabend, Halbjahresende), und betont im Fließtext – nicht nur in einem Tipp –, nie den Namen eines Kindes oder andere persönliche Daten auf das Los zu schreiben. Der für die Feuerwehr beschreibt den eigenen Vorstand oder die Einsatzleitung, einen konkreten Anlass (ein Fahrzeug, Schläuche, Schutzausrüstung), den Verkauf von Haus zu Haus in Uniform und den Prüf-QR-Code, der das Vertrauen jener stärkt, die Jahr für Jahr wieder kaufen.
+
 ## 3.96.0 — 2026-11-27
 
 ### Verbessert

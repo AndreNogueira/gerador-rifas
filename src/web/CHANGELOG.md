@@ -4,6 +4,11 @@ Tudo o que mudou no Gerador de Rifas, da versão mais recente para a mais antiga
 
 Formato (para quem o edita): `## <versão> — <data>`, depois secções `### Novo`, `### Melhorado` ou `### Corrigido` com itens `- texto`. A primeira versão tem de ser igual a `VERSAO` em `src/web/__init__.py` (um teste verifica-o).
 
+## 3.97.0 — 2026-11-27
+
+### Melhorado
+- **Guias «Como fazer uma rifa para a escola» e «…para os bombeiros» reescritos**: deixam de partilhar a estrutura e as frases dos outros guias por público. O da escola passa a falar de quem decide (a associação de pais ou o conselho pedagógico), do calendário escolar (reunião de pais, fim de período) e reforça, no corpo do texto e não só numa dica, para nunca pôr nomes de alunos nem outros dados pessoais nos bilhetes. O dos bombeiros fala da direção ou do comando da corporação, de um motivo concreto (viatura, mangueiras, equipamento de proteção), da venda porta a porta de uniforme e do QR de verificação para manter a confiança de quem compra ano após ano.
+
 ## 3.96.0 — 2026-11-27
 
 ### Melhorado

@@ -2,6 +2,11 @@
 
 Resum traduït de `../CHANGELOG.md`: les mateixes versions, seccions i punts, més curts. El text complet és en portuguès.
 
+## 3.97.0 — 2026-11-27
+
+### Millores
+- **Guies «Com fer una rifa per a l'escola» i «…per als bombers» reescrites**: deixen de compartir l'estructura i les frases de les altres guies per públic. La de l'escola parla ara de qui decideix (l'associació de pares o el consell escolar), del calendari escolar (reunió de pares, final de trimestre), i insisteix, en el mateix text i no només en un consell, a no escriure mai el nom d'un alumne ni altres dades personals a la butlleta. La dels bombers parla de la pròpia junta o comandància del cos, d'un motiu concret (un vehicle, mànegues, equip de protecció), de la venda de porta en porta d'uniforme i del QR de verificació per mantenir la confiança de qui compra any rere any.
+
 ## 3.96.0 — 2026-11-27
 
 ### Millorat

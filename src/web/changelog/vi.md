@@ -2,6 +2,11 @@
 
 Bản tóm tắt đã dịch của `../CHANGELOG.md`: cùng các phiên bản, mục và ý, ngắn hơn. Bản đầy đủ bằng tiếng Bồ Đào Nha.
 
+## 3.97.0 — 2026-11-27
+
+### Cải thiện
+- **Viết lại các hướng dẫn "Cách tổ chức bốc thăm cho trường học" và "…cho đội cứu hỏa"**: không còn dùng chung cấu trúc và câu chữ với các hướng dẫn khác theo từng đối tượng. Hướng dẫn trường học giờ nói về ai quyết định (hội phụ huynh hoặc ban giám hiệu), lịch học (họp phụ huynh, cuối học kỳ), và nhấn mạnh ngay trong nội dung chứ không chỉ trong một mẹo, rằng đừng bao giờ viết tên học sinh hay dữ liệu cá nhân khác lên vé. Hướng dẫn đội cứu hỏa nói về ban lãnh đạo hoặc chỉ huy của đội, một lý do cụ thể (xe, vòi, thiết bị bảo hộ), bán hàng từng nhà trong đồng phục và mã QR xác minh giúp giữ niềm tin của những người năm nào cũng mua.
+
 ## 3.96.0 — 2026-11-27
 
 ### Đã cải thiện

@@ -2,6 +2,11 @@
 
 `../CHANGELOG.md` dosyasının çevrilmiş özeti: aynı sürümler, bölümler ve maddeler, daha kısa. Tam metin Portekizcedir.
 
+## 3.97.0 — 2026-11-27
+
+### İyileştirildi
+- **"Okul için çekiliş nasıl yapılır" ve "…itfaiye için" kılavuzları yeniden yazıldı**: artık diğer hedef gruplar için kılavuzlarla aynı yapıyı ve cümleleri paylaşmıyor. Okul kılavuzu şimdi kimin karar verdiğinden (okul aile birliği veya okul kurulu), okul takviminden (veli toplantısı, dönem sonu) bahsediyor ve sadece bir ipucunda değil, metnin kendisinde, bilete asla bir öğrencinin adını veya başka bir kişisel bilgiyi yazmamayı vurguluyor. İtfaiye kılavuzu, birliğin kendi yönetim kurulundan veya komutanlığından, somut bir nedenden (bir araç, hortumlar, koruyucu ekipman), üniformayla ev ev satıştan ve her yıl tekrar satın alanların güvenini korumaya yardımcı olan doğrulama QR kodundan bahsediyor.
+
 ## 3.96.0 — 2026-11-27
 
 ### İyileştirildi

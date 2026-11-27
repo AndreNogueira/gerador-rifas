@@ -2,6 +2,11 @@
 
 Přeložené shrnutí `../CHANGELOG.md`: stejné verze, oddíly a body, kratší. Úplný text je v portugalštině.
 
+## 3.97.0 — 2026-11-27
+
+### Vylepšeno
+- **Přepsané průvodce „Jak uspořádat tombolu pro školu“ a „…pro hasiče“**: už nesdílejí stejnou stavbu a věty jako ostatní průvodce pro jednotlivé skupiny. Ten pro školu nyní popisuje, kdo rozhoduje (sdružení rodičů nebo školská rada), školní kalendář (schůzka rodičů, konec pololetí), a zdůrazňuje přímo v textu, nejen v tipu, že se na los nikdy nesmí psát jméno žáka ani jiné osobní údaje. Ten pro hasiče popisuje vlastní výbor nebo velení sboru, konkrétní důvod (techniku, hadice, ochranné prostředky), prodej dům od domu v uniformě a ověřovací QR kód, který udržuje důvěru těch, kdo kupují rok za rokem.
+
 ## 3.96.0 — 2026-11-27
 
 ### Vylepšeno

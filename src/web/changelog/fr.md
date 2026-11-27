@@ -2,6 +2,11 @@
 
 Résumé traduit de `../CHANGELOG.md` : mêmes versions, sections et points, plus courts. Le texte complet est en portugais.
 
+## 3.97.0 — 2026-11-27
+
+### Amélioré
+- **Guides « Organiser une tombola pour l'école » et « … pour les pompiers » réécrits** : ils ne partagent plus la structure ni les phrases des autres guides par public. Celui de l'école parle désormais de qui décide (l'association de parents d'élèves ou le conseil d'école), du calendrier scolaire (réunion de parents, fin de trimestre), et insiste, dans le texte même et pas seulement dans un conseil, pour ne jamais écrire le nom d'un élève ni d'autres données personnelles sur le billet. Celui des pompiers parle du bureau ou du commandement de la caserne, d'un motif concret (un véhicule, des tuyaux, des équipements de protection), de la vente de porte à porte en uniforme et du QR de vérification pour garder la confiance de ceux qui achètent chaque année.
+
 ## 3.96.0 — 2026-11-27
 
 ### Amélioré

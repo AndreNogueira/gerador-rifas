@@ -2,6 +2,11 @@
 
 Translated summary of `../CHANGELOG.md`: same versions, sections and items, shorter. The full text is in Portuguese.
 
+## 3.97.0 — 2026-11-27
+
+### Improved
+- **Raffle guides for schools and fire brigades rewritten**: the "How to run a raffle for your school" and "...for your fire brigade" guides no longer share the structure and sentences of the other audience guides. The school one now covers who decides (the parents' association or school board), the school calendar (parents' meetings, end of term), and stresses, in the body text and not only in a tip, to never put a pupil's name or other personal data on the ticket. The fire brigade one covers the brigade's own board or command, a concrete reason (a vehicle, hoses, protective gear), door-to-door selling in uniform, and the verification QR code to keep the trust of people who buy year after year.
+
 ## 3.96.0 — 2026-11-27
 
 ### Improved

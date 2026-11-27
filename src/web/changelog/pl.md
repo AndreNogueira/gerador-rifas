@@ -2,6 +2,11 @@
 
 Przetłumaczone streszczenie `../CHANGELOG.md`: te same wersje, sekcje i punkty, krótsze. Pełny tekst jest po portugalsku.
 
+## 3.97.0 — 2026-11-27
+
+### Ulepszono
+- **Przewodniki „Jak zorganizować loterię dla szkoły” i „…dla straży pożarnej” napisane od nowa**: nie mają już tej samej struktury i zdań co inne przewodniki dla poszczególnych odbiorców. Ten dla szkoły mówi teraz o tym, kto decyduje (rada rodziców albo rada szkoły), o kalendarzu szkolnym (zebranie z rodzicami, koniec semestru), i podkreśla, w samym tekście, a nie tylko w porada, że nigdy nie wolno wpisywać na losie imienia dziecka ani innych danych osobowych. Ten dla straży mówi o zarządzie lub dowództwie jednostki, o konkretnym powodzie (wóz, węże, sprzęt ochronny), o sprzedaży od domu do domu w mundurze i o kodzie QR weryfikacji, który pomaga zachować zaufanie tych, którzy kupują rok po roku.
+
 ## 3.96.0 — 2026-11-27
 
 ### Poprawione

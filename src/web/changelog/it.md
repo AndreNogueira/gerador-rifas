@@ -2,6 +2,11 @@
 
 Riassunto tradotto di `../CHANGELOG.md`: stesse versioni, sezioni e punti, più brevi. Il testo completo è in portoghese.
 
+## 3.97.0 — 2026-11-27
+
+### Migliorato
+- **Guide «Come fare una lotteria per la scuola» e «…per i vigili del fuoco» riscritte**: non condividono più la struttura e le frasi delle altre guide per pubblico. Quella della scuola parla ora di chi decide (il comitato dei genitori o il consiglio d'istituto), del calendario scolastico (riunione di genitori, fine trimestre), e sottolinea, nel testo stesso e non solo in un consiglio, di non scrivere mai il nome di un alunno né altri dati personali sul biglietto. Quella dei vigili del fuoco parla del direttivo o del comando del corpo, di un motivo concreto (un mezzo, manichette, dispositivi di protezione), della vendita porta a porta in divisa e del QR di verifica per mantenere la fiducia di chi compra anno dopo anno.
+
 ## 3.96.0 — 2026-11-27
 
 ### Migliorato
