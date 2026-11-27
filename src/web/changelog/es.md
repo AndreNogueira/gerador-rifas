@@ -2,6 +2,11 @@
 
 Resumen traducido de `../CHANGELOG.md`: mismas versiones, secciones y puntos, más breves. El texto completo está en portugués.
 
+## 3.97.0 — 2026-11-27
+
+### Mejorado
+- **Guías «Cómo hacer una rifa para el colegio» y «…para los bomberos» reescritas**: dejan de compartir la estructura y las frases de las demás guías por público. La del colegio habla ahora de quién decide (la asociación de padres o el consejo escolar), del calendario escolar (reunión de padres, fin de trimestre), y advierte, en el propio texto y no solo en un consejo, de no escribir nunca el nombre de un alumno ni otros datos personales en el boleto. La de los bomberos habla de la propia dirección o mando del cuerpo, de un motivo concreto (un vehículo, mangueras, equipo de protección), de la venta de puerta en puerta de uniforme y del código QR de verificación para mantener la confianza de quienes compran año tras año.
+
 ## 3.96.0 — 2026-11-27
 
 ### Mejorado

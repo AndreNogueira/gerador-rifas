@@ -2,6 +2,11 @@
 
 Rezumat tradus al `../CHANGELOG.md`: aceleași versiuni, secțiuni și puncte, mai scurte. Textul complet este în portugheză.
 
+## 3.97.0 — 2026-11-27
+
+### Îmbunătățit
+- **Ghidurile „Cum faci o tombolă pentru școală” și „…pentru pompieri” rescrise**: nu mai au aceeași structură și propoziții ca celelalte ghiduri pe public. Cel pentru școală vorbește acum despre cine decide (asociația de părinți sau consiliul școlii), calendarul școlar (ședință cu părinții, final de semestru), și insistă, chiar în text, nu doar într-un sfat, să nu se scrie niciodată numele unui elev sau alte date personale pe bilet. Cel pentru pompieri vorbește despre conducerea sau comanda proprie a unității, un motiv concret (o mașină, furtunuri, echipament de protecție), vânzarea din poartă în poartă în uniformă și codul QR de verificare, care ajută să se păstreze încrederea celor care cumpără an de an.
+
 ## 3.96.0 — 2026-11-27
 
 ### Îmbunătățit

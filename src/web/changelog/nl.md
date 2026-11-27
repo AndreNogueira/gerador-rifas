@@ -2,6 +2,11 @@
 
 Vertaalde samenvatting van `../CHANGELOG.md`: dezelfde versies, onderdelen en punten, korter. De volledige tekst is in het Portugees.
 
+## 3.97.0 — 2026-11-27
+
+### Verbeterd
+- **Gidsen "Zo organiseert u een loterij voor de school" en "…voor de brandweer" herschreven**: ze delen niet meer dezelfde opbouw en zinnen als de andere gidsen per doelgroep. Die van de school gaat nu over wie beslist (de oudervereniging of de medezeggenschapsraad), de schoolkalender (ouderavond, einde trimester), en benadrukt, in de tekst zelf en niet alleen in een tip, om nooit de naam van een leerling of andere persoonsgegevens op het lot te schrijven. Die van de brandweer gaat over het eigen bestuur of commando van het korps, een concrete reden (een voertuig, slangen, beschermingsmiddelen), de verkoop van deur tot deur in uniform en de verificatie-QR om het vertrouwen te behouden van wie elk jaar opnieuw koopt.
+
 ## 3.96.0 — 2026-11-27
 
 ### Verbeterd

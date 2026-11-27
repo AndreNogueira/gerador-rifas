@@ -2,6 +2,11 @@
 
 Ringkasan terjemahan dari `../CHANGELOG.md`: versi, bagian dan butir yang sama, lebih singkat. Teks lengkapnya dalam bahasa Portugis.
 
+## 3.97.0 — 2026-11-27
+
+### Ditingkatkan
+- **Panduan "Cara menyelenggarakan undian untuk sekolah" dan "…untuk pemadam kebakaran" ditulis ulang**: tidak lagi berbagi struktur dan kalimat yang sama dengan panduan lain per audiens. Panduan sekolah kini membahas siapa yang memutuskan (komite orang tua atau pihak sekolah), kalender sekolah (rapat orang tua, akhir semester), dan menekankan, di teks utama bukan hanya di tips, untuk tidak pernah menulis nama murid atau data pribadi lain pada tiket. Panduan pemadam kebakaran membahas pengurus atau komando regu sendiri, alasan konkret (kendaraan, selang, perlengkapan pelindung), penjualan dari rumah ke rumah berseragam, dan kode QR verifikasi yang membantu menjaga kepercayaan mereka yang terus membeli setiap tahun.
+
 ## 3.96.0 — 2026-11-27
 
 ### Ditingkatkan

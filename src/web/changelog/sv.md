@@ -2,6 +2,11 @@
 
 Översatt sammanfattning av `../CHANGELOG.md`: samma versioner, avsnitt och punkter, kortare. Hela texten finns på portugisiska.
 
+## 3.97.0 — 2026-11-27
+
+### Förbättrat
+- **Guiderna "Så ordnar du ett lotteri för skolan" och "…för brandkåren" omskrivna**: de delar inte längre struktur och meningar med de andra guiderna per målgrupp. Skolguiden handlar nu om vem som bestämmer (föräldraföreningen eller skolans styrelse), skolkalendern (föräldramöte, terminsslut), och betonar, i själva texten och inte bara i ett tips, att aldrig skriva ett barns namn eller andra personuppgifter på lotten. Brandkårsguiden handlar om kårens egen styrelse eller ledning, en konkret anledning (ett fordon, slangar, skyddsutrustning), dörrknackningsförsäljning i uniform och verifierings-QR-koden som hjälper att behålla förtroendet hos dem som köper år efter år.
+
 ## 3.96.0 — 2026-11-27
 
 ### Förbättrat
