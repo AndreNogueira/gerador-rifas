@@ -12,6 +12,7 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest",
+    "pytest-xdist",  # `-n auto`: cada teste e isolado (tmp_path, portas livres), corre em processos a parte
     "httpx2",      # usado pelo starlette.testclient (testes da API); o antigo `httpx` esta obsoleto no Starlette 1.x
     "ruff",         # lint (CI)
 ]

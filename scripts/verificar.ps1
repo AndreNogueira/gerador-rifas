@@ -21,7 +21,7 @@ function Passo([string]$nome, [string]$pasta, [scriptblock]$comando) {
 $front = Join-Path $raiz "src\web\frontend"
 
 Passo "ruff"            $raiz  { uv run ruff check . }
-Passo "pytest"          $raiz  { uv run pytest -q }
+Passo "pytest"          $raiz  { uv run pytest -q -n auto }
 Passo "frontend: Biome" $front { pnpm run lint }
 Passo "frontend: tsc"   $front { pnpm run tipos }
 Passo "frontend: Vitest" $front { pnpm run teste }

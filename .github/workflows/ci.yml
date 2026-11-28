@@ -52,7 +52,7 @@ jobs:
           version: "0.13.7"
           python-version: ${{ matrix.python }}
       - run: uv sync --frozen
-      - run: uv run --no-sync python -m pytest -q
+      - run: uv run --no-sync python -m pytest -q -n auto
       - name: Auto-teste do motor (python -m core)
         working-directory: src
         env:
@@ -106,9 +106,16 @@ jobs:
       - run: pnpm run teste
       - run: pnpm run build
 
+  # 3 fatias (Playwright --shard): cada uma arranca o seu proprio `python -m src.web` (porta 8123, so nesta maquina) e
+  # corre workers:1 la dentro (o motor so tem 1 processo de trabalho; playwright.config.ts). As fatias, em maquinas
+  # diferentes, nao colidem entre si — reduz o tempo de espera sem tocar na regra de 1 geracao de cada vez.
   e2e:
-    name: e2e (Playwright, Chromium)
+    name: e2e (Playwright, Chromium, fatia ${{ matrix.fatia }}/3)
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        fatia: [1, 2, 3]
     steps:
       - uses: actions/checkout@v7
       - uses: astral-sh/setup-uv@v10.4.0
@@ -134,11 +141,11 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Testes e2e (a app compilada num browser a sério)
         working-directory: src/web/frontend
-        run: pnpm run e2e
+        run: pnpm run e2e -- --shard=${{ matrix.fatia }}/3
       - uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: resultados-e2e
+          name: resultados-e2e-${{ matrix.fatia }}
           path: src/web/frontend/test-results/
           retention-days: 7
 
