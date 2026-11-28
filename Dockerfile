@@ -36,7 +36,7 @@ COPY tests ./tests
 COPY app/exemplos ./app/exemplos
 COPY app/assets ./app/assets
 COPY app/ambiente.py ./app/ambiente.py
-RUN uv run --no-sync python -m pytest -q -p no:cacheprovider \
+RUN uv run --no-sync python -m pytest -q -n auto -p no:cacheprovider \
  && cd src && /opt/venv/bin/python -m core ../app/exemplos /tmp/autoteste
 
 # --- a webapp (python -m src.web), sem root. O frontend compilado vem do estagio `frontend` (nao ha Node na imagem final).

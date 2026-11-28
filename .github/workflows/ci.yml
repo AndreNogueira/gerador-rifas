@@ -52,7 +52,7 @@ jobs:
           version: "0.13.7"
           python-version: ${{ matrix.python }}
       - run: uv sync --frozen
-      - run: uv run --no-sync python -m pytest -q
+      - run: uv run --no-sync python -m pytest -q -n auto
       - name: Auto-teste do motor (python -m core)
         working-directory: src
         env:
